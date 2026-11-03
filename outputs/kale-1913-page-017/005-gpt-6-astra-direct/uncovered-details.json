@@ -1,0 +1,256 @@
+{
+  "source_result": "outputs/kale-1913-page-017/005-gpt-6-astra-direct/regions.json",
+  "source_result_sha256": "190807102079599c952e2f3df6fe20fa3b99d74020c59774acf79b1f122a0e41",
+  "input_sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+  "script_sha256": "ae13f4772662810fcabd44a41e5e1e9e13e8928d03ab08123e29c40d097b40f2",
+  "uncovered_pixels": 4524,
+  "components": [
+    {
+      "id": 1,
+      "box": [
+        499,
+        260,
+        501,
+        262
+      ],
+      "pixels": 4
+    },
+    {
+      "id": 2,
+      "box": [
+        200,
+        280,
+        202,
+        283
+      ],
+      "pixels": 6
+    },
+    {
+      "id": 3,
+      "box": [
+        1297,
+        285,
+        1300,
+        289
+      ],
+      "pixels": 8
+    },
+    {
+      "id": 4,
+      "box": [
+        888,
+        545,
+        889,
+        546
+      ],
+      "pixels": 1
+    },
+    {
+      "id": 5,
+      "box": [
+        929,
+        545,
+        930,
+        546
+      ],
+      "pixels": 1
+    },
+    {
+      "id": 6,
+      "box": [
+        1315,
+        570,
+        1318,
+        572
+      ],
+      "pixels": 6
+    },
+    {
+      "id": 7,
+      "box": [
+        333,
+        995,
+        337,
+        997
+      ],
+      "pixels": 6
+    },
+    {
+      "id": 8,
+      "box": [
+        154,
+        1883,
+        564,
+        1891
+      ],
+      "pixels": 1662
+    },
+    {
+      "id": 9,
+      "box": [
+        567,
+        1885,
+        875,
+        1893
+      ],
+      "pixels": 1436
+    },
+    {
+      "id": 10,
+      "box": [
+        877,
+        1888,
+        1240,
+        1895
+      ],
+      "pixels": 1394
+    }
+  ],
+  "footnote_separator_pixels": 4492,
+  "other_pixels": 32,
+  "views": [
+    {
+      "label": "A",
+      "description": "Footnote separator",
+      "box": [
+        154,
+        1883,
+        1240,
+        1895
+      ],
+      "pixels": 4492,
+      "component_ids": [
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "label": "B",
+      "description": "Small component context",
+      "box": [
+        499,
+        260,
+        501,
+        262
+      ],
+      "pixels": 4,
+      "component_ids": [
+        1
+      ],
+      "crop_box": [
+        462,
+        231,
+        538,
+        291
+      ]
+    },
+    {
+      "label": "C",
+      "description": "Small component context",
+      "box": [
+        200,
+        280,
+        202,
+        283
+      ],
+      "pixels": 6,
+      "component_ids": [
+        2
+      ],
+      "crop_box": [
+        163,
+        251,
+        239,
+        311
+      ]
+    },
+    {
+      "label": "D",
+      "description": "Small component context",
+      "box": [
+        1297,
+        285,
+        1300,
+        289
+      ],
+      "pixels": 8,
+      "component_ids": [
+        3
+      ],
+      "crop_box": [
+        1260,
+        257,
+        1336,
+        317
+      ]
+    },
+    {
+      "label": "E",
+      "description": "Small component context",
+      "box": [
+        888,
+        545,
+        930,
+        546
+      ],
+      "pixels": 2,
+      "component_ids": [
+        4,
+        5
+      ],
+      "crop_box": [
+        871,
+        515,
+        947,
+        575
+      ]
+    },
+    {
+      "label": "F",
+      "description": "Small component context",
+      "box": [
+        1315,
+        570,
+        1318,
+        572
+      ],
+      "pixels": 6,
+      "component_ids": [
+        6
+      ],
+      "crop_box": [
+        1278,
+        541,
+        1354,
+        601
+      ]
+    },
+    {
+      "label": "G",
+      "description": "Small component context",
+      "box": [
+        333,
+        995,
+        337,
+        997
+      ],
+      "pixels": 6,
+      "component_ids": [
+        7
+      ],
+      "crop_box": [
+        297,
+        966,
+        373,
+        1026
+      ]
+    }
+  ],
+  "rendering": {
+    "red": "exact uncovered pixels",
+    "context_opacity": 0.35,
+    "small_detail_scale": 5,
+    "detail_resampling": "nearest-neighbor"
+  }
+}

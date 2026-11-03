@@ -1,0 +1,44 @@
+{
+  "upstream": "https://huggingface.co/PaddlePaddle/PP-DocLayoutV3_safetensors",
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "path": "models/v3/PP-DocLayoutV3.onnx",
+      "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/PP-DocLayoutV3.onnx",
+      "size_bytes": 5088167,
+      "sha256": "c0721928ff08741bb208ebed539c77170db5234a68cb7e546e6cc9bc172a695b"
+    },
+    {
+      "path": "models/v3/PP-DocLayoutV3.onnx.data",
+      "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/PP-DocLayoutV3.onnx.data",
+      "size_bytes": 136774480,
+      "sha256": "34df3e4b79d7bbbf82abce1b4f3cde3d540fa57ad42ec8905c352b97c408d437"
+    },
+    {
+      "path": "models/v3/README.md",
+      "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/README.md",
+      "size_bytes": 4756,
+      "sha256": "bae6aff06c76f412be7896226fe6134070059bb239f4933a762ce7a8d104c086"
+    },
+    {
+      "path": "models/v3/config.json",
+      "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/config.json",
+      "size_bytes": 2460,
+      "sha256": "3cf834b91d23a756b1519bce4db42c09e852f3e35c35092dd5a3e253a50c071a"
+    },
+    {
+      "path": "models/v3/preprocessor_config.json",
+      "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/preprocessor_config.json",
+      "size_bytes": 575,
+      "sha256": "519fe0187a43a1ca429e3ad8317bab8700f0d5e8fb3a6e3a0a413ffac078ba42"
+    },
+    {
+      "path": "models/v3/inference.yml",
+      "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/inference.yml",
+      "size_bytes": 1482,
+      "sha256": "506fcfac13b3b546ae40d7886b44126420f392adb694e3f8bb6a6286a1f90fdc"
+    }
+  ],
+  "reference_postprocessor_url": "https://github.com/huggingface/transformers/blob/main/src/transformers/models/pp_doclayout_v3/image_processing_pp_doclayout_v3.py",
+  "reference_postprocessor_sha256": "5b064fa7383dda12b3550448eae77d4f627a102c25e8b4db25d99e85fba4abc6"
+}

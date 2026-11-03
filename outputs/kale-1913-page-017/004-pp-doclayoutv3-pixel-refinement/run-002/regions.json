@@ -1,0 +1,566 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-02T05:19:41.505855+00:00",
+  "method": {
+    "id": "004-pp-doclayoutv3-pixel-refinement",
+    "name": "PP-DocLayoutV3 + pixel refinement",
+    "files_sha256": {
+      "refinement.py": "9cc82e0be8653dbd5d4f0713893df55d3123da1598441337e0fb8878f9056310",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "run.py": "fd53c42f36e85b48c4c11c782e4bf0cddacbc631a14f0daffb1bfbbd2c3113ec",
+      "requirements.txt": "47a3d3fe9fd9eb593db620d6502d845651cd46a66ccc165c6bd44c72bbacb413"
+    },
+    "settings": {
+      "base_confidence_threshold": 0.3,
+      "exclude_boxes_starting_below_height_fraction": 0.94,
+      "component_intersection_minimum": "max(2 pixels, 20% of component area)",
+      "component_extension_limit": {
+        "x_width_fraction": 0.025,
+        "y_height_fraction": 0.018
+      },
+      "padding_pixels": 2,
+      "residual_component_minimum_area": 5,
+      "residual_uncovered_threshold": "strictly greater than max(3 pixels, 15% of component area)",
+      "recovered_box_filter": "discard when width < 2.5% of image width AND height < estimated character height",
+      "reading_order": "top-to-bottom, then left-to-right"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "base_result": {
+    "path": "outputs/kale-1913-page-017/003-pp-doclayoutv3/regions.json",
+    "sha256": "5df7884775063af5b3e7e734aa86079ef630e1cc1358a4171003d5cc8d4dd7a6",
+    "started_at_utc": "2026-11-02T04:53:32.462423+00:00",
+    "method": {
+      "id": "003-pp-doclayoutv3",
+      "name": "PP-DocLayoutV3",
+      "files_sha256": {
+        "detector.py": "09809b840df5e554775485adba7644b895263cec0b1a72224a07fb26b8d2266f",
+        "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+        "run.py": "14a9255b208196efdeb4a72581f22a6a16c4d76f71f7eb72ccacfb9ae5b37bdb",
+        "offline.py": "18cd128da56832aaa6884b999883d23ab1f31f3c1ac951b483b43723e9ecc63a",
+        "download_models.py": "c610500ead7b9b9467886419a99894258165b87acc88207d748927d961f68156",
+        "models.json": "aeb0b28e553c97cdb3e5aefcd3f89d645b78d7f63b4c378a0a6afbb257bc56e9",
+        "requirements.txt": "f459284ae74f955bb779b02886798de50a7726d828d864d51d8ea2287fff0039"
+      },
+      "settings": {
+        "model_input_size": [
+          800,
+          800
+        ],
+        "resize": "OpenCV INTER_CUBIC",
+        "rescale": "1/255",
+        "confidence_threshold": 0.3,
+        "candidate_confidence_threshold": 0.2,
+        "top_query_class_pairs": 300,
+        "reading_order": "predicted pairwise-order votes with stable sorting",
+        "overlapping_predictions": "retained"
+      },
+      "model_files": [
+        {
+          "path": "models/v3/PP-DocLayoutV3.onnx",
+          "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/PP-DocLayoutV3.onnx",
+          "size_bytes": 5088167,
+          "sha256": "c0721928ff08741bb208ebed539c77170db5234a68cb7e546e6cc9bc172a695b"
+        },
+        {
+          "path": "models/v3/PP-DocLayoutV3.onnx.data",
+          "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/PP-DocLayoutV3.onnx.data",
+          "size_bytes": 136774480,
+          "sha256": "34df3e4b79d7bbbf82abce1b4f3cde3d540fa57ad42ec8905c352b97c408d437"
+        },
+        {
+          "path": "models/v3/README.md",
+          "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/README.md",
+          "size_bytes": 4756,
+          "sha256": "bae6aff06c76f412be7896226fe6134070059bb239f4933a762ce7a8d104c086"
+        },
+        {
+          "path": "models/v3/config.json",
+          "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/config.json",
+          "size_bytes": 2460,
+          "sha256": "3cf834b91d23a756b1519bce4db42c09e852f3e35c35092dd5a3e253a50c071a"
+        },
+        {
+          "path": "models/v3/preprocessor_config.json",
+          "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/preprocessor_config.json",
+          "size_bytes": 575,
+          "sha256": "519fe0187a43a1ca429e3ad8317bab8700f0d5e8fb3a6e3a0a413ffac078ba42"
+        },
+        {
+          "path": "models/v3/inference.yml",
+          "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/inference.yml",
+          "size_bytes": 1482,
+          "sha256": "506fcfac13b3b546ae40d7886b44126420f392adb694e3f8bb6a6286a1f90fdc"
+        }
+      ]
+    },
+    "input": {
+      "id": "kale-1913-page-017",
+      "path": "inputs/kale-1913-page-017.png",
+      "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+      "width": 1407,
+      "height": 2135
+    }
+  },
+  "coordinates": {
+    "format": "[x1, y1, x2, y2]",
+    "units": "input-image pixels",
+    "origin": "top-left",
+    "rasterization": "floor top-left, ceil bottom-right; exclusive right/bottom"
+  },
+  "estimated_character_height_px": 30.0,
+  "base_regions": [
+    {
+      "box": [
+        178.2630615234375,
+        144.67884826660156,
+        251.3860321044922,
+        203.14071655273438
+      ],
+      "label": "header",
+      "score": 0.6557533740997314,
+      "model_order": 0,
+      "query_id": 4,
+      "reading_order": 1
+    },
+    {
+      "box": [
+        605.7254028320312,
+        135.9850311279297,
+        857.788330078125,
+        201.26605224609375
+      ],
+      "label": "header",
+      "score": 0.7807241678237915,
+      "model_order": 8,
+      "query_id": 5,
+      "reading_order": 2
+    },
+    {
+      "box": [
+        212.05775451660156,
+        261.7325134277344,
+        702.4324340820312,
+        310.74591064453125
+      ],
+      "label": "text",
+      "score": 0.6643805503845215,
+      "model_order": 42,
+      "query_id": 7,
+      "reading_order": 3
+    },
+    {
+      "box": [
+        266.0618896484375,
+        308.0484619140625,
+        1036.0872802734375,
+        368.1911315917969
+      ],
+      "label": "text",
+      "score": 0.349558025598526,
+      "model_order": 53,
+      "query_id": 26,
+      "reading_order": 4
+    },
+    {
+      "box": [
+        311.75537109375,
+        485.08697509765625,
+        1156.52294921875,
+        544.936279296875
+      ],
+      "label": "text",
+      "score": 0.5501672625541687,
+      "model_order": 104,
+      "query_id": 10,
+      "reading_order": 5
+    },
+    {
+      "box": [
+        156.28125,
+        547.8075561523438,
+        1293.8792724609375,
+        995.9955444335938
+      ],
+      "label": "text",
+      "score": 0.93780517578125,
+      "model_order": 128,
+      "query_id": 0,
+      "reading_order": 6
+    },
+    {
+      "box": [
+        154.17593383789062,
+        996.5758056640625,
+        1287.9451904296875,
+        1105.68017578125
+      ],
+      "label": "text",
+      "score": 0.8922405242919922,
+      "model_order": 150,
+      "query_id": 6,
+      "reading_order": 7
+    },
+    {
+      "box": [
+        250.7880401611328,
+        1105.2830810546875,
+        960.5934448242188,
+        1168.15283203125
+      ],
+      "label": "text",
+      "score": 0.47219157218933105,
+      "model_order": 163,
+      "query_id": 11,
+      "reading_order": 8
+    },
+    {
+      "box": [
+        311.1005859375,
+        1166.820068359375,
+        969.5047607421875,
+        1224.271484375
+      ],
+      "label": "text",
+      "score": 0.346515953540802,
+      "model_order": 177,
+      "query_id": 14,
+      "reading_order": 9
+    },
+    {
+      "box": [
+        251.3067626953125,
+        1223.06103515625,
+        937.481689453125,
+        1284.343505859375
+      ],
+      "label": "text",
+      "score": 0.39008840918540955,
+      "model_order": 199,
+      "query_id": 9,
+      "reading_order": 10
+    },
+    {
+      "box": [
+        299.3926086425781,
+        1281.281982421875,
+        1237.9998779296875,
+        1344.7105712890625
+      ],
+      "label": "text",
+      "score": 0.5907649993896484,
+      "model_order": 209,
+      "query_id": 8,
+      "reading_order": 11
+    },
+    {
+      "box": [
+        142.217041015625,
+        1321.0223388671875,
+        1285.6793212890625,
+        1879.885498046875
+      ],
+      "label": "text",
+      "score": 0.8814613223075867,
+      "model_order": 219,
+      "query_id": 3,
+      "reading_order": 12
+    },
+    {
+      "box": [
+        183.0499267578125,
+        1893.3338623046875,
+        1278.101806640625,
+        1949.6751708984375
+      ],
+      "label": "footnote",
+      "score": 0.8365514278411865,
+      "model_order": 256,
+      "query_id": 1,
+      "reading_order": 13
+    },
+    {
+      "box": [
+        710.6535034179688,
+        2033.2484130859375,
+        995.0637817382812,
+        2094.19287109375
+      ],
+      "label": "footer",
+      "score": 0.5949373841285706,
+      "model_order": 299,
+      "query_id": 2,
+      "reading_order": 14
+    },
+    {
+      "box": [
+        710.6535034179688,
+        2033.2484130859375,
+        995.0637817382812,
+        2094.19287109375
+      ],
+      "label": "footer",
+      "score": 0.3712347149848938,
+      "model_order": 299,
+      "query_id": 2,
+      "reading_order": 15
+    }
+  ],
+  "regions": [
+    {
+      "box": [
+        603.7254028320312,
+        133.9850311279297,
+        859.788330078125,
+        203.26605224609375
+      ],
+      "label": "header",
+      "score": 0.7807241678237915,
+      "model_order": 8,
+      "query_id": 5,
+      "origin": "model_refined",
+      "reading_order": 1
+    },
+    {
+      "box": [
+        176.2630615234375,
+        142.67884826660156,
+        253.3860321044922,
+        205.14071655273438
+      ],
+      "label": "header",
+      "score": 0.6557533740997314,
+      "model_order": 0,
+      "query_id": 4,
+      "origin": "model_refined",
+      "reading_order": 2
+    },
+    {
+      "box": [
+        210.05775451660156,
+        258,
+        704.4324340820312,
+        312.74591064453125
+      ],
+      "label": "text",
+      "score": 0.6643805503845215,
+      "model_order": 42,
+      "query_id": 7,
+      "origin": "model_refined",
+      "reading_order": 3
+    },
+    {
+      "box": [
+        264.0618896484375,
+        306.0484619140625,
+        1038.0872802734375,
+        373
+      ],
+      "label": "text",
+      "score": 0.349558025598526,
+      "model_order": 53,
+      "query_id": 26,
+      "origin": "model_refined",
+      "reading_order": 4
+    },
+    {
+      "box": [
+        278,
+        365,
+        1064,
+        485
+      ],
+      "label": "recovered",
+      "score": null,
+      "origin": "unassigned_ink",
+      "reading_order": 5
+    },
+    {
+      "box": [
+        309.75537109375,
+        483.08697509765625,
+        1158.52294921875,
+        548
+      ],
+      "label": "text",
+      "score": 0.5501672625541687,
+      "model_order": 104,
+      "query_id": 10,
+      "origin": "model_refined",
+      "reading_order": 6
+    },
+    {
+      "box": [
+        154.28125,
+        543,
+        1295.8792724609375,
+        999
+      ],
+      "label": "text",
+      "score": 0.93780517578125,
+      "model_order": 128,
+      "query_id": 0,
+      "origin": "model_refined",
+      "reading_order": 7
+    },
+    {
+      "box": [
+        152.17593383789062,
+        994.5758056640625,
+        1289.9451904296875,
+        1107.68017578125
+      ],
+      "label": "text",
+      "score": 0.8922405242919922,
+      "model_order": 150,
+      "query_id": 6,
+      "origin": "model_refined",
+      "reading_order": 8
+    },
+    {
+      "box": [
+        248.7880401611328,
+        1103.2830810546875,
+        962.5934448242188,
+        1170.15283203125
+      ],
+      "label": "text",
+      "score": 0.47219157218933105,
+      "model_order": 163,
+      "query_id": 11,
+      "origin": "model_refined",
+      "reading_order": 9
+    },
+    {
+      "box": [
+        309.1005859375,
+        1161,
+        971.5047607421875,
+        1226.271484375
+      ],
+      "label": "text",
+      "score": 0.346515953540802,
+      "model_order": 177,
+      "query_id": 14,
+      "origin": "model_refined",
+      "reading_order": 10
+    },
+    {
+      "box": [
+        249.3067626953125,
+        1221.06103515625,
+        939.481689453125,
+        1286.343505859375
+      ],
+      "label": "text",
+      "score": 0.39008840918540955,
+      "model_order": 199,
+      "query_id": 9,
+      "origin": "model_refined",
+      "reading_order": 11
+    },
+    {
+      "box": [
+        297.3926086425781,
+        1277,
+        1239.9998779296875,
+        1348
+      ],
+      "label": "text",
+      "score": 0.5907649993896484,
+      "model_order": 209,
+      "query_id": 8,
+      "origin": "model_refined",
+      "reading_order": 12
+    },
+    {
+      "box": [
+        140.217041015625,
+        1298,
+        1287.6793212890625,
+        1881.885498046875
+      ],
+      "label": "text",
+      "score": 0.8814613223075867,
+      "model_order": 219,
+      "query_id": 3,
+      "origin": "model_refined",
+      "reading_order": 13
+    },
+    {
+      "box": [
+        154,
+        1883,
+        1241,
+        1896
+      ],
+      "label": "recovered",
+      "score": null,
+      "origin": "unassigned_ink",
+      "reading_order": 14
+    },
+    {
+      "box": [
+        181.0499267578125,
+        1891.3338623046875,
+        1280.101806640625,
+        1951.6751708984375
+      ],
+      "label": "footnote",
+      "score": 0.8365514278411865,
+      "model_order": 256,
+      "query_id": 1,
+      "origin": "model_refined",
+      "reading_order": 15
+    }
+  ],
+  "base_metrics": {
+    "regions": 15,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 31265,
+    "ink_coverage": 0.9239046307068485,
+    "partially_covered_components": 4
+  },
+  "metrics": {
+    "regions": 15,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 20,
+    "ink_coverage": 0.9999513223289345,
+    "partially_covered_components": 0
+  },
+  "refinement_counts": {
+    "base_regions": 15,
+    "retained_model_regions": 13,
+    "discarded_model_regions": 2,
+    "recovered_regions": 2
+  },
+  "timings_seconds": {
+    "image_loading": 0.02214370807632804,
+    "mask_creation": 0.10800754185765982,
+    "pixel_refinement": 0.032026708126068115,
+    "diagnostics": 0.01610087463632226,
+    "overlay_drawing": 0.016499792225658894,
+    "total_before_file_writes": 0.19477862492203712
+  },
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93",
+      "scipy": "1.17.0"
+    },
+    "opencv_threads": 10
+  },
+  "artifacts": {
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

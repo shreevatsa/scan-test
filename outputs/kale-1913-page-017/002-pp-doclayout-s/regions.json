@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-02T03:35:43.799038+00:00",
+  "method": {
+    "id": "002-pp-doclayout-s",
+    "name": "PP-DocLayout-S",
+    "files_sha256": {
+      "detector.py": "9d8c2787cde28b43918e4adfd25b7281d9c2bdac3edd417a07f7c0360dd2efe6",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "run.py": "1b23fd46926eee674b913b9af66b62602776af456fdfa4dce0a177ff0e8cf2fe",
+      "offline.py": "18cd128da56832aaa6884b999883d23ab1f31f3c1ac951b483b43723e9ecc63a",
+      "download_models.py": "c610500ead7b9b9467886419a99894258165b87acc88207d748927d961f68156",
+      "models.json": "f993dfdd65f49d3c49705c77f0efcd616e88c3d1417fee00b2df1d82a3ded4d5",
+      "requirements.txt": "1798ef0d392fd02660de44d01750ec1cf6832999a6dd68d007ea68c6aea72fe6"
+    },
+    "settings": {
+      "model_input_size": [
+        480,
+        480
+      ],
+      "resize": "OpenCV INTER_CUBIC",
+      "rescale": "1/255",
+      "normalization_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "normalization_std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "confidence_threshold": 0.3,
+      "class_agnostic_nms_iou_threshold": 0.55,
+      "reading_order": "top-to-bottom, then left-to-right"
+    },
+    "model": {
+      "path": "models/pp_doclayout_s.onnx",
+      "url": "https://huggingface.co/stefanj0/PP-DocLayout-S-ONNX/resolve/7e851b9e5ad66613d7318a3213ab3336ebe0a514/pp_doclayout_s.onnx",
+      "size_bytes": 4917852,
+      "sha256": "33688dbee1c23e34b81777e97cb428eb40f24b242c02b5f623484959e830aec8"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "coordinates": {
+    "format": "[x1, y1, x2, y2]",
+    "units": "input-image pixels",
+    "origin": "top-left",
+    "rasterization": "floor top-left, ceil bottom-right; exclusive right/bottom"
+  },
+  "regions": [
+    {
+      "box": [
+        611.1735229492188,
+        135.42587280273438,
+        854.3626098632812,
+        192.7280731201172
+      ],
+      "label": "paragraph_title",
+      "score": 0.5124716758728027,
+      "reading_order": 1
+    },
+    {
+      "box": [
+        183.01556396484375,
+        147.86497497558594,
+        246.48748779296875,
+        193.08953857421875
+      ],
+      "label": "number",
+      "score": 0.4514586627483368,
+      "reading_order": 2
+    },
+    {
+      "box": [
+        155.14346313476562,
+        181.7411346435547,
+        1293.96142578125,
+        1878.520751953125
+      ],
+      "label": "abstract",
+      "score": 0.5056777000427246,
+      "reading_order": 3
+    },
+    {
+      "box": [
+        221.13650512695312,
+        261.7656555175781,
+        1078.4969482421875,
+        515.1549072265625
+      ],
+      "label": "text",
+      "score": 0.3812670409679413,
+      "reading_order": 4
+    },
+    {
+      "box": [
+        158.98623657226562,
+        551.5640869140625,
+        1289.9874267578125,
+        985.0778198242188
+      ],
+      "label": "abstract",
+      "score": 0.48920488357543945,
+      "reading_order": 5
+    },
+    {
+      "box": [
+        156.570556640625,
+        997.423828125,
+        1277.3314208984375,
+        1096.7877197265625
+      ],
+      "label": "text",
+      "score": 0.45866918563842773,
+      "reading_order": 6
+    },
+    {
+      "box": [
+        316.86639404296875,
+        1163.4427490234375,
+        954.1976318359375,
+        1212.8677978515625
+      ],
+      "label": "text",
+      "score": 0.3127080500125885,
+      "reading_order": 7
+    },
+    {
+      "box": [
+        262.13623046875,
+        1222.872802734375,
+        911.0665283203125,
+        1281.4227294921875
+      ],
+      "label": "text",
+      "score": 0.36584222316741943,
+      "reading_order": 8
+    },
+    {
+      "box": [
+        151.59231567382812,
+        1310.8193359375,
+        1279.2569580078125,
+        1880.401611328125
+      ],
+      "label": "abstract",
+      "score": 0.6339237689971924,
+      "reading_order": 9
+    },
+    {
+      "box": [
+        164.7147674560547,
+        1885.6376953125,
+        1262.96142578125,
+        1942.575927734375
+      ],
+      "label": "text",
+      "score": 0.6833440065383911,
+      "reading_order": 10
+    },
+    {
+      "box": [
+        714.8146362304688,
+        2028.260009765625,
+        995.8223876953125,
+        2091.69287109375
+      ],
+      "label": "footer_image",
+      "score": 0.34348657727241516,
+      "reading_order": 11
+    }
+  ],
+  "metrics": {
+    "regions": 11,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 372,
+    "ink_coverage": 0.9990945953181816,
+    "partially_covered_components": 3
+  },
+  "timings_seconds": {
+    "image_loading": 0.0328618329949677,
+    "mask_creation": 0.10933399992063642,
+    "model_loading": 0.037686167284846306,
+    "preprocessing_and_inference": 0.049782832618802786,
+    "diagnostics": 0.008276583161205053,
+    "overlay_drawing": 0.018302917014807463,
+    "total_before_file_writes": 0.2562443329952657
+  },
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93",
+      "onnxruntime": "1.31.1"
+    },
+    "onnxruntime_providers": [
+      "CPUExecutionProvider"
+    ],
+    "intra_op_threads": 2,
+    "inter_op_threads": 1,
+    "opencv_threads": 10,
+    "network_restriction": {
+      "backend": "macOS sandbox-exec: deny network*",
+      "verified_probes": [
+        {
+          "family": "AF_INET",
+          "type": "SOCK_STREAM",
+          "operation": "connect",
+          "errno": 1
+        },
+        {
+          "family": "AF_INET",
+          "type": "SOCK_DGRAM",
+          "operation": "connect",
+          "errno": 1
+        },
+        {
+          "family": "AF_INET",
+          "type": "SOCK_DGRAM",
+          "operation": "sendto",
+          "errno": 1
+        },
+        {
+          "family": "AF_INET6",
+          "type": "SOCK_STREAM",
+          "operation": "connect",
+          "errno": 1
+        },
+        {
+          "family": "AF_INET6",
+          "type": "SOCK_DGRAM",
+          "operation": "connect",
+          "errno": 1
+        },
+        {
+          "family": "AF_INET6",
+          "type": "SOCK_DGRAM",
+          "operation": "sendto",
+          "errno": 1
+        }
+      ]
+    },
+    "ORT_DISABLE_TELEMETRY": "1",
+    "disable_telemetry_events_called": true
+  },
+  "artifacts": {
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

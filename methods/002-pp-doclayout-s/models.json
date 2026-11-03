@@ -1,0 +1,24 @@
+{
+  "upstream": "https://huggingface.co/PaddlePaddle/PP-DocLayout-S",
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "path": "models/pp_doclayout_s.onnx",
+      "url": "https://huggingface.co/stefanj0/PP-DocLayout-S-ONNX/resolve/7e851b9e5ad66613d7318a3213ab3336ebe0a514/pp_doclayout_s.onnx",
+      "size_bytes": 4917852,
+      "sha256": "33688dbee1c23e34b81777e97cb428eb40f24b242c02b5f623484959e830aec8"
+    },
+    {
+      "path": "models/README.md",
+      "url": "https://huggingface.co/stefanj0/PP-DocLayout-S-ONNX/resolve/7e851b9e5ad66613d7318a3213ab3336ebe0a514/README.md",
+      "size_bytes": 3621,
+      "sha256": "2065e499b7955e75f15fbc4f1d7253af44159fc895d4bffaef64467e0b5248dc"
+    },
+    {
+      "path": "models/small-inference.yml",
+      "url": "https://huggingface.co/PaddlePaddle/PP-DocLayout-S/resolve/8ac289e66575bb9bba6e15c53719d8b15cc9b3b2/inference.yml",
+      "size_bytes": 1579,
+      "sha256": "6f690098c438214c67822239a568f0bc2bbe97a8f02fba93e492d4f2c47523c3"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-02T03:09:28.479938+00:00",
+  "method": {
+    "id": "001-geometry",
+    "name": "Geometry baseline",
+    "files_sha256": {
+      "geometry.py": "ce7bee233a194a2f5ea3684d5883e4cb7ce497b670c2732c7550d922ff86c206",
+      "run.py": "c922e6f6bc8a63cd72acb10912def9021da8ab10916eca1e04787b670b5e0008",
+      "requirements.txt": "06410332cc883f38010003d3445153ef61648d9551810f66606d92f30f81e0d3"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "coordinates": {
+    "format": "[x1, y1, x2, y2]",
+    "units": "input-image pixels",
+    "origin": "top-left",
+    "right_and_bottom_edges": "exclusive"
+  },
+  "estimated_character_height_px": 30.0,
+  "regions": [
+    {
+      "box": [
+        186,
+        140,
+        849,
+        198
+      ],
+      "label": "header",
+      "score": null,
+      "reading_order": 1
+    },
+    {
+      "box": [
+        200,
+        260,
+        1300,
+        309
+      ],
+      "label": "text_block",
+      "score": null,
+      "reading_order": 2
+    },
+    {
+      "box": [
+        277,
+        310,
+        1144,
+        546
+      ],
+      "label": "verse_like",
+      "score": null,
+      "reading_order": 3
+    },
+    {
+      "box": [
+        164,
+        545,
+        1318,
+        1101
+      ],
+      "label": "text_block",
+      "score": null,
+      "reading_order": 4
+    },
+    {
+      "box": [
+        265,
+        1109,
+        957,
+        1284
+      ],
+      "label": "verse_like",
+      "score": null,
+      "reading_order": 5
+    },
+    {
+      "box": [
+        152,
+        1279,
+        1283,
+        1949
+      ],
+      "label": "text_block",
+      "score": null,
+      "reading_order": 6
+    }
+  ],
+  "metrics": {
+    "regions": 6,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 0,
+    "ink_coverage": 1.0,
+    "partially_covered_components": 0
+  },
+  "timings_seconds": {
+    "image_loading": 0.037576500326395035,
+    "mask_creation": 0.08946833293884993,
+    "line_grouping": 0.018665624782443047,
+    "diagnostics": 0.007473875302821398,
+    "overlay_drawing": 0.00722179189324379,
+    "total_before_file_writes": 0.1604061252437532
+  },
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "scipy": "1.17.0",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    },
+    "opencv_threads": 10
+  },
+  "artifacts": {
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

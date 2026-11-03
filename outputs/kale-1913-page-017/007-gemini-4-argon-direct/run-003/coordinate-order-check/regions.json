@@ -1,0 +1,271 @@
+{
+  "description": "Diagnostic view interpreting returned coordinates as [y1,x1,y2,x2].",
+  "source": {
+    "parsed_regions": "outputs/kale-1913-page-017/007-gemini-4-argon-direct/run-003/parsed-regions.json",
+    "parsed_regions_sha256": "56ddfe1bf118c91185ea7a400c808263fa7659e19e113368df411c1cf40578fd",
+    "regions": "outputs/kale-1913-page-017/007-gemini-4-argon-direct/run-003/regions.json",
+    "regions_sha256": "728ceaaed7fcad933fa516d8af4ce0b00b81bf34ef790ad18f50f1f773f920f7",
+    "response_sha256": "9d029bfb6a4b873d2a4614723c5b5a1653eff988af42acf2ff4f7cf13025a416"
+  },
+  "transformation": {
+    "requested_order": "x1,y1,x2,y2",
+    "assumed_returned_order": "y1,x1,y2,x2",
+    "permutation": [
+      1,
+      0,
+      3,
+      2
+    ],
+    "pixel_conversion": "x*width/1000, y*height/1000",
+    "boundary_adjustment": false
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "regions": [
+    {
+      "type": "page_number",
+      "box_1000": [
+        126,
+        71,
+        175,
+        95
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 1,
+      "label": "page_number",
+      "box": [
+        177.282,
+        151.585,
+        246.225,
+        202.825
+      ],
+      "returned_box_1000": [
+        71,
+        126,
+        95,
+        175
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_1000": [
+        431,
+        66,
+        606,
+        94
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 2,
+      "label": "running_header",
+      "box": [
+        606.417,
+        140.91,
+        852.642,
+        200.69
+      ],
+      "returned_box_1000": [
+        66,
+        431,
+        94,
+        606
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        157,
+        123,
+        495,
+        145
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "region_id": 3,
+      "label": "lead_in",
+      "box": [
+        220.899,
+        262.605,
+        696.465,
+        309.575
+      ],
+      "returned_box_1000": [
+        123,
+        157,
+        145,
+        495
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        193,
+        144,
+        817,
+        254
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "region_id": 4,
+      "label": "verse",
+      "box": [
+        271.551,
+        307.44,
+        1149.519,
+        542.29
+      ],
+      "returned_box_1000": [
+        144,
+        193,
+        254,
+        817
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        118,
+        256,
+        915,
+        468
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "region_id": 5,
+      "label": "commentary",
+      "box": [
+        166.026,
+        546.56,
+        1287.405,
+        999.18
+      ],
+      "returned_box_1000": [
+        256,
+        118,
+        468,
+        915
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        114,
+        467,
+        913,
+        516
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "region_id": 6,
+      "label": "lead_in",
+      "box": [
+        160.398,
+        997.045,
+        1284.591,
+        1101.66
+      ],
+      "returned_box_1000": [
+        467,
+        114,
+        516,
+        913
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        185,
+        514,
+        871,
+        631
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "region_id": 7,
+      "label": "verse",
+      "box": [
+        260.295,
+        1097.39,
+        1225.497,
+        1347.185
+      ],
+      "returned_box_1000": [
+        514,
+        185,
+        631,
+        871
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        106,
+        631,
+        914,
+        876
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "region_id": 8,
+      "label": "commentary",
+      "box": [
+        149.142,
+        1347.185,
+        1285.998,
+        1870.26
+      ],
+      "returned_box_1000": [
+        631,
+        106,
+        876,
+        914
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        138,
+        887,
+        901,
+        914
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "region_id": 9,
+      "label": "footnote",
+      "box": [
+        194.166,
+        1893.745,
+        1267.707,
+        1951.39
+      ],
+      "returned_box_1000": [
+        887,
+        138,
+        914,
+        901
+      ]
+    }
+  ],
+  "validation_warnings": [],
+  "files_sha256": {
+    "inspect_coordinates.py": "ca0dfed00bda5bf914e3f099229f46724b0642e677c323d0b9e379775f4834a2",
+    "regions.py": "43078be8023a3148e17ef0a5270774d17573979fecfbbe2708e058f5aff33841",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2"
+  }
+}

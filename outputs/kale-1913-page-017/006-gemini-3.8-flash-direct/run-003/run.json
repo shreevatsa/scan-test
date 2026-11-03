@@ -1,0 +1,53 @@
+{
+  "status": "completed",
+  "started_at_utc": "2026-11-02T14:13:51.753648+00:00",
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "credential_source": "llm stored key: gemini",
+  "client_request_id": "5e7ba484-2910-42d9-aa82-c4ee284658b8",
+  "request_sha256": "1a90d8e930d552fc7c4018faa284643c55080482bcb822d03df2333c5cc08546",
+  "method_id": "006-gemini-3.8-flash-direct",
+  "settings": {
+    "model": "gemini-3.8-flash",
+    "thinking_level": "low",
+    "thinking_summaries": "none",
+    "image_resolution": "high",
+    "max_output_tokens": 16384,
+    "service_tier": "standard",
+    "store": false
+  },
+  "files_sha256": {
+    "run.py": "bc9cc9c510bb9e365a7052d52bf2171722bda4e395e5a5a5a7bd364d752ac6f3",
+    "regions.py": "43078be8023a3148e17ef0a5270774d17573979fecfbbe2708e058f5aff33841",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "prompt.txt": "0b889e4f6cc7bbd0e81f3f621e734d60eab132a4fb0d429495501d8ddd43f181",
+    "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+    "config.json": "c72f673a6be0596f9c380ec4b16624eda0a6dce3e8cec38c9498f6037a069837",
+    "pricing.json": "d17fc25f7519a151b9e059a6d54e42f2093d26401b776ad4fd5079ea34375278",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  },
+  "http_status": 200,
+  "request_id": null,
+  "api_wall_seconds": 341.22883545793593,
+  "response_id": null,
+  "returned_model": "gemini-3.8-flash",
+  "response_status": "completed",
+  "usage": {
+    "total_tokens": 1791,
+    "total_input_tokens": 1413,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 306
+      },
+      {
+        "modality": "image",
+        "tokens": 1107
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 378,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 1698
+  }
+}

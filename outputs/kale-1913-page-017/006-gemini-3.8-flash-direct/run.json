@@ -1,0 +1,15 @@
+{
+  "status": "failed",
+  "started_at_utc": "2026-11-02T14:10:36.668992+00:00",
+  "endpoint": "https://generativelanguage.googleapis.com/v1/interactions",
+  "credential_source": "llm stored key: gemini",
+  "client_request_id": "d8b11c30-63f9-49be-b9ab-9c5d81f61ab6",
+  "request_sha256": "1a90d8e930d552fc7c4018faa284643c55080482bcb822d03df2333c5cc08546",
+  "http_status": 400,
+  "request_id": null,
+  "api_wall_seconds": 9.114179040770978,
+  "error": {
+    "type": "RuntimeError",
+    "message": "Gemini API returned HTTP 400; response saved."
+  }
+}

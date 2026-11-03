@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-02T13:17:48.271885+00:00",
+  "method": {
+    "id": "005-gpt-6-astra-direct",
+    "name": "GPT-6 Astra direct regions",
+    "settings": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "high",
+      "image_detail": "original",
+      "max_output_tokens": 16384,
+      "store": false
+    },
+    "files_sha256": {
+      "run.py": "9802a61c8bcfdce48e1a59e7df581026624d26bea384667d568946cf5148f0ba",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "prompt.txt": "0b889e4f6cc7bbd0e81f3f621e734d60eab132a4fb0d429495501d8ddd43f181",
+      "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+      "config.json": "738f925661478dafbe8ec19da976b471398faa99243f467ed74b40db29e329af",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "api": {
+    "endpoint": "https://api.openai.com/v1/responses",
+    "requested_model": "gpt-6-astra",
+    "returned_model": "gpt-6-astra",
+    "response_id": "resp_087c88006ee56ff7016ae88d7d419887d1911aa6c89e7651dc",
+    "request_id": "req_46254413db6648b4bfe102c2df93fd91",
+    "client_request_id": "216caafc-a621-4181-8785-6f91f8c156fa",
+    "api_wall_seconds": 45.49338954081759,
+    "usage": {
+      "input_tokens": 3919,
+      "input_tokens_details": {
+        "cache_write_tokens": 3916,
+        "cached_tokens": 0
+      },
+      "output_tokens": 2013,
+      "output_tokens_details": {
+        "reasoning_tokens": 1552
+      },
+      "total_tokens": 5932
+    },
+    "response_sha256": "fa554237f7c0ff4776c3603501c7e696da166d8311856ca8b73688e3ad6d93b5",
+    "request_sha256": "b74cbf73e086aa855b98349e1ecd1a313ac07324b4eabc576bbe68d3592e45c0"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "page_number",
+      "box_1000": [
+        128,
+        69,
+        176,
+        95
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 1,
+      "label": "page_number",
+      "box": [
+        180.096,
+        147.315,
+        247.632,
+        202.825
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_1000": [
+        432,
+        64,
+        610,
+        96
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 2,
+      "label": "running_header",
+      "box": [
+        607.824,
+        136.64,
+        858.27,
+        204.96
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        156,
+        123,
+        497,
+        145
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "region_id": 3,
+      "label": "lead_in",
+      "box": [
+        219.492,
+        262.605,
+        699.279,
+        309.575
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        192,
+        145,
+        819,
+        255
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "region_id": 4,
+      "label": "verse",
+      "box": [
+        270.144,
+        309.575,
+        1152.333,
+        544.425
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        116,
+        256,
+        920,
+        466
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "region_id": 5,
+      "label": "commentary",
+      "box": [
+        163.212,
+        546.56,
+        1294.44,
+        994.91
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        114,
+        468,
+        916,
+        517
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "region_id": 6,
+      "label": "lead_in",
+      "box": [
+        160.398,
+        999.18,
+        1288.812,
+        1103.795
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        184,
+        519,
+        874,
+        630
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "region_id": 7,
+      "label": "verse",
+      "box": [
+        258.888,
+        1108.065,
+        1229.718,
+        1345.05
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        106,
+        630,
+        916,
+        878
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "region_id": 8,
+      "label": "commentary",
+      "box": [
+        149.142,
+        1345.05,
+        1288.812,
+        1874.53
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        132,
+        888,
+        224,
+        914
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "region_id": 9,
+      "label": "footnote",
+      "box": [
+        185.724,
+        1895.88,
+        315.168,
+        1951.39
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        230,
+        888,
+        334,
+        912
+      ],
+      "keep": true,
+      "reading_order": 8,
+      "uncertain": false,
+      "region_id": 10,
+      "label": "footnote",
+      "box": [
+        323.61,
+        1895.88,
+        469.938,
+        1947.12
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        341,
+        887,
+        462,
+        912
+      ],
+      "keep": true,
+      "reading_order": 9,
+      "uncertain": false,
+      "region_id": 11,
+      "label": "footnote",
+      "box": [
+        479.787,
+        1893.745,
+        650.034,
+        1947.12
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        477,
+        889,
+        714,
+        912
+      ],
+      "keep": true,
+      "reading_order": 10,
+      "uncertain": false,
+      "region_id": 12,
+      "label": "footnote",
+      "box": [
+        671.139,
+        1898.015,
+        1004.598,
+        1947.12
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        723,
+        889,
+        813,
+        912
+      ],
+      "keep": true,
+      "reading_order": 11,
+      "uncertain": false,
+      "region_id": 13,
+      "label": "footnote",
+      "box": [
+        1017.261,
+        1898.015,
+        1143.891,
+        1947.12
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        820,
+        887,
+        903,
+        914
+      ],
+      "keep": true,
+      "reading_order": 12,
+      "uncertain": false,
+      "region_id": 14,
+      "label": "footnote",
+      "box": [
+        1153.74,
+        1893.745,
+        1270.521,
+        1951.39
+      ]
+    }
+  ],
+  "region_types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 6
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 14,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 4524,
+    "ink_coverage": 0.9889891108049826,
+    "partially_covered_components": 1
+  },
+  "kept_regions_metrics": {
+    "regions": 12,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 10881,
+    "ink_coverage": 0.9735169130568118,
+    "partially_covered_components": 1
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

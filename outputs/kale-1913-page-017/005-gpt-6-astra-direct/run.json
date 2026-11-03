@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "started_at_utc": "2026-11-02T13:17:48.271885+00:00",
+  "endpoint": "https://api.openai.com/v1/responses",
+  "credential_source": "llm stored key: openai",
+  "client_request_id": "216caafc-a621-4181-8785-6f91f8c156fa",
+  "request_sha256": "b74cbf73e086aa855b98349e1ecd1a313ac07324b4eabc576bbe68d3592e45c0",
+  "http_status": 200,
+  "request_id": "req_46254413db6648b4bfe102c2df93fd91",
+  "api_wall_seconds": 45.49338954081759,
+  "response_id": "resp_087c88006ee56ff7016ae88d7d419887d1911aa6c89e7651dc",
+  "returned_model": "gpt-6-astra",
+  "response_status": "completed",
+  "usage": {
+    "input_tokens": 3919,
+    "input_tokens_details": {
+      "cache_write_tokens": 3916,
+      "cached_tokens": 0
+    },
+    "output_tokens": 2013,
+    "output_tokens_details": {
+      "reasoning_tokens": 1552
+    },
+    "total_tokens": 5932
+  }
+}

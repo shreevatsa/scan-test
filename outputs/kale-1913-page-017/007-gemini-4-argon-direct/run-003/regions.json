@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-02T15:19:59.192012+00:00",
+  "method": {
+    "id": "007-gemini-4-argon-direct",
+    "name": "Gemini 4 Argon direct regions",
+    "settings": {
+      "model": "gemini-4-argon",
+      "thinking_level": "low",
+      "thinking_summaries": "none",
+      "image_resolution": "high",
+      "max_output_tokens": 16384,
+      "service_tier": "standard",
+      "store": false
+    },
+    "files_sha256": {
+      "run.py": "0a5ad6fe0656cd83492e49c533f944577bf50b8002523b853381eff730342363",
+      "regions.py": "43078be8023a3148e17ef0a5270774d17573979fecfbbe2708e058f5aff33841",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "prompt.txt": "0b889e4f6cc7bbd0e81f3f621e734d60eab132a4fb0d429495501d8ddd43f181",
+      "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+      "config.json": "b4b38690a97708a89b382e7115dd15e767713efe2f1eefb9be8db273ac5ff4bf",
+      "pricing.json": "f58d867e19034fb34f66e21ffd51f1ea4adae7ecf0839fa95c766e257e52197f",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "api": {
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+    "requested_model": "gemini-4-argon",
+    "returned_model": "gemini-4-argon",
+    "response_id": null,
+    "request_id": null,
+    "client_request_id": "83dbf268-7693-4b0d-9529-b5fc6ebc5e3f",
+    "api_wall_seconds": 8.671738542150706,
+    "response_headers_seconds": 8.670857750345021,
+    "response_first_body_byte_seconds": 8.670887083280832,
+    "usage": {
+      "total_tokens": 2238,
+      "total_input_tokens": 1835,
+      "input_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 728
+        },
+        {
+          "modality": "image",
+          "tokens": 1107
+        }
+      ],
+      "total_cached_tokens": 0,
+      "total_output_tokens": 403,
+      "output_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 403
+        }
+      ],
+      "total_tool_use_tokens": 0,
+      "total_thought_tokens": 0,
+      "initial_input_tokens": 1835
+    },
+    "tokens_and_cost": {
+      "available": true,
+      "input_tokens": 1835,
+      "cached_input_tokens": 0,
+      "text_output_tokens": 403,
+      "thinking_tokens": 0,
+      "billable_output_tokens_including_thinking": 403,
+      "total_token_count_matches": true,
+      "estimated_paid_tier_input_cost_usd": 0.00367,
+      "estimated_paid_tier_output_cost_usd": 0.00403,
+      "estimated_paid_tier_total_cost_usd": 0.0077,
+      "pricing": {
+        "checked_on": "2026-11-02",
+        "currency": "USD",
+        "basis": "Published paid-tier standard rates; estimate from usage, not an invoice",
+        "input_per_million_usd": 2.0,
+        "output_per_million_usd": 10.0,
+        "cached_input_per_million_usd": 0.1,
+        "valid_through": "2026-11-30",
+        "source": "https://ai.google.dev/gemini-api/docs/pricing"
+      }
+    },
+    "response_sha256": "9d029bfb6a4b873d2a4614723c5b5a1653eff988af42acf2ff4f7cf13025a416",
+    "request_sha256": "417f075863dc00ac55926cd3098360685ec09c541d183a3b2108b2427d4017f3"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "page_number",
+      "box_1000": [
+        71,
+        126,
+        95,
+        175
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 1,
+      "label": "page_number",
+      "box": [
+        99.897,
+        269.01,
+        133.665,
+        373.625
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_1000": [
+        66,
+        431,
+        94,
+        606
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 2,
+      "label": "running_header",
+      "box": [
+        92.862,
+        920.185,
+        132.258,
+        1293.81
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        123,
+        157,
+        145,
+        495
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "region_id": 3,
+      "label": "lead_in",
+      "box": [
+        173.061,
+        335.195,
+        204.015,
+        1056.825
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        144,
+        193,
+        254,
+        817
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "region_id": 4,
+      "label": "verse",
+      "box": [
+        202.608,
+        412.055,
+        357.378,
+        1744.295
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        256,
+        118,
+        468,
+        915
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "region_id": 5,
+      "label": "commentary",
+      "box": [
+        360.192,
+        251.93,
+        658.476,
+        1953.525
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        467,
+        114,
+        516,
+        913
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "region_id": 6,
+      "label": "lead_in",
+      "box": [
+        657.069,
+        243.39,
+        726.012,
+        1949.255
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        514,
+        185,
+        631,
+        871
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "region_id": 7,
+      "label": "verse",
+      "box": [
+        723.198,
+        394.975,
+        887.817,
+        1859.585
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        631,
+        106,
+        876,
+        914
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "region_id": 8,
+      "label": "commentary",
+      "box": [
+        887.817,
+        226.31,
+        1232.532,
+        1951.39
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        887,
+        138,
+        914,
+        901
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "region_id": 9,
+      "label": "footnote",
+      "box": [
+        1248.009,
+        294.63,
+        1285.998,
+        1923.635
+      ]
+    }
+  ],
+  "region_types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 1
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 9,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 39934,
+    "ink_coverage": 0.9028052941835051,
+    "partially_covered_components": 49
+  },
+  "kept_regions_metrics": {
+    "regions": 7,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 39934,
+    "ink_coverage": 0.9028052941835051,
+    "partially_covered_components": 49
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}
