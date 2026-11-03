@@ -1,0 +1,57 @@
+{
+  "method": "Interactive vision pass by the current chat assistant",
+  "model": "gpt-6.1-sol (runtime-reported model family; serving snapshot unavailable)",
+  "independent_api_calls": false,
+  "blind_evaluation": false,
+  "source_sha256": "ccabe9850493a8e5d6ecd61660407933f757481cb892985b007e6ff222d9f3b0",
+  "pages": [
+    {
+      "pdf_page": 17,
+      "vision_region_count": 9,
+      "whole_verse_blocks": 2,
+      "v3_region_count": 15,
+      "v3_diagnostics": {
+        "ink_pixels": 410866,
+        "covered_fraction": 0.9239046307068485,
+        "overlapped_ink_fraction": 0.009251191385999329
+      },
+      "vision_diagnostics": {
+        "ink_pixels": 410866,
+        "covered_fraction": 0.9885729167173726,
+        "overlapped_ink_fraction": 0.00027259495796683105
+      }
+    },
+    {
+      "pdf_page": 97,
+      "vision_region_count": 8,
+      "whole_verse_blocks": 2,
+      "v3_region_count": 16,
+      "v3_diagnostics": {
+        "ink_pixels": 429391,
+        "covered_fraction": 0.9564615932797846,
+        "overlapped_ink_fraction": 0.41900971375739127
+      },
+      "vision_diagnostics": {
+        "ink_pixels": 429391,
+        "covered_fraction": 0.9913458828899534,
+        "overlapped_ink_fraction": 0.0
+      }
+    },
+    {
+      "pdf_page": 113,
+      "vision_region_count": 9,
+      "whole_verse_blocks": 3,
+      "v3_region_count": 22,
+      "v3_diagnostics": {
+        "ink_pixels": 453454,
+        "covered_fraction": 0.9939530801360226,
+        "overlapped_ink_fraction": 0.09239967008781486
+      },
+      "vision_diagnostics": {
+        "ink_pixels": 453454,
+        "covered_fraction": 0.9876349089433548,
+        "overlapped_ink_fraction": 0.007290706444314087
+      }
+    }
+  ]
+}

@@ -1,0 +1,506 @@
+{
+  "method": "Interactive vision pass by the current chat assistant",
+  "model": "gpt-6.1-sol (runtime-reported model family; serving snapshot unavailable)",
+  "independent_api_calls": false,
+  "blind_evaluation": false,
+  "context_note": "The assistant had access to the previous investigation and its selected difficult cases. These are visually estimated proposals from source page renders, not an independently repeated API benchmark.",
+  "coordinate_origin": "top-left",
+  "raw_predictions_frozen_before_overlay_review": true,
+  "pages": [
+    {
+      "pdf_page": 17,
+      "image_size": [
+        676,
+        1025
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "type": "page_number",
+          "box_pixels": [
+            86,
+            68,
+            122,
+            102
+          ],
+          "box_1000": [
+            127,
+            66,
+            180,
+            100
+          ],
+          "reading_order": null,
+          "keep": false
+        },
+        {
+          "id": 2,
+          "type": "running_header",
+          "box_pixels": [
+            289,
+            63,
+            420,
+            102
+          ],
+          "box_1000": [
+            428,
+            61,
+            621,
+            100
+          ],
+          "reading_order": null,
+          "keep": false
+        },
+        {
+          "id": 3,
+          "type": "lead_in",
+          "box_pixels": [
+            101,
+            123,
+            341,
+            151
+          ],
+          "box_1000": [
+            149,
+            120,
+            504,
+            147
+          ],
+          "reading_order": 1,
+          "keep": true
+        },
+        {
+          "id": 4,
+          "type": "verse",
+          "box_pixels": [
+            126,
+            150,
+            602,
+            264
+          ],
+          "box_1000": [
+            186,
+            146,
+            891,
+            258
+          ],
+          "reading_order": 2,
+          "keep": true
+        },
+        {
+          "id": 5,
+          "type": "commentary",
+          "box_pixels": [
+            74,
+            264,
+            635,
+            480
+          ],
+          "box_1000": [
+            109,
+            258,
+            939,
+            468
+          ],
+          "reading_order": 3,
+          "keep": true
+        },
+        {
+          "id": 6,
+          "type": "lead_in",
+          "box_pixels": [
+            74,
+            480,
+            635,
+            532
+          ],
+          "box_1000": [
+            109,
+            468,
+            939,
+            519
+          ],
+          "reading_order": 4,
+          "keep": true
+        },
+        {
+          "id": 7,
+          "type": "verse",
+          "box_pixels": [
+            120,
+            533,
+            605,
+            649
+          ],
+          "box_1000": [
+            178,
+            520,
+            895,
+            633
+          ],
+          "reading_order": 5,
+          "keep": true
+        },
+        {
+          "id": 8,
+          "type": "commentary",
+          "box_pixels": [
+            68,
+            649,
+            635,
+            904
+          ],
+          "box_1000": [
+            101,
+            633,
+            939,
+            882
+          ],
+          "reading_order": 6,
+          "keep": true
+        },
+        {
+          "id": 9,
+          "type": "footnote",
+          "box_pixels": [
+            82,
+            911,
+            619,
+            942
+          ],
+          "box_1000": [
+            121,
+            889,
+            916,
+            919
+          ],
+          "reading_order": 7,
+          "keep": true
+        }
+      ]
+    },
+    {
+      "pdf_page": 97,
+      "image_size": [
+        660,
+        1015
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "type": "page_number",
+          "box_pixels": [
+            80,
+            65,
+            124,
+            99
+          ],
+          "box_1000": [
+            121,
+            64,
+            188,
+            98
+          ],
+          "reading_order": null,
+          "keep": false
+        },
+        {
+          "id": 2,
+          "type": "running_header",
+          "box_pixels": [
+            285,
+            54,
+            424,
+            99
+          ],
+          "box_1000": [
+            432,
+            53,
+            642,
+            98
+          ],
+          "reading_order": null,
+          "keep": false
+        },
+        {
+          "id": 3,
+          "type": "lead_in",
+          "box_pixels": [
+            103,
+            119,
+            339,
+            154
+          ],
+          "box_1000": [
+            156,
+            117,
+            514,
+            152
+          ],
+          "reading_order": 1,
+          "keep": true
+        },
+        {
+          "id": 4,
+          "type": "verse",
+          "box_pixels": [
+            103,
+            154,
+            598,
+            283
+          ],
+          "box_1000": [
+            156,
+            152,
+            906,
+            279
+          ],
+          "reading_order": 2,
+          "keep": true
+        },
+        {
+          "id": 5,
+          "type": "commentary",
+          "box_pixels": [
+            79,
+            287,
+            633,
+            489
+          ],
+          "box_1000": [
+            120,
+            283,
+            959,
+            482
+          ],
+          "reading_order": 3,
+          "keep": true
+        },
+        {
+          "id": 6,
+          "type": "verse",
+          "box_pixels": [
+            130,
+            491,
+            636,
+            622
+          ],
+          "box_1000": [
+            197,
+            484,
+            964,
+            613
+          ],
+          "reading_order": 4,
+          "keep": true
+        },
+        {
+          "id": 7,
+          "type": "commentary",
+          "box_pixels": [
+            77,
+            625,
+            635,
+            883
+          ],
+          "box_1000": [
+            117,
+            616,
+            962,
+            870
+          ],
+          "reading_order": 5,
+          "keep": true
+        },
+        {
+          "id": 8,
+          "type": "footnote",
+          "box_pixels": [
+            78,
+            889,
+            632,
+            946
+          ],
+          "box_1000": [
+            118,
+            876,
+            958,
+            932
+          ],
+          "reading_order": 6,
+          "keep": true
+        }
+      ]
+    },
+    {
+      "pdf_page": 113,
+      "image_size": [
+        658,
+        1017
+      ],
+      "regions": [
+        {
+          "id": 1,
+          "type": "page_number",
+          "box_pixels": [
+            74,
+            62,
+            116,
+            100
+          ],
+          "box_1000": [
+            112,
+            61,
+            176,
+            98
+          ],
+          "reading_order": null,
+          "keep": false
+        },
+        {
+          "id": 2,
+          "type": "running_header",
+          "box_pixels": [
+            273,
+            47,
+            419,
+            94
+          ],
+          "box_1000": [
+            415,
+            46,
+            637,
+            92
+          ],
+          "reading_order": null,
+          "keep": false
+        },
+        {
+          "id": 3,
+          "type": "verse",
+          "box_pixels": [
+            116,
+            105,
+            616,
+            230
+          ],
+          "box_1000": [
+            176,
+            103,
+            936,
+            226
+          ],
+          "reading_order": 1,
+          "keep": true
+        },
+        {
+          "id": 4,
+          "type": "commentary",
+          "box_pixels": [
+            68,
+            224,
+            624,
+            417
+          ],
+          "box_1000": [
+            103,
+            220,
+            948,
+            410
+          ],
+          "reading_order": 2,
+          "keep": true
+        },
+        {
+          "id": 5,
+          "type": "verse",
+          "box_pixels": [
+            114,
+            410,
+            625,
+            530
+          ],
+          "box_1000": [
+            173,
+            403,
+            950,
+            521
+          ],
+          "reading_order": 3,
+          "keep": true
+        },
+        {
+          "id": 6,
+          "type": "commentary",
+          "box_pixels": [
+            67,
+            527,
+            624,
+            686
+          ],
+          "box_1000": [
+            102,
+            518,
+            948,
+            675
+          ],
+          "reading_order": 4,
+          "keep": true
+        },
+        {
+          "id": 7,
+          "type": "verse",
+          "box_pixels": [
+            140,
+            682,
+            567,
+            798
+          ],
+          "box_1000": [
+            213,
+            671,
+            862,
+            785
+          ],
+          "reading_order": 5,
+          "keep": true
+        },
+        {
+          "id": 8,
+          "type": "commentary",
+          "box_pixels": [
+            67,
+            796,
+            624,
+            885
+          ],
+          "box_1000": [
+            102,
+            783,
+            948,
+            870
+          ],
+          "reading_order": 6,
+          "keep": true
+        },
+        {
+          "id": 9,
+          "type": "footnote",
+          "box_pixels": [
+            78,
+            907,
+            622,
+            941
+          ],
+          "box_1000": [
+            119,
+            892,
+            945,
+            925
+          ],
+          "reading_order": 7,
+          "keep": true
+        }
+      ]
+    }
+  ]
+}

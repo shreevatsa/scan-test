@@ -1,0 +1,489 @@
+{
+  "kind": "saved foreground diagnostics; not region accuracy",
+  "source": {
+    "source": "Kale-1913-pp21-272.pdf",
+    "source_sha256": "ccabe9850493a8e5d6ecd61660407933f757481cb892985b007e6ff222d9f3b0",
+    "source_pages": 252,
+    "render_dpi": 300,
+    "small_threshold": 0.3,
+    "large_threshold": 0.3
+  },
+  "detections_sha256": "72e70baf9e1d26089b321ec577ec08a62aa54f6226e81eda82a41306f25edb50",
+  "review_notes_sha256": "65eaca5c80d4dd0abbb57285ec874d2e4165d1c09101682e888ac026fe37686b",
+  "archive_sha256": "b4989e5d8a1140822f6a7346f14cde6f5bed3cc91d636aac9205f693585636e6",
+  "aggregation": "pooled = 1 - sum(uncovered_ink_pixels) / sum(ink_pixels)",
+  "pdf_pages": [
+    1,
+    2,
+    3,
+    9,
+    17,
+    25,
+    33,
+    49,
+    57,
+    65,
+    81,
+    97,
+    113,
+    114,
+    121,
+    137,
+    145,
+    161,
+    169,
+    177,
+    193,
+    209,
+    233,
+    252
+  ],
+  "methods": {
+    "geometry": {
+      "pages": 24,
+      "regions": 150,
+      "ink_pixels": 8926948,
+      "uncovered_ink_pixels": 196749,
+      "pooled_ink_coverage": 0.977960104618062,
+      "mean_page_ink_coverage": 0.9818981123008801,
+      "minimum_page_ink_coverage": 0.61446365011666
+    },
+    "small": {
+      "pages": 24,
+      "regions": 210,
+      "ink_pixels": 8926948,
+      "uncovered_ink_pixels": 499164,
+      "pooled_ink_coverage": 0.944083465031946,
+      "mean_page_ink_coverage": 0.9490183220412931,
+      "minimum_page_ink_coverage": 0.7732550001478604
+    },
+    "large": {
+      "pages": 24,
+      "regions": 327,
+      "ink_pixels": 8926948,
+      "uncovered_ink_pixels": 120083,
+      "pooled_ink_coverage": 0.98654825815049,
+      "mean_page_ink_coverage": 0.9866276999812811,
+      "minimum_page_ink_coverage": 0.9205828061957815
+    },
+    "large_default05": {
+      "pages": 24,
+      "regions": 227,
+      "ink_pixels": 8926948,
+      "uncovered_ink_pixels": 1003115,
+      "pooled_ink_coverage": 0.8876306885623172,
+      "mean_page_ink_coverage": 0.8952725689303046,
+      "minimum_page_ink_coverage": 0.334122047271601
+    },
+    "hybrid": {
+      "pages": 24,
+      "regions": 304,
+      "ink_pixels": 8926948,
+      "uncovered_ink_pixels": 5076,
+      "pooled_ink_coverage": 0.9994313846120757,
+      "mean_page_ink_coverage": 0.9993833493012907,
+      "minimum_page_ink_coverage": 0.9966657181838743
+    }
+  },
+  "descriptive_strata": {
+    "Opening / contents": {
+      "pdf_pages": [
+        1,
+        2,
+        3
+      ],
+      "methods": {
+        "geometry": {
+          "pages": 3,
+          "regions": 26,
+          "ink_pixels": 979288,
+          "uncovered_ink_pixels": 159,
+          "pooled_ink_coverage": 0.999837637140453,
+          "mean_page_ink_coverage": 0.9998242791444665,
+          "minimum_page_ink_coverage": 0.9995139807019751
+        },
+        "small": {
+          "pages": 3,
+          "regions": 39,
+          "ink_pixels": 979288,
+          "uncovered_ink_pixels": 16334,
+          "pooled_ink_coverage": 0.9833205349192474,
+          "mean_page_ink_coverage": 0.9847955347351454,
+          "minimum_page_ink_coverage": 0.9692608354654975
+        },
+        "large": {
+          "pages": 3,
+          "regions": 60,
+          "ink_pixels": 979288,
+          "uncovered_ink_pixels": 10461,
+          "pooled_ink_coverage": 0.9893177492218836,
+          "mean_page_ink_coverage": 0.9886975971731058,
+          "minimum_page_ink_coverage": 0.9831620387877478
+        },
+        "large_default05": {
+          "pages": 3,
+          "regions": 48,
+          "ink_pixels": 979288,
+          "uncovered_ink_pixels": 35887,
+          "pooled_ink_coverage": 0.9633539877952145,
+          "mean_page_ink_coverage": 0.9632753605864349,
+          "minimum_page_ink_coverage": 0.951370131273297
+        },
+        "hybrid": {
+          "pages": 3,
+          "regions": 57,
+          "ink_pixels": 979288,
+          "uncovered_ink_pixels": 526,
+          "pooled_ink_coverage": 0.999462875068417,
+          "mean_page_ink_coverage": 0.9994200603860842,
+          "minimum_page_ink_coverage": 0.9990109677222009
+        }
+      }
+    },
+    "Sanskrit verse / commentary": {
+      "pdf_pages": [
+        9,
+        17,
+        25,
+        33,
+        49,
+        57,
+        65,
+        81,
+        97,
+        113
+      ],
+      "methods": {
+        "geometry": {
+          "pages": 10,
+          "regions": 70,
+          "ink_pixels": 4050630,
+          "uncovered_ink_pixels": 175174,
+          "pooled_ink_coverage": 0.9567538876668568,
+          "mean_page_ink_coverage": 0.9613567805576851,
+          "minimum_page_ink_coverage": 0.61446365011666
+        },
+        "small": {
+          "pages": 10,
+          "regions": 98,
+          "ink_pixels": 4050630,
+          "uncovered_ink_pixels": 472774,
+          "pooled_ink_coverage": 0.8832838348602563,
+          "mean_page_ink_coverage": 0.8864779902541231,
+          "minimum_page_ink_coverage": 0.7732550001478604
+        },
+        "large": {
+          "pages": 10,
+          "regions": 180,
+          "ink_pixels": 4050630,
+          "uncovered_ink_pixels": 103779,
+          "pooled_ink_coverage": 0.9743795409602951,
+          "mean_page_ink_coverage": 0.9744387295755702,
+          "minimum_page_ink_coverage": 0.9205828061957815
+        },
+        "large_default05": {
+          "pages": 10,
+          "regions": 114,
+          "ink_pixels": 4050630,
+          "uncovered_ink_pixels": 951907,
+          "pooled_ink_coverage": 0.7649977904671619,
+          "mean_page_ink_coverage": 0.7658243053643418,
+          "minimum_page_ink_coverage": 0.334122047271601
+        },
+        "hybrid": {
+          "pages": 10,
+          "regions": 175,
+          "ink_pixels": 4050630,
+          "uncovered_ink_pixels": 3836,
+          "pooled_ink_coverage": 0.9990529868193343,
+          "mean_page_ink_coverage": 0.9990524890385525,
+          "minimum_page_ink_coverage": 0.9966657181838743
+        }
+      }
+    },
+    "English translation": {
+      "pdf_pages": [
+        114,
+        121,
+        137,
+        145,
+        161
+      ],
+      "methods": {
+        "geometry": {
+          "pages": 5,
+          "regions": 27,
+          "ink_pixels": 1513135,
+          "uncovered_ink_pixels": 1363,
+          "pooled_ink_coverage": 0.9990992211534331,
+          "mean_page_ink_coverage": 0.9988823005207639,
+          "minimum_page_ink_coverage": 0.9966252342224795
+        },
+        "small": {
+          "pages": 5,
+          "regions": 36,
+          "ink_pixels": 1513135,
+          "uncovered_ink_pixels": 5942,
+          "pooled_ink_coverage": 0.9960730536270723,
+          "mean_page_ink_coverage": 0.9938980697425981,
+          "minimum_page_ink_coverage": 0.9793038503974082
+        },
+        "large": {
+          "pages": 5,
+          "regions": 43,
+          "ink_pixels": 1513135,
+          "uncovered_ink_pixels": 4244,
+          "pooled_ink_coverage": 0.9971952271277844,
+          "mean_page_ink_coverage": 0.9949533229404488,
+          "minimum_page_ink_coverage": 0.9797887516953977
+        },
+        "large_default05": {
+          "pages": 5,
+          "regions": 34,
+          "ink_pixels": 1513135,
+          "uncovered_ink_pixels": 9189,
+          "pooled_ink_coverage": 0.9939271776807753,
+          "mean_page_ink_coverage": 0.9916047006615204,
+          "minimum_page_ink_coverage": 0.9797887516953977
+        },
+        "hybrid": {
+          "pages": 5,
+          "regions": 37,
+          "ink_pixels": 1513135,
+          "uncovered_ink_pixels": 432,
+          "pooled_ink_coverage": 0.9997145000280874,
+          "mean_page_ink_coverage": 0.9994895439819567,
+          "minimum_page_ink_coverage": 0.9977933477163959
+        }
+      }
+    },
+    "Notes / final page": {
+      "pdf_pages": [
+        169,
+        177,
+        193,
+        209,
+        233,
+        252
+      ],
+      "methods": {
+        "geometry": {
+          "pages": 6,
+          "regions": 27,
+          "ink_pixels": 2383895,
+          "uncovered_ink_pixels": 20053,
+          "pooled_ink_coverage": 0.9915881362224427,
+          "mean_page_ink_coverage": 0.9930170916011751,
+          "minimum_page_ink_coverage": 0.9610131388115543
+        },
+        "small": {
+          "pages": 6,
+          "regions": 37,
+          "ink_pixels": 2383895,
+          "uncovered_ink_pixels": 4114,
+          "pooled_ink_coverage": 0.9982742528509015,
+          "mean_page_ink_coverage": 0.9979638122552295,
+          "minimum_page_ink_coverage": 0.9936807482622058
+        },
+        "large": {
+          "pages": 6,
+          "regions": 44,
+          "ink_pixels": 2383895,
+          "uncovered_ink_pixels": 1599,
+          "pooled_ink_coverage": 0.9993292489811841,
+          "mean_page_ink_coverage": 0.9989696829289139,
+          "minimum_page_ink_coverage": 0.9939711983420796
+        },
+        "large_default05": {
+          "pages": 6,
+          "regions": 31,
+          "ink_pixels": 2383895,
+          "uncovered_ink_pixels": 6132,
+          "pooled_ink_coverage": 0.9974277390572991,
+          "mean_page_ink_coverage": 0.9967415026028311,
+          "minimum_page_ink_coverage": 0.9880562217154609
+        },
+        "hybrid": {
+          "pages": 6,
+          "regions": 35,
+          "ink_pixels": 2383895,
+          "uncovered_ink_pixels": 282,
+          "pooled_ink_coverage": 0.9998817061993083,
+          "mean_page_ink_coverage": 0.9998279319629025,
+          "minimum_page_ink_coverage": 0.9990933247506643
+        }
+      }
+    }
+  },
+  "historical_stage_timings": {
+    "geometry": {
+      "mean_seconds": 0.025128910416649813,
+      "median_seconds": 0.023574874000019008,
+      "minimum_seconds": 0.01999849800017728,
+      "maximum_seconds": 0.04421285699982036
+    },
+    "small": {
+      "mean_seconds": 0.02706464500000531,
+      "median_seconds": 0.025077972000076443,
+      "minimum_seconds": 0.021976587999915864,
+      "maximum_seconds": 0.0415539489999901
+    },
+    "large": {
+      "mean_seconds": 1.2376393735416495,
+      "median_seconds": 1.2032208995000246,
+      "minimum_seconds": 1.1353978019999431,
+      "maximum_seconds": 1.4744526979998227
+    },
+    "hybrid_cleanup": {
+      "mean_seconds": 0.0486843920416599,
+      "median_seconds": 0.04809316800003671,
+      "minimum_seconds": 0.032844600000089486,
+      "maximum_seconds": 0.06898175900005299
+    }
+  },
+  "timing_caveat": "Not end-to-end. Threshold refinement did not re-time hybrid cleanup; do not attribute its stored timing to final boxes.",
+  "model_download_manifest": {
+    "small_upstream": "https://huggingface.co/PaddlePaddle/PP-DocLayout-S",
+    "v3_upstream": "https://huggingface.co/PaddlePaddle/PP-DocLayoutV3_safetensors",
+    "files": [
+      {
+        "path": "models/pp_doclayout_s.onnx",
+        "url": "https://huggingface.co/stefanj0/PP-DocLayout-S-ONNX/resolve/7e851b9e5ad66613d7318a3213ab3336ebe0a514/pp_doclayout_s.onnx",
+        "size_bytes": 4917852,
+        "sha256": "33688dbee1c23e34b81777e97cb428eb40f24b242c02b5f623484959e830aec8"
+      },
+      {
+        "path": "models/README.md",
+        "url": "https://huggingface.co/stefanj0/PP-DocLayout-S-ONNX/resolve/7e851b9e5ad66613d7318a3213ab3336ebe0a514/README.md",
+        "size_bytes": 3621,
+        "sha256": "2065e499b7955e75f15fbc4f1d7253af44159fc895d4bffaef64467e0b5248dc"
+      },
+      {
+        "path": "models/small-inference.yml",
+        "url": "https://huggingface.co/PaddlePaddle/PP-DocLayout-S/resolve/8ac289e66575bb9bba6e15c53719d8b15cc9b3b2/inference.yml",
+        "size_bytes": 1579,
+        "sha256": "6f690098c438214c67822239a568f0bc2bbe97a8f02fba93e492d4f2c47523c3"
+      },
+      {
+        "path": "models/v3/PP-DocLayoutV3.onnx",
+        "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/PP-DocLayoutV3.onnx",
+        "size_bytes": 5088167,
+        "sha256": "c0721928ff08741bb208ebed539c77170db5234a68cb7e546e6cc9bc172a695b"
+      },
+      {
+        "path": "models/v3/PP-DocLayoutV3.onnx.data",
+        "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/PP-DocLayoutV3.onnx.data",
+        "size_bytes": 136774480,
+        "sha256": "34df3e4b79d7bbbf82abce1b4f3cde3d540fa57ad42ec8905c352b97c408d437"
+      },
+      {
+        "path": "models/v3/README.md",
+        "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/README.md",
+        "size_bytes": 4756,
+        "sha256": "bae6aff06c76f412be7896226fe6134070059bb239f4933a762ce7a8d104c086"
+      },
+      {
+        "path": "models/v3/config.json",
+        "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/config.json",
+        "size_bytes": 2460,
+        "sha256": "3cf834b91d23a756b1519bce4db42c09e852f3e35c35092dd5a3e253a50c071a"
+      },
+      {
+        "path": "models/v3/preprocessor_config.json",
+        "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/preprocessor_config.json",
+        "size_bytes": 575,
+        "sha256": "519fe0187a43a1ca429e3ad8317bab8700f0d5e8fb3a6e3a0a413ffac078ba42"
+      },
+      {
+        "path": "models/v3/inference.yml",
+        "url": "https://huggingface.co/Bei0001/PP-DocLayoutV3-ONNX/resolve/ff677269004f03007705f3e7f1bc8d0f4546d299/inference.yml",
+        "size_bytes": 1482,
+        "sha256": "506fcfac13b3b546ae40d7886b44126420f392adb694e3f8bb6a6286a1f90fdc"
+      }
+    ],
+    "reference_postprocessor_url": "https://github.com/huggingface/transformers/blob/main/src/transformers/models/pp_doclayout_v3/image_processing_pp_doclayout_v3.py",
+    "reference_postprocessor_sha256": "5b064fa7383dda12b3550448eae77d4f627a102c25e8b4db25d99e85fba4abc6",
+    "license": "Apache-2.0"
+  },
+  "interactive_pilot": {
+    "method": "Interactive vision pass by the current chat assistant",
+    "model": "gpt-6.1-sol (runtime-reported model family; serving snapshot unavailable)",
+    "independent_api_calls": false,
+    "blind_evaluation": false,
+    "source_sha256": "ccabe9850493a8e5d6ecd61660407933f757481cb892985b007e6ff222d9f3b0",
+    "pages": [
+      {
+        "pdf_page": 17,
+        "vision_region_count": 9,
+        "whole_verse_blocks": 2,
+        "v3_region_count": 15,
+        "v3_diagnostics": {
+          "ink_pixels": 410866,
+          "covered_fraction": 0.9239046307068485,
+          "overlapped_ink_fraction": 0.009251191385999329
+        },
+        "vision_diagnostics": {
+          "ink_pixels": 410866,
+          "covered_fraction": 0.9885729167173726,
+          "overlapped_ink_fraction": 0.00027259495796683105
+        }
+      },
+      {
+        "pdf_page": 97,
+        "vision_region_count": 8,
+        "whole_verse_blocks": 2,
+        "v3_region_count": 16,
+        "v3_diagnostics": {
+          "ink_pixels": 429391,
+          "covered_fraction": 0.9564615932797846,
+          "overlapped_ink_fraction": 0.41900971375739127
+        },
+        "vision_diagnostics": {
+          "ink_pixels": 429391,
+          "covered_fraction": 0.9913458828899534,
+          "overlapped_ink_fraction": 0.0
+        }
+      },
+      {
+        "pdf_page": 113,
+        "vision_region_count": 9,
+        "whole_verse_blocks": 3,
+        "v3_region_count": 22,
+        "v3_diagnostics": {
+          "ink_pixels": 453454,
+          "covered_fraction": 0.9939530801360226,
+          "overlapped_ink_fraction": 0.09239967008781486
+        },
+        "vision_diagnostics": {
+          "ink_pixels": 453454,
+          "covered_fraction": 0.9876349089433548,
+          "overlapped_ink_fraction": 0.007290706444314087
+        }
+      }
+    ]
+  },
+  "interactive_pilot_metrics_sha256": "ae4f309877d693eebaf6785c5cc6b4a3701d3c1a036b97c0712493c95331a792",
+  "pilot_input_images": [
+    {
+      "pdf_page": 17,
+      "path": "pages/page-017.png",
+      "width": 676,
+      "height": 1025,
+      "sha256": "69cd63701e6c74660cfd1399b8f2fcff7d1f0db7a79eb86e7a9188c9710fd81a"
+    },
+    {
+      "pdf_page": 97,
+      "path": "pages/page-097.png",
+      "width": 660,
+      "height": 1015,
+      "sha256": "df4a00fa9f469f1af41979d139fe1cbb8a4b4cbb05527e814d86bc1a86ae0e56"
+    },
+    {
+      "pdf_page": 113,
+      "path": "pages/page-113.png",
+      "width": 658,
+      "height": 1017,
+      "sha256": "a41c37d8db5c75da398195728eb8913b464a1f6ca505896990aa5cda166880d5"
+    }
+  ]
+}
