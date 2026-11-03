@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "regions"
+  ],
+  "properties": {
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "box_pixels",
+          "keep",
+          "reading_order",
+          "uncertain"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "verse",
+              "commentary",
+              "lead_in",
+              "footnote",
+              "running_header",
+              "page_number",
+              "other"
+            ]
+          },
+          "box_pixels": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Constraints: {\"minItems\":4,\"maxItems\":4}."
+          },
+          "keep": {
+            "type": "boolean"
+          },
+          "reading_order": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Constraints: {\"minimum\":1}."
+          },
+          "uncertain": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

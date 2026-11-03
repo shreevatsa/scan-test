@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "started_at_utc": "2026-11-03T14:53:11.135127+00:00",
+  "endpoint": "https://api.anthropic.com/v1/messages",
+  "credential_source": "llm stored key: anthropic",
+  "client_request_id": "e6b5c9f9-ac6c-4334-9609-3ff153ec89eb",
+  "request_sha256": "d3af0f473dec036bc829c55063ffd2b3c07768f135ef3229ac161be0912f4ec3",
+  "method_id": "015-claude-fable-5.1-max-pixels",
+  "settings": {
+    "model": "claude-fable-5-1",
+    "api_version": "2026-10-21",
+    "thinking": "adaptive",
+    "effort": "max",
+    "image_processing": "Exact PNG bytes; documented high-resolution fit checked before request; no local resizing.",
+    "max_output_tokens": 16384,
+    "service_selection": "provider default",
+    "stream": false,
+    "coordinate_format": "xyxy_pixels",
+    "prompt_variant": "individual-numbered-footnotes-v2"
+  },
+  "files_sha256": {
+    "run.py": "842f1355c8c11125d729e8c866ca30551b680e2582391f63f26a1895cb524f83",
+    "regions.py": "8ef770044193ffc9a6b5d00da314829207bbe635b1b530983abc78d1a183b2e2",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "schema_adapter.py": "f404d3e11e13bea0e94b3700423f258b40a56db353aaf69ac97ecb1402a565cf",
+    "prompt.txt": "4091b670c3593b096637cb1e7d4436af41fe30ad0a10f2391805cfa1f70b30a1",
+    "response-schema.json": "980cbba898ff760669895a7ba64cde586c08c0d3b84d942fd2aff7cb9201a00b",
+    "api-response-schema.json": "523067f76b0043216e80bf15633566412163cdb7bd63856a29297970bddcd178",
+    "config.json": "f5f0d41fab726250329fde4e843752626ce9746cdfec06d5af85d72c9afbcb1a",
+    "pricing.json": "97288c660b12120caa84b03adfcab3ff76cfa3f2a5ecd6de5c30bf2c12df0323",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e",
+    "vision_fit.py": "f1c35dfd626bdf52332bae830c0d63df5ec4f6f6a841743e7efd7d16dcbe29f4"
+  },
+  "request_headers": {
+    "anthropic-version": "2026-10-21",
+    "Content-Type": "application/json"
+  },
+  "response_headers_seconds": 50.97744704084471,
+  "http_status": 200,
+  "request_id": "req_011CggBgnYBBtc6sZmvp4Gy9",
+  "response_first_body_byte_seconds": 50.97748029092327,
+  "api_wall_seconds": 50.97781758289784,
+  "response_id": "msg_011CggBgo5AUnsWvkcsJ8ZPw",
+  "returned_model": "claude-fable-5-1",
+  "stop_reason": "end_turn",
+  "usage": {
+    "input_tokens": 4955,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 4851,
+    "output_tokens_details": {
+      "thinking_tokens": 4168
+    },
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard"
+  }
+}

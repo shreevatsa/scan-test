@@ -1,0 +1,524 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-03T14:53:11.135127+00:00",
+  "method": {
+    "id": "015-claude-fable-5.1-max-pixels",
+    "name": "Claude Fable 5.1 max effort, individual footnotes, pixel coordinates",
+    "settings": {
+      "model": "claude-fable-5-1",
+      "api_version": "2026-10-21",
+      "thinking": "adaptive",
+      "effort": "max",
+      "image_processing": "Exact PNG bytes; documented high-resolution fit checked before request; no local resizing.",
+      "max_output_tokens": 16384,
+      "service_selection": "provider default",
+      "stream": false,
+      "coordinate_format": "xyxy_pixels",
+      "prompt_variant": "individual-numbered-footnotes-v2"
+    },
+    "files_sha256": {
+      "run.py": "842f1355c8c11125d729e8c866ca30551b680e2582391f63f26a1895cb524f83",
+      "regions.py": "8ef770044193ffc9a6b5d00da314829207bbe635b1b530983abc78d1a183b2e2",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "schema_adapter.py": "f404d3e11e13bea0e94b3700423f258b40a56db353aaf69ac97ecb1402a565cf",
+      "prompt.txt": "4091b670c3593b096637cb1e7d4436af41fe30ad0a10f2391805cfa1f70b30a1",
+      "response-schema.json": "980cbba898ff760669895a7ba64cde586c08c0d3b84d942fd2aff7cb9201a00b",
+      "api-response-schema.json": "523067f76b0043216e80bf15633566412163cdb7bd63856a29297970bddcd178",
+      "config.json": "f5f0d41fab726250329fde4e843752626ce9746cdfec06d5af85d72c9afbcb1a",
+      "pricing.json": "97288c660b12120caa84b03adfcab3ff76cfa3f2a5ecd6de5c30bf2c12df0323",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e",
+      "vision_fit.py": "f1c35dfd626bdf52332bae830c0d63df5ec4f6f6a841743e7efd7d16dcbe29f4"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135,
+    "vision_fit": {
+      "tier": "high-resolution",
+      "unpadded_dimensions": [
+        1407,
+        2135
+      ],
+      "padded_dimensions": [
+        1428,
+        2156
+      ],
+      "visual_tokens": 3927,
+      "max_edge": 2576,
+      "max_visual_tokens": 4784,
+      "fits_without_resize": true,
+      "coordinate_mapping": "identity on original unpadded pixels",
+      "source": "https://platform.claude.com/docs/en/build-with-claude/vision-coordinates"
+    }
+  },
+  "api": {
+    "endpoint": "https://api.anthropic.com/v1/messages",
+    "version": "2026-10-21",
+    "requested_model": "claude-fable-5-1",
+    "returned_model": "claude-fable-5-1",
+    "response_id": "msg_011CggBgo5AUnsWvkcsJ8ZPw",
+    "request_id": "req_011CggBgnYBBtc6sZmvp4Gy9",
+    "client_request_id": "e6b5c9f9-ac6c-4334-9609-3ff153ec89eb",
+    "stop_reason": "end_turn",
+    "api_wall_seconds": 50.97781758289784,
+    "response_headers_seconds": 50.97744704084471,
+    "response_first_body_byte_seconds": 50.97748029092327,
+    "usage": {
+      "input_tokens": 4955,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 4851,
+      "output_tokens_details": {
+        "thinking_tokens": 4168
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "tokens_and_cost": {
+      "available": true,
+      "uncached_input_tokens": 4955,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "total_input_tokens": 4955,
+      "output_tokens_including_thinking": 4851,
+      "thinking_tokens": 4168,
+      "approximate_non_thinking_output_tokens": 683,
+      "estimated_paid_tier_input_cost_usd": 0.04955,
+      "estimated_paid_tier_output_cost_usd": 0.24255,
+      "estimated_paid_tier_total_cost_usd": 0.29209999999999997,
+      "pricing": {
+        "checked_on": "2026-11-03",
+        "currency": "USD",
+        "basis": "Published Claude API standard rates; estimate from usage, not an invoice",
+        "input_per_million_usd": 10.0,
+        "output_per_million_usd": 50.0,
+        "cache_read_per_million_usd": 0.25,
+        "cache_write_5m_per_million_usd": 12.5,
+        "cache_write_1h_per_million_usd": 20.0,
+        "source": "https://platform.claude.com/docs/en/models/fable-5-1/overview"
+      }
+    },
+    "request_sha256": "d3af0f473dec036bc829c55063ffd2b3c07768f135ef3229ac161be0912f4ec3",
+    "response_sha256": "88bcd37eddb6a2b3f2bf22c898329b9676a984c3ba6242b990af09e5e9ef70c6"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] in uploaded-image pixels",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "Identity on unpadded uploaded-image pixels; clamp only to image bounds."
+  },
+  "regions": [
+    {
+      "type": "page_number",
+      "box_pixels": [
+        160,
+        138,
+        252,
+        212
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 1,
+      "label": "page_number",
+      "box": [
+        160,
+        138,
+        252,
+        212
+      ],
+      "box_xyxy_1000": [
+        113.71712864250178,
+        64.63700234192038,
+        179.1044776119403,
+        99.29742388758783
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_pixels": [
+        598,
+        132,
+        862,
+        212
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 2,
+      "label": "running_header",
+      "box": [
+        598,
+        132,
+        862,
+        212
+      ],
+      "box_xyxy_1000": [
+        425.0177683013504,
+        61.82669789227166,
+        612.6510305614784,
+        99.29742388758783
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_pixels": [
+        215,
+        256,
+        712,
+        320
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "region_id": 3,
+      "label": "lead_in",
+      "box": [
+        215,
+        256,
+        712,
+        320
+      ],
+      "box_xyxy_1000": [
+        152.80739161336177,
+        119.90632318501171,
+        506.0412224591329,
+        149.88290398126463
+      ]
+    },
+    {
+      "type": "verse",
+      "box_pixels": [
+        258,
+        312,
+        1165,
+        550
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "region_id": 4,
+      "label": "verse",
+      "box": [
+        258,
+        312,
+        1165,
+        550
+      ],
+      "box_xyxy_1000": [
+        183.36886993603412,
+        146.13583138173303,
+        828.0028429282161,
+        257.6112412177986
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_pixels": [
+        146,
+        552,
+        1302,
+        1000
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "region_id": 5,
+      "label": "commentary",
+      "box": [
+        146,
+        552,
+        1302,
+        1000
+      ],
+      "box_xyxy_1000": [
+        103.76687988628287,
+        258.5480093676815,
+        925.3731343283582,
+        468.384074941452
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_pixels": [
+        146,
+        1002,
+        1302,
+        1104
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "region_id": 6,
+      "label": "lead_in",
+      "box": [
+        146,
+        1002,
+        1302,
+        1104
+      ],
+      "box_xyxy_1000": [
+        103.76687988628287,
+        469.3208430913349,
+        925.3731343283582,
+        517.096018735363
+      ]
+    },
+    {
+      "type": "verse",
+      "box_pixels": [
+        252,
+        1108,
+        1242,
+        1352
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "region_id": 7,
+      "label": "verse",
+      "box": [
+        252,
+        1108,
+        1242,
+        1352
+      ],
+      "box_xyxy_1000": [
+        179.1044776119403,
+        518.9695550351288,
+        882.72921108742,
+        633.2552693208431
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_pixels": [
+        146,
+        1352,
+        1302,
+        1876
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "region_id": 8,
+      "label": "commentary",
+      "box": [
+        146,
+        1352,
+        1302,
+        1876
+      ],
+      "box_xyxy_1000": [
+        103.76687988628287,
+        633.2552693208431,
+        925.3731343283582,
+        878.688524590164
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_pixels": [
+        183,
+        1886,
+        363,
+        1960
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "region_id": 9,
+      "label": "footnote",
+      "box": [
+        183,
+        1886,
+        363,
+        1960
+      ],
+      "box_xyxy_1000": [
+        130.0639658848614,
+        883.3723653395784,
+        257.9957356076759,
+        918.0327868852459
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_pixels": [
+        364,
+        1886,
+        506,
+        1960
+      ],
+      "keep": true,
+      "reading_order": 8,
+      "uncertain": false,
+      "region_id": 10,
+      "label": "footnote",
+      "box": [
+        364,
+        1886,
+        506,
+        1960
+      ],
+      "box_xyxy_1000": [
+        258.70646766169153,
+        883.3723653395784,
+        359.63041933191187,
+        918.0327868852459
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_pixels": [
+        507,
+        1886,
+        662,
+        1960
+      ],
+      "keep": true,
+      "reading_order": 9,
+      "uncertain": false,
+      "region_id": 11,
+      "label": "footnote",
+      "box": [
+        507,
+        1886,
+        662,
+        1960
+      ],
+      "box_xyxy_1000": [
+        360.3411513859275,
+        883.3723653395784,
+        470.5046197583511,
+        918.0327868852459
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_pixels": [
+        663,
+        1886,
+        1005,
+        1960
+      ],
+      "keep": true,
+      "reading_order": 10,
+      "uncertain": false,
+      "region_id": 12,
+      "label": "footnote",
+      "box": [
+        663,
+        1886,
+        1005,
+        1960
+      ],
+      "box_xyxy_1000": [
+        471.21535181236675,
+        883.3723653395784,
+        714.2857142857143,
+        918.0327868852459
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_pixels": [
+        1006,
+        1886,
+        1121,
+        1960
+      ],
+      "keep": true,
+      "reading_order": 11,
+      "uncertain": false,
+      "region_id": 13,
+      "label": "footnote",
+      "box": [
+        1006,
+        1886,
+        1121,
+        1960
+      ],
+      "box_xyxy_1000": [
+        714.9964463397299,
+        883.3723653395784,
+        796.7306325515281,
+        918.0327868852459
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_pixels": [
+        1122,
+        1886,
+        1282,
+        1960
+      ],
+      "keep": true,
+      "reading_order": 12,
+      "uncertain": false,
+      "region_id": 14,
+      "label": "footnote",
+      "box": [
+        1122,
+        1886,
+        1282,
+        1960
+      ],
+      "box_xyxy_1000": [
+        797.4413646055438,
+        883.3723653395784,
+        911.1584932480455,
+        918.0327868852459
+      ]
+    }
+  ],
+  "region_types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 6
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 14,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 873,
+    "ink_coverage": 0.9978752196579906,
+    "partially_covered_components": 6
+  },
+  "kept_regions_metrics": {
+    "regions": 12,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 7230,
+    "ink_coverage": 0.9824030219098198,
+    "partially_covered_components": 6
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

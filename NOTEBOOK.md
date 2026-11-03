@@ -372,3 +372,167 @@ The footnotes are assigned one region. Its lower boundary clips the printed foot
 Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
 
 ![Claude Opus 5.5 max effort output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/012-claude-opus-5.5-max/overlay.png)
+
+
+## 13. Gemini 4 Argon high thinking, individual footnotes — Kale (1913), PDF page 17 / 252
+
+**Method:** [013-gemini-4-argon-high-footnotes: Gemini 4 Argon high thinking, individual footnotes](methods/013-gemini-4-argon-high-footnotes/README.md).
+
+**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gemini-4-argon`; thinking level `high`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested `[x1,y1,x2,y2]` coordinates normalized to 0–1000. Converted to original-image pixels using x × 1407 / 1000 and y × 2135 / 1000.
+
+**Run:** 2026-11-03 14:53:05 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 32.71 s |
+| Input tokens | 1,848 |
+| Text output tokens | 616 |
+| Thinking tokens | 1,521 |
+| Output tokens, including thinking | 2,137 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.025066 |
+
+The cost estimate uses $2.00 per million input tokens and $10.00 per million output tokens including thinking: (1,848 × $2.00 + 2,137 × $10.00) / 1,000,000.
+
+Returned region types: 2 verse, 2 commentary, 2 lead-in, 6 footnote, 1 running header and 1 page number.
+
+Each numbered footnote has its own box containing its marker and text. Each verse remains one region; the commentary passages and lead-ins have separate boxes.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Gemini 4 Argon high thinking, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/013-gemini-4-argon-high-footnotes/overlay.png)
+
+
+## 14. Gemini 4 Argon high thinking, individual footnotes, native coordinates — Kale (1913), PDF page 17 / 252
+
+**Method:** [014-gemini-4-argon-high-native: Gemini 4 Argon high thinking, individual footnotes, native coordinates](methods/014-gemini-4-argon-high-native/README.md).
+
+**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gemini-4-argon`; thinking level `high`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested Google's documented `[ymin,xmin,ymax,xmax]` coordinates normalized to 0–1000. Converted by reordering to `[xmin,ymin,xmax,ymax]`, then multiplying x by 1407 / 1000 and y by 2135 / 1000.
+
+**Run:** 2026-11-03 14:53:08 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 24.58 s |
+| Input tokens | 1,842 |
+| Text output tokens | 616 |
+| Thinking tokens | 1,524 |
+| Output tokens, including thinking | 2,140 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.025084 |
+
+The cost estimate uses $2.00 per million input tokens and $10.00 per million output tokens including thinking: (1,842 × $2.00 + 2,140 × $10.00) / 1,000,000.
+
+Returned region types: 2 verse, 2 commentary, 2 lead-in, 6 footnote, 1 running header and 1 page number.
+
+Each numbered footnote has its own box containing its marker and text. Each verse remains one region; the commentary passages and lead-ins have separate boxes. A few upper glyph tips on the first line of the final commentary fall above its box.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Gemini 4 Argon high thinking, individual footnotes, native coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/014-gemini-4-argon-high-native/overlay.png)
+
+
+## 15. Claude Fable 5.1 max effort, individual footnotes, pixel coordinates — Kale (1913), PDF page 17 / 252
+
+**Method:** [015-claude-fable-5.1-max-pixels: Claude Fable 5.1 max effort, individual footnotes, pixel coordinates](methods/015-claude-fable-5.1-max-pixels/README.md).
+
+**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `claude-fable-5-1`; adaptive thinking at `max` effort; JSON Schema output; maximum 16,384 output tokens including thinking; returned standard tier, standard speed and global inference. Fixed array length was carried as a schema description and validated locally.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested Anthropic's documented `[x1,y1,x2,y2]` absolute pixel coordinates. The 1407 × 2135 input fits the model's high-resolution tier: 51 × 77 = 3,927 visual patches, within the 4,784-patch budget and 2,576-pixel edge limit. Coordinates map directly to the original unpadded image. No resize or coordinate clamping was applied.
+
+**Run:** 2026-11-03 14:53:11 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 50.98 s |
+| Input tokens | 4,955 |
+| Output tokens, including thinking | 4,851 |
+| Thinking tokens reported | 4,168 |
+| Cache read or creation tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.2921 |
+
+The cost estimate uses $10.00 per million input tokens and $50.00 per million output tokens including thinking: (4,955 × $10.00 + 4,851 × $50.00) / 1,000,000.
+
+Returned region types: 2 verse, 2 commentary, 2 lead-in, 6 footnote, 1 running header and 1 page number.
+
+Six footnote boxes are returned. Some boundaries separate a note's marker from its text: the first footnote box also includes the marker for note 2, and the second also includes the marker for note 3. The two verses, commentary passages and lead-ins have separate boxes.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Claude Fable 5.1 max effort, individual footnotes, pixel coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/015-claude-fable-5.1-max-pixels/overlay.png)
+
+
+## 16. Claude Opus 5.5 max effort, individual footnotes, pixel coordinates — Kale (1913), PDF page 17 / 252
+
+**Method:** [016-claude-opus-5.5-max-pixels: Claude Opus 5.5 max effort, individual footnotes, pixel coordinates](methods/016-claude-opus-5.5-max-pixels/README.md).
+
+**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `claude-opus-5-5`; adaptive thinking at `max` effort; JSON Schema output; maximum 16,384 output tokens including thinking; returned standard tier, standard speed and global inference. Fixed array length was carried as a schema description and validated locally.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested Anthropic's documented `[x1,y1,x2,y2]` absolute pixel coordinates. The 1407 × 2135 input fits the model's high-resolution tier: 51 × 77 = 3,927 visual patches, within the 4,784-patch budget and 2,576-pixel edge limit. Coordinates map directly to the original unpadded image. No resize or coordinate clamping was applied.
+
+**Run:** 2026-11-03 14:53:13 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 74.62 s |
+| Input tokens | 4,955 |
+| Output tokens, including thinking | 8,803 |
+| Thinking tokens reported | 8,121 |
+| Cache read or creation tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.19588 |
+
+The cost estimate uses $4.00 per million input tokens and $20.00 per million output tokens including thinking: (4,955 × $4.00 + 8,803 × $20.00) / 1,000,000.
+
+Returned region types: 2 verse, 2 commentary, 2 lead-in, 6 footnote, 1 running header and 1 page number.
+
+Six footnote boxes are returned. Their lower boundaries cross the printed footnote line, clipping lower parts of glyphs. The final commentary box also clips its last printed line.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Claude Opus 5.5 max effort, individual footnotes, pixel coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/016-claude-opus-5.5-max-pixels/overlay.png)
