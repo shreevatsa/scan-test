@@ -201,3 +201,36 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 With this interpretation, each verse is enclosed in one box, commentary and lead-ins have separate boxes, and one box contains all six printed footnotes.
 
 ![Gemini 4 Argon output interpreted as y1,x1,y2,x2 for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/007-gemini-4-argon-direct/run-003/coordinate-order-check/overlay.png)
+
+
+## 8. Claude Sonnet 5.5 direct regions — Kale (1913), PDF page 17 / 252
+
+**Method:** [008-claude-sonnet-5.5-direct: Claude Sonnet 5.5 direct regions](methods/008-claude-sonnet-5.5-direct/README.md).
+
+**Input:** `kale-1913-page-017`; an unannotated rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `claude-sonnet-5-5`; adaptive thinking at low effort; provider-default image processing with the original PNG bytes; JSON Schema output; maximum 16,384 output tokens including thinking. The unchanged prompt asked for whole verses, separate commentary, lead-ins, footnotes and page furniture. Numerical limits and fixed array length were moved to schema descriptions for Claude's structured-output interface and validated locally. The response reported standard tier, standard speed and global inference.
+
+**Run:** 2026-11-03 04:23:42 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 9 |
+| Boxes marked keep=true | 7 |
+| Regions marked uncertain | 0 |
+| API wall time | 5.21 s |
+| Input tokens | 4,934 |
+| Output tokens, including thinking | 414 |
+| Thinking tokens reported | 0 |
+| Cache read or creation tokens | 0 |
+| Estimated paid-tier cost | $0.014008 |
+
+The cost estimate uses $2.00 per million input tokens and $10.00 per million output tokens including thinking: (4,934 × $2.00 + 414 × $10.00) / 1,000,000.
+
+Returned region types: 2 verse, 3 commentary, 1 lead-in, 1 footnote, 1 running header and 1 page number.
+
+The footnote-labeled box (order 7) lies below the printed footnotes. The final commentary box (order 6) includes the printed footnote line. Both verse boxes clip upper parts of glyphs; the second verse box (order 5) extends into the first line of following commentary.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Claude Sonnet 5.5 direct-region output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/008-claude-sonnet-5.5-direct/overlay.png)

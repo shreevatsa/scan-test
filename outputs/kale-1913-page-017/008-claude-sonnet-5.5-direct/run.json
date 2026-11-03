@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "started_at_utc": "2026-11-03T04:23:42.574173+00:00",
+  "endpoint": "https://api.anthropic.com/v1/messages",
+  "credential_source": "llm stored key: anthropic",
+  "client_request_id": "8fb2a4e1-37c5-4b4f-afdd-5452ec4eac2a",
+  "request_sha256": "152e2f4ea92333829e90b721d97a0bb3a137a95dec76f414d2437671e0d5e68f",
+  "method_id": "008-claude-sonnet-5.5-direct",
+  "settings": {
+    "model": "claude-sonnet-5-5",
+    "api_version": "2026-10-21",
+    "thinking": "adaptive",
+    "effort": "low",
+    "image_processing": "provider default; exact PNG bytes; no local resizing",
+    "max_output_tokens": 16384,
+    "service_selection": "provider default",
+    "stream": false
+  },
+  "files_sha256": {
+    "run.py": "87ccdef606df615873434d2c670ce00b79a56ff3802c6641fb7c429153cea376",
+    "regions.py": "43078be8023a3148e17ef0a5270774d17573979fecfbbe2708e058f5aff33841",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "schema_adapter.py": "f404d3e11e13bea0e94b3700423f258b40a56db353aaf69ac97ecb1402a565cf",
+    "prompt.txt": "0b889e4f6cc7bbd0e81f3f621e734d60eab132a4fb0d429495501d8ddd43f181",
+    "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+    "api-response-schema.json": "6ff91c6a012a9c14764d196b338c715712b840b70320ce28d38ab60f16a8d897",
+    "config.json": "f7e45d897269e9ae08aaad386aaeade5e8f1917560ef1497a74b7dc93a58ba96",
+    "pricing.json": "4cc8f454509865de7efbee3017389a14fb26032d57100b2260f659b8feba339d",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  },
+  "request_headers": {
+    "anthropic-version": "2026-10-21",
+    "Content-Type": "application/json"
+  },
+  "response_headers_seconds": 5.2135961670428514,
+  "http_status": 200,
+  "request_id": "req_011CgfMgi3ThuXW5uoKzqRCZ",
+  "response_first_body_byte_seconds": 5.213628374971449,
+  "api_wall_seconds": 5.2147423340938985,
+  "response_id": "msg_011CgfMgiVzxJw4T7RkF6kZD",
+  "returned_model": "claude-sonnet-5-5",
+  "stop_reason": "end_turn",
+  "usage": {
+    "input_tokens": 4934,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 414,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard"
+  }
+}

@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-03T04:23:42.574173+00:00",
+  "method": {
+    "id": "008-claude-sonnet-5.5-direct",
+    "name": "Claude Sonnet 5.5 direct regions",
+    "settings": {
+      "model": "claude-sonnet-5-5",
+      "api_version": "2026-10-21",
+      "thinking": "adaptive",
+      "effort": "low",
+      "image_processing": "provider default; exact PNG bytes; no local resizing",
+      "max_output_tokens": 16384,
+      "service_selection": "provider default",
+      "stream": false
+    },
+    "files_sha256": {
+      "run.py": "87ccdef606df615873434d2c670ce00b79a56ff3802c6641fb7c429153cea376",
+      "regions.py": "43078be8023a3148e17ef0a5270774d17573979fecfbbe2708e058f5aff33841",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "schema_adapter.py": "f404d3e11e13bea0e94b3700423f258b40a56db353aaf69ac97ecb1402a565cf",
+      "prompt.txt": "0b889e4f6cc7bbd0e81f3f621e734d60eab132a4fb0d429495501d8ddd43f181",
+      "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+      "api-response-schema.json": "6ff91c6a012a9c14764d196b338c715712b840b70320ce28d38ab60f16a8d897",
+      "config.json": "f7e45d897269e9ae08aaad386aaeade5e8f1917560ef1497a74b7dc93a58ba96",
+      "pricing.json": "4cc8f454509865de7efbee3017389a14fb26032d57100b2260f659b8feba339d",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "api": {
+    "endpoint": "https://api.anthropic.com/v1/messages",
+    "version": "2026-10-21",
+    "requested_model": "claude-sonnet-5-5",
+    "returned_model": "claude-sonnet-5-5",
+    "response_id": "msg_011CgfMgiVzxJw4T7RkF6kZD",
+    "request_id": "req_011CgfMgi3ThuXW5uoKzqRCZ",
+    "client_request_id": "8fb2a4e1-37c5-4b4f-afdd-5452ec4eac2a",
+    "stop_reason": "end_turn",
+    "api_wall_seconds": 5.2147423340938985,
+    "response_headers_seconds": 5.2135961670428514,
+    "response_first_body_byte_seconds": 5.213628374971449,
+    "usage": {
+      "input_tokens": 4934,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 414,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "tokens_and_cost": {
+      "available": true,
+      "uncached_input_tokens": 4934,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "total_input_tokens": 4934,
+      "output_tokens_including_thinking": 414,
+      "thinking_tokens": 0,
+      "approximate_non_thinking_output_tokens": 414,
+      "estimated_paid_tier_input_cost_usd": 0.009868,
+      "estimated_paid_tier_output_cost_usd": 0.00414,
+      "estimated_paid_tier_total_cost_usd": 0.014008,
+      "pricing": {
+        "checked_on": "2026-11-02",
+        "currency": "USD",
+        "basis": "Published Claude API standard rates; estimate from usage, not an invoice",
+        "input_per_million_usd": 2.0,
+        "output_per_million_usd": 10.0,
+        "cache_read_per_million_usd": 0.1,
+        "cache_write_5m_per_million_usd": 2.5,
+        "cache_write_1h_per_million_usd": 4.0,
+        "source": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview"
+      }
+    },
+    "request_sha256": "152e2f4ea92333829e90b721d97a0bb3a137a95dec76f414d2437671e0d5e68f",
+    "response_sha256": "ae13a13c6ece40f4e225c0ef972cb4776d73155ead139e42cb228c5e0fbf2de6"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "page_number",
+      "box_1000": [
+        125,
+        70,
+        180,
+        100
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 1,
+      "label": "page_number",
+      "box": [
+        175.875,
+        149.45,
+        253.26,
+        213.5
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_1000": [
+        430,
+        65,
+        610,
+        100
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 2,
+      "label": "running_header",
+      "box": [
+        605.01,
+        138.775,
+        858.27,
+        213.5
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        155,
+        125,
+        500,
+        155
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "region_id": 3,
+      "label": "lead_in",
+      "box": [
+        218.085,
+        266.875,
+        703.5,
+        330.925
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        190,
+        155,
+        815,
+        255
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "region_id": 4,
+      "label": "verse",
+      "box": [
+        267.33,
+        330.925,
+        1146.705,
+        544.425
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        115,
+        262,
+        915,
+        470
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "region_id": 5,
+      "label": "commentary",
+      "box": [
+        161.805,
+        559.37,
+        1287.405,
+        1003.45
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        115,
+        470,
+        915,
+        520
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "region_id": 6,
+      "label": "commentary",
+      "box": [
+        161.805,
+        1003.45,
+        1287.405,
+        1110.2
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        180,
+        530,
+        870,
+        650
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "region_id": 7,
+      "label": "verse",
+      "box": [
+        253.26,
+        1131.55,
+        1224.09,
+        1387.75
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        110,
+        655,
+        915,
+        915
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "region_id": 8,
+      "label": "commentary",
+      "box": [
+        154.77,
+        1398.425,
+        1287.405,
+        1953.525
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        125,
+        925,
+        900,
+        960
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "region_id": 9,
+      "label": "footnote",
+      "box": [
+        175.875,
+        1974.875,
+        1266.3,
+        2049.6
+      ]
+    }
+  ],
+  "region_types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 1,
+    "verse": 2,
+    "commentary": 3,
+    "footnote": 1
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 9,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 8402,
+    "ink_coverage": 0.9795505103853811,
+    "partially_covered_components": 14
+  },
+  "kept_regions_metrics": {
+    "regions": 7,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 14759,
+    "ink_coverage": 0.9640783126372102,
+    "partially_covered_components": 14
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

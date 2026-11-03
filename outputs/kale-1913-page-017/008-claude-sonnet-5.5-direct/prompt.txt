@@ -1,0 +1,20 @@
+Inspect this scanned book page and identify regions suitable for cropping and reassembly.
+
+Return JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,
+with the origin at the top-left. Give each region a type, a keep flag, and
+reading_order among content regions. Furniture regions may have null order.
+
+- Keep each complete multi-line verse in one region. Do not make one box per line.
+- Separate commentary prose from verses. Split distinct prose paragraphs when clear.
+- Short lead-ins introducing a verse may be separate regions.
+- Identify footnotes separately, including small superscript references where applicable.
+- Identify running headers and page numbers, but mark them keep=false.
+- Ignore scanner borders, digitization watermarks, speckles, and decorative rules.
+- Include all visible glyphs and their diacritics. Add modest padding without
+  swallowing a neighboring text block.
+- Preserve reading order. Flag uncertain grouping instead of silently dropping material.
+- Do not transcribe, translate, or regenerate the text. Only propose regions.
+
+Schema:
+{"regions":[{"type":"verse|commentary|lead_in|footnote|running_header|page_number|other",
+"box_1000":[0,0,1000,1000],"keep":true,"reading_order":1,"uncertain":false}]}
