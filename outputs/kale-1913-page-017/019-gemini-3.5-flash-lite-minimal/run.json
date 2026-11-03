@@ -1,0 +1,61 @@
+{
+  "status": "failed",
+  "started_at_utc": "2026-11-03T15:16:57.473144+00:00",
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "credential_source": "llm stored key: gemini",
+  "client_request_id": "b31ec30b-3a53-455d-aa8f-a906ecc6ec7f",
+  "request_sha256": "3eaaace85fc53904f0560fea3678bc2a9ec9f8e8eeba503427c6668312d3abcf",
+  "method_id": "019-gemini-3.5-flash-lite-minimal",
+  "settings": {
+    "model": "gemini-3.5-flash-lite",
+    "thinking_level": "minimal",
+    "thinking_summaries": "none",
+    "image_resolution": "high",
+    "max_output_tokens": 16384,
+    "service_tier": "standard",
+    "store": false,
+    "coordinate_format": "yxyx_1000",
+    "prompt_variant": "individual-numbered-footnotes-v2"
+  },
+  "files_sha256": {
+    "run.py": "1764fb041842239c70294d77134fe89b01792136fd18fb5e9409f1de9e97b049",
+    "regions.py": "8ef770044193ffc9a6b5d00da314829207bbe635b1b530983abc78d1a183b2e2",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "prompt.txt": "70bfdfdb57796abce8596c6f0744c4c63b24232c7b24a9d633ede66ebb983702",
+    "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+    "config.json": "ec9245945f7f2c613d390ff142637f9ca76d0e188740447dd09c9abd3430e556",
+    "pricing.json": "10913966a5e0d1fb8e9e3e7f185f554b3eab85464381d9f4a411f73060610ba5",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  },
+  "response_headers_seconds": 2.4642475419677794,
+  "http_status": 200,
+  "request_id": null,
+  "response_first_body_byte_seconds": 2.4642637497745454,
+  "api_wall_seconds": 2.464426207821816,
+  "response_id": null,
+  "returned_model": "gemini-3.5-flash-lite",
+  "response_status": "completed",
+  "usage": {
+    "total_tokens": 2104,
+    "total_input_tokens": 1420,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 313
+      },
+      {
+        "modality": "image",
+        "tokens": 1107
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 684,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 1705
+  },
+  "error": {
+    "type": "ValueError",
+    "message": "Nonpositive rectangle at region 1"
+  }
+}
