@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-03T14:31:28.859647+00:00",
+  "method": {
+    "id": "012-claude-opus-5.5-max",
+    "name": "Claude Opus 5.5 max effort",
+    "settings": {
+      "model": "claude-opus-5-5",
+      "api_version": "2026-10-21",
+      "thinking": "adaptive",
+      "effort": "max",
+      "image_processing": "provider default; exact PNG bytes; no local resizing",
+      "max_output_tokens": 16384,
+      "service_selection": "provider default",
+      "stream": false
+    },
+    "files_sha256": {
+      "run.py": "51c3bc9cc7d048aaa161e50c9fadcd94393e25c0f6e2b659c586a2de2392f7ed",
+      "regions.py": "43078be8023a3148e17ef0a5270774d17573979fecfbbe2708e058f5aff33841",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "schema_adapter.py": "f404d3e11e13bea0e94b3700423f258b40a56db353aaf69ac97ecb1402a565cf",
+      "prompt.txt": "0b889e4f6cc7bbd0e81f3f621e734d60eab132a4fb0d429495501d8ddd43f181",
+      "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+      "api-response-schema.json": "6ff91c6a012a9c14764d196b338c715712b840b70320ce28d38ab60f16a8d897",
+      "config.json": "bd5d2892e0db6b3aff1b9766c76259ceb78342a504056725b465b724ab87f657",
+      "pricing.json": "fe83f39d2081b3a56ba1332c300e5186123256bc87a2beb3b9b0982fa4ff9990",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "api": {
+    "endpoint": "https://api.anthropic.com/v1/messages",
+    "version": "2026-10-21",
+    "requested_model": "claude-opus-5-5",
+    "returned_model": "claude-opus-5-5",
+    "response_id": "msg_011CggA2oRpvB4uYoPG1VMJC",
+    "request_id": "req_011CggA2o12mwcX7CS2VXVUe",
+    "client_request_id": "bc520896-974c-40ee-a18a-f7e69ef80288",
+    "stop_reason": "end_turn",
+    "api_wall_seconds": 58.27201037481427,
+    "response_headers_seconds": 58.26563774980605,
+    "response_first_body_byte_seconds": 58.265718082897365,
+    "usage": {
+      "input_tokens": 4934,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 6460,
+      "output_tokens_details": {
+        "thinking_tokens": 6045
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "tokens_and_cost": {
+      "available": true,
+      "uncached_input_tokens": 4934,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "total_input_tokens": 4934,
+      "output_tokens_including_thinking": 6460,
+      "thinking_tokens": 6045,
+      "approximate_non_thinking_output_tokens": 415,
+      "estimated_paid_tier_input_cost_usd": 0.019736,
+      "estimated_paid_tier_output_cost_usd": 0.1292,
+      "estimated_paid_tier_total_cost_usd": 0.148936,
+      "pricing": {
+        "checked_on": "2026-11-03",
+        "currency": "USD",
+        "basis": "Published Claude API standard rates; estimate from usage, not an invoice",
+        "input_per_million_usd": 4.0,
+        "output_per_million_usd": 20.0,
+        "cache_read_per_million_usd": 0.2,
+        "cache_write_5m_per_million_usd": 5.0,
+        "cache_write_1h_per_million_usd": 8.0,
+        "source": "https://platform.claude.com/docs/en/models/opus-5-5/overview"
+      }
+    },
+    "request_sha256": "8f2beeb83f0e981d28ef73af4d3bc7b4049167e3bef9cc68b7b48fb5dcd96fb3",
+    "response_sha256": "8f7f65b3aa1d9399251508ed4bf52b394116984d21b31107574a84df4d53b186"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "page_number",
+      "box_1000": [
+        126,
+        64,
+        177,
+        92
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 1,
+      "label": "page_number",
+      "box": [
+        177.282,
+        136.64,
+        249.039,
+        196.42
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_1000": [
+        417,
+        63,
+        607,
+        95
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 2,
+      "label": "running_header",
+      "box": [
+        586.719,
+        134.505,
+        854.049,
+        202.825
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        155,
+        120,
+        505,
+        144
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "region_id": 3,
+      "label": "lead_in",
+      "box": [
+        218.085,
+        256.2,
+        710.535,
+        307.44
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        191,
+        145,
+        833,
+        254
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "region_id": 4,
+      "label": "verse",
+      "box": [
+        268.737,
+        309.575,
+        1172.031,
+        542.29
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        113,
+        255,
+        922,
+        460
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "region_id": 5,
+      "label": "commentary",
+      "box": [
+        158.991,
+        544.425,
+        1297.254,
+        982.1
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        113,
+        462,
+        922,
+        507
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "region_id": 6,
+      "label": "lead_in",
+      "box": [
+        158.991,
+        986.37,
+        1297.254,
+        1082.445
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        177,
+        507,
+        876,
+        625
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "region_id": 7,
+      "label": "verse",
+      "box": [
+        249.039,
+        1082.445,
+        1232.532,
+        1334.375
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        112,
+        626,
+        923,
+        866
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "region_id": 8,
+      "label": "commentary",
+      "box": [
+        157.584,
+        1336.51,
+        1298.661,
+        1848.91
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        135,
+        874,
+        907,
+        902
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "region_id": 9,
+      "label": "footnote",
+      "box": [
+        189.945,
+        1865.99,
+        1276.149,
+        1925.77
+      ]
+    }
+  ],
+  "region_types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 1
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 9,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 9884,
+    "ink_coverage": 0.9759434949594271,
+    "partially_covered_components": 44
+  },
+  "kept_regions_metrics": {
+    "regions": 7,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 16241,
+    "ink_coverage": 0.9604712972112562,
+    "partially_covered_components": 44
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

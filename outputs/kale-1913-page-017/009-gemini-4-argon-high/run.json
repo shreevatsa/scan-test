@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "started_at_utc": "2026-11-03T14:27:07.904420+00:00",
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "credential_source": "llm stored key: gemini",
+  "client_request_id": "6d974cb6-3d46-4d90-a4b1-f8bee27d9126",
+  "request_sha256": "629c36399eecd6153f969c592060b24236cdb6601514d7b3b0706f3e8af9deaf",
+  "method_id": "009-gemini-4-argon-high",
+  "settings": {
+    "model": "gemini-4-argon",
+    "thinking_level": "high",
+    "thinking_summaries": "none",
+    "image_resolution": "high",
+    "max_output_tokens": 16384,
+    "service_tier": "standard",
+    "store": false
+  },
+  "files_sha256": {
+    "run.py": "db555075a04f7e75a76bcd9ce39e155b6b1d5efc92fcef73e09ed873a5bd37f9",
+    "regions.py": "43078be8023a3148e17ef0a5270774d17573979fecfbbe2708e058f5aff33841",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "prompt.txt": "0b889e4f6cc7bbd0e81f3f621e734d60eab132a4fb0d429495501d8ddd43f181",
+    "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+    "config.json": "0dc264fa3582e601ae5dfa82c6f37cb0e2eab06338c1ff02d0d000394f6900da",
+    "pricing.json": "c952aa34dfd3bfc4c4ba995261db51a1172fc43ab713a6df3ae20dee1a467bd6",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  },
+  "response_headers_seconds": 42.0351288751699,
+  "http_status": 200,
+  "request_id": null,
+  "response_first_body_byte_seconds": 42.03516025003046,
+  "api_wall_seconds": 42.03548758290708,
+  "response_id": null,
+  "returned_model": "gemini-4-argon",
+  "response_status": "completed",
+  "usage": {
+    "total_tokens": 4274,
+    "total_input_tokens": 1835,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 728
+      },
+      {
+        "modality": "image",
+        "tokens": 1107
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 404,
+    "output_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 404
+      }
+    ],
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 2035,
+    "initial_input_tokens": 1835
+  }
+}

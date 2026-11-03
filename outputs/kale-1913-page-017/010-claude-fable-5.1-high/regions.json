@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-03T14:27:10.089860+00:00",
+  "method": {
+    "id": "010-claude-fable-5.1-high",
+    "name": "Claude Fable 5.1 high effort",
+    "settings": {
+      "model": "claude-fable-5-1",
+      "api_version": "2026-10-21",
+      "thinking": "adaptive",
+      "effort": "high",
+      "image_processing": "provider default; exact PNG bytes; no local resizing",
+      "max_output_tokens": 16384,
+      "service_selection": "provider default",
+      "stream": false
+    },
+    "files_sha256": {
+      "run.py": "01f4f923e67f172305bced5c5533f72ff4920c2c93a9c2965bda0048dd80588d",
+      "regions.py": "43078be8023a3148e17ef0a5270774d17573979fecfbbe2708e058f5aff33841",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "schema_adapter.py": "f404d3e11e13bea0e94b3700423f258b40a56db353aaf69ac97ecb1402a565cf",
+      "prompt.txt": "0b889e4f6cc7bbd0e81f3f621e734d60eab132a4fb0d429495501d8ddd43f181",
+      "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+      "api-response-schema.json": "6ff91c6a012a9c14764d196b338c715712b840b70320ce28d38ab60f16a8d897",
+      "config.json": "c6c9ee0e49572a1c2f12417b144da14eb9cd275828d6fe4bee791585b65f459e",
+      "pricing.json": "97288c660b12120caa84b03adfcab3ff76cfa3f2a5ecd6de5c30bf2c12df0323",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-017",
+    "path": "inputs/kale-1913-page-017.png",
+    "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+    "width": 1407,
+    "height": 2135
+  },
+  "api": {
+    "endpoint": "https://api.anthropic.com/v1/messages",
+    "version": "2026-10-21",
+    "requested_model": "claude-fable-5-1",
+    "returned_model": "claude-fable-5-1",
+    "response_id": "msg_011Cgg9hiyACyvNjYTpmgHpR",
+    "request_id": "req_011Cgg9hiRvWTKPQftBDNLXQ",
+    "client_request_id": "6a1c9abd-4b9a-4eda-a7ab-1413e53728c9",
+    "stop_reason": "end_turn",
+    "api_wall_seconds": 4.951929207891226,
+    "response_headers_seconds": 4.951477791182697,
+    "response_first_body_byte_seconds": 4.951499916147441,
+    "usage": {
+      "input_tokens": 4934,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 415,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "tokens_and_cost": {
+      "available": true,
+      "uncached_input_tokens": 4934,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "total_input_tokens": 4934,
+      "output_tokens_including_thinking": 415,
+      "thinking_tokens": 0,
+      "approximate_non_thinking_output_tokens": 415,
+      "estimated_paid_tier_input_cost_usd": 0.04934,
+      "estimated_paid_tier_output_cost_usd": 0.02075,
+      "estimated_paid_tier_total_cost_usd": 0.07009,
+      "pricing": {
+        "checked_on": "2026-11-03",
+        "currency": "USD",
+        "basis": "Published Claude API standard rates; estimate from usage, not an invoice",
+        "input_per_million_usd": 10.0,
+        "output_per_million_usd": 50.0,
+        "cache_read_per_million_usd": 0.25,
+        "cache_write_5m_per_million_usd": 12.5,
+        "cache_write_1h_per_million_usd": 20.0,
+        "source": "https://platform.claude.com/docs/en/models/fable-5-1/overview"
+      }
+    },
+    "request_sha256": "51e1c90c7a9dfe16ef8037403ed69777bc22f3895f19f33cdbf0cdceb7ba4d64",
+    "response_sha256": "c3bee9609df689f89b71f499506f0c48cbec174b266365d799d42fb2000a418a"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "page_number",
+      "box_1000": [
+        120,
+        62,
+        175,
+        98
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 1,
+      "label": "page_number",
+      "box": [
+        168.84,
+        132.37,
+        246.225,
+        209.23
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_1000": [
+        430,
+        58,
+        610,
+        102
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 2,
+      "label": "running_header",
+      "box": [
+        605.01,
+        123.83,
+        858.27,
+        217.77
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        160,
+        118,
+        500,
+        152
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "region_id": 3,
+      "label": "lead_in",
+      "box": [
+        225.12,
+        251.93,
+        703.5,
+        324.52
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        190,
+        158,
+        820,
+        260
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "region_id": 4,
+      "label": "verse",
+      "box": [
+        267.33,
+        337.33,
+        1153.74,
+        555.1
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        110,
+        270,
+        915,
+        476
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "region_id": 5,
+      "label": "commentary",
+      "box": [
+        154.77,
+        576.45,
+        1287.405,
+        1016.26
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        110,
+        484,
+        915,
+        536
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "region_id": 6,
+      "label": "lead_in",
+      "box": [
+        154.77,
+        1033.34,
+        1287.405,
+        1144.36
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        185,
+        548,
+        880,
+        648
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "region_id": 7,
+      "label": "verse",
+      "box": [
+        260.295,
+        1169.98,
+        1238.16,
+        1383.48
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        108,
+        658,
+        915,
+        910
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "region_id": 8,
+      "label": "commentary",
+      "box": [
+        151.956,
+        1404.83,
+        1287.405,
+        1942.85
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        108,
+        928,
+        915,
+        966
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "region_id": 9,
+      "label": "footnote",
+      "box": [
+        151.956,
+        1981.28,
+        1287.405,
+        2062.41
+      ]
+    }
+  ],
+  "region_types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 1
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 9,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 32041,
+    "ink_coverage": 0.9220159370695069,
+    "partially_covered_components": 55
+  },
+  "kept_regions_metrics": {
+    "regions": 7,
+    "ink_pixels": 410866,
+    "uncovered_ink_pixels": 38398,
+    "ink_coverage": 0.9065437393213359,
+    "partially_covered_components": 55
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

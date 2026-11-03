@@ -234,3 +234,141 @@ The footnote-labeled box (order 7) lies below the printed footnotes. The final c
 Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
 
 ![Claude Sonnet 5.5 direct-region output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/008-claude-sonnet-5.5-direct/overlay.png)
+
+
+## 9. Gemini 4 Argon high thinking — Kale (1913), PDF page 17 / 252
+
+**Method:** [009-gemini-4-argon-high: Gemini 4 Argon high thinking](methods/009-gemini-4-argon-high/README.md).
+
+**Input:** `kale-1913-page-017`; an unannotated rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gemini-4-argon`; thinking level `high`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier. The unchanged prompt asked for whole verses, separate commentary, lead-ins, footnotes and page furniture.
+
+**Run:** 2026-11-03 14:27:07 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 9 |
+| Boxes marked keep=true | 7 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 1 |
+| API wall time | 42.04 s |
+| Input tokens | 1,835 |
+| Image input tokens | 1,107 |
+| Text input tokens | 728 |
+| Text output tokens | 404 |
+| Thinking tokens | 2,035 |
+| Output tokens, including thinking | 2,439 |
+| Estimated paid-tier cost | $0.02806 |
+
+The cost estimate uses $2.00 per million input tokens and $10.00 per million output tokens including thinking: (1,835 × $2.00 + 2,439 × $10.00) / 1,000,000.
+
+Returned region types: 2 verse, 2 commentary, 2 lead-in, 1 footnote, 1 running header and 1 page number.
+
+Each verse is enclosed in one box; the two commentary passages and two lead-ins have separate boxes. One box contains all six printed footnotes. The returned arrays use the requested x/y coordinate order.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Gemini 4 Argon high thinking output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/009-gemini-4-argon-high/overlay.png)
+
+
+## 10. Claude Fable 5.1 high effort — Kale (1913), PDF page 17 / 252
+
+**Method:** [010-claude-fable-5.1-high: Claude Fable 5.1 high effort](methods/010-claude-fable-5.1-high/README.md).
+
+**Input:** `kale-1913-page-017`; an unannotated rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `claude-fable-5-1`; adaptive thinking at `high` effort; provider-default image processing with the original PNG bytes; JSON Schema output; maximum 16,384 output tokens including thinking. The unchanged prompt asked for whole verses, separate commentary, lead-ins, footnotes and page furniture. Numerical limits and fixed array length were carried as schema descriptions and validated locally. The response reported standard tier, standard speed and global inference.
+
+**Run:** 2026-11-03 14:27:10 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 9 |
+| Boxes marked keep=true | 7 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 1 |
+| API wall time | 4.95 s |
+| Input tokens | 4,934 |
+| Output tokens, including thinking | 415 |
+| Thinking tokens reported | 0 |
+| Cache read or creation tokens | 0 |
+| Estimated paid-tier cost | $0.07009 |
+
+The cost estimate uses $10.00 per million input tokens and $50.00 per million output tokens including thinking: (4,934 × $10.00 + 415 × $50.00) / 1,000,000.
+
+Returned region types: 2 verse, 2 commentary, 2 lead-in, 1 footnote, 1 running header and 1 page number.
+
+The footnote-labeled box (order 7) is below the printed footnotes, which lie inside the final commentary box (order 6). The first verse box clips upper parts of its first line; the second verse box starts below its first line. Both commentary boxes begin partway through their first printed lines.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Claude Fable 5.1 high effort output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/010-claude-fable-5.1-high/overlay.png)
+
+
+## 11. Claude Fable 5.1 max effort — Kale (1913), PDF page 17 / 252
+
+**Method:** [011-claude-fable-5.1-max: Claude Fable 5.1 max effort](methods/011-claude-fable-5.1-max/README.md).
+
+**Input:** `kale-1913-page-017`; an unannotated rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `claude-fable-5-1`; adaptive thinking at `max` effort; provider-default image processing with the original PNG bytes; JSON Schema output; maximum 16,384 output tokens including thinking. The unchanged prompt asked for whole verses, separate commentary, lead-ins, footnotes and page furniture. Numerical limits and fixed array length were carried as schema descriptions and validated locally. The response reported standard tier, standard speed and global inference.
+
+**Run:** 2026-11-03 14:29:16 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 9 |
+| Boxes marked keep=true | 7 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 1 |
+| API wall time | 52.63 s |
+| Input tokens | 4,934 |
+| Output tokens, including thinking | 4,758 |
+| Thinking tokens reported | 4,343 |
+| Cache read or creation tokens | 0 |
+| Estimated paid-tier cost | $0.28724 |
+
+The cost estimate uses $10.00 per million input tokens and $50.00 per million output tokens including thinking: (4,934 × $10.00 + 4,758 × $50.00) / 1,000,000.
+
+Returned region types: 2 verse, 2 commentary, 2 lead-in, 1 footnote, 1 running header and 1 page number.
+
+The footnote-labeled box (order 7) covers the last commentary line and the separator above the printed footnotes; most footnote text lies below it. The final commentary box ends above its last printed line. The first commentary and second verse boxes clip their last lines; the second lead-in box clips its second line.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Claude Fable 5.1 max effort output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/011-claude-fable-5.1-max/overlay.png)
+
+
+## 12. Claude Opus 5.5 max effort — Kale (1913), PDF page 17 / 252
+
+**Method:** [012-claude-opus-5.5-max: Claude Opus 5.5 max effort](methods/012-claude-opus-5.5-max/README.md).
+
+**Input:** `kale-1913-page-017`; an unannotated rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `claude-opus-5-5`; adaptive thinking at `max` effort; provider-default image processing with the original PNG bytes; JSON Schema output; maximum 16,384 output tokens including thinking. The unchanged prompt asked for whole verses, separate commentary, lead-ins, footnotes and page furniture. Numerical limits and fixed array length were carried as schema descriptions and validated locally. The response reported standard tier, standard speed and global inference.
+
+**Run:** 2026-11-03 14:31:28 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 9 |
+| Boxes marked keep=true | 7 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 1 |
+| API wall time | 58.27 s |
+| Input tokens | 4,934 |
+| Output tokens, including thinking | 6,460 |
+| Thinking tokens reported | 6,045 |
+| Cache read or creation tokens | 0 |
+| Estimated paid-tier cost | $0.148936 |
+
+The cost estimate uses $4.00 per million input tokens and $20.00 per million output tokens including thinking: (4,934 × $4.00 + 6,460 × $20.00) / 1,000,000.
+
+Returned region types: 2 verse, 2 commentary, 2 lead-in, 1 footnote, 1 running header and 1 page number.
+
+The footnotes are assigned one region. Its lower boundary clips the printed footnote line. Both commentary boxes clip their last lines. The second lead-in box clips part of its second line; the second verse box extends upward into that lead-in line.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Claude Opus 5.5 max effort output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/012-claude-opus-5.5-max/overlay.png)
