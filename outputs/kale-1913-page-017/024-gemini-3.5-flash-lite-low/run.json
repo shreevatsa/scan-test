@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "started_at_utc": "2026-11-04T03:24:14.865268+00:00",
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "credential_source": "llm stored key: gemini",
+  "client_request_id": "2953a61a-94bf-4422-b657-7efdc263c1a5",
+  "request_sha256": "0a3909fcebf1c0287ed1b572694f42e4202a28a3d9796bea9e742d79a29797b3",
+  "method_id": "024-gemini-3.5-flash-lite-low",
+  "settings": {
+    "model": "gemini-3.5-flash-lite",
+    "thinking_level": "low",
+    "thinking_summaries": "none",
+    "image_resolution": "high",
+    "max_output_tokens": 16384,
+    "service_tier": "standard",
+    "store": false,
+    "coordinate_format": "yxyx_1000",
+    "prompt_variant": "individual-numbered-footnotes-v2"
+  },
+  "files_sha256": {
+    "run.py": "50076f13c3d4e5780fce0b0a6f6ea596ed176caa4117f10e7c827255861ba496",
+    "regions.py": "8ef770044193ffc9a6b5d00da314829207bbe635b1b530983abc78d1a183b2e2",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "prompt.txt": "70bfdfdb57796abce8596c6f0744c4c63b24232c7b24a9d633ede66ebb983702",
+    "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+    "config.json": "4b484f89d1ff00c6aa7e286cedc597a1c81025efbe40327bff216db314787ad3",
+    "pricing.json": "10913966a5e0d1fb8e9e3e7f185f554b3eab85464381d9f4a411f73060610ba5",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  },
+  "response_headers_seconds": 1.9389022500254214,
+  "http_status": 200,
+  "request_id": null,
+  "response_first_body_byte_seconds": 1.9389218329451978,
+  "api_wall_seconds": 1.939020040910691,
+  "response_id": null,
+  "returned_model": "gemini-3.5-flash-lite",
+  "response_status": "completed",
+  "usage": {
+    "total_tokens": 1798,
+    "total_input_tokens": 1420,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 313
+      },
+      {
+        "modality": "image",
+        "tokens": 1107
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 378,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 1705
+  }
+}

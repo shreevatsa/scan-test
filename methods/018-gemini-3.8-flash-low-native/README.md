@@ -53,3 +53,54 @@ uv run python methods/018-gemini-3.8-flash-low-native/inspect_footnotes.py outpu
 ```
 
 Existing detail output is protected against overwriting.
+
+## Recorded run-002
+
+Input: `kale-1913-page-017`, unchanged raw PNG, 1407 × 2135 pixels. Started 2026-11-04 03:23:40 UTC. Requested and returned model `gemini-3.8-flash`. HTTP 200, response completed.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 7.12 s |
+| Input tokens | 1,420 |
+| Text output tokens | 619 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 619 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.00338625 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,420 × $0.75 + 619 × $3.75) / 1,000,000 = $0.00338625. Rates checked on 2026-11-03.
+
+Each of the six numbered footnotes has a separate box containing its marker and text. Both four-line verses remain whole, with separate commentary and lead-in boxes. Some box edges are tight, including the first commentary's right edge and the fifth footnote's left edge.
+
+![run-002 output](../../outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/run-002/overlay.png)
+
+
+## Recorded run-003
+
+Input: `kale-1913-page-017`, unchanged raw PNG, 1407 × 2135 pixels. Started 2026-11-04 03:23:58 UTC. Requested and returned model `gemini-3.8-flash`. HTTP 200, response completed.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 5.49 s |
+| Input tokens | 1,420 |
+| Text output tokens | 619 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 619 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.00338625 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,420 × $0.75 + 619 × $3.75) / 1,000,000 = $0.00338625. Rates checked on 2026-11-03.
+
+Each of the six numbered footnotes has a separate box containing its marker and text. Both four-line verses remain whole, with separate commentary and lead-in boxes. A few glyph tips fall beyond tight boundaries, including the top of the first verse and the left edge of the second footnote.
+
+![run-003 output](../../outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/run-003/overlay.png)
