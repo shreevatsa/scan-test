@@ -1,6 +1,8 @@
 # Layout experiments
 
-## 1. Geometry baseline — Kale (1913), PDF page 17 / 252
+## Kale (1913), PDF page 17 / 252
+
+### Method 001 — Geometry baseline
 
 **Method:** [001-geometry: Geometry baseline](methods/001-geometry/README.md).
 
@@ -21,7 +23,7 @@ Purple marks the region labelled `header`; blue marks the other regions. Numbers
 
 ![Geometry baseline output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/001-geometry/overlay.png)
 
-## 2. PP-DocLayout-S — Kale (1913), PDF page 17 / 252
+### Method 002 — PP-DocLayout-S
 
 **Method:** [002-pp-doclayout-s: PP-DocLayout-S](methods/002-pp-doclayout-s/README.md).
 
@@ -42,7 +44,7 @@ Purple marks predictions labelled `number` or `footer_image`; blue marks other p
 
 ![PP-DocLayout-S output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/002-pp-doclayout-s/overlay.png)
 
-## 3. PP-DocLayoutV3 — Kale (1913), PDF page 17 / 252
+### Method 003 — PP-DocLayoutV3
 
 **Method:** [003-pp-doclayoutv3: PP-DocLayoutV3](methods/003-pp-doclayoutv3/README.md).
 
@@ -63,7 +65,7 @@ Purple marks predictions labelled `header` or `footer`; blue marks other predict
 
 ![PP-DocLayoutV3 output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/003-pp-doclayoutv3/overlay.png)
 
-## 4. PP-DocLayoutV3 + pixel refinement — Kale (1913), PDF page 17 / 252
+### Method 004 — PP-DocLayoutV3 + pixel refinement
 
 **Method:** [004-pp-doclayoutv3-pixel-refinement: PP-DocLayoutV3 + pixel refinement](methods/004-pp-doclayoutv3-pixel-refinement/README.md).
 
@@ -89,7 +91,7 @@ Orange marks recovered regions, purple marks headers, and blue marks other refin
 
 ![PP-DocLayoutV3 with pixel refinement on Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/004-pp-doclayoutv3-pixel-refinement/run-002/overlay.png)
 
-## 5. GPT-6 Astra direct regions — Kale (1913), PDF page 17 / 252
+### Method 005 — GPT-6 Astra direct regions
 
 **Method:** [005-gpt-6-astra-direct: GPT-6 Astra direct regions](methods/005-gpt-6-astra-direct/README.md).
 
@@ -118,7 +120,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 
 ![GPT-6 Astra direct-region output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/005-gpt-6-astra-direct/overlay.png)
 
-### Uncovered-pixel inspection
+#### Uncovered-pixel inspection
 
 Of the 4,524 uncovered measured pixels, 4,492 are in the horizontal separator above the footnotes (view A). The remaining 32 pixels form seven small components, shown enlarged in views B–G. Views E and G include tiny clipped character tips.
 
@@ -127,7 +129,7 @@ Red marks the exact counted pixels; gray shows the source image for context. Tea
 ![Uncovered pixels for GPT-6 Astra on Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/005-gpt-6-astra-direct/uncovered-highlight.png)
 
 
-## 6. Gemini 3.8 Flash direct regions — Kale (1913), PDF page 17 / 252
+### Method 006 — Gemini 3.8 Flash direct regions
 
 **Method:** [006-gemini-3.8-flash-direct: Gemini 3.8 Flash direct regions](methods/006-gemini-3.8-flash-direct/README.md).
 
@@ -161,7 +163,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Gemini 3.8 Flash direct-region output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/006-gemini-3.8-flash-direct/run-003/overlay.png)
 
 
-## 7. Gemini 4 Argon direct regions — Kale (1913), PDF page 17 / 252
+### Method 007 — Gemini 4 Argon direct regions
 
 **Method:** [007-gemini-4-argon-direct: Gemini 4 Argon direct regions](methods/007-gemini-4-argon-direct/README.md).
 
@@ -203,7 +205,7 @@ With this interpretation, each verse is enclosed in one box, commentary and lead
 ![Gemini 4 Argon output interpreted as y1,x1,y2,x2 for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/007-gemini-4-argon-direct/run-003/coordinate-order-check/overlay.png)
 
 
-## 8. Claude Sonnet 5.5 direct regions — Kale (1913), PDF page 17 / 252
+### Method 008 — Claude Sonnet 5.5 direct regions
 
 **Method:** [008-claude-sonnet-5.5-direct: Claude Sonnet 5.5 direct regions](methods/008-claude-sonnet-5.5-direct/README.md).
 
@@ -236,7 +238,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Claude Sonnet 5.5 direct-region output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/008-claude-sonnet-5.5-direct/overlay.png)
 
 
-## 9. Gemini 4 Argon high thinking — Kale (1913), PDF page 17 / 252
+### Method 009 — Gemini 4 Argon high thinking
 
 **Method:** [009-gemini-4-argon-high: Gemini 4 Argon high thinking](methods/009-gemini-4-argon-high/README.md).
 
@@ -272,7 +274,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Gemini 4 Argon high thinking output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/009-gemini-4-argon-high/overlay.png)
 
 
-## 10. Claude Fable 5.1 high effort — Kale (1913), PDF page 17 / 252
+### Method 010 — Claude Fable 5.1 high effort
 
 **Method:** [010-claude-fable-5.1-high: Claude Fable 5.1 high effort](methods/010-claude-fable-5.1-high/README.md).
 
@@ -306,7 +308,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Claude Fable 5.1 high effort output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/010-claude-fable-5.1-high/overlay.png)
 
 
-## 11. Claude Fable 5.1 max effort — Kale (1913), PDF page 17 / 252
+### Method 011 — Claude Fable 5.1 max effort
 
 **Method:** [011-claude-fable-5.1-max: Claude Fable 5.1 max effort](methods/011-claude-fable-5.1-max/README.md).
 
@@ -340,7 +342,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Claude Fable 5.1 max effort output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/011-claude-fable-5.1-max/overlay.png)
 
 
-## 12. Claude Opus 5.5 max effort — Kale (1913), PDF page 17 / 252
+### Method 012 — Claude Opus 5.5 max effort
 
 **Method:** [012-claude-opus-5.5-max: Claude Opus 5.5 max effort](methods/012-claude-opus-5.5-max/README.md).
 
@@ -374,7 +376,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Claude Opus 5.5 max effort output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/012-claude-opus-5.5-max/overlay.png)
 
 
-## 13. Gemini 4 Argon high thinking, individual footnotes — Kale (1913), PDF page 17 / 252
+### Method 013 — Gemini 4 Argon high thinking, individual footnotes
 
 **Method:** [013-gemini-4-argon-high-footnotes: Gemini 4 Argon high thinking, individual footnotes](methods/013-gemini-4-argon-high-footnotes/README.md).
 
@@ -415,7 +417,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Gemini 4 Argon high thinking, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/013-gemini-4-argon-high-footnotes/overlay.png)
 
 
-## 14. Gemini 4 Argon high thinking, individual footnotes, native coordinates — Kale (1913), PDF page 17 / 252
+### Method 014 — Gemini 4 Argon high thinking, individual footnotes, native coordinates
 
 **Method:** [014-gemini-4-argon-high-native: Gemini 4 Argon high thinking, individual footnotes, native coordinates](methods/014-gemini-4-argon-high-native/README.md).
 
@@ -456,7 +458,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Gemini 4 Argon high thinking, individual footnotes, native coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/014-gemini-4-argon-high-native/overlay.png)
 
 
-## 15. Claude Fable 5.1 max effort, individual footnotes, pixel coordinates — Kale (1913), PDF page 17 / 252
+### Method 015 — Claude Fable 5.1 max effort, individual footnotes, pixel coordinates
 
 **Method:** [015-claude-fable-5.1-max-pixels: Claude Fable 5.1 max effort, individual footnotes, pixel coordinates](methods/015-claude-fable-5.1-max-pixels/README.md).
 
@@ -497,7 +499,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Claude Fable 5.1 max effort, individual footnotes, pixel coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/015-claude-fable-5.1-max-pixels/overlay.png)
 
 
-## 16. Claude Opus 5.5 max effort, individual footnotes, pixel coordinates — Kale (1913), PDF page 17 / 252
+### Method 016 — Claude Opus 5.5 max effort, individual footnotes, pixel coordinates
 
 **Method:** [016-claude-opus-5.5-max-pixels: Claude Opus 5.5 max effort, individual footnotes, pixel coordinates](methods/016-claude-opus-5.5-max-pixels/README.md).
 
@@ -537,7 +539,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 
 ![Claude Opus 5.5 max effort, individual footnotes, pixel coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/016-claude-opus-5.5-max-pixels/overlay.png)
 
-## 17. Gemini 4 Argon low thinking, individual footnotes, native coordinates — Kale (1913), PDF page 17 / 252
+### Method 017 — Gemini 4 Argon low thinking, individual footnotes, native coordinates
 
 **Method:** [017-gemini-4-argon-low-native: Gemini 4 Argon low thinking, individual footnotes, native coordinates](methods/017-gemini-4-argon-low-native/README.md).
 
@@ -579,7 +581,9 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Gemini 4 Argon low thinking, individual footnotes, native coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/017-gemini-4-argon-low-native/overlay.png)
 
 
-## 18. Gemini 3.8 Flash low thinking, individual footnotes, native coordinates — Kale (1913), PDF page 17 / 252
+### Method 018 — Gemini 3.8 Flash low thinking, individual footnotes, native coordinates
+
+#### Run 001
 
 **Method:** [018-gemini-3.8-flash-low-native: Gemini 3.8 Flash low thinking, individual footnotes, native coordinates](methods/018-gemini-3.8-flash-low-native/README.md).
 
@@ -625,7 +629,93 @@ Footnotes enlarged 2× from original-image crop [150,1870,1300,2005], using near
 ![Gemini 3.8 Flash low thinking footnotes at 2× scale](outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/footnotes-detail.png)
 
 
-## 19. Gemini 3.5 Flash-Lite minimal thinking, individual footnotes, native coordinates — Kale (1913), PDF page 17 / 252
+
+#### Run 002
+
+**Method:** [018-gemini-3.8-flash-low-native: Gemini 3.8 Flash low thinking, individual footnotes, native coordinates](methods/018-gemini-3.8-flash-low-native/README.md).
+
+**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request, with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000. Converted by reordering to [xmin,ymin,xmax,ymax], then multiplying x by 1407 / 1000 and y by 2135 / 1000. No coordinate clamping was applied.
+
+**Run:** 2026-11-04 03:23:40 UTC; `run-002`; HTTP 200, response completed.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 7.12 s |
+| Input tokens | 1,420 |
+| Text output tokens | 619 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 619 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.00338625 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,420 × $0.75 + 619 × $3.75) / 1,000,000 = $0.00338625. Rates checked on 2026-11-03.
+
+Returned region types: 2 verse, 2 commentary, 2 lead in, 6 footnote, 1 running header, 1 page number.
+
+Each of the six numbered footnotes has a separate box containing its marker and text. Both four-line verses remain whole, with separate commentary and lead-in boxes. Some box edges are tight, including the first commentary's right edge and the fifth footnote's left edge.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Gemini 3.8 Flash low thinking, individual footnotes, native coordinates — repeat 2 output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/run-002/overlay.png)
+
+
+
+#### Run 003
+
+**Method:** [018-gemini-3.8-flash-low-native: Gemini 3.8 Flash low thinking, individual footnotes, native coordinates](methods/018-gemini-3.8-flash-low-native/README.md).
+
+**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request, with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000. Converted by reordering to [xmin,ymin,xmax,ymax], then multiplying x by 1407 / 1000 and y by 2135 / 1000. No coordinate clamping was applied.
+
+**Run:** 2026-11-04 03:23:58 UTC; `run-003`; HTTP 200, response completed.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 5.49 s |
+| Input tokens | 1,420 |
+| Text output tokens | 619 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 619 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.00338625 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,420 × $0.75 + 619 × $3.75) / 1,000,000 = $0.00338625. Rates checked on 2026-11-03.
+
+Returned region types: 2 verse, 2 commentary, 2 lead in, 6 footnote, 1 running header, 1 page number.
+
+Each of the six numbered footnotes has a separate box containing its marker and text. Both four-line verses remain whole, with separate commentary and lead-in boxes. A few glyph tips fall beyond tight boundaries, including the top of the first verse and the left edge of the second footnote.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Gemini 3.8 Flash low thinking, individual footnotes, native coordinates — repeat 3 output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/run-003/overlay.png)
+
+
+### Method 019 — Gemini 3.5 Flash-Lite minimal thinking, individual footnotes, native coordinates
 
 **Method:** [019-gemini-3.5-flash-lite-minimal: Gemini 3.5 Flash-Lite minimal thinking, individual footnotes, native coordinates](methods/019-gemini-3.5-flash-lite-minimal/README.md).
 
@@ -668,7 +758,7 @@ The diagnostic image renders the eight valid returned rectangles with their orig
 ![Gemini 3.5 Flash-Lite minimal thinking, individual footnotes, native coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/019-gemini-3.5-flash-lite-minimal/diagnostic/overlay.png)
 
 
-## 20. GPT-6 Astra low reasoning, individual footnotes — Kale (1913), PDF page 17 / 252
+### Method 020 — GPT-6 Astra low reasoning, individual footnotes
 
 **Method:** [020-gpt-6-astra-low-footnotes: GPT-6 Astra low reasoning, individual footnotes](methods/020-gpt-6-astra-low-footnotes/README.md).
 
@@ -712,7 +802,9 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![GPT-6 Astra low reasoning, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/020-gpt-6-astra-low-footnotes/overlay.png)
 
 
-## 21. GPT-6.1 Terra low reasoning, individual footnotes — Kale (1913), PDF page 17 / 252
+### Method 021 — GPT-6.1 Terra low reasoning, individual footnotes
+
+#### Run 001
 
 **Method:** [021-gpt-6.1-terra-low-footnotes: GPT-6.1 Terra low reasoning, individual footnotes](methods/021-gpt-6.1-terra-low-footnotes/README.md).
 
@@ -756,136 +848,8 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![GPT-6.1 Terra low reasoning, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/021-gpt-6.1-terra-low-footnotes/overlay.png)
 
 
-## 22. GPT-6 Luna low reasoning, individual footnotes — Kale (1913), PDF page 17 / 252
 
-**Method:** [022-gpt-6-luna-low-footnotes: GPT-6 Luna low reasoning, individual footnotes](methods/022-gpt-6-luna-low-footnotes/README.md).
-
-**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
-
-**Settings:** Requested and returned model `gpt-6-luna`; reasoning effort `low`; image detail `original`; strict JSON Schema output; maximum 16,384 output tokens including reasoning; returned service tier `default`; `store=false`.
-
-**Footnote instruction:**
-
-> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
-
-**Coordinates:** Requested [xmin,ymin,xmax,ymax] coordinates normalized to 0–1000. Converted by multiplying x by 1407 / 1000 and y by 2135 / 1000.
-
-**Run:** 2026-11-03 15:20:44 UTC.
-
-| Measurement | Result |
-| --- | --- |
-| Output boxes | 15 |
-| Boxes marked keep=true | 13 |
-| Regions marked uncertain | 7 |
-| Footnote regions | 6 |
-| API wall time | 8.62 s |
-| Input tokens | 3,932 |
-| Ordinary input tokens | 3 |
-| Cache-write input tokens, default 30-minute lifetime | 3,929 |
-| Cache-read input tokens | 0 |
-| Output tokens, including reasoning | 750 |
-| Reasoning tokens | 257 |
-| Output tokens excluding reasoning | 493 |
-| Coordinate clamping adjustments | 0 |
-| Estimated paid-tier cost | $0.000866425 |
-
-The estimated cost uses $0.1 per million ordinary input tokens, $0.125 per million default 30-minute cache-write tokens and $0.5 per million output tokens including reasoning: (3 × $0.1 + 3,929 × $0.125 + 750 × $0.5) / 1,000,000 = $0.000866425. Rates checked on 2026-11-03.
-
-Returned region types: 2 verse, 3 commentary, 2 lead in, 6 footnote, 1 running header, 1 page number.
-
-Six footnote boxes are returned, but several horizontal boundaries pass through notes and separate markers from their text. The final box combines notes 5 and 6, while earlier boxes split note 4. The second lead-in is split across two overlapping boxes labeled lead_in and commentary. Both verses remain whole.
-
-Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
-
-![GPT-6 Luna low reasoning, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/022-gpt-6-luna-low-footnotes/overlay.png)
-
-
-## 23. GPT-6 Luna high reasoning, individual footnotes — Kale (1913), PDF page 17 / 252
-
-**Method:** [023-gpt-6-luna-high-footnotes: GPT-6 Luna high reasoning, individual footnotes](methods/023-gpt-6-luna-high-footnotes/README.md).
-
-**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
-
-**Settings:** Requested and returned model `gpt-6-luna`; reasoning effort `high`; image detail `original`; strict JSON Schema output; maximum 16,384 output tokens including reasoning; returned service tier `default`; `store=false`.
-
-**Footnote instruction:**
-
-> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
-
-**Coordinates:** Requested [xmin,ymin,xmax,ymax] coordinates normalized to 0–1000. Converted by multiplying x by 1407 / 1000 and y by 2135 / 1000.
-
-**Run:** 2026-11-03 15:23:37 UTC.
-
-| Measurement | Result |
-| --- | --- |
-| Output boxes | 14 |
-| Boxes marked keep=true | 12 |
-| Regions marked uncertain | 0 |
-| Footnote regions | 6 |
-| API wall time | 23.31 s |
-| Input tokens | 3,932 |
-| Ordinary input tokens | 3 |
-| Cache-write input tokens, default 30-minute lifetime | 3,929 |
-| Cache-read input tokens | 0 |
-| Output tokens, including reasoning | 2,646 |
-| Reasoning tokens | 2,185 |
-| Output tokens excluding reasoning | 461 |
-| Coordinate clamping adjustments | 0 |
-| Estimated paid-tier cost | $0.001814425 |
-
-The estimated cost uses $0.1 per million ordinary input tokens, $0.125 per million default 30-minute cache-write tokens and $0.5 per million output tokens including reasoning: (3 × $0.1 + 3,929 × $0.125 + 2,646 × $0.5) / 1,000,000 = $0.001814425. Rates checked on 2026-11-03.
-
-Returned region types: 2 verse, 2 commentary, 2 lead in, 6 footnote, 1 running header, 1 page number.
-
-The six footnote boxes lie below the printed footnote line, over blank space. The final commentary box includes the footnote line and separator rule. The second verse box omits its first line and includes the first line of its commentary; the omitted verse line is included in the preceding lead-in box.
-
-Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
-
-![GPT-6 Luna high reasoning, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/023-gpt-6-luna-high-footnotes/overlay.png)
-
-## 24. Gemini 3.8 Flash low thinking, individual footnotes, native coordinates — repeat 2 — Kale (1913), PDF page 17 / 252
-
-**Method:** [018-gemini-3.8-flash-low-native: Gemini 3.8 Flash low thinking, individual footnotes, native coordinates](methods/018-gemini-3.8-flash-low-native/README.md).
-
-**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
-
-**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request, with automatic retries disabled.
-
-**Footnote instruction:**
-
-> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
-
-**Coordinates:** Requested [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000. Converted by reordering to [xmin,ymin,xmax,ymax], then multiplying x by 1407 / 1000 and y by 2135 / 1000. No coordinate clamping was applied.
-
-**Run:** 2026-11-04 03:23:40 UTC; `run-002`; HTTP 200, response completed.
-
-| Measurement | Result |
-| --- | --- |
-| Output boxes | 14 |
-| Boxes marked keep=true | 12 |
-| Regions marked uncertain | 0 |
-| Footnote regions | 6 |
-| API wall time | 7.12 s |
-| Input tokens | 1,420 |
-| Text output tokens | 619 |
-| Thinking tokens | 0 |
-| Output tokens, including thinking | 619 |
-| Cached input tokens | 0 |
-| Coordinate clamping adjustments | 0 |
-| Estimated paid-tier cost | $0.00338625 |
-
-The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,420 × $0.75 + 619 × $3.75) / 1,000,000 = $0.00338625. Rates checked on 2026-11-03.
-
-Returned region types: 2 verse, 2 commentary, 2 lead in, 6 footnote, 1 running header, 1 page number.
-
-Each of the six numbered footnotes has a separate box containing its marker and text. Both four-line verses remain whole, with separate commentary and lead-in boxes. Some box edges are tight, including the first commentary's right edge and the fifth footnote's left edge.
-
-Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
-
-![Gemini 3.8 Flash low thinking, individual footnotes, native coordinates — repeat 2 output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/run-002/overlay.png)
-
-
-## 25. GPT-6.1 Terra low reasoning, individual footnotes — repeat 2 — Kale (1913), PDF page 17 / 252
+#### Run 002
 
 **Method:** [021-gpt-6.1-terra-low-footnotes: GPT-6.1 Terra low reasoning, individual footnotes](methods/021-gpt-6.1-terra-low-footnotes/README.md).
 
@@ -929,49 +893,8 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![GPT-6.1 Terra low reasoning, individual footnotes — repeat 2 output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/021-gpt-6.1-terra-low-footnotes/run-002/overlay.png)
 
 
-## 26. Gemini 3.8 Flash low thinking, individual footnotes, native coordinates — repeat 3 — Kale (1913), PDF page 17 / 252
 
-**Method:** [018-gemini-3.8-flash-low-native: Gemini 3.8 Flash low thinking, individual footnotes, native coordinates](methods/018-gemini-3.8-flash-low-native/README.md).
-
-**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
-
-**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request, with automatic retries disabled.
-
-**Footnote instruction:**
-
-> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
-
-**Coordinates:** Requested [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000. Converted by reordering to [xmin,ymin,xmax,ymax], then multiplying x by 1407 / 1000 and y by 2135 / 1000. No coordinate clamping was applied.
-
-**Run:** 2026-11-04 03:23:58 UTC; `run-003`; HTTP 200, response completed.
-
-| Measurement | Result |
-| --- | --- |
-| Output boxes | 14 |
-| Boxes marked keep=true | 12 |
-| Regions marked uncertain | 0 |
-| Footnote regions | 6 |
-| API wall time | 5.49 s |
-| Input tokens | 1,420 |
-| Text output tokens | 619 |
-| Thinking tokens | 0 |
-| Output tokens, including thinking | 619 |
-| Cached input tokens | 0 |
-| Coordinate clamping adjustments | 0 |
-| Estimated paid-tier cost | $0.00338625 |
-
-The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,420 × $0.75 + 619 × $3.75) / 1,000,000 = $0.00338625. Rates checked on 2026-11-03.
-
-Returned region types: 2 verse, 2 commentary, 2 lead in, 6 footnote, 1 running header, 1 page number.
-
-Each of the six numbered footnotes has a separate box containing its marker and text. Both four-line verses remain whole, with separate commentary and lead-in boxes. A few glyph tips fall beyond tight boundaries, including the top of the first verse and the left edge of the second footnote.
-
-Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
-
-![Gemini 3.8 Flash low thinking, individual footnotes, native coordinates — repeat 3 output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/run-003/overlay.png)
-
-
-## 27. GPT-6.1 Terra low reasoning, individual footnotes — repeat 3 — Kale (1913), PDF page 17 / 252
+#### Run 003
 
 **Method:** [021-gpt-6.1-terra-low-footnotes: GPT-6.1 Terra low reasoning, individual footnotes](methods/021-gpt-6.1-terra-low-footnotes/README.md).
 
@@ -1015,7 +938,94 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![GPT-6.1 Terra low reasoning, individual footnotes — repeat 3 output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/021-gpt-6.1-terra-low-footnotes/run-003/overlay.png)
 
 
-## 28. Gemini 3.5 Flash-Lite low thinking, individual footnotes, native coordinates — Kale (1913), PDF page 17 / 252
+### Method 022 — GPT-6 Luna low reasoning, individual footnotes
+
+**Method:** [022-gpt-6-luna-low-footnotes: GPT-6 Luna low reasoning, individual footnotes](methods/022-gpt-6-luna-low-footnotes/README.md).
+
+**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gpt-6-luna`; reasoning effort `low`; image detail `original`; strict JSON Schema output; maximum 16,384 output tokens including reasoning; returned service tier `default`; `store=false`.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested [xmin,ymin,xmax,ymax] coordinates normalized to 0–1000. Converted by multiplying x by 1407 / 1000 and y by 2135 / 1000.
+
+**Run:** 2026-11-03 15:20:44 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 15 |
+| Boxes marked keep=true | 13 |
+| Regions marked uncertain | 7 |
+| Footnote regions | 6 |
+| API wall time | 8.62 s |
+| Input tokens | 3,932 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,929 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 750 |
+| Reasoning tokens | 257 |
+| Output tokens excluding reasoning | 493 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.000866425 |
+
+The estimated cost uses $0.1 per million ordinary input tokens, $0.125 per million default 30-minute cache-write tokens and $0.5 per million output tokens including reasoning: (3 × $0.1 + 3,929 × $0.125 + 750 × $0.5) / 1,000,000 = $0.000866425. Rates checked on 2026-11-03.
+
+Returned region types: 2 verse, 3 commentary, 2 lead in, 6 footnote, 1 running header, 1 page number.
+
+Six footnote boxes are returned, but several horizontal boundaries pass through notes and separate markers from their text. The final box combines notes 5 and 6, while earlier boxes split note 4. The second lead-in is split across two overlapping boxes labeled lead_in and commentary. Both verses remain whole.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![GPT-6 Luna low reasoning, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/022-gpt-6-luna-low-footnotes/overlay.png)
+
+
+### Method 023 — GPT-6 Luna high reasoning, individual footnotes
+
+**Method:** [023-gpt-6-luna-high-footnotes: GPT-6 Luna high reasoning, individual footnotes](methods/023-gpt-6-luna-high-footnotes/README.md).
+
+**Input:** `kale-1913-page-017`; the unchanged PNG rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gpt-6-luna`; reasoning effort `high`; image detail `original`; strict JSON Schema output; maximum 16,384 output tokens including reasoning; returned service tier `default`; `store=false`.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested [xmin,ymin,xmax,ymax] coordinates normalized to 0–1000. Converted by multiplying x by 1407 / 1000 and y by 2135 / 1000.
+
+**Run:** 2026-11-03 15:23:37 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 23.31 s |
+| Input tokens | 3,932 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,929 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 2,646 |
+| Reasoning tokens | 2,185 |
+| Output tokens excluding reasoning | 461 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.001814425 |
+
+The estimated cost uses $0.1 per million ordinary input tokens, $0.125 per million default 30-minute cache-write tokens and $0.5 per million output tokens including reasoning: (3 × $0.1 + 3,929 × $0.125 + 2,646 × $0.5) / 1,000,000 = $0.001814425. Rates checked on 2026-11-03.
+
+Returned region types: 2 verse, 2 commentary, 2 lead in, 6 footnote, 1 running header, 1 page number.
+
+The six footnote boxes lie below the printed footnote line, over blank space. The final commentary box includes the footnote line and separator rule. The second verse box omits its first line and includes the first line of its commentary; the omitted verse line is included in the preceding lead-in box.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![GPT-6 Luna high reasoning, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/023-gpt-6-luna-high-footnotes/overlay.png)
+
+### Method 024 — Gemini 3.5 Flash-Lite low thinking, individual footnotes, native coordinates
 
 **Method:** [024-gemini-3.5-flash-lite-low: Gemini 3.5 Flash-Lite low thinking, individual footnotes, native coordinates](methods/024-gemini-3.5-flash-lite-low/README.md).
 
@@ -1057,7 +1067,7 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 ![Gemini 3.5 Flash-Lite low thinking, individual footnotes, native coordinates output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/024-gemini-3.5-flash-lite-low/overlay.png)
 
 
-## 29. GPT-6.1 Terra without reasoning, individual footnotes — Kale (1913), PDF page 17 / 252
+### Method 025 — GPT-6.1 Terra without reasoning, individual footnotes
 
 **Method:** [025-gpt-6.1-terra-none-footnotes: GPT-6.1 Terra without reasoning, individual footnotes](methods/025-gpt-6.1-terra-none-footnotes/README.md).
 
@@ -1099,3 +1109,174 @@ Each of the six numbered footnotes has a separate box containing its marker and 
 Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
 
 ![GPT-6.1 Terra without reasoning, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/025-gpt-6.1-terra-none-footnotes/overlay.png)
+
+## Kale (1913), PDF page 97 / 252
+
+### Method 017 — Gemini 4 Argon low thinking, individual footnotes, native coordinates
+
+**Method:** [017-gemini-4-argon-low-native: Gemini 4 Argon low thinking, individual footnotes, native coordinates](methods/017-gemini-4-argon-low-native/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unannotated RGB rendering at 300 dpi, 1374 × 2114 pixels. Two four-line verses, two commentary passages, one lead-in and six numbered footnotes; the sixth footnote is printed on a second line.
+
+**Settings:** Requested and returned model `gemini-4-argon`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request, with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000. Converted by reordering to [xmin,ymin,xmax,ymax], then multiplying x by 1374 / 1000 and y by 2114 / 1000. No coordinate clamping was applied.
+
+**Run:** 2026-11-04 04:28:40 UTC; HTTP 200, response completed.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 9.66 s |
+| Input tokens | 1,801 |
+| Text output tokens | 571 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 571 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.009312 |
+
+The estimated paid-tier cost uses $2 per million input tokens and $10 per million output tokens including thinking: (1,801 × $2 + 571 × $10) / 1,000,000 = $0.009312. Rates checked on 2026-11-03.
+
+Returned region types: 2 verse, 2 commentary, 1 lead in, 6 footnote, 1 running header, 1 page number.
+
+Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text, including the sixth footnote on the second printed footnote line. Some right edges of commentary boxes are tight, with small glyph tips extending beyond them.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Gemini 4 Argon low thinking, individual footnotes, native coordinates output for Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/017-gemini-4-argon-low-native/overlay.png)
+
+
+### Method 018 — Gemini 3.8 Flash low thinking, individual footnotes, native coordinates
+
+**Method:** [018-gemini-3.8-flash-low-native: Gemini 3.8 Flash low thinking, individual footnotes, native coordinates](methods/018-gemini-3.8-flash-low-native/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unannotated RGB rendering at 300 dpi, 1374 × 2114 pixels. Two four-line verses, two commentary passages, one lead-in and six numbered footnotes; the sixth footnote is printed on a second line.
+
+**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request, with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000. Converted by reordering to [xmin,ymin,xmax,ymax], then multiplying x by 1374 / 1000 and y by 2114 / 1000. No coordinate clamping was applied.
+
+**Run:** 2026-11-04 04:28:23 UTC; HTTP 200, response completed.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 5.99 s |
+| Input tokens | 1,379 |
+| Text output tokens | 575 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 575 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.0031905 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,379 × $0.75 + 575 × $3.75) / 1,000,000 = $0.0031905. Rates checked on 2026-11-03.
+
+Returned region types: 2 verse, 2 commentary, 1 lead in, 6 footnote, 1 running header, 1 page number.
+
+Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text; the sixth footnote is on the second printed footnote line. Several boundaries are tight, with small glyph tips outside the first verse and commentary boxes.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![Gemini 3.8 Flash low thinking, individual footnotes, native coordinates output for Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/018-gemini-3.8-flash-low-native/overlay.png)
+
+
+### Method 020 — GPT-6 Astra low reasoning, individual footnotes
+
+**Method:** [020-gpt-6-astra-low-footnotes: GPT-6 Astra low reasoning, individual footnotes](methods/020-gpt-6-astra-low-footnotes/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unannotated RGB rendering at 300 dpi, 1374 × 2114 pixels. Two four-line verses, two commentary passages, one lead-in and six numbered footnotes; the sixth footnote is printed on a second line.
+
+**Settings:** Requested and returned model `gpt-6-astra`; reasoning effort `low`; image detail `original`; strict JSON Schema output; maximum 16,384 output tokens including reasoning; returned service tier `default`; `store=false`. One synchronous request, with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested [xmin,ymin,xmax,ymax] integer coordinates normalized to 0–1000. Converted by multiplying x by 1374 / 1000 and y by 2114 / 1000. No coordinate clamping was applied.
+
+**Run:** 2026-11-04 04:28:51 UTC; HTTP 200, response completed.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 9.71 s |
+| Input tokens | 3,852 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,849 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 427 |
+| Reasoning tokens | 0 |
+| Output tokens excluding reasoning | 427 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.0694925 |
+
+The estimated paid-tier cost uses $10 per million ordinary input tokens, $12.5 per million default 30-minute cache-write tokens, $1 per million cache-read tokens and $50 per million output tokens including reasoning: (3 × $10 + 3,849 × $12.5 + 0 × $1 + 427 × $50) / 1,000,000 = $0.0694925. Rates checked on 2026-11-03.
+
+Returned region types: 2 verse, 2 commentary, 1 lead in, 6 footnote, 1 running header, 1 page number.
+
+Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text, including the sixth footnote on the second printed footnote line.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![GPT-6 Astra low reasoning, individual footnotes output for Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/020-gpt-6-astra-low-footnotes/overlay.png)
+### Method 025 — GPT-6.1 Terra without reasoning, individual footnotes
+
+**Method:** [025-gpt-6.1-terra-none-footnotes: GPT-6.1 Terra without reasoning, individual footnotes](methods/025-gpt-6.1-terra-none-footnotes/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unannotated RGB rendering at 300 dpi, 1374 × 2114 pixels. Two four-line verses, two commentary passages, one lead-in and six numbered footnotes; the sixth footnote is printed on a second line.
+
+**Settings:** Requested and returned model `gpt-6.1-terra`; reasoning effort `none`; image detail `original`; strict JSON Schema output; maximum 16,384 output tokens including reasoning; returned service tier `default`; `store=false`. One synchronous request, with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Requested [xmin,ymin,xmax,ymax] integer coordinates normalized to 0–1000. Converted by multiplying x by 1374 / 1000 and y by 2114 / 1000. No coordinate clamping was applied.
+
+**Run:** 2026-11-04 04:28:30 UTC; HTTP 200, response completed.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 8.83 s |
+| Input tokens | 3,852 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,849 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 427 |
+| Reasoning tokens | 0 |
+| Output tokens excluding reasoning | 427 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.00694925 |
+
+The estimated paid-tier cost uses $1 per million ordinary input tokens, $1.25 per million default 30-minute cache-write tokens, $0.05 per million cache-read tokens and $5 per million output tokens including reasoning: (3 × $1 + 3,849 × $1.25 + 0 × $0.05 + 427 × $5) / 1,000,000 = $0.00694925. Rates checked on 2026-11-03.
+
+Returned region types: 2 verse, 2 commentary, 1 lead in, 6 footnote, 1 running header, 1 page number.
+
+Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text, including the sixth footnote on the second printed footnote line.
+
+Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
+
+![GPT-6.1 Terra without reasoning, individual footnotes output for Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/025-gpt-6.1-terra-none-footnotes/overlay.png)

@@ -49,3 +49,37 @@ Each of the six numbered footnotes has its own box containing its marker and tex
 The estimated cost uses $10 per million ordinary input tokens, $12.5 per million default 30-minute cache-write tokens and $50 per million output tokens including reasoning: (3 × $10 + 3,929 × $12.5 + 510 × $50) / 1,000,000 = $0.0746425. Rates checked on 2026-11-03.
 
 ![Recorded output](../../outputs/kale-1913-page-017/020-gpt-6-astra-low-footnotes/overlay.png)
+
+## Kale (1913), PDF page 97 / 252
+
+Input: `kale-1913-page-097`, unannotated 300 dpi RGB render, 1374 × 2114 pixels. Started 2026-11-04 04:28:51 UTC. Requested and returned model `gpt-6-astra`. Settings and prompt are unchanged; coordinate conversion uses this input's actual width and height. HTTP 200, response completed.
+
+```sh
+uv run python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-097.png --check
+uv run python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-097.png
+```
+
+The completed artifacts are under `outputs/kale-1913-page-097/020-gpt-6-astra-low-footnotes/`. Choose a fresh `--output-dir` for another API request.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 9.71 s |
+| Input tokens | 3,852 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,849 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 427 |
+| Reasoning tokens | 0 |
+| Output tokens excluding reasoning | 427 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.0694925 |
+
+The estimated paid-tier cost uses $10 per million ordinary input tokens, $12.5 per million default 30-minute cache-write tokens, $1 per million cache-read tokens and $50 per million output tokens including reasoning: (3 × $10 + 3,849 × $12.5 + 0 × $1 + 427 × $50) / 1,000,000 = $0.0694925. Rates checked on 2026-11-03.
+
+Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text, including the sixth footnote on the second printed footnote line.
+
+![Page 97 output](../../outputs/kale-1913-page-097/020-gpt-6-astra-low-footnotes/overlay.png)

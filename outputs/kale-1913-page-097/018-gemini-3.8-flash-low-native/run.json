@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "started_at_utc": "2026-11-04T04:28:23.808964+00:00",
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "credential_source": "llm stored key: gemini",
+  "client_request_id": "2676b2ae-a74f-43db-a457-70c10c9c6039",
+  "request_sha256": "c26532f2cad1d80222f7373f6c34be5ef5c9e22ed97bf8acb093e6bd8e3beb67",
+  "method_id": "018-gemini-3.8-flash-low-native",
+  "settings": {
+    "model": "gemini-3.8-flash",
+    "thinking_level": "low",
+    "thinking_summaries": "none",
+    "image_resolution": "high",
+    "max_output_tokens": 16384,
+    "service_tier": "standard",
+    "store": false,
+    "coordinate_format": "yxyx_1000",
+    "prompt_variant": "individual-numbered-footnotes-v2"
+  },
+  "files_sha256": {
+    "run.py": "6a6c1a59ed54ec8219b5c0e0b2095d0ab0239e8d5d63a32d61a1fa319269bd28",
+    "regions.py": "8ef770044193ffc9a6b5d00da314829207bbe635b1b530983abc78d1a183b2e2",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "prompt.txt": "70bfdfdb57796abce8596c6f0744c4c63b24232c7b24a9d633ede66ebb983702",
+    "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+    "config.json": "7f84494e8ae34407279c595e63dc97f4d8ce6a9cef024b6d4c6753171c862081",
+    "pricing.json": "91de812aca8d6321bd6d22361c3c7a8f39d6d46c7b74af365262a2207e2ee63f",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  },
+  "response_headers_seconds": 5.98612550040707,
+  "http_status": 200,
+  "request_id": null,
+  "response_first_body_byte_seconds": 5.9861417091451585,
+  "api_wall_seconds": 5.986657084431499,
+  "response_id": null,
+  "returned_model": "gemini-3.8-flash",
+  "response_status": "completed",
+  "usage": {
+    "total_tokens": 1954,
+    "total_input_tokens": 1379,
+    "input_tokens_by_modality": [
+      {
+        "modality": "image",
+        "tokens": 1066
+      },
+      {
+        "modality": "text",
+        "tokens": 313
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 575,
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0,
+    "initial_input_tokens": 1664
+  }
+}

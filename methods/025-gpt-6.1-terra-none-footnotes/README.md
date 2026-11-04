@@ -51,3 +51,37 @@ The estimated paid-tier cost uses $1 per million ordinary input tokens, $1.25 pe
 Each of the six numbered footnotes has a separate box containing its marker and text. Both four-line verses remain whole, with separate commentary and lead-in boxes. The API reported zero reasoning tokens.
 
 ![run-001 output](../../outputs/kale-1913-page-017/025-gpt-6.1-terra-none-footnotes/overlay.png)
+
+## Kale (1913), PDF page 97 / 252
+
+Input: `kale-1913-page-097`, unannotated 300 dpi RGB render, 1374 × 2114 pixels. Started 2026-11-04 04:28:30 UTC. Requested and returned model `gpt-6.1-terra`. Settings and prompt are unchanged; coordinate conversion uses this input's actual width and height. HTTP 200, response completed.
+
+```sh
+uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-097.png --check
+uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-097.png
+```
+
+The completed artifacts are under `outputs/kale-1913-page-097/025-gpt-6.1-terra-none-footnotes/`. Choose a fresh `--output-dir` for another API request.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 8.83 s |
+| Input tokens | 3,852 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,849 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 427 |
+| Reasoning tokens | 0 |
+| Output tokens excluding reasoning | 427 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.00694925 |
+
+The estimated paid-tier cost uses $1 per million ordinary input tokens, $1.25 per million default 30-minute cache-write tokens, $0.05 per million cache-read tokens and $5 per million output tokens including reasoning: (3 × $1 + 3,849 × $1.25 + 0 × $0.05 + 427 × $5) / 1,000,000 = $0.00694925. Rates checked on 2026-11-03.
+
+Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text, including the sixth footnote on the second printed footnote line.
+
+![Page 97 output](../../outputs/kale-1913-page-097/025-gpt-6.1-terra-none-footnotes/overlay.png)

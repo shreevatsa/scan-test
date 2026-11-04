@@ -104,3 +104,35 @@ The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per m
 Each of the six numbered footnotes has a separate box containing its marker and text. Both four-line verses remain whole, with separate commentary and lead-in boxes. A few glyph tips fall beyond tight boundaries, including the top of the first verse and the left edge of the second footnote.
 
 ![run-003 output](../../outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/run-003/overlay.png)
+
+## Kale (1913), PDF page 97 / 252
+
+Input: `kale-1913-page-097`, unannotated 300 dpi RGB render, 1374 × 2114 pixels. Started 2026-11-04 04:28:23 UTC. Requested and returned model `gemini-3.8-flash`. Settings and prompt are unchanged; coordinate conversion uses this input's actual width and height. HTTP 200, response completed.
+
+```sh
+uv run python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-097.png --check
+uv run python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-097.png
+```
+
+The completed artifacts are under `outputs/kale-1913-page-097/018-gemini-3.8-flash-low-native/`. Choose a fresh `--output-dir` for another API request.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 5.99 s |
+| Input tokens | 1,379 |
+| Text output tokens | 575 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 575 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.0031905 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,379 × $0.75 + 575 × $3.75) / 1,000,000 = $0.0031905. Rates checked on 2026-11-03.
+
+Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text; the sixth footnote is on the second printed footnote line. Several boundaries are tight, with small glyph tips outside the first verse and commentary boxes.
+
+![Page 97 output](../../outputs/kale-1913-page-097/018-gemini-3.8-flash-low-native/overlay.png)

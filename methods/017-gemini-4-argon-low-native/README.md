@@ -45,3 +45,35 @@ Each of the six numbered footnotes has its own box containing its marker and tex
 The estimated cost uses $2 per million input tokens and $10 per million output tokens including thinking: (1,842 × $2 + 618 × $10) / 1,000,000 = $0.009864. Rates checked on 2026-11-03.
 
 ![Recorded output](../../outputs/kale-1913-page-017/017-gemini-4-argon-low-native/overlay.png)
+
+## Kale (1913), PDF page 97 / 252
+
+Input: `kale-1913-page-097`, unannotated 300 dpi RGB render, 1374 × 2114 pixels. Started 2026-11-04 04:28:40 UTC. Requested and returned model `gemini-4-argon`. Settings and prompt are unchanged; coordinate conversion uses this input's actual width and height. HTTP 200, response completed.
+
+```sh
+uv run python methods/017-gemini-4-argon-low-native/run.py inputs/kale-1913-page-097.png --check
+uv run python methods/017-gemini-4-argon-low-native/run.py inputs/kale-1913-page-097.png
+```
+
+The completed artifacts are under `outputs/kale-1913-page-097/017-gemini-4-argon-low-native/`. Choose a fresh `--output-dir` for another API request.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| API wall time | 9.66 s |
+| Input tokens | 1,801 |
+| Text output tokens | 571 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 571 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier cost | $0.009312 |
+
+The estimated paid-tier cost uses $2 per million input tokens and $10 per million output tokens including thinking: (1,801 × $2 + 571 × $10) / 1,000,000 = $0.009312. Rates checked on 2026-11-03.
+
+Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text, including the sixth footnote on the second printed footnote line. Some right edges of commentary boxes are tight, with small glyph tips extending beyond them.
+
+![Page 97 output](../../outputs/kale-1913-page-097/017-gemini-4-argon-low-native/overlay.png)
