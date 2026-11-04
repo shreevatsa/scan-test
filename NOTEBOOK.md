@@ -1110,6 +1110,224 @@ Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red
 
 ![GPT-6.1 Terra without reasoning, individual footnotes output for Kale (1913), PDF page 17 / 252](outputs/kale-1913-page-017/025-gpt-6.1-terra-none-footnotes/overlay.png)
 
+
+
+### Method 028 — Gemini 4 Argon low thinking, explicit crop padding
+
+**Method:** [028-gemini-4-argon-low-padded-prompt](methods/028-gemini-4-argon-low-padded-prompt/README.md).
+
+**Input:** [kale-1913-page-017](inputs/kale-1913-page-017.png); unchanged RGB rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gemini-4-argon`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Padding instruction:** The prompt explicitly requests complete glyphs, a white margin and an edge inspection before returning the boxes.
+
+> Leave a visible white margin of at least 5 normalized x units on the left and right and 3 normalized y units above and below the outermost ink (about seven original-image pixels per axis on this page). Reduce this margin only where it would include a neighboring text block or footnote, or a separator rule. Keep each footnote separate.
+
+**Coordinates:** Returned [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000, mechanically reordered to [xmin,ymin,xmax,ymax] and scaled by x × 1407 / 1000 and y × 2135 / 1000. Original arrays are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 06:00:06 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 8 |
+| Overlapping kept-box pairs containing text | 1 |
+| Detected separator pixels inside kept boxes | 305 |
+| API wall time | 8.06 s |
+| Input tokens | 1,961 |
+| Text output tokens | 617 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 617 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.010092 |
+
+The estimated paid-tier cost uses $2 per million input tokens and $10 per million output tokens including thinking: (1,961 × $2 + 617 × $10) / 1,000,000 = $0.010092. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 2 lead in, 2 verse, 2 commentary, 6 footnote.
+
+Both verses remain whole, with separate commentary, lead-ins and six footnotes. Some glyph tips still cross crop edges. One neighboring pair overlaps printed text.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 4 Argon low thinking, explicit crop padding, PDF page 17 / 252](outputs/kale-1913-page-017/028-gemini-4-argon-low-padded-prompt/overlay.png)
+
+![Gemini 4 Argon low thinking, explicit crop padding, enlarged boundary inspection, PDF page 17 / 252](outputs/kale-1913-page-017/028-gemini-4-argon-low-padded-prompt/separator-review/details.png)
+
+
+
+### Method 029 — Gemini 3.8 Flash low thinking, explicit crop padding
+
+**Method:** [029-gemini-3.8-flash-low-padded-prompt](methods/029-gemini-3.8-flash-low-padded-prompt/README.md).
+
+**Input:** [kale-1913-page-017](inputs/kale-1913-page-017.png); unchanged RGB rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Padding instruction:** The prompt explicitly requests complete glyphs, a white margin and an edge inspection before returning the boxes.
+
+> Leave a visible white margin of at least 5 normalized x units on the left and right and 3 normalized y units above and below the outermost ink (about seven original-image pixels per axis on this page). Reduce this margin only where it would include a neighboring text block or footnote, or a separator rule. Keep each footnote separate.
+
+**Coordinates:** Returned [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000, mechanically reordered to [xmin,ymin,xmax,ymax] and scaled by x × 1407 / 1000 and y × 2135 / 1000. Original arrays are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 06:00:15 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 21 |
+| Overlapping kept-box pairs containing text | 2 |
+| Detected separator pixels inside kept boxes | 0 |
+| API wall time | 5.72 s |
+| Input tokens | 1,538 |
+| Text output tokens | 619 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 619 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00347475 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,538 × $0.75 + 619 × $3.75) / 1,000,000 = $0.00347475. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 2 lead in, 2 verse, 2 commentary, 6 footnote.
+
+Both verses remain whole, with separate commentary, lead-ins and six footnotes. Upper glyph tips on the first verse and several other character edges are clipped. Two neighboring pairs overlap printed text.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, PDF page 17 / 252](outputs/kale-1913-page-017/029-gemini-3.8-flash-low-padded-prompt/overlay.png)
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, enlarged boundary inspection, PDF page 17 / 252](outputs/kale-1913-page-017/029-gemini-3.8-flash-low-padded-prompt/separator-review/details.png)
+
+
+
+### Method 030 — Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling
+
+**Method:** [030-gemini-4-argon-low-slanted-refinement](methods/030-gemini-4-argon-low-slanted-refinement/README.md).
+
+**Input:** [kale-1913-page-017](inputs/kale-1913-page-017.png); unchanged RGB rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Source method:** [017-gemini-4-argon-low-native](methods/017-gemini-4-argon-low-native/README.md), applied to the identical raw image.
+
+**Settings:** Complete assigned foreground components within ceil(1.5% of width) horizontally and ceil(1.2% of height) vertically; request ceil(0.5% of width) horizontal and ceil(0.3% of height) vertical padding. Keep source region count, types, keep flags, reading order and uncertainty flags.
+
+**Separator handling:** Detect near-straight thin components from source pixels: width at least max(80 pixels, 8% of image width), aspect ratio at least 10, height at most 5% of image height, at least 95% filled columns, median column thickness at most max(3 pixels, 0.3% of image height), maximum thickness at most twice that, absolute line slope at most 0.05 and 95th-percentile fit residual at most max(1.5 pixels, 0.15% of image height). Exclude accepted line pixels from component ownership. Limit crop edges to their local line envelope, requesting a one-pixel gap. Original whitespace and separator inclusion can be reduced while preserving owned text and all text-mask pixels originally inside each source box.
+
+**Coordinates:** Final integer [xmin,ymin,xmax,ymax] pixel rectangles, with exclusive right and bottom edges. Original model coordinates are preserved.
+
+
+**Run:** 2026-11-04 06:05:31 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 31 |
+| Overlapping kept-box pairs containing text | 4 |
+| Detected separator pixels inside kept boxes | 0 |
+| Source text components cut by kept crop edges | 10 |
+| Detected separator fragments | 3 |
+| Regions constrained by separators | 6 |
+| Requested padding per axis | 8 × 7 pixels |
+| Ambiguous component assignments | 0 |
+| Completed rectangle overlap warnings | 4 |
+| Local refinement time | 0.0371 s |
+| Local total before file writes | 0.2325 s |
+| Additional API calls | 0 |
+| Estimated source API cost | $0.009864 |
+| Additional API cost | $0 |
+
+The local step uses the saved source boxes. Its additional API cost is $0; the previously recorded source request is estimated at $0.009864.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 2 lead in, 2 verse, 2 commentary, 6 footnote.
+
+The detected separator stays outside every kept box, and source labels and reading order are retained. Padding extends into neighboring text at existing body-box overlaps. The audit records 31 cut text components and 4 overlaps containing text. The output retains 0 ambiguous component assignments and 4 completed-rectangle overlap warnings for inspection. Source text-mask pixels remain enclosed.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling, PDF page 17 / 252](outputs/kale-1913-page-017/030-gemini-4-argon-low-slanted-refinement/overlay.png)
+
+![Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling, enlarged boundary inspection, PDF page 17 / 252](outputs/kale-1913-page-017/030-gemini-4-argon-low-slanted-refinement/separator-review/details.png)
+
+
+
+### Method 031 — Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling
+
+**Method:** [031-gemini-3.8-flash-low-slanted-refinement](methods/031-gemini-3.8-flash-low-slanted-refinement/README.md).
+
+**Input:** [kale-1913-page-017](inputs/kale-1913-page-017.png); unchanged RGB rendering at 300 dpi, 1407 × 2135 pixels.
+
+**Source method:** [018-gemini-3.8-flash-low-native](methods/018-gemini-3.8-flash-low-native/README.md), applied to the identical raw image.
+
+**Settings:** Complete assigned foreground components within ceil(1.5% of width) horizontally and ceil(1.2% of height) vertically; request ceil(0.5% of width) horizontal and ceil(0.3% of height) vertical padding. Keep source region count, types, keep flags, reading order and uncertainty flags.
+
+**Separator handling:** Detect near-straight thin components from source pixels: width at least max(80 pixels, 8% of image width), aspect ratio at least 10, height at most 5% of image height, at least 95% filled columns, median column thickness at most max(3 pixels, 0.3% of image height), maximum thickness at most twice that, absolute line slope at most 0.05 and 95th-percentile fit residual at most max(1.5 pixels, 0.15% of image height). Exclude accepted line pixels from component ownership. Limit crop edges to their local line envelope, requesting a one-pixel gap. Original whitespace and separator inclusion can be reduced while preserving owned text and all text-mask pixels originally inside each source box.
+
+**Coordinates:** Final integer [xmin,ymin,xmax,ymax] pixel rectangles, with exclusive right and bottom edges. Original model coordinates are preserved.
+
+
+**Run:** 2026-11-04 06:05:32 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 25 |
+| Overlapping kept-box pairs containing text | 3 |
+| Detected separator pixels inside kept boxes | 0 |
+| Source text components cut by kept crop edges | 15 |
+| Detected separator fragments | 3 |
+| Regions constrained by separators | 4 |
+| Requested padding per axis | 8 × 7 pixels |
+| Ambiguous component assignments | 0 |
+| Completed rectangle overlap warnings | 3 |
+| Local refinement time | 0.0383 s |
+| Local total before file writes | 0.2096 s |
+| Additional API calls | 0 |
+| Estimated source API cost | $0.0033975 |
+| Additional API cost | $0 |
+
+The local step uses the saved source boxes. Its additional API cost is $0; the previously recorded source request is estimated at $0.0033975.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 2 lead in, 2 verse, 2 commentary, 6 footnote.
+
+The detected separator stays outside every kept box, and source labels and reading order are retained. Padding extends into neighboring text at existing body-box overlaps. The audit records 25 cut text components and 3 overlaps containing text. The output retains 0 ambiguous component assignments and 3 completed-rectangle overlap warnings for inspection. Source text-mask pixels remain enclosed.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling, PDF page 17 / 252](outputs/kale-1913-page-017/031-gemini-3.8-flash-low-slanted-refinement/overlay.png)
+
+![Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling, enlarged boundary inspection, PDF page 17 / 252](outputs/kale-1913-page-017/031-gemini-3.8-flash-low-slanted-refinement/separator-review/details.png)
+
 ## Kale (1913), PDF page 97 / 252
 
 ### Method 017 — Gemini 4 Argon low thinking, individual footnotes, native coordinates
@@ -1502,3 +1720,535 @@ The full-page overlay marks kept boxes blue, page furniture purple and uncovered
 The enlarged panels show original pixels at 2× scale, crop edges in blue and clipped text-mask pixels in red.
 
 ![Gemini 3.8 Flash low thinking, explicit crop padding, enlarged boundary inspection](outputs/kale-1913-page-097/029-gemini-3.8-flash-low-padded-prompt/boundary-review/details.png)
+
+
+### Method 030 — Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling
+
+**Method:** [030-gemini-4-argon-low-slanted-refinement](methods/030-gemini-4-argon-low-slanted-refinement/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unchanged RGB rendering at 300 dpi, 1374 × 2114 pixels.
+
+**Source method:** [017-gemini-4-argon-low-native](methods/017-gemini-4-argon-low-native/README.md), applied to the identical raw image.
+
+**Settings:** Complete assigned foreground components within ceil(1.5% of width) horizontally and ceil(1.2% of height) vertically; request ceil(0.5% of width) horizontal and ceil(0.3% of height) vertical padding. Keep source region count, types, keep flags, reading order and uncertainty flags.
+
+**Separator handling:** Detect near-straight thin components from source pixels: width at least max(80 pixels, 8% of image width), aspect ratio at least 10, height at most 5% of image height, at least 95% filled columns, median column thickness at most max(3 pixels, 0.3% of image height), maximum thickness at most twice that, absolute line slope at most 0.05 and 95th-percentile fit residual at most max(1.5 pixels, 0.15% of image height). Exclude accepted line pixels from component ownership. Limit crop edges to their local line envelope, requesting a one-pixel gap. Original whitespace and separator inclusion can be reduced while preserving owned text and all text-mask pixels originally inside each source box.
+
+**Coordinates:** Final integer [xmin,ymin,xmax,ymax] pixel rectangles, with exclusive right and bottom edges. Original model coordinates are preserved.
+
+
+**Run:** 2026-11-04 06:05:33 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 0 |
+| Overlapping kept-box pairs containing text | 0 |
+| Detected separator pixels inside kept boxes | 0 |
+| Source text components cut by kept crop edges | 19 |
+| Detected separator fragments | 2 |
+| Regions constrained by separators | 4 |
+| Requested padding per axis | 7 × 7 pixels |
+| Ambiguous component assignments | 0 |
+| Completed rectangle overlap warnings | 0 |
+| Local refinement time | 0.0335 s |
+| Local total before file writes | 0.2031 s |
+| Additional API calls | 0 |
+| Estimated source API cost | $0.009312 |
+| Additional API cost | $0 |
+
+The local step uses the saved source boxes. Its additional API cost is $0; the previously recorded source request is estimated at $0.009312.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 1 lead in, 2 verse, 2 commentary, 6 footnote.
+
+Both verses, commentary passages and the lead-in retain their source grouping; each of the six footnotes remains separate. The detected separator stays outside every kept box. The audit records zero cut text components and zero overlaps containing text. Component assignments and completed rectangles produce zero ambiguity or overlap warnings.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling, PDF page 97 / 252](outputs/kale-1913-page-097/030-gemini-4-argon-low-slanted-refinement/overlay.png)
+
+![Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling, enlarged boundary inspection, PDF page 97 / 252](outputs/kale-1913-page-097/030-gemini-4-argon-low-slanted-refinement/separator-review/details.png)
+
+
+
+### Method 031 — Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling
+
+**Method:** [031-gemini-3.8-flash-low-slanted-refinement](methods/031-gemini-3.8-flash-low-slanted-refinement/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unchanged RGB rendering at 300 dpi, 1374 × 2114 pixels.
+
+**Source method:** [018-gemini-3.8-flash-low-native](methods/018-gemini-3.8-flash-low-native/README.md), applied to the identical raw image.
+
+**Settings:** Complete assigned foreground components within ceil(1.5% of width) horizontally and ceil(1.2% of height) vertically; request ceil(0.5% of width) horizontal and ceil(0.3% of height) vertical padding. Keep source region count, types, keep flags, reading order and uncertainty flags.
+
+**Separator handling:** Detect near-straight thin components from source pixels: width at least max(80 pixels, 8% of image width), aspect ratio at least 10, height at most 5% of image height, at least 95% filled columns, median column thickness at most max(3 pixels, 0.3% of image height), maximum thickness at most twice that, absolute line slope at most 0.05 and 95th-percentile fit residual at most max(1.5 pixels, 0.15% of image height). Exclude accepted line pixels from component ownership. Limit crop edges to their local line envelope, requesting a one-pixel gap. Original whitespace and separator inclusion can be reduced while preserving owned text and all text-mask pixels originally inside each source box.
+
+**Coordinates:** Final integer [xmin,ymin,xmax,ymax] pixel rectangles, with exclusive right and bottom edges. Original model coordinates are preserved.
+
+
+**Run:** 2026-11-04 06:05:33 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 0 |
+| Overlapping kept-box pairs containing text | 0 |
+| Detected separator pixels inside kept boxes | 0 |
+| Source text components cut by kept crop edges | 17 |
+| Detected separator fragments | 2 |
+| Regions constrained by separators | 5 |
+| Requested padding per axis | 7 × 7 pixels |
+| Ambiguous component assignments | 0 |
+| Completed rectangle overlap warnings | 0 |
+| Local refinement time | 0.0361 s |
+| Local total before file writes | 0.2225 s |
+| Additional API calls | 0 |
+| Estimated source API cost | $0.0031905 |
+| Additional API cost | $0 |
+
+The local step uses the saved source boxes. Its additional API cost is $0; the previously recorded source request is estimated at $0.0031905.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 1 lead in, 2 verse, 2 commentary, 6 footnote.
+
+Both verses, commentary passages and the lead-in retain their source grouping; each of the six footnotes remains separate. The detected separator stays outside every kept box. The audit records zero cut text components and zero overlaps containing text. Component assignments and completed rectangles produce zero ambiguity or overlap warnings.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling, PDF page 97 / 252](outputs/kale-1913-page-097/031-gemini-3.8-flash-low-slanted-refinement/overlay.png)
+
+![Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling, enlarged boundary inspection, PDF page 97 / 252](outputs/kale-1913-page-097/031-gemini-3.8-flash-low-slanted-refinement/separator-review/details.png)
+
+## Kale (1913), PDF page 113 / 252
+
+
+### Method 017 — Gemini 4 Argon low thinking, individual footnotes, native coordinates
+
+**Method:** [017-gemini-4-argon-low-native](methods/017-gemini-4-argon-low-native/README.md).
+
+**Input:** [kale-1913-page-113](inputs/kale-1913-page-113.png); unchanged RGB rendering at 300 dpi, 1370 × 2118 pixels.
+
+**Settings:** Requested and returned model `gemini-4-argon`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Returned [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000, mechanically reordered to [xmin,ymin,xmax,ymax] and scaled by x × 1370 / 1000 and y × 2118 / 1000. Original arrays are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 06:00:22 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 45 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 1953 |
+| API wall time | 7.42 s |
+| Input tokens | 1,801 |
+| Text output tokens | 612 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 612 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.009722 |
+
+The estimated paid-tier cost uses $2 per million input tokens and $10 per million output tokens including thinking: (1,801 × $2 + 612 × $10) / 1,000,000 = $0.009722. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+Three four-line verse groups, three commentary passages and six individual footnotes are returned. Neighboring body boxes overlap at five transitions, with text in each intersection. Several crop edges pass through upper or lower glyph parts. The audit records 45 cut text components.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 4 Argon low thinking, individual footnotes, native coordinates, PDF page 113 / 252](outputs/kale-1913-page-113/017-gemini-4-argon-low-native/overlay.png)
+
+![Gemini 4 Argon low thinking, individual footnotes, native coordinates, enlarged boundary inspection, PDF page 113 / 252](outputs/kale-1913-page-113/017-gemini-4-argon-low-native/separator-review/details.png)
+
+
+
+### Method 018 — Gemini 3.8 Flash low thinking, individual footnotes, native coordinates
+
+**Method:** [018-gemini-3.8-flash-low-native](methods/018-gemini-3.8-flash-low-native/README.md).
+
+**Input:** [kale-1913-page-113](inputs/kale-1913-page-113.png); unchanged RGB rendering at 300 dpi, 1370 × 2118 pixels.
+
+**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Returned [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000, mechanically reordered to [xmin,ymin,xmax,ymax] and scaled by x × 1370 / 1000 and y × 2118 / 1000. Original arrays are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 06:00:30 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 63 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 337 |
+| API wall time | 5.90 s |
+| Input tokens | 1,379 |
+| Text output tokens | 602 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 602 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00329175 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,379 × $0.75 + 602 × $3.75) / 1,000,000 = $0.00329175. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+Three four-line verse groups, three commentary passages and six individual footnotes are returned. Neighboring body boxes overlap at five transitions, with text in each intersection. Several crop edges pass through upper or lower glyph parts. The audit records 63 cut text components.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 3.8 Flash low thinking, individual footnotes, native coordinates, PDF page 113 / 252](outputs/kale-1913-page-113/018-gemini-3.8-flash-low-native/overlay.png)
+
+![Gemini 3.8 Flash low thinking, individual footnotes, native coordinates, enlarged boundary inspection, PDF page 113 / 252](outputs/kale-1913-page-113/018-gemini-3.8-flash-low-native/separator-review/details.png)
+
+
+
+### Method 020 — GPT-6 Astra low reasoning, individual footnotes
+
+**Method:** [020-gpt-6-astra-low-footnotes](methods/020-gpt-6-astra-low-footnotes/README.md).
+
+**Input:** [kale-1913-page-113](inputs/kale-1913-page-113.png); unchanged RGB rendering at 300 dpi, 1370 × 2118 pixels.
+
+**Settings:** Requested and returned model `gpt-6-astra`; reasoning effort `low`; image detail `original`; strict JSON Schema output; maximum 16,384 output tokens including reasoning; returned service tier `default`; `store=false`. One synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Returned [xmin,ymin,xmax,ymax] integer coordinates normalized to 0–1000, scaled by x × 1370 / 1000 and y × 2118 / 1000. Original arrays are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 05:59:23 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 33 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 479 |
+| API wall time | 11.94 s |
+| Input tokens | 3,852 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,849 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 458 |
+| Reasoning tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.0710425 |
+
+The estimated paid-tier cost uses $10 per million ordinary input tokens, $12.5 per million default 30-minute cache-write tokens, $1 per million cache-read tokens and $50 per million output tokens including reasoning: (3 × $10 + 3,849 × $12.5 + 0 × $1 + 458 × $50) / 1,000,000 = $0.0710425. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+Three four-line verse groups, three commentary passages and six individual footnotes are returned. Neighboring body boxes overlap at five transitions, with text in each intersection. Several crop edges pass through upper or lower glyph parts. The audit records 33 cut text components.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![GPT-6 Astra low reasoning, individual footnotes, PDF page 113 / 252](outputs/kale-1913-page-113/020-gpt-6-astra-low-footnotes/overlay.png)
+
+![GPT-6 Astra low reasoning, individual footnotes, enlarged boundary inspection, PDF page 113 / 252](outputs/kale-1913-page-113/020-gpt-6-astra-low-footnotes/separator-review/details.png)
+
+
+
+### Method 025 — GPT-6.1 Terra without reasoning, individual footnotes
+
+**Method:** [025-gpt-6.1-terra-none-footnotes](methods/025-gpt-6.1-terra-none-footnotes/README.md).
+
+**Input:** [kale-1913-page-113](inputs/kale-1913-page-113.png); unchanged RGB rendering at 300 dpi, 1370 × 2118 pixels.
+
+**Settings:** Requested and returned model `gpt-6.1-terra`; reasoning effort `none`; image detail `original`; strict JSON Schema output; maximum 16,384 output tokens including reasoning; returned service tier `default`; `store=false`. One synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Returned [xmin,ymin,xmax,ymax] integer coordinates normalized to 0–1000, scaled by x × 1370 / 1000 and y × 2118 / 1000. Original arrays are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 05:59:36 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 24 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 368 |
+| API wall time | 7.00 s |
+| Input tokens | 3,852 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,849 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 458 |
+| Reasoning tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00710425 |
+
+The estimated paid-tier cost uses $1 per million ordinary input tokens, $1.25 per million default 30-minute cache-write tokens, $0.05 per million cache-read tokens and $5 per million output tokens including reasoning: (3 × $1 + 3,849 × $1.25 + 0 × $0.05 + 458 × $5) / 1,000,000 = $0.00710425. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+Three four-line verse groups, three commentary passages and six individual footnotes are returned. Neighboring body boxes overlap at five transitions, with text in each intersection. Several crop edges pass through upper or lower glyph parts. The audit records 24 cut text components.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![GPT-6.1 Terra without reasoning, individual footnotes, PDF page 113 / 252](outputs/kale-1913-page-113/025-gpt-6.1-terra-none-footnotes/overlay.png)
+
+![GPT-6.1 Terra without reasoning, individual footnotes, enlarged boundary inspection, PDF page 113 / 252](outputs/kale-1913-page-113/025-gpt-6.1-terra-none-footnotes/separator-review/details.png)
+
+
+
+### Method 028 — Gemini 4 Argon low thinking, explicit crop padding
+
+**Method:** [028-gemini-4-argon-low-padded-prompt](methods/028-gemini-4-argon-low-padded-prompt/README.md).
+
+**Input:** [kale-1913-page-113](inputs/kale-1913-page-113.png); unchanged RGB rendering at 300 dpi, 1370 × 2118 pixels.
+
+**Settings:** Requested and returned model `gemini-4-argon`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Padding instruction:** The prompt explicitly requests complete glyphs, a white margin and an edge inspection before returning the boxes.
+
+> Leave a visible white margin of at least 5 normalized x units on the left and right and 3 normalized y units above and below the outermost ink (about seven original-image pixels per axis on this page). Reduce this margin only where it would include a neighboring text block or footnote, or a separator rule. Keep each footnote separate.
+
+**Coordinates:** Returned [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000, mechanically reordered to [xmin,ymin,xmax,ymax] and scaled by x × 1370 / 1000 and y × 2118 / 1000. Original arrays are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 05:59:44 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 53 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 2161 |
+| API wall time | 12.82 s |
+| Input tokens | 1,920 |
+| Text output tokens | 614 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 614 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00998 |
+
+The estimated paid-tier cost uses $2 per million input tokens and $10 per million output tokens including thinking: (1,920 × $2 + 614 × $10) / 1,000,000 = $0.00998. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+Three four-line verse groups, three commentary passages and six individual footnotes are returned. Neighboring body boxes overlap at five transitions, with text in each intersection. Several crop edges pass through upper or lower glyph parts. The audit records 53 cut text components.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 4 Argon low thinking, explicit crop padding, PDF page 113 / 252](outputs/kale-1913-page-113/028-gemini-4-argon-low-padded-prompt/overlay.png)
+
+![Gemini 4 Argon low thinking, explicit crop padding, enlarged boundary inspection, PDF page 113 / 252](outputs/kale-1913-page-113/028-gemini-4-argon-low-padded-prompt/separator-review/details.png)
+
+
+
+### Method 029 — Gemini 3.8 Flash low thinking, explicit crop padding
+
+**Method:** [029-gemini-3.8-flash-low-padded-prompt](methods/029-gemini-3.8-flash-low-padded-prompt/README.md).
+
+**Input:** [kale-1913-page-113](inputs/kale-1913-page-113.png); unchanged RGB rendering at 300 dpi, 1370 × 2118 pixels.
+
+**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Padding instruction:** The prompt explicitly requests complete glyphs, a white margin and an edge inspection before returning the boxes.
+
+> Leave a visible white margin of at least 5 normalized x units on the left and right and 3 normalized y units above and below the outermost ink (about seven original-image pixels per axis on this page). Reduce this margin only where it would include a neighboring text block or footnote, or a separator rule. Keep each footnote separate.
+
+**Coordinates:** Returned [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–1000, mechanically reordered to [xmin,ymin,xmax,ymax] and scaled by x × 1370 / 1000 and y × 2118 / 1000. Original arrays are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 05:59:58 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 35 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 0 |
+| API wall time | 6.27 s |
+| Input tokens | 1,497 |
+| Text output tokens | 604 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 604 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00338775 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,497 × $0.75 + 604 × $3.75) / 1,000,000 = $0.00338775. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+Three four-line verse groups, three commentary passages and six individual footnotes are returned. Neighboring body boxes overlap at five transitions, with text in each intersection. Several crop edges pass through upper or lower glyph parts. The audit records 35 cut text components.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, PDF page 113 / 252](outputs/kale-1913-page-113/029-gemini-3.8-flash-low-padded-prompt/overlay.png)
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, enlarged boundary inspection, PDF page 113 / 252](outputs/kale-1913-page-113/029-gemini-3.8-flash-low-padded-prompt/separator-review/details.png)
+
+
+
+### Method 030 — Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling
+
+**Method:** [030-gemini-4-argon-low-slanted-refinement](methods/030-gemini-4-argon-low-slanted-refinement/README.md).
+
+**Input:** [kale-1913-page-113](inputs/kale-1913-page-113.png); unchanged RGB rendering at 300 dpi, 1370 × 2118 pixels.
+
+**Source method:** [017-gemini-4-argon-low-native](methods/017-gemini-4-argon-low-native/README.md), applied to the identical raw image.
+
+**Settings:** Complete assigned foreground components within ceil(1.5% of width) horizontally and ceil(1.2% of height) vertically; request ceil(0.5% of width) horizontal and ceil(0.3% of height) vertical padding. Keep source region count, types, keep flags, reading order and uncertainty flags.
+
+**Separator handling:** Detect near-straight thin components from source pixels: width at least max(80 pixels, 8% of image width), aspect ratio at least 10, height at most 5% of image height, at least 95% filled columns, median column thickness at most max(3 pixels, 0.3% of image height), maximum thickness at most twice that, absolute line slope at most 0.05 and 95th-percentile fit residual at most max(1.5 pixels, 0.15% of image height). Exclude accepted line pixels from component ownership. Limit crop edges to their local line envelope, requesting a one-pixel gap. Original whitespace and separator inclusion can be reduced while preserving owned text and all text-mask pixels originally inside each source box.
+
+**Coordinates:** Final integer [xmin,ymin,xmax,ymax] pixel rectangles, with exclusive right and bottom edges. Original model coordinates are preserved.
+
+
+**Run:** 2026-11-04 06:05:34 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 88 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 0 |
+| Source text components cut by kept crop edges | 45 |
+| Detected separator fragments | 2 |
+| Regions constrained by separators | 6 |
+| Requested padding per axis | 7 × 7 pixels |
+| Ambiguous component assignments | 4 |
+| Completed rectangle overlap warnings | 5 |
+| Local refinement time | 0.0367 s |
+| Local total before file writes | 0.1748 s |
+| Additional API calls | 0 |
+| Estimated source API cost | $0.009722 |
+| Additional API cost | $0 |
+
+The local step uses the saved source boxes. Its additional API cost is $0; the previously recorded source request is estimated at $0.009722.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+The detected separator stays outside every kept box, and source labels and reading order are retained. Padding extends into neighboring text at existing body-box overlaps. The audit records 88 cut text components and 5 overlaps containing text. The output retains 4 ambiguous component assignments and 5 completed-rectangle overlap warnings for inspection. Source text-mask pixels remain enclosed.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling, PDF page 113 / 252](outputs/kale-1913-page-113/030-gemini-4-argon-low-slanted-refinement/overlay.png)
+
+![Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling, enlarged boundary inspection, PDF page 113 / 252](outputs/kale-1913-page-113/030-gemini-4-argon-low-slanted-refinement/separator-review/details.png)
+
+
+
+### Method 031 — Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling
+
+**Method:** [031-gemini-3.8-flash-low-slanted-refinement](methods/031-gemini-3.8-flash-low-slanted-refinement/README.md).
+
+**Input:** [kale-1913-page-113](inputs/kale-1913-page-113.png); unchanged RGB rendering at 300 dpi, 1370 × 2118 pixels.
+
+**Source method:** [018-gemini-3.8-flash-low-native](methods/018-gemini-3.8-flash-low-native/README.md), applied to the identical raw image.
+
+**Settings:** Complete assigned foreground components within ceil(1.5% of width) horizontally and ceil(1.2% of height) vertically; request ceil(0.5% of width) horizontal and ceil(0.3% of height) vertical padding. Keep source region count, types, keep flags, reading order and uncertainty flags.
+
+**Separator handling:** Detect near-straight thin components from source pixels: width at least max(80 pixels, 8% of image width), aspect ratio at least 10, height at most 5% of image height, at least 95% filled columns, median column thickness at most max(3 pixels, 0.3% of image height), maximum thickness at most twice that, absolute line slope at most 0.05 and 95th-percentile fit residual at most max(1.5 pixels, 0.15% of image height). Exclude accepted line pixels from component ownership. Limit crop edges to their local line envelope, requesting a one-pixel gap. Original whitespace and separator inclusion can be reduced while preserving owned text and all text-mask pixels originally inside each source box.
+
+**Coordinates:** Final integer [xmin,ymin,xmax,ymax] pixel rectangles, with exclusive right and bottom edges. Original model coordinates are preserved.
+
+
+**Run:** 2026-11-04 06:05:35 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 119 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 0 |
+| Source text components cut by kept crop edges | 63 |
+| Detected separator fragments | 2 |
+| Regions constrained by separators | 7 |
+| Requested padding per axis | 7 × 7 pixels |
+| Ambiguous component assignments | 10 |
+| Completed rectangle overlap warnings | 5 |
+| Local refinement time | 0.0363 s |
+| Local total before file writes | 0.1823 s |
+| Additional API calls | 0 |
+| Estimated source API cost | $0.00329175 |
+| Additional API cost | $0 |
+
+The local step uses the saved source boxes. Its additional API cost is $0; the previously recorded source request is estimated at $0.00329175.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+The detected separator stays outside every kept box, and source labels and reading order are retained. Padding extends into neighboring text at existing body-box overlaps. The audit records 119 cut text components and 5 overlaps containing text. The output retains 10 ambiguous component assignments and 5 completed-rectangle overlap warnings for inspection. Source text-mask pixels remain enclosed.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling, PDF page 113 / 252](outputs/kale-1913-page-113/031-gemini-3.8-flash-low-slanted-refinement/overlay.png)
+
+![Gemini 3.8 Flash low thinking + component completion, padding and slanted-separator handling, enlarged boundary inspection, PDF page 113 / 252](outputs/kale-1913-page-113/031-gemini-3.8-flash-low-slanted-refinement/separator-review/details.png)

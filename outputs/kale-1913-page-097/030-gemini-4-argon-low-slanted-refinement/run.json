@@ -1,0 +1,23 @@
+{
+  "status": "completed",
+  "method_id": "030-gemini-4-argon-low-slanted-refinement",
+  "started_at_utc": "2026-11-04T06:05:33.276621+00:00",
+  "input_sha256": "8ea39bb8699404c96935d35c00b966d4f55ba74598d2df8c32a5d29d39467820",
+  "base_result_sha256": "5225ecd2e1960a7864b8bd326aadd15711f92c449c2f55f0da4436c237106264",
+  "timings_seconds": {
+    "mask_creation": 0.1227352088317275,
+    "pixel_refinement": 0.03349554073065519,
+    "drawing": 0.037061082664877176,
+    "total_before_file_writes": 0.20313929207623005
+  },
+  "files_sha256": {
+    "run.py": "0fcf13e9b1895b9859cf73591155bdeb0cd62bae1ac7fc80d56811c75dee831f",
+    "refinement.py": "9c542850a5f76474810058d4903b41420c70909b14af8ddfe7e825a7d62549ab",
+    "completion.py": "ad8d09e0353d3282ddaf5ddbb7a247ce8c8bf72e6ec94e7e4b55397447cbbeb5",
+    "separators.py": "8cdf4e5370ea9d08278f7145ff90d8290499bdd116a0f681b16079dbce238895",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "regions.py": "64ef7cfa4d732934a85876df80c8f355e42b8c72306763c41447f446d4895c75",
+    "config.json": "c8828123dbe97820a0ffdbeae3a52c11a4f4ae50b1181c7d628c16f3a719862f",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+}

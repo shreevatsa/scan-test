@@ -85,3 +85,49 @@ The estimated paid-tier cost uses $1 per million ordinary input tokens, $1.25 pe
 Both four-line verses remain whole. The two commentary passages and the short lead-in have separate boxes. Each numbered footnote has a separate box containing its marker and text, including the sixth footnote on the second printed footnote line.
 
 ![Page 97 output](../../outputs/kale-1913-page-097/025-gpt-6.1-terra-none-footnotes/overlay.png)
+
+## Recorded test on PDF page 113 / 252
+
+Input `kale-1913-page-113`, unchanged raw PNG, 1370 × 2118 pixels.
+
+```sh
+uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-113.png --check
+uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-113.png
+```
+
+The completed output is `outputs/kale-1913-page-113/025-gpt-6.1-terra-none-footnotes/`; use a fresh `--output-dir` for a repeat run.
+
+**Run:** 2026-11-04 05:59:36 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 24 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 368 |
+| API wall time | 7.00 s |
+| Input tokens | 3,852 |
+| Ordinary input tokens | 3 |
+| Cache-write input tokens, default 30-minute lifetime | 3,849 |
+| Cache-read input tokens | 0 |
+| Output tokens, including reasoning | 458 |
+| Reasoning tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00710425 |
+
+The estimated paid-tier cost uses $1 per million ordinary input tokens, $1.25 per million default 30-minute cache-write tokens, $0.05 per million cache-read tokens and $5 per million output tokens including reasoning: (3 × $1 + 3,849 × $1.25 + 0 × $0.05 + 458 × $5) / 1,000,000 = $0.00710425. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+Three four-line verse groups, three commentary passages and six individual footnotes are returned. Neighboring body boxes overlap at five transitions, with text in each intersection. Several crop edges pass through upper or lower glyph parts. The audit records 24 cut text components.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![GPT-6.1 Terra without reasoning, individual footnotes, PDF page 113 / 252](../../outputs/kale-1913-page-113/025-gpt-6.1-terra-none-footnotes/overlay.png)
+
+![GPT-6.1 Terra without reasoning, individual footnotes, enlarged boundary inspection, PDF page 113 / 252](../../outputs/kale-1913-page-113/025-gpt-6.1-terra-none-footnotes/separator-review/details.png)

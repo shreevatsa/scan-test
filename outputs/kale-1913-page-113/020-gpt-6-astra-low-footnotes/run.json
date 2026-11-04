@@ -1,0 +1,50 @@
+{
+  "status": "completed",
+  "started_at_utc": "2026-11-04T05:59:23.506340+00:00",
+  "endpoint": "https://api.openai.com/v1/responses",
+  "credential_source": "llm stored key: openai",
+  "client_request_id": "bb515584-3799-412d-85d2-dd94f2565721",
+  "request_sha256": "8e4889e24126c3da02261e15e26538482ec26c6d2aac05267fe6ae04d5c70fdf",
+  "method_id": "020-gpt-6-astra-low-footnotes",
+  "settings": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "low",
+    "image_detail": "original",
+    "max_output_tokens": 16384,
+    "store": false,
+    "coordinate_format": "xyxy_1000",
+    "prompt_variant": "individual-numbered-footnotes-v2",
+    "cache_lifetime": "30m (provider default)"
+  },
+  "files_sha256": {
+    "run.py": "ce98970849d8027bfd6879e997a2df810f7fa757e48034d7de1cfc1aed2ab50a",
+    "regions.py": "8ef770044193ffc9a6b5d00da314829207bbe635b1b530983abc78d1a183b2e2",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+    "prompt.txt": "82fabd9a6c7192c6e0b0bad9a9780631730513f1aa42cb3c49bd8e78ab39c3ca",
+    "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+    "config.json": "beb909dfd704b864d08c77abc8e389ac09fa41e66b70daa53bb7c2bfc7c9a92f",
+    "pricing.json": "094da4929ddfde7aa2e543337c6daf2c0e5225e3e03ed827deb17f1aa09f0ece",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  },
+  "response_headers_seconds": 11.934535084292293,
+  "http_status": 200,
+  "request_id": "req_17fca17bfcfa46bbb6b0b130867df01f",
+  "response_first_body_byte_seconds": 11.934554709121585,
+  "api_wall_seconds": 11.935223709326237,
+  "response_id": "resp_049aa3abbc7492bb016aeac9bc742487d08c9cfc010a14fc2b",
+  "returned_model": "gpt-6-astra",
+  "response_status": "completed",
+  "usage": {
+    "input_tokens": 3852,
+    "input_tokens_details": {
+      "cache_write_tokens": 3849,
+      "cached_tokens": 0
+    },
+    "output_tokens": 458,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 4310
+  }
+}

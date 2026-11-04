@@ -1,0 +1,20 @@
+{
+  "name": "Gemini 4 Argon low thinking + component completion, padding and slanted-separator handling",
+  "base_method_id": "017-gemini-4-argon-low-native",
+  "coordinate_format": "xyxy_pixels",
+  "padding_width_fraction": 0.005,
+  "padding_height_fraction": 0.003,
+  "maximum_extension_width_fraction": 0.015,
+  "maximum_extension_height_fraction": 0.012,
+  "separator_gap_pixels": 1,
+  "separator_detection": {
+    "minimum_span_pixels": 80,
+    "minimum_span_width_fraction": 0.08,
+    "maximum_height_fraction": 0.05,
+    "minimum_aspect_ratio": 10,
+    "median_thickness_height_fraction": 0.003,
+    "minimum_filled_column_fraction": 0.95,
+    "maximum_absolute_slope": 0.05,
+    "fit_residual_height_fraction": 0.0015
+  }
+}

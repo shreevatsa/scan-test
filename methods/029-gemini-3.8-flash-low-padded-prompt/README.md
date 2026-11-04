@@ -78,3 +78,94 @@ uv run python methods/029-gemini-3.8-flash-low-padded-prompt/audit_boundaries.py
 ```
 
 The resulting `boundary-review/audit.json` preserves all raw cuts, separator annotations, component boxes, exact pixel counts, crop windows and provenance hashes. `boundary-review/details.png` shows enlarged edges. Existing review output is protected against overwriting.
+
+## Recorded test on PDF page 113 / 252
+
+Input `kale-1913-page-113`, unchanged raw PNG, 1370 × 2118 pixels.
+
+```sh
+uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-113.png --check
+uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-113.png
+```
+
+The completed output is `outputs/kale-1913-page-113/029-gemini-3.8-flash-low-padded-prompt/`; use a fresh `--output-dir` for a repeat run.
+
+**Run:** 2026-11-04 05:59:58 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 35 |
+| Overlapping kept-box pairs containing text | 5 |
+| Detected separator pixels inside kept boxes | 0 |
+| API wall time | 6.27 s |
+| Input tokens | 1,497 |
+| Text output tokens | 604 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 604 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00338775 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,497 × $0.75 + 604 × $3.75) / 1,000,000 = $0.00338775. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 3 verse, 3 commentary, 6 footnote.
+
+Three four-line verse groups, three commentary passages and six individual footnotes are returned. Neighboring body boxes overlap at five transitions, with text in each intersection. Several crop edges pass through upper or lower glyph parts. The audit records 35 cut text components.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, PDF page 113 / 252](../../outputs/kale-1913-page-113/029-gemini-3.8-flash-low-padded-prompt/overlay.png)
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, enlarged boundary inspection, PDF page 113 / 252](../../outputs/kale-1913-page-113/029-gemini-3.8-flash-low-padded-prompt/separator-review/details.png)
+
+
+## Recorded test on PDF page 17 / 252
+
+Input `kale-1913-page-017`, unchanged raw PNG, 1407 × 2135 pixels.
+
+```sh
+uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-017.png --check
+uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-017.png
+```
+
+The completed output is `outputs/kale-1913-page-017/029-gemini-3.8-flash-low-padded-prompt/`; use a fresh `--output-dir` for a repeat run.
+
+**Run:** 2026-11-04 06:00:15 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 14 |
+| Boxes marked keep=true | 12 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Unique text components cut by kept crop edges | 21 |
+| Overlapping kept-box pairs containing text | 2 |
+| Detected separator pixels inside kept boxes | 0 |
+| API wall time | 5.72 s |
+| Input tokens | 1,538 |
+| Text output tokens | 619 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 619 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00347475 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,538 × $0.75 + 619 × $3.75) / 1,000,000 = $0.00347475. Rates checked on 2026-11-03.
+
+The audit uses grayscale <175, speckle and margin filtering, and the same automatic thin-line separator detector for all compared results. It counts connected text components crossing individual kept crop edges, kept-box overlaps containing text-mask pixels, and detected separator pixels inside kept boxes. A cut can belong to text from a neighboring passage that enters a crop.
+
+Returned region types: 1 page number, 1 running header, 2 lead in, 2 verse, 2 commentary, 6 footnote.
+
+Both verses remain whole, with separate commentary, lead-ins and six footnotes. Upper glyph tips on the first verse and several other character edges are clipped. Two neighboring pairs overlap printed text.
+
+The full-page overlay marks kept boxes blue and excluded page furniture purple. Red marks uncovered pixels from the method's analysis mask. The enlarged inspection marks text-mask pixels cut by individual crops in red.
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, PDF page 17 / 252](../../outputs/kale-1913-page-017/029-gemini-3.8-flash-low-padded-prompt/overlay.png)
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, enlarged boundary inspection, PDF page 17 / 252](../../outputs/kale-1913-page-017/029-gemini-3.8-flash-low-padded-prompt/separator-review/details.png)
