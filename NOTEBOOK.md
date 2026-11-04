@@ -1280,3 +1280,225 @@ Both four-line verses remain whole. The two commentary passages and the short le
 Blue marks regions with `keep=true`; purple marks regions with `keep=false`. Red marks uncovered measured ink. Content numbers show returned reading order; H marks the running header and PN the page number.
 
 ![GPT-6.1 Terra without reasoning, individual footnotes output for Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/025-gpt-6.1-terra-none-footnotes/overlay.png)
+
+### Method 026 — Gemini 4 Argon low thinking + component completion and padding
+
+**Method:** [026-gemini-4-argon-low-pixel-refinement](methods/026-gemini-4-argon-low-pixel-refinement/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unannotated RGB rendering at 300 dpi, 1374 × 2114 pixels.
+
+**Source method:** [017-gemini-4-argon-low-native](methods/017-gemini-4-argon-low-native/README.md), applied to the same 1374 × 2114 raw image.
+
+**Settings:** Local processing of saved method 017 boxes on the identical raw image. Complete foreground components assigned by greatest original-box pixel intersection; include uniquely nearest detached components within the padding distance. Limit completion to 21 pixels horizontally and 26 vertically beyond each rounded source box, then request seven pixels of padding on every side. Padding stops at image edges, detected rule rows and midpoints between neighboring completed rectangles. Preserve source region count, types, keep flags, reading order and uncertainty flags.
+
+**Coordinates:** Original model boxes remain in the saved source record. Final boxes use integer [xmin,ymin,xmax,ymax] original-image pixels, with exclusive right and bottom edges.
+
+
+**Run:** 2026-11-04 05:39:09 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Source text components cut by crop edges, separator excluded | 19 |
+| Output text components cut by crop edges, separator excluded | 0 |
+| Padding requested per axis | 7 × 7 pixels |
+| Component extension limit before padding | 21 pixels horizontally; 26 vertically |
+| Changed boxes | 13 |
+| Ambiguous component assignments | 1 |
+| Overlapping completed rectangle pairs | 0 |
+| Local pixel-refinement time | 0.0190 s |
+| Local total before file writes, including mask and drawing | 0.1517 s |
+| Additional API calls | 0 |
+| Estimated source API cost | $0.009312 |
+| Additional API cost | $0 |
+
+The source API request was previously recorded at an estimated $0.009312. This run uses its saved boxes; the additional API cost is $0.
+
+The boundary audit counts connected foreground components that cross individual kept crop edges in the grayscale <175 mask, after the existing speckle and margin filtering. Visual inspection identifies two slanted-separator components, bounded by [1096,1835,1273,1845] and [182,1839,1094,1858] in original-image pixels; these are reported separately from text-component cuts.
+
+Returned region types: 2 verse, 2 commentary, 1 lead-in, 6 footnote, 1 running header and 1 page number.
+
+Both four-line verses remain whole, with separate commentary and lead-in regions and six individual footnotes. The previously clipped text components are enclosed. The slanted separator survives the rule filter: one component receives a tied assignment, and parts of the separator enter the expanded final-commentary and footnote crops.
+
+The full-page overlay marks kept boxes blue, page furniture purple and uncovered measured ink red. Reading-order labels for footnotes appear below both printed footnote lines.
+
+![Gemini 4 Argon low thinking + component completion and padding, Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/026-gemini-4-argon-low-pixel-refinement/overlay.png)
+
+The enlarged panels show original pixels at 2× scale, crop edges in blue and clipped text-mask pixels in red.
+
+![Gemini 4 Argon low thinking + component completion and padding, enlarged boundary inspection](outputs/kale-1913-page-097/026-gemini-4-argon-low-pixel-refinement/boundary-review/details.png)
+
+
+
+### Method 027 — Gemini 3.8 Flash low thinking + component completion and padding
+
+**Method:** [027-gemini-3.8-flash-low-pixel-refinement](methods/027-gemini-3.8-flash-low-pixel-refinement/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unannotated RGB rendering at 300 dpi, 1374 × 2114 pixels.
+
+**Source method:** [018-gemini-3.8-flash-low-native](methods/018-gemini-3.8-flash-low-native/README.md), applied to the same 1374 × 2114 raw image.
+
+**Settings:** Local processing of saved method 018 boxes on the identical raw image. Complete foreground components assigned by greatest original-box pixel intersection; include uniquely nearest detached components within the padding distance. Limit completion to 21 pixels horizontally and 26 vertically beyond each rounded source box, then request seven pixels of padding on every side. Padding stops at image edges, detected rule rows and midpoints between neighboring completed rectangles. Preserve source region count, types, keep flags, reading order and uncertainty flags.
+
+**Coordinates:** Original model boxes remain in the saved source record. Final boxes use integer [xmin,ymin,xmax,ymax] original-image pixels, with exclusive right and bottom edges.
+
+
+**Run:** 2026-11-04 05:39:10 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Source text components cut by crop edges, separator excluded | 17 |
+| Output text components cut by crop edges, separator excluded | 0 |
+| Padding requested per axis | 7 × 7 pixels |
+| Component extension limit before padding | 21 pixels horizontally; 26 vertically |
+| Changed boxes | 13 |
+| Ambiguous component assignments | 1 |
+| Overlapping completed rectangle pairs | 0 |
+| Local pixel-refinement time | 0.0181 s |
+| Local total before file writes, including mask and drawing | 0.1302 s |
+| Additional API calls | 0 |
+| Estimated source API cost | $0.0031905 |
+| Additional API cost | $0 |
+
+The source API request was previously recorded at an estimated $0.0031905. This run uses its saved boxes; the additional API cost is $0.
+
+The boundary audit counts connected foreground components that cross individual kept crop edges in the grayscale <175 mask, after the existing speckle and margin filtering. Visual inspection identifies two slanted-separator components, bounded by [1096,1835,1273,1845] and [182,1839,1094,1858] in original-image pixels; these are reported separately from text-component cuts.
+
+Returned region types: 2 verse, 2 commentary, 1 lead-in, 6 footnote, 1 running header and 1 page number.
+
+Both four-line verses remain whole, with separate commentary and lead-in regions and six individual footnotes. The previously clipped text components are enclosed. The slanted separator survives the rule filter: one component receives a tied assignment, and parts of the separator enter the expanded final-commentary and footnote crops.
+
+The full-page overlay marks kept boxes blue, page furniture purple and uncovered measured ink red. Reading-order labels for footnotes appear below both printed footnote lines.
+
+![Gemini 3.8 Flash low thinking + component completion and padding, Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/027-gemini-3.8-flash-low-pixel-refinement/overlay.png)
+
+The enlarged panels show original pixels at 2× scale, crop edges in blue and clipped text-mask pixels in red.
+
+![Gemini 3.8 Flash low thinking + component completion and padding, enlarged boundary inspection](outputs/kale-1913-page-097/027-gemini-3.8-flash-low-pixel-refinement/boundary-review/details.png)
+
+
+
+### Method 028 — Gemini 4 Argon low thinking, explicit crop padding
+
+**Method:** [028-gemini-4-argon-low-padded-prompt](methods/028-gemini-4-argon-low-padded-prompt/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unannotated RGB rendering at 300 dpi, 1374 × 2114 pixels.
+
+**Source method:** [017-gemini-4-argon-low-native](methods/017-gemini-4-argon-low-native/README.md). The prompt replaces its general padding instruction with the following text; model, reasoning level, image and API schema remain the same. The request contains the unannotated source image and the revised prompt.
+
+> Include every visible glyph completely, including all diacritics, detached accents, superscripts, punctuation, upper tips and lower strokes. Never place a crop edge through printed ink.
+>
+> Leave a visible white margin of at least 5 normalized x units on the left and right and 3 normalized y units above and below the outermost ink (about seven original-image pixels per axis on this page). Reduce this margin only where it would include a neighboring text block or footnote, or a separator rule. Keep each footnote separate.
+>
+> Before returning the boxes, inspect every edge and expand any box whose edge touches or cuts a glyph. Prefer a slightly loose crop that preserves the complete glyph over a tight crop.
+
+**Settings:** Requested and returned model `gemini-4-argon`; thinking level `low`; image resolution `high`; native [ymin,xmin,ymax,xmax] 0–1000 JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One fresh synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Reorder returned [ymin,xmin,ymax,xmax] coordinates to [xmin,ymin,xmax,ymax], then multiply x by 1374 / 1000 and y by 2114 / 1000. Original model coordinates are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 05:39:11 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Source text components cut by crop edges, separator excluded | 19 |
+| Output text components cut by crop edges, separator excluded | 0 |
+| API wall time | 9.15 s |
+| Input tokens | 1,920 |
+| Text output tokens | 571 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 571 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.00955 |
+
+The estimated paid-tier cost uses $2 per million input tokens and $10 per million output tokens including thinking: (1,920 × $2 + 571 × $10) / 1,000,000 = $0.00955. Rates checked on 2026-11-03.
+
+The boundary audit counts connected foreground components that cross individual kept crop edges in the grayscale <175 mask, after the existing speckle and margin filtering. Visual inspection identifies two slanted-separator components, bounded by [1096,1835,1273,1845] and [182,1839,1094,1858] in original-image pixels; these are reported separately from text-component cuts.
+
+Returned region types: 2 verse, 2 commentary, 1 lead-in, 6 footnote, 1 running header and 1 page number.
+
+Both four-line verses remain whole, with separate commentary and lead-in regions and six individual footnotes. The boxes have visible white margins. The audit finds zero cut text components after excluding the slanted separator. Part of that separator remains inside the final commentary crop.
+
+The full-page overlay marks kept boxes blue, page furniture purple and uncovered measured ink red. Reading-order labels for footnotes appear below both printed footnote lines.
+
+![Gemini 4 Argon low thinking, explicit crop padding, Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/028-gemini-4-argon-low-padded-prompt/overlay.png)
+
+The enlarged panels show original pixels at 2× scale, crop edges in blue and clipped text-mask pixels in red.
+
+![Gemini 4 Argon low thinking, explicit crop padding, enlarged boundary inspection](outputs/kale-1913-page-097/028-gemini-4-argon-low-padded-prompt/boundary-review/details.png)
+
+
+
+### Method 029 — Gemini 3.8 Flash low thinking, explicit crop padding
+
+**Method:** [029-gemini-3.8-flash-low-padded-prompt](methods/029-gemini-3.8-flash-low-padded-prompt/README.md).
+
+**Input:** [kale-1913-page-097](inputs/kale-1913-page-097.png); unannotated RGB rendering at 300 dpi, 1374 × 2114 pixels.
+
+**Source method:** [018-gemini-3.8-flash-low-native](methods/018-gemini-3.8-flash-low-native/README.md). The prompt replaces its general padding instruction with the following text; model, reasoning level, image and API schema remain the same. The request contains the unannotated source image and the revised prompt.
+
+> Include every visible glyph completely, including all diacritics, detached accents, superscripts, punctuation, upper tips and lower strokes. Never place a crop edge through printed ink.
+>
+> Leave a visible white margin of at least 5 normalized x units on the left and right and 3 normalized y units above and below the outermost ink (about seven original-image pixels per axis on this page). Reduce this margin only where it would include a neighboring text block or footnote, or a separator rule. Keep each footnote separate.
+>
+> Before returning the boxes, inspect every edge and expand any box whose edge touches or cuts a glyph. Prefer a slightly loose crop that preserves the complete glyph over a tight crop.
+
+**Settings:** Requested and returned model `gemini-3.8-flash`; thinking level `low`; image resolution `high`; native [ymin,xmin,ymax,xmax] 0–1000 JSON Schema output; maximum 16,384 output tokens including thinking; standard service tier; `store=false`. One fresh synchronous request with automatic retries disabled.
+
+**Footnote instruction:**
+
+> Return one region per numbered footnote, including its marker and text. Separate neighboring footnotes even when they share a printed line.
+
+**Coordinates:** Reorder returned [ymin,xmin,ymax,xmax] coordinates to [xmin,ymin,xmax,ymax], then multiply x by 1374 / 1000 and y by 2114 / 1000. Original model coordinates are preserved. No coordinate clamping was applied.
+
+
+**Run:** 2026-11-04 05:39:21 UTC.
+
+| Measurement | Result |
+| --- | --- |
+| Output boxes | 13 |
+| Boxes marked keep=true | 11 |
+| Regions marked uncertain | 0 |
+| Footnote regions | 6 |
+| Source text components cut by crop edges, separator excluded | 17 |
+| Output text components cut by crop edges, separator excluded | 2 |
+| API wall time | 5.65 s |
+| Input tokens | 1,497 |
+| Text output tokens | 545 |
+| Thinking tokens | 0 |
+| Output tokens, including thinking | 545 |
+| Cached input tokens | 0 |
+| Coordinate clamping adjustments | 0 |
+| Estimated paid-tier API cost | $0.0031665 |
+
+The estimated paid-tier cost uses $0.75 per million input tokens and $3.75 per million output tokens including thinking: (1,497 × $0.75 + 545 × $3.75) / 1,000,000 = $0.0031665. Rates checked on 2026-11-03.
+
+The boundary audit counts connected foreground components that cross individual kept crop edges in the grayscale <175 mask, after the existing speckle and margin filtering. Visual inspection identifies two slanted-separator components, bounded by [1096,1835,1273,1845] and [182,1839,1094,1858] in original-image pixels; these are reported separately from text-component cuts.
+
+Returned region types: 2 verse, 2 commentary, 1 lead-in, 6 footnote, 1 running header and 1 page number.
+
+Both four-line verses remain whole, with separate commentary and lead-in regions and six individual footnotes. Body text has more margin than in the source result. The final punctuation of note 1 falls across the gap between its box and the box for note 2; note 3's final punctuation is also clipped. The audit records two unique cut punctuation components, intersected by three boxes. Parts of the slanted separator enter the final-commentary and footnote crops.
+
+The full-page overlay marks kept boxes blue, page furniture purple and uncovered measured ink red. Reading-order labels for footnotes appear below both printed footnote lines.
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, Kale (1913), PDF page 97 / 252](outputs/kale-1913-page-097/029-gemini-3.8-flash-low-padded-prompt/overlay.png)
+
+The enlarged panels show original pixels at 2× scale, crop edges in blue and clipped text-mask pixels in red.
+
+![Gemini 3.8 Flash low thinking, explicit crop padding, enlarged boundary inspection](outputs/kale-1913-page-097/029-gemini-3.8-flash-low-padded-prompt/boundary-review/details.png)

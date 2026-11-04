@@ -1,0 +1,240 @@
+{
+  "input_sha256": "8ea39bb8699404c96935d35c00b966d4f55ba74598d2df8c32a5d29d39467820",
+  "result_sha256": "56f67bb6fcaa785e0258f45a2277f2d15727f9259eb2cf49b2be780cca74d950",
+  "method_id": "027-gemini-3.8-flash-low-pixel-refinement",
+  "analysis": "Connected components of the declared foreground mask crossing individual kept crop boundaries.",
+  "separator_review": {
+    "basis": "Visual inspection of the slanted separator above the footnotes on this input.",
+    "component_ids": [
+      443,
+      444
+    ],
+    "components": [
+      {
+        "id": 443,
+        "xywh_and_area": [
+          1096,
+          1835,
+          177,
+          10,
+          722
+        ]
+      },
+      {
+        "id": 444,
+        "xywh_and_area": [
+          182,
+          1839,
+          912,
+          19,
+          3789
+        ]
+      }
+    ]
+  },
+  "content_cut_component_instances_without_separator": 0,
+  "unique_nonseparator_cut_component_ids": [],
+  "unique_nonseparator_cut_components": 0,
+  "regions": [
+    {
+      "region_id": 3,
+      "type": "lead_in",
+      "box": [
+        219,
+        253,
+        693,
+        316
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 4,
+      "type": "verse",
+      "box": [
+        219,
+        317,
+        1223,
+        588
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 5,
+      "type": "commentary",
+      "box": [
+        172,
+        595,
+        1300,
+        1019
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 6,
+      "type": "verse",
+      "box": [
+        273,
+        1020,
+        1305,
+        1296
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 7,
+      "type": "commentary",
+      "box": [
+        168,
+        1297,
+        1306,
+        1847
+      ],
+      "cuts": [
+        {
+          "component_id": 444,
+          "inside_pixels": 1765,
+          "outside_pixels": 2024,
+          "component_box": [
+            182,
+            1839,
+            1094,
+            1858
+          ],
+          "area": 3789,
+          "visually_identified_separator": true
+        }
+      ]
+    },
+    {
+      "region_id": 8,
+      "type": "footnote",
+      "box": [
+        214,
+        1852,
+        328,
+        1906
+      ],
+      "cuts": [
+        {
+          "component_id": 444,
+          "inside_pixels": 304,
+          "outside_pixels": 3485,
+          "component_box": [
+            182,
+            1839,
+            1094,
+            1858
+          ],
+          "area": 3789,
+          "visually_identified_separator": true
+        }
+      ]
+    },
+    {
+      "region_id": 9,
+      "type": "footnote",
+      "box": [
+        329,
+        1852,
+        449,
+        1907
+      ],
+      "cuts": [
+        {
+          "component_id": 444,
+          "inside_pixels": 7,
+          "outside_pixels": 3782,
+          "component_box": [
+            182,
+            1839,
+            1094,
+            1858
+          ],
+          "area": 3789,
+          "visually_identified_separator": true
+        }
+      ]
+    },
+    {
+      "region_id": 10,
+      "type": "footnote",
+      "box": [
+        473,
+        1853,
+        604,
+        1906
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 11,
+      "type": "footnote",
+      "box": [
+        622,
+        1851,
+        1096,
+        1906
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 12,
+      "type": "footnote",
+      "box": [
+        1101,
+        1848,
+        1292,
+        1900
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 13,
+      "type": "footnote",
+      "box": [
+        177,
+        1907,
+        528,
+        1961
+      ],
+      "cuts": []
+    }
+  ],
+  "detail_panels": [
+    {
+      "caption": "First verse: upper edge",
+      "crop_xyxy": [
+        204,
+        299,
+        1238,
+        382
+      ],
+      "scale": 2
+    },
+    {
+      "caption": "First commentary: upper edge",
+      "crop_xyxy": [
+        157,
+        577,
+        1315,
+        660
+      ],
+      "scale": 2
+    },
+    {
+      "caption": "Footnotes: both printed lines",
+      "crop_xyxy": [
+        157,
+        1823,
+        1312,
+        1981
+      ],
+      "scale": 2
+    }
+  ],
+  "files_sha256": {
+    "audit_boundaries.py": "a4b74bf371c6bbdf2cc977674e9356a0169829e67f781cf344059600c49595ec",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "regions.py": "64ef7cfa4d732934a85876df80c8f355e42b8c72306763c41447f446d4895c75"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "status": "completed",
+  "method_id": "027-gemini-3.8-flash-low-pixel-refinement",
+  "started_at_utc": "2026-11-04T05:39:10.123271+00:00",
+  "input_sha256": "8ea39bb8699404c96935d35c00b966d4f55ba74598d2df8c32a5d29d39467820",
+  "base_result_sha256": "7e2612898fc381d70c721aae71ccc144500d2490487fd67939e395dec265b2cb",
+  "timings_seconds": {
+    "mask_creation": 0.08006533281877637,
+    "pixel_refinement": 0.018070249818265438,
+    "drawing": 0.02463804231956601,
+    "total_before_file_writes": 0.13015862507745624
+  },
+  "files_sha256": {
+    "run.py": "b663b82f7d1c67da20ad6eb69190696ba6f8df3f7d3c92ac1b0546cc2c443c7a",
+    "refinement.py": "ad8d09e0353d3282ddaf5ddbb7a247ce8c8bf72e6ec94e7e4b55397447cbbeb5",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "regions.py": "64ef7cfa4d732934a85876df80c8f355e42b8c72306763c41447f446d4895c75",
+    "config.json": "f84c9b7a4a3b2895c6278b7b4018ec264d2bc9699dea64b9b7ff37cff27857c2",
+    "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+}

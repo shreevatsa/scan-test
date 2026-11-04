@@ -1,0 +1,445 @@
+{
+  "input_sha256": "8ea39bb8699404c96935d35c00b966d4f55ba74598d2df8c32a5d29d39467820",
+  "result_sha256": "7e2612898fc381d70c721aae71ccc144500d2490487fd67939e395dec265b2cb",
+  "method_id": "018-gemini-3.8-flash-low-native",
+  "analysis": "Connected components of the declared foreground mask crossing individual kept crop boundaries.",
+  "separator_review": {
+    "basis": "Visual inspection of the slanted separator above the footnotes on this input.",
+    "component_ids": [
+      443,
+      444
+    ],
+    "components": [
+      {
+        "id": 443,
+        "xywh_and_area": [
+          1096,
+          1835,
+          177,
+          10,
+          722
+        ]
+      },
+      {
+        "id": 444,
+        "xywh_and_area": [
+          182,
+          1839,
+          912,
+          19,
+          3789
+        ]
+      }
+    ]
+  },
+  "content_cut_component_instances_without_separator": 17,
+  "unique_nonseparator_cut_component_ids": [
+    7,
+    11,
+    12,
+    50,
+    56,
+    57,
+    58,
+    59,
+    152,
+    203,
+    221,
+    222,
+    274,
+    275,
+    445,
+    447,
+    466
+  ],
+  "unique_nonseparator_cut_components": 17,
+  "regions": [
+    {
+      "region_id": 3,
+      "type": "lead_in",
+      "box": [
+        226.71,
+        264.25,
+        685.626,
+        310.758
+      ],
+      "cuts": [
+        {
+          "component_id": 7,
+          "inside_pixels": 4061,
+          "outside_pixels": 40,
+          "component_box": [
+            302,
+            260,
+            513,
+            304
+          ],
+          "area": 4101,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 4,
+      "type": "verse",
+      "box": [
+        226.71,
+        327.67,
+        1215.99,
+        579.236
+      ],
+      "cuts": [
+        {
+          "component_id": 11,
+          "inside_pixels": 4376,
+          "outside_pixels": 38,
+          "component_box": [
+            732,
+            322,
+            933,
+            372
+          ],
+          "area": 4414,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 12,
+          "inside_pixels": 6345,
+          "outside_pixels": 8,
+          "component_box": [
+            395,
+            326,
+            703,
+            376
+          ],
+          "area": 6353,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 50,
+          "inside_pixels": 3342,
+          "outside_pixels": 7,
+          "component_box": [
+            873,
+            538,
+            1030,
+            581
+          ],
+          "area": 3349,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 5,
+      "type": "commentary",
+      "box": [
+        179.994,
+        606.718,
+        1290.186,
+        1008.378
+      ],
+      "cuts": [
+        {
+          "component_id": 56,
+          "inside_pixels": 1861,
+          "outside_pixels": 35,
+          "component_box": [
+            627,
+            602,
+            741,
+            642
+          ],
+          "area": 1896,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 57,
+          "inside_pixels": 33,
+          "outside_pixels": 22,
+          "component_box": [
+            842,
+            602,
+            850,
+            611
+          ],
+          "area": 55,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 58,
+          "inside_pixels": 2419,
+          "outside_pixels": 57,
+          "component_box": [
+            925,
+            602,
+            1060,
+            643
+          ],
+          "area": 2476,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 59,
+          "inside_pixels": 1426,
+          "outside_pixels": 22,
+          "component_box": [
+            1076,
+            603,
+            1150,
+            646
+          ],
+          "area": 1448,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 152,
+          "inside_pixels": 2946,
+          "outside_pixels": 7,
+          "component_box": [
+            1139,
+            846,
+            1293,
+            881
+          ],
+          "area": 2953,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 203,
+          "inside_pixels": 3777,
+          "outside_pixels": 48,
+          "component_box": [
+            182,
+            966,
+            372,
+            1012
+          ],
+          "area": 3825,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 6,
+      "type": "verse",
+      "box": [
+        280.296,
+        1029.518,
+        1297.056,
+        1285.312
+      ],
+      "cuts": [
+        {
+          "component_id": 221,
+          "inside_pixels": 974,
+          "outside_pixels": 25,
+          "component_box": [
+            1001,
+            1027,
+            1036,
+            1074
+          ],
+          "area": 999,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 222,
+          "inside_pixels": 140,
+          "outside_pixels": 6,
+          "component_box": [
+            906,
+            1028,
+            927,
+            1044
+          ],
+          "area": 146,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 7,
+      "type": "commentary",
+      "box": [
+        175.872,
+        1306.452,
+        1298.43,
+        1834.952
+      ],
+      "cuts": [
+        {
+          "component_id": 274,
+          "inside_pixels": 86,
+          "outside_pixels": 14,
+          "component_box": [
+            1026,
+            1304,
+            1038,
+            1317
+          ],
+          "area": 100,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 275,
+          "inside_pixels": 622,
+          "outside_pixels": 5,
+          "component_box": [
+            1260,
+            1305,
+            1290,
+            1349
+          ],
+          "area": 627,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 8,
+      "type": "footnote",
+      "box": [
+        221.214,
+        1858.206,
+        321.516,
+        1898.372
+      ],
+      "cuts": [
+        {
+          "component_id": 466,
+          "inside_pixels": 1092,
+          "outside_pixels": 3,
+          "component_box": [
+            249,
+            1872,
+            313,
+            1900
+          ],
+          "area": 1095,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 9,
+      "type": "footnote",
+      "box": [
+        335.256,
+        1858.206,
+        441.054,
+        1898.372
+      ],
+      "cuts": [
+        {
+          "component_id": 447,
+          "inside_pixels": 1146,
+          "outside_pixels": 7,
+          "component_box": [
+            369,
+            1861,
+            426,
+            1901
+          ],
+          "area": 1153,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 10,
+      "type": "footnote",
+      "box": [
+        480.9,
+        1860.32,
+        596.316,
+        1898.372
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 11,
+      "type": "footnote",
+      "box": [
+        629.292,
+        1856.092,
+        1088.208,
+        1898.372
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 12,
+      "type": "footnote",
+      "box": [
+        1108.818,
+        1851.864,
+        1284.69,
+        1892.03
+      ],
+      "cuts": [
+        {
+          "component_id": 445,
+          "inside_pixels": 2005,
+          "outside_pixels": 8,
+          "component_box": [
+            1144,
+            1850,
+            1248,
+            1889
+          ],
+          "area": 2013,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 13,
+      "type": "footnote",
+      "box": [
+        184.116,
+        1913.17,
+        520.746,
+        1953.336
+      ],
+      "cuts": []
+    }
+  ],
+  "detail_panels": [
+    {
+      "caption": "First verse: upper edge",
+      "crop_xyxy": [
+        211,
+        309,
+        1231,
+        393
+      ],
+      "scale": 2
+    },
+    {
+      "caption": "First commentary: upper edge",
+      "crop_xyxy": [
+        164,
+        588,
+        1306,
+        672
+      ],
+      "scale": 2
+    },
+    {
+      "caption": "Footnotes: both printed lines",
+      "crop_xyxy": [
+        164,
+        1826,
+        1305,
+        1974
+      ],
+      "scale": 2
+    }
+  ],
+  "files_sha256": {
+    "audit_boundaries.py": "a4b74bf371c6bbdf2cc977674e9356a0169829e67f781cf344059600c49595ec",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "regions.py": "64ef7cfa4d732934a85876df80c8f355e42b8c72306763c41447f446d4895c75"
+  }
+}

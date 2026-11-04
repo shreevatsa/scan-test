@@ -1,0 +1,485 @@
+{
+  "input_sha256": "8ea39bb8699404c96935d35c00b966d4f55ba74598d2df8c32a5d29d39467820",
+  "result_sha256": "5225ecd2e1960a7864b8bd326aadd15711f92c449c2f55f0da4436c237106264",
+  "method_id": "017-gemini-4-argon-low-native",
+  "analysis": "Connected components of the declared foreground mask crossing individual kept crop boundaries.",
+  "separator_review": {
+    "basis": "Visual inspection of the slanted separator above the footnotes on this input.",
+    "component_ids": [
+      443,
+      444
+    ],
+    "components": [
+      {
+        "id": 443,
+        "xywh_and_area": [
+          1096,
+          1835,
+          177,
+          10,
+          722
+        ]
+      },
+      {
+        "id": 444,
+        "xywh_and_area": [
+          182,
+          1839,
+          912,
+          19,
+          3789
+        ]
+      }
+    ]
+  },
+  "content_cut_component_instances_without_separator": 19,
+  "unique_nonseparator_cut_component_ids": [
+    50,
+    63,
+    85,
+    102,
+    132,
+    152,
+    274,
+    275,
+    317,
+    418,
+    432,
+    435,
+    445,
+    447,
+    455,
+    456,
+    468,
+    471,
+    472
+  ],
+  "unique_nonseparator_cut_components": 19,
+  "regions": [
+    {
+      "region_id": 3,
+      "type": "lead_in",
+      "box": [
+        229.458,
+        260.022,
+        687.0,
+        306.53
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 4,
+      "type": "verse",
+      "box": [
+        226.71,
+        321.328,
+        1214.616,
+        579.236
+      ],
+      "cuts": [
+        {
+          "component_id": 50,
+          "inside_pixels": 3342,
+          "outside_pixels": 7,
+          "component_box": [
+            873,
+            538,
+            1030,
+            581
+          ],
+          "area": 3349,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 5,
+      "type": "commentary",
+      "box": [
+        177.246,
+        600.376,
+        1288.812,
+        1014.72
+      ],
+      "cuts": [
+        {
+          "component_id": 63,
+          "inside_pixels": 1600,
+          "outside_pixels": 6,
+          "component_box": [
+            1206,
+            610,
+            1291,
+            642
+          ],
+          "area": 1606,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 85,
+          "inside_pixels": 1793,
+          "outside_pixels": 5,
+          "component_box": [
+            1184,
+            670,
+            1291,
+            702
+          ],
+          "area": 1798,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 102,
+          "inside_pixels": 776,
+          "outside_pixels": 8,
+          "component_box": [
+            1249,
+            719,
+            1291,
+            759
+          ],
+          "area": 784,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 132,
+          "inside_pixels": 1511,
+          "outside_pixels": 4,
+          "component_box": [
+            1204,
+            787,
+            1290,
+            817
+          ],
+          "area": 1515,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 152,
+          "inside_pixels": 2934,
+          "outside_pixels": 19,
+          "component_box": [
+            1139,
+            846,
+            1293,
+            881
+          ],
+          "area": 2953,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 6,
+      "type": "verse",
+      "box": [
+        280.296,
+        1025.29,
+        1297.056,
+        1289.54
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 7,
+      "type": "commentary",
+      "box": [
+        177.246,
+        1308.566,
+        1291.56,
+        1837.066
+      ],
+      "cuts": [
+        {
+          "component_id": 274,
+          "inside_pixels": 64,
+          "outside_pixels": 36,
+          "component_box": [
+            1026,
+            1304,
+            1038,
+            1317
+          ],
+          "area": 100,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 275,
+          "inside_pixels": 602,
+          "outside_pixels": 25,
+          "component_box": [
+            1260,
+            1305,
+            1290,
+            1349
+          ],
+          "area": 627,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 317,
+          "inside_pixels": 242,
+          "outside_pixels": 17,
+          "component_box": [
+            1272,
+            1385,
+            1296,
+            1400
+          ],
+          "area": 259,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 418,
+          "inside_pixels": 1489,
+          "outside_pixels": 4,
+          "component_box": [
+            1216,
+            1715,
+            1294,
+            1760
+          ],
+          "area": 1493,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 432,
+          "inside_pixels": 31,
+          "outside_pixels": 1,
+          "component_box": [
+            176,
+            1779,
+            186,
+            1786
+          ],
+          "area": 32,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 435,
+          "inside_pixels": 2640,
+          "outside_pixels": 4,
+          "component_box": [
+            176,
+            1790,
+            306,
+            1831
+          ],
+          "area": 2644,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 443,
+          "inside_pixels": 40,
+          "outside_pixels": 682,
+          "component_box": [
+            1096,
+            1835,
+            1273,
+            1845
+          ],
+          "area": 722,
+          "visually_identified_separator": true
+        }
+      ]
+    },
+    {
+      "region_id": 8,
+      "type": "footnote",
+      "box": [
+        222.588,
+        1864.548,
+        321.516,
+        1904.714
+      ],
+      "cuts": [
+        {
+          "component_id": 456,
+          "inside_pixels": 294,
+          "outside_pixels": 2,
+          "component_box": [
+            221,
+            1868,
+            238,
+            1899
+          ],
+          "area": 296,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 9,
+      "type": "footnote",
+      "box": [
+        335.256,
+        1856.092,
+        441.054,
+        1898.372
+      ],
+      "cuts": [
+        {
+          "component_id": 447,
+          "inside_pixels": 1146,
+          "outside_pixels": 7,
+          "component_box": [
+            369,
+            1861,
+            426,
+            1901
+          ],
+          "area": 1153,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 10,
+      "type": "footnote",
+      "box": [
+        478.152,
+        1864.548,
+        597.69,
+        1900.486
+      ],
+      "cuts": []
+    },
+    {
+      "region_id": 11,
+      "type": "footnote",
+      "box": [
+        633.414,
+        1853.978,
+        1075.842,
+        1896.258
+      ],
+      "cuts": [
+        {
+          "component_id": 455,
+          "inside_pixels": 273,
+          "outside_pixels": 19,
+          "component_box": [
+            630,
+            1867,
+            652,
+            1892
+          ],
+          "area": 292,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 471,
+          "inside_pixels": 48,
+          "outside_pixels": 3,
+          "component_box": [
+            1069,
+            1877,
+            1077,
+            1886
+          ],
+          "area": 51,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 472,
+          "inside_pixels": 107,
+          "outside_pixels": 2,
+          "component_box": [
+            757,
+            1881,
+            767,
+            1898
+          ],
+          "area": 109,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 12,
+      "type": "footnote",
+      "box": [
+        1103.322,
+        1851.864,
+        1283.316,
+        1892.03
+      ],
+      "cuts": [
+        {
+          "component_id": 445,
+          "inside_pixels": 2005,
+          "outside_pixels": 8,
+          "component_box": [
+            1144,
+            1850,
+            1248,
+            1889
+          ],
+          "area": 2013,
+          "visually_identified_separator": false
+        },
+        {
+          "component_id": 468,
+          "inside_pixels": 93,
+          "outside_pixels": 3,
+          "component_box": [
+            1272,
+            1875,
+            1285,
+            1886
+          ],
+          "area": 96,
+          "visually_identified_separator": false
+        }
+      ]
+    },
+    {
+      "region_id": 13,
+      "type": "footnote",
+      "box": [
+        182.742,
+        1915.284,
+        522.12,
+        1955.45
+      ],
+      "cuts": []
+    }
+  ],
+  "detail_panels": [
+    {
+      "caption": "First verse: upper edge",
+      "crop_xyxy": [
+        211,
+        303,
+        1230,
+        387
+      ],
+      "scale": 2
+    },
+    {
+      "caption": "First commentary: upper edge",
+      "crop_xyxy": [
+        162,
+        582,
+        1304,
+        666
+      ],
+      "scale": 2
+    },
+    {
+      "caption": "Footnotes: both printed lines",
+      "crop_xyxy": [
+        162,
+        1826,
+        1304,
+        1976
+      ],
+      "scale": 2
+    }
+  ],
+  "files_sha256": {
+    "audit_boundaries.py": "a4b74bf371c6bbdf2cc977674e9356a0169829e67f781cf344059600c49595ec",
+    "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+    "regions.py": "64ef7cfa4d732934a85876df80c8f355e42b8c72306763c41447f446d4895c75"
+  }
+}
