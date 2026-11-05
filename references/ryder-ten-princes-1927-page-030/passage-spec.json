@@ -1,0 +1,94 @@
+{
+  "input_id": "ryder-ten-princes-1927-page-030",
+  "version": 1,
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "line_segmentation": "method 032 line finder as copied into methods 033 and 035, page-level line ids 0-58; two columns, one per page of the spread (lines 0-28 left, 29-58 right)",
+  "split_lines_by_x": {
+    "0": [
+      {
+        "below_x": 250,
+        "passage": "page-number-left"
+      },
+      {
+        "passage": "running-header-left"
+      }
+    ],
+    "29": [
+      {
+        "below_x": 1380,
+        "passage": "running-header-right"
+      },
+      {
+        "passage": "page-number-right"
+      }
+    ]
+  },
+  "passages": [
+    {
+      "passage": "page-number-left",
+      "type": "page_number",
+      "keep": false,
+      "note": "40, left end of line 0."
+    },
+    {
+      "passage": "running-header-left",
+      "type": "running_header",
+      "keep": false,
+      "note": "THE TEN PRINCES."
+    },
+    {
+      "passage": "paragraph-1",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        1,
+        12
+      ],
+      "note": "cled by the seven seas, ... hence my melancholy.', continued from the previous page."
+    },
+    {
+      "passage": "paragraph-2",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        13,
+        28
+      ],
+      "note": "“When I had learned her heartfelt, overflowing ... sheldrake birds.” Line 28 is two printed lines that the line finder merged; both are in this paragraph."
+    },
+    {
+      "passage": "running-header-right",
+      "type": "running_header",
+      "keep": false,
+      "note": "PUSHPODBHAVA'S ADVENTURE."
+    },
+    {
+      "passage": "page-number-right",
+      "type": "page_number",
+      "keep": false,
+      "note": "41, right end of line 29."
+    },
+    {
+      "passage": "paragraph-3",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        30,
+        51
+      ],
+      "note": "“ 'Now if Daruvarman, hearing continual gossip ... what they say.'"
+    },
+    {
+      "passage": "paragraph-4",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        52,
+        58
+      ],
+      "note": "“Her flower-face seemed ready to bloom ... went to her home."
+    }
+  ],
+  "unit_definition": "A photographed two-page spread. One passage per paragraph (indented first line) on each page, plus each page's running header and page number. A paragraph that runs over from the previous page is a passage of its own. Splitting a paragraph into consecutive regions is a grouping difference, not an ownership error.",
+  "non_text": "The page edges, the book's shadow at the gutter and the dark corner at bottom left are large components or specks and stay unlabeled; two specks of 17-18 pixels in the left margin are on no line and stay unlabeled."
+}

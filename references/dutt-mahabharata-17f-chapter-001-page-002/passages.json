@@ -1,0 +1,450 @@
+{
+  "input_id": "dutt-mahabharata-17f-chapter-001-page-002",
+  "input_sha256": "30d5598a048c41029b6674bafa288f7a0319cdf78f9c47d19d87b336e6d25449",
+  "version": 1,
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T22:27:45.126110+00:00",
+  "spec_sha256": "5e8c7c2b07d8a971c7ae872eedabbe07d6e3dc623fab1ae78e896abc3c32fca1",
+  "labels_png_sha256": "b780ccee92acebc9437bae5f78b9dd89961f40b9edffce819d975a3e93a728dd",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 0.0,
+    "weak": 127.5,
+    "speck_area": 9
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 253,
+      "components": 1,
+      "box": [
+        186,
+        144,
+        205,
+        173
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "verse-11",
+      "type": "verse",
+      "keep": true,
+      "pixels": 17331,
+      "components": 22,
+      "box": [
+        214,
+        243,
+        909,
+        371
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "verse-12",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15841,
+      "components": 23,
+      "box": [
+        214,
+        385,
+        893,
+        505
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "translation-1",
+      "type": "translation",
+      "keep": true,
+      "pixels": 34195,
+      "components": 207,
+      "box": [
+        184,
+        529,
+        1026,
+        823
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "heading-sanjaya-uvaca",
+      "type": "heading",
+      "keep": true,
+      "pixels": 1958,
+      "components": 3,
+      "box": [
+        518,
+        863,
+        692,
+        897
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "verse-13",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15017,
+      "components": 17,
+      "box": [
+        214,
+        931,
+        821,
+        1056
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "heading-sanjaya-said",
+      "type": "heading",
+      "keep": true,
+      "pixels": 2459,
+      "components": 13,
+      "box": [
+        186,
+        1083,
+        411,
+        1121
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "translation-2",
+      "type": "translation",
+      "keep": true,
+      "pixels": 16640,
+      "components": 98,
+      "box": [
+        185,
+        1141,
+        1026,
+        1280
+      ]
+    },
+    {
+      "value": 9,
+      "passage": "verse-14",
+      "type": "verse",
+      "keep": true,
+      "pixels": 14832,
+      "components": 22,
+      "box": [
+        213,
+        1297,
+        856,
+        1423
+      ]
+    },
+    {
+      "value": 10,
+      "passage": "translation-3",
+      "type": "translation",
+      "keep": true,
+      "pixels": 19849,
+      "components": 116,
+      "box": [
+        183,
+        1439,
+        1021,
+        1583
+      ]
+    },
+    {
+      "value": 11,
+      "passage": "verse-15",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16705,
+      "components": 21,
+      "box": [
+        212,
+        1603,
+        963,
+        1727
+      ]
+    },
+    {
+      "value": 12,
+      "passage": "translation-4",
+      "type": "translation",
+      "keep": true,
+      "pixels": 25768,
+      "components": 150,
+      "box": [
+        184,
+        1743,
+        1021,
+        1933
+      ]
+    },
+    {
+      "value": 13,
+      "passage": "verse-16",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16206,
+      "components": 18,
+      "box": [
+        213,
+        1947,
+        870,
+        2066
+      ]
+    },
+    {
+      "value": 14,
+      "passage": "verse-17",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15246,
+      "components": 21,
+      "box": [
+        213,
+        2088,
+        844,
+        2206
+      ]
+    },
+    {
+      "value": 15,
+      "passage": "translation-5",
+      "type": "translation",
+      "keep": true,
+      "pixels": 42703,
+      "components": 254,
+      "box": [
+        182,
+        2227,
+        1025,
+        2561
+      ]
+    },
+    {
+      "value": 16,
+      "passage": "verse-18",
+      "type": "verse",
+      "keep": true,
+      "pixels": 17240,
+      "components": 21,
+      "box": [
+        212,
+        2587,
+        955,
+        2708
+      ]
+    },
+    {
+      "value": 17,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 3718,
+      "components": 12,
+      "box": [
+        1613,
+        141,
+        1918,
+        174
+      ]
+    },
+    {
+      "value": 18,
+      "passage": "verse-19",
+      "type": "verse",
+      "keep": true,
+      "pixels": 17078,
+      "components": 23,
+      "box": [
+        1110,
+        244,
+        1841,
+        371
+      ]
+    },
+    {
+      "value": 19,
+      "passage": "translation-6",
+      "type": "translation",
+      "keep": true,
+      "pixels": 47451,
+      "components": 255,
+      "box": [
+        1081,
+        385,
+        1919,
+        728
+      ]
+    },
+    {
+      "value": 20,
+      "passage": "verse-20",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16326,
+      "components": 20,
+      "box": [
+        1109,
+        742,
+        1776,
+        869
+      ]
+    },
+    {
+      "value": 21,
+      "passage": "translation-7",
+      "type": "translation",
+      "keep": true,
+      "pixels": 20903,
+      "components": 113,
+      "box": [
+        1081,
+        885,
+        1918,
+        1030
+      ]
+    },
+    {
+      "value": 22,
+      "passage": "verse-21",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16791,
+      "components": 19,
+      "box": [
+        1110,
+        1049,
+        1720,
+        1169
+      ]
+    },
+    {
+      "value": 23,
+      "passage": "verse-22",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16552,
+      "components": 24,
+      "box": [
+        1109,
+        1192,
+        1788,
+        1318
+      ]
+    },
+    {
+      "value": 24,
+      "passage": "translation-8",
+      "type": "translation",
+      "keep": true,
+      "pixels": 56972,
+      "components": 307,
+      "box": [
+        1080,
+        1333,
+        1923,
+        1790
+      ]
+    },
+    {
+      "value": 25,
+      "passage": "verse-23",
+      "type": "verse",
+      "keep": true,
+      "pixels": 17469,
+      "components": 22,
+      "box": [
+        1109,
+        1810,
+        1840,
+        1936
+      ]
+    },
+    {
+      "value": 26,
+      "passage": "translation-9",
+      "type": "translation",
+      "keep": true,
+      "pixels": 34558,
+      "components": 180,
+      "box": [
+        1080,
+        1951,
+        1922,
+        2200
+      ]
+    },
+    {
+      "value": 27,
+      "passage": "verse-24",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15681,
+      "components": 16,
+      "box": [
+        1109,
+        2219,
+        1711,
+        2344
+      ]
+    },
+    {
+      "value": 28,
+      "passage": "translation-10",
+      "type": "translation",
+      "keep": true,
+      "pixels": 24148,
+      "components": 137,
+      "box": [
+        1079,
+        2360,
+        1916,
+        2558
+      ]
+    },
+    {
+      "value": 29,
+      "passage": "verse-25",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16466,
+      "components": 17,
+      "box": [
+        1108,
+        2577,
+        1750,
+        2701
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 15,
+      "box": [
+        1047,
+        233,
+        1054,
+        2711
+      ],
+      "area": 8534,
+      "role": "large"
+    }
+  ],
+  "component_rules_applied": [],
+  "separator_pixels": 9860,
+  "builder": "methods/035-gpt-6.1-terra-none-column-margin-ownership/reference.py",
+  "method_files_sha256": {
+    "reference.py": "1a03a4bd97e5e13879c2c7108611fb0dae1876c2217e9b974d78034e779a9710",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

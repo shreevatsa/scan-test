@@ -1,0 +1,187 @@
+{
+ "created_at_utc": "2026-11-04T18:21:56.414187+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/gopinath-1914-page-258.png",
+  "sha256": "7d1fb165f28d2a846898d10b8ad007c12acef6c89f0f3360a7afa7505256b2cc"
+ },
+ "reference": {
+  "path": "../../references/gopinath-1914-page-258",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "labels_png_sha256": "85c3ba6f6e8b0613e5abf47f4a281c5a5457f4949b257f95f1d3ab00ada70dc3",
+  "spec_sha256": "7d67a92c131c07abd4e820359de32e55325da3623263dd100fb50dd505b1fb1e"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra without reasoning (025), boxes",
+   "path": "../../outputs/gopinath-1914-page-258/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "sha256": "f46f794567376c92bf67769df884c1efb6ae6de0ece38cd58b897912d01f0074",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "verse-81": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "hindi-translation-81": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "english-translation-81": {
+     "matched_region_id": 5,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-source": {
+     "matched_region_id": 6,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-comment": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-81",
+     "lower": "hindi-translation-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "hindi-translation-81",
+     "lower": "english-translation-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra + line ownership polygons (033)",
+   "path": "../../outputs/gopinath-1914-page-258/033-gpt-6.1-terra-none-line-polygons/regions.json",
+   "sha256": "202848833e6e25797e18612faea3faaff98ec5f060443a7694ea4692763213ff",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "verse-81": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "hindi-translation-81": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "english-translation-81": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-source": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-comment": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-81",
+     "lower": "hindi-translation-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "hindi-translation-81",
+     "lower": "english-translation-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "running-header": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "page-number": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-81": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "hindi-translation-81": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "english-translation-81": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "note-source": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "note-comment": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "4a2e86b34616e17a5c1b56e3134546e49c68f45435f9ba711efb433e80188a7b"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "0670009e1bc23665794d5480d2f070a30132e36d744ad47d721f2bb35fe32f63",
+  "ownership.py": "2aa725f23aead27d685d1ee15d23cace4620ba99918ea7c3523e0cde9c6429ff",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

@@ -1,0 +1,459 @@
+{
+ "created_at_utc": "2026-11-04T20:37:41.028074+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/telang-dli-page-108.png",
+  "sha256": "52fa687d0eb0fd992aea64cfbe6b875ccb8d6ecffe4f160149e0f46092889517"
+ },
+ "reference": {
+  "path": "../../references/telang-dli-page-108",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "labels_png_sha256": "fc0a75c959e2074b84dee658fc89b525ff43e3b6debdc587172126fda755b5c4",
+  "spec_sha256": "bf686ac5865e1e3d9c01d4039e24e023ceb7ad0ac127734fb389d390bd046615"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra without reasoning (025) run-002, boxes",
+   "path": "../../outputs/telang-dli-page-108/025-gpt-6.1-terra-none-footnotes/run-002/regions.json",
+   "sha256": "86cf4882e3f6bbd337bfb1486578ee71be57060a3653fc5a207bcbf8982fb708",
+   "totals": {
+    "other_passages_ink_included": 48,
+    "own_ink_left_out": 43,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "verse-79-end": {
+     "matched_region_id": 2,
+     "region_kind": "box",
+     "own_left_out": 11,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-80": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-81": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 1,
+     "other_included": {
+      "verse-82-start": 15
+     },
+     "separator_included": 0
+    },
+    "verse-82-start": {
+     "matched_region_id": 5,
+     "region_kind": "box",
+     "own_left_out": 15,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-79": {
+     "matched_region_id": 6,
+     "region_kind": "box",
+     "own_left_out": 16,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-80": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "apparatus-81": 1
+     },
+     "separator_included": 0
+    },
+    "apparatus-81": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "apparatus-80": 32
+     },
+     "separator_included": 0
+    },
+    "apparatus-82": {
+     "matched_region_id": 9,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-79-end",
+     "lower": "verse-80",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-80",
+     "lower": "verse-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-81",
+     "lower": "verse-82-start",
+     "upper_region_takes_lower_ink": 15,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-82-start",
+     "lower": "apparatus-79",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-79",
+     "lower": "apparatus-80",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-80",
+     "lower": "apparatus-81",
+     "upper_region_takes_lower_ink": 1,
+     "lower_region_takes_upper_ink": 32
+    },
+    {
+     "upper": "apparatus-81",
+     "lower": "apparatus-82",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra run-002 + column-safe ownership polygons (035)",
+   "path": "../../outputs/telang-dli-page-108/035-gpt-6.1-terra-none-column-margin-ownership/run-002/regions.json",
+   "sha256": "f85a1bf65f0ee2e8b60258582a2078b0f12998eb1fc9eaabd8582645b0812136",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "verse-79-end": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-80": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-81": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-82-start": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-79": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-80": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-81": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-82": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-79-end",
+     "lower": "verse-80",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-80",
+     "lower": "verse-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-81",
+     "lower": "verse-82-start",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-82-start",
+     "lower": "apparatus-79",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-79",
+     "lower": "apparatus-80",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-80",
+     "lower": "apparatus-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-81",
+     "lower": "apparatus-82",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "page-number": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-79-end": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-80": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-81": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-82-start": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "apparatus-79": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "apparatus-80": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "apparatus-81": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "apparatus-82": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "fc0a75c959e2074b84dee658fc89b525ff43e3b6debdc587172126fda755b5c4"
+   }
+  },
+  {
+   "label": "GPT-6.1 Terra run-002 + ownership with ink on no line and rule pieces (036)",
+   "path": "../../outputs/telang-dli-page-108/036-gpt-6.1-terra-none-unlined-ink-ownership/run-002/regions.json",
+   "sha256": "5c48048fb4cb933db07f58884b10ee487933dcd4e51eb91e3afb62079b5b7992",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "verse-79-end": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-80": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-81": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-82-start": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-79": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-80": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-81": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "apparatus-82": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-79-end",
+     "lower": "verse-80",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-80",
+     "lower": "verse-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-81",
+     "lower": "verse-82-start",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-82-start",
+     "lower": "apparatus-79",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-79",
+     "lower": "apparatus-80",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-80",
+     "lower": "apparatus-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-81",
+     "lower": "apparatus-82",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "page-number": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-79-end": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-80": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-81": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-82-start": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "apparatus-79": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "apparatus-80": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "apparatus-81": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "apparatus-82": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "ec1f5b9334710227a64e9a7120498616974ef1574993976a4a5eae33d076ff2c"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "0670009e1bc23665794d5480d2f070a30132e36d744ad47d721f2bb35fe32f63",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

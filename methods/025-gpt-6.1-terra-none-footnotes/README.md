@@ -9,8 +9,8 @@ The prompt requests [xmin,ymin,xmax,ymax] integer coordinates normalized to 0–
 ## Run
 
 ```sh
-uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-017.png
 ```
 
 For another request, choose a fresh `--output-dir`, such as `outputs/kale-1913-page-017/025-gpt-6.1-terra-none-footnotes/run-002`. Existing output is protected against overwriting. Authentication checks OPENAI_API_KEY, then the stored `llm` key named `openai`.
@@ -57,8 +57,8 @@ Each of the six numbered footnotes has a separate box containing its marker and 
 Input: `kale-1913-page-097`, unannotated 300 dpi RGB render, 1374 × 2114 pixels. Started 2026-11-04 04:28:30 UTC. Requested and returned model `gpt-6.1-terra`. Settings and prompt are unchanged; coordinate conversion uses this input's actual width and height. HTTP 200, response completed.
 
 ```sh
-uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-097.png --check
-uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-097.png
+uv run --offline python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-097.png --check
+uv run --offline python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-097.png
 ```
 
 The completed artifacts are under `outputs/kale-1913-page-097/025-gpt-6.1-terra-none-footnotes/`. Choose a fresh `--output-dir` for another API request.
@@ -91,8 +91,8 @@ Both four-line verses remain whole. The two commentary passages and the short le
 Input `kale-1913-page-113`, unchanged raw PNG, 1370 × 2118 pixels.
 
 ```sh
-uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-113.png --check
-uv run python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-113.png
+uv run --offline python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-113.png --check
+uv run --offline python methods/025-gpt-6.1-terra-none-footnotes/run.py inputs/kale-1913-page-113.png
 ```
 
 The completed output is `outputs/kale-1913-page-113/025-gpt-6.1-terra-none-footnotes/`; use a fresh `--output-dir` for a repeat run.

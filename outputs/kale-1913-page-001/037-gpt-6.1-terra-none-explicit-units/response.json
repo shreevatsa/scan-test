@@ -1,0 +1,169 @@
+{
+  "id": "resp_0b104ee409bc0a3c016aeba19d301087d0a0cfc68cd6a4a475",
+  "object": "response",
+  "created_at": 1793827229,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793827240,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_0b104ee409bc0a3c016aeba19e97f087d09ef469c454bbd1b7",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"heading\",\"box_1000\":[403,93,631,119],\"keep\":true,\"reading_order\":1,\"uncertain\":false},{\"type\":\"lead_in\",\"box_1000\":[166,176,723,200],\"keep\":true,\"reading_order\":2,\"uncertain\":false},{\"type\":\"heading\",\"box_1000\":[394,207,637,228],\"keep\":true,\"reading_order\":3,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[106,234,616,260],\"keep\":true,\"reading_order\":4,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[107,258,613,282],\"keep\":true,\"reading_order\":5,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[109,280,598,306],\"keep\":true,\"reading_order\":6,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[108,302,793,328],\"keep\":true,\"reading_order\":7,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[109,326,704,352],\"keep\":true,\"reading_order\":8,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[112,350,600,376],\"keep\":true,\"reading_order\":9,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[112,371,769,398],\"keep\":true,\"reading_order\":10,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[113,395,769,421],\"keep\":true,\"reading_order\":11,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[115,419,570,443],\"keep\":true,\"reading_order\":12,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[113,441,721,469],\"keep\":true,\"reading_order\":13,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[114,465,767,491],\"keep\":true,\"reading_order\":14,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[144,490,402,514],\"keep\":true,\"reading_order\":15,\"uncertain\":false},{\"type\":\"heading\",\"box_1000\":[352,514,685,536],\"keep\":true,\"reading_order\":16,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[146,548,428,572],\"keep\":true,\"reading_order\":17,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[116,570,604,596],\"keep\":true,\"reading_order\":18,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[116,594,930,639],\"keep\":true,\"reading_order\":19,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[115,639,626,664],\"keep\":true,\"reading_order\":20,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[117,661,872,687],\"keep\":true,\"reading_order\":21,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[118,685,724,710],\"keep\":true,\"reading_order\":22,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[117,707,932,754],\"keep\":true,\"reading_order\":23,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[118,755,719,779],\"keep\":true,\"reading_order\":24,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[118,777,929,803],\"keep\":true,\"reading_order\":25,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[119,802,817,827],\"keep\":true,\"reading_order\":26,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[118,823,934,851],\"keep\":true,\"reading_order\":27,\"uncertain\":false},{\"type\":\"list_item\",\"box_1000\":[147,855,426,878],\"keep\":true,\"reading_order\":28,\"uncertain\":false}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "verse",
+                    "paragraph",
+                    "heading",
+                    "lead_in",
+                    "list_item",
+                    "formula",
+                    "note",
+                    "table",
+                    "figure",
+                    "caption",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 4260,
+    "input_tokens_details": {
+      "cache_write_tokens": 4257,
+      "cached_tokens": 0
+    },
+    "output_tokens": 906,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 5166
+  },
+  "user": null,
+  "metadata": {}
+}

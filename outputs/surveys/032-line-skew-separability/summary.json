@@ -1,0 +1,919 @@
+{
+  "started_at_utc": "2026-11-04T07:14:07.536192+00:00",
+  "render": {
+    "dpi": 300,
+    "colorspace": "gray",
+    "library": "PyMuPDF",
+    "version": "1.26.6"
+  },
+  "books": {
+    "kale-1913": {
+      "description": "Kale (1913), the project's test book: Sanskrit verses with Sanskrit commentary and footnotes; Google Books scan, 600 dpi bilevel page images.",
+      "caveat": null,
+      "pdfs": {
+        "Kale-1913-pp21-272.pdf": "ccabe9850493a8e5d6ecd61660407933f757481cb892985b007e6ff222d9f3b0"
+      },
+      "page_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251
+      ],
+      "summary": {
+        "pages": 252,
+        "pages_analyzed": 252,
+        "pages_skipped": 0,
+        "excluded_pages": {},
+        "abs_page_angle_deg": {
+          "n": 252,
+          "median": 0.06,
+          "p90": 0.343,
+          "maximum": 1.43
+        },
+        "signed_page_angle_deg": {
+          "n": 252,
+          "median": -0.0,
+          "p90": 0.1,
+          "maximum": 1.2
+        },
+        "pages_abs_angle_at_least_0_5_deg": 18,
+        "pages_abs_angle_at_least_1_deg": 4,
+        "within_page_line_angle_p10_p90_spread_deg": {
+          "n": 252,
+          "median": 0.26,
+          "p90": 0.427,
+          "maximum": 0.808
+        },
+        "within_page_abs_bow_p90_char_heights": {
+          "n": 252,
+          "median": 0.057,
+          "p90": 0.131,
+          "maximum": 0.31
+        },
+        "char_h_px": {
+          "n": 252,
+          "median": 30.0,
+          "p90": 42.0,
+          "maximum": 46.0
+        },
+        "all_line_pairs": {
+          "pairs": 7349,
+          "axis_aligned_not_separable": 0.183,
+          "page_rotated_not_separable": 0.172,
+          "straight_any_angle_not_separable": 0.108,
+          "column_staircase_not_separable": 0.001,
+          "axis_conflict_over_quarter_char2": 0.062,
+          "rotated_conflict_over_quarter_char2": 0.049
+        },
+        "long_line_pairs": {
+          "pairs": 5848,
+          "axis_aligned_not_separable": 0.182,
+          "page_rotated_not_separable": 0.168,
+          "straight_any_angle_not_separable": 0.111,
+          "column_staircase_not_separable": 0.001,
+          "axis_conflict_over_quarter_char2": 0.057,
+          "rotated_conflict_over_quarter_char2": 0.041
+        },
+        "line_pairs_on_pages_abs_angle_at_least_0_5_deg": {
+          "pairs": 526,
+          "axis_aligned_not_separable": 0.483,
+          "page_rotated_not_separable": 0.232,
+          "straight_any_angle_not_separable": 0.141,
+          "column_staircase_not_separable": 0.002,
+          "axis_conflict_over_quarter_char2": 0.222,
+          "rotated_conflict_over_quarter_char2": 0.053
+        },
+        "line_pairs_on_pages_abs_angle_below_0_5_deg": {
+          "pairs": 6823,
+          "axis_aligned_not_separable": 0.159,
+          "page_rotated_not_separable": 0.168,
+          "straight_any_angle_not_separable": 0.106,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.05,
+          "rotated_conflict_over_quarter_char2": 0.049
+        }
+      }
+    },
+    "telang-dli": {
+      "description": "Digital Library of India scan (dli.granth.78136) of a Telang edition of Bhartrhari: Sanskrit verses with a small-type variant-reading apparatus and English notes; 1500 x 2500 pixel grayscale or RGB page images.",
+      "caveat": null,
+      "pdfs": {
+        "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf": "37dffcba76cf1d038140cd671e8a522eaca4995ea2505106c4b544b2e09fd122"
+      },
+      "page_indices": [
+        20,
+        34,
+        49,
+        63,
+        78,
+        92,
+        107,
+        121,
+        136,
+        150,
+        165,
+        179
+      ],
+      "summary": {
+        "pages": 12,
+        "pages_analyzed": 11,
+        "pages_skipped": 1,
+        "excluded_pages": {
+          "50": "Sideways table: the horizontal text-line analysis does not apply. Found by inspecting the contact sheet."
+        },
+        "abs_page_angle_deg": {
+          "n": 11,
+          "median": 0.01,
+          "p90": 0.1,
+          "maximum": 0.15
+        },
+        "signed_page_angle_deg": {
+          "n": 11,
+          "median": -0.0,
+          "p90": 0.1,
+          "maximum": 0.1
+        },
+        "pages_abs_angle_at_least_0_5_deg": 0,
+        "pages_abs_angle_at_least_1_deg": 0,
+        "within_page_line_angle_p10_p90_spread_deg": {
+          "n": 11,
+          "median": 0.277,
+          "p90": 0.477,
+          "maximum": 0.683
+        },
+        "within_page_abs_bow_p90_char_heights": {
+          "n": 11,
+          "median": 0.057,
+          "p90": 0.106,
+          "maximum": 0.217
+        },
+        "char_h_px": {
+          "n": 11,
+          "median": 31.0,
+          "p90": 38.0,
+          "maximum": 39.0
+        },
+        "all_line_pairs": {
+          "pairs": 301,
+          "axis_aligned_not_separable": 0.15,
+          "page_rotated_not_separable": 0.153,
+          "straight_any_angle_not_separable": 0.12,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.11,
+          "rotated_conflict_over_quarter_char2": 0.12
+        },
+        "long_line_pairs": {
+          "pairs": 225,
+          "axis_aligned_not_separable": 0.138,
+          "page_rotated_not_separable": 0.138,
+          "straight_any_angle_not_separable": 0.12,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.098,
+          "rotated_conflict_over_quarter_char2": 0.111
+        },
+        "line_pairs_on_pages_abs_angle_at_least_0_5_deg": {
+          "pairs": 0,
+          "axis_aligned_not_separable": null,
+          "page_rotated_not_separable": null,
+          "straight_any_angle_not_separable": null,
+          "column_staircase_not_separable": null,
+          "axis_conflict_over_quarter_char2": null,
+          "rotated_conflict_over_quarter_char2": null
+        },
+        "line_pairs_on_pages_abs_angle_below_0_5_deg": {
+          "pairs": 301,
+          "axis_aligned_not_separable": 0.15,
+          "page_rotated_not_separable": 0.153,
+          "straight_any_angle_not_separable": 0.12,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.11,
+          "rotated_conflict_over_quarter_char2": 0.12
+        }
+      }
+    },
+    "vavilla": {
+      "description": "Vavilla edition with the Ramachandra Budhendra commentary: Sanskrit verses with Sanskrit prose commentary and numbered notes; 600 dpi bilevel page images.",
+      "caveat": null,
+      "pdfs": {
+        "~/w/bhartrhari/data/images/RamchandraBudhendra-Vavilla.pdf": "711f384227eb7b75837be2fd7916fe60e172f25ab9dcb6cddd22bfbcaa54a532"
+      },
+      "page_indices": [
+        33,
+        57,
+        81,
+        105,
+        129,
+        153,
+        178,
+        202,
+        226,
+        250,
+        274,
+        298
+      ],
+      "summary": {
+        "pages": 12,
+        "pages_analyzed": 12,
+        "pages_skipped": 0,
+        "excluded_pages": {},
+        "abs_page_angle_deg": {
+          "n": 12,
+          "median": 0.01,
+          "p90": 0.099,
+          "maximum": 0.24
+        },
+        "signed_page_angle_deg": {
+          "n": 12,
+          "median": 0.005,
+          "p90": 0.01,
+          "maximum": 0.1
+        },
+        "pages_abs_angle_at_least_0_5_deg": 0,
+        "pages_abs_angle_at_least_1_deg": 0,
+        "within_page_line_angle_p10_p90_spread_deg": {
+          "n": 12,
+          "median": 0.295,
+          "p90": 0.363,
+          "maximum": 0.491
+        },
+        "within_page_abs_bow_p90_char_heights": {
+          "n": 12,
+          "median": 0.061,
+          "p90": 0.095,
+          "maximum": 0.127
+        },
+        "char_h_px": {
+          "n": 12,
+          "median": 32.0,
+          "p90": 33.0,
+          "maximum": 33.0
+        },
+        "all_line_pairs": {
+          "pairs": 108,
+          "axis_aligned_not_separable": 0.176,
+          "page_rotated_not_separable": 0.185,
+          "straight_any_angle_not_separable": 0.176,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.167,
+          "rotated_conflict_over_quarter_char2": 0.167
+        },
+        "long_line_pairs": {
+          "pairs": 77,
+          "axis_aligned_not_separable": 0.182,
+          "page_rotated_not_separable": 0.182,
+          "straight_any_angle_not_separable": 0.182,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.169,
+          "rotated_conflict_over_quarter_char2": 0.169
+        },
+        "line_pairs_on_pages_abs_angle_at_least_0_5_deg": {
+          "pairs": 0,
+          "axis_aligned_not_separable": null,
+          "page_rotated_not_separable": null,
+          "straight_any_angle_not_separable": null,
+          "column_staircase_not_separable": null,
+          "axis_conflict_over_quarter_char2": null,
+          "rotated_conflict_over_quarter_char2": null
+        },
+        "line_pairs_on_pages_abs_angle_below_0_5_deg": {
+          "pairs": 108,
+          "axis_aligned_not_separable": 0.176,
+          "page_rotated_not_separable": 0.185,
+          "straight_any_angle_not_separable": 0.176,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.167,
+          "rotated_conflict_over_quarter_char2": 0.167
+        }
+      }
+    },
+    "gopinath-1896": {
+      "description": "The Nitisataka, Sringarasataka and Vairagyasataka (1896), Google Books XikpAAAAYAAJ: large-type Sanskrit verse, Hindi and English translation, footnotes; 600 dpi grayscale.",
+      "caveat": null,
+      "pdfs": {
+        "~/w/bhartrhari/data/images/gopinath/1896-XikpAAAAYAAJ/pdf/The_Nîtiśataka_Śringâraśataka_and_V.pdf": "06bfe181e65f545adcc3992e005de6223a664c252960692c1573468831e74ca4"
+      },
+      "page_indices": [
+        50,
+        86,
+        122,
+        158,
+        194,
+        230,
+        266,
+        302,
+        338,
+        374,
+        410,
+        446
+      ],
+      "summary": {
+        "pages": 12,
+        "pages_analyzed": 12,
+        "pages_skipped": 0,
+        "excluded_pages": {},
+        "abs_page_angle_deg": {
+          "n": 12,
+          "median": 0.08,
+          "p90": 0.09,
+          "maximum": 0.11
+        },
+        "signed_page_angle_deg": {
+          "n": 12,
+          "median": 0.06,
+          "p90": 0.09,
+          "maximum": 0.11
+        },
+        "pages_abs_angle_at_least_0_5_deg": 0,
+        "pages_abs_angle_at_least_1_deg": 0,
+        "within_page_line_angle_p10_p90_spread_deg": {
+          "n": 12,
+          "median": 0.266,
+          "p90": 0.411,
+          "maximum": 0.445
+        },
+        "within_page_abs_bow_p90_char_heights": {
+          "n": 12,
+          "median": 0.036,
+          "p90": 0.079,
+          "maximum": 0.09
+        },
+        "char_h_px": {
+          "n": 12,
+          "median": 39.0,
+          "p90": 41.0,
+          "maximum": 48.0
+        },
+        "all_line_pairs": {
+          "pairs": 278,
+          "axis_aligned_not_separable": 0.263,
+          "page_rotated_not_separable": 0.273,
+          "straight_any_angle_not_separable": 0.219,
+          "column_staircase_not_separable": 0.004,
+          "axis_conflict_over_quarter_char2": 0.126,
+          "rotated_conflict_over_quarter_char2": 0.126
+        },
+        "long_line_pairs": {
+          "pairs": 202,
+          "axis_aligned_not_separable": 0.272,
+          "page_rotated_not_separable": 0.282,
+          "straight_any_angle_not_separable": 0.248,
+          "column_staircase_not_separable": 0.005,
+          "axis_conflict_over_quarter_char2": 0.149,
+          "rotated_conflict_over_quarter_char2": 0.149
+        },
+        "line_pairs_on_pages_abs_angle_at_least_0_5_deg": {
+          "pairs": 0,
+          "axis_aligned_not_separable": null,
+          "page_rotated_not_separable": null,
+          "straight_any_angle_not_separable": null,
+          "column_staircase_not_separable": null,
+          "axis_conflict_over_quarter_char2": null,
+          "rotated_conflict_over_quarter_char2": null
+        },
+        "line_pairs_on_pages_abs_angle_below_0_5_deg": {
+          "pairs": 278,
+          "axis_aligned_not_separable": 0.263,
+          "page_rotated_not_separable": 0.273,
+          "straight_any_angle_not_separable": 0.219,
+          "column_staircase_not_separable": 0.004,
+          "axis_conflict_over_quarter_char2": 0.126,
+          "rotated_conflict_over_quarter_char2": 0.126
+        }
+      }
+    },
+    "gopinath-1914": {
+      "description": "The Nitisataka, Sringarasataka and Vairagyasataka (1914), Google Books VeBjAAAAMAAJ: same layout family as the 1896 edition; 600 dpi grayscale.",
+      "caveat": "Pages have a border of small repeated ornaments. The line segmentation attaches ornament components to text lines, so this book's line-pair statistics are not reliable. Page angles are unaffected in inspection.",
+      "pdfs": {
+        "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf": "23e5b02904a7e868765737245ea60ff4d7336cafd674350834c179b4a7625aa8"
+      },
+      "page_indices": [
+        48,
+        83,
+        118,
+        153,
+        188,
+        223,
+        257,
+        292,
+        327,
+        362,
+        397,
+        432
+      ],
+      "summary": {
+        "pages": 12,
+        "pages_analyzed": 12,
+        "pages_skipped": 0,
+        "excluded_pages": {},
+        "abs_page_angle_deg": {
+          "n": 12,
+          "median": 0.025,
+          "p90": 0.105,
+          "maximum": 0.33
+        },
+        "signed_page_angle_deg": {
+          "n": 12,
+          "median": -0.0,
+          "p90": 0.01,
+          "maximum": 0.33
+        },
+        "pages_abs_angle_at_least_0_5_deg": 0,
+        "pages_abs_angle_at_least_1_deg": 0,
+        "within_page_line_angle_p10_p90_spread_deg": {
+          "n": 12,
+          "median": 0.271,
+          "p90": 0.441,
+          "maximum": 0.534
+        },
+        "within_page_abs_bow_p90_char_heights": {
+          "n": 12,
+          "median": 0.071,
+          "p90": 0.084,
+          "maximum": 0.094
+        },
+        "char_h_px": {
+          "n": 12,
+          "median": 38.5,
+          "p90": 49.0,
+          "maximum": 49.0
+        },
+        "all_line_pairs": {
+          "pairs": 254,
+          "axis_aligned_not_separable": 0.488,
+          "page_rotated_not_separable": 0.496,
+          "straight_any_angle_not_separable": 0.433,
+          "column_staircase_not_separable": 0.004,
+          "axis_conflict_over_quarter_char2": 0.366,
+          "rotated_conflict_over_quarter_char2": 0.382
+        },
+        "long_line_pairs": {
+          "pairs": 187,
+          "axis_aligned_not_separable": 0.54,
+          "page_rotated_not_separable": 0.551,
+          "straight_any_angle_not_separable": 0.481,
+          "column_staircase_not_separable": 0.005,
+          "axis_conflict_over_quarter_char2": 0.406,
+          "rotated_conflict_over_quarter_char2": 0.428
+        },
+        "line_pairs_on_pages_abs_angle_at_least_0_5_deg": {
+          "pairs": 0,
+          "axis_aligned_not_separable": null,
+          "page_rotated_not_separable": null,
+          "straight_any_angle_not_separable": null,
+          "column_staircase_not_separable": null,
+          "axis_conflict_over_quarter_char2": null,
+          "rotated_conflict_over_quarter_char2": null
+        },
+        "line_pairs_on_pages_abs_angle_below_0_5_deg": {
+          "pairs": 254,
+          "axis_aligned_not_separable": 0.488,
+          "page_rotated_not_separable": 0.496,
+          "straight_any_angle_not_separable": 0.433,
+          "column_staircase_not_separable": 0.004,
+          "axis_conflict_over_quarter_char2": 0.366,
+          "rotated_conflict_over_quarter_char2": 0.382
+        }
+      }
+    },
+    "dutt-mahabharata": {
+      "description": "M. N. Dutt's English Mahabharata, per-chapter PDFs: two columns, each interleaving Devanagari verses with English translation; 300 dpi bilevel page images.",
+      "caveat": null,
+      "pdfs": {
+        "~/w/mahabharata-dutt/pdfs/13F_Chapter_221_1.pdf": "e7ad531218416a5c54c8f8474b4fbb511e3e14d78e576d3bb1da13ccdd6f4a61",
+        "~/w/mahabharata-dutt/pdfs/14F_Chapter_069.pdf": "47a367b7cb17e9524578b08ce1647eec4917bf159230150dc77894a584362deb",
+        "~/w/mahabharata-dutt/pdfs/14F_Chapter_225.pdf": "dedc97dd42761096e192f31d8e4d2939617c5d4fdedb23083ba7f76a38338b8b",
+        "~/w/mahabharata-dutt/pdfs/15F_Chapter_080.pdf": "32ae40427355bf01bab1b71ddaa7989ed795dee1f4ff9c0084dbbd8d68d84055",
+        "~/w/mahabharata-dutt/pdfs/15F_Chapter_239.pdf": "165948e1c5315acbcc477313a146b3a14c9cca1e56696f4fce923bed6f8f69eb",
+        "~/w/mahabharata-dutt/pdfs/17F_Chapter_001.pdf": "cd1f6fecd7b4bb9055849c359c82c1a1e5ff6bbd519e113e9e1f17af4ec5459d",
+        "~/w/mahabharata-dutt/pdfs/17F_Chapter_154.pdf": "6e7c0358be7c2ec1669c7b004f306d314b98602dba10d1a59715b0091706e5a7",
+        "~/w/mahabharata-dutt/pdfs/18F_Chapter_087_1.pdf": "1d75e9b52ec3c459eb5a1d5a67f707a93d53e626e8d133f65f0b16be16ccec3b",
+        "~/w/mahabharata-dutt/pdfs/19F_Chapter_034.pdf": "32c53620bbd3b8ae4dd0ebf6a1b5349eaf4d51a4cb0b72dd9b7655d32bd876f1",
+        "~/w/mahabharata-dutt/pdfs/20F_Chapter_187.pdf": "1dbb5b5845f800147541ab7d1cbe293cc2988e496df16041ed0ab50000f5a0de",
+        "~/w/mahabharata-dutt/pdfs/20F_Chapter_337.pdf": "9403b6456bbfe947b1a296ec4b45ed07f25776ca9d8726d216083383f05c5da1",
+        "~/w/mahabharata-dutt/pdfs/21F_Chapter_101.pdf": "935faa808ff78e9eab32a44e4f8873f35647c8c5f394a8a967155aa60b2263a1"
+      },
+      "page_indices": null,
+      "summary": {
+        "pages": 12,
+        "pages_analyzed": 12,
+        "pages_skipped": 0,
+        "excluded_pages": {},
+        "abs_page_angle_deg": {
+          "n": 12,
+          "median": 0.08,
+          "p90": 0.11,
+          "maximum": 0.19
+        },
+        "signed_page_angle_deg": {
+          "n": 12,
+          "median": -0.07,
+          "p90": 0.069,
+          "maximum": 0.07
+        },
+        "pages_abs_angle_at_least_0_5_deg": 0,
+        "pages_abs_angle_at_least_1_deg": 0,
+        "within_page_line_angle_p10_p90_spread_deg": {
+          "n": 12,
+          "median": 0.205,
+          "p90": 0.384,
+          "maximum": 0.864
+        },
+        "within_page_abs_bow_p90_char_heights": {
+          "n": 12,
+          "median": 0.019,
+          "p90": 0.027,
+          "maximum": 0.154
+        },
+        "char_h_px": {
+          "n": 12,
+          "median": 30.0,
+          "p90": 30.0,
+          "maximum": 31.0
+        },
+        "all_line_pairs": {
+          "pairs": 922,
+          "axis_aligned_not_separable": 0.015,
+          "page_rotated_not_separable": 0.015,
+          "straight_any_angle_not_separable": 0.002,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.003,
+          "rotated_conflict_over_quarter_char2": 0.008
+        },
+        "long_line_pairs": {
+          "pairs": 759,
+          "axis_aligned_not_separable": 0.014,
+          "page_rotated_not_separable": 0.014,
+          "straight_any_angle_not_separable": 0.003,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.003,
+          "rotated_conflict_over_quarter_char2": 0.008
+        },
+        "line_pairs_on_pages_abs_angle_at_least_0_5_deg": {
+          "pairs": 0,
+          "axis_aligned_not_separable": null,
+          "page_rotated_not_separable": null,
+          "straight_any_angle_not_separable": null,
+          "column_staircase_not_separable": null,
+          "axis_conflict_over_quarter_char2": null,
+          "rotated_conflict_over_quarter_char2": null
+        },
+        "line_pairs_on_pages_abs_angle_below_0_5_deg": {
+          "pairs": 922,
+          "axis_aligned_not_separable": 0.015,
+          "page_rotated_not_separable": 0.015,
+          "straight_any_angle_not_separable": 0.002,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.003,
+          "rotated_conflict_over_quarter_char2": 0.008
+        }
+      }
+    },
+    "cole-1903": {
+      "description": "F. N. Cole, Bulletin of the AMS (1903), Project Euclid scan: English mathematical prose with displayed formulas and a footnote; 600 dpi bilevel.",
+      "caveat": null,
+      "pdfs": {
+        "~/w/pages/docs/cole-factor/Cole.1903-euclid.bams.1183417760.pdf": "492cae4531fce36dd0acca0730c2f64bdbb1ae7a62f4476cd77bba43b47fc596"
+      },
+      "page_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "summary": {
+        "pages": 4,
+        "pages_analyzed": 4,
+        "pages_skipped": 0,
+        "excluded_pages": {},
+        "abs_page_angle_deg": {
+          "n": 4,
+          "median": 0.005,
+          "p90": 0.01,
+          "maximum": 0.01
+        },
+        "signed_page_angle_deg": {
+          "n": 4,
+          "median": 0.005,
+          "p90": 0.01,
+          "maximum": 0.01
+        },
+        "pages_abs_angle_at_least_0_5_deg": 0,
+        "pages_abs_angle_at_least_1_deg": 0,
+        "within_page_line_angle_p10_p90_spread_deg": {
+          "n": 4,
+          "median": 0.106,
+          "p90": 0.134,
+          "maximum": 0.136
+        },
+        "within_page_abs_bow_p90_char_heights": {
+          "n": 4,
+          "median": 0.029,
+          "p90": 0.038,
+          "maximum": 0.041
+        },
+        "char_h_px": {
+          "n": 4,
+          "median": 21.0,
+          "p90": 23.8,
+          "maximum": 25.0
+        },
+        "all_line_pairs": {
+          "pairs": 130,
+          "axis_aligned_not_separable": 0.131,
+          "page_rotated_not_separable": 0.138,
+          "straight_any_angle_not_separable": 0.123,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.1,
+          "rotated_conflict_over_quarter_char2": 0.108
+        },
+        "long_line_pairs": {
+          "pairs": 91,
+          "axis_aligned_not_separable": 0.099,
+          "page_rotated_not_separable": 0.11,
+          "straight_any_angle_not_separable": 0.099,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.066,
+          "rotated_conflict_over_quarter_char2": 0.077
+        },
+        "line_pairs_on_pages_abs_angle_at_least_0_5_deg": {
+          "pairs": 0,
+          "axis_aligned_not_separable": null,
+          "page_rotated_not_separable": null,
+          "straight_any_angle_not_separable": null,
+          "column_staircase_not_separable": null,
+          "axis_conflict_over_quarter_char2": null,
+          "rotated_conflict_over_quarter_char2": null
+        },
+        "line_pairs_on_pages_abs_angle_below_0_5_deg": {
+          "pairs": 130,
+          "axis_aligned_not_separable": 0.131,
+          "page_rotated_not_separable": 0.138,
+          "straight_any_angle_not_separable": 0.123,
+          "column_staircase_not_separable": 0.0,
+          "axis_conflict_over_quarter_char2": 0.1,
+          "rotated_conflict_over_quarter_char2": 0.108
+        }
+      }
+    }
+  },
+  "method_files_sha256": {
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "analyze_page.py": "87a923ff67f3d83edff8c00edadb1f51a8afdd8fb1f0b8886e91f625cd641b3f",
+    "evaluate.py": "efdbf565fa0674ea006e4241cfa11344e5a8b9d30bf15f18d22d4bc21e67f43b",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "reference.py": "a0bd6165b3e49ea74531a845638229935a62e060321312a6908d831fa36ddb69",
+    "survey.py": "667d350c847f6c02fcd8443df2350a940bb6ab01936e7edb4d6f4992be90cc9c",
+    "config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33",
+    "books.json": "1b6e72803ca752e9cfdb85c4512ee67000a81bbdd0d46c485fa795dfa9019519"
+  },
+  "finished_at_utc": "2026-11-04T07:15:11.420144+00:00"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "GPT-6.1 Terra without reasoning + line ownership and polygon regions",
+  "base_method_id": "025-gpt-6.1-terra-none-footnotes",
+  "component_in_box_fraction": 0.5,
+  "minimum_line_share": 0.25,
+  "local_box_maximum_line_coverage": 0.9,
+  "local_box_minimum_ink_share": 0.5,
+  "remainder_minimum_line_share": 0.25,
+  "maximum_outside_gap_char": 1.0,
+  "isolation_gap_char": 2.0,
+  "envelope_padding_char": 0.25,
+  "polygon_epsilon_px": 1.0,
+  "distance_mask_size": 5
+}

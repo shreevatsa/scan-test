@@ -1,0 +1,34 @@
+{
+  "input_id": "kale-1913-page-113",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation; not yet human-reviewed",
+  "line_segmentation": "methods/032-line-skew-separability, page-level line ids 0-29",
+  "split_lines_by_x": {
+    "0": [{"below_x": 400, "passage": "page-number"}, {"passage": "running-header"}],
+    "29": [
+      {"below_x": 369.5, "passage": "footnote-1"},
+      {"below_x": 475.5, "passage": "footnote-2"},
+      {"below_x": 716.5, "passage": "footnote-3"},
+      {"below_x": 886.0, "passage": "footnote-4"},
+      {"below_x": 1078.0, "passage": "footnote-5"},
+      {"passage": "footnote-6"}
+    ]
+  },
+  "passages": [
+    {"passage": "page-number", "type": "page_number", "keep": false},
+    {"passage": "running-header", "type": "running_header", "keep": false},
+    {"passage": "verse-42", "type": "verse", "keep": true, "lines": [1, 4], "note": "Verse 42, four printed lines ending with ॥ ४२ ॥."},
+    {"passage": "commentary-42", "type": "commentary", "keep": true, "lines": [5, 11]},
+    {"passage": "verse-43", "type": "verse", "keep": true, "lines": [12, 15], "note": "Verse 43, ending with ॥ ४३ ॥."},
+    {"passage": "commentary-43", "type": "commentary", "keep": true, "lines": [16, 21]},
+    {"passage": "verse-44", "type": "verse", "keep": true, "lines": [22, 25], "note": "Verse 44, ending with ॥ ४४ ॥."},
+    {"passage": "commentary-44", "type": "commentary", "keep": true, "lines": [26, 28]},
+    {"passage": "footnote-1", "type": "footnote", "keep": true},
+    {"passage": "footnote-2", "type": "footnote", "keep": true},
+    {"passage": "footnote-3", "type": "footnote", "keep": true},
+    {"passage": "footnote-4", "type": "footnote", "keep": true},
+    {"passage": "footnote-5", "type": "footnote", "keep": true},
+    {"passage": "footnote-6", "type": "footnote", "keep": true}
+  ],
+  "footnote_split_basis": "Each split is the center of an ink-free column run on the footnote line between one footnote's final punctuation and the next footnote's numeral; the run between numeral 4 and its text (x 749-776) is not a split.",
+  "non_text": "Detected rules (the short centered rule and the long footnote rule) are labeled separator. Three unassigned specks or marks (a dot near the top margin, a dot near the watermark, and the dark mark at the bottom edge) are left unlabeled."
+}

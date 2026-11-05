@@ -1,0 +1,33 @@
+{
+  "input_id": "ryder-ten-princes-1927-page-033",
+  "image": "ryder-ten-princes-1927-page-033.png",
+  "image_sha256": "5d6e82979a7e32a5c68651a746ec3c5daaa71dce98d4af745790b349d0ea3fd8",
+  "width": 1641,
+  "height": 1195,
+  "book_id": "ryder-ten-princes-1927",
+  "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+  "source_pdf_sha256": "fd8ccaea45c87e1b49a6706096d92a4a39ff8a286afe63040734ae2e636e6224",
+  "pdf_page": 33,
+  "pdf_page_index": 32,
+  "pdf_page_count": 69,
+  "pdf_page_size_points": [
+    787.0,
+    573.0
+  ],
+  "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+  "render": {
+    "library": "PyMuPDF",
+    "version": "1.26.6",
+    "dpi": 300,
+    "zoom": 2.085133418043202,
+    "effective_dpi": 150.13,
+    "native_image_size": [
+      1641,
+      1195
+    ],
+    "colorspace": "RGB",
+    "alpha": false,
+    "script": "inputs/render_pages.py",
+    "page_list": "inputs/pages-runs.json"
+  }
+}

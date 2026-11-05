@@ -1,0 +1,163 @@
+{
+  "id": "resp_021ae7f09319f5d3016aeb7b9cb20087d09e201e34cb0be2dd",
+  "object": "response",
+  "created_at": 1793817500,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793817510,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_021ae7f09319f5d3016aeb7b9e0c0487d0951a66be826c3896",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"running_header\",\"box_1000\":[82,44,185,58],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"page_number\",\"box_1000\":[883,46,917,60],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[102,76,419,122],\"keep\":true,\"reading_order\":1,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[80,126,488,196],\"keep\":true,\"reading_order\":2,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[101,201,439,374],\"keep\":true,\"reading_order\":3,\"uncertain\":true},{\"type\":\"commentary\",\"box_1000\":[80,378,487,554],\"keep\":true,\"reading_order\":4,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[101,558,485,606],\"keep\":true,\"reading_order\":5,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[80,609,487,674],\"keep\":true,\"reading_order\":6,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[101,679,423,705],\"keep\":true,\"reading_order\":7,\"uncertain\":true},{\"type\":\"commentary\",\"box_1000\":[80,704,489,736],\"keep\":true,\"reading_order\":8,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[101,739,439,785],\"keep\":true,\"reading_order\":9,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[80,789,487,841],\"keep\":true,\"reading_order\":10,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[101,846,444,918],\"keep\":true,\"reading_order\":11,\"uncertain\":true},{\"type\":\"commentary\",\"box_1000\":[80,920,489,954],\"keep\":true,\"reading_order\":12,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,75,919,145],\"keep\":true,\"reading_order\":13,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[530,151,857,197],\"keep\":true,\"reading_order\":14,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,200,918,253],\"keep\":true,\"reading_order\":15,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[529,257,859,302],\"keep\":true,\"reading_order\":16,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,307,919,377],\"keep\":true,\"reading_order\":17,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[530,382,884,529],\"keep\":true,\"reading_order\":18,\"uncertain\":true},{\"type\":\"commentary\",\"box_1000\":[509,534,919,699],\"keep\":true,\"reading_order\":19,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[530,703,836,751],\"keep\":true,\"reading_order\":20,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,754,919,828],\"keep\":true,\"reading_order\":21,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[530,831,854,880],\"keep\":true,\"reading_order\":22,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,881,918,953],\"keep\":true,\"reading_order\":23,\"uncertain\":false}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "verse",
+                    "commentary",
+                    "lead_in",
+                    "footnote",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 7443,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 7440
+    },
+    "output_tokens": 802,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 8245
+  },
+  "user": null,
+  "metadata": {}
+}

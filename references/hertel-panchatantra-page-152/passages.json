@@ -1,0 +1,435 @@
+{
+  "input_id": "hertel-panchatantra-page-152",
+  "input_sha256": "e50c430933d334e870c1ba491c7502bee14ecc6e9f13acf45d6bd987460f0318",
+  "version": 1,
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T22:24:07.559044+00:00",
+  "spec_sha256": "bccc182f53740692dd57f8e849112dfe91cd157358c7910e14d6c21310a09515",
+  "labels_png_sha256": "3b77d257db5c7d3e9d9d171cd71b98e93802c949666afdb73cf001027557e386",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 138.0,
+    "weak": 196.5,
+    "speck_area": 28
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 17130,
+      "components": 49,
+      "box": [
+        489,
+        264,
+        1517,
+        371
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 992,
+      "components": 2,
+      "box": [
+        1864,
+        263,
+        1919,
+        301
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "prose-1",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 328828,
+      "components": 204,
+      "box": [
+        170,
+        432,
+        1840,
+        1307
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "verse-345",
+      "type": "verse",
+      "keep": true,
+      "pixels": 68733,
+      "components": 52,
+      "box": [
+        259,
+        1346,
+        1824,
+        1542
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "lead-in-1",
+      "type": "lead_in",
+      "keep": true,
+      "pixels": 4357,
+      "components": 4,
+      "box": [
+        170,
+        1547,
+        365,
+        1614
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "verse-346",
+      "type": "verse",
+      "keep": true,
+      "pixels": 65344,
+      "components": 51,
+      "box": [
+        259,
+        1648,
+        1697,
+        1838
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "prose-2",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 190578,
+      "components": 114,
+      "box": [
+        168,
+        1855,
+        1829,
+        2351
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "verse-347",
+      "type": "verse",
+      "keep": true,
+      "pixels": 65250,
+      "components": 46,
+      "box": [
+        259,
+        2367,
+        1712,
+        2560
+      ]
+    },
+    {
+      "value": 9,
+      "passage": "prose-3",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 38218,
+      "components": 27,
+      "box": [
+        167,
+        2577,
+        1790,
+        2668
+      ]
+    },
+    {
+      "value": 10,
+      "passage": "verse-348",
+      "type": "verse",
+      "keep": true,
+      "pixels": 60336,
+      "components": 46,
+      "box": [
+        257,
+        2680,
+        1622,
+        2870
+      ]
+    },
+    {
+      "value": 11,
+      "passage": "margin-line-numbers",
+      "type": "other",
+      "keep": false,
+      "pixels": 3516,
+      "components": 14,
+      "box": [
+        1844,
+        661,
+        1891,
+        2833
+      ]
+    }
+  ],
+  "unlabeled_components": [],
+  "component_rules_applied": [
+    {
+      "box": [
+        1842,
+        600,
+        1930,
+        2900
+      ],
+      "label": "margin-line-numbers",
+      "components": [
+        {
+          "component_id": 131,
+          "box": [
+            1859,
+            661,
+            1879,
+            689
+          ],
+          "area": 339,
+          "role": "text",
+          "line": 2
+        },
+        {
+          "component_id": 209,
+          "box": [
+            1857,
+            963,
+            1876,
+            990
+          ],
+          "area": 339,
+          "role": "text",
+          "line": 7
+        },
+        {
+          "component_id": 265,
+          "box": [
+            1855,
+            1270,
+            1874,
+            1298
+          ],
+          "area": 319,
+          "role": "text",
+          "line": 8
+        },
+        {
+          "component_id": 325,
+          "box": [
+            1854,
+            1581,
+            1867,
+            1607
+          ],
+          "area": 193,
+          "role": "text",
+          "line": 11
+        },
+        {
+          "component_id": 326,
+          "box": [
+            1873,
+            1580,
+            1890,
+            1597
+          ],
+          "area": 162,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 327,
+          "box": [
+            1872,
+            1597,
+            1889,
+            1607
+          ],
+          "area": 110,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 408,
+          "box": [
+            1853,
+            1883,
+            1868,
+            1911
+          ],
+          "area": 219,
+          "role": "text",
+          "line": 15
+        },
+        {
+          "component_id": 409,
+          "box": [
+            1872,
+            1883,
+            1891,
+            1910
+          ],
+          "area": 315,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 472,
+          "box": [
+            1852,
+            2189,
+            1865,
+            2215
+          ],
+          "area": 177,
+          "role": "text",
+          "line": 18
+        },
+        {
+          "component_id": 473,
+          "box": [
+            1870,
+            2188,
+            1888,
+            2216
+          ],
+          "area": 289,
+          "role": "text",
+          "line": 17
+        },
+        {
+          "component_id": 545,
+          "box": [
+            1847,
+            2497,
+            1866,
+            2525
+          ],
+          "area": 299,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 546,
+          "box": [
+            1870,
+            2498,
+            1883,
+            2525
+          ],
+          "area": 195,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 622,
+          "box": [
+            1844,
+            2806,
+            1863,
+            2833
+          ],
+          "area": 305,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 623,
+          "box": [
+            1865,
+            2806,
+            1883,
+            2833
+          ],
+          "area": 255,
+          "role": "text",
+          "line": -1
+        }
+      ]
+    },
+    {
+      "box": [
+        485,
+        274,
+        513,
+        302
+      ],
+      "label": "running-header",
+      "components": [
+        {
+          "component_id": 25,
+          "box": [
+            489,
+            277,
+            510,
+            299
+          ],
+          "area": 228,
+          "role": "text",
+          "line": -1
+        }
+      ]
+    },
+    {
+      "box": [
+        884,
+        362,
+        896,
+        374
+      ],
+      "label": "running-header",
+      "components": [
+        {
+          "component_id": 52,
+          "box": [
+            886,
+            365,
+            894,
+            371
+          ],
+          "area": 41,
+          "role": "text",
+          "line": -1
+        }
+      ]
+    },
+    {
+      "box": [
+        1244,
+        360,
+        1257,
+        373
+      ],
+      "label": "running-header",
+      "components": [
+        {
+          "component_id": 51,
+          "box": [
+            1247,
+            363,
+            1254,
+            370
+          ],
+          "area": 37,
+          "role": "text",
+          "line": -1
+        }
+      ]
+    }
+  ],
+  "separator_pixels": 17586,
+  "builder": "methods/035-gpt-6.1-terra-none-column-margin-ownership/reference.py",
+  "method_files_sha256": {
+    "reference.py": "1a03a4bd97e5e13879c2c7108611fb0dae1876c2217e9b974d78034e779a9710",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

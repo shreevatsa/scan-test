@@ -1,0 +1,161 @@
+{
+  "input_id": "gopinath-1896-page-123",
+  "version": 2,
+  "status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+  "line_segmentation": "methods/032-line-skew-separability (copied unchanged into method 033), page-level line ids 0-35",
+  "split_lines_by_x": {
+    "14": [
+      {
+        "below_x": 1370,
+        "passage": "hindi-translation-54"
+      },
+      {
+        "passage": null
+      }
+    ],
+    "15": [
+      {
+        "below_x": 220,
+        "passage": null
+      },
+      {
+        "passage": "hindi-translation-54"
+      }
+    ],
+    "24": [
+      {
+        "below_x": 220,
+        "passage": null
+      },
+      {
+        "passage": "english-translation-54"
+      }
+    ]
+  },
+  "passages": [
+    {
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "lines": [
+        0,
+        0
+      ],
+      "note": "नीतिशतकम् ।, above the page frame."
+    },
+    {
+      "passage": "verse-54",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        1,
+        10
+      ],
+      "note": "Five printed lines ending with ॥ ५४ ॥. Lines 1, 3, 5, 7 and 9 are detached marks above lines 2, 4, 6, 8 and 10. A thin piece of the frame's inner top rule (x 586-672, y 261-267) is attached to line 1; a component rule leaves it unlabeled."
+    },
+    {
+      "passage": "hindi-translation-54",
+      "type": "translation",
+      "keep": true,
+      "lines": [
+        11,
+        16
+      ],
+      "note": "लज्जावान्को मूर्ख ... ॥ ५४ ॥. Split rules on lines 14 and 15 take precedence over this range."
+    },
+    {
+      "passage": "bhavartha-heading-54",
+      "type": "heading",
+      "keep": true,
+      "lines": [
+        17,
+        17
+      ],
+      "note": "भावार्थ ।, a centered heading."
+    },
+    {
+      "passage": "bhavartha-54",
+      "type": "translation",
+      "keep": true,
+      "lines": [
+        18,
+        19
+      ],
+      "note": "दुष्ट मनुष्य ... ॥ ५४ ॥."
+    },
+    {
+      "passage": "english-translation-54",
+      "type": "translation",
+      "keep": true,
+      "lines": [
+        20,
+        26
+      ],
+      "note": "The bashful are considered as stupid ... by the evil?. The split rule on line 24 takes precedence over this range."
+    },
+    {
+      "passage": "note-source",
+      "type": "footnote",
+      "keep": true,
+      "lines": [
+        27,
+        28
+      ],
+      "note": "Quoted under Bhartrihari ... at No. 464."
+    },
+    {
+      "passage": "note-cf-a",
+      "type": "footnote",
+      "keep": true,
+      "lines": [
+        29,
+        31
+      ],
+      "note": "Cf.—(a) “Bad men give themselves ...” (H. S. Brown). The e of 'done' at the end of line 29 is on no line; a component rule labels it note-cf-a."
+    },
+    {
+      "passage": "note-cf-b",
+      "type": "footnote",
+      "keep": true,
+      "lines": [
+        32,
+        33
+      ],
+      "note": "(b) “दोषान्वेषणमेव ...” (श्रीकविभट्टकृते पद्यसंग्रहे)."
+    },
+    {
+      "passage": "note-cf-c",
+      "type": "footnote",
+      "keep": true,
+      "lines": [
+        34,
+        35
+      ],
+      "note": "(c) “दुर्जनधिषणाभीक्ष्णं ...” (श्रीकृष्णकवेर्मन्दारमरन्दचम्पूः । ८६)."
+    }
+  ],
+  "unit_definition": "One passage per verse, per translation or gist paragraph, per heading, and per separately set note item below the rule. Joining the note items, or the heading to its paragraph, is a grouping difference, not an ownership error.",
+  "non_text": "Rules, and large components that are thin and horizontal (the top and bottom of the page frame), are labeled separator by the builder. The vertical frame bars, which the line finder classes as large components, stay unlabeled. Three short frame pieces that the line finder attached to text lines 14, 15 and 24 are left unlabeled by split rules. The 'Digitized by Google' watermark is not in the ink mask. The piece of the inner top rule attached to line 1 is left unlabeled by a component rule.",
+  "components_in_boxes": [
+    {
+      "box": [
+        580,
+        255,
+        680,
+        272
+      ],
+      "passage": null,
+      "note": "Piece of the frame's inner top rule, attached to line 1."
+    },
+    {
+      "box": [
+        1332,
+        1912,
+        1357,
+        1940
+      ],
+      "passage": "note-cf-a",
+      "note": "The e of 'done', on no line."
+    }
+  ]
+}

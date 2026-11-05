@@ -36,19 +36,19 @@ From the project root, install the dependencies into the existing Python 3.12 en
 Create the base detections with method 003 if they have not yet been recorded:
 
 ```sh
-.venv/bin/python methods/003-pp-doclayoutv3/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/003-pp-doclayoutv3/run.py inputs/kale-1913-page-017.png
 ```
 
 Apply the refinement:
 
 ```sh
-.venv/bin/python methods/004-pp-doclayoutv3-pixel-refinement/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/004-pp-doclayoutv3-pixel-refinement/run.py inputs/kale-1913-page-017.png
 ```
 
 To refine another saved method-3 run, specify it explicitly and choose a fresh output directory:
 
 ```sh
-.venv/bin/python methods/004-pp-doclayoutv3-pixel-refinement/run.py inputs/kale-1913-page-017.png --base-regions outputs/kale-1913-page-017/003-pp-doclayoutv3/run-002/regions.json --output-dir outputs/kale-1913-page-017/004-pp-doclayoutv3-pixel-refinement/run-002
+uv run --offline python methods/004-pp-doclayoutv3-pixel-refinement/run.py inputs/kale-1913-page-017.png --base-regions outputs/kale-1913-page-017/003-pp-doclayoutv3/run-002/regions.json --output-dir outputs/kale-1913-page-017/004-pp-doclayoutv3-pixel-refinement/run-002
 ```
 
 Existing nonempty output directories are preserved.

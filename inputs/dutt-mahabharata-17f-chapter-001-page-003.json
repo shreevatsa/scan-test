@@ -1,0 +1,33 @@
+{
+  "input_id": "dutt-mahabharata-17f-chapter-001-page-003",
+  "image": "dutt-mahabharata-17f-chapter-001-page-003.png",
+  "image_sha256": "a1d70dd830818997a12bc2d9a5dd31ec977fe58f6184c96eed9397e4a1644a14",
+  "width": 2107,
+  "height": 2850,
+  "book_id": "dutt-mahabharata",
+  "source_pdf": "~/w/mahabharata-dutt/pdfs/17F_Chapter_001.pdf",
+  "source_pdf_sha256": "cd1f6fecd7b4bb9055849c359c82c1a1e5ff6bbd519e113e9e1f17af4ec5459d",
+  "pdf_page": 3,
+  "pdf_page_index": 2,
+  "pdf_page_count": 5,
+  "pdf_page_size_points": [
+    505.67999267578125,
+    684.0
+  ],
+  "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+  "render": {
+    "library": "PyMuPDF",
+    "version": "1.26.6",
+    "dpi": 300,
+    "zoom": 4.166666666666667,
+    "effective_dpi": 300.0,
+    "native_image_size": [
+      2107,
+      2850
+    ],
+    "colorspace": "RGB",
+    "alpha": false,
+    "script": "inputs/render_pages.py",
+    "page_list": "inputs/pages-runs.json"
+  }
+}

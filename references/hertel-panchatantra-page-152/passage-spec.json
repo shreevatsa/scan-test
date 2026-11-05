@@ -1,0 +1,161 @@
+{
+  "input_id": "hertel-panchatantra-page-152",
+  "version": 1,
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "line_segmentation": "method 032 line finder as copied into methods 033 and 035, page-level line ids 0-24",
+  "split_lines_by_x": {
+    "0": [
+      {
+        "below_x": 1800,
+        "passage": "running-header"
+      },
+      {
+        "passage": "page-number"
+      }
+    ]
+  },
+  "passages": [
+    {
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "note": "OR, THE LION AND THE BULL. Book I., with the tale line Tale xv: Strand-bird and sea. below it; left part of line 0 plus three pieces on no line."
+    },
+    {
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "note": "95, right end of line 0."
+    },
+    {
+      "passage": "prose-1",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        1,
+        9
+      ],
+      "note": "भो दूत ' किं मया कुभृत्येन ... आनयामि । उक्तं च ।, continued from the previous page; the closing उक्तं च । shares the last line."
+    },
+    {
+      "passage": "verse-345",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        10,
+        11
+      ],
+      "note": "शक्तं भक्तं कुलीनं च ... आत्मनः ॥३४५॥, indented."
+    },
+    {
+      "passage": "lead-in-1",
+      "type": "lead_in",
+      "keep": true,
+      "lines": [
+        12,
+        12
+      ],
+      "note": "किं च ।, on a line of its own."
+    },
+    {
+      "passage": "verse-346",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        13,
+        14
+      ],
+      "note": "स्वामी तुष्टो ऽपि ... उपकुर्वते ॥३४६॥"
+    },
+    {
+      "passage": "prose-2",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        15,
+        19
+      ],
+      "note": "इति संप्रधार्य ... उक्तं च ।"
+    },
+    {
+      "passage": "verse-347",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        20,
+        21
+      ],
+      "note": "येन स्याल् लघुता लोके ... कुलसेवकः ॥३४७॥"
+    },
+    {
+      "passage": "prose-3",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        22,
+        22
+      ],
+      "note": "इत्य् उक्ते भगवान् आह । ... यतः ।, one line."
+    },
+    {
+      "passage": "verse-348",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        23,
+        24
+      ],
+      "note": "सदा भृत्यापराधेन ... मुञ्चति ॥३४८॥"
+    },
+    {
+      "passage": "margin-line-numbers",
+      "type": "other",
+      "keep": false,
+      "note": "The edition's line numbers in the right margin (3, 6, ..., 24). The line finder attaches some to text lines and leaves others on no line; a component rule labels them all."
+    }
+  ],
+  "components_in_boxes": [
+    {
+      "box": [
+        1842,
+        600,
+        1930,
+        2900
+      ],
+      "passage": "margin-line-numbers",
+      "note": "Right-margin line numbers; every text glyph ends by x 1840."
+    },
+    {
+      "box": [
+        485,
+        274,
+        513,
+        302
+      ],
+      "passage": "running-header",
+      "note": "The O of OR, on no line."
+    },
+    {
+      "box": [
+        884,
+        362,
+        896,
+        374
+      ],
+      "passage": "running-header",
+      "note": "Lower dot of the colon in Tale xv:, on no line."
+    },
+    {
+      "box": [
+        1244,
+        360,
+        1257,
+        373
+      ],
+      "passage": "running-header",
+      "note": "Final period of the tale line, on no line."
+    }
+  ],
+  "unit_definition": "One passage per prose paragraph (a block of continuous prose between verses), per verse, and per lead-in set on a line of its own. A lead-in at the end of a prose line (उक्तं च ।, यतः ।) belongs to the prose. Joining a lead-in to its verse or prose, or splitting a paragraph into consecutive regions, is a grouping difference, not an ownership error.",
+  "non_text": "The thick rule under the header and the short rule between the header and the tale line are labeled separator by the builder. The margin line numbers are labeled as a non-kept passage."
+}

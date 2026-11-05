@@ -41,13 +41,13 @@ From the project root, install this method's dependencies in the existing Python
 
 ```sh
 .venv/bin/python -m pip install -r methods/002-pp-doclayout-s/requirements.txt
-.venv/bin/python methods/002-pp-doclayout-s/download_models.py
+uv run --offline python methods/002-pp-doclayout-s/download_models.py
 ```
 
 Run it on the shared input:
 
 ```sh
-.venv/bin/python methods/002-pp-doclayout-s/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/002-pp-doclayout-s/run.py inputs/kale-1913-page-017.png
 ```
 
 The runner applies an OS network restriction before importing the inference libraries and verifies it using IPv4 and IPv6 TCP/UDP probes. On macOS it uses `sandbox-exec` with `deny network*`; on Linux it uses libseccomp to deny socket creation and connection/send syscalls. It sets `ORT_DISABLE_TELEMETRY=1` and calls `onnxruntime.disable_telemetry_events()`. The network restriction and probe results are recorded with each run. Dependency installation and model download are separate commands.
@@ -64,7 +64,7 @@ outputs/kale-1913-page-017/002-pp-doclayout-s/
 For a repeat run, use a fresh directory:
 
 ```sh
-.venv/bin/python methods/002-pp-doclayout-s/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/002-pp-doclayout-s/run-002
+uv run --offline python methods/002-pp-doclayout-s/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/002-pp-doclayout-s/run-002
 ```
 
 Existing nonempty output directories are preserved.

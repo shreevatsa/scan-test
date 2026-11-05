@@ -1,0 +1,33 @@
+{
+  "input_id": "kale-1913-page-109",
+  "image": "kale-1913-page-109.png",
+  "image_sha256": "3c4eb8d104a443434ae5886f71b9048a4bc16f19faa62074ca8569c3c26b9699",
+  "width": 1379,
+  "height": 2115,
+  "book_id": "kale-1913",
+  "source_pdf": "Kale-1913-pp21-272.pdf",
+  "source_pdf_sha256": "ccabe9850493a8e5d6ecd61660407933f757481cb892985b007e6ff222d9f3b0",
+  "pdf_page": 109,
+  "pdf_page_index": 108,
+  "pdf_page_count": 252,
+  "pdf_page_size_points": [
+    330.96002197265625,
+    507.6000061035156
+  ],
+  "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+  "render": {
+    "library": "PyMuPDF",
+    "version": "1.26.6",
+    "dpi": 300,
+    "zoom": 4.166666666666667,
+    "effective_dpi": 300.0,
+    "native_image_size": [
+      2758,
+      4230
+    ],
+    "colorspace": "RGB",
+    "alpha": false,
+    "script": "inputs/render_pages.py",
+    "page_list": "inputs/pages-runs.json"
+  }
+}

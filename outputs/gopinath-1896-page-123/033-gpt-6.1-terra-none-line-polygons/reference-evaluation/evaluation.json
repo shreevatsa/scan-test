@@ -1,0 +1,289 @@
+{
+ "created_at_utc": "2026-11-04T18:21:55.793782+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/gopinath-1896-page-123.png",
+  "sha256": "0361671dc5c57360331f210f9f4cbe771cb1cd77b6c5ab870ee1628d8264a47b"
+ },
+ "reference": {
+  "path": "../../references/gopinath-1896-page-123",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "labels_png_sha256": "ad1f8c802d4bcf413947b43eb8b82c479f09f50979c360005e0ba6c8815fa171",
+  "spec_sha256": "f5f01c30b532560c1b43db7acf3d921e9ba8a2c47070a31a65bba92df3a0a628"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra without reasoning (025), boxes",
+   "path": "../../outputs/gopinath-1896-page-123/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "sha256": "3da99e93ca467f3c4e9ad818dbbe2064658b99e4717392d8aa1475a516b32e47",
+   "totals": {
+    "other_passages_ink_included": 613,
+    "own_ink_left_out": 541,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "verse-54": {
+     "matched_region_id": 2,
+     "region_kind": "box",
+     "own_left_out": 438,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "hindi-translation-54": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "bhavartha-heading-54": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "bhavartha-54": {
+     "matched_region_id": 5,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "english-translation-54": {
+     "matched_region_id": 6,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-source": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "note-cf-a": 2
+     },
+     "separator_included": 0
+    },
+    "note-cf-a": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 103,
+     "other_included": {
+      "note-source": 13,
+      "note-cf-b": 204
+     },
+     "separator_included": 0
+    },
+    "note-cf-b": {
+     "matched_region_id": 9,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "note-cf-a": 179,
+      "note-cf-c": 56
+     },
+     "separator_included": 0
+    },
+    "note-cf-c": {
+     "matched_region_id": 10,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "note-cf-b": 159
+     },
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-54",
+     "lower": "hindi-translation-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "hindi-translation-54",
+     "lower": "bhavartha-heading-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-heading-54",
+     "lower": "bhavartha-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-54",
+     "lower": "english-translation-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra + line ownership polygons (033)",
+   "path": "../../outputs/gopinath-1896-page-123/033-gpt-6.1-terra-none-line-polygons/regions.json",
+   "sha256": "83684427b2ccc565652710dec63fcb00fc3f63e6b13813c33af3a423eb5b5320",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "verse-54": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "hindi-translation-54": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "bhavartha-heading-54": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "bhavartha-54": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "english-translation-54": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-source": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-cf-a": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-cf-b": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "note-cf-c": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-54",
+     "lower": "hindi-translation-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "hindi-translation-54",
+     "lower": "bhavartha-heading-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-heading-54",
+     "lower": "bhavartha-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-54",
+     "lower": "english-translation-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "running-header": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-54": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "hindi-translation-54": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "bhavartha-heading-54": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "bhavartha-54": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "english-translation-54": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "note-source": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "note-cf-a": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "note-cf-b": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "note-cf-c": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "d0afd9566f9a35bf0e68d81e5b8423d80c2899d305e1ae0bfde8867baca86df2"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "0670009e1bc23665794d5480d2f070a30132e36d744ad47d721f2bb35fe32f63",
+  "ownership.py": "2aa725f23aead27d685d1ee15d23cace4620ba99918ea7c3523e0cde9c6429ff",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

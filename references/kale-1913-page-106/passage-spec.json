@@ -1,0 +1,166 @@
+{
+  "input_id": "kale-1913-page-106",
+  "version": 1,
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "line_segmentation": "method 032 line finder as copied into methods 033 and 035, page-level line ids 0-30",
+  "split_lines_by_x": {
+    "0": [
+      {
+        "below_x": 1000,
+        "passage": "running-header"
+      },
+      {
+        "passage": "page-number"
+      }
+    ],
+    "30": [
+      {
+        "below_x": 277,
+        "passage": "footnote-1"
+      },
+      {
+        "below_x": 478,
+        "passage": "footnote-2"
+      },
+      {
+        "below_x": 682,
+        "passage": "footnote-3"
+      },
+      {
+        "passage": "footnote-4"
+      }
+    ]
+  },
+  "passages": [
+    {
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "note": "वैराग्यशतकम् ।"
+    },
+    {
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "note": "८७, right end of line 0."
+    },
+    {
+      "passage": "commentary-19",
+      "type": "commentary",
+      "keep": true,
+      "lines": [
+        1,
+        4
+      ],
+      "note": "रोदनं कुर्वते च ... वसन्ततिलका ॥, continued from the previous page."
+    },
+    {
+      "passage": "verse-20",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        5,
+        8
+      ],
+      "note": "कार्कश्यं स्तनयोर्दृशोस्तरलता ... प्रियाः २०"
+    },
+    {
+      "passage": "commentary-20",
+      "type": "commentary",
+      "keep": true,
+      "lines": [
+        9,
+        15
+      ],
+      "note": "स्तनयोः कर्कशस्य भावः ... शार्दूल० ॥"
+    },
+    {
+      "passage": "verse-21",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        16,
+        19
+      ],
+      "note": "क्वचिद्वीणावादः ... किं विषमयः ॥ २१ ॥"
+    },
+    {
+      "passage": "commentary-21",
+      "type": "commentary",
+      "keep": true,
+      "lines": [
+        20,
+        23
+      ],
+      "note": "वीणावादः वीणावादनम् ... शिखरिणी ॥"
+    },
+    {
+      "passage": "verse-22",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        24,
+        28
+      ],
+      "note": "गात्रैर्गिरा च विकलश्चटुमीश्वराणां ... दीर्घमायुः ॥ २२ ॥ Line 24 is a detached mark above line 25."
+    },
+    {
+      "passage": "commentary-22",
+      "type": "commentary",
+      "keep": true,
+      "lines": [
+        29,
+        29
+      ],
+      "note": "गात्रैः गिरा च विकलः ... हास्यरसप्रधान-, continued on the next page."
+    },
+    {
+      "passage": "footnote-1",
+      "type": "footnote",
+      "keep": true,
+      "note": "१ प्रवचने."
+    },
+    {
+      "passage": "footnote-2",
+      "type": "footnote",
+      "keep": true,
+      "note": "२ प्रयोगाप्रये."
+    },
+    {
+      "passage": "footnote-3",
+      "type": "footnote",
+      "keep": true,
+      "note": "३ किं नराणां"
+    },
+    {
+      "passage": "footnote-4",
+      "type": "footnote",
+      "keep": true,
+      "note": "४ वाद्यं."
+    }
+  ],
+  "components_in_boxes": [
+    {
+      "separator": true,
+      "box": [
+        95,
+        1903,
+        1210,
+        1915
+      ],
+      "note": "Every piece of the footnote rule: three rule components, and seven thin pieces that the line finder classes as text and attaches to lines 29 and 30."
+    },
+    {
+      "box": [
+        959,
+        1120,
+        972,
+        1133
+      ],
+      "passage": null,
+      "note": "An isolated speck in the white space right of commentary 20's last line; the line finder put it on verse 21's first line."
+    }
+  ],
+  "unit_definition": "One passage per verse, per commentary, and per footnote; the four footnotes share one printed line and are split at the gaps before their numerals. Joining the footnotes, or splitting a commentary into consecutive regions, is a grouping difference, not an ownership error.",
+  "non_text": "The footnote rule is labeled separator (component rule). The 'Digitized by Google' watermark is not in the ink mask. A 17-pixel speck in the left margin is on no line and stays unlabeled. An isolated speck right of commentary 20's last line is left unlabeled by a component rule."
+}

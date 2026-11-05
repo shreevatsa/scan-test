@@ -1,0 +1,1595 @@
+{
+ "note": "Continuation truth for the consecutive-page runs in inputs/pages-runs.json, written by Claude on 2026-11-04 from the page images before any method 040 output was opened; not yet reviewed by the user. Each edge says whether the first (start) or last (end) unit of a stream (body or notes) in a page or column continues from an earlier region or into a later one; links pair them. Anchors are line ids of the method 032 line finder (as copied into method 035), optionally restricted to an x range; 'point' is the ink centroid used for checking. Three 1914 anchors were corrected after the check showed border pieces pulling the centroid: page 259 line 32 is restricted to x 200-1350; page 260 line 22 (the word 'love.') to x 95-1350; and the notes start on page 260 is line 26, not line 25, which is a border piece. Sentences continuing through displayed formulas within a page (Cole) are deliberately not scored.",
+ "runs": {
+  "kale-1913-106": {
+   "edges": [
+    {
+     "page": "kale-1913-page-106",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       682,
+       293
+      ]
+     },
+     "continues": true,
+     "note": "commentary 19 continued from page 105"
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 29,
+      "point": [
+       707,
+       1872
+      ]
+     },
+     "continues": true,
+     "note": "ends हास्यरसप्रधान-"
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 30,
+      "x": [
+       130,
+       280
+      ],
+      "point": [
+       204,
+       1944
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 30,
+      "x": [
+       690,
+       810
+      ],
+      "point": [
+       754,
+       1938
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 2,
+      "point": [
+       726,
+       240
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 30,
+      "point": [
+       826,
+       1813
+      ]
+     },
+     "continues": false,
+     "note": "verse 26 complete"
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 31,
+      "x": [
+       240,
+       600
+      ],
+      "point": [
+       420,
+       1882
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 32,
+      "point": [
+       306,
+       1923
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       638,
+       273
+      ]
+     },
+     "continues": false,
+     "note": "new commentary"
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 27,
+      "point": [
+       621,
+       1659
+      ]
+     },
+     "continues": false,
+     "note": "verse 29 complete"
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 28,
+      "x": [
+       60,
+       300
+      ],
+      "point": [
+       192,
+       1729
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 32,
+      "x": [
+       560,
+       710
+      ],
+      "point": [
+       646,
+       1930
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 2,
+      "point": [
+       786,
+       293
+      ]
+     },
+     "continues": false,
+     "note": "commentary on verse 29 begins"
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 28,
+      "point": [
+       734,
+       1861
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 29,
+      "x": [
+       250,
+       500
+      ],
+      "point": [
+       365,
+       1939
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 29,
+      "x": [
+       1000,
+       1310
+      ],
+      "point": [
+       1147,
+       1937
+      ]
+     },
+     "continues": false
+    }
+   ],
+   "links": [
+    {
+     "stream": "body",
+     "from": {
+      "page": "kale-1913-page-106",
+      "line": 29
+     },
+     "to": {
+      "page": "kale-1913-page-107",
+      "line": 2
+     }
+    }
+   ]
+  },
+  "hertel-panchatantra-152": {
+   "edges": [
+    {
+     "page": "hertel-panchatantra-page-152",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       1006,
+       478
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "hertel-panchatantra-page-152",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 24,
+      "point": [
+       951,
+       2825
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "hertel-panchatantra-page-153",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       1104,
+       478
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "hertel-panchatantra-page-153",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 31,
+      "point": [
+       633,
+       2835
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "hertel-panchatantra-page-154",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       988,
+       575
+      ]
+     },
+     "continues": false,
+     "note": "story heading"
+    },
+    {
+     "page": "hertel-panchatantra-page-154",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 23,
+      "point": [
+       949,
+       2828
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "hertel-panchatantra-page-155",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       1075,
+       453
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "hertel-panchatantra-page-155",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 24,
+      "point": [
+       1075,
+       2808
+      ]
+     },
+     "continues": true,
+     "note": "ends mid-dialogue, continues on page 156"
+    }
+   ],
+   "links": [
+    {
+     "stream": "body",
+     "from": {
+      "page": "hertel-panchatantra-page-154",
+      "line": 23
+     },
+     "to": {
+      "page": "hertel-panchatantra-page-155",
+      "line": 1
+     }
+    }
+   ]
+  },
+  "ryder-ten-princes-1927-030": {
+   "edges": [
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       419,
+       181
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 28,
+      "point": [
+       396,
+       1006
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 30,
+      "point": [
+       1179,
+       161
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 58,
+      "point": [
+       924,
+       1014
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       438,
+       173
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 30,
+      "point": [
+       541,
+       1026
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 32,
+      "point": [
+       1135,
+       159
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 60,
+      "point": [
+       1165,
+       1011
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       414,
+       174
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 10,
+      "point": [
+       290,
+       446
+      ]
+     },
+     "continues": false,
+     "note": "end of chapter IV"
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 11,
+      "point": [
+       1142,
+       227
+      ]
+     },
+     "continues": false,
+     "note": "CHAPTER V heading"
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 36,
+      "point": [
+       1182,
+       1010
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       422,
+       159
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 27,
+      "point": [
+       467,
+       1008
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 29,
+      "point": [
+       1126,
+       157
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 57,
+      "point": [
+       1146,
+       1009
+      ]
+     },
+     "continues": true,
+     "note": "hyphenated, continues on page 34"
+    }
+   ],
+   "links": [
+    {
+     "stream": "body",
+     "from": {
+      "page": "ryder-ten-princes-1927-page-031",
+      "line": 30
+     },
+     "to": {
+      "page": "ryder-ten-princes-1927-page-031",
+      "line": 32
+     },
+     "note": "left page to right page"
+    },
+    {
+     "stream": "body",
+     "from": {
+      "page": "ryder-ten-princes-1927-page-031",
+      "line": 60
+     },
+     "to": {
+      "page": "ryder-ten-princes-1927-page-032",
+      "line": 1
+     }
+    },
+    {
+     "stream": "body",
+     "from": {
+      "page": "ryder-ten-princes-1927-page-032",
+      "line": 36
+     },
+     "to": {
+      "page": "ryder-ten-princes-1927-page-033",
+      "line": 1
+     }
+    },
+    {
+     "stream": "body",
+     "from": {
+      "page": "ryder-ten-princes-1927-page-033",
+      "line": 27
+     },
+     "to": {
+      "page": "ryder-ten-princes-1927-page-033",
+      "line": 29
+     },
+     "note": "left page to right page"
+    }
+   ]
+  },
+  "cole-1903-001": {
+   "edges": [
+    {
+     "page": "cole-1903-page-001",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 2,
+      "point": [
+       895,
+       471
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 37,
+      "point": [
+       928,
+       2249
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 38,
+      "point": [
+       926,
+       2323
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 39,
+      "point": [
+       890,
+       2355
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       902,
+       472
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 41,
+      "point": [
+       909,
+       2242
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 42,
+      "point": [
+       667,
+       2317
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 43,
+      "point": [
+       741,
+       2349
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 2,
+      "point": [
+       917,
+       471
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 47,
+      "point": [
+       837,
+       2166
+      ]
+     },
+     "continues": false,
+     "note": "display 4 complete"
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 49,
+      "point": [
+       948,
+       2240
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 53,
+      "point": [
+       759,
+       2373
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       587,
+       472
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 34,
+      "point": [
+       568,
+       2223
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 35,
+      "point": [
+       957,
+       2294
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 37,
+      "point": [
+       933,
+       2363
+      ]
+     },
+     "continues": false
+    }
+   ],
+   "links": [
+    {
+     "stream": "body",
+     "from": {
+      "page": "cole-1903-page-001",
+      "line": 37
+     },
+     "to": {
+      "page": "cole-1903-page-002",
+      "line": 1
+     }
+    },
+    {
+     "stream": "body",
+     "from": {
+      "page": "cole-1903-page-002",
+      "line": 41
+     },
+     "to": {
+      "page": "cole-1903-page-003",
+      "line": 2
+     }
+    }
+   ]
+  },
+  "telang-dli-108": {
+   "edges": [
+    {
+     "page": "telang-dli-page-108",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       591,
+       424
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 17,
+      "point": [
+       737,
+       1237
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 19,
+      "point": [
+       754,
+       1361
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 34,
+      "point": [
+       280,
+       2216
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       700,
+       423
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 15,
+      "point": [
+       706,
+       1386
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 16,
+      "point": [
+       812,
+       1466
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 32,
+      "point": [
+       712,
+       2217
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       621,
+       420
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 17,
+      "point": [
+       764,
+       1377
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 19,
+      "point": [
+       758,
+       1457
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 33,
+      "point": [
+       618,
+       2213
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       519,
+       437
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 14,
+      "point": [
+       747,
+       1397
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 15,
+      "point": [
+       768,
+       1479
+      ]
+     },
+     "continues": false
+    }
+   ],
+   "links": [
+    {
+     "stream": "body",
+     "from": {
+      "page": "telang-dli-page-108",
+      "line": 17
+     },
+     "to": {
+      "page": "telang-dli-page-109",
+      "line": 1
+     }
+    },
+    {
+     "stream": "body",
+     "from": {
+      "page": "telang-dli-page-109",
+      "line": 15
+     },
+     "to": {
+      "page": "telang-dli-page-110",
+      "line": 1
+     }
+    },
+    {
+     "stream": "notes",
+     "from": {
+      "page": "telang-dli-page-108",
+      "line": 34
+     },
+     "to": {
+      "page": "telang-dli-page-109",
+      "line": 16
+     }
+    },
+    {
+     "stream": "notes",
+     "from": {
+      "page": "telang-dli-page-109",
+      "line": 32
+     },
+     "to": {
+      "page": "telang-dli-page-110",
+      "line": 19
+     }
+    }
+   ]
+  },
+  "dutt-17f-chapter-001": {
+   "edges": [
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "x": [
+       0,
+       1040
+      ],
+      "point": [
+       595,
+       546
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 50,
+      "x": [
+       0,
+       1040
+      ],
+      "point": [
+       555,
+       2575
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "x": [
+       1060,
+       2000
+      ],
+      "point": [
+       1263,
+       543
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 50,
+      "x": [
+       1060,
+       2000
+      ],
+      "point": [
+       1404,
+       2580
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       514,
+       270
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 41,
+      "point": [
+       579,
+       2684
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 43,
+      "point": [
+       1367,
+       270
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 84,
+      "point": [
+       1402,
+       2674
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       519,
+       266
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 43,
+      "point": [
+       537,
+       2661
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 45,
+      "point": [
+       1346,
+       266
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 87,
+      "point": [
+       1507,
+       2685
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 1,
+      "point": [
+       629,
+       263
+      ]
+     },
+     "continues": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 42,
+      "point": [
+       565,
+       2676
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 44,
+      "point": [
+       1511,
+       264
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 84,
+      "point": [
+       1444,
+       2679
+      ]
+     },
+     "continues": false
+    }
+   ],
+   "links": [
+    {
+     "stream": "body",
+     "from": {
+      "page": "dutt-mahabharata-17f-chapter-001-page-003",
+      "line": 87
+     },
+     "to": {
+      "page": "dutt-mahabharata-17f-chapter-001-page-004",
+      "line": 1
+     }
+    }
+   ]
+  },
+  "gopinath-1914-258": {
+   "edges": [
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 3,
+      "point": [
+       719,
+       322
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 15,
+      "point": [
+       485,
+       1404
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 17,
+      "point": [
+       804,
+       1550
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 27,
+      "point": [
+       498,
+       2116
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 3,
+      "point": [
+       842,
+       327
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 32,
+      "x": [
+       200,
+       1350
+      ],
+      "point": [
+       321,
+       1877
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 35,
+      "point": [
+       814,
+       1999
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 39,
+      "point": [
+       1067,
+       2113
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 2,
+      "point": [
+       737,
+       325
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 22,
+      "x": [
+       95,
+       1350
+      ],
+      "point": [
+       146,
+       1650
+      ]
+     },
+     "continues": false,
+     "note": "ends with the word love."
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 26,
+      "point": [
+       737,
+       1844
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 34,
+      "point": [
+       649,
+       2133
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "body",
+     "edge": "start",
+     "anchor": {
+      "line": 4,
+      "point": [
+       747,
+       304
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "body",
+     "edge": "end",
+     "anchor": {
+      "line": 20,
+      "point": [
+       514,
+       1216
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "notes",
+     "edge": "start",
+     "anchor": {
+      "line": 22,
+      "point": [
+       850,
+       1376
+      ]
+     },
+     "continues": false
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "notes",
+     "edge": "end",
+     "anchor": {
+      "line": 40,
+      "point": [
+       987,
+       2100
+      ]
+     },
+     "continues": false
+    }
+   ],
+   "links": []
+  }
+ }
+}

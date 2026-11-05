@@ -48,13 +48,13 @@ From the project root, install the dependencies in the existing Python 3.12 envi
 
 ```sh
 .venv/bin/python -m pip install -r methods/003-pp-doclayoutv3/requirements.txt
-.venv/bin/python methods/003-pp-doclayoutv3/download_models.py
+uv run --offline python methods/003-pp-doclayoutv3/download_models.py
 ```
 
 Run it on the shared input:
 
 ```sh
-.venv/bin/python methods/003-pp-doclayoutv3/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/003-pp-doclayoutv3/run.py inputs/kale-1913-page-017.png
 ```
 
 The runner verifies every downloaded file against the manifest before loading the model. It applies the same OS network restriction as method 002 before importing inference libraries: macOS `sandbox-exec` with `deny network*`, or Linux libseccomp denying socket creation and connection/send syscalls. It verifies the restriction with IPv4 and IPv6 TCP/UDP probes, sets `ORT_DISABLE_TELEMETRY=1`, and calls `onnxruntime.disable_telemetry_events()`.
@@ -71,7 +71,7 @@ outputs/kale-1913-page-017/003-pp-doclayoutv3/
 For a repeat run, choose a fresh directory:
 
 ```sh
-.venv/bin/python methods/003-pp-doclayoutv3/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/003-pp-doclayoutv3/run-002
+uv run --offline python methods/003-pp-doclayoutv3/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/003-pp-doclayoutv3/run-002
 ```
 
 Existing nonempty output directories are preserved.

@@ -1,0 +1,18 @@
+{
+  "input_id": "telang-dli-page-108",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "line_segmentation": "methods/032-line-skew-separability (copied unchanged into method 033), page-level line ids 0-34",
+  "passages": [
+    {"passage": "page-number", "type": "page_number", "keep": false, "lines": [0, 0], "note": "[ ९८ ]"},
+    {"passage": "verse-79-end", "type": "verse", "keep": true, "lines": [1, 2], "note": "Last two printed lines of verse 79, continued from the previous page, ending with ॥ ७९ ॥."},
+    {"passage": "verse-80", "type": "verse", "keep": true, "lines": [3, 7], "note": "Four printed lines ending with ॥ ८० ॥. Line 3 is a detached mark of line 4."},
+    {"passage": "verse-81", "type": "verse", "keep": true, "lines": [8, 15], "note": "Four printed lines ending with ॥ ८१ ॥. Lines 8, 10, 11 and 14 are detached vowel signs and repha of lines 9, 12 and 13."},
+    {"passage": "verse-82-start", "type": "verse", "keep": true, "lines": [16, 18], "note": "First two printed lines of verse 82, continued on the next page. Line 18 is the detached vowel sign of पू in line 17."},
+    {"passage": "apparatus-79", "type": "apparatus", "keep": true, "lines": [19, 20], "note": "Variant readings for verse 79, (c) and (d), continued from the previous page; ends with °न्तम् P."},
+    {"passage": "apparatus-80", "type": "apparatus", "keep": true, "lines": [21, 28], "note": "LXXX. through ... रतिं मा कृथाः."},
+    {"passage": "apparatus-81", "type": "apparatus", "keep": true, "lines": [29, 32], "note": "LXXXI. through ... A. N. Bo.n."},
+    {"passage": "apparatus-82", "type": "apparatus", "keep": true, "lines": [33, 34], "note": "LXXXII. through K. Bo. G. N."}
+  ],
+  "unit_definition": "One passage per verse, or verse fragment where a verse crosses the page boundary, and one per verse's entry in the variant-reading apparatus, which begins with the verse's Roman numeral.",
+  "non_text": "The two pieces of the rule above the apparatus are labeled separator. Specks that the line finder did not attach to any line stay unlabeled."
+}

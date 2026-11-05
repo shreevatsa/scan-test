@@ -1,0 +1,169 @@
+{
+  "id": "resp_0564138b8c2d72ff016aebb0c8bf8087d09ff9b056088d3523",
+  "object": "response",
+  "created_at": 1793831112,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793831119,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_0564138b8c2d72ff016aebb0c9f0b487d0a27ba1e775f5b9d1",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"running_header\",\"box_1000\":[365,58,544,89],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"page_number\",\"box_1000\":[805,59,857,86],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"lead_in\",\"box_1000\":[82,115,577,142],\"keep\":true,\"reading_order\":1,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[155,146,680,260],\"keep\":true,\"reading_order\":2,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[43,263,863,487],\"keep\":true,\"reading_order\":3,\"uncertain\":false},{\"type\":\"lead_in\",\"box_1000\":[46,490,306,512],\"keep\":true,\"reading_order\":4,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[44,518,856,574],\"keep\":true,\"reading_order\":5,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[45,579,861,691],\"keep\":true,\"reading_order\":6,\"uncertain\":false},{\"type\":\"lead_in\",\"box_1000\":[82,695,859,726],\"keep\":true,\"reading_order\":7,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[81,729,851,852],\"keep\":true,\"reading_order\":8,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[86,854,862,880],\"keep\":true,\"reading_order\":9,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[80,887,182,910],\"keep\":true,\"reading_order\":10,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[187,887,285,910],\"keep\":true,\"reading_order\":11,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[296,887,430,910],\"keep\":true,\"reading_order\":12,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[430,887,535,910],\"keep\":true,\"reading_order\":13,\"uncertain\":false}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "verse",
+                    "paragraph",
+                    "heading",
+                    "lead_in",
+                    "list_item",
+                    "formula",
+                    "note",
+                    "table",
+                    "figure",
+                    "caption",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 4260,
+    "input_tokens_details": {
+      "cache_write_tokens": 4257,
+      "cached_tokens": 0
+    },
+    "output_tokens": 483,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 4743
+  },
+  "user": null,
+  "metadata": {}
+}

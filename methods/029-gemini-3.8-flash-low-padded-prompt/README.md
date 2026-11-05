@@ -15,8 +15,8 @@ The schema, model ID, thinking level, image detail and API settings match method
 ## Run
 
 ```sh
-uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-097.png --check
-uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-097.png
+uv run --offline python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-097.png --check
+uv run --offline python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-097.png
 ```
 
 For another request, select a fresh `--output-dir`; existing output is protected against overwriting. Authentication uses the configured Google environment variables or the stored `llm` key named `gemini`.
@@ -74,7 +74,7 @@ The enlarged panels show original pixels at 2× scale, crop edges in blue and cl
 The identical audit script is saved with all four new methods. For this page, visual inspection identifies connected-component IDs 443 and 444 as the two slanted-separator fragments:
 
 ```sh
-uv run python methods/029-gemini-3.8-flash-low-padded-prompt/audit_boundaries.py inputs/kale-1913-page-097.png outputs/kale-1913-page-097/029-gemini-3.8-flash-low-padded-prompt/regions.json --separator-components 443 444
+uv run --offline python methods/029-gemini-3.8-flash-low-padded-prompt/audit_boundaries.py inputs/kale-1913-page-097.png outputs/kale-1913-page-097/029-gemini-3.8-flash-low-padded-prompt/regions.json --separator-components 443 444
 ```
 
 The resulting `boundary-review/audit.json` preserves all raw cuts, separator annotations, component boxes, exact pixel counts, crop windows and provenance hashes. `boundary-review/details.png` shows enlarged edges. Existing review output is protected against overwriting.
@@ -84,8 +84,8 @@ The resulting `boundary-review/audit.json` preserves all raw cuts, separator ann
 Input `kale-1913-page-113`, unchanged raw PNG, 1370 × 2118 pixels.
 
 ```sh
-uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-113.png --check
-uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-113.png
+uv run --offline python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-113.png --check
+uv run --offline python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-113.png
 ```
 
 The completed output is `outputs/kale-1913-page-113/029-gemini-3.8-flash-low-padded-prompt/`; use a fresh `--output-dir` for a repeat run.
@@ -130,8 +130,8 @@ The full-page overlay marks kept boxes blue and excluded page furniture purple. 
 Input `kale-1913-page-017`, unchanged raw PNG, 1407 × 2135 pixels.
 
 ```sh
-uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/029-gemini-3.8-flash-low-padded-prompt/run.py inputs/kale-1913-page-017.png
 ```
 
 The completed output is `outputs/kale-1913-page-017/029-gemini-3.8-flash-low-padded-prompt/`; use a fresh `--output-dir` for a repeat run.

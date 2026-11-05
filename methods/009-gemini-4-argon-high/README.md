@@ -27,14 +27,14 @@ The [model](https://aistudio.google.com/docs/models/gemini-4-argon), [thinking c
 From the project root, using the existing project environment:
 
 ```sh
-uv run python methods/009-gemini-4-argon-high/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/009-gemini-4-argon-high/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/009-gemini-4-argon-high/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/009-gemini-4-argon-high/run.py inputs/kale-1913-page-017.png
 ```
 
 For a repeat call, choose a fresh output directory:
 
 ```sh
-uv run python methods/009-gemini-4-argon-high/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/009-gemini-4-argon-high/run-002
+uv run --offline python methods/009-gemini-4-argon-high/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/009-gemini-4-argon-high/run-002
 ```
 
 Existing output directories are protected against overwriting. Each invocation makes one request and preserves failures.

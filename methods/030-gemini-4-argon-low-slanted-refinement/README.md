@@ -11,9 +11,9 @@ The final step caps vertical edges at the detected separator's local envelope ov
 ## Run
 
 ```sh
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/test_refinement.py
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-097.png --check
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-097.png
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/test_refinement.py
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-097.png --check
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-097.png
 ```
 
 Run the pinned source method on the same input first. Use `--base-regions` to select another saved run of that method and `--output-dir` for a fresh repeat output. Existing output is protected against overwriting.
@@ -29,8 +29,8 @@ Run the pinned source method on the same input first. Use `--base-regions` to se
 Input `kale-1913-page-017`, unchanged raw PNG, 1407 × 2135 pixels.
 
 ```sh
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-017.png
 ```
 
 The completed output is `outputs/kale-1913-page-017/030-gemini-4-argon-low-slanted-refinement/`; use a fresh `--output-dir` for a repeat run.
@@ -78,8 +78,8 @@ The full-page overlay marks kept boxes blue and excluded page furniture purple. 
 Input `kale-1913-page-097`, unchanged raw PNG, 1374 × 2114 pixels.
 
 ```sh
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-097.png --check
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-097.png
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-097.png --check
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-097.png
 ```
 
 The completed output is `outputs/kale-1913-page-097/030-gemini-4-argon-low-slanted-refinement/`; use a fresh `--output-dir` for a repeat run.
@@ -127,8 +127,8 @@ The full-page overlay marks kept boxes blue and excluded page furniture purple. 
 Input `kale-1913-page-113`, unchanged raw PNG, 1370 × 2118 pixels.
 
 ```sh
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-113.png --check
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-113.png
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-113.png --check
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/run.py inputs/kale-1913-page-113.png
 ```
 
 The completed output is `outputs/kale-1913-page-113/030-gemini-4-argon-low-slanted-refinement/`; use a fresh `--output-dir` for a repeat run.
@@ -175,7 +175,7 @@ The full-page overlay marks kept boxes blue and excluded page furniture purple. 
 The review uses this method's automatic separator detector and analysis mask on any saved result for the same input. It saves `separator-review/audit.json` and an enlarged pixel inspection, protecting existing review output.
 
 ```sh
-uv run python methods/030-gemini-4-argon-low-slanted-refinement/review.py inputs/kale-1913-page-097.png outputs/kale-1913-page-097/030-gemini-4-argon-low-slanted-refinement/regions.json
+uv run --offline python methods/030-gemini-4-argon-low-slanted-refinement/review.py inputs/kale-1913-page-097.png outputs/kale-1913-page-097/030-gemini-4-argon-low-slanted-refinement/regions.json
 ```
 
 Ten focused tests cover component completion, detached accents, neighbor padding, ambiguous ownership, slanted rules, character stems, rules touching glyphs, protected-text trimming and separator-spanning text. The identical implementation is used in methods 030 and 031; only their source method IDs differ.

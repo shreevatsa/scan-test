@@ -1,0 +1,494 @@
+{
+ "created_at_utc": "2026-11-04T20:37:37.076724+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/kale-1913-page-097.png",
+  "sha256": "8ea39bb8699404c96935d35c00b966d4f55ba74598d2df8c32a5d29d39467820"
+ },
+ "reference": {
+  "path": "../../references/kale-1913-page-097",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before any method 033 or 034 output existed for this page; not yet human-reviewed",
+  "labels_png_sha256": "55dae868367103728f354895fd5c03d3be795a03cae8d8d79308cc82635c0113",
+  "spec_sha256": "b31790c7eeb2c2f82cf382c2bb080b6104918871a277a3bc4d303bed91294972"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra without reasoning (025), boxes",
+   "path": "../../outputs/kale-1913-page-097/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "sha256": "3b28126f8bea0fb4754a4e47dcbd2a4d077531f694418959e7a467b4457ec7db",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 44,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "lead-in-96": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-96": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-96": {
+     "matched_region_id": 5,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-97": {
+     "matched_region_id": 6,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-97": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 44
+    },
+    "footnote-1": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-2": {
+     "matched_region_id": 9,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-3": {
+     "matched_region_id": 10,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-4": {
+     "matched_region_id": 11,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-5": {
+     "matched_region_id": 12,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-6": {
+     "matched_region_id": 13,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "lead-in-96",
+     "lower": "verse-96",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-96",
+     "lower": "commentary-96",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "commentary-96",
+     "lower": "verse-97",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-97",
+     "lower": "commentary-97",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra + column-safe ownership polygons (035)",
+   "path": "../../outputs/kale-1913-page-097/035-gpt-6.1-terra-none-column-margin-ownership/regions.json",
+   "sha256": "9ee769553232de04f4650a14635f85b9a6bd72e582093e924af8f5bd779cb0be",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "lead-in-96": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-96": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-96": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-97": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-97": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-1": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-2": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-3": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-4": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-5": {
+     "matched_region_id": 12,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-6": {
+     "matched_region_id": 13,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "lead-in-96",
+     "lower": "verse-96",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-96",
+     "lower": "commentary-96",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "commentary-96",
+     "lower": "verse-97",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-97",
+     "lower": "commentary-97",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "page-number": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "running-header": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "lead-in-96": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-96": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "commentary-96": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-97": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "commentary-97": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-1": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-2": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-3": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-4": {
+      "main_owner_value": 11,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-5": {
+      "main_owner_value": 12,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-6": {
+      "main_owner_value": 13,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "8f2c27cfda9096e66567c71443f57ae722ea3c4de2459ad842adb11cb11fdbd9"
+   }
+  },
+  {
+   "label": "GPT-6.1 Terra + ownership with ink on no line and rule pieces (036)",
+   "path": "../../outputs/kale-1913-page-097/036-gpt-6.1-terra-none-unlined-ink-ownership/regions.json",
+   "sha256": "87cdca8a9e7f67c751796412096336aa08bf3555e3a3fb1217f8e4f680873a56",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "lead-in-96": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-96": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-96": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-97": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-97": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-1": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-2": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-3": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-4": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-5": {
+     "matched_region_id": 12,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-6": {
+     "matched_region_id": 13,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "lead-in-96",
+     "lower": "verse-96",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-96",
+     "lower": "commentary-96",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "commentary-96",
+     "lower": "verse-97",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-97",
+     "lower": "commentary-97",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "page-number": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "running-header": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "lead-in-96": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-96": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "commentary-96": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-97": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "commentary-97": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-1": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-2": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-3": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-4": {
+      "main_owner_value": 11,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-5": {
+      "main_owner_value": 12,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-6": {
+      "main_owner_value": 13,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "8f2c27cfda9096e66567c71443f57ae722ea3c4de2459ad842adb11cb11fdbd9"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "0670009e1bc23665794d5480d2f070a30132e36d744ad47d721f2bb35fe32f63",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

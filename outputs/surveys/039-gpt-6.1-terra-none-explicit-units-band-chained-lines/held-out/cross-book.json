@@ -1,0 +1,3389 @@
+{
+ "created_at_utc": "2026-11-04T22:36:08.693019+00:00",
+ "api_calls": 0,
+ "source_method": "037-gpt-6.1-terra-none-explicit-units",
+ "method": "039-gpt-6.1-terra-none-explicit-units-band-chained-lines",
+ "totals": {
+  "pages": 54,
+  "estimated_cost_usd": 0.455127,
+  "api_wall_seconds": 349.0
+ },
+ "pages": [
+  {
+   "input_id": "telang-dli-page-035",
+   "book_id": "telang-dli",
+   "width": 1500,
+   "height": 2500,
+   "source": {
+    "path": "outputs/telang-dli-page-035/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "aec0ed973c5aecc65ad8ab1817f06c0fc13e09938a08c0d14de133d65fd99d65"
+   },
+   "result": {
+    "path": "outputs/telang-dli-page-035/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "dbcbbab11cda3579f6f016223f972b499a3b735a825d0be1a4340bc9df37e165"
+   },
+   "model": {
+    "regions": 3,
+    "kept": 2,
+    "uncertain": 0,
+    "types": {
+     "heading": 1,
+     "table": 1,
+     "page_number": 1
+    },
+    "api_wall_seconds": 3.32,
+    "input_tokens": 5178,
+    "output_tokens": 107,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00700675
+   },
+   "lines": {
+    "char_h": 21.0,
+    "page_angle_deg": 0.09,
+    "columns": 1,
+    "lines": 74,
+    "whole": 68,
+    "split": 6,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 238,
+    "text_components_not_on_lines": 18,
+    "ink_owned_by_kept_regions": 228459,
+    "ink_owned_by_furniture_regions": 892,
+    "unassigned_share_of_text_ink": 0.001,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [
+     2
+    ],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 703,
+    "local_seconds": 2.618
+   }
+  },
+  {
+   "input_id": "telang-dli-page-064",
+   "book_id": "telang-dli",
+   "width": 1500,
+   "height": 2500,
+   "source": {
+    "path": "outputs/telang-dli-page-064/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "26979cc29b533b6a3c7501bc754f98808d848506e7f7da4075f694df9b004ce3"
+   },
+   "result": {
+    "path": "outputs/telang-dli-page-064/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "f9645d94e5a8b97b86be0e7d2a687588121667daa177106b177647826d0fc165"
+   },
+   "model": {
+    "regions": 18,
+    "kept": 17,
+    "uncertain": 6,
+    "types": {
+     "page_number": 1,
+     "verse": 4,
+     "heading": 1,
+     "note": 12
+    },
+    "api_wall_seconds": 8.28,
+    "input_tokens": 5178,
+    "output_tokens": 572,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00933175
+   },
+   "lines": {
+    "char_h": 36.0,
+    "page_angle_deg": 0.01,
+    "columns": 1,
+    "lines": 26,
+    "whole": 23,
+    "split": 3,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 124,
+    "text_components_not_on_lines": 7,
+    "ink_owned_by_kept_regions": 256091,
+    "ink_owned_by_furniture_regions": 1485,
+    "unassigned_share_of_text_ink": 0.0005,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 409,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1295,
+    "local_seconds": 2.419
+   }
+  },
+  {
+   "input_id": "telang-dli-page-093",
+   "book_id": "telang-dli",
+   "width": 1500,
+   "height": 2500,
+   "source": {
+    "path": "outputs/telang-dli-page-093/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "07f9d4fb555f3672aa6675537747d6f80509e3ca76252bbba73eb5baec74571a"
+   },
+   "result": {
+    "path": "outputs/telang-dli-page-093/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "0eb8c10b6c946a4f4f11856ef11b37408215aace28e469b907fca7336fc33684"
+   },
+   "model": {
+    "regions": 18,
+    "kept": 17,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "verse": 4,
+     "heading": 1,
+     "note": 12
+    },
+    "api_wall_seconds": 8.62,
+    "input_tokens": 5178,
+    "output_tokens": 572,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00933175
+   },
+   "lines": {
+    "char_h": 35.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 30,
+    "whole": 28,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 142,
+    "text_components_not_on_lines": 8,
+    "ink_owned_by_kept_regions": 337520,
+    "ink_owned_by_furniture_regions": 1573,
+    "unassigned_share_of_text_ink": 0.0004,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 596,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1749,
+    "local_seconds": 2.819
+   }
+  },
+  {
+   "input_id": "telang-dli-page-122",
+   "book_id": "telang-dli",
+   "width": 1500,
+   "height": 2500,
+   "source": {
+    "path": "outputs/telang-dli-page-122/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "0574fd9c6d9c9eee42860338764d082209370479e2f53c5f0ce639141763232a"
+   },
+   "result": {
+    "path": "outputs/telang-dli-page-122/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "b1305a19b0db3e3f912c05aca2290ab58b72c66474bba437a45bca14827101d2"
+   },
+   "model": {
+    "regions": 15,
+    "kept": 14,
+    "uncertain": 4,
+    "types": {
+     "page_number": 1,
+     "verse": 5,
+     "note": 9
+    },
+    "api_wall_seconds": 7.84,
+    "input_tokens": 5178,
+    "output_tokens": 479,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00886675
+   },
+   "lines": {
+    "char_h": 39.0,
+    "page_angle_deg": -0.15,
+    "columns": 1,
+    "lines": 27,
+    "whole": 25,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 85,
+    "text_components_not_on_lines": 4,
+    "ink_owned_by_kept_regions": 329033,
+    "ink_owned_by_furniture_regions": 1711,
+    "unassigned_share_of_text_ink": 0.0003,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 463,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1306,
+    "local_seconds": 2.804
+   }
+  },
+  {
+   "input_id": "telang-dli-page-151",
+   "book_id": "telang-dli",
+   "width": 1500,
+   "height": 2500,
+   "source": {
+    "path": "outputs/telang-dli-page-151/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "cd297bea33ac434f6f17bc69ee8a8903b1b4c0051d89e7d61cbd0f46c9182045"
+   },
+   "result": {
+    "path": "outputs/telang-dli-page-151/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "fa0b92fa0b1b5906bcc698bcb15c524b8cdf16d2136dfd665590598c037d2698"
+   },
+   "model": {
+    "regions": 5,
+    "kept": 3,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "paragraph": 3
+    },
+    "api_wall_seconds": 4.2,
+    "input_tokens": 5178,
+    "output_tokens": 170,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00732175
+   },
+   "lines": {
+    "char_h": 31.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 31,
+    "whole": 30,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 590,
+    "text_components_not_on_lines": 8,
+    "ink_owned_by_kept_regions": 433498,
+    "ink_owned_by_furniture_regions": 1845,
+    "unassigned_share_of_text_ink": 0.0014,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 155,
+    "local_seconds": 2.211
+   }
+  },
+  {
+   "input_id": "telang-dli-page-180",
+   "book_id": "telang-dli",
+   "width": 1500,
+   "height": 2500,
+   "source": {
+    "path": "outputs/telang-dli-page-180/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "566ccb619f67e1e98773dd1d77ce526547376749194e5e92cbc88fdfc5e5be4e"
+   },
+   "result": {
+    "path": "outputs/telang-dli-page-180/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "5eaccf637515451289f6095a4a7fbee178f720834c6c6e71d2080103befb71e2"
+   },
+   "model": {
+    "regions": 7,
+    "kept": 5,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "note": 5
+    },
+    "api_wall_seconds": 4.95,
+    "input_tokens": 5178,
+    "output_tokens": 232,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00763175
+   },
+   "lines": {
+    "char_h": 29.0,
+    "page_angle_deg": 0.1,
+    "columns": 1,
+    "lines": 32,
+    "whole": 31,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 379344,
+    "ink_owned_by_furniture_regions": 1924,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 70,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 312,
+    "local_seconds": 2.672
+   }
+  },
+  {
+   "input_id": "vavilla-page-058",
+   "book_id": "vavilla",
+   "width": 1488,
+   "height": 2140,
+   "source": {
+    "path": "outputs/vavilla-page-058/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "10e6301560b0e86bf18fab53038c2a3b2685da740a52c3d615c54f1fbec05474"
+   },
+   "result": {
+    "path": "outputs/vavilla-page-058/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "97684c191404ad5c33d1090fe058171a31500304a55118ac4fe0693ec94fe368"
+   },
+   "model": {
+    "regions": 4,
+    "kept": 2,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "paragraph": 2
+    },
+    "api_wall_seconds": 3.04,
+    "input_tokens": 4501,
+    "output_tokens": 139,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.006320500000000001
+   },
+   "lines": {
+    "char_h": 33.0,
+    "page_angle_deg": -0.09,
+    "columns": 1,
+    "lines": 40,
+    "whole": 39,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 383885,
+    "ink_owned_by_furniture_regions": 6201,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 34,
+    "local_seconds": 2.008
+   }
+  },
+  {
+   "input_id": "vavilla-page-106",
+   "book_id": "vavilla",
+   "width": 1488,
+   "height": 2140,
+   "source": {
+    "path": "outputs/vavilla-page-106/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "e4b43f3c90d0a9d9e28767b53da49a5e7be18b29d618ebe8106a62b42c6987ba"
+   },
+   "result": {
+    "path": "outputs/vavilla-page-106/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "dc85eeb5c2c20bc5591218900212635bb7384ba3b391ba4d4bc190a44cde2255"
+   },
+   "model": {
+    "regions": 5,
+    "kept": 3,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "verse": 1,
+     "paragraph": 1,
+     "heading": 1
+    },
+    "api_wall_seconds": 3.36,
+    "input_tokens": 4501,
+    "output_tokens": 170,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0064755
+   },
+   "lines": {
+    "char_h": 33.0,
+    "page_angle_deg": 0.01,
+    "columns": 1,
+    "lines": 24,
+    "whole": 23,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 634,
+    "text_components_not_on_lines": 5,
+    "ink_owned_by_kept_regions": 212478,
+    "ink_owned_by_furniture_regions": 5936,
+    "unassigned_share_of_text_ink": 0.0029,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 69,
+    "local_seconds": 1.475
+   }
+  },
+  {
+   "input_id": "vavilla-page-154",
+   "book_id": "vavilla",
+   "width": 1488,
+   "height": 2140,
+   "source": {
+    "path": "outputs/vavilla-page-154/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "aabbf62456a7f57a1c30f7495920780d25ba4ab39e4ed52d4a8aba91aa7e1099"
+   },
+   "result": {
+    "path": "outputs/vavilla-page-154/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "99957f5bdcfa2d0ae049a5792e4c7505205549f69d48ac4a26367743307c88b6"
+   },
+   "model": {
+    "regions": 8,
+    "kept": 6,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "paragraph": 4,
+     "heading": 1,
+     "verse": 1
+    },
+    "api_wall_seconds": 4.39,
+    "input_tokens": 4501,
+    "output_tokens": 263,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0069405000000000005
+   },
+   "lines": {
+    "char_h": 32.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 38,
+    "whole": 37,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 394,
+    "text_components_not_on_lines": 1,
+    "ink_owned_by_kept_regions": 270670,
+    "ink_owned_by_furniture_regions": 6406,
+    "unassigned_share_of_text_ink": 0.0014,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 20,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 200,
+    "local_seconds": 1.874
+   }
+  },
+  {
+   "input_id": "vavilla-page-203",
+   "book_id": "vavilla",
+   "width": 1488,
+   "height": 2140,
+   "source": {
+    "path": "outputs/vavilla-page-203/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "002f110ab17de72de92451d4e0fa6b0037c1e8f93ba97dd9282a06a1da4e24cb"
+   },
+   "result": {
+    "path": "outputs/vavilla-page-203/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "6941f15bc962e70cffb52192c0f7ece5e0803baddbde0141f0662b11fc2b8389"
+   },
+   "model": {
+    "regions": 5,
+    "kept": 3,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "paragraph": 2,
+     "verse": 1
+    },
+    "api_wall_seconds": 3.77,
+    "input_tokens": 4501,
+    "output_tokens": 170,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0064755
+   },
+   "lines": {
+    "char_h": 31.0,
+    "page_angle_deg": 0.01,
+    "columns": 1,
+    "lines": 41,
+    "whole": 39,
+    "split": 1,
+    "uncovered": 1,
+    "uncovered_line_ids": [
+     19
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 126,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 324996,
+    "ink_owned_by_furniture_regions": 7390,
+    "unassigned_share_of_text_ink": 0.0004,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 54,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 188,
+    "local_seconds": 1.958
+   }
+  },
+  {
+   "input_id": "vavilla-page-251",
+   "book_id": "vavilla",
+   "width": 1488,
+   "height": 2140,
+   "source": {
+    "path": "outputs/vavilla-page-251/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "f9d2c51dec4498ffccf8cff155d9e07ce9153aad12ae238f27c21e60beba09d2"
+   },
+   "result": {
+    "path": "outputs/vavilla-page-251/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "1a2b00b92d04cecb3b900f912a55b056a433dd619aca7d4792156f254cc0d67e"
+   },
+   "model": {
+    "regions": 3,
+    "kept": 1,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "paragraph": 1
+    },
+    "api_wall_seconds": 3.11,
+    "input_tokens": 4501,
+    "output_tokens": 108,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0061655
+   },
+   "lines": {
+    "char_h": 31.0,
+    "page_angle_deg": 0.1,
+    "columns": 1,
+    "lines": 47,
+    "whole": 46,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 344044,
+    "ink_owned_by_furniture_regions": 8746,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 13,
+    "local_seconds": 1.995
+   }
+  },
+  {
+   "input_id": "vavilla-page-299",
+   "book_id": "vavilla",
+   "width": 1488,
+   "height": 2140,
+   "source": {
+    "path": "outputs/vavilla-page-299/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "a7dd858bafe160c48553e65e7e984d1976aacb97f467930c4861d571494ca5e4"
+   },
+   "result": {
+    "path": "outputs/vavilla-page-299/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "623139f8bdf08c61e9b2c052cbd80abbd2ac6e47fc4053fd82fcbdd242d361a7"
+   },
+   "model": {
+    "regions": 4,
+    "kept": 2,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "paragraph": 1,
+     "verse": 1
+    },
+    "api_wall_seconds": 3.19,
+    "input_tokens": 4501,
+    "output_tokens": 139,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.006320500000000001
+   },
+   "lines": {
+    "char_h": 32.0,
+    "page_angle_deg": 0.01,
+    "columns": 1,
+    "lines": 41,
+    "whole": 39,
+    "split": 1,
+    "uncovered": 1,
+    "uncovered_line_ids": [
+     6
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 185,
+    "text_components_not_on_lines": 5,
+    "ink_owned_by_kept_regions": 339870,
+    "ink_owned_by_furniture_regions": 13076,
+    "unassigned_share_of_text_ink": 0.0005,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 9,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 104,
+    "local_seconds": 1.927
+   }
+  },
+  {
+   "input_id": "gopinath-1896-page-087",
+   "book_id": "gopinath-1896",
+   "width": 1547,
+   "height": 2392,
+   "source": {
+    "path": "outputs/gopinath-1896-page-087/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "933c5cc7f47c0ed7db2d9396a56c843d3a77a5a1fcaab47d0b18be89c5fe6173"
+   },
+   "result": {
+    "path": "outputs/gopinath-1896-page-087/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "c046c2c03e92a75fa795e8fcdd721476e656f69795b5fa25a5f2480baa251bfa"
+   },
+   "model": {
+    "regions": 15,
+    "kept": 13,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "verse": 3,
+     "paragraph": 4,
+     "heading": 1,
+     "note": 3,
+     "lead_in": 2
+    },
+    "api_wall_seconds": 7.02,
+    "input_tokens": 5133,
+    "output_tokens": 482,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0088255
+   },
+   "lines": {
+    "char_h": 39.0,
+    "page_angle_deg": 0.09,
+    "columns": 1,
+    "lines": 37,
+    "whole": 33,
+    "split": 1,
+    "uncovered": 3,
+    "uncovered_line_ids": [
+     0,
+     2,
+     36
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 1044,
+    "text_components_not_on_lines": 4,
+    "ink_owned_by_kept_regions": 410338,
+    "ink_owned_by_furniture_regions": 9377,
+    "unassigned_share_of_text_ink": 0.0025,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 227,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 982,
+    "local_seconds": 2.545
+   }
+  },
+  {
+   "input_id": "gopinath-1896-page-159",
+   "book_id": "gopinath-1896",
+   "width": 1567,
+   "height": 2392,
+   "source": {
+    "path": "outputs/gopinath-1896-page-159/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "90fee5bad408c70d6de3bc6e33582cf5ec5546b5655560f5deff3fcc853bc601"
+   },
+   "result": {
+    "path": "outputs/gopinath-1896-page-159/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "baecaada87cf8e5e429a6fb89499ef4510d3210a78e1bec701cd8566cd1c1abd"
+   },
+   "model": {
+    "regions": 6,
+    "kept": 4,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "verse": 1,
+     "paragraph": 2,
+     "note": 1
+    },
+    "api_wall_seconds": 3.99,
+    "input_tokens": 5133,
+    "output_tokens": 201,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0074205
+   },
+   "lines": {
+    "char_h": 41.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 32,
+    "whole": 27,
+    "split": 1,
+    "uncovered": 4,
+    "uncovered_line_ids": [
+     0,
+     28,
+     30,
+     31
+    ]
+   },
+   "ownership": {
+    "dropped_components": 1,
+    "unassigned_text_pixels": 877,
+    "text_components_not_on_lines": 4,
+    "ink_owned_by_kept_regions": 430875,
+    "ink_owned_by_furniture_regions": 9025,
+    "unassigned_share_of_text_ink": 0.002,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 392,
+    "local_seconds": 2.031
+   }
+  },
+  {
+   "input_id": "gopinath-1896-page-231",
+   "book_id": "gopinath-1896",
+   "width": 1570,
+   "height": 2396,
+   "source": {
+    "path": "outputs/gopinath-1896-page-231/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "be9a1c56162d8e0cedd6be1b0dc46e848ae484464d2e02c01a832606409ff1bc"
+   },
+   "result": {
+    "path": "outputs/gopinath-1896-page-231/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "95778dd5a1afc2ebea0b1445a1b2d0d65105794d6a940fadb709e2b1010e8c6a"
+   },
+   "model": {
+    "regions": 7,
+    "kept": 4,
+    "uncertain": 1,
+    "types": {
+     "page_number": 1,
+     "running_header": 2,
+     "verse": 1,
+     "paragraph": 2,
+     "note": 1
+    },
+    "api_wall_seconds": 4.15,
+    "input_tokens": 5223,
+    "output_tokens": 233,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.007693
+   },
+   "lines": {
+    "char_h": 40.0,
+    "page_angle_deg": -0.04,
+    "columns": 1,
+    "lines": 32,
+    "whole": 29,
+    "split": 1,
+    "uncovered": 2,
+    "uncovered_line_ids": [
+     21,
+     25
+    ]
+   },
+   "ownership": {
+    "dropped_components": 1,
+    "unassigned_text_pixels": 744,
+    "text_components_not_on_lines": 4,
+    "ink_owned_by_kept_regions": 446765,
+    "ink_owned_by_furniture_regions": 11314,
+    "unassigned_share_of_text_ink": 0.0016,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 19,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 470,
+    "local_seconds": 2.165
+   }
+  },
+  {
+   "input_id": "gopinath-1896-page-303",
+   "book_id": "gopinath-1896",
+   "width": 1587,
+   "height": 2405,
+   "source": {
+    "path": "outputs/gopinath-1896-page-303/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "49a5e22286b12d468bc9a9cee097ab3c32934e629c98d580b2f78070ea0042bf"
+   },
+   "result": {
+    "path": "outputs/gopinath-1896-page-303/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "743666e2d23341d3d53e3064955d03f76dad20c9b6ee80134cacee2d065c76c0"
+   },
+   "model": {
+    "regions": 9,
+    "kept": 6,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 2,
+     "verse": 2,
+     "paragraph": 2,
+     "note": 2
+    },
+    "api_wall_seconds": 5.33,
+    "input_tokens": 5283,
+    "output_tokens": 295,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.008078
+   },
+   "lines": {
+    "char_h": 41.0,
+    "page_angle_deg": -0.09,
+    "columns": 1,
+    "lines": 29,
+    "whole": 26,
+    "split": 1,
+    "uncovered": 2,
+    "uncovered_line_ids": [
+     0,
+     28
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 778,
+    "text_components_not_on_lines": 3,
+    "ink_owned_by_kept_regions": 374793,
+    "ink_owned_by_furniture_regions": 12214,
+    "unassigned_share_of_text_ink": 0.002,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 38,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 543,
+    "local_seconds": 2.436
+   }
+  },
+  {
+   "input_id": "gopinath-1896-page-375",
+   "book_id": "gopinath-1896",
+   "width": 1533,
+   "height": 2394,
+   "source": {
+    "path": "outputs/gopinath-1896-page-375/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "734324d93ece8f0a4297710ac76a2a26c6fe908568f2033359d36a4788c60564"
+   },
+   "result": {
+    "path": "outputs/gopinath-1896-page-375/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "63d5065b1bfea1042bcb2a5aa9ab35ab2921e991f94ba5c9df6b31cf7a9555c9"
+   },
+   "model": {
+    "regions": 8,
+    "kept": 5,
+    "uncertain": 1,
+    "types": {
+     "page_number": 1,
+     "running_header": 2,
+     "verse": 1,
+     "paragraph": 3,
+     "lead_in": 1
+    },
+    "api_wall_seconds": 5.18,
+    "input_tokens": 5043,
+    "output_tokens": 265,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.007627999999999999
+   },
+   "lines": {
+    "char_h": 48.0,
+    "page_angle_deg": 0.06,
+    "columns": 1,
+    "lines": 30,
+    "whole": 28,
+    "split": 1,
+    "uncovered": 1,
+    "uncovered_line_ids": [
+     27
+    ]
+   },
+   "ownership": {
+    "dropped_components": 2,
+    "unassigned_text_pixels": 2172,
+    "text_components_not_on_lines": 5,
+    "ink_owned_by_kept_regions": 489970,
+    "ink_owned_by_furniture_regions": 12822,
+    "unassigned_share_of_text_ink": 0.0043,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 87,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 845,
+    "local_seconds": 2.157
+   }
+  },
+  {
+   "input_id": "gopinath-1896-page-447",
+   "book_id": "gopinath-1896",
+   "width": 1567,
+   "height": 2397,
+   "source": {
+    "path": "outputs/gopinath-1896-page-447/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "f00fb944f20c8c428d4bcb8ead35416193d6191ffbb11d346ef74a623af4841f"
+   },
+   "result": {
+    "path": "outputs/gopinath-1896-page-447/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "f5be03a6cfb210294e00e13ea3d8892b35d02c96ecac18043f5414e0a0459cab"
+   },
+   "model": {
+    "regions": 9,
+    "kept": 7,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "note": 6,
+     "verse": 1
+    },
+    "api_wall_seconds": 4.82,
+    "input_tokens": 5133,
+    "output_tokens": 294,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0078855
+   },
+   "lines": {
+    "char_h": 25.0,
+    "page_angle_deg": 0.06,
+    "columns": 1,
+    "lines": 47,
+    "whole": 39,
+    "split": 1,
+    "uncovered": 7,
+    "uncovered_line_ids": [
+     0,
+     2,
+     3,
+     5,
+     17,
+     45,
+     46
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 12433,
+    "text_components_not_on_lines": 9,
+    "ink_owned_by_kept_regions": 371523,
+    "ink_owned_by_furniture_regions": 2860,
+    "unassigned_share_of_text_ink": 0.0321,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 38,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 477,
+    "local_seconds": 2.58
+   }
+  },
+  {
+   "input_id": "gopinath-1914-page-084",
+   "book_id": "gopinath-1914",
+   "width": 1567,
+   "height": 2332,
+   "source": {
+    "path": "outputs/gopinath-1914-page-084/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "0cdee89e36c025887ba85c0fe24790ea55a0eff2e067808d9dda4760967ad8f4"
+   },
+   "result": {
+    "path": "outputs/gopinath-1914-page-084/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "88b48512f8463c9e7510a28a7f1f6ce2cc1ffa78dd899c13e4fef6a0677e7713"
+   },
+   "model": {
+    "regions": 9,
+    "kept": 7,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "verse": 1,
+     "paragraph": 3,
+     "heading": 1,
+     "note": 2
+    },
+    "api_wall_seconds": 4.88,
+    "input_tokens": 5015,
+    "output_tokens": 294,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.007738
+   },
+   "lines": {
+    "char_h": 49.0,
+    "page_angle_deg": -0.06,
+    "columns": 1,
+    "lines": 33,
+    "whole": 26,
+    "split": 1,
+    "uncovered": 6,
+    "uncovered_line_ids": [
+     1,
+     2,
+     4,
+     7,
+     31,
+     32
+    ]
+   },
+   "ownership": {
+    "dropped_components": 3,
+    "unassigned_text_pixels": 48000,
+    "text_components_not_on_lines": 3,
+    "ink_owned_by_kept_regions": 439191,
+    "ink_owned_by_furniture_regions": 9820,
+    "unassigned_share_of_text_ink": 0.0966,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 130,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 740,
+    "local_seconds": 2.104
+   }
+  },
+  {
+   "input_id": "gopinath-1914-page-154",
+   "book_id": "gopinath-1914",
+   "width": 1539,
+   "height": 2332,
+   "source": {
+    "path": "outputs/gopinath-1914-page-154/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "e37f32f440688fbffd9581dc07ab655fdfb4f36c42ff0f30cd2d7c8a0c0ae67f"
+   },
+   "result": {
+    "path": "outputs/gopinath-1914-page-154/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "0dfb3667f273fe1d77f8109585e5b56e5aa760e758bbc14239535d6270a971a5"
+   },
+   "model": {
+    "regions": 10,
+    "kept": 8,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "verse": 3,
+     "paragraph": 3,
+     "note": 2
+    },
+    "api_wall_seconds": 5.92,
+    "input_tokens": 5015,
+    "output_tokens": 325,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.007893
+   },
+   "lines": {
+    "char_h": 38.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 32,
+    "whole": 22,
+    "split": 1,
+    "uncovered": 9,
+    "uncovered_line_ids": [
+     1,
+     3,
+     13,
+     15,
+     17,
+     26,
+     28,
+     30,
+     31
+    ]
+   },
+   "ownership": {
+    "dropped_components": 6,
+    "unassigned_text_pixels": 43950,
+    "text_components_not_on_lines": 12,
+    "ink_owned_by_kept_regions": 321674,
+    "ink_owned_by_furniture_regions": 10315,
+    "unassigned_share_of_text_ink": 0.1169,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 78,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 407,
+    "local_seconds": 2.18
+   }
+  },
+  {
+   "input_id": "gopinath-1914-page-224",
+   "book_id": "gopinath-1914",
+   "width": 1545,
+   "height": 2339,
+   "source": {
+    "path": "outputs/gopinath-1914-page-224/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "5c0d53c7ae840688497da83d0e059dd03296340f4c1186fd2ca6c0e4172a071e"
+   },
+   "result": {
+    "path": "outputs/gopinath-1914-page-224/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "f3c5996dadb22ff243b8960f5b63c751616bda0ef8b961f55f3d3c49cde946a4"
+   },
+   "model": {
+    "regions": 7,
+    "kept": 5,
+    "uncertain": 1,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "verse": 1,
+     "paragraph": 2,
+     "note": 2
+    },
+    "api_wall_seconds": 4.56,
+    "input_tokens": 5074,
+    "output_tokens": 232,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00750175
+   },
+   "lines": {
+    "char_h": 49.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 35,
+    "whole": 26,
+    "split": 1,
+    "uncovered": 8,
+    "uncovered_line_ids": [
+     1,
+     2,
+     8,
+     10,
+     16,
+     32,
+     33,
+     34
+    ]
+   },
+   "ownership": {
+    "dropped_components": 2,
+    "unassigned_text_pixels": 54448,
+    "text_components_not_on_lines": 2,
+    "ink_owned_by_kept_regions": 493391,
+    "ink_owned_by_furniture_regions": 10563,
+    "unassigned_share_of_text_ink": 0.0975,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 71,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 587,
+    "local_seconds": 2.145
+   }
+  },
+  {
+   "input_id": "gopinath-1914-page-293",
+   "book_id": "gopinath-1914",
+   "width": 1564,
+   "height": 2343,
+   "source": {
+    "path": "outputs/gopinath-1914-page-293/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "f672dd3088f13cf38f29021e1660501b441f74f060c1f5c840782d48becf071c"
+   },
+   "result": {
+    "path": "outputs/gopinath-1914-page-293/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "fe80002719daf9112a56a924bebb46ee0a7a3a5461f7b9e12053c0df9188d33d"
+   },
+   "model": {
+    "regions": 10,
+    "kept": 8,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "verse": 5,
+     "paragraph": 3
+    },
+    "api_wall_seconds": 5.46,
+    "input_tokens": 5074,
+    "output_tokens": 325,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00796675
+   },
+   "lines": {
+    "char_h": 39.0,
+    "page_angle_deg": -0.11,
+    "columns": 1,
+    "lines": 37,
+    "whole": 26,
+    "split": 1,
+    "uncovered": 10,
+    "uncovered_line_ids": [
+     1,
+     2,
+     5,
+     7,
+     11,
+     17,
+     30,
+     32,
+     34,
+     36
+    ]
+   },
+   "ownership": {
+    "dropped_components": 25,
+    "unassigned_text_pixels": 69339,
+    "text_components_not_on_lines": 7,
+    "ink_owned_by_kept_regions": 322606,
+    "ink_owned_by_furniture_regions": 8594,
+    "unassigned_share_of_text_ink": 0.1731,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 78,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 714,
+    "local_seconds": 1.913
+   }
+  },
+  {
+   "input_id": "gopinath-1914-page-363",
+   "book_id": "gopinath-1914",
+   "width": 1515,
+   "height": 2348,
+   "source": {
+    "path": "outputs/gopinath-1914-page-363/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "ce1ad414341a7827fc00910f0efc63ca1fe4419bc865857d2c2648241d9280da"
+   },
+   "result": {
+    "path": "outputs/gopinath-1914-page-363/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "266df8e14f883d6535da41760e67c624899dcb616079b4fd5366614aef09fe38"
+   },
+   "model": {
+    "regions": 6,
+    "kept": 4,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "verse": 1,
+     "paragraph": 2,
+     "note": 1
+    },
+    "api_wall_seconds": 3.89,
+    "input_tokens": 4985,
+    "output_tokens": 201,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0072355
+   },
+   "lines": {
+    "char_h": 42.0,
+    "page_angle_deg": 0.01,
+    "columns": 1,
+    "lines": 28,
+    "whole": 23,
+    "split": 1,
+    "uncovered": 4,
+    "uncovered_line_ids": [
+     1,
+     2,
+     26,
+     27
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 52617,
+    "text_components_not_on_lines": 14,
+    "ink_owned_by_kept_regions": 422359,
+    "ink_owned_by_furniture_regions": 8511,
+    "unassigned_share_of_text_ink": 0.1088,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 307,
+    "local_seconds": 1.903
+   }
+  },
+  {
+   "input_id": "gopinath-1914-page-433",
+   "book_id": "gopinath-1914",
+   "width": 1526,
+   "height": 2354,
+   "source": {
+    "path": "outputs/gopinath-1914-page-433/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "b7f18e1693e6d5b4755297a3bb471db23b1f231afc057fd2e52fa8f75bd16855"
+   },
+   "result": {
+    "path": "outputs/gopinath-1914-page-433/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "6bb6013b8dcccce475ed00a9f713750d5d3ff48e950f6e9efe0a4da9e911c0f5"
+   },
+   "model": {
+    "regions": 9,
+    "kept": 7,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "paragraph": 7
+    },
+    "api_wall_seconds": 5.09,
+    "input_tokens": 4985,
+    "output_tokens": 294,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0077005
+   },
+   "lines": {
+    "char_h": 29.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 43,
+    "whole": 29,
+    "split": 1,
+    "uncovered": 13,
+    "uncovered_line_ids": [
+     1,
+     3,
+     5,
+     10,
+     12,
+     15,
+     21,
+     27,
+     30,
+     35,
+     39,
+     41,
+     42
+    ]
+   },
+   "ownership": {
+    "dropped_components": 27,
+    "unassigned_text_pixels": 21651,
+    "text_components_not_on_lines": 25,
+    "ink_owned_by_kept_regions": 387896,
+    "ink_owned_by_furniture_regions": 4793,
+    "unassigned_share_of_text_ink": 0.0523,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 595,
+    "local_seconds": 2.054
+   }
+  },
+  {
+   "input_id": "dutt-mahabharata-14f-chapter-069-page-002",
+   "book_id": "dutt-mahabharata",
+   "width": 2081,
+   "height": 2832,
+   "source": {
+    "path": "outputs/dutt-mahabharata-14f-chapter-069-page-002/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "30035f88dc01b5fb65e0cf843778f9ff303b4aa4eacf43656a276713f0c00013"
+   },
+   "result": {
+    "path": "outputs/dutt-mahabharata-14f-chapter-069-page-002/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "9c1799ad89a465fbf179ca93206cb95435b26e353c16dd5c149b589b0b4e4936"
+   },
+   "model": {
+    "regions": 31,
+    "kept": 29,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "verse": 16,
+     "paragraph": 13
+    },
+    "api_wall_seconds": 12.21,
+    "input_tokens": 7771,
+    "output_tokens": 976,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.014592999999999998
+   },
+   "lines": {
+    "char_h": 29.0,
+    "page_angle_deg": -0.09,
+    "columns": 2,
+    "lines": 87,
+    "whole": 87,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 439056,
+    "ink_owned_by_furniture_regions": 3400,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 193,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1512,
+    "local_seconds": 6.363
+   }
+  },
+  {
+   "input_id": "dutt-mahabharata-15f-chapter-080-page-002",
+   "book_id": "dutt-mahabharata",
+   "width": 2082,
+   "height": 2806,
+   "source": {
+    "path": "outputs/dutt-mahabharata-15f-chapter-080-page-002/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "d4e23c7cfd4612a1bf03bed3c759fce801b9312130f468f477804fb69b1d1663"
+   },
+   "result": {
+    "path": "outputs/dutt-mahabharata-15f-chapter-080-page-002/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "fe3198bbe280c0ebfd88208e53c63397cde9d2106cce959f1408c5a729d164d7"
+   },
+   "model": {
+    "regions": 31,
+    "kept": 29,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "paragraph": 14,
+     "verse": 13,
+     "heading": 2
+    },
+    "api_wall_seconds": 12.25,
+    "input_tokens": 7692,
+    "output_tokens": 976,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.01449425
+   },
+   "lines": {
+    "char_h": 30.0,
+    "page_angle_deg": 0.07,
+    "columns": 2,
+    "lines": 85,
+    "whole": 85,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 551177,
+    "ink_owned_by_furniture_regions": 3733,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1114,
+    "local_seconds": 6.525
+   }
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-002",
+   "book_id": "dutt-mahabharata",
+   "width": 2106,
+   "height": 2852,
+   "source": {
+    "path": "outputs/dutt-mahabharata-17f-chapter-001-page-002/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "e348bd3eac0bb14f20db2ff16e91c438beefa184d14d52e4ec3fa11ecfd3be69"
+   },
+   "result": {
+    "path": "outputs/dutt-mahabharata-17f-chapter-001-page-002/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "d2af892ca0424e3bc26afde2cfd2b46612924655e740e002e3f7a6119d501c7d"
+   },
+   "model": {
+    "regions": 29,
+    "kept": 27,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "verse": 15,
+     "paragraph": 10,
+     "heading": 2
+    },
+    "api_wall_seconds": 11.88,
+    "input_tokens": 7851,
+    "output_tokens": 914,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.014383
+   },
+   "lines": {
+    "char_h": 30.0,
+    "page_angle_deg": -0.0,
+    "columns": 2,
+    "lines": 85,
+    "whole": 85,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 572385,
+    "ink_owned_by_furniture_regions": 3971,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 84,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1079,
+    "local_seconds": 6.471
+   },
+   "reference": {
+    "path": "../../references/dutt-mahabharata-17f-chapter-001-page-002",
+    "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+    "evaluation": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-002/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/reference-evaluation/evaluation.json",
+     "sha256": "92bc18f5a02b4841704404f6abfaa551177d5bb27537e3ebdadbce1504b69638"
+    },
+    "results": {
+     "GPT-6.1 Terra (025), boxes": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 28,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 28,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": null
+     },
+     "GPT-6.1 Terra (025) + ownership polygons (036)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     },
+     "GPT-6.1 Terra, explicit units (037), boxes": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 47,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 47,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": null
+     },
+     "GPT-6.1 Terra, explicit units (037) + ownership polygons (038)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     },
+     "GPT-6.1 Terra, explicit units (037) + band-chained lines (039)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     }
+    }
+   }
+  },
+  {
+   "input_id": "dutt-mahabharata-18f-chapter-087-1-page-002",
+   "book_id": "dutt-mahabharata",
+   "width": 2066,
+   "height": 2861,
+   "source": {
+    "path": "outputs/dutt-mahabharata-18f-chapter-087-1-page-002/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "430a80976c66774604636ad7a74c16b52756c8756cf9018f726f38733bd026e3"
+   },
+   "result": {
+    "path": "outputs/dutt-mahabharata-18f-chapter-087-1-page-002/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "71e5d8c5c569b3dbcf0b65ff33da552ab7ed9b9f305751e7f46f14459d76d2c4"
+   },
+   "model": {
+    "regions": 24,
+    "kept": 22,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "verse": 14,
+     "paragraph": 8
+    },
+    "api_wall_seconds": 11.86,
+    "input_tokens": 7743,
+    "output_tokens": 759,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.013473
+   },
+   "lines": {
+    "char_h": 30.0,
+    "page_angle_deg": -0.0,
+    "columns": 2,
+    "lines": 87,
+    "whole": 87,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 511148,
+    "ink_owned_by_furniture_regions": 3125,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 183,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1210,
+    "local_seconds": 6.072
+   }
+  },
+  {
+   "input_id": "dutt-mahabharata-20f-chapter-187-page-002",
+   "book_id": "dutt-mahabharata",
+   "width": 2096,
+   "height": 2846,
+   "source": {
+    "path": "outputs/dutt-mahabharata-20f-chapter-187-page-002/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "bc524466b5f4fa44b01a44c9ae66dfa5deb692a58a549ea69b8a5fdae9cd0ebc"
+   },
+   "result": {
+    "path": "outputs/dutt-mahabharata-20f-chapter-187-page-002/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "ca87b26cbd0c27c04077282e0874086bf121816229165e332be040c8064fc6b3"
+   },
+   "model": {
+    "regions": 30,
+    "kept": 28,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "paragraph": 11,
+     "heading": 6,
+     "verse": 11
+    },
+    "api_wall_seconds": 12.16,
+    "input_tokens": 7771,
+    "output_tokens": 945,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.014438
+   },
+   "lines": {
+    "char_h": 28.0,
+    "page_angle_deg": -0.05,
+    "columns": 2,
+    "lines": 83,
+    "whole": 83,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 406841,
+    "ink_owned_by_furniture_regions": 3109,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 620,
+    "local_seconds": 5.858
+   }
+  },
+  {
+   "input_id": "dutt-mahabharata-21f-chapter-101-page-002",
+   "book_id": "dutt-mahabharata",
+   "width": 2088,
+   "height": 2821,
+   "source": {
+    "path": "outputs/dutt-mahabharata-21f-chapter-101-page-002/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "2490ffb5458541eb71d4f51f087bf935e2c6f64e6de4c5be7be0e36a629d974c"
+   },
+   "result": {
+    "path": "outputs/dutt-mahabharata-21f-chapter-101-page-002/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "0ada22b1b322401cd1eb552bb73938b2d811a81c0c7c02fe9f143b43074762d0"
+   },
+   "model": {
+    "regions": 28,
+    "kept": 26,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "verse": 13,
+     "paragraph": 11,
+     "heading": 2
+    },
+    "api_wall_seconds": 11.46,
+    "input_tokens": 7771,
+    "output_tokens": 883,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.014127999999999998
+   },
+   "lines": {
+    "char_h": 29.0,
+    "page_angle_deg": -0.1,
+    "columns": 2,
+    "lines": 83,
+    "whole": 83,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 481462,
+    "ink_owned_by_furniture_regions": 4251,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 841,
+    "local_seconds": 5.853
+   }
+  },
+  {
+   "input_id": "kale-1913-page-022",
+   "book_id": "kale-1913",
+   "width": 1380,
+   "height": 2113,
+   "source": {
+    "path": "outputs/kale-1913-page-022/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "99480db899cb9a5faa9ae6b0e85e43417b833aa5a3ad6f4815b6f8380b35abf7"
+   },
+   "result": {
+    "path": "outputs/kale-1913-page-022/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "f7dd5f9622b57a6962a00a4ea5a46e20ea7effa2d73fe0a37c879ee69e9fe414"
+   },
+   "model": {
+    "regions": 15,
+    "kept": 13,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "lead_in": 3,
+     "verse": 3,
+     "paragraph": 3,
+     "note": 4
+    },
+    "api_wall_seconds": 6.9,
+    "input_tokens": 4260,
+    "output_tokens": 483,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00773925
+   },
+   "lines": {
+    "char_h": 41.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 28,
+    "whole": 26,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 64,
+    "text_components_not_on_lines": 3,
+    "ink_owned_by_kept_regions": 405695,
+    "ink_owned_by_furniture_regions": 6336,
+    "unassigned_share_of_text_ink": 0.0002,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 266,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 908,
+    "local_seconds": 1.989
+   }
+  },
+  {
+   "input_id": "kale-1913-page-064",
+   "book_id": "kale-1913",
+   "width": 1366,
+   "height": 2115,
+   "source": {
+    "path": "outputs/kale-1913-page-064/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "cd5ab88a96aebfc8830f44ba904486dc360794af70cabfd9b3702b364b7d2ef1"
+   },
+   "result": {
+    "path": "outputs/kale-1913-page-064/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "b8a9d8faa66034a1b2a17ef72a535f3c2cebac7fdd23d8abc93e47026011f393"
+   },
+   "model": {
+    "regions": 8,
+    "kept": 6,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "paragraph": 3,
+     "verse": 2,
+     "lead_in": 1
+    },
+    "api_wall_seconds": 4.68,
+    "input_tokens": 4180,
+    "output_tokens": 264,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00654425
+   },
+   "lines": {
+    "char_h": 41.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 29,
+    "whole": 27,
+    "split": 1,
+    "uncovered": 1,
+    "uncovered_line_ids": [
+     1
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 920,
+    "text_components_not_on_lines": 3,
+    "ink_owned_by_kept_regions": 440674,
+    "ink_owned_by_furniture_regions": 7855,
+    "unassigned_share_of_text_ink": 0.002,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 89,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 633,
+    "local_seconds": 1.842
+   }
+  },
+  {
+   "input_id": "kale-1913-page-106",
+   "book_id": "kale-1913",
+   "width": 1374,
+   "height": 2118,
+   "source": {
+    "path": "outputs/kale-1913-page-106/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "5aff026a12ef8693833e78c6846e48f7b45e1b83fb567e3d9e1be6bdc3738344"
+   },
+   "result": {
+    "path": "outputs/kale-1913-page-106/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "ad33f41035b71b35fa1a3aa659e04134ba688bc4165a14ba72d0d6c1e5cde2f3"
+   },
+   "model": {
+    "regions": 13,
+    "kept": 11,
+    "uncertain": 0,
+    "types": {
+     "running_header": 1,
+     "page_number": 1,
+     "paragraph": 4,
+     "verse": 3,
+     "note": 4
+    },
+    "api_wall_seconds": 6.56,
+    "input_tokens": 4180,
+    "output_tokens": 418,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00731425
+   },
+   "lines": {
+    "char_h": 37.0,
+    "page_angle_deg": 0.08,
+    "columns": 1,
+    "lines": 31,
+    "whole": 29,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 17,
+    "text_components_not_on_lines": 1,
+    "ink_owned_by_kept_regions": 439565,
+    "ink_owned_by_furniture_regions": 7079,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 290,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1022,
+    "local_seconds": 2.168
+   },
+   "reference": {
+    "path": "../../references/kale-1913-page-106",
+    "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+    "evaluation": {
+     "path": "outputs/kale-1913-page-106/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/reference-evaluation/evaluation.json",
+     "sha256": "c6c35584d419380b4620b9b86cebd949cc0acad7bc9e64c272938917e9f5d78a"
+    },
+    "results": {
+     "GPT-6.1 Terra (025), boxes": {
+      "other_passages_ink_included": 175,
+      "own_ink_left_out": 142,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 142,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": null
+     },
+     "GPT-6.1 Terra (025) + ownership polygons (036)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     },
+     "GPT-6.1 Terra, explicit units (037), boxes": {
+      "other_passages_ink_included": 178,
+      "own_ink_left_out": 5,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 5,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": null
+     },
+     "GPT-6.1 Terra, explicit units (037) + ownership polygons (038)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     },
+     "GPT-6.1 Terra, explicit units (037) + band-chained lines (039)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     }
+    }
+   }
+  },
+  {
+   "input_id": "kale-1913-page-148",
+   "book_id": "kale-1913",
+   "width": 1364,
+   "height": 2119,
+   "source": {
+    "path": "outputs/kale-1913-page-148/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "af7b3d7afbee986bd309db2270d7a1e0833d3944c875d9847fbaa2fd772d0ef8"
+   },
+   "result": {
+    "path": "outputs/kale-1913-page-148/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "5d373d181df0a9775ed69cdf0bb9032143c46ced7535dd8fb7f69a9022abba82"
+   },
+   "model": {
+    "regions": 7,
+    "kept": 6,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "paragraph": 6
+    },
+    "api_wall_seconds": 4.2,
+    "input_tokens": 4180,
+    "output_tokens": 231,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0063792499999999995
+   },
+   "lines": {
+    "char_h": 21.0,
+    "page_angle_deg": 0.11,
+    "columns": 1,
+    "lines": 35,
+    "whole": 35,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 37,
+    "text_components_not_on_lines": 2,
+    "ink_owned_by_kept_regions": 361078,
+    "ink_owned_by_furniture_regions": 1767,
+    "unassigned_share_of_text_ink": 0.0001,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 40,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 412,
+    "local_seconds": 2.299
+   }
+  },
+  {
+   "input_id": "kale-1913-page-190",
+   "book_id": "kale-1913",
+   "width": 1353,
+   "height": 2119,
+   "source": {
+    "path": "outputs/kale-1913-page-190/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "2dc2a8fe203f18ac0a9ea92155cc675f58bd8ab8dcb4d91e21abd0806f717386"
+   },
+   "result": {
+    "path": "outputs/kale-1913-page-190/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "41924d958da531962ea70764cb5e6a43076e7fa60a3ab1eda965ced9d71b566c"
+   },
+   "model": {
+    "regions": 4,
+    "kept": 3,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "paragraph": 3
+    },
+    "api_wall_seconds": 3.06,
+    "input_tokens": 4180,
+    "output_tokens": 138,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.005914249999999999
+   },
+   "lines": {
+    "char_h": 28.0,
+    "page_angle_deg": -0.1,
+    "columns": 1,
+    "lines": 35,
+    "whole": 35,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 441548,
+    "ink_owned_by_furniture_regions": 1210,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 126,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 180,
+    "local_seconds": 1.813
+   }
+  },
+  {
+   "input_id": "kale-1913-page-232",
+   "book_id": "kale-1913",
+   "width": 1355,
+   "height": 2126,
+   "source": {
+    "path": "outputs/kale-1913-page-232/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "438f30e262a51175c78250e79a2d8e6428741ae40ca94c42a2d0f04d64a86d20"
+   },
+   "result": {
+    "path": "outputs/kale-1913-page-232/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "409dc8fd1a1b04dde29b1e7d315907ff3a5f5946433175e4df47970bc5eff7d6"
+   },
+   "model": {
+    "regions": 8,
+    "kept": 7,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "paragraph": 6,
+     "verse": 1
+    },
+    "api_wall_seconds": 4.81,
+    "input_tokens": 4180,
+    "output_tokens": 262,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00653425
+   },
+   "lines": {
+    "char_h": 26.0,
+    "page_angle_deg": 0.09,
+    "columns": 1,
+    "lines": 39,
+    "whole": 39,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 109,
+    "text_components_not_on_lines": 10,
+    "ink_owned_by_kept_regions": 383270,
+    "ink_owned_by_furniture_regions": 1211,
+    "unassigned_share_of_text_ink": 0.0003,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 117,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 577,
+    "local_seconds": 2.299
+   }
+  },
+  {
+   "input_id": "hertel-panchatantra-page-037",
+   "book_id": "hertel-panchatantra",
+   "width": 2088,
+   "height": 3121,
+   "source": {
+    "path": "outputs/hertel-panchatantra-page-037/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "d8ee397bb5a3861a592c18f6532d0d38895bcc5c90a754f09974166d4dd78ce9"
+   },
+   "result": {
+    "path": "outputs/hertel-panchatantra-page-037/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "8811bdf9b0906c38fad6840c5e10a16b39d72b5b36c0f5be74b96219fdcc0ddc"
+   },
+   "model": {
+    "regions": 12,
+    "kept": 10,
+    "uncertain": 0,
+    "types": {
+     "page_number": 1,
+     "running_header": 1,
+     "paragraph": 5,
+     "note": 5
+    },
+    "api_wall_seconds": 7.94,
+    "input_tokens": 8484,
+    "output_tokens": 387,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.012539250000000002
+   },
+   "lines": {
+    "char_h": 27.0,
+    "page_angle_deg": 0.05,
+    "columns": 1,
+    "lines": 46,
+    "whole": 43,
+    "split": 3,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 800304,
+    "ink_owned_by_furniture_regions": 15191,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 164,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 641,
+    "local_seconds": 4.995
+   }
+  },
+  {
+   "input_id": "hertel-panchatantra-page-094",
+   "book_id": "hertel-panchatantra",
+   "width": 2088,
+   "height": 3121,
+   "source": {
+    "path": "outputs/hertel-panchatantra-page-094/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "ef8a9d9784e3d96f087d8cf158b0bbf6e933ecf9c245ca52098d064938814a2a"
+   },
+   "result": {
+    "path": "outputs/hertel-panchatantra-page-094/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "480ac6431e463a6e3253e820fa7cf861945e4feadca9db90471d9eec928488b6"
+   },
+   "model": {
+    "regions": 6,
+    "kept": 3,
+    "uncertain": 0,
+    "types": {
+     "running_header": 2,
+     "page_number": 1,
+     "paragraph": 2,
+     "verse": 1
+    },
+    "api_wall_seconds": 5.31,
+    "input_tokens": 8484,
+    "output_tokens": 202,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.011614250000000001
+   },
+   "lines": {
+    "char_h": 56.0,
+    "page_angle_deg": 0.05,
+    "columns": 1,
+    "lines": 25,
+    "whole": 24,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 923751,
+    "ink_owned_by_furniture_regions": 18863,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 90,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 652,
+    "local_seconds": 4.006
+   }
+  },
+  {
+   "input_id": "hertel-panchatantra-page-152",
+   "book_id": "hertel-panchatantra",
+   "width": 2088,
+   "height": 3121,
+   "source": {
+    "path": "outputs/hertel-panchatantra-page-152/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "5cc1d5737ccede74908b5b5f11d4d182a7578c61fc6dc5fe83ed5a70422cc9e0"
+   },
+   "result": {
+    "path": "outputs/hertel-panchatantra-page-152/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "791b2ad08c45753eab0265ee2add45543ca815076afbca9e3ac2ff0fcf829430"
+   },
+   "model": {
+    "regions": 11,
+    "kept": 8,
+    "uncertain": 0,
+    "types": {
+     "running_header": 2,
+     "page_number": 1,
+     "paragraph": 3,
+     "verse": 4,
+     "lead_in": 1
+    },
+    "api_wall_seconds": 7.88,
+    "input_tokens": 8484,
+    "output_tokens": 358,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.01239425
+   },
+   "lines": {
+    "char_h": 53.0,
+    "page_angle_deg": 0.04,
+    "columns": 1,
+    "lines": 25,
+    "whole": 24,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 1326,
+    "text_components_not_on_lines": 6,
+    "ink_owned_by_kept_regions": 823834,
+    "ink_owned_by_furniture_regions": 18122,
+    "unassigned_share_of_text_ink": 0.0016,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 321,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1009,
+    "local_seconds": 4.093
+   },
+   "reference": {
+    "path": "../../references/hertel-panchatantra-page-152",
+    "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+    "evaluation": {
+     "path": "outputs/hertel-panchatantra-page-152/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/reference-evaluation/evaluation.json",
+     "sha256": "0fca1fdcdff15e07fa3eaddeece7b62e28c5213347cece83da28854b4cd2eb82"
+    },
+    "results": {
+     "GPT-6.1 Terra (025), boxes": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 18,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 18,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": null
+     },
+     "GPT-6.1 Terra (025) + ownership polygons (036)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 8115
+     },
+     "GPT-6.1 Terra, explicit units (037), boxes": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 18,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 18,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": null
+     },
+     "GPT-6.1 Terra, explicit units (037) + ownership polygons (038)": {
+      "other_passages_ink_included": 2303,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 7528
+     },
+     "GPT-6.1 Terra, explicit units (037) + band-chained lines (039)": {
+      "other_passages_ink_included": 2303,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 7843
+     }
+    }
+   }
+  },
+  {
+   "input_id": "hertel-panchatantra-page-209",
+   "book_id": "hertel-panchatantra",
+   "width": 2088,
+   "height": 3121,
+   "source": {
+    "path": "outputs/hertel-panchatantra-page-209/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "18f02e0fd9a48952fd42c310746e66bb41277017d8cb8dddf54c1445fbedb691"
+   },
+   "result": {
+    "path": "outputs/hertel-panchatantra-page-209/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "16f27b144a77fd2af100d3f724cabadfa00c0ef4cdb460a2b8313d7b99e0c3dd"
+   },
+   "model": {
+    "regions": 14,
+    "kept": 11,
+    "uncertain": 0,
+    "types": {
+     "running_header": 2,
+     "page_number": 1,
+     "lead_in": 2,
+     "verse": 9
+    },
+    "api_wall_seconds": 8.46,
+    "input_tokens": 8484,
+    "output_tokens": 452,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.01286425
+   },
+   "lines": {
+    "char_h": 66.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 24,
+    "whole": 23,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 3960,
+    "text_components_not_on_lines": 12,
+    "ink_owned_by_kept_regions": 686656,
+    "ink_owned_by_furniture_regions": 19631,
+    "unassigned_share_of_text_ink": 0.0056,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 433,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1231,
+    "local_seconds": 4.17
+   }
+  },
+  {
+   "input_id": "hertel-panchatantra-page-267",
+   "book_id": "hertel-panchatantra",
+   "width": 2088,
+   "height": 3121,
+   "source": {
+    "path": "outputs/hertel-panchatantra-page-267/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "bad6e57c92d34f69f761fbb97737e40ace6b6f02d326e7857fdc6308e9d63d57"
+   },
+   "result": {
+    "path": "outputs/hertel-panchatantra-page-267/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "e20abe949b8301b3ac2693dc102db006be3e91032b04a29969ec11a83429701b"
+   },
+   "model": {
+    "regions": 19,
+    "kept": 8,
+    "uncertain": 1,
+    "types": {
+     "running_header": 2,
+     "page_number": 1,
+     "heading": 1,
+     "paragraph": 4,
+     "verse": 3,
+     "other": 8
+    },
+    "api_wall_seconds": 11.01,
+    "input_tokens": 8484,
+    "output_tokens": 605,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.01362925
+   },
+   "lines": {
+    "char_h": 54.0,
+    "page_angle_deg": 0.05,
+    "columns": 1,
+    "lines": 23,
+    "whole": 16,
+    "split": 7,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 535,
+    "text_components_not_on_lines": 3,
+    "ink_owned_by_kept_regions": 768997,
+    "ink_owned_by_furniture_regions": 30251,
+    "unassigned_share_of_text_ink": 0.0007,
+    "regions_without_ink": [
+     13
+    ],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 375,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 1216,
+    "local_seconds": 4.687
+   }
+  },
+  {
+   "input_id": "hertel-panchatantra-page-324",
+   "book_id": "hertel-panchatantra",
+   "width": 2088,
+   "height": 3121,
+   "source": {
+    "path": "outputs/hertel-panchatantra-page-324/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "a897a548aaf16871177cf3fa593bb6138d670435bd5dc2b336849bd36f9d1812"
+   },
+   "result": {
+    "path": "outputs/hertel-panchatantra-page-324/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "499556e2e177a14e0091dad6137108abab885e8caec932e589c531d545cff03d"
+   },
+   "model": {
+    "regions": 9,
+    "kept": 5,
+    "uncertain": 0,
+    "types": {
+     "running_header": 3,
+     "page_number": 1,
+     "paragraph": 3,
+     "verse": 1,
+     "heading": 1
+    },
+    "api_wall_seconds": 6.67,
+    "input_tokens": 8484,
+    "output_tokens": 296,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.012084250000000001
+   },
+   "lines": {
+    "char_h": 57.0,
+    "page_angle_deg": 0.05,
+    "columns": 1,
+    "lines": 23,
+    "whole": 22,
+    "split": 1,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 290,
+    "text_components_not_on_lines": 1,
+    "ink_owned_by_kept_regions": 805235,
+    "ink_owned_by_furniture_regions": 32211,
+    "unassigned_share_of_text_ink": 0.0003,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [
+     5
+    ],
+    "polygon_overlap_pixels": 127,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 646,
+    "local_seconds": 3.706
+   }
+  },
+  {
+   "input_id": "ryder-gita-1929-page-011",
+   "book_id": "ryder-gita-1929",
+   "width": 1670,
+   "height": 1214,
+   "source": {
+    "path": "outputs/ryder-gita-1929-page-011/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "5870eb37b520ac3289eee888502311eb0a2e782299685dc2ea8ed3ec0dc01ad2"
+   },
+   "result": {
+    "path": "outputs/ryder-gita-1929-page-011/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "c4a50625254390c2b15114a8490dcf5f7ff5777b675f11ee51164ff29852de99"
+   },
+   "model": {
+    "regions": 14,
+    "kept": 10,
+    "uncertain": 0,
+    "types": {
+     "running_header": 2,
+     "paragraph": 8,
+     "heading": 1,
+     "verse": 1,
+     "page_number": 2
+    },
+    "api_wall_seconds": 6.94,
+    "input_tokens": 3139,
+    "output_tokens": 451,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.006178
+   },
+   "lines": {
+    "char_h": 25.0,
+    "page_angle_deg": 0.86,
+    "columns": 2,
+    "lines": 33,
+    "whole": 32,
+    "split": 0,
+    "uncovered": 1,
+    "uncovered_line_ids": [
+     16
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 4062,
+    "text_components_not_on_lines": 22,
+    "ink_owned_by_kept_regions": 84817,
+    "ink_owned_by_furniture_regions": 0,
+    "unassigned_share_of_text_ink": 0.0457,
+    "regions_without_ink": [
+     1,
+     7,
+     8,
+     9,
+     13,
+     14
+    ],
+    "regions_with_several_pieces": [
+     12
+    ],
+    "polygon_overlap_pixels": 16,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 516,
+    "local_seconds": 1.278
+   }
+  },
+  {
+   "input_id": "ryder-gita-1929-page-026",
+   "book_id": "ryder-gita-1929",
+   "width": 1670,
+   "height": 1214,
+   "source": {
+    "path": "outputs/ryder-gita-1929-page-026/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "f0d8e30aac3b776cafb66132f2289b263813467507d7636083b973d6461606de"
+   },
+   "result": {
+    "path": "outputs/ryder-gita-1929-page-026/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "a424c02685ab45254a5fa986a23fb493214163df3f29b2c109f4be7e74631fa1"
+   },
+   "model": {
+    "regions": 18,
+    "kept": 14,
+    "uncertain": 0,
+    "types": {
+     "running_header": 2,
+     "heading": 2,
+     "verse": 12,
+     "page_number": 2
+    },
+    "api_wall_seconds": 8.8,
+    "input_tokens": 3139,
+    "output_tokens": 575,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.006798
+   },
+   "lines": {
+    "char_h": 26.0,
+    "page_angle_deg": -1.87,
+    "columns": 2,
+    "lines": 26,
+    "whole": 26,
+    "split": 0,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 2215,
+    "text_components_not_on_lines": 64,
+    "ink_owned_by_kept_regions": 53233,
+    "ink_owned_by_furniture_regions": 0,
+    "unassigned_share_of_text_ink": 0.0399,
+    "regions_without_ink": [
+     1,
+     6,
+     8,
+     9,
+     10,
+     18
+    ],
+    "regions_with_several_pieces": [
+     4,
+     14
+    ],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 244,
+    "local_seconds": 1.274
+   }
+  },
+  {
+   "input_id": "ryder-gita-1929-page-041",
+   "book_id": "ryder-gita-1929",
+   "width": 1670,
+   "height": 1214,
+   "source": {
+    "path": "outputs/ryder-gita-1929-page-041/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "7bf9dbb9662336dcc93ec254b31703cde26f16d85a1ecc38cfe82915630a9ce4"
+   },
+   "result": {
+    "path": "outputs/ryder-gita-1929-page-041/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "ae1d7d0705bd120afa4f308ca27fe736e44d8195edf5ffaca9618efd8a3e9931"
+   },
+   "model": {
+    "regions": 15,
+    "kept": 11,
+    "uncertain": 0,
+    "types": {
+     "running_header": 2,
+     "verse": 10,
+     "heading": 1,
+     "page_number": 2
+    },
+    "api_wall_seconds": 7.67,
+    "input_tokens": 3139,
+    "output_tokens": 482,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.006333
+   },
+   "lines": {
+    "char_h": 25.0,
+    "page_angle_deg": 0.01,
+    "columns": 1,
+    "lines": 14,
+    "whole": 13,
+    "split": 0,
+    "uncovered": 1,
+    "uncovered_line_ids": [
+     1
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 1746,
+    "text_components_not_on_lines": 7,
+    "ink_owned_by_kept_regions": 54158,
+    "ink_owned_by_furniture_regions": 2583,
+    "unassigned_share_of_text_ink": 0.0299,
+    "regions_without_ink": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     15
+    ],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 139,
+    "local_seconds": 1.132
+   }
+  },
+  {
+   "input_id": "ryder-gita-1929-page-056",
+   "book_id": "ryder-gita-1929",
+   "width": 1670,
+   "height": 1214,
+   "source": {
+    "path": "outputs/ryder-gita-1929-page-056/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "e3679320661b16a5cccb782f265c06f502e63fb66d1d98dbbdc115e6bfd41b55"
+   },
+   "result": {
+    "path": "outputs/ryder-gita-1929-page-056/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "02375b1a527af455f56a6074dcf1b36092fa4c109edc92a39a0d14909ca9c96e"
+   },
+   "model": {
+    "regions": 17,
+    "kept": 13,
+    "uncertain": 0,
+    "types": {
+     "running_header": 2,
+     "verse": 12,
+     "page_number": 2,
+     "heading": 1
+    },
+    "api_wall_seconds": 8.44,
+    "input_tokens": 3139,
+    "output_tokens": 544,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0066430000000000005
+   },
+   "lines": {
+    "char_h": 26.0,
+    "page_angle_deg": -0.21,
+    "columns": 2,
+    "lines": 7,
+    "whole": 5,
+    "split": 0,
+    "uncovered": 2,
+    "uncovered_line_ids": [
+     0,
+     2
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 1981,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 15562,
+    "ink_owned_by_furniture_regions": 0,
+    "unassigned_share_of_text_ink": 0.1129,
+    "regions_without_ink": [
+     1,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17
+    ],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 0,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 122,
+    "local_seconds": 1.006
+   }
+  },
+  {
+   "input_id": "ryder-gita-1929-page-071",
+   "book_id": "ryder-gita-1929",
+   "width": 1670,
+   "height": 1214,
+   "source": {
+    "path": "outputs/ryder-gita-1929-page-071/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "77bd4a39a80b94e435eac207c37808ad966e9b0a149a40dc0ee6d569f5ae8760"
+   },
+   "result": {
+    "path": "outputs/ryder-gita-1929-page-071/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "7567d8747a57c7df6a47c7befd6fdd50a9c487746727f6932354b0451ad2320b"
+   },
+   "model": {
+    "regions": 18,
+    "kept": 15,
+    "uncertain": 0,
+    "types": {
+     "heading": 5,
+     "verse": 10,
+     "page_number": 2,
+     "running_header": 1
+    },
+    "api_wall_seconds": 8.07,
+    "input_tokens": 3139,
+    "output_tokens": 574,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.006793
+   },
+   "lines": {
+    "char_h": 28.0,
+    "page_angle_deg": -0.0,
+    "columns": 1,
+    "lines": 16,
+    "whole": 15,
+    "split": 0,
+    "uncovered": 1,
+    "uncovered_line_ids": [
+     0
+    ]
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 3961,
+    "text_components_not_on_lines": 55,
+    "ink_owned_by_kept_regions": 28918,
+    "ink_owned_by_furniture_regions": 0,
+    "unassigned_share_of_text_ink": 0.1205,
+    "regions_without_ink": [
+     6,
+     7,
+     8,
+     9,
+     11,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18
+    ],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 5,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 257,
+    "local_seconds": 1.118
+   }
+  },
+  {
+   "input_id": "ryder-gita-1929-page-087",
+   "book_id": "ryder-gita-1929",
+   "width": 1670,
+   "height": 1214,
+   "source": {
+    "path": "outputs/ryder-gita-1929-page-087/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "a6f40ee985a1f4a19dea2a4724b37a3e0e2bc6b336ae83e6f05e114b9dceb419"
+   },
+   "result": {
+    "path": "outputs/ryder-gita-1929-page-087/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "91a23d3ec90e36f0aae4a1822d1735321d8e3dcb5b48f83bdd10f3b460ecf147"
+   },
+   "model": {
+    "regions": 17,
+    "kept": 13,
+    "uncertain": 0,
+    "types": {
+     "running_header": 2,
+     "verse": 12,
+     "page_number": 2,
+     "heading": 1
+    },
+    "api_wall_seconds": 7.9,
+    "input_tokens": 3139,
+    "output_tokens": 544,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0066430000000000005
+   },
+   "lines": {
+    "char_h": 27.0,
+    "page_angle_deg": -0.15,
+    "columns": 1,
+    "lines": 21,
+    "whole": 18,
+    "split": 3,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 1265,
+    "text_components_not_on_lines": 35,
+    "ink_owned_by_kept_regions": 55607,
+    "ink_owned_by_furniture_regions": 0,
+    "unassigned_share_of_text_ink": 0.0222,
+    "regions_without_ink": [
+     1,
+     6,
+     7,
+     8,
+     9,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17
+    ],
+    "regions_with_several_pieces": [
+     11
+    ],
+    "polygon_overlap_pixels": 38,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 348,
+    "local_seconds": 1.116
+   }
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-008",
+   "book_id": "ryder-ten-princes-1927",
+   "width": 1641,
+   "height": 1195,
+   "source": {
+    "path": "outputs/ryder-ten-princes-1927-page-008/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "c93dfadc2fc3746b4b4269c5f100fe0108a2ef5ae9abcb44646eddaeb83e464f"
+   },
+   "result": {
+    "path": "outputs/ryder-ten-princes-1927-page-008/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "b31613780c317445aa52f63a732520a088cf1d5f2fa3864d8a1c83f76b9ffbe0"
+   },
+   "model": {
+    "regions": 11,
+    "kept": 7,
+    "uncertain": 0,
+    "types": {
+     "page_number": 2,
+     "running_header": 2,
+     "paragraph": 7
+    },
+    "api_wall_seconds": 6.19,
+    "input_tokens": 3149,
+    "output_tokens": 358,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.0057255
+   },
+   "lines": {
+    "char_h": 19.0,
+    "page_angle_deg": -0.86,
+    "columns": 2,
+    "lines": 62,
+    "whole": 60,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 239302,
+    "ink_owned_by_furniture_regions": 8359,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 42,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 376,
+    "local_seconds": 2.119
+   }
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-019",
+   "book_id": "ryder-ten-princes-1927",
+   "width": 1641,
+   "height": 1195,
+   "source": {
+    "path": "outputs/ryder-ten-princes-1927-page-019/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "cc91f3ee7aedf6487d98dc55ac8b4287cb833d7fcf981c175a341819103764ab"
+   },
+   "result": {
+    "path": "outputs/ryder-ten-princes-1927-page-019/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "ea450554b33ec10120911def2c9b96afcdcbe1e60a6ca21e9408ea0a4fc7ad75"
+   },
+   "model": {
+    "regions": 8,
+    "kept": 4,
+    "uncertain": 0,
+    "types": {
+     "page_number": 2,
+     "running_header": 2,
+     "paragraph": 4
+    },
+    "api_wall_seconds": 4.91,
+    "input_tokens": 3094,
+    "output_tokens": 265,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00519175
+   },
+   "lines": {
+    "char_h": 20.0,
+    "page_angle_deg": -0.38,
+    "columns": 2,
+    "lines": 42,
+    "whole": 40,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 16,
+    "text_components_not_on_lines": 1,
+    "ink_owned_by_kept_regions": 174712,
+    "ink_owned_by_furniture_regions": 5992,
+    "unassigned_share_of_text_ink": 0.0001,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 16,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 129,
+    "local_seconds": 1.613
+   }
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-030",
+   "book_id": "ryder-ten-princes-1927",
+   "width": 1641,
+   "height": 1195,
+   "source": {
+    "path": "outputs/ryder-ten-princes-1927-page-030/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "46fcfb926e563d7b5d6de9c1bd7d9a50c713bceb67a20106b2a2352770cafb67"
+   },
+   "result": {
+    "path": "outputs/ryder-ten-princes-1927-page-030/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "e3eacd54d006752f73a1ae537d4c3413e787e2465faebfc7a05100f03dca806a"
+   },
+   "model": {
+    "regions": 8,
+    "kept": 4,
+    "uncertain": 0,
+    "types": {
+     "page_number": 2,
+     "running_header": 2,
+     "paragraph": 4
+    },
+    "api_wall_seconds": 5.13,
+    "input_tokens": 3094,
+    "output_tokens": 265,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00519175
+   },
+   "lines": {
+    "char_h": 20.0,
+    "page_angle_deg": -1.4,
+    "columns": 2,
+    "lines": 59,
+    "whole": 57,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 35,
+    "text_components_not_on_lines": 2,
+    "ink_owned_by_kept_regions": 262659,
+    "ink_owned_by_furniture_regions": 7707,
+    "unassigned_share_of_text_ink": 0.0001,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 18,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 206,
+    "local_seconds": 2.072
+   },
+   "reference": {
+    "path": "../../references/ryder-ten-princes-1927-page-030",
+    "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+    "evaluation": {
+     "path": "outputs/ryder-ten-princes-1927-page-030/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/reference-evaluation/evaluation.json",
+     "sha256": "44f5f6bfc5403aca24583543feb83b0b745df338b6bc4583c76aba7f5596aed7"
+    },
+    "results": {
+     "GPT-6.1 Terra (025), boxes": {
+      "other_passages_ink_included": 182,
+      "own_ink_left_out": 3,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 3,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": null
+     },
+     "GPT-6.1 Terra (025) + ownership polygons (036)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     },
+     "GPT-6.1 Terra, explicit units (037), boxes": {
+      "other_passages_ink_included": 101,
+      "own_ink_left_out": 28,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 28,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": null
+     },
+     "GPT-6.1 Terra, explicit units (037) + ownership polygons (038)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     },
+     "GPT-6.1 Terra, explicit units (037) + band-chained lines (039)": {
+      "other_passages_ink_included": 0,
+      "own_ink_left_out": 0,
+      "separator_pixels_included": 0,
+      "own_ink_left_out_beyond_reading_order_splits": 0,
+      "passages_split_in_reading_order": [],
+      "passages_split_out_of_order": [],
+      "kept_passages_without_region": [],
+      "regions_matched_by_several_kept_passages": [],
+      "ownership_errors": 0
+     }
+    }
+   }
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-040",
+   "book_id": "ryder-ten-princes-1927",
+   "width": 1641,
+   "height": 1195,
+   "source": {
+    "path": "outputs/ryder-ten-princes-1927-page-040/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "d44a61942ab9d197ebd8e1a954a664196214bcdc4536bd73ca0e25d54725d5fc"
+   },
+   "result": {
+    "path": "outputs/ryder-ten-princes-1927-page-040/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "ab8daeacd244dc6ad54cfa795dfb79c903faaf8d3eae99bf6aebfeead2ca00ca"
+   },
+   "model": {
+    "regions": 10,
+    "kept": 6,
+    "uncertain": 0,
+    "types": {
+     "page_number": 2,
+     "running_header": 2,
+     "paragraph": 6
+    },
+    "api_wall_seconds": 5.59,
+    "input_tokens": 3094,
+    "output_tokens": 327,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00550175
+   },
+   "lines": {
+    "char_h": 20.0,
+    "page_angle_deg": -0.83,
+    "columns": 2,
+    "lines": 62,
+    "whole": 60,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 34,
+    "text_components_not_on_lines": 2,
+    "ink_owned_by_kept_regions": 281663,
+    "ink_owned_by_furniture_regions": 7216,
+    "unassigned_share_of_text_ink": 0.0001,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 65,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 341,
+    "local_seconds": 2.27
+   }
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-051",
+   "book_id": "ryder-ten-princes-1927",
+   "width": 1641,
+   "height": 1195,
+   "source": {
+    "path": "outputs/ryder-ten-princes-1927-page-051/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "5f44dd8065c017f1efdf3a555bd1ae95527d7b4991d9e8d9b42791fcdff073ee"
+   },
+   "result": {
+    "path": "outputs/ryder-ten-princes-1927-page-051/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "e48d7ef92f27f25e3162754961ad77d8d65ebe35eff1544c5f3a02abb054551d"
+   },
+   "model": {
+    "regions": 10,
+    "kept": 6,
+    "uncertain": 0,
+    "types": {
+     "page_number": 2,
+     "running_header": 2,
+     "paragraph": 6
+    },
+    "api_wall_seconds": 5.59,
+    "input_tokens": 3094,
+    "output_tokens": 327,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00550175
+   },
+   "lines": {
+    "char_h": 19.0,
+    "page_angle_deg": 0.63,
+    "columns": 2,
+    "lines": 60,
+    "whole": 58,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 0,
+    "text_components_not_on_lines": 0,
+    "ink_owned_by_kept_regions": 228209,
+    "ink_owned_by_furniture_regions": 6846,
+    "unassigned_share_of_text_ink": 0.0,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 41,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 289,
+    "local_seconds": 1.981
+   }
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-062",
+   "book_id": "ryder-ten-princes-1927",
+   "width": 1641,
+   "height": 1195,
+   "source": {
+    "path": "outputs/ryder-ten-princes-1927-page-062/037-gpt-6.1-terra-none-explicit-units/regions.json",
+    "sha256": "ef6cd89a125328fa33396ab108d19d5313112feaed82eca30d8b9d5202bc5216"
+   },
+   "result": {
+    "path": "outputs/ryder-ten-princes-1927-page-062/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/regions.json",
+    "sha256": "87d9676608363d3e24ce2d708babf071c2644ad9e1392a5f09c621008cd35104"
+   },
+   "model": {
+    "regions": 12,
+    "kept": 8,
+    "uncertain": 0,
+    "types": {
+     "page_number": 2,
+     "running_header": 2,
+     "paragraph": 8
+    },
+    "api_wall_seconds": 6.07,
+    "input_tokens": 3094,
+    "output_tokens": 389,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0.00581175
+   },
+   "lines": {
+    "char_h": 19.0,
+    "page_angle_deg": 0.08,
+    "columns": 2,
+    "lines": 60,
+    "whole": 58,
+    "split": 2,
+    "uncovered": 0,
+    "uncovered_line_ids": []
+   },
+   "ownership": {
+    "dropped_components": 0,
+    "unassigned_text_pixels": 17,
+    "text_components_not_on_lines": 2,
+    "ink_owned_by_kept_regions": 244543,
+    "ink_owned_by_furniture_regions": 7425,
+    "unassigned_share_of_text_ink": 0.0001,
+    "regions_without_ink": [],
+    "regions_with_several_pieces": [],
+    "polygon_overlap_pixels": 136,
+    "ink_in_polygon_overlaps": 0,
+    "polygon_vertices": 420,
+    "local_seconds": 2.052
+   }
+  }
+ ],
+ "contact_sheets": [
+  "cross-book-telang-dli.png",
+  "cross-book-vavilla.png",
+  "cross-book-gopinath-1896.png",
+  "cross-book-gopinath-1914.png",
+  "cross-book-dutt-mahabharata.png",
+  "cross-book-kale-1913.png",
+  "cross-book-hertel-panchatantra.png",
+  "cross-book-ryder-gita-1929.png",
+  "cross-book-ryder-ten-princes-1927.png"
+ ],
+ "code_sha256": {
+  "crossbook.py": "b19064edf5fa57e5b87bae81c492dbb1aa171857b27d050c826e5aed8b3ea815",
+  "run.py": "4f8f212654bba9ed413179d516d3ce8e7dc8a045c6f4b126a181b331e72ede2a",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

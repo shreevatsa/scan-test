@@ -1,0 +1,60 @@
+{
+  "note": "Local scanned books used for the cross-book skew survey. Paths beginning with ~ are expanded at run time; the survey records each PDF's SHA-256. Descriptions are from file names and visible page content only.",
+  "books": [
+    {
+      "book_id": "kale-1913",
+      "path": "Kale-1913-pp21-272.pdf",
+      "pages": "all",
+      "description": "Kale (1913), the project's test book: Sanskrit verses with Sanskrit commentary and footnotes; Google Books scan, 600 dpi bilevel page images."
+    },
+    {
+      "book_id": "telang-dli",
+      "path": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+      "pages": "sample",
+      "description": "Digital Library of India scan (dli.granth.78136) of a Telang edition of Bhartrhari: Sanskrit verses with a small-type variant-reading apparatus and English notes; 1500 x 2500 pixel grayscale or RGB page images."
+    },
+    {
+      "book_id": "vavilla",
+      "path": "~/w/bhartrhari/data/images/RamchandraBudhendra-Vavilla.pdf",
+      "pages": "sample",
+      "description": "Vavilla edition with the Ramachandra Budhendra commentary: Sanskrit verses with Sanskrit prose commentary and numbered notes; 600 dpi bilevel page images."
+    },
+    {
+      "book_id": "gopinath-1896",
+      "path": "~/w/bhartrhari/data/images/gopinath/1896-XikpAAAAYAAJ/pdf/The_Nîtiśataka_Śringâraśataka_and_V.pdf",
+      "pages": "sample",
+      "description": "The Nitisataka, Sringarasataka and Vairagyasataka (1896), Google Books XikpAAAAYAAJ: large-type Sanskrit verse, Hindi and English translation, footnotes; 600 dpi grayscale."
+    },
+    {
+      "book_id": "gopinath-1914",
+      "path": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+      "pages": "sample",
+      "description": "The Nitisataka, Sringarasataka and Vairagyasataka (1914), Google Books VeBjAAAAMAAJ: same layout family as the 1896 edition; 600 dpi grayscale.",
+      "caveat": "Pages have a border of small repeated ornaments. The line segmentation attaches ornament components to text lines, so this book's line-pair statistics are not reliable. Page angles are unaffected in inspection."
+    },
+    {
+      "book_id": "dutt-mahabharata",
+      "path_glob": "~/w/mahabharata-dutt/pdfs/*_Chapter_*.pdf",
+      "pages": "one_per_file_sample",
+      "description": "M. N. Dutt's English Mahabharata, per-chapter PDFs: two columns, each interleaving Devanagari verses with English translation; 300 dpi bilevel page images."
+    },
+    {
+      "book_id": "cole-1903",
+      "path": "~/w/pages/docs/cole-factor/Cole.1903-euclid.bams.1183417760.pdf",
+      "pages": "all",
+      "description": "F. N. Cole, Bulletin of the AMS (1903), Project Euclid scan: English mathematical prose with displayed formulas and a footnote; 600 dpi bilevel."
+    }
+  ],
+  "sample_pages": 12,
+  "sample_range": [
+    0.1,
+    0.9
+  ],
+  "render_dpi": 300,
+  "contact_sheet_pages": 6,
+  "summary_exclusions": {
+    "telang-dli": {
+      "50": "Sideways table: the horizontal text-line analysis does not apply. Found by inspecting the contact sheet."
+    }
+  }
+}

@@ -1,0 +1,1063 @@
+{
+  "input_id": "gopinath-1914-page-258",
+  "input_sha256": "7d1fb165f28d2a846898d10b8ad007c12acef6c89f0f3360a7afa7505256b2cc",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T18:16:43.909819+00:00",
+  "spec_sha256": "7d67a92c131c07abd4e820359de32e55325da3623263dd100fb50dd505b1fb1e",
+  "labels_png_sha256": "85c3ba6f6e8b0613e5abf47f4a281c5a5457f4949b257f95f1d3ab00ada70dc3",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 138.0,
+    "weak": 196.5,
+    "speck_area": 13
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 8464,
+      "components": 3,
+      "box": [
+        570,
+        122,
+        908,
+        187
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 2171,
+      "components": 4,
+      "box": [
+        1234,
+        83,
+        1323,
+        182
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "verse-81",
+      "type": "verse",
+      "keep": true,
+      "pixels": 64851,
+      "components": 35,
+      "box": [
+        221,
+        277,
+        1296,
+        591
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "hindi-translation-81",
+      "type": "translation",
+      "keep": true,
+      "pixels": 58730,
+      "components": 38,
+      "box": [
+        136,
+        719,
+        1335,
+        989
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "english-translation-81",
+      "type": "translation",
+      "keep": true,
+      "pixels": 60147,
+      "components": 217,
+      "box": [
+        134,
+        1107,
+        1331,
+        1427
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "note-source",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 42264,
+      "components": 175,
+      "box": [
+        129,
+        1524,
+        1329,
+        1755
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "note-comment",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 63953,
+      "components": 317,
+      "box": [
+        126,
+        1803,
+        1329,
+        2135
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 1,
+      "box": [
+        206,
+        76,
+        220,
+        88
+      ],
+      "area": 108,
+      "role": "text"
+    },
+    {
+      "component_id": 5,
+      "box": [
+        1426,
+        117,
+        1430,
+        122
+      ],
+      "area": 17,
+      "role": "text"
+    },
+    {
+      "component_id": 13,
+      "box": [
+        95,
+        224,
+        429,
+        357
+      ],
+      "area": 7301,
+      "role": "large"
+    },
+    {
+      "component_id": 14,
+      "box": [
+        430,
+        226,
+        826,
+        254
+      ],
+      "area": 6448,
+      "role": "text"
+    },
+    {
+      "component_id": 15,
+      "box": [
+        827,
+        226,
+        1092,
+        255
+      ],
+      "area": 4309,
+      "role": "text"
+    },
+    {
+      "component_id": 16,
+      "box": [
+        1100,
+        226,
+        1360,
+        256
+      ],
+      "area": 4280,
+      "role": "text"
+    },
+    {
+      "component_id": 17,
+      "box": [
+        1363,
+        227,
+        1392,
+        305
+      ],
+      "area": 1436,
+      "role": "text"
+    },
+    {
+      "component_id": 18,
+      "box": [
+        1094,
+        233,
+        1100,
+        240
+      ],
+      "area": 30,
+      "role": "text"
+    },
+    {
+      "component_id": 33,
+      "box": [
+        1363,
+        306,
+        1391,
+        410
+      ],
+      "area": 1609,
+      "role": "text"
+    },
+    {
+      "component_id": 35,
+      "box": [
+        96,
+        358,
+        121,
+        410
+      ],
+      "area": 772,
+      "role": "text"
+    },
+    {
+      "component_id": 43,
+      "box": [
+        95,
+        411,
+        120,
+        516
+      ],
+      "area": 1519,
+      "role": "text"
+    },
+    {
+      "component_id": 46,
+      "box": [
+        1362,
+        413,
+        1391,
+        517
+      ],
+      "area": 1611,
+      "role": "text"
+    },
+    {
+      "component_id": 51,
+      "box": [
+        168,
+        456,
+        172,
+        461
+      ],
+      "area": 16,
+      "role": "text"
+    },
+    {
+      "component_id": 54,
+      "box": [
+        220,
+        513,
+        460,
+        600
+      ],
+      "area": 8604,
+      "role": "text"
+    },
+    {
+      "component_id": 55,
+      "box": [
+        92,
+        517,
+        120,
+        940
+      ],
+      "area": 6271,
+      "role": "large"
+    },
+    {
+      "component_id": 56,
+      "box": [
+        1363,
+        518,
+        1391,
+        623
+      ],
+      "area": 1706,
+      "role": "text"
+    },
+    {
+      "component_id": 64,
+      "box": [
+        1363,
+        624,
+        1391,
+        729
+      ],
+      "area": 1665,
+      "role": "text"
+    },
+    {
+      "component_id": 73,
+      "box": [
+        1362,
+        730,
+        1390,
+        835
+      ],
+      "area": 1656,
+      "role": "text"
+    },
+    {
+      "component_id": 87,
+      "box": [
+        1361,
+        836,
+        1390,
+        941
+      ],
+      "area": 1624,
+      "role": "text"
+    },
+    {
+      "component_id": 104,
+      "box": [
+        89,
+        941,
+        115,
+        1259
+      ],
+      "area": 4530,
+      "role": "large"
+    },
+    {
+      "component_id": 106,
+      "box": [
+        1360,
+        943,
+        1388,
+        994
+      ],
+      "area": 757,
+      "role": "text"
+    },
+    {
+      "component_id": 109,
+      "box": [
+        1360,
+        995,
+        1388,
+        1048
+      ],
+      "area": 852,
+      "role": "text"
+    },
+    {
+      "component_id": 111,
+      "box": [
+        1358,
+        1049,
+        1386,
+        1153
+      ],
+      "area": 1590,
+      "role": "text"
+    },
+    {
+      "component_id": 152,
+      "box": [
+        1358,
+        1154,
+        1386,
+        1260
+      ],
+      "area": 1596,
+      "role": "text"
+    },
+    {
+      "component_id": 246,
+      "box": [
+        88,
+        1260,
+        112,
+        1367
+      ],
+      "area": 1530,
+      "role": "text"
+    },
+    {
+      "component_id": 247,
+      "box": [
+        1356,
+        1261,
+        1386,
+        1367
+      ],
+      "area": 1708,
+      "role": "text"
+    },
+    {
+      "component_id": 303,
+      "box": [
+        88,
+        1367,
+        112,
+        1472
+      ],
+      "area": 1421,
+      "role": "text"
+    },
+    {
+      "component_id": 304,
+      "box": [
+        1356,
+        1368,
+        1385,
+        1475
+      ],
+      "area": 1645,
+      "role": "text"
+    },
+    {
+      "component_id": 340,
+      "box": [
+        87,
+        1474,
+        111,
+        1579
+      ],
+      "area": 1466,
+      "role": "text"
+    },
+    {
+      "component_id": 342,
+      "box": [
+        1370,
+        1477,
+        1373,
+        1484
+      ],
+      "area": 17,
+      "role": "text"
+    },
+    {
+      "component_id": 343,
+      "box": [
+        1358,
+        1478,
+        1386,
+        1522
+      ],
+      "area": 365,
+      "role": "text"
+    },
+    {
+      "component_id": 346,
+      "box": [
+        1355,
+        1527,
+        1382,
+        1579
+      ],
+      "area": 849,
+      "role": "text"
+    },
+    {
+      "component_id": 390,
+      "box": [
+        87,
+        1579,
+        110,
+        1631
+      ],
+      "area": 703,
+      "role": "text"
+    },
+    {
+      "component_id": 391,
+      "box": [
+        1354,
+        1580,
+        1382,
+        1686
+      ],
+      "area": 1727,
+      "role": "text"
+    },
+    {
+      "component_id": 448,
+      "box": [
+        87,
+        1631,
+        109,
+        1683
+      ],
+      "area": 695,
+      "role": "text"
+    },
+    {
+      "component_id": 495,
+      "box": [
+        86,
+        1685,
+        109,
+        1789
+      ],
+      "area": 1425,
+      "role": "text"
+    },
+    {
+      "component_id": 496,
+      "box": [
+        1353,
+        1687,
+        1381,
+        1792
+      ],
+      "area": 1604,
+      "role": "text"
+    },
+    {
+      "component_id": 529,
+      "box": [
+        82,
+        1791,
+        108,
+        2160
+      ],
+      "area": 4902,
+      "role": "large"
+    },
+    {
+      "component_id": 530,
+      "box": [
+        1352,
+        1793,
+        1381,
+        1898
+      ],
+      "area": 1644,
+      "role": "text"
+    },
+    {
+      "component_id": 540,
+      "box": [
+        1302,
+        1807,
+        1309,
+        1818
+      ],
+      "area": 60,
+      "role": "text"
+    },
+    {
+      "component_id": 587,
+      "box": [
+        35,
+        1825,
+        37,
+        1837
+      ],
+      "area": 17,
+      "role": "text"
+    },
+    {
+      "component_id": 589,
+      "box": [
+        34,
+        1860,
+        47,
+        2316
+      ],
+      "area": 3532,
+      "role": "large"
+    },
+    {
+      "component_id": 650,
+      "box": [
+        1352,
+        1899,
+        1379,
+        1952
+      ],
+      "area": 782,
+      "role": "text"
+    },
+    {
+      "component_id": 707,
+      "box": [
+        1353,
+        1953,
+        1379,
+        2004
+      ],
+      "area": 707,
+      "role": "text"
+    },
+    {
+      "component_id": 766,
+      "box": [
+        1349,
+        2006,
+        1377,
+        2110
+      ],
+      "area": 1334,
+      "role": "text"
+    },
+    {
+      "component_id": 819,
+      "box": [
+        1349,
+        2060,
+        1353,
+        2073
+      ],
+      "area": 40,
+      "role": "text"
+    },
+    {
+      "component_id": 859,
+      "box": [
+        1349,
+        2112,
+        1376,
+        2164
+      ],
+      "area": 692,
+      "role": "text"
+    },
+    {
+      "component_id": 860,
+      "box": [
+        310,
+        2154,
+        367,
+        2186
+      ],
+      "area": 980,
+      "role": "text"
+    },
+    {
+      "component_id": 861,
+      "box": [
+        108,
+        2157,
+        200,
+        2186
+      ],
+      "area": 1334,
+      "role": "text"
+    },
+    {
+      "component_id": 862,
+      "box": [
+        409,
+        2157,
+        419,
+        2161
+      ],
+      "area": 30,
+      "role": "text"
+    },
+    {
+      "component_id": 863,
+      "box": [
+        509,
+        2157,
+        525,
+        2161
+      ],
+      "area": 46,
+      "role": "text"
+    },
+    {
+      "component_id": 864,
+      "box": [
+        536,
+        2157,
+        581,
+        2186
+      ],
+      "area": 795,
+      "role": "text"
+    },
+    {
+      "component_id": 865,
+      "box": [
+        582,
+        2157,
+        634,
+        2187
+      ],
+      "area": 731,
+      "role": "text"
+    },
+    {
+      "component_id": 866,
+      "box": [
+        689,
+        2157,
+        737,
+        2187
+      ],
+      "area": 652,
+      "role": "text"
+    },
+    {
+      "component_id": 867,
+      "box": [
+        925,
+        2156,
+        976,
+        2186
+      ],
+      "area": 782,
+      "role": "text"
+    },
+    {
+      "component_id": 868,
+      "box": [
+        978,
+        2156,
+        1083,
+        2187
+      ],
+      "area": 1774,
+      "role": "text"
+    },
+    {
+      "component_id": 869,
+      "box": [
+        1085,
+        2157,
+        1137,
+        2188
+      ],
+      "area": 909,
+      "role": "text"
+    },
+    {
+      "component_id": 870,
+      "box": [
+        189,
+        2158,
+        198,
+        2162
+      ],
+      "area": 30,
+      "role": "text"
+    },
+    {
+      "component_id": 871,
+      "box": [
+        203,
+        2159,
+        214,
+        2161
+      ],
+      "area": 21,
+      "role": "text"
+    },
+    {
+      "component_id": 872,
+      "box": [
+        205,
+        2158,
+        255,
+        2186
+      ],
+      "area": 742,
+      "role": "text"
+    },
+    {
+      "component_id": 873,
+      "box": [
+        257,
+        2159,
+        308,
+        2186
+      ],
+      "area": 612,
+      "role": "text"
+    },
+    {
+      "component_id": 874,
+      "box": [
+        296,
+        2158,
+        304,
+        2161
+      ],
+      "area": 23,
+      "role": "text"
+    },
+    {
+      "component_id": 875,
+      "box": [
+        369,
+        2158,
+        421,
+        2186
+      ],
+      "area": 795,
+      "role": "text"
+    },
+    {
+      "component_id": 876,
+      "box": [
+        422,
+        2158,
+        434,
+        2162
+      ],
+      "area": 39,
+      "role": "text"
+    },
+    {
+      "component_id": 877,
+      "box": [
+        423,
+        2158,
+        527,
+        2187
+      ],
+      "area": 1452,
+      "role": "text"
+    },
+    {
+      "component_id": 880,
+      "box": [
+        636,
+        2158,
+        686,
+        2188
+      ],
+      "area": 856,
+      "role": "text"
+    },
+    {
+      "component_id": 881,
+      "box": [
+        691,
+        2159,
+        697,
+        2166
+      ],
+      "area": 35,
+      "role": "text"
+    },
+    {
+      "component_id": 882,
+      "box": [
+        742,
+        2158,
+        793,
+        2187
+      ],
+      "area": 850,
+      "role": "text"
+    },
+    {
+      "component_id": 883,
+      "box": [
+        793,
+        2158,
+        819,
+        2187
+      ],
+      "area": 549,
+      "role": "text"
+    },
+    {
+      "component_id": 884,
+      "box": [
+        820,
+        2159,
+        871,
+        2187
+      ],
+      "area": 716,
+      "role": "text"
+    },
+    {
+      "component_id": 885,
+      "box": [
+        851,
+        2158,
+        869,
+        2161
+      ],
+      "area": 42,
+      "role": "text"
+    },
+    {
+      "component_id": 886,
+      "box": [
+        873,
+        2158,
+        888,
+        2161
+      ],
+      "area": 35,
+      "role": "text"
+    },
+    {
+      "component_id": 887,
+      "box": [
+        874,
+        2158,
+        924,
+        2188
+      ],
+      "area": 696,
+      "role": "text"
+    },
+    {
+      "component_id": 888,
+      "box": [
+        1139,
+        2158,
+        1190,
+        2188
+      ],
+      "area": 898,
+      "role": "text"
+    },
+    {
+      "component_id": 890,
+      "box": [
+        1193,
+        2158,
+        1244,
+        2188
+      ],
+      "area": 860,
+      "role": "text"
+    },
+    {
+      "component_id": 891,
+      "box": [
+        1246,
+        2159,
+        1296,
+        2188
+      ],
+      "area": 785,
+      "role": "text"
+    },
+    {
+      "component_id": 892,
+      "box": [
+        260,
+        2161,
+        267,
+        2167
+      ],
+      "area": 31,
+      "role": "text"
+    },
+    {
+      "component_id": 893,
+      "box": [
+        479,
+        2160,
+        491,
+        2167
+      ],
+      "area": 49,
+      "role": "text"
+    },
+    {
+      "component_id": 894,
+      "box": [
+        585,
+        2161,
+        591,
+        2167
+      ],
+      "area": 30,
+      "role": "text"
+    },
+    {
+      "component_id": 895,
+      "box": [
+        84,
+        2162,
+        103,
+        2188
+      ],
+      "area": 397,
+      "role": "text"
+    },
+    {
+      "component_id": 896,
+      "box": [
+        1297,
+        2163,
+        1317,
+        2191
+      ],
+      "area": 312,
+      "role": "text"
+    },
+    {
+      "component_id": 898,
+      "box": [
+        1319,
+        2164,
+        1341,
+        2190
+      ],
+      "area": 272,
+      "role": "text"
+    },
+    {
+      "component_id": 899,
+      "box": [
+        1353,
+        2165,
+        1359,
+        2173
+      ],
+      "area": 22,
+      "role": "text"
+    },
+    {
+      "component_id": 900,
+      "box": [
+        1351,
+        2165,
+        1378,
+        2192
+      ],
+      "area": 393,
+      "role": "text"
+    },
+    {
+      "component_id": 927,
+      "box": [
+        150,
+        2275,
+        155,
+        2280
+      ],
+      "area": 22,
+      "role": "text"
+    }
+  ],
+  "separator_pixels": 4201,
+  "method_files_sha256": {
+    "reference.py": "1b8bccaaf51bf9ab2b8bba5ad76abbe32e410e521bae09278ccdca9f9e9c4f51",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "input_id": "kale-1913-page-097",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before any method 033 or 034 output existed for this page; not yet human-reviewed",
+  "line_segmentation": "methods/032-line-skew-separability (copied unchanged into method 033), page-level line ids 0-27",
+  "split_lines_by_x": {
+    "0": [{"below_x": 400, "passage": "page-number"}, {"passage": "running-header"}],
+    "26": [
+      {"below_x": 204.0, "passage": null},
+      {"below_x": 329.0, "passage": "footnote-1"},
+      {"below_x": 459.5, "passage": "footnote-2"},
+      {"below_x": 613.0, "passage": "footnote-3"},
+      {"below_x": 1093.5, "passage": "footnote-4"},
+      {"passage": "footnote-5"}
+    ]
+  },
+  "passages": [
+    {"passage": "page-number", "type": "page_number", "keep": false},
+    {"passage": "running-header", "type": "running_header", "keep": false},
+    {"passage": "lead-in-96", "type": "lead_in", "keep": true, "lines": [1, 1], "note": "अथ योगिस्वरूपमाह द्वाभ्याम्—, introducing verses 96 and 97."},
+    {"passage": "verse-96", "type": "verse", "keep": true, "lines": [2, 5], "note": "Four printed lines ending with ॥ ९६ ॥."},
+    {"passage": "commentary-96", "type": "commentary", "keep": true, "lines": [6, 12], "note": "Ends with शार्दूल० ॥."},
+    {"passage": "verse-97", "type": "verse", "keep": true, "lines": [13, 16], "note": "Four printed lines ending with ९७."},
+    {"passage": "commentary-97", "type": "commentary", "keep": true, "lines": [17, 25], "note": "Ends with शार्दूलवि० ॥."},
+    {"passage": "footnote-1", "type": "footnote", "keep": true},
+    {"passage": "footnote-2", "type": "footnote", "keep": true},
+    {"passage": "footnote-3", "type": "footnote", "keep": true},
+    {"passage": "footnote-4", "type": "footnote", "keep": true},
+    {"passage": "footnote-5", "type": "footnote", "keep": true},
+    {"passage": "footnote-6", "type": "footnote", "keep": true, "lines": [27, 27], "note": "The only footnote on the second footnote line."}
+  ],
+  "footnote_split_basis": "Each split on footnote line 26 is the center of an ink-free column run between one footnote's final punctuation and the next footnote's numeral. The run inside footnote 4 between संप्रोत०; and संप्राप्तकन्थासखः (x 767-792) and the runs between each numeral and its text are not splits.",
+  "non_text": "A 93-pixel smudge at x 171-187 left of footnote numeral १ is left unlabeled. Detected rules, including the slanted footnote separator, are labeled separator."
+}

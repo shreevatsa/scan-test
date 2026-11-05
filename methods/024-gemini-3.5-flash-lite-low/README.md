@@ -9,8 +9,8 @@ The prompt requests [ymin,xmin,ymax,xmax] integer coordinates normalized to 0–
 ## Run
 
 ```sh
-uv run python methods/024-gemini-3.5-flash-lite-low/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/024-gemini-3.5-flash-lite-low/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/024-gemini-3.5-flash-lite-low/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/024-gemini-3.5-flash-lite-low/run.py inputs/kale-1913-page-017.png
 ```
 
 For another request, choose a fresh `--output-dir`, such as `outputs/kale-1913-page-017/024-gemini-3.5-flash-lite-low/run-002`. Existing output is protected against overwriting. Authentication uses GEMINI_API_KEY, GOOGLE_API_KEY, or the stored `llm` key named `gemini`.

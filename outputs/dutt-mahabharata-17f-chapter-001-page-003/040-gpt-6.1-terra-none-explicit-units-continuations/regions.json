@@ -1,0 +1,833 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-04T23:01:59.795742+00:00",
+  "method": {
+    "id": "040-gpt-6.1-terra-none-explicit-units-continuations",
+    "name": "GPT-6.1 Terra without reasoning, explicit units, book-neutral types and continuation flags",
+    "settings": {
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "none",
+      "image_detail": "original",
+      "max_output_tokens": 16384,
+      "store": false,
+      "coordinate_format": "xyxy_1000",
+      "prompt_variant": "explicit-units-book-neutral-types-continuations-v1",
+      "cache_lifetime": "30m (provider default)"
+    },
+    "files_sha256": {
+      "run.py": "6548c542435c8a2ba5674ca220fed7de42f2b050c958b0db46e4949de480d27c",
+      "regions.py": "15b61126fc977be57781872e52eca40d5d2cca033952d1adb6e3eed209e7ad84",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+      "prompt.txt": "e85e925a2fcaf4155fd0f42d9904e1e94af5fb64c7dd1629ab095c4dba5bcbfe",
+      "response-schema.json": "980b492ca192609d6176bacfb205b787ba0134cae2966209d6e04c5296879522",
+      "config.json": "9a8565c6c5ae70bedde32280728ea371588f2242520ff37f07dfbffaf70f9b2e",
+      "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    }
+  },
+  "input": {
+    "id": "dutt-mahabharata-17f-chapter-001-page-003",
+    "path": "inputs/dutt-mahabharata-17f-chapter-001-page-003.png",
+    "sha256": "a1d70dd830818997a12bc2d9a5dd31ec977fe58f6184c96eed9397e4a1644a14",
+    "width": 2107,
+    "height": 2850
+  },
+  "api": {
+    "endpoint": "https://api.openai.com/v1/responses",
+    "requested_model": "gpt-6.1-terra",
+    "returned_model": "gpt-6.1-terra",
+    "response_id": "resp_07d416a4bb777fd8016aebb9680ab887d0b01f15a8a1382730",
+    "request_id": "req_7e9fff174cc045b3ad8b66399af80434",
+    "client_request_id": "cda2cdc2-a5c7-4761-93ef-026200824fbc",
+    "api_wall_seconds": 14.817238624673337,
+    "usage": {
+      "input_tokens": 8077,
+      "input_tokens_details": {
+        "cache_write_tokens": 8074,
+        "cached_tokens": 0
+      },
+      "output_tokens": 1190,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 9267
+    },
+    "response_headers_seconds": 14.816911249887198,
+    "response_first_body_byte_seconds": 14.816931291949004,
+    "service_tier": "default",
+    "tokens_and_cost": {
+      "available": true,
+      "input_tokens": 8077,
+      "ordinary_input_tokens": 3,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 8074,
+      "output_tokens_including_reasoning": 1190,
+      "reasoning_tokens": 0,
+      "non_reasoning_output_tokens": 1190,
+      "total_token_count_matches": true,
+      "cache_write_lifetime": "30m (provider default)",
+      "estimated_paid_tier_input_cost_usd": 0.0100955,
+      "estimated_paid_tier_output_cost_usd": 0.00595,
+      "estimated_paid_tier_total_cost_usd": 0.0160455,
+      "pricing": {
+        "checked_on": "2026-11-03",
+        "currency": "USD",
+        "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+        "input_per_million_usd": 1.0,
+        "output_per_million_usd": 5.0,
+        "cached_input_per_million_usd": 0.05,
+        "cache_write_30m_per_million_usd": 1.25,
+        "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+      }
+    },
+    "response_sha256": "2039c5ad4402db78ee1a5db31853f319016714e79e6de3e42f8ca7f7db1e0072",
+    "request_sha256": "ae590c008f92f7fe0d92ce9a83891b8aefb498e877b6ed57aeda3810aff40dc7"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "running_header",
+      "box_1000": [
+        87,
+        48,
+        222,
+        64
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 1,
+      "label": "running_header",
+      "box": [
+        183.309,
+        136.8,
+        467.754,
+        182.4
+      ],
+      "box_xyxy_1000": [
+        87.0,
+        48.0,
+        222.0,
+        64.0
+      ]
+    },
+    {
+      "type": "page_number",
+      "box_1000": [
+        898,
+        48,
+        912,
+        62
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 2,
+      "label": "page_number",
+      "box": [
+        1892.086,
+        136.8,
+        1921.584,
+        176.7
+      ],
+      "box_xyxy_1000": [
+        898.0,
+        48.0,
+        912.0,
+        62.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        100,
+        82,
+        425,
+        128
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "continues_from_earlier": true,
+      "continues_later": false,
+      "region_id": 3,
+      "label": "verse",
+      "box": [
+        210.7,
+        233.7,
+        895.475,
+        364.8
+      ],
+      "box_xyxy_1000": [
+        100.0,
+        82.0,
+        425.0,
+        128.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        86,
+        132,
+        488,
+        271
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 4,
+      "label": "paragraph",
+      "box": [
+        181.202,
+        376.2,
+        1028.216,
+        772.35
+      ],
+      "box_xyxy_1000": [
+        86.0,
+        132.0,
+        487.99999999999994,
+        271.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        99,
+        276,
+        395,
+        321
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 5,
+      "label": "verse",
+      "box": [
+        208.593,
+        786.6,
+        832.265,
+        914.85
+      ],
+      "box_xyxy_1000": [
+        99.0,
+        276.0,
+        395.0,
+        321.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        99,
+        325,
+        392,
+        371
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 6,
+      "label": "verse",
+      "box": [
+        208.593,
+        926.25,
+        825.944,
+        1057.35
+      ],
+      "box_xyxy_1000": [
+        99.0,
+        325.0,
+        392.0,
+        371.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        86,
+        374,
+        487,
+        514
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 7,
+      "label": "paragraph",
+      "box": [
+        181.202,
+        1065.9,
+        1026.109,
+        1464.9
+      ],
+      "box_xyxy_1000": [
+        86.0,
+        374.0,
+        486.99999999999994,
+        514.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        99,
+        518,
+        422,
+        562
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 8,
+      "label": "verse",
+      "box": [
+        208.593,
+        1476.3,
+        889.154,
+        1601.7
+      ],
+      "box_xyxy_1000": [
+        99.0,
+        518.0,
+        422.0,
+        562.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        86,
+        566,
+        488,
+        652
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 9,
+      "label": "paragraph",
+      "box": [
+        181.202,
+        1613.1,
+        1028.216,
+        1858.2
+      ],
+      "box_xyxy_1000": [
+        86.0,
+        566.0,
+        487.99999999999994,
+        652.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        100,
+        656,
+        425,
+        702
+      ],
+      "keep": true,
+      "reading_order": 8,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 10,
+      "label": "verse",
+      "box": [
+        210.7,
+        1869.6,
+        895.475,
+        2000.7
+      ],
+      "box_xyxy_1000": [
+        100.0,
+        656.0,
+        425.0,
+        702.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        86,
+        704,
+        488,
+        772
+      ],
+      "keep": true,
+      "reading_order": 9,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 11,
+      "label": "paragraph",
+      "box": [
+        181.202,
+        2006.4,
+        1028.216,
+        2200.2
+      ],
+      "box_xyxy_1000": [
+        86.0,
+        704.0,
+        487.99999999999994,
+        772.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        100,
+        777,
+        417,
+        823
+      ],
+      "keep": true,
+      "reading_order": 10,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 12,
+      "label": "verse",
+      "box": [
+        210.7,
+        2214.45,
+        878.619,
+        2345.55
+      ],
+      "box_xyxy_1000": [
+        100.0,
+        777.0,
+        417.0,
+        823.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        86,
+        827,
+        487,
+        895
+      ],
+      "keep": true,
+      "reading_order": 11,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 13,
+      "label": "paragraph",
+      "box": [
+        181.202,
+        2356.95,
+        1026.109,
+        2550.75
+      ],
+      "box_xyxy_1000": [
+        86.0,
+        827.0,
+        486.99999999999994,
+        895.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        100,
+        899,
+        422,
+        945
+      ],
+      "keep": true,
+      "reading_order": 12,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 14,
+      "label": "verse",
+      "box": [
+        210.7,
+        2562.15,
+        889.154,
+        2693.25
+      ],
+      "box_xyxy_1000": [
+        100.0,
+        899.0,
+        422.0,
+        945.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        524,
+        82,
+        866,
+        128
+      ],
+      "keep": true,
+      "reading_order": 13,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 15,
+      "label": "verse",
+      "box": [
+        1104.068,
+        233.7,
+        1824.662,
+        364.8
+      ],
+      "box_xyxy_1000": [
+        524.0,
+        82.0,
+        866.0,
+        128.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        511,
+        132,
+        914,
+        295
+      ],
+      "keep": true,
+      "reading_order": 14,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 16,
+      "label": "paragraph",
+      "box": [
+        1076.677,
+        376.2,
+        1925.798,
+        840.75
+      ],
+      "box_xyxy_1000": [
+        511.0,
+        132.0,
+        914.0,
+        295.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        524,
+        301,
+        863,
+        347
+      ],
+      "keep": true,
+      "reading_order": 15,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 17,
+      "label": "verse",
+      "box": [
+        1104.068,
+        857.85,
+        1818.341,
+        988.95
+      ],
+      "box_xyxy_1000": [
+        524.0,
+        301.0,
+        863.0,
+        347.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        524,
+        350,
+        864,
+        395
+      ],
+      "keep": true,
+      "reading_order": 16,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 18,
+      "label": "verse",
+      "box": [
+        1104.068,
+        997.5,
+        1820.448,
+        1125.75
+      ],
+      "box_xyxy_1000": [
+        524.0,
+        350.0,
+        864.0,
+        395.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        524,
+        400,
+        857,
+        446
+      ],
+      "keep": true,
+      "reading_order": 17,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 19,
+      "label": "verse",
+      "box": [
+        1104.068,
+        1140.0,
+        1805.699,
+        1271.1
+      ],
+      "box_xyxy_1000": [
+        524.0,
+        400.0,
+        857.0,
+        446.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        511,
+        448,
+        914,
+        642
+      ],
+      "keep": true,
+      "reading_order": 18,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 20,
+      "label": "paragraph",
+      "box": [
+        1076.677,
+        1276.8,
+        1925.798,
+        1829.7
+      ],
+      "box_xyxy_1000": [
+        511.0,
+        448.0,
+        914.0,
+        642.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        524,
+        645,
+        867,
+        691
+      ],
+      "keep": true,
+      "reading_order": 19,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 21,
+      "label": "verse",
+      "box": [
+        1104.068,
+        1838.25,
+        1826.769,
+        1969.35
+      ],
+      "box_xyxy_1000": [
+        524.0,
+        645.0,
+        867.0,
+        691.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        511,
+        693,
+        914,
+        796
+      ],
+      "keep": true,
+      "reading_order": 20,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 22,
+      "label": "paragraph",
+      "box": [
+        1076.677,
+        1975.05,
+        1925.798,
+        2268.6
+      ],
+      "box_xyxy_1000": [
+        511.0,
+        693.0,
+        914.0,
+        796.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        524,
+        800,
+        873,
+        845
+      ],
+      "keep": true,
+      "reading_order": 21,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 23,
+      "label": "verse",
+      "box": [
+        1104.068,
+        2280.0,
+        1839.411,
+        2408.25
+      ],
+      "box_xyxy_1000": [
+        524.0,
+        800.0,
+        873.0,
+        845.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        525,
+        849,
+        837,
+        897
+      ],
+      "keep": true,
+      "reading_order": 22,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 24,
+      "label": "verse",
+      "box": [
+        1106.175,
+        2419.65,
+        1763.559,
+        2556.45
+      ],
+      "box_xyxy_1000": [
+        525.0,
+        849.0,
+        837.0,
+        897.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        512,
+        898,
+        914,
+        950
+      ],
+      "keep": true,
+      "reading_order": 23,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": true,
+      "region_id": 25,
+      "label": "paragraph",
+      "box": [
+        1078.784,
+        2559.3,
+        1925.798,
+        2707.5
+      ],
+      "box_xyxy_1000": [
+        512.0,
+        898.0,
+        914.0,
+        950.0
+      ]
+    }
+  ],
+  "region_types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 14,
+    "paragraph": 9
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 25,
+    "ink_pixels": 618577,
+    "uncovered_ink_pixels": 41,
+    "ink_coverage": 0.9999337188417934,
+    "partially_covered_components": 0
+  },
+  "kept_regions_metrics": {
+    "regions": 23,
+    "ink_pixels": 618577,
+    "uncovered_ink_pixels": 3533,
+    "ink_coverage": 0.9942885040989238,
+    "partially_covered_components": 0
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

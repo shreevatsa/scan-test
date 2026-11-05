@@ -1,0 +1,20 @@
+{
+  "input_id": "vavilla-page-034",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "line_segmentation": "methods/032-line-skew-separability (copied unchanged into method 033), page-level line ids 0-33",
+  "split_lines_by_x": {
+    "1": [{"below_x": 400, "passage": "page-number"}, {"passage": "running-header"}],
+    "4": [{"passage": null}]
+  },
+  "passages": [
+    {"passage": "page-number", "type": "page_number", "keep": false, "note": "३२, left part of line 1."},
+    {"passage": "running-header", "type": "running_header", "keep": false, "lines": [0, 0], "note": "नीतिशतके, right part of line 1; line 0 is a detached mark of the header."},
+    {"passage": "commentary-23-end", "type": "commentary", "keep": true, "lines": [2, 3], "note": "End of the commentary on verse 23, continued from the previous page, ending with वृत्तं पूर्ववत् ॥."},
+    {"passage": "verse-24", "type": "verse", "keep": true, "lines": [5, 9], "note": "Four printed lines with the verse number २४ at the right of the last line. Line 6 is detached marks of line 7."},
+    {"passage": "commentary-24", "type": "commentary", "keep": true, "lines": [10, 29], "note": "व्या.— through ... भावः ॥. Lines 11, 13, 14, 16, 18, 22, 25 and 28 are detached marks."},
+    {"passage": "metre-24", "type": "other", "keep": true, "lines": [30, 30], "note": "वसन्ततिलकावृत्तम् - लक्षणं तूक्तम् ॥, an indented line naming the metre of verse 24."},
+    {"passage": "verse-25", "type": "verse", "keep": true, "lines": [31, 33], "note": "Two printed lines with the verse number २५. Line 32 is a detached mark of line 33."}
+  ],
+  "unit_definition": "One passage per verse, per commentary, and per metre line. The metre line is kept separate because it is set apart from the commentary; a result that joins it to the commentary is a grouping difference, not an ownership error.",
+  "non_text": "Line 4, a small mark in the right margin at x 1305-1326, y 451-471, is left unlabeled. The page has no rules."
+}

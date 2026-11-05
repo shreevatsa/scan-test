@@ -1,0 +1,169 @@
+{
+  "id": "resp_0fd1688fe1441847016aebba07d26087d092328bda9d6315d7",
+  "object": "response",
+  "created_at": 1793833480,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793833492,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_0fd1688fe1441847016aebba0a54b887d08cb1de03b6edb97d",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"running_header\",\"box_1000\":[252,81,771,99],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"page_number\",\"box_1000\":[915,82,950,99],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"running_header\",\"box_1000\":[114,106,362,120],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"running_header\",\"box_1000\":[802,107,913,121],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[113,136,914,357],\"keep\":true,\"reading_order\":1,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[113,385,914,497],\"keep\":true,\"reading_order\":2,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[113,498,914,562],\"keep\":true,\"reading_order\":3,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[253,565,742,608],\"keep\":true,\"reading_order\":4,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[113,608,748,630],\"keep\":true,\"reading_order\":5,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[252,630,809,676],\"keep\":true,\"reading_order\":6,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[113,674,608,698],\"keep\":true,\"reading_order\":7,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[253,697,765,741],\"keep\":true,\"reading_order\":8,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[113,740,914,784],\"keep\":true,\"reading_order\":9,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[253,784,769,829],\"keep\":true,\"reading_order\":10,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[113,830,813,852],\"keep\":true,\"reading_order\":11,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[253,850,698,895],\"keep\":true,\"reading_order\":12,\"uncertain\":false},{\"type\":\"paragraph\",\"box_1000\":[113,895,500,918],\"keep\":true,\"reading_order\":13,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[916,209,930,220],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[916,304,931,316],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[917,422,930,433],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[915,479,941,491],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[914,545,940,558],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[915,609,942,623],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[886,658,911,669],\"keep\":false,\"reading_order\":null,\"uncertain\":true},{\"type\":\"other\",\"box_1000\":[915,677,941,691],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[914,745,942,758],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[914,811,942,824],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"other\",\"box_1000\":[915,877,942,890],\"keep\":false,\"reading_order\":null,\"uncertain\":false}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "verse",
+                    "paragraph",
+                    "heading",
+                    "lead_in",
+                    "list_item",
+                    "formula",
+                    "note",
+                    "table",
+                    "figure",
+                    "caption",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 8484,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 8481
+    },
+    "output_tokens": 885,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 9369
+  },
+  "user": null,
+  "metadata": {}
+}

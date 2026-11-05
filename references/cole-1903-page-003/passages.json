@@ -1,0 +1,585 @@
+{
+  "input_id": "cole-1903-page-003",
+  "input_sha256": "d4ea9bd561c16f7feda5eafd23eeb0620771202182cf0c5bd7e966e2271a99a2",
+  "version": 2,
+  "status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+  "created_at_utc": "2026-11-04T19:56:38.266431+00:00",
+  "spec_sha256": "6f9694fa4aa91fb85b2fc439abcddebaf079c969ee9dc97988754178441ae1cb",
+  "labels_png_sha256": "823e6cbf7d0b9937a1e40d0d357c77c77e6188122abf2ad06aa6f3e70151892f",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 145.0,
+    "weak": 200.0,
+    "speck_area": 4
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 737,
+      "components": 3,
+      "box": [
+        326,
+        356,
+        389,
+        387
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 7623,
+      "components": 30,
+      "box": [
+        539,
+        355,
+        1481,
+        401
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "text-1",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 75297,
+      "components": 382,
+      "box": [
+        323,
+        450,
+        1483,
+        804
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "text-2",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 2972,
+      "components": 15,
+      "box": [
+        370,
+        833,
+        722,
+        866
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "display-1",
+      "type": "formula",
+      "keep": true,
+      "pixels": 6205,
+      "components": 28,
+      "box": [
+        566,
+        904,
+        1238,
+        937
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "text-3",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 12215,
+      "components": 65,
+      "box": [
+        321,
+        975,
+        1483,
+        1054
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "display-2",
+      "type": "formula",
+      "keep": true,
+      "pixels": 19787,
+      "components": 123,
+      "box": [
+        323,
+        1090,
+        1481,
+        1222
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "text-4",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 22102,
+      "components": 128,
+      "box": [
+        321,
+        1251,
+        1482,
+        1387
+      ]
+    },
+    {
+      "value": 9,
+      "passage": "text-5",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 85755,
+      "components": 445,
+      "box": [
+        318,
+        1388,
+        1482,
+        1799
+      ]
+    },
+    {
+      "value": 10,
+      "passage": "text-6",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 5202,
+      "components": 29,
+      "box": [
+        366,
+        1801,
+        931,
+        1845
+      ]
+    },
+    {
+      "value": 11,
+      "passage": "display-3",
+      "type": "formula",
+      "keep": true,
+      "pixels": 4858,
+      "components": 29,
+      "box": [
+        559,
+        1869,
+        1239,
+        1916
+      ]
+    },
+    {
+      "value": 12,
+      "passage": "text-7",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 18066,
+      "components": 99,
+      "box": [
+        320,
+        1937,
+        1480,
+        2030
+      ]
+    },
+    {
+      "value": 13,
+      "passage": "display-4",
+      "type": "formula",
+      "keep": true,
+      "pixels": 18795,
+      "components": 100,
+      "box": [
+        366,
+        2053,
+        1425,
+        2191
+      ]
+    },
+    {
+      "value": 14,
+      "passage": "footnote",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 45001,
+      "components": 310,
+      "box": [
+        317,
+        2224,
+        1481,
+        2392
+      ]
+    }
+  ],
+  "unlabeled_components": [],
+  "component_rules_applied": [
+    {
+      "box": [
+        320,
+        1195,
+        365,
+        1210
+      ],
+      "label": "display-2",
+      "components": [
+        {
+          "component_id": 632,
+          "box": [
+            324,
+            1200,
+            358,
+            1205
+          ],
+          "area": 127,
+          "role": "text",
+          "line": -1
+        }
+      ]
+    },
+    {
+      "box": [
+        1410,
+        1195,
+        1485,
+        1216
+      ],
+      "label": "display-2",
+      "components": [
+        {
+          "component_id": 634,
+          "box": [
+            1415,
+            1201,
+            1421,
+            1207
+          ],
+          "area": 28,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 635,
+          "box": [
+            1435,
+            1200,
+            1440,
+            1206
+          ],
+          "area": 23,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 636,
+          "box": [
+            1455,
+            1201,
+            1460,
+            1207
+          ],
+          "area": 26,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 646,
+          "box": [
+            1473,
+            1206,
+            1479,
+            1213
+          ],
+          "area": 38,
+          "role": "text",
+          "line": -1
+        }
+      ]
+    },
+    {
+      "box": [
+        530,
+        2105,
+        575,
+        2185
+      ],
+      "label": "display-4",
+      "components": [
+        {
+          "component_id": 1446,
+          "box": [
+            536,
+            2114,
+            569,
+            2119
+          ],
+          "area": 150,
+          "role": "text",
+          "line": 44
+        },
+        {
+          "component_id": 1448,
+          "box": [
+            536,
+            2120,
+            569,
+            2126
+          ],
+          "area": 132,
+          "role": "text",
+          "line": 44
+        },
+        {
+          "component_id": 1452,
+          "box": [
+            536,
+            2127,
+            569,
+            2132
+          ],
+          "area": 148,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 1471,
+          "box": [
+            537,
+            2160,
+            570,
+            2165
+          ],
+          "area": 145,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 1472,
+          "box": [
+            537,
+            2167,
+            570,
+            2172
+          ],
+          "area": 133,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 1474,
+          "box": [
+            537,
+            2173,
+            570,
+            2178
+          ],
+          "area": 135,
+          "role": "text",
+          "line": -1
+        }
+      ]
+    },
+    {
+      "box": [
+        300,
+        2199,
+        1480,
+        2208
+      ],
+      "label": "separator",
+      "components": [
+        {
+          "component_id": 1478,
+          "box": [
+            320,
+            2203,
+            353,
+            2205
+          ],
+          "area": 57,
+          "role": "text",
+          "line": -1
+        },
+        {
+          "component_id": 1479,
+          "box": [
+            565,
+            2203,
+            593,
+            2206
+          ],
+          "area": 42,
+          "role": "text",
+          "line": 47
+        },
+        {
+          "component_id": 1480,
+          "box": [
+            626,
+            2203,
+            709,
+            2206
+          ],
+          "area": 150,
+          "role": "rule",
+          "line": -1
+        },
+        {
+          "component_id": 1481,
+          "box": [
+            730,
+            2202,
+            1126,
+            2206
+          ],
+          "area": 763,
+          "role": "rule",
+          "line": -1
+        },
+        {
+          "component_id": 1482,
+          "box": [
+            1130,
+            2202,
+            1475,
+            2206
+          ],
+          "area": 903,
+          "role": "rule",
+          "line": -1
+        },
+        {
+          "component_id": 1483,
+          "box": [
+            357,
+            2204,
+            364,
+            2206
+          ],
+          "area": 9,
+          "role": "text",
+          "line": 49
+        },
+        {
+          "component_id": 1484,
+          "box": [
+            371,
+            2204,
+            374,
+            2206
+          ],
+          "area": 6,
+          "role": "text",
+          "line": 49
+        },
+        {
+          "component_id": 1485,
+          "box": [
+            383,
+            2204,
+            395,
+            2206
+          ],
+          "area": 14,
+          "role": "text",
+          "line": 49
+        },
+        {
+          "component_id": 1487,
+          "box": [
+            442,
+            2204,
+            446,
+            2205
+          ],
+          "area": 4,
+          "role": "text",
+          "line": 49
+        },
+        {
+          "component_id": 1488,
+          "box": [
+            484,
+            2204,
+            492,
+            2206
+          ],
+          "area": 15,
+          "role": "text",
+          "line": 49
+        },
+        {
+          "component_id": 1489,
+          "box": [
+            507,
+            2204,
+            528,
+            2206
+          ],
+          "area": 38,
+          "role": "text",
+          "line": 49
+        },
+        {
+          "component_id": 1490,
+          "box": [
+            529,
+            2204,
+            564,
+            2206
+          ],
+          "area": 47,
+          "role": "text",
+          "line": 49
+        },
+        {
+          "component_id": 1491,
+          "box": [
+            594,
+            2204,
+            603,
+            2206
+          ],
+          "area": 16,
+          "role": "text",
+          "line": 47
+        },
+        {
+          "component_id": 1492,
+          "box": [
+            605,
+            2204,
+            623,
+            2206
+          ],
+          "area": 34,
+          "role": "text",
+          "line": 47
+        },
+        {
+          "component_id": 1493,
+          "box": [
+            712,
+            2204,
+            728,
+            2206
+          ],
+          "area": 32,
+          "role": "text",
+          "line": 47
+        }
+      ]
+    }
+  ],
+  "separator_pixels": 2130,
+  "builder": "methods/035-gpt-6.1-terra-none-column-margin-ownership/reference.py",
+  "method_files_sha256": {
+    "reference.py": "1a03a4bd97e5e13879c2c7108611fb0dae1876c2217e9b974d78034e779a9710",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

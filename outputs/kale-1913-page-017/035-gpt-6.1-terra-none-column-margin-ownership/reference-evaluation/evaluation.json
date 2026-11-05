@@ -1,0 +1,549 @@
+{
+ "created_at_utc": "2026-11-04T18:48:04.950977+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/kale-1913-page-017.png",
+  "sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d"
+ },
+ "reference": {
+  "path": "../../references/kale-1913-page-017",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before any method 033 or 034 output existed for this page; not yet human-reviewed",
+  "labels_png_sha256": "25d7392cf5efaa822ed2f1bb60132cfc9410b9bab7a2031dfaf68b075a60f40e",
+  "spec_sha256": "06096e2a25e324867cb506a66f7dcef370d68fa202e2ac13dec5a28602af6213"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra without reasoning (025), boxes",
+   "path": "../../outputs/kale-1913-page-017/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "sha256": "a693acfcc9666af113b79429b5595dd5096fbc98fa7dcbcfbb0e27094ed9424d",
+   "totals": {
+    "other_passages_ink_included": 87,
+    "own_ink_left_out": 13,
+    "separator_pixels_included": 176,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "lead-in-35": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "verse-35": 6
+     },
+     "separator_included": 0
+    },
+    "verse-35": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 13,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-35": {
+     "matched_region_id": 5,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "verse-35": 7
+     },
+     "separator_included": 0
+    },
+    "lead-in-36": {
+     "matched_region_id": 6,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-36": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "commentary-36": 17
+     },
+     "separator_included": 0
+    },
+    "commentary-36": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "verse-36": 57
+     },
+     "separator_included": 0
+    },
+    "footnote-1": {
+     "matched_region_id": 9,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-2": {
+     "matched_region_id": 10,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-3": {
+     "matched_region_id": 11,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-4": {
+     "matched_region_id": 12,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-5": {
+     "matched_region_id": 13,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-6": {
+     "matched_region_id": 14,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 176
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "lead-in-35",
+     "lower": "verse-35",
+     "upper_region_takes_lower_ink": 6,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-35",
+     "lower": "commentary-35",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 7
+    },
+    {
+     "upper": "commentary-35",
+     "lower": "lead-in-36",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "lead-in-36",
+     "lower": "verse-36",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-36",
+     "lower": "commentary-36",
+     "upper_region_takes_lower_ink": 17,
+     "lower_region_takes_upper_ink": 57
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra + line ownership polygons (033)",
+   "path": "../../outputs/kale-1913-page-017/033-gpt-6.1-terra-none-line-polygons/regions.json",
+   "sha256": "55ca88d6d374e1a7af9cd83151cd6293034929f867e1df911fb612b9da6d659e",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "lead-in-35": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-35": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-35": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "lead-in-36": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-36": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-36": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-1": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-2": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-3": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-4": {
+     "matched_region_id": 12,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-5": {
+     "matched_region_id": 13,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-6": {
+     "matched_region_id": 14,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "lead-in-35",
+     "lower": "verse-35",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-35",
+     "lower": "commentary-35",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "commentary-35",
+     "lower": "lead-in-36",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "lead-in-36",
+     "lower": "verse-36",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-36",
+     "lower": "commentary-36",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "page-number": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "running-header": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "lead-in-35": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-35": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "commentary-35": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "lead-in-36": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-36": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "commentary-36": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-1": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-2": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-3": {
+      "main_owner_value": 11,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-4": {
+      "main_owner_value": 12,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-5": {
+      "main_owner_value": 13,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-6": {
+      "main_owner_value": 14,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "f421d09a9824b2d1dcc7389269f81192a51a28cac2c7c29464302eaa8c4c9e0a"
+   }
+  },
+  {
+   "label": "GPT-6.1 Terra + column-safe ownership polygons (035)",
+   "path": "../../outputs/kale-1913-page-017/035-gpt-6.1-terra-none-column-margin-ownership/regions.json",
+   "sha256": "8e7199681080a3c5656fcac8da37eef63b97b546ead27661eae65ca000332427",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "lead-in-35": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-35": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-35": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "lead-in-36": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-36": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "commentary-36": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-1": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-2": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-3": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-4": {
+     "matched_region_id": 12,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-5": {
+     "matched_region_id": 13,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "footnote-6": {
+     "matched_region_id": 14,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "lead-in-35",
+     "lower": "verse-35",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-35",
+     "lower": "commentary-35",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "commentary-35",
+     "lower": "lead-in-36",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "lead-in-36",
+     "lower": "verse-36",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-36",
+     "lower": "commentary-36",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "page-number": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "running-header": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "lead-in-35": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-35": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "commentary-35": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "lead-in-36": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-36": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "commentary-36": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-1": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-2": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-3": {
+      "main_owner_value": 11,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-4": {
+      "main_owner_value": 12,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-5": {
+      "main_owner_value": 13,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "footnote-6": {
+      "main_owner_value": 14,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "f421d09a9824b2d1dcc7389269f81192a51a28cac2c7c29464302eaa8c4c9e0a"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "0670009e1bc23665794d5480d2f070a30132e36d744ad47d721f2bb35fe32f63",
+  "ownership.py": "85a2d1ef66660e2d1c6b4e6200c09f3a0bac7eb19756018b423b4ad9eadc8618",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

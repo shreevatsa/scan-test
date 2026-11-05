@@ -1,0 +1,33 @@
+{
+  "input_id": "telang-dli-page-151",
+  "image": "telang-dli-page-151.png",
+  "image_sha256": "1615b03cbf3d1c236623eda526ece604bc50a5048a5784bd757740b4f98a70bc",
+  "width": 1500,
+  "height": 2500,
+  "book_id": "telang-dli",
+  "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+  "source_pdf_sha256": "37dffcba76cf1d038140cd671e8a522eaca4995ea2505106c4b544b2e09fd122",
+  "pdf_page": 151,
+  "pdf_page_index": 150,
+  "pdf_page_count": 200,
+  "pdf_page_size_points": [
+    1125.0,
+    1875.0
+  ],
+  "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it.",
+  "render": {
+    "library": "PyMuPDF",
+    "version": "1.26.6",
+    "dpi": 300,
+    "zoom": 1.3333333333333333,
+    "effective_dpi": 96.0,
+    "native_image_size": [
+      1500,
+      2500
+    ],
+    "colorspace": "RGB",
+    "alpha": false,
+    "script": "inputs/render_pages.py",
+    "page_list": "inputs/pages-fresh.json"
+  }
+}

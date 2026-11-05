@@ -1,0 +1,262 @@
+{
+  "input_id": "kale-1913-page-113",
+  "input_sha256": "8d382a072ce243c7c70943cb5deafa2fe94d6b6628089c54c1a482f40f32b246",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T07:09:01.424244+00:00",
+  "spec_sha256": "7fe313b3f6e9ecdd76f8cbdfe44a95b58b53c054a9fb40145184ed9fa844d507",
+  "labels_png_sha256": "19e6e027bd61153ef201dff5090c570bacbda7f62b12e30ad03ffc2360dcdc53",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 136.0,
+    "weak": 195.5,
+    "speck_area": 16
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 1317,
+      "components": 2,
+      "box": [
+        164,
+        144,
+        225,
+        195
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 5300,
+      "components": 4,
+      "box": [
+        580,
+        113,
+        846,
+        172
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "verse-42",
+      "type": "verse",
+      "keep": true,
+      "pixels": 68898,
+      "components": 48,
+      "box": [
+        262,
+        222,
+        1249,
+        477
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "commentary-42",
+      "type": "commentary",
+      "keep": true,
+      "pixels": 105663,
+      "components": 220,
+      "box": [
+        162,
+        458,
+        1282,
+        864
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "verse-43",
+      "type": "verse",
+      "keep": true,
+      "pixels": 67016,
+      "components": 42,
+      "box": [
+        262,
+        855,
+        1280,
+        1097
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "commentary-43",
+      "type": "commentary",
+      "keep": true,
+      "pixels": 96713,
+      "components": 161,
+      "box": [
+        159,
+        1097,
+        1276,
+        1420
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "verse-44",
+      "type": "verse",
+      "keep": true,
+      "pixels": 55505,
+      "components": 31,
+      "box": [
+        309,
+        1416,
+        1134,
+        1661
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "commentary-44",
+      "type": "commentary",
+      "keep": true,
+      "pixels": 52247,
+      "components": 75,
+      "box": [
+        156,
+        1644,
+        1264,
+        1828
+      ]
+    },
+    {
+      "value": 9,
+      "passage": "footnote-1",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 2532,
+      "components": 5,
+      "box": [
+        200,
+        1895,
+        363,
+        1937
+      ]
+    },
+    {
+      "value": 10,
+      "passage": "footnote-2",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 1148,
+      "components": 3,
+      "box": [
+        377,
+        1890,
+        460,
+        1931
+      ]
+    },
+    {
+      "value": 11,
+      "passage": "footnote-3",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 3105,
+      "components": 6,
+      "box": [
+        492,
+        1884,
+        701,
+        1926
+      ]
+    },
+    {
+      "value": 12,
+      "passage": "footnote-4",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 1805,
+      "components": 3,
+      "box": [
+        733,
+        1883,
+        872,
+        1920
+      ]
+    },
+    {
+      "value": 13,
+      "passage": "footnote-5",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 2565,
+      "components": 8,
+      "box": [
+        901,
+        1872,
+        1070,
+        1922
+      ]
+    },
+    {
+      "value": 14,
+      "passage": "footnote-6",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 1716,
+      "components": 4,
+      "box": [
+        1087,
+        1879,
+        1209,
+        1915
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 1,
+      "box": [
+        891,
+        49,
+        898,
+        56
+      ],
+      "area": 30,
+      "role": "text"
+    },
+    {
+      "component_id": 706,
+      "box": [
+        769,
+        2021,
+        773,
+        2025
+      ],
+      "area": 16,
+      "role": "text"
+    },
+    {
+      "component_id": 758,
+      "box": [
+        621,
+        2105,
+        732,
+        2118
+      ],
+      "area": 1186,
+      "role": "text"
+    }
+  ],
+  "separator_pixels": 5479,
+  "method_files_sha256": {
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "analyze_page.py": "87a923ff67f3d83edff8c00edadb1f51a8afdd8fb1f0b8886e91f625cd641b3f",
+    "evaluate.py": "efdbf565fa0674ea006e4241cfa11344e5a8b9d30bf15f18d22d4bc21e67f43b",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "reference.py": "a0bd6165b3e49ea74531a845638229935a62e060321312a6908d831fa36ddb69",
+    "survey.py": "9d3c6c2661a033ef41a5b792e11dd12d9a0446f1d752caa440d3eb44e31972a6",
+    "config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

@@ -25,8 +25,8 @@ Blue marks kept regions, purple marks excluded page furniture and red marks unco
 From the project root:
 
 ```sh
-uv run python methods/016-claude-opus-5.5-max-pixels/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/016-claude-opus-5.5-max-pixels/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/016-claude-opus-5.5-max-pixels/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/016-claude-opus-5.5-max-pixels/run.py inputs/kale-1913-page-017.png
 ```
 
 For another request, supply a fresh `--output-dir`, for example `outputs/kale-1913-page-017/016-claude-opus-5.5-max-pixels/run-002`. Existing output is protected against overwriting. Authentication follows the preceding provider method: Google environment variables or the stored `gemini` key; Anthropic environment variable or the stored `anthropic` key. Secrets are excluded from saved artifacts.

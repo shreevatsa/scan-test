@@ -1,0 +1,200 @@
+{
+  "input_id": "ryder-ten-princes-1927-page-030",
+  "input_sha256": "4448cf7b04d700a8b0d2d9aed4b9c627f632dde1994b8cef2347559bdc865af1",
+  "version": 1,
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T22:25:28.085448+00:00",
+  "spec_sha256": "8185daad166305e82ce98039ebeb32207395784973f099f781bc33df5c9895a9",
+  "labels_png_sha256": "e0ef10790a3dccc47c05beddc82ab41e2267b8fd54fae05a724ed346b013c272",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 182.0,
+    "weak": 218.5,
+    "speck_area": 4
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "page-number-left",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 266,
+      "components": 1,
+      "box": [
+        155,
+        127,
+        180,
+        147
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "running-header-left",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 2951,
+      "components": 4,
+      "box": [
+        299,
+        114,
+        539,
+        139
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "paragraph-1",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 55506,
+      "components": 196,
+      "box": [
+        157,
+        163,
+        699,
+        529
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "paragraph-2",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 81681,
+      "components": 252,
+      "box": [
+        167,
+        530,
+        714,
+        1035
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "running-header-right",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 4338,
+      "components": 10,
+      "box": [
+        945,
+        92,
+        1348,
+        121
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "page-number-right",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 152,
+      "components": 2,
+      "box": [
+        1396,
+        96,
+        1417,
+        115
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "paragraph-3",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 97082,
+      "components": 496,
+      "box": [
+        877,
+        143,
+        1437,
+        818
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "paragraph-4",
+      "type": "paragraph",
+      "keep": true,
+      "pixels": 28390,
+      "components": 123,
+      "box": [
+        890,
+        812,
+        1441,
+        1025
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 1,
+      "box": [
+        0,
+        0,
+        1554,
+        1195
+      ],
+      "area": 54534,
+      "role": "large"
+    },
+    {
+      "component_id": 3,
+      "box": [
+        1557,
+        0,
+        1641,
+        1195
+      ],
+      "area": 61361,
+      "role": "large"
+    },
+    {
+      "component_id": 348,
+      "box": [
+        56,
+        342,
+        62,
+        347
+      ],
+      "area": 18,
+      "role": "text"
+    },
+    {
+      "component_id": 881,
+      "box": [
+        782,
+        738,
+        793,
+        1016
+      ],
+      "area": 894,
+      "role": "large"
+    },
+    {
+      "component_id": 1281,
+      "box": [
+        122,
+        1135,
+        126,
+        1140
+      ],
+      "area": 17,
+      "role": "text"
+    }
+  ],
+  "component_rules_applied": [],
+  "separator_pixels": 0,
+  "builder": "methods/035-gpt-6.1-terra-none-column-margin-ownership/reference.py",
+  "method_files_sha256": {
+    "reference.py": "1a03a4bd97e5e13879c2c7108611fb0dae1876c2217e9b974d78034e779a9710",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

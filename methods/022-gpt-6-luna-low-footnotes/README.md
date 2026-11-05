@@ -7,8 +7,8 @@ The prompt is copied byte-for-byte from method 013: it explicitly requests one r
 ## Run
 
 ```sh
-uv run python methods/022-gpt-6-luna-low-footnotes/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/022-gpt-6-luna-low-footnotes/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/022-gpt-6-luna-low-footnotes/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/022-gpt-6-luna-low-footnotes/run.py inputs/kale-1913-page-017.png
 ```
 
 For a repeat request, use a fresh `--output-dir`, for example `outputs/kale-1913-page-017/022-gpt-6-luna-low-footnotes/run-002`. Existing output is protected against overwriting. Authentication checks `OPENAI_API_KEY`, then the locally stored `llm` key named `openai`.

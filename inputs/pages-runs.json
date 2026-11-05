@@ -1,0 +1,230 @@
+{
+ "note": "Consecutive-page runs for testing continuation flags and book-level linking (method 040). Pages already rendered for earlier tests keep their original renders and provenance records; the renderer skips them. Render with: uv run --offline python inputs/render_pages.py inputs/pages-runs.json",
+ "dpi": 300,
+ "pages": [
+  {
+   "input_id": "kale-1913-page-106",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 106,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "kale-1913-106"
+  },
+  {
+   "input_id": "kale-1913-page-107",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 107,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "kale-1913-106"
+  },
+  {
+   "input_id": "kale-1913-page-108",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 108,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "kale-1913-106"
+  },
+  {
+   "input_id": "kale-1913-page-109",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 109,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "kale-1913-106"
+  },
+  {
+   "input_id": "hertel-panchatantra-page-152",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 152,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "hertel-panchatantra-152"
+  },
+  {
+   "input_id": "hertel-panchatantra-page-153",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 153,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "hertel-panchatantra-152"
+  },
+  {
+   "input_id": "hertel-panchatantra-page-154",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 154,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "hertel-panchatantra-152"
+  },
+  {
+   "input_id": "hertel-panchatantra-page-155",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 155,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "hertel-panchatantra-152"
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-030",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 30,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "ryder-ten-princes-1927-030"
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-031",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 31,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "ryder-ten-princes-1927-030"
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-032",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 32,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "ryder-ten-princes-1927-030"
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-033",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 33,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "ryder-ten-princes-1927-030"
+  },
+  {
+   "input_id": "cole-1903-page-001",
+   "book_id": "cole-1903",
+   "source_pdf": "~/w/pages/docs/cole-factor/Cole.1903-euclid.bams.1183417760.pdf",
+   "pdf_page": 1,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "cole-1903-001"
+  },
+  {
+   "input_id": "cole-1903-page-002",
+   "book_id": "cole-1903",
+   "source_pdf": "~/w/pages/docs/cole-factor/Cole.1903-euclid.bams.1183417760.pdf",
+   "pdf_page": 2,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "cole-1903-001"
+  },
+  {
+   "input_id": "cole-1903-page-003",
+   "book_id": "cole-1903",
+   "source_pdf": "~/w/pages/docs/cole-factor/Cole.1903-euclid.bams.1183417760.pdf",
+   "pdf_page": 3,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "cole-1903-001"
+  },
+  {
+   "input_id": "cole-1903-page-004",
+   "book_id": "cole-1903",
+   "source_pdf": "~/w/pages/docs/cole-factor/Cole.1903-euclid.bams.1183417760.pdf",
+   "pdf_page": 4,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "cole-1903-001"
+  },
+  {
+   "input_id": "telang-dli-page-108",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 108,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "telang-dli-108"
+  },
+  {
+   "input_id": "telang-dli-page-109",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 109,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "telang-dli-108"
+  },
+  {
+   "input_id": "telang-dli-page-110",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 110,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "telang-dli-108"
+  },
+  {
+   "input_id": "telang-dli-page-111",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 111,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "telang-dli-108"
+  },
+  {
+   "input_id": "gopinath-1914-page-258",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 258,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "gopinath-1914-258"
+  },
+  {
+   "input_id": "gopinath-1914-page-259",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 259,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "gopinath-1914-258"
+  },
+  {
+   "input_id": "gopinath-1914-page-260",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 260,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "gopinath-1914-258"
+  },
+  {
+   "input_id": "gopinath-1914-page-261",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 261,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "gopinath-1914-258"
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-001",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/17F_Chapter_001.pdf",
+   "pdf_page": 1,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "dutt-17f-chapter-001"
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-002",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/17F_Chapter_001.pdf",
+   "pdf_page": 2,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "dutt-17f-chapter-001"
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-003",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/17F_Chapter_001.pdf",
+   "pdf_page": 3,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "dutt-17f-chapter-001"
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-004",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/17F_Chapter_001.pdf",
+   "pdf_page": 4,
+   "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+   "run": "dutt-17f-chapter-001"
+  }
+ ]
+}

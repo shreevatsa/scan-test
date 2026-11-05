@@ -33,8 +33,8 @@ From the project root, use the existing Python 3.12 environment:
 
 ```sh
 .venv/bin/python -m pip install -r methods/005-gpt-6-astra-direct/requirements.txt
-.venv/bin/python methods/005-gpt-6-astra-direct/run.py inputs/kale-1913-page-017.png --check
-.venv/bin/python methods/005-gpt-6-astra-direct/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/005-gpt-6-astra-direct/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/005-gpt-6-astra-direct/run.py inputs/kale-1913-page-017.png
 ```
 
 Authentication uses `OPENAI_API_KEY` when set, otherwise the locally stored `llm` key named `openai`. An alternative stored key name can be selected with `--llm-key-name`. Credentials are used only in the Authorization header and are excluded from saved request artifacts.
@@ -42,7 +42,7 @@ Authentication uses `OPENAI_API_KEY` when set, otherwise the locally stored `llm
 For a repeat request, choose a fresh output directory:
 
 ```sh
-.venv/bin/python methods/005-gpt-6-astra-direct/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/005-gpt-6-astra-direct/run-002
+uv run --offline python methods/005-gpt-6-astra-direct/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/005-gpt-6-astra-direct/run-002
 ```
 
 Existing nonempty output directories are preserved. Each invocation makes one request; API errors, incomplete responses and validation failures are recorded in that attempt's directory.
@@ -71,7 +71,7 @@ The [model documentation](https://developers.openai.com/api/docs/models/gpt-6-as
 For the recorded page-17 result, generate a diagnostic showing the exact uncovered measurement-mask pixels and enlarged context:
 
 ```sh
-.venv/bin/python methods/005-gpt-6-astra-direct/inspect_uncovered.py outputs/kale-1913-page-017/005-gpt-6-astra-direct/regions.json
+uv run --offline python methods/005-gpt-6-astra-direct/inspect_uncovered.py outputs/kale-1913-page-017/005-gpt-6-astra-direct/regions.json
 ```
 
 This saves `uncovered-highlight.png`, `uncovered-mask.png` and `uncovered-details.json` beside the result. The details file records component coordinates, pixel counts, view rectangles and source/script checksums. The figure uses faded scan context, exact red uncovered pixels, teal area markers and enlarged views of the small components.

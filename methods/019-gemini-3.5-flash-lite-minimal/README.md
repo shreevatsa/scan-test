@@ -7,8 +7,8 @@ Coordinates follow Google's documented `[ymin,xmin,ymax,xmax]` convention normal
 ## Run
 
 ```sh
-uv run python methods/019-gemini-3.5-flash-lite-minimal/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/019-gemini-3.5-flash-lite-minimal/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/019-gemini-3.5-flash-lite-minimal/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/019-gemini-3.5-flash-lite-minimal/run.py inputs/kale-1913-page-017.png
 ```
 
 For another request, use a fresh `--output-dir`, such as `outputs/kale-1913-page-017/019-gemini-3.5-flash-lite-minimal/run-002`. Existing output is protected against overwriting. Authentication uses the configured Google environment variables or the stored `llm` key named `gemini`.
@@ -50,7 +50,7 @@ The estimated cost uses $0.3 per million input tokens and $2.5 per million outpu
 The diagnostic image above renders only the eight valid proposals, unchanged. The rejected proposal and original validation error remain in the record. To produce this diagnostic from a saved run:
 
 ```sh
-uv run python methods/019-gemini-3.5-flash-lite-minimal/inspect_response.py outputs/kale-1913-page-017/019-gemini-3.5-flash-lite-minimal
+uv run --offline python methods/019-gemini-3.5-flash-lite-minimal/inspect_response.py outputs/kale-1913-page-017/019-gemini-3.5-flash-lite-minimal
 ```
 
 This creates a fresh `diagnostic/` directory with an overlay, measurement mask, excluded-proposal record, cost calculation and provenance hashes. Existing diagnostic output is protected against overwriting.

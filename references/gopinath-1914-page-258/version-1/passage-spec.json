@@ -1,0 +1,203 @@
+{
+  "input_id": "gopinath-1914-page-258",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "line_segmentation": "methods/032-line-skew-separability (copied unchanged into method 033), page-level line ids 0-29",
+  "split_lines_by_x": {
+    "0": [
+      {
+        "below_x": 1150,
+        "passage": "running-header"
+      },
+      {
+        "passage": "page-number"
+      }
+    ],
+    "1": [
+      {
+        "passage": null
+      }
+    ],
+    "2": [
+      {
+        "passage": null
+      }
+    ],
+    "4": [
+      {
+        "passage": null
+      }
+    ],
+    "10": [
+      {
+        "passage": null
+      }
+    ],
+    "16": [
+      {
+        "passage": null
+      }
+    ],
+    "24": [
+      {
+        "passage": null
+      }
+    ],
+    "28": [
+      {
+        "passage": null
+      }
+    ],
+    "29": [
+      {
+        "passage": null
+      }
+    ],
+    "9": [
+      {
+        "below_x": 1345,
+        "passage": "hindi-translation-81"
+      },
+      {
+        "passage": null
+      }
+    ],
+    "14": [
+      {
+        "below_x": 120,
+        "passage": null
+      },
+      {
+        "passage": "english-translation-81"
+      }
+    ],
+    "15": [
+      {
+        "below_x": 120,
+        "passage": null
+      },
+      {
+        "passage": "english-translation-81"
+      }
+    ],
+    "17": [
+      {
+        "below_x": 1345,
+        "passage": "note-source"
+      },
+      {
+        "passage": null
+      }
+    ],
+    "18": [
+      {
+        "below_x": 120,
+        "passage": null
+      },
+      {
+        "passage": "note-source"
+      }
+    ],
+    "19": [
+      {
+        "below_x": 120,
+        "passage": null
+      },
+      {
+        "passage": "note-source"
+      }
+    ],
+    "20": [
+      {
+        "below_x": 120,
+        "passage": null
+      },
+      {
+        "passage": "note-source"
+      }
+    ],
+    "23": [
+      {
+        "below_x": 1345,
+        "passage": "note-comment"
+      },
+      {
+        "passage": null
+      }
+    ],
+    "26": [
+      {
+        "below_x": 1340,
+        "passage": "note-comment"
+      },
+      {
+        "passage": null
+      }
+    ]
+  },
+  "passages": [
+    {
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "note": "भाषाटीकासमेतम् ।, left part of line 0."
+    },
+    {
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "note": "२९३, right part of line 0."
+    },
+    {
+      "passage": "verse-81",
+      "type": "verse",
+      "keep": true,
+      "lines": [
+        3,
+        6
+      ],
+      "note": "Three printed lines ending with ॥ ८१ ॥. Line 4 is a border piece, unlabeled by a split rule. The word मुष्टिभिरेव at the start of line 6 is one merged component, 240 x 87 pixels, which the line finder leaves off every line, so this reference leaves it unlabeled too."
+    },
+    {
+      "passage": "hindi-translation-81",
+      "type": "translation",
+      "keep": true,
+      "lines": [
+        7,
+        9
+      ],
+      "note": "स्त्रियोंके वचनोंमें ... ॥ ८१ ॥."
+    },
+    {
+      "passage": "english-translation-81",
+      "type": "translation",
+      "keep": true,
+      "lines": [
+        11,
+        15
+      ],
+      "note": "While the words of women ... with their fists."
+    },
+    {
+      "passage": "note-source",
+      "type": "footnote",
+      "keep": true,
+      "lines": [
+        17,
+        20
+      ],
+      "note": "Quoted under Kâlidas Mâghau ... Śhringâravindu (शृङ्गारबिन्दु)."
+    },
+    {
+      "passage": "note-comment",
+      "type": "footnote",
+      "keep": true,
+      "lines": [
+        21,
+        27
+      ],
+      "note": "How exquisitely the poet accounts ... the deadly bane?"
+    }
+  ],
+  "unit_definition": "One passage per verse, per translation paragraph, and per separately set note paragraph below the rule.",
+  "non_text": "The page has a border of small repeated ornaments. The line finder classes some border pieces as large components, makes others into lines of their own (lines 1, 2, 4, 10, 16, 24, 28 and 29), and attaches others to text lines 9, 14, 15, 17-20, 23 and 26. All of these are left unlabeled: whole lines by a null rule and attached pieces by split rules. Only the rule above the notes and thin horizontal large components are labeled separator."
+}

@@ -1,0 +1,2213 @@
+{
+  "input_id": "kale-1913-page-113",
+  "input_sha256": "8d382a072ce243c7c70943cb5deafa2fe94d6b6628089c54c1a482f40f32b246",
+  "reference_status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation; not yet human-reviewed",
+  "reference_labels_sha256": "19e6e027bd61153ef201dff5090c570bacbda7f62b12e30ad03ffc2360dcdc53",
+  "page_angle_deg": -1.4300000000000161,
+  "page_summary": {
+    "status": "ok",
+    "char_h": 40.0,
+    "page_angle_deg": -1.4300000000000161,
+    "sharpness_ratio_vs_zero": 1.3035504854623932,
+    "columns": 1,
+    "lines": 30,
+    "long_lines": 27,
+    "bridging_components": 0,
+    "unassigned_text_components": 3,
+    "line_angle_deg": {
+      "n": 27,
+      "median": -1.4628796213283028,
+      "p10": -1.665888770112999,
+      "p90": -1.328055599759177,
+      "minimum": -2.1819384186873982,
+      "maximum": -1.1373871644287132
+    },
+    "line_bow_px": {
+      "n": 27,
+      "median": 2.2772156985601217,
+      "p10": 0.9051698329686364,
+      "p90": 3.8397223429831224,
+      "minimum": 0.41083493853608033,
+      "maximum": 12.955567635733598
+    },
+    "pair_counts": {
+      "axis_aligned": {
+        "pairs": 29,
+        "not_separable": 26
+      },
+      "page_rotated": {
+        "pairs": 29,
+        "not_separable": 17
+      },
+      "straight_any_angle": {
+        "pairs": 29,
+        "not_separable": 12
+      },
+      "column_staircase": {
+        "pairs": 29,
+        "not_separable": 0
+      }
+    },
+    "long_pair_counts": {
+      "axis_aligned": {
+        "pairs": 23,
+        "not_separable": 20
+      },
+      "page_rotated": {
+        "pairs": 23,
+        "not_separable": 14
+      },
+      "straight_any_angle": {
+        "pairs": 23,
+        "not_separable": 9
+      },
+      "column_staircase": {
+        "pairs": 23,
+        "not_separable": 0
+      }
+    }
+  },
+  "rules": [
+    {
+      "component_id": 664,
+      "box": [
+        567,
+        1840,
+        827,
+        1851
+      ],
+      "angle_deg": -1.0920390924713792
+    }
+  ],
+  "floors": {
+    "verse-42": {
+      "axis_aligned": {
+        "other_included": {
+          "commentary-42": 1185
+        },
+        "total": 1185,
+        "polygon": [
+          [
+            261.5,
+            221.5
+          ],
+          [
+            1248.5,
+            221.5
+          ],
+          [
+            1248.5,
+            476.5
+          ],
+          [
+            261.5,
+            476.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {
+          "commentary-42": 350
+        },
+        "total": 350,
+        "polygon": [
+          [
+            257.78,
+            241.05
+          ],
+          [
+            1246.49,
+            216.37
+          ],
+          [
+            1252.61,
+            461.83
+          ],
+          [
+            263.91,
+            486.51
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -2.9,
+        "other_included": {
+          "commentary-42": 187
+        },
+        "total": 187,
+        "polygon": [
+          [
+            254.35,
+            248.84
+          ],
+          [
+            1243.52,
+            198.73
+          ],
+          [
+            1256.08,
+            446.56
+          ],
+          [
+            266.9,
+            496.67
+          ]
+        ]
+      }
+    },
+    "commentary-42": {
+      "axis_aligned": {
+        "other_included": {
+          "verse-42": 1300,
+          "verse-43": 289
+        },
+        "total": 1589,
+        "polygon": [
+          [
+            161.5,
+            457.5
+          ],
+          [
+            1281.5,
+            457.5
+          ],
+          [
+            1281.5,
+            863.5
+          ],
+          [
+            161.5,
+            863.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {
+          "verse-42": 124
+        },
+        "total": 124,
+        "polygon": [
+          [
+            152.51,
+            480.71
+          ],
+          [
+            1277.24,
+            452.64
+          ],
+          [
+            1286.83,
+            836.66
+          ],
+          [
+            162.09,
+            864.74
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -2.05,
+        "other_included": {
+          "verse-42": 55
+        },
+        "total": 55,
+        "polygon": [
+          [
+            148.86,
+            487.88
+          ],
+          [
+            1276.59,
+            447.51
+          ],
+          [
+            1290.14,
+            826.2
+          ],
+          [
+            162.41,
+            866.57
+          ]
+        ]
+      }
+    },
+    "verse-43": {
+      "axis_aligned": {
+        "other_included": {
+          "commentary-42": 84
+        },
+        "total": 84,
+        "polygon": [
+          [
+            261.5,
+            854.5
+          ],
+          [
+            1279.5,
+            854.5
+          ],
+          [
+            1279.5,
+            1096.5
+          ],
+          [
+            261.5,
+            1096.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {
+          "commentary-43": 34
+        },
+        "total": 34,
+        "polygon": [
+          [
+            257.52,
+            865.6
+          ],
+          [
+            1274.21,
+            840.22
+          ],
+          [
+            1280.34,
+            1085.56
+          ],
+          [
+            263.65,
+            1110.94
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -0.7,
+        "other_included": {
+          "commentary-42": 7,
+          "commentary-43": 13
+        },
+        "total": 20,
+        "polygon": [
+          [
+            259.48,
+            859.91
+          ],
+          [
+            1277.0,
+            847.47
+          ],
+          [
+            1279.98,
+            1091.15
+          ],
+          [
+            262.46,
+            1103.58
+          ]
+        ]
+      }
+    },
+    "commentary-43": {
+      "axis_aligned": {
+        "other_included": {
+          "verse-44": 66
+        },
+        "total": 66,
+        "polygon": [
+          [
+            158.5,
+            1096.5
+          ],
+          [
+            1275.5,
+            1096.5
+          ],
+          [
+            1275.5,
+            1419.5
+          ],
+          [
+            158.5,
+            1419.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {
+          "verse-43": 48
+        },
+        "total": 48,
+        "polygon": [
+          [
+            152.11,
+            1109.83
+          ],
+          [
+            1273.5,
+            1081.83
+          ],
+          [
+            1281.33,
+            1395.7
+          ],
+          [
+            159.94,
+            1423.7
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -0.7,
+        "other_included": {
+          "verse-43": 12
+        },
+        "total": 12,
+        "polygon": [
+          [
+            155.8,
+            1102.98
+          ],
+          [
+            1274.61,
+            1089.31
+          ],
+          [
+            1278.5,
+            1407.89
+          ],
+          [
+            159.69,
+            1421.56
+          ]
+        ]
+      }
+    },
+    "verse-44": {
+      "axis_aligned": {
+        "other_included": {
+          "commentary-43": 25,
+          "commentary-44": 395
+        },
+        "total": 420,
+        "polygon": [
+          [
+            308.5,
+            1415.5
+          ],
+          [
+            1133.5,
+            1415.5
+          ],
+          [
+            1133.5,
+            1660.5
+          ],
+          [
+            308.5,
+            1660.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {
+          "commentary-44": 42
+        },
+        "total": 42,
+        "polygon": [
+          [
+            304.87,
+            1427.51
+          ],
+          [
+            1127.96,
+            1406.97
+          ],
+          [
+            1133.96,
+            1647.55
+          ],
+          [
+            310.87,
+            1668.09
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -1.75,
+        "other_included": {
+          "commentary-44": 5
+        },
+        "total": 5,
+        "polygon": [
+          [
+            304.1,
+            1429.12
+          ],
+          [
+            1126.63,
+            1403.99
+          ],
+          [
+            1133.98,
+            1644.64
+          ],
+          [
+            311.46,
+            1669.77
+          ]
+        ]
+      }
+    },
+    "commentary-44": {
+      "axis_aligned": {
+        "other_included": {
+          "verse-44": 622
+        },
+        "total": 622,
+        "polygon": [
+          [
+            155.5,
+            1643.5
+          ],
+          [
+            1263.5,
+            1643.5
+          ],
+          [
+            1263.5,
+            1827.5
+          ],
+          [
+            155.5,
+            1827.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {
+          "verse-44": 16
+        },
+        "total": 16,
+        "polygon": [
+          [
+            152.92,
+            1669.72
+          ],
+          [
+            1261.45,
+            1642.05
+          ],
+          [
+            1265.48,
+            1803.42
+          ],
+          [
+            156.95,
+            1831.09
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -1.65,
+        "other_included": {
+          "verse-44": 4
+        },
+        "total": 4,
+        "polygon": [
+          [
+            152.47,
+            1673.15
+          ],
+          [
+            1261.12,
+            1641.22
+          ],
+          [
+            1265.77,
+            1802.63
+          ],
+          [
+            157.12,
+            1834.57
+          ]
+        ]
+      }
+    },
+    "footnote-1": {
+      "axis_aligned": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            199.5,
+            1894.5
+          ],
+          [
+            362.5,
+            1894.5
+          ],
+          [
+            362.5,
+            1936.5
+          ],
+          [
+            199.5,
+            1936.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            199.16,
+            1895.49
+          ],
+          [
+            361.79,
+            1891.43
+          ],
+          [
+            362.82,
+            1932.84
+          ],
+          [
+            200.2,
+            1936.89
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -1.45,
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            199.16,
+            1895.51
+          ],
+          [
+            361.78,
+            1891.39
+          ],
+          [
+            362.82,
+            1932.78
+          ],
+          [
+            200.21,
+            1936.9
+          ]
+        ]
+      }
+    },
+    "footnote-2": {
+      "axis_aligned": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            376.5,
+            1889.5
+          ],
+          [
+            459.5,
+            1889.5
+          ],
+          [
+            459.5,
+            1930.5
+          ],
+          [
+            376.5,
+            1930.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            376.18,
+            1891.04
+          ],
+          [
+            458.83,
+            1888.98
+          ],
+          [
+            459.82,
+            1928.91
+          ],
+          [
+            377.17,
+            1930.97
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -1.45,
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            376.17,
+            1891.06
+          ],
+          [
+            458.82,
+            1888.97
+          ],
+          [
+            459.83,
+            1928.88
+          ],
+          [
+            377.18,
+            1930.98
+          ]
+        ]
+      }
+    },
+    "footnote-3": {
+      "axis_aligned": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            491.5,
+            1883.5
+          ],
+          [
+            700.5,
+            1883.5
+          ],
+          [
+            700.5,
+            1925.5
+          ],
+          [
+            491.5,
+            1925.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            491.02,
+            1886.6
+          ],
+          [
+            699.76,
+            1881.39
+          ],
+          [
+            700.79,
+            1922.81
+          ],
+          [
+            492.05,
+            1928.02
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -1.45,
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            491.01,
+            1886.61
+          ],
+          [
+            699.75,
+            1881.33
+          ],
+          [
+            700.8,
+            1922.8
+          ],
+          [
+            492.06,
+            1928.08
+          ]
+        ]
+      }
+    },
+    "footnote-4": {
+      "axis_aligned": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            732.5,
+            1882.5
+          ],
+          [
+            871.5,
+            1882.5
+          ],
+          [
+            871.5,
+            1919.5
+          ],
+          [
+            732.5,
+            1919.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            732.15,
+            1885.09
+          ],
+          [
+            870.82,
+            1881.63
+          ],
+          [
+            871.71,
+            1917.56
+          ],
+          [
+            733.05,
+            1921.02
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -1.45,
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            732.15,
+            1885.13
+          ],
+          [
+            870.81,
+            1881.62
+          ],
+          [
+            871.72,
+            1917.53
+          ],
+          [
+            733.06,
+            1921.04
+          ]
+        ]
+      }
+    },
+    "footnote-5": {
+      "axis_aligned": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            900.5,
+            1871.5
+          ],
+          [
+            1069.5,
+            1871.5
+          ],
+          [
+            1069.5,
+            1921.5
+          ],
+          [
+            900.5,
+            1921.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            899.92,
+            1874.72
+          ],
+          [
+            1068.59,
+            1870.51
+          ],
+          [
+            1069.8,
+            1919.06
+          ],
+          [
+            901.13,
+            1923.27
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -1.45,
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            899.91,
+            1874.77
+          ],
+          [
+            1068.58,
+            1870.5
+          ],
+          [
+            1069.8,
+            1919.02
+          ],
+          [
+            901.14,
+            1923.29
+          ]
+        ]
+      }
+    },
+    "footnote-6": {
+      "axis_aligned": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            1086.5,
+            1878.5
+          ],
+          [
+            1208.5,
+            1878.5
+          ],
+          [
+            1208.5,
+            1914.5
+          ],
+          [
+            1086.5,
+            1914.5
+          ]
+        ]
+      },
+      "page_rotated": {
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            1086.19,
+            1879.42
+          ],
+          [
+            1207.84,
+            1876.38
+          ],
+          [
+            1208.75,
+            1913.18
+          ],
+          [
+            1087.1,
+            1916.22
+          ]
+        ]
+      },
+      "best_single_angle": {
+        "angle_deg": -1.45,
+        "other_included": {},
+        "total": 0,
+        "polygon": [
+          [
+            1086.18,
+            1879.43
+          ],
+          [
+            1207.83,
+            1876.35
+          ],
+          [
+            1208.76,
+            1913.18
+          ],
+          [
+            1087.11,
+            1916.26
+          ]
+        ]
+      }
+    }
+  },
+  "floor_totals": {
+    "axis_aligned": 3966,
+    "page_rotated": 614,
+    "best_single_angle": 283
+  },
+  "pairs": [
+    {
+      "upper": "verse-42",
+      "lower": "commentary-42",
+      "orientation": "stacked",
+      "axis_aligned": {
+        "b_in_a": 1185,
+        "a_in_b": 1300
+      },
+      "page_rotated": {
+        "b_in_a": 350,
+        "a_in_b": 124
+      },
+      "straight": {
+        "best_margin_px": -5.804662703330678,
+        "best_angle_deg": -2.1700000000000816,
+        "axis_margin_px": -17.999999999998863,
+        "page_angle_margin_px": -7.577654596926379
+      },
+      "column": {
+        "shared_columns": 962,
+        "minimum_gap_px": 10,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": false,
+        "page_rotated": false,
+        "straight_any_angle": false,
+        "column_staircase": true
+      },
+      "best_edge": {
+        "axis_aligned": {
+          "upper_box_bottom_edge": {
+            "cost": 522,
+            "own_left_out": 273,
+            "other_included": 249
+          },
+          "lower_box_top_edge": {
+            "cost": 564,
+            "own_left_out": 291,
+            "other_included": 273
+          }
+        },
+        "page_rotated": {
+          "upper_box_bottom_edge": {
+            "cost": 67,
+            "own_left_out": 44,
+            "other_included": 23
+          },
+          "lower_box_top_edge": {
+            "cost": 67,
+            "own_left_out": 23,
+            "other_included": 44
+          }
+        }
+      }
+    },
+    {
+      "upper": "commentary-42",
+      "lower": "verse-43",
+      "orientation": "stacked",
+      "axis_aligned": {
+        "b_in_a": 289,
+        "a_in_b": 84
+      },
+      "page_rotated": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "straight": {
+        "best_margin_px": 10.144669944086445,
+        "best_angle_deg": -2.670000000000071,
+        "axis_margin_px": -7.999999999998863,
+        "page_angle_margin_px": 4.235135584155614
+      },
+      "column": {
+        "shared_columns": 973,
+        "minimum_gap_px": 15,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": false,
+        "page_rotated": true,
+        "straight_any_angle": true,
+        "column_staircase": true
+      },
+      "best_edge": {
+        "axis_aligned": {
+          "upper_box_bottom_edge": {
+            "cost": 172,
+            "own_left_out": 63,
+            "other_included": 109
+          },
+          "lower_box_top_edge": {
+            "cost": 60,
+            "own_left_out": 20,
+            "other_included": 40
+          }
+        },
+        "page_rotated": {
+          "upper_box_bottom_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          },
+          "lower_box_top_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          }
+        }
+      }
+    },
+    {
+      "upper": "verse-43",
+      "lower": "commentary-43",
+      "orientation": "stacked",
+      "axis_aligned": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "page_rotated": {
+        "b_in_a": 34,
+        "a_in_b": 48
+      },
+      "straight": {
+        "best_margin_px": 0.9999999999997726,
+        "best_angle_deg": -1.2789769243681803e-13,
+        "axis_margin_px": 0.9999999999997726,
+        "page_angle_margin_px": -2.8933877317936094
+      },
+      "column": {
+        "shared_columns": 969,
+        "minimum_gap_px": 7,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": true,
+        "page_rotated": false,
+        "straight_any_angle": true,
+        "column_staircase": true
+      },
+      "best_edge": {
+        "axis_aligned": {
+          "upper_box_bottom_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          },
+          "lower_box_top_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          }
+        },
+        "page_rotated": {
+          "upper_box_bottom_edge": {
+            "cost": 19,
+            "own_left_out": 6,
+            "other_included": 13
+          },
+          "lower_box_top_edge": {
+            "cost": 19,
+            "own_left_out": 13,
+            "other_included": 6
+          }
+        }
+      }
+    },
+    {
+      "upper": "commentary-43",
+      "lower": "verse-44",
+      "orientation": "stacked",
+      "axis_aligned": {
+        "b_in_a": 66,
+        "a_in_b": 25
+      },
+      "page_rotated": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "straight": {
+        "best_margin_px": 8.61786619155987,
+        "best_angle_deg": -1.4600000000000968,
+        "axis_margin_px": -2.999999999998863,
+        "page_angle_margin_px": 8.433534762545833
+      },
+      "column": {
+        "shared_columns": 804,
+        "minimum_gap_px": 12,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": false,
+        "page_rotated": true,
+        "straight_any_angle": true,
+        "column_staircase": true
+      },
+      "best_edge": {
+        "axis_aligned": {
+          "upper_box_bottom_edge": {
+            "cost": 46,
+            "own_left_out": 7,
+            "other_included": 39
+          },
+          "lower_box_top_edge": {
+            "cost": 24,
+            "own_left_out": 7,
+            "other_included": 17
+          }
+        },
+        "page_rotated": {
+          "upper_box_bottom_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          },
+          "lower_box_top_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          }
+        }
+      }
+    },
+    {
+      "upper": "verse-44",
+      "lower": "commentary-44",
+      "orientation": "stacked",
+      "axis_aligned": {
+        "b_in_a": 395,
+        "a_in_b": 622
+      },
+      "page_rotated": {
+        "b_in_a": 42,
+        "a_in_b": 16
+      },
+      "straight": {
+        "best_margin_px": 0.8518927938298475,
+        "best_angle_deg": -1.7200000000000912,
+        "axis_margin_px": -15.999999999998636,
+        "page_angle_margin_px": -1.3152585356212967
+      },
+      "column": {
+        "shared_columns": 804,
+        "minimum_gap_px": 13,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": false,
+        "page_rotated": false,
+        "straight_any_angle": false,
+        "column_staircase": true
+      },
+      "best_edge": {
+        "axis_aligned": {
+          "upper_box_bottom_edge": {
+            "cost": 182,
+            "own_left_out": 106,
+            "other_included": 76
+          },
+          "lower_box_top_edge": {
+            "cost": 258,
+            "own_left_out": 117,
+            "other_included": 141
+          }
+        },
+        "page_rotated": {
+          "upper_box_bottom_edge": {
+            "cost": 10,
+            "own_left_out": 10,
+            "other_included": 0
+          },
+          "lower_box_top_edge": {
+            "cost": 10,
+            "own_left_out": 0,
+            "other_included": 10
+          }
+        }
+      }
+    },
+    {
+      "upper": "commentary-44",
+      "lower": "all footnotes",
+      "orientation": "stacked",
+      "axis_aligned": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "page_rotated": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "straight": {
+        "best_margin_px": 63.276878453434165,
+        "best_angle_deg": -1.2300000000001017,
+        "axis_margin_px": 45.00000000000182,
+        "page_angle_margin_px": 63.156532476085886
+      },
+      "column": {
+        "shared_columns": 746,
+        "minimum_gap_px": 71,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": true,
+        "page_rotated": true,
+        "straight_any_angle": true,
+        "column_staircase": true
+      },
+      "best_edge": {
+        "axis_aligned": {
+          "upper_box_bottom_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          },
+          "lower_box_top_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          }
+        },
+        "page_rotated": {
+          "upper_box_bottom_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          },
+          "lower_box_top_edge": {
+            "cost": 0,
+            "own_left_out": 0,
+            "other_included": 0
+          }
+        }
+      }
+    },
+    {
+      "upper": "footnote-1",
+      "lower": "footnote-2",
+      "orientation": "side_by_side_transposed",
+      "axis_aligned": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "page_rotated": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "straight": {
+        "best_margin_px": 16.590283842806457,
+        "best_angle_deg": 5.999999999999744,
+        "axis_margin_px": 15.0,
+        "page_angle_margin_px": 15.394618277384438
+      },
+      "column": {
+        "shared_columns": 36,
+        "minimum_gap_px": 22,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": true,
+        "page_rotated": true,
+        "straight_any_angle": true,
+        "column_staircase": true
+      }
+    },
+    {
+      "upper": "footnote-2",
+      "lower": "footnote-3",
+      "orientation": "side_by_side_transposed",
+      "axis_aligned": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "page_rotated": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "straight": {
+        "best_margin_px": 33.86450717982956,
+        "best_angle_deg": 5.999999999999744,
+        "axis_margin_px": 33.0,
+        "page_angle_margin_px": 33.23927865540378
+      },
+      "column": {
+        "shared_columns": 36,
+        "minimum_gap_px": 35,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": true,
+        "page_rotated": true,
+        "straight_any_angle": true,
+        "column_staircase": true
+      }
+    },
+    {
+      "upper": "footnote-3",
+      "lower": "footnote-4",
+      "orientation": "side_by_side_transposed",
+      "axis_aligned": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "page_rotated": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "straight": {
+        "best_margin_px": 34.073564106364756,
+        "best_angle_deg": 5.999999999999744,
+        "axis_margin_px": 32.999999999999886,
+        "page_angle_margin_px": 33.28918988991495
+      },
+      "column": {
+        "shared_columns": 36,
+        "minimum_gap_px": 35,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": true,
+        "page_rotated": true,
+        "straight_any_angle": true,
+        "column_staircase": true
+      }
+    },
+    {
+      "upper": "footnote-4",
+      "lower": "footnote-5",
+      "orientation": "side_by_side_transposed",
+      "axis_aligned": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "page_rotated": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "straight": {
+        "best_margin_px": 30.985469956992347,
+        "best_angle_deg": 5.999999999999744,
+        "axis_margin_px": 29.999999999999886,
+        "page_angle_margin_px": 30.265168592400528
+      },
+      "column": {
+        "shared_columns": 37,
+        "minimum_gap_px": 40,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": true,
+        "page_rotated": true,
+        "straight_any_angle": true,
+        "column_staircase": true
+      }
+    },
+    {
+      "upper": "footnote-5",
+      "lower": "footnote-6",
+      "orientation": "side_by_side_transposed",
+      "axis_aligned": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "page_rotated": {
+        "b_in_a": 0,
+        "a_in_b": 0
+      },
+      "straight": {
+        "best_margin_px": 19.469321065643726,
+        "best_angle_deg": 5.999999999999744,
+        "axis_margin_px": 18.0,
+        "page_angle_margin_px": 18.368728340387747
+      },
+      "column": {
+        "shared_columns": 36,
+        "minimum_gap_px": 24,
+        "interleaved_columns": 0
+      },
+      "separable": {
+        "axis_aligned": true,
+        "page_rotated": true,
+        "straight_any_angle": true,
+        "column_staircase": true
+      }
+    }
+  ],
+  "boundary_scores": [
+    {
+      "upper": "verse-42",
+      "lower": "commentary-42",
+      "best_axis_aligned": {
+        "upper_box_bottom_edge": 522,
+        "lower_box_top_edge": 564
+      },
+      "best_page_rotated": {
+        "upper_box_bottom_edge": 67,
+        "lower_box_top_edge": 67
+      },
+      "results": {
+        "GPT-6.1 Terra without reasoning (025)": {
+          "upper_box_bottom_edge": {
+            "cost": 601,
+            "own_left_out_below": 138,
+            "other_included": 463
+          },
+          "lower_box_top_edge": {
+            "cost": 1141,
+            "own_left_out_above": 1,
+            "other_included": 1140
+          }
+        },
+        "GPT-6 Astra low reasoning (020)": {
+          "upper_box_bottom_edge": {
+            "cost": 1644,
+            "own_left_out_below": 0,
+            "other_included": 1644
+          },
+          "lower_box_top_edge": {
+            "cost": 905,
+            "own_left_out_above": 24,
+            "other_included": 881
+          }
+        }
+      }
+    },
+    {
+      "upper": "commentary-42",
+      "lower": "verse-43",
+      "best_axis_aligned": {
+        "upper_box_bottom_edge": 172,
+        "lower_box_top_edge": 60
+      },
+      "best_page_rotated": {
+        "upper_box_bottom_edge": 0,
+        "lower_box_top_edge": 0
+      },
+      "results": {
+        "GPT-6.1 Terra without reasoning (025)": {
+          "upper_box_bottom_edge": {
+            "cost": 334,
+            "own_left_out_below": 0,
+            "other_included": 334
+          },
+          "lower_box_top_edge": {
+            "cost": 84,
+            "own_left_out_above": 0,
+            "other_included": 84
+          }
+        },
+        "GPT-6 Astra low reasoning (020)": {
+          "upper_box_bottom_edge": {
+            "cost": 243,
+            "own_left_out_below": 3,
+            "other_included": 240
+          },
+          "lower_box_top_edge": {
+            "cost": 60,
+            "own_left_out_above": 20,
+            "other_included": 40
+          }
+        }
+      }
+    },
+    {
+      "upper": "verse-43",
+      "lower": "commentary-43",
+      "best_axis_aligned": {
+        "upper_box_bottom_edge": 0,
+        "lower_box_top_edge": 0
+      },
+      "best_page_rotated": {
+        "upper_box_bottom_edge": 19,
+        "lower_box_top_edge": 19
+      },
+      "results": {
+        "GPT-6.1 Terra without reasoning (025)": {
+          "upper_box_bottom_edge": {
+            "cost": 36,
+            "own_left_out_below": 0,
+            "other_included": 36
+          },
+          "lower_box_top_edge": {
+            "cost": 173,
+            "own_left_out_above": 0,
+            "other_included": 173
+          }
+        },
+        "GPT-6 Astra low reasoning (020)": {
+          "upper_box_bottom_edge": {
+            "cost": 7,
+            "own_left_out_below": 0,
+            "other_included": 7
+          },
+          "lower_box_top_edge": {
+            "cost": 337,
+            "own_left_out_above": 0,
+            "other_included": 337
+          }
+        }
+      }
+    },
+    {
+      "upper": "commentary-43",
+      "lower": "verse-44",
+      "best_axis_aligned": {
+        "upper_box_bottom_edge": 46,
+        "lower_box_top_edge": 24
+      },
+      "best_page_rotated": {
+        "upper_box_bottom_edge": 0,
+        "lower_box_top_edge": 0
+      },
+      "results": {
+        "GPT-6.1 Terra without reasoning (025)": {
+          "upper_box_bottom_edge": {
+            "cost": 201,
+            "own_left_out_below": 0,
+            "other_included": 201
+          },
+          "lower_box_top_edge": {
+            "cost": 50,
+            "own_left_out_above": 0,
+            "other_included": 50
+          }
+        },
+        "GPT-6 Astra low reasoning (020)": {
+          "upper_box_bottom_edge": {
+            "cost": 66,
+            "own_left_out_below": 0,
+            "other_included": 66
+          },
+          "lower_box_top_edge": {
+            "cost": 25,
+            "own_left_out_above": 0,
+            "other_included": 25
+          }
+        }
+      }
+    },
+    {
+      "upper": "verse-44",
+      "lower": "commentary-44",
+      "best_axis_aligned": {
+        "upper_box_bottom_edge": 182,
+        "lower_box_top_edge": 258
+      },
+      "best_page_rotated": {
+        "upper_box_bottom_edge": 10,
+        "lower_box_top_edge": 10
+      },
+      "results": {
+        "GPT-6.1 Terra without reasoning (025)": {
+          "upper_box_bottom_edge": {
+            "cost": 342,
+            "own_left_out_below": 10,
+            "other_included": 332
+          },
+          "lower_box_top_edge": {
+            "cost": 301,
+            "own_left_out_above": 61,
+            "other_included": 240
+          }
+        },
+        "GPT-6 Astra low reasoning (020)": {
+          "upper_box_bottom_edge": {
+            "cost": 217,
+            "own_left_out_below": 40,
+            "other_included": 177
+          },
+          "lower_box_top_edge": {
+            "cost": 520,
+            "own_left_out_above": 7,
+            "other_included": 513
+          }
+        }
+      }
+    }
+  ],
+  "results": [
+    {
+      "label": "GPT-6.1 Terra without reasoning (025)",
+      "path": "outputs/kale-1913-page-113/025-gpt-6.1-terra-none-footnotes/regions.json",
+      "result_sha256": "468a09a9fbeca666b67cd672f0f94bd3bfb05172553f2e7e70682b35750dcd5a",
+      "totals": {
+        "boxes": 12,
+        "passages_without_box": [],
+        "passages_with_several_boxes": [],
+        "own_left_out": 210,
+        "other_included": 3053,
+        "separator_included": 378
+      },
+      "boxes": [
+        {
+          "matched_passage": "verse-42",
+          "own_pixels": 68898,
+          "own_left_out": 138,
+          "other_included": {
+            "commentary-42": 463
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            253,
+            218,
+            1264,
+            471
+          ],
+          "region_id": 3,
+          "type": "verse",
+          "box": [
+            253.45,
+            218.154,
+            1263.14,
+            470.196
+          ]
+        },
+        {
+          "matched_passage": "commentary-42",
+          "own_pixels": 105663,
+          "own_left_out": 1,
+          "other_included": {
+            "verse-42": 1140,
+            "verse-43": 334
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            150,
+            459,
+            1287,
+            865
+          ],
+          "region_id": 4,
+          "type": "commentary",
+          "box": [
+            150.7,
+            459.606,
+            1286.43,
+            864.144
+          ]
+        },
+        {
+          "matched_passage": "verse-43",
+          "own_pixels": 67016,
+          "own_left_out": 0,
+          "other_included": {
+            "commentary-42": 84,
+            "commentary-43": 36
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            252,
+            855,
+            1284,
+            1100
+          ],
+          "region_id": 5,
+          "type": "verse",
+          "box": [
+            252.08,
+            855.672,
+            1283.69,
+            1099.242
+          ]
+        },
+        {
+          "matched_passage": "commentary-43",
+          "own_pixels": 96713,
+          "own_left_out": 0,
+          "other_included": {
+            "verse-43": 173,
+            "verse-44": 201
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            150,
+            1092,
+            1287,
+            1424
+          ],
+          "region_id": 6,
+          "type": "commentary",
+          "box": [
+            150.7,
+            1092.888,
+            1286.43,
+            1423.296
+          ]
+        },
+        {
+          "matched_passage": "verse-44",
+          "own_pixels": 55505,
+          "own_left_out": 10,
+          "other_included": {
+            "commentary-43": 50,
+            "commentary-44": 332
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            302,
+            1414,
+            1147,
+            1659
+          ],
+          "region_id": 7,
+          "type": "verse",
+          "box": [
+            302.77,
+            1414.824,
+            1146.69,
+            1658.394
+          ]
+        },
+        {
+          "matched_passage": "commentary-44",
+          "own_pixels": 52247,
+          "own_left_out": 61,
+          "other_included": {
+            "verse-44": 240
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            149,
+            1649,
+            1275,
+            1830
+          ],
+          "region_id": 8,
+          "type": "commentary",
+          "box": [
+            149.33,
+            1649.922,
+            1274.1,
+            1829.952
+          ]
+        },
+        {
+          "matched_passage": "footnote-1",
+          "own_pixels": 2532,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 0,
+          "pixel_box": [
+            193,
+            1891,
+            369,
+            1941
+          ],
+          "region_id": 9,
+          "type": "footnote",
+          "box": [
+            193.17,
+            1891.374,
+            368.53,
+            1940.088
+          ]
+        },
+        {
+          "matched_passage": "footnote-2",
+          "own_pixels": 1148,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 4,
+          "pixel_box": [
+            371,
+            1882,
+            466,
+            1932
+          ],
+          "region_id": 10,
+          "type": "footnote",
+          "box": [
+            371.27,
+            1882.902,
+            465.8,
+            1931.616
+          ]
+        },
+        {
+          "matched_passage": "footnote-3",
+          "own_pixels": 3105,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 17,
+          "pixel_box": [
+            483,
+            1878,
+            705,
+            1932
+          ],
+          "region_id": 11,
+          "type": "footnote",
+          "box": [
+            483.61,
+            1878.666,
+            704.18,
+            1931.616
+          ]
+        },
+        {
+          "matched_passage": "footnote-4",
+          "own_pixels": 1805,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 0,
+          "pixel_box": [
+            726,
+            1878,
+            875,
+            1928
+          ],
+          "region_id": 12,
+          "type": "footnote",
+          "box": [
+            726.1,
+            1878.666,
+            874.06,
+            1927.38
+          ]
+        },
+        {
+          "matched_passage": "footnote-5",
+          "own_pixels": 2565,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 357,
+          "pixel_box": [
+            891,
+            1868,
+            1073,
+            1926
+          ],
+          "region_id": 13,
+          "type": "footnote",
+          "box": [
+            891.87,
+            1868.076,
+            1072.71,
+            1925.262
+          ]
+        },
+        {
+          "matched_passage": "footnote-6",
+          "own_pixels": 1716,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 0,
+          "pixel_box": [
+            1080,
+            1874,
+            1217,
+            1922
+          ],
+          "region_id": 14,
+          "type": "footnote",
+          "box": [
+            1080.93,
+            1874.43,
+            1216.56,
+            1921.026
+          ]
+        }
+      ]
+    },
+    {
+      "label": "GPT-6 Astra low reasoning (020)",
+      "path": "outputs/kale-1913-page-113/020-gpt-6-astra-low-footnotes/regions.json",
+      "result_sha256": "b7842677c470cdb318470f8ce80cf33896c52d1e23f93a4f029bc92bcbd5629f",
+      "totals": {
+        "boxes": 12,
+        "passages_without_box": [],
+        "passages_with_several_boxes": [],
+        "own_left_out": 94,
+        "other_included": 3930,
+        "separator_included": 491
+      },
+      "boxes": [
+        {
+          "matched_passage": "verse-42",
+          "own_pixels": 68898,
+          "own_left_out": 0,
+          "other_included": {
+            "commentary-42": 1644
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            256,
+            220,
+            1261,
+            479
+          ],
+          "region_id": 3,
+          "type": "verse",
+          "box": [
+            256.19,
+            220.272,
+            1260.4,
+            478.668
+          ]
+        },
+        {
+          "matched_passage": "commentary-42",
+          "own_pixels": 105663,
+          "own_left_out": 27,
+          "other_included": {
+            "verse-42": 881,
+            "verse-43": 240
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            154,
+            461,
+            1286,
+            863
+          ],
+          "region_id": 4,
+          "type": "commentary",
+          "box": [
+            154.81,
+            461.724,
+            1285.06,
+            862.026
+          ]
+        },
+        {
+          "matched_passage": "verse-43",
+          "own_pixels": 67016,
+          "own_left_out": 20,
+          "other_included": {
+            "commentary-42": 40,
+            "commentary-43": 7
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            256,
+            857,
+            1283,
+            1098
+          ],
+          "region_id": 5,
+          "type": "verse",
+          "box": [
+            256.19,
+            857.79,
+            1282.32,
+            1097.124
+          ]
+        },
+        {
+          "matched_passage": "commentary-43",
+          "own_pixels": 96713,
+          "own_left_out": 0,
+          "other_included": {
+            "verse-43": 337,
+            "verse-44": 66
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            153,
+            1090,
+            1281,
+            1420
+          ],
+          "region_id": 6,
+          "type": "commentary",
+          "box": [
+            153.44,
+            1090.77,
+            1280.95,
+            1419.06
+          ]
+        },
+        {
+          "matched_passage": "verse-44",
+          "own_pixels": 55505,
+          "own_left_out": 40,
+          "other_included": {
+            "commentary-43": 25,
+            "commentary-44": 177
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            301,
+            1416,
+            1140,
+            1655
+          ],
+          "region_id": 7,
+          "type": "verse",
+          "box": [
+            301.4,
+            1416.942,
+            1139.84,
+            1654.158
+          ]
+        },
+        {
+          "matched_passage": "commentary-44",
+          "own_pixels": 52247,
+          "own_left_out": 7,
+          "other_included": {
+            "verse-44": 513
+          },
+          "separator_included": 0,
+          "pixel_box": [
+            150,
+            1645,
+            1273,
+            1828
+          ],
+          "region_id": 8,
+          "type": "commentary",
+          "box": [
+            150.7,
+            1645.686,
+            1272.73,
+            1827.834
+          ]
+        },
+        {
+          "matched_passage": "footnote-1",
+          "own_pixels": 2532,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 130,
+          "pixel_box": [
+            194,
+            1887,
+            368,
+            1938
+          ],
+          "region_id": 9,
+          "type": "footnote",
+          "box": [
+            194.54,
+            1887.138,
+            367.16,
+            1937.97
+          ]
+        },
+        {
+          "matched_passage": "footnote-2",
+          "own_pixels": 1148,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 0,
+          "pixel_box": [
+            371,
+            1885,
+            466,
+            1936
+          ],
+          "region_id": 10,
+          "type": "footnote",
+          "box": [
+            371.27,
+            1885.02,
+            465.8,
+            1935.852
+          ]
+        },
+        {
+          "matched_passage": "footnote-3",
+          "own_pixels": 3105,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 14,
+          "pixel_box": [
+            486,
+            1878,
+            706,
+            1932
+          ],
+          "region_id": 11,
+          "type": "footnote",
+          "box": [
+            486.35,
+            1878.666,
+            705.55,
+            1931.616
+          ]
+        },
+        {
+          "matched_passage": "footnote-4",
+          "own_pixels": 1805,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 0,
+          "pixel_box": [
+            727,
+            1876,
+            876,
+            1926
+          ],
+          "region_id": 12,
+          "type": "footnote",
+          "box": [
+            727.47,
+            1876.548,
+            875.43,
+            1925.262
+          ]
+        },
+        {
+          "matched_passage": "footnote-5",
+          "own_pixels": 2565,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 347,
+          "pixel_box": [
+            894,
+            1868,
+            1072,
+            1924
+          ],
+          "region_id": 13,
+          "type": "footnote",
+          "box": [
+            894.61,
+            1868.076,
+            1071.34,
+            1923.144
+          ]
+        },
+        {
+          "matched_passage": "footnote-6",
+          "own_pixels": 1716,
+          "own_left_out": 0,
+          "other_included": {},
+          "separator_included": 0,
+          "pixel_box": [
+            1079,
+            1874,
+            1216,
+            1924
+          ],
+          "region_id": 14,
+          "type": "footnote",
+          "box": [
+            1079.56,
+            1874.43,
+            1215.19,
+            1923.144
+          ]
+        }
+      ]
+    }
+  ],
+  "method_files_sha256": {
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "analyze_page.py": "87a923ff67f3d83edff8c00edadb1f51a8afdd8fb1f0b8886e91f625cd641b3f",
+    "evaluate.py": "efdbf565fa0674ea006e4241cfa11344e5a8b9d30bf15f18d22d4bc21e67f43b",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "reference.py": "a0bd6165b3e49ea74531a845638229935a62e060321312a6908d831fa36ddb69",
+    "survey.py": "9d3c6c2661a033ef41a5b792e11dd12d9a0446f1d752caa440d3eb44e31972a6",
+    "config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

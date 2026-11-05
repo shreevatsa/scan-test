@@ -1,0 +1,33 @@
+{
+  "input_id": "hertel-panchatantra-page-155",
+  "image": "hertel-panchatantra-page-155.png",
+  "image_sha256": "a3b372dabd79c5c415f45ed5d78d00d1ccbe5d8d4ccafed5a7150d5cac3658ba",
+  "width": 2088,
+  "height": 3121,
+  "book_id": "hertel-panchatantra",
+  "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+  "source_pdf_sha256": "8bf317f404241b65783e06925afb32530f663873f67d7841e9f9c6b40570d3b8",
+  "pdf_page": 155,
+  "pdf_page_index": 154,
+  "pdf_page_count": 360,
+  "pdf_page_size_points": [
+    1566.0,
+    2340.75
+  ],
+  "selection": "Continuation test run: four consecutive pages starting at a page with a passage reference; chosen by rule on 2026-11-04 before any model run on the new pages.",
+  "render": {
+    "library": "PyMuPDF",
+    "version": "1.26.6",
+    "dpi": 300,
+    "zoom": 1.3333333333333333,
+    "effective_dpi": 96.0,
+    "native_image_size": [
+      2088,
+      3121
+    ],
+    "colorspace": "RGB",
+    "alpha": false,
+    "script": "inputs/render_pages.py",
+    "page_list": "inputs/pages-runs.json"
+  }
+}

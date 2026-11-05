@@ -1,0 +1,402 @@
+{
+ "created_at_utc": "2026-11-05T00:52:28.187827+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/hertel-panchatantra-page-152.png",
+  "sha256": "e50c430933d334e870c1ba491c7502bee14ecc6e9f13acf45d6bd987460f0318"
+ },
+ "reference": {
+  "path": "../../references/hertel-panchatantra-page-152",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "labels_png_sha256": "3b77d257db5c7d3e9d9d171cd71b98e93802c949666afdb73cf001027557e386",
+  "spec_sha256": "bccc182f53740692dd57f8e849112dfe91cd157358c7910e14d6c21310a09515"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra, explicit units with continuations (040), boxes",
+   "path": "../../outputs/hertel-panchatantra-page-152/040-gpt-6.1-terra-none-explicit-units-continuations/run-002/regions.json",
+   "sha256": "66580c88bef729eb0f959485c9abad369859699d86c62bf770347cd2bf97fbfc",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "prose-1": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-345": {
+     "matched_region_id": 5,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "lead-in-1": {
+     "matched_region_id": 6,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-346": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "prose-2": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-347": {
+     "matched_region_id": 9,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "prose-3": {
+     "matched_region_id": 10,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-348": {
+     "matched_region_id": 11,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "prose-1",
+     "lower": "verse-345",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-345",
+     "lower": "lead-in-1",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "lead-in-1",
+     "lower": "verse-346",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-346",
+     "lower": "prose-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "prose-2",
+     "lower": "verse-347",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-347",
+     "lower": "prose-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "prose-3",
+     "lower": "verse-348",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra, explicit units with continuations (040) + band-chained lines (041)",
+   "path": "../../outputs/hertel-panchatantra-page-152/041-gpt-6.1-terra-none-explicit-units-continuations-band-chained-lines/run-002/regions.json",
+   "sha256": "abc3ce1e6d4a3a81a95bc75e53ed780cbc62e064f4e5cfe889a7359e0e4f1aef",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "prose-1": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-345": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "lead-in-1": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-346": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "prose-2": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-347": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "prose-3": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-348": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "prose-1",
+     "lower": "verse-345",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-345",
+     "lower": "lead-in-1",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "lead-in-1",
+     "lower": "verse-346",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-346",
+     "lower": "prose-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "prose-2",
+     "lower": "verse-347",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-347",
+     "lower": "prose-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "prose-3",
+     "lower": "verse-348",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 8115,
+    "beyond_reading_order_splits": 8115,
+    "passages": {
+     "running-header": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 5653,
+      "split_owner_values": [
+       2
+      ],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 5653
+     },
+     "page-number": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "prose-1": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "verse-345": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "lead-in-1": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "verse-346": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "prose-2": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "verse-347": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "prose-3": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "verse-348": {
+      "main_owner_value": 11,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "margin-line-numbers": {
+      "main_owner_value": 0,
+      "pixels_owned_elsewhere_or_unassigned": 2462,
+      "split_owner_values": [
+       12,
+       13,
+       14,
+       15,
+       16,
+       17
+      ],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 2462
+     }
+    },
+    "ownership_png_sha256": "c42a10ec78092390ccfc7dd1fbd0c48aa3054bca5efb40de9928769814a8d956"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

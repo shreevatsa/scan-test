@@ -11,9 +11,9 @@ The foreground mask uses grayscale <175, filters components smaller than five pi
 ## Run
 
 ```sh
-uv run python methods/027-gemini-3.8-flash-low-pixel-refinement/test_refinement.py
-uv run python methods/027-gemini-3.8-flash-low-pixel-refinement/run.py inputs/kale-1913-page-097.png --check
-uv run python methods/027-gemini-3.8-flash-low-pixel-refinement/run.py inputs/kale-1913-page-097.png
+uv run --offline python methods/027-gemini-3.8-flash-low-pixel-refinement/test_refinement.py
+uv run --offline python methods/027-gemini-3.8-flash-low-pixel-refinement/run.py inputs/kale-1913-page-097.png --check
+uv run --offline python methods/027-gemini-3.8-flash-low-pixel-refinement/run.py inputs/kale-1913-page-097.png
 ```
 
 Run the source method on the same input first. An explicit saved source result can be selected with `--base-regions`. Another refinement run requires a fresh `--output-dir`; existing output is protected against overwriting.
@@ -73,7 +73,7 @@ The enlarged panels show original pixels at 2× scale, crop edges in blue and cl
 The identical audit script is saved with all four new methods. For this page, visual inspection identifies connected-component IDs 443 and 444 as the two slanted-separator fragments:
 
 ```sh
-uv run python methods/027-gemini-3.8-flash-low-pixel-refinement/audit_boundaries.py inputs/kale-1913-page-097.png outputs/kale-1913-page-097/027-gemini-3.8-flash-low-pixel-refinement/regions.json --separator-components 443 444
+uv run --offline python methods/027-gemini-3.8-flash-low-pixel-refinement/audit_boundaries.py inputs/kale-1913-page-097.png outputs/kale-1913-page-097/027-gemini-3.8-flash-low-pixel-refinement/regions.json --separator-components 443 444
 ```
 
 The resulting `boundary-review/audit.json` preserves all raw cuts, separator annotations, component boxes, exact pixel counts, crop windows and provenance hashes. `boundary-review/details.png` shows enlarged edges. Existing review output is protected against overwriting.

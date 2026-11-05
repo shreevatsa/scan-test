@@ -1,0 +1,244 @@
+{
+  "input_id": "telang-dli-page-108",
+  "input_sha256": "52fa687d0eb0fd992aea64cfbe6b875ccb8d6ecffe4f160149e0f46092889517",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T18:14:00.904060+00:00",
+  "spec_sha256": "bf686ac5865e1e3d9c01d4039e24e023ceb7ad0ac127734fb389d390bd046615",
+  "labels_png_sha256": "fc0a75c959e2074b84dee658fc89b525ff43e3b6debdc587172126fda755b5c4",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 139.0,
+    "weak": 197.0,
+    "speck_area": 11
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 1530,
+      "components": 4,
+      "box": [
+        682,
+        278,
+        843,
+        328
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "verse-79-end",
+      "type": "verse",
+      "keep": true,
+      "pixels": 22639,
+      "components": 46,
+      "box": [
+        267,
+        392,
+        1116,
+        536
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "verse-80",
+      "type": "verse",
+      "keep": true,
+      "pixels": 50399,
+      "components": 81,
+      "box": [
+        265,
+        539,
+        1252,
+        817
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "verse-81",
+      "type": "verse",
+      "keep": true,
+      "pixels": 52440,
+      "components": 74,
+      "box": [
+        257,
+        829,
+        1174,
+        1125
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "verse-82-start",
+      "type": "verse",
+      "keep": true,
+      "pixels": 29152,
+      "components": 31,
+      "box": [
+        248,
+        1109,
+        1161,
+        1274
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "apparatus-79",
+      "type": "apparatus",
+      "keep": true,
+      "pixels": 14794,
+      "components": 43,
+      "box": [
+        193,
+        1317,
+        1320,
+        1445
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "apparatus-80",
+      "type": "apparatus",
+      "keep": true,
+      "pixels": 105131,
+      "components": 279,
+      "box": [
+        178,
+        1451,
+        1319,
+        1898
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "apparatus-81",
+      "type": "apparatus",
+      "keep": true,
+      "pixels": 43802,
+      "components": 166,
+      "box": [
+        176,
+        1902,
+        1312,
+        2127
+      ]
+    },
+    {
+      "value": 9,
+      "passage": "apparatus-82",
+      "type": "apparatus",
+      "keep": true,
+      "pixels": 11626,
+      "components": 66,
+      "box": [
+        175,
+        2134,
+        1307,
+        2232
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 9,
+      "box": [
+        160,
+        341,
+        164,
+        345
+      ],
+      "area": 12,
+      "role": "text"
+    },
+    {
+      "component_id": 10,
+      "box": [
+        1020,
+        385,
+        1025,
+        388
+      ],
+      "area": 11,
+      "role": "text"
+    },
+    {
+      "component_id": 75,
+      "box": [
+        162,
+        573,
+        166,
+        578
+      ],
+      "area": 18,
+      "role": "text"
+    },
+    {
+      "component_id": 115,
+      "box": [
+        160,
+        733,
+        163,
+        742
+      ],
+      "area": 21,
+      "role": "text"
+    },
+    {
+      "component_id": 142,
+      "box": [
+        203,
+        824,
+        206,
+        829
+      ],
+      "area": 11,
+      "role": "text"
+    },
+    {
+      "component_id": 780,
+      "box": [
+        147,
+        2153,
+        151,
+        2158
+      ],
+      "area": 13,
+      "role": "text"
+    },
+    {
+      "component_id": 810,
+      "box": [
+        865,
+        2230,
+        870,
+        2236
+      ],
+      "area": 19,
+      "role": "text"
+    },
+    {
+      "component_id": 812,
+      "box": [
+        951,
+        2238,
+        955,
+        2243
+      ],
+      "area": 14,
+      "role": "text"
+    }
+  ],
+  "separator_pixels": 5475,
+  "method_files_sha256": {
+    "reference.py": "1b8bccaaf51bf9ab2b8bba5ad76abbe32e410e521bae09278ccdca9f9e9c4f51",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

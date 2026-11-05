@@ -1,0 +1,172 @@
+{
+  "input_id": "vavilla-page-034",
+  "input_sha256": "d59d65ef83a10539b77e9a458160eb8b83cf7c3131f87018126a85151fe14767",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T18:14:26.445197+00:00",
+  "spec_sha256": "38630da0be0f6050b291720c01da2780be1d7973c983a2128f3f728c374c63a2",
+  "labels_png_sha256": "dea626c0666d89b88d5b7ff510b0921972f9be66e374f251baf50b578a2844ca",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 136.0,
+    "weak": 195.5,
+    "speck_area": 10
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 901,
+      "components": 2,
+      "box": [
+        185,
+        177,
+        242,
+        219
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 4681,
+      "components": 3,
+      "box": [
+        650,
+        161,
+        834,
+        223
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "commentary-23-end",
+      "type": "commentary",
+      "keep": true,
+      "pixels": 26490,
+      "components": 73,
+      "box": [
+        182,
+        277,
+        1311,
+        427
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "verse-24",
+      "type": "verse",
+      "keep": true,
+      "pixels": 43161,
+      "components": 80,
+      "box": [
+        247,
+        464,
+        1305,
+        773
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "commentary-24",
+      "type": "commentary",
+      "keep": true,
+      "pixels": 172886,
+      "components": 541,
+      "box": [
+        172,
+        809,
+        1308,
+        1709
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "metre-24",
+      "type": "other",
+      "keep": true,
+      "pixels": 9695,
+      "components": 19,
+      "box": [
+        307,
+        1734,
+        934,
+        1792
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "verse-25",
+      "type": "verse",
+      "keep": true,
+      "pixels": 30726,
+      "components": 42,
+      "box": [
+        238,
+        1828,
+        1302,
+        1984
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 80,
+      "box": [
+        1305,
+        451,
+        1326,
+        471
+      ],
+      "area": 158,
+      "role": "text"
+    },
+    {
+      "component_id": 712,
+      "box": [
+        1324,
+        1694,
+        1327,
+        1698
+      ],
+      "area": 10,
+      "role": "text"
+    },
+    {
+      "component_id": 714,
+      "box": [
+        1329,
+        1703,
+        1333,
+        1711
+      ],
+      "area": 17,
+      "role": "text"
+    },
+    {
+      "component_id": 715,
+      "box": [
+        1304,
+        1721,
+        1306,
+        1727
+      ],
+      "area": 11,
+      "role": "text"
+    }
+  ],
+  "separator_pixels": 0,
+  "method_files_sha256": {
+    "reference.py": "1b8bccaaf51bf9ab2b8bba5ad76abbe32e410e521bae09278ccdca9f9e9c4f51",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

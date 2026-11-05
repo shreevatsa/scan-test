@@ -1,0 +1,2814 @@
+{
+ "created_at_utc": "2026-11-04T20:37:54.568385+00:00",
+ "api_calls": 0,
+ "seeds": 20,
+ "random_generator_seed": 20261104,
+ "pages": {
+  "kale-1913-page-017": {
+   "input_sha256": "cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d",
+   "reference_status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before any method 033 or 034 output existed for this page; not yet human-reviewed",
+   "reference_labels_sha256": "25d7392cf5efaa822ed2f1bb60132cfc9410b9bab7a2031dfaf68b075a60f40e"
+  },
+  "kale-1913-page-097": {
+   "input_sha256": "8ea39bb8699404c96935d35c00b966d4f55ba74598d2df8c32a5d29d39467820",
+   "reference_status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before any method 033 or 034 output existed for this page; not yet human-reviewed",
+   "reference_labels_sha256": "55dae868367103728f354895fd5c03d3be795a03cae8d8d79308cc82635c0113"
+  },
+  "kale-1913-page-113": {
+   "input_sha256": "8d382a072ce243c7c70943cb5deafa2fe94d6b6628089c54c1a482f40f32b246",
+   "reference_status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation; not yet human-reviewed",
+   "reference_labels_sha256": "19e6e027bd61153ef201dff5090c570bacbda7f62b12e30ad03ffc2360dcdc53"
+  },
+  "cole-1903-page-003": {
+   "input_sha256": "d4ea9bd561c16f7feda5eafd23eeb0620771202182cf0c5bd7e966e2271a99a2",
+   "reference_status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+   "reference_labels_sha256": "823e6cbf7d0b9937a1e40d0d357c77c77e6188122abf2ad06aa6f3e70151892f"
+  },
+  "dutt-mahabharata-14f-chapter-225-page-002": {
+   "input_sha256": "1b9b6986581f46a160fbc7951bf8051b44c03334b75ff521afe2289d2f7ddeb4",
+   "reference_status": "version 2: the same passage assignment as version 1, which the user reviewed on 2026-11-04 and found correct. Only the review image changed: labels of right-column passages are drawn to the right of the page.",
+   "reference_labels_sha256": "75f0a6caf3da28e8085fdea50a618b5373f38dbe10f66acf3c2e25af16d63154"
+  },
+  "gopinath-1896-page-123": {
+   "input_sha256": "0361671dc5c57360331f210f9f4cbe771cb1cd77b6c5ab870ee1628d8264a47b",
+   "reference_status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+   "reference_labels_sha256": "2d21c6feecdae60c0f842b794bb5b233caf971009e2ed0664ebff48c07b8d742"
+  },
+  "gopinath-1914-page-258": {
+   "input_sha256": "7d1fb165f28d2a846898d10b8ad007c12acef6c89f0f3360a7afa7505256b2cc",
+   "reference_status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+   "reference_labels_sha256": "bcc99ded754a578a0ec21b31b12e1acfec7ec6a5f3077b880940dd9b4ed813b2"
+  },
+  "telang-dli-page-108": {
+   "input_sha256": "52fa687d0eb0fd992aea64cfbe6b875ccb8d6ecffe4f160149e0f46092889517",
+   "reference_status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+   "reference_labels_sha256": "fc0a75c959e2074b84dee658fc89b525ff43e3b6debdc587172126fda755b5c4"
+  },
+  "vavilla-page-034": {
+   "input_sha256": "d59d65ef83a10539b77e9a458160eb8b83cf7c3131f87018126a85151fe14767",
+   "reference_status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+   "reference_labels_sha256": "dea626c0666d89b88d5b7ff510b0921972f9be66e374f251baf50b578a2844ca"
+  }
+ },
+ "recipe": {
+  "directory": "methods/035-gpt-6.1-terra-none-column-margin-ownership",
+  "ownership_sha256": "85a2d1ef66660e2d1c6b4e6200c09f3a0bac7eb19756018b423b4ad9eadc8618",
+  "config_sha256": "57458675ba5a7a61294f0943c07175a610a190742087a9a6cc81f5c3fbd51dcd"
+ },
+ "note": "Sources are scored with this method's settings; this is an analysis, not new method outputs. Merged regions reflect a source's grouping, not ownership geometry.",
+ "source_sweep": [
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "001-geometry",
+   "regions": 6,
+   "regions_sha256": "ec5538916a051b6311f516a313033879102453a3df973e2876ddb8093c529e78",
+   "raw_boxes": {
+    "other_passages_ink_included": 1207567,
+    "own_ink_left_out": 15430,
+    "separator_pixels_included": 33397,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     4,
+     6
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 1206679,
+    "own_ink_left_out": 15487,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     4,
+     6
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 15487,
+    "lines": [
+     19
+    ],
+    "merged_region_indices": [
+     3,
+     5
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "002-pp-doclayout-s",
+   "regions": 11,
+   "regions_sha256": "8c87b4f2068ba9c528940f7e359c6e337dcb0c81b9e442c0d1853b576eb7939b",
+   "raw_boxes": {
+    "other_passages_ink_included": 1840585,
+    "own_ink_left_out": 114,
+    "separator_pixels_included": 26928,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     10
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 1923115,
+    "own_ink_left_out": 31864,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     10
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 31864,
+    "lines": [
+     27,
+     28
+    ],
+    "merged_region_indices": [
+     2,
+     9
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "003-pp-doclayoutv3",
+   "regions": 15,
+   "regions_sha256": "5df7884775063af5b3e7e734aa86079ef630e1cc1358a4171003d5cc8d4dd7a6",
+   "raw_boxes": {
+    "other_passages_ink_included": 66413,
+    "own_ink_left_out": 82497,
+    "separator_pixels_included": 1944,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     13
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 62565,
+    "own_ink_left_out": 81843,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     13
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 82472,
+    "lines": [
+     2,
+     3,
+     4,
+     16,
+     17,
+     18
+    ],
+    "merged_region_indices": [
+     12
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": [
+    3,
+    4
+   ]
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "005-gpt-6-astra-direct",
+   "regions": 14,
+   "regions_sha256": "190807102079599c952e2f3df6fe20fa3b99d74020c59774acf79b1f122a0e41",
+   "raw_boxes": {
+    "other_passages_ink_included": 21,
+    "own_ink_left_out": 22,
+    "separator_pixels_included": 174,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "008-claude-sonnet-5.5-direct",
+   "regions": 9,
+   "regions_sha256": "3dddf407bae2114a6841cf7596ecc65052378c567a51ddf4c0803d4258269c2d",
+   "raw_boxes": {
+    "other_passages_ink_included": 884899,
+    "own_ink_left_out": 23567,
+    "separator_pixels_included": 33397,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     8
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 885335,
+    "own_ink_left_out": 15563,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     8
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 15563,
+    "lines": [
+     20
+    ],
+    "merged_region_indices": [
+     7
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "009-gemini-4-argon-high",
+   "regions": 9,
+   "regions_sha256": "4514506fd21fb76d8f7816d96a966fe8d6f1554b219b597e6129171f4f436205",
+   "raw_boxes": {
+    "other_passages_ink_included": 62689,
+    "own_ink_left_out": 61,
+    "separator_pixels_included": 6150,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     9
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 62565,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     9
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [
+     8
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "010-claude-fable-5.1-high",
+   "regions": 9,
+   "regions_sha256": "c445310ddd6888cfb131b313c43748c75ab16e207aa672993085d5df16adf45b",
+   "raw_boxes": {
+    "other_passages_ink_included": 893314,
+    "own_ink_left_out": 57188,
+    "separator_pixels_included": 33397,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     8
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 898580,
+    "own_ink_left_out": 28808,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     8
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 28808,
+    "lines": [
+     16,
+     20
+    ],
+    "merged_region_indices": [
+     7
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "011-claude-fable-5.1-max",
+   "regions": 9,
+   "regions_sha256": "900545b6f4367610418e5a22abdac16ef3d9c54a0106328eef0ec9574604e12d",
+   "raw_boxes": {
+    "other_passages_ink_included": 77919,
+    "own_ink_left_out": 40038,
+    "separator_pixels_included": 23385,
+    "kept_passages_without_region": [
+     "footnote-1"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     9
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 15487,
+    "own_ink_left_out": 41989,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [
+     "footnote-1",
+     "footnote-2",
+     "footnote-3",
+     "footnote-4",
+     "footnote-5",
+     "footnote-6"
+    ],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 29476,
+    "lines": [
+     19,
+     28
+    ],
+    "merged_region_indices": [],
+    "passages_without_owner": [
+     "footnote-1",
+     "footnote-2",
+     "footnote-3",
+     "footnote-4",
+     "footnote-5",
+     "footnote-6"
+    ]
+   },
+   "uncovered_lines": [
+    29
+   ]
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "012-claude-opus-5.5-max",
+   "regions": 9,
+   "regions_sha256": "527765814eefbed8921bd59924685c4383c1c415bd04f639ee734f30c27e2f5b",
+   "raw_boxes": {
+    "other_passages_ink_included": 44650,
+    "own_ink_left_out": 12902,
+    "separator_pixels_included": 27750,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     9
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 62565,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     9
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [
+     8
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "013-gemini-4-argon-high-footnotes",
+   "regions": 14,
+   "regions_sha256": "e2ffe5c268d2ce248fa76c53b747db7dde4c737e136fcf052e0e8491de579c66",
+   "raw_boxes": {
+    "other_passages_ink_included": 250,
+    "own_ink_left_out": 2,
+    "separator_pixels_included": 1139,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "014-gemini-4-argon-high-native",
+   "regions": 14,
+   "regions_sha256": "008f62d43b1e3d9f082f6ff85ca74b45bf1dbf3dde034141537afb6f525dfb70",
+   "raw_boxes": {
+    "other_passages_ink_included": 17,
+    "own_ink_left_out": 59,
+    "separator_pixels_included": 499,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "015-claude-fable-5.1-max-pixels",
+   "regions": 14,
+   "regions_sha256": "076914776ed11ddcd9025215ced301a9eb90899a51c30f0c0906daf2b92efaef",
+   "raw_boxes": {
+    "other_passages_ink_included": 1316,
+    "own_ink_left_out": 1087,
+    "separator_pixels_included": 4014,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 599,
+    "own_ink_left_out": 599,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 599,
+    "lines": [
+     29
+    ],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "016-claude-opus-5.5-max-pixels",
+   "regions": 14,
+   "regions_sha256": "f478b0e31f06cf53eefa6236857f348c9074be7f9a647d43c8cbe972b5127428",
+   "raw_boxes": {
+    "other_passages_ink_included": 582,
+    "own_ink_left_out": 13788,
+    "separator_pixels_included": 4471,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 401,
+    "own_ink_left_out": 401,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 401,
+    "lines": [
+     29
+    ],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "017-gemini-4-argon-low-native",
+   "regions": 14,
+   "regions_sha256": "7fe40a07bcab6f880fa224544973b800a442ff4de2f68f783480d322eee6086f",
+   "raw_boxes": {
+    "other_passages_ink_included": 117,
+    "own_ink_left_out": 25,
+    "separator_pixels_included": 339,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "018-gemini-3.8-flash-low-native",
+   "regions": 14,
+   "regions_sha256": "efbcda3b4e7234ea1ecedba166a00f307acdbcf3776eb0213887096ee295f1ea",
+   "raw_boxes": {
+    "other_passages_ink_included": 211,
+    "own_ink_left_out": 57,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "020-gpt-6-astra-low-footnotes",
+   "regions": 14,
+   "regions_sha256": "2894da47204f0215bf1f87b80174b71189a987bb7aefceb3791a4e995dad0bc9",
+   "raw_boxes": {
+    "other_passages_ink_included": 17,
+    "own_ink_left_out": 56,
+    "separator_pixels_included": 11,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "021-gpt-6.1-terra-low-footnotes",
+   "regions": 14,
+   "regions_sha256": "afd0b2ddcbc2e96fd6aeb5cf0fb3de6827ef93a07889aa7e788c883c7a75a0b1",
+   "raw_boxes": {
+    "other_passages_ink_included": 32,
+    "own_ink_left_out": 124,
+    "separator_pixels_included": 11,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "022-gpt-6-luna-low-footnotes",
+   "regions": 15,
+   "regions_sha256": "879f8c8db490a6de79e4342a83fbf68be447682e2b4709adcdc21ce0233d6f91",
+   "raw_boxes": {
+    "other_passages_ink_included": 5457,
+    "own_ink_left_out": 3264,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     15
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 5074,
+    "own_ink_left_out": 2640,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     15
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 2640,
+    "lines": [
+     29
+    ],
+    "merged_region_indices": [
+     14
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "023-gpt-6-luna-high-footnotes",
+   "regions": 14,
+   "regions_sha256": "d236634582a3a06f5a41f9bc1164987a0a573c0164af92d018f000726fe1ada3",
+   "raw_boxes": {
+    "other_passages_ink_included": 1009740,
+    "own_ink_left_out": 43603,
+    "separator_pixels_included": 33397,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     5,
+     8
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 1013101,
+    "own_ink_left_out": 36162,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     5,
+     8
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 36162,
+    "lines": [
+     15,
+     16,
+     20
+    ],
+    "merged_region_indices": [
+     4,
+     7
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "024-gemini-3.5-flash-lite-low",
+   "regions": 9,
+   "regions_sha256": "9bee6ece0447eeb3fa87b62add9520f6a24cbdfc985a0061f8172fb70914c416",
+   "raw_boxes": {
+    "other_passages_ink_included": 77648,
+    "own_ink_left_out": 16665,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     9
+    ]
+   },
+   "polygons": {
+    "other_passages_ink_included": 78006,
+    "own_ink_left_out": 15441,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     9
+    ]
+   },
+   "ownership_errors": {
+    "pixels": 15441,
+    "lines": [
+     5
+    ],
+    "merged_region_indices": [
+     8
+    ],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 14,
+   "regions_sha256": "a693acfcc9666af113b79429b5595dd5096fbc98fa7dcbcfbb0e27094ed9424d",
+   "raw_boxes": {
+    "other_passages_ink_included": 87,
+    "own_ink_left_out": 13,
+    "separator_pixels_included": 176,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "028-gemini-4-argon-low-padded-prompt",
+   "regions": 14,
+   "regions_sha256": "3fd1e71154b447e0c4918a6abe178422c8a1b39a7b5a10b580c3de3cfbdd0549",
+   "raw_boxes": {
+    "other_passages_ink_included": 25,
+    "own_ink_left_out": 69,
+    "separator_pixels_included": 322,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "029-gemini-3.8-flash-low-padded-prompt",
+   "regions": 14,
+   "regions_sha256": "29e0b46b13a3a4386701f7023e56cbc33821be852d649aff984bd4c635c3f121",
+   "raw_boxes": {
+    "other_passages_ink_included": 353,
+    "own_ink_left_out": 238,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "030-gemini-4-argon-low-slanted-refinement",
+   "regions": 14,
+   "regions_sha256": "ec038c55bc8b57ce96a29babe375dcbfa7dc313db7f56ddf4df94cbdecfe208d",
+   "raw_boxes": {
+    "other_passages_ink_included": 2046,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-017",
+   "source_method": "031-gemini-3.8-flash-low-slanted-refinement",
+   "regions": 14,
+   "regions_sha256": "6005c3fda0a4a55ff17b950a1f36ae68b95c55dc54120ecd1489d123db25005b",
+   "raw_boxes": {
+    "other_passages_ink_included": 1824,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "017-gemini-4-argon-low-native",
+   "regions": 13,
+   "regions_sha256": "5225ecd2e1960a7864b8bd326aadd15711f92c449c2f55f0da4436c237106264",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 208,
+    "separator_pixels_included": 44,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "018-gemini-3.8-flash-low-native",
+   "regions": 13,
+   "regions_sha256": "7e2612898fc381d70c721aae71ccc144500d2490487fd67939e395dec265b2cb",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 407,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "020-gpt-6-astra-low-footnotes",
+   "regions": 13,
+   "regions_sha256": "107def4eef0b97ac777a0b57f24935a1521c7228df406735c7f0c078029c7728",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 1,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 13,
+   "regions_sha256": "3b28126f8bea0fb4754a4e47dcbd2a4d077531f694418959e7a467b4457ec7db",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 44,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "026-gemini-4-argon-low-pixel-refinement",
+   "regions": 13,
+   "regions_sha256": "50bb94735c8aabb2efcac4565bb6a67671da6e036411b3716edb2a306579e86a",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 2601,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "027-gemini-3.8-flash-low-pixel-refinement",
+   "regions": 13,
+   "regions_sha256": "56f67bb6fcaa785e0258f45a2277f2d15727f9259eb2cf49b2be780cca74d950",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 2881,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "028-gemini-4-argon-low-padded-prompt",
+   "regions": 13,
+   "regions_sha256": "cf7b502269c1e29a9873d0962dd09aab2ddd88ee5eb422bc5f74d9f245ccf119",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 792,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "029-gemini-3.8-flash-low-padded-prompt",
+   "regions": 13,
+   "regions_sha256": "800124a59e60a53212561419b5bad334b584f8ea9745a9e288bafb55f1d43fb0",
+   "raw_boxes": {
+    "other_passages_ink_included": 5,
+    "own_ink_left_out": 65,
+    "separator_pixels_included": 4049,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "030-gemini-4-argon-low-slanted-refinement",
+   "regions": 13,
+   "regions_sha256": "79df193fba4954c23da2ad22b9d73e04a4bc7f34e7aadd6a663b974c2756b9b1",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-097",
+   "source_method": "031-gemini-3.8-flash-low-slanted-refinement",
+   "regions": 13,
+   "regions_sha256": "88b178ca44e00749c256929bf618756ec5d5913164904e01591332d896fcc17f",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-113",
+   "source_method": "017-gemini-4-argon-low-native",
+   "regions": 14,
+   "regions_sha256": "d5c54553963b53db0e3a64239f7c97f32e987ae53150568512a4722c46bd2c4d",
+   "raw_boxes": {
+    "other_passages_ink_included": 6249,
+    "own_ink_left_out": 101,
+    "separator_pixels_included": 2015,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-113",
+   "source_method": "018-gemini-3.8-flash-low-native",
+   "regions": 14,
+   "regions_sha256": "9d3e7eebd93cb51b38403e564a49bb41d7ed2af4b1b5c341f0f5a00683e779e1",
+   "raw_boxes": {
+    "other_passages_ink_included": 14533,
+    "own_ink_left_out": 86,
+    "separator_pixels_included": 355,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-113",
+   "source_method": "020-gpt-6-astra-low-footnotes",
+   "regions": 14,
+   "regions_sha256": "b7842677c470cdb318470f8ce80cf33896c52d1e23f93a4f029bc92bcbd5629f",
+   "raw_boxes": {
+    "other_passages_ink_included": 3930,
+    "own_ink_left_out": 94,
+    "separator_pixels_included": 491,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-113",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 14,
+   "regions_sha256": "468a09a9fbeca666b67cd672f0f94bd3bfb05172553f2e7e70682b35750dcd5a",
+   "raw_boxes": {
+    "other_passages_ink_included": 3053,
+    "own_ink_left_out": 210,
+    "separator_pixels_included": 378,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-113",
+   "source_method": "028-gemini-4-argon-low-padded-prompt",
+   "regions": 14,
+   "regions_sha256": "27df6461fdfe892eedfdeb8c11166c8f9a0cd6861d7e8e33c25fc0726c5fd2f2",
+   "raw_boxes": {
+    "other_passages_ink_included": 8353,
+    "own_ink_left_out": 25,
+    "separator_pixels_included": 2223,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-113",
+   "source_method": "029-gemini-3.8-flash-low-padded-prompt",
+   "regions": 14,
+   "regions_sha256": "bc5cf581e86101c45bb49aea20ec058a984321caf083fce1de37e8a15ce6f282",
+   "raw_boxes": {
+    "other_passages_ink_included": 4224,
+    "own_ink_left_out": 189,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-113",
+   "source_method": "030-gemini-4-argon-low-slanted-refinement",
+   "regions": 14,
+   "regions_sha256": "8ea6c0fd4135b62d59533c031fa24ecca206fd2669865a1e1b768317ab403ead",
+   "raw_boxes": {
+    "other_passages_ink_included": 18609,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "kale-1913-page-113",
+   "source_method": "031-gemini-3.8-flash-low-slanted-refinement",
+   "regions": 14,
+   "regions_sha256": "e473aa94d67c0a5009cdd730aacfe277b85871f7e3579537508d9a7f5353c5ed",
+   "raw_boxes": {
+    "other_passages_ink_included": 34727,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "cole-1903-page-003",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 15,
+   "regions_sha256": "a6ac99fa99363e1f2242cd464b3da03e95722aa8224a10264371915e503ec7bd",
+   "raw_boxes": {
+    "other_passages_ink_included": 123,
+    "own_ink_left_out": 89,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 208,
+    "separator_pixels_included": 314,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 2011,
+    "lines": [
+     0,
+     1
+    ],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "dutt-mahabharata-14f-chapter-225-page-002",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 32,
+   "regions_sha256": "b771ce43c1c07b5d9d523b7aef0140268b6f281c1bfea9fabfbe5489c969fab3",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 24,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "gopinath-1896-page-123",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 10,
+   "regions_sha256": "3da99e93ca467f3c4e9ad818dbbe2064658b99e4717392d8aa1475a516b32e47",
+   "raw_boxes": {
+    "other_passages_ink_included": 613,
+    "own_ink_left_out": 103,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 174,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "gopinath-1914-page-258",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 7,
+   "regions_sha256": "f46f794567376c92bf67769df884c1efb6ae6de0ece38cd58b897912d01f0074",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 137,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 8664,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": [
+    1,
+    2,
+    4,
+    10,
+    16,
+    24,
+    28,
+    29
+   ]
+  },
+  {
+   "page": "telang-dli-page-108",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 9,
+   "regions_sha256": "5b72a7afa4472d6c049f027f08973f8d8fad2e2540117de94c43cfb593afd030",
+   "raw_boxes": {
+    "other_passages_ink_included": 58,
+    "own_ink_left_out": 88,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": []
+  },
+  {
+   "page": "vavilla-page-034",
+   "source_method": "025-gpt-6.1-terra-none-footnotes",
+   "regions": 7,
+   "regions_sha256": "8afcbd1157e14c971c4e04104dd05be07a2e402fcb712295e8b5470aa4bcb583",
+   "raw_boxes": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "polygons": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "ownership_errors": {
+    "pixels": 0,
+    "lines": [],
+    "merged_region_indices": [],
+    "passages_without_owner": []
+   },
+   "uncovered_lines": [
+    4
+   ]
+  }
+ ],
+ "perturbation": {
+  "kale-1913-page-017": {
+   "source": "outputs/kale-1913-page-017/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 40.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 20,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 12,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 323,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 2,
+     "median_error_pixels": 321.0,
+     "max_error_pixels": 1884,
+     "max_lines_affected": 2,
+     "trials_with_merges": 6
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 9741.5,
+     "max_error_pixels": 30057,
+     "max_lines_affected": 3,
+     "trials_with_merges": 15
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 25945.5,
+     "max_error_pixels": 50835,
+     "max_lines_affected": 6,
+     "trials_with_merges": 20
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 55604.0,
+     "max_error_pixels": 55604,
+     "max_lines_affected": 6,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 1134.0,
+     "max_error_pixels": 1134,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 167.0,
+     "max_error_pixels": 167,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 546.0,
+     "max_error_pixels": 546,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 66002.0,
+     "max_error_pixels": 66002,
+     "max_lines_affected": 5,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 990.0,
+     "max_error_pixels": 990,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 465.0,
+     "max_error_pixels": 465,
+     "max_lines_affected": 1,
+     "trials_with_merges": 1
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 323.0,
+     "max_error_pixels": 323,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    }
+   }
+  },
+  "kale-1913-page-097": {
+   "source": "outputs/kale-1913-page-097/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 43.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 20,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 19,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 63,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 8,
+     "median_error_pixels": 69.0,
+     "max_error_pixels": 2503,
+     "max_lines_affected": 1,
+     "trials_with_merges": 7
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 4,
+     "median_error_pixels": 317.5,
+     "max_error_pixels": 34044,
+     "max_lines_affected": 3,
+     "trials_with_merges": 17
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 16818.5,
+     "max_error_pixels": 52206,
+     "max_lines_affected": 5,
+     "trials_with_merges": 19
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 42371.0,
+     "max_error_pixels": 42371,
+     "max_lines_affected": 3,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 393.0,
+     "max_error_pixels": 393,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 63.0,
+     "max_error_pixels": 63,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 327.0,
+     "max_error_pixels": 327,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 46942.0,
+     "max_error_pixels": 46942,
+     "max_lines_affected": 4,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 629.0,
+     "max_error_pixels": 629,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 305.0,
+     "max_error_pixels": 305,
+     "max_lines_affected": 1,
+     "trials_with_merges": 1
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 607.0,
+     "max_error_pixels": 607,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    }
+   }
+  },
+  "kale-1913-page-113": {
+   "source": "outputs/kale-1913-page-113/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 40.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 20,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 17,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 75,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 7,
+     "median_error_pixels": 116.5,
+     "max_error_pixels": 18179,
+     "max_lines_affected": 2,
+     "trials_with_merges": 10
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 4,
+     "median_error_pixels": 504.0,
+     "max_error_pixels": 16989,
+     "max_lines_affected": 2,
+     "trials_with_merges": 18
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 34956.5,
+     "max_error_pixels": 63909,
+     "max_lines_affected": 5,
+     "trials_with_merges": 17
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 77018.0,
+     "max_error_pixels": 77018,
+     "max_lines_affected": 5,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 1257.0,
+     "max_error_pixels": 1257,
+     "max_lines_affected": 1,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 255.0,
+     "max_error_pixels": 255,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 275.0,
+     "max_error_pixels": 275,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 74425.0,
+     "max_error_pixels": 74425,
+     "max_lines_affected": 5,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 1225.0,
+     "max_error_pixels": 1225,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 159.0,
+     "max_error_pixels": 159,
+     "max_lines_affected": 1,
+     "trials_with_merges": 1
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 800.0,
+     "max_error_pixels": 800,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    }
+   }
+  },
+  "cole-1903-page-003": {
+   "source": "outputs/cole-1903-page-003/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 21.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2011.0,
+     "max_error_pixels": 2059,
+     "max_lines_affected": 3,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2059.0,
+     "max_error_pixels": 6639,
+     "max_lines_affected": 4,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 4883.5,
+     "max_error_pixels": 11801,
+     "max_lines_affected": 5,
+     "trials_with_merges": 4
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 15802.5,
+     "max_error_pixels": 43082,
+     "max_lines_affected": 12,
+     "trials_with_merges": 3
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 33718.5,
+     "max_error_pixels": 71609,
+     "max_lines_affected": 17,
+     "trials_with_merges": 13
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 40944.0,
+     "max_error_pixels": 40944,
+     "max_lines_affected": 12,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2314.0,
+     "max_error_pixels": 2314,
+     "max_lines_affected": 6,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 13163.0,
+     "max_error_pixels": 13163,
+     "max_lines_affected": 6,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2011.0,
+     "max_error_pixels": 2011,
+     "max_lines_affected": 2,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2340.0,
+     "max_error_pixels": 2340,
+     "max_lines_affected": 5,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2059.0,
+     "max_error_pixels": 2059,
+     "max_lines_affected": 3,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 77242.0,
+     "max_error_pixels": 77242,
+     "max_lines_affected": 12,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2059.0,
+     "max_error_pixels": 2059,
+     "max_lines_affected": 3,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 9591.0,
+     "max_error_pixels": 9591,
+     "max_lines_affected": 4,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2011.0,
+     "max_error_pixels": 2011,
+     "max_lines_affected": 2,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2011.0,
+     "max_error_pixels": 2011,
+     "max_lines_affected": 2,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 880.0,
+     "max_error_pixels": 880,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    }
+   }
+  },
+  "dutt-mahabharata-14f-chapter-225-page-002": {
+   "source": "outputs/dutt-mahabharata-14f-chapter-225-page-002/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 31.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 20,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 20,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 14,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 16331,
+     "max_lines_affected": 3,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 16663.5,
+     "max_error_pixels": 34995,
+     "max_lines_affected": 7,
+     "trials_with_merges": 4
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 51896.0,
+     "max_error_pixels": 99099,
+     "max_lines_affected": 16,
+     "trials_with_merges": 18
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 129986.0,
+     "max_error_pixels": 129986,
+     "max_lines_affected": 22,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 144586.0,
+     "max_error_pixels": 144586,
+     "max_lines_affected": 21,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 21840.0,
+     "max_error_pixels": 21840,
+     "max_lines_affected": 4,
+     "trials_with_merges": 1
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 10309.0,
+     "max_error_pixels": 10309,
+     "max_lines_affected": 2,
+     "trials_with_merges": 0
+    }
+   }
+  },
+  "gopinath-1896-page-123": {
+   "source": "outputs/gopinath-1896-page-123/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 39.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 2882,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 3391,
+     "max_lines_affected": 1,
+     "trials_with_merges": 1
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 6955.0,
+     "max_error_pixels": 17760,
+     "max_lines_affected": 4,
+     "trials_with_merges": 1
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 24358.5,
+     "max_error_pixels": 48987,
+     "max_lines_affected": 6,
+     "trials_with_merges": 14
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 39661.0,
+     "max_error_pixels": 39661,
+     "max_lines_affected": 7,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2882.0,
+     "max_error_pixels": 2882,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 73751.0,
+     "max_error_pixels": 73751,
+     "max_lines_affected": 7,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 11055.0,
+     "max_error_pixels": 11055,
+     "max_lines_affected": 3,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 174.0,
+     "max_error_pixels": 174,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    }
+   }
+  },
+  "gopinath-1914-page-258": {
+   "source": "outputs/gopinath-1914-page-258/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 37.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 21234,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 19350.0,
+     "max_error_pixels": 41402,
+     "max_lines_affected": 3,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 32021.0,
+     "max_error_pixels": 32021,
+     "max_lines_affected": 3,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 30235.0,
+     "max_error_pixels": 30235,
+     "max_lines_affected": 2,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 8664.0,
+     "max_error_pixels": 8664,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    }
+   }
+  },
+  "telang-dli-page-108": {
+   "source": "outputs/telang-dli-page-108/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 34.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 20,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 14,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 228,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 9,
+     "median_error_pixels": 165.0,
+     "max_error_pixels": 8185,
+     "max_lines_affected": 3,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 2,
+     "median_error_pixels": 1129.5,
+     "max_error_pixels": 24231,
+     "max_lines_affected": 4,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 0,
+     "median_error_pixels": 38240.5,
+     "max_error_pixels": 86761,
+     "max_lines_affected": 9,
+     "trials_with_merges": 2
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 60657.0,
+     "max_error_pixels": 60657,
+     "max_lines_affected": 8,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 228.0,
+     "max_error_pixels": 228,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 330.0,
+     "max_error_pixels": 330,
+     "max_lines_affected": 2,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 82013.0,
+     "max_error_pixels": 82013,
+     "max_lines_affected": 10,
+     "trials_with_merges": 1
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 238.0,
+     "max_error_pixels": 238,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 2170.0,
+     "max_error_pixels": 2170,
+     "max_lines_affected": 2,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    }
+   }
+  },
+  "vavilla-page-034": {
+   "source": "outputs/vavilla-page-034/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "char_h": 33.0,
+   "conditions": {
+    "each edge moved independently, uniform within ±10 px": {
+     "trials": 20,
+     "trials_without_errors": 20,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±20 px": {
+     "trials": 20,
+     "trials_without_errors": 16,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 183,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±30 px": {
+     "trials": 20,
+     "trials_without_errors": 15,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 183,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±40 px": {
+     "trials": 20,
+     "trials_without_errors": 12,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 183,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "each edge moved independently, uniform within ±60 px": {
+     "trials": 20,
+     "trials_without_errors": 2,
+     "median_error_pixels": 11915.5,
+     "max_error_pixels": 30226,
+     "max_lines_affected": 3,
+     "trials_with_merges": 3
+    },
+    "all boxes shifted -40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 183.0,
+     "max_error_pixels": 183,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted -20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 183.0,
+     "max_error_pixels": 183,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +20 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px vertically": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 183.0,
+     "max_error_pixels": 183,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all boxes shifted +40 px horizontally": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.97 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 0,
+     "median_error_pixels": 183.0,
+     "max_error_pixels": 183,
+     "max_lines_affected": 1,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 0.99 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.01 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    },
+    "all coordinates scaled by 1.03 about the page center": {
+     "trials": 1,
+     "trials_without_errors": 1,
+     "median_error_pixels": 0.0,
+     "max_error_pixels": 0,
+     "max_lines_affected": 0,
+     "trials_with_merges": 0
+    }
+   }
+  }
+ },
+ "code_sha256": {
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+  "config.json": "bea61fb2b5e93af9b5e93d0b7cc514027170542ca68701533572313b252affb7",
+  "crossbook.py": "bf9f1741db393213636d67b54a66fe1636be449fa01038e0060fb8ce802df218",
+  "evaluate.py": "0670009e1bc23665794d5480d2f070a30132e36d744ad47d721f2bb35fe32f63",
+  "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+  "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "run.py": "11f4419527c7aa7f69ad05342dc8af05c05de3284f11abd3085278098e87bc96",
+  "stability.py": "c05cd89e49be5e2b73364a39dcd51d477754a352d0ccab8609977c4a790d8ea3",
+  "sweep.py": "4db8c8b9335965eea28305aa95dbc81193da0691327b2bda84f9750a44c9153e"
+ }
+}

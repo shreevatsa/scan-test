@@ -4,13 +4,12 @@
 
 `kale-1913-page-017.png` is the unannotated RGB rendering of PDF page 17 of 252 in the Kale (1913) scan, at 300 dpi. Its dimensions are 1407 × 2135 pixels.
 
-The source PDF is `Kale-vision-handoff/input/Kale-1913-pp21-272.pdf`, SHA-256 `ccabe9850493a8e5d6ecd61660407933f757481cb892985b007e6ff222d9f3b0`. The render uses PyMuPDF 1.26.6, an RGB colorspace and no alpha channel. `kale-1913-page-017.json` records the source and image checksums and rendering parameters.
+The source is `Kale-1913-pp21-272.pdf` in the project root, SHA-256 `ccabe9850493a8e5d6ecd61660407933f757481cb892985b007e6ff222d9f3b0`. The image was originally rendered from `Kale-vision-handoff/input/`, before the PDF moved to the project root; the checksum is unchanged. The render uses PyMuPDF 1.26.6, an RGB colorspace and no alpha channel. `kale-1913-page-017.json` records the source and image checksums and rendering parameters.
 
-To reproduce the image, run these commands from the project root:
+To reproduce the image with the existing environment, run from the project root. On 2026-11-03 this command reproduced the saved PNG byte for byte, SHA-256 `cfacda5b09ed6cd333dc50907c097c9cded8fb976f9549c925b419980c9be10d`.
 
 ```sh
-.venv/bin/python -m pip install PyMuPDF==1.26.6
-.venv/bin/python -c 'import fitz; doc = fitz.open("Kale-vision-handoff/input/Kale-1913-pp21-272.pdf"); doc[16].get_pixmap(matrix=fitz.Matrix(300/72, 300/72), colorspace=fitz.csRGB, alpha=False).save("inputs/kale-1913-page-017.png")'
+uv run --offline python -c 'import fitz; doc = fitz.open("Kale-1913-pp21-272.pdf"); doc[16].get_pixmap(matrix=fitz.Matrix(300/72, 300/72), colorspace=fitz.csRGB, alpha=False).save("inputs/kale-1913-page-017.png")'
 ```
 
 ## kale-1913-page-097
@@ -36,3 +35,10 @@ To reproduce it from the project root with the existing environment:
 ```sh
 uv run --offline python -c 'import fitz; doc = fitz.open("Kale-1913-pp21-272.pdf"); doc[112].get_pixmap(matrix=fitz.Matrix(300/72, 300/72), colorspace=fitz.csRGB, alpha=False).save("inputs/kale-1913-page-113.png")'
 ```
+
+## Page lists
+
+Besides the three Kale pages above, inputs are rendered from page lists by `render_pages.py`, which writes each PNG with a JSON provenance record and skips pages already rendered:
+- `pages.json`: the 43 cross-book test pages (default list): `uv run --offline python inputs/render_pages.py`.
+- `pages-fresh.json`: 54 held-out pages from ten books, chosen by rule per book: `uv run --offline python inputs/render_pages.py inputs/pages-fresh.json`.
+- `pages-runs.json`: 28 pages in seven runs of four consecutive pages, for the continuation test (methods 040 and 041); each page records its `run`: `uv run --offline python inputs/render_pages.py inputs/pages-runs.json`.

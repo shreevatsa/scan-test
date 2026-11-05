@@ -1,0 +1,612 @@
+{
+ "created_at_utc": "2026-11-04T22:34:47.119742+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/ryder-ten-princes-1927-page-030.png",
+  "sha256": "4448cf7b04d700a8b0d2d9aed4b9c627f632dde1994b8cef2347559bdc865af1"
+ },
+ "reference": {
+  "path": "../../references/ryder-ten-princes-1927-page-030",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "labels_png_sha256": "e0ef10790a3dccc47c05beddc82ab41e2267b8fd54fae05a724ed346b013c272",
+  "spec_sha256": "8185daad166305e82ce98039ebeb32207395784973f099f781bc33df5c9895a9"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra (025) run-002, boxes",
+   "path": "../../outputs/ryder-ten-princes-1927-page-030/025-gpt-6.1-terra-none-footnotes/run-002/regions.json",
+   "sha256": "e2980aff357ee5bf1b5039aa8b3b72cf7682906c1814ee6816461d0bd21cab3c",
+   "totals": {
+    "other_passages_ink_included": 153,
+    "own_ink_left_out": 47,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 47,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "paragraph-1": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 2,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 2
+    },
+    "paragraph-2": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-3": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 45,
+     "other_included": {
+      "paragraph-4": 9
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 45
+    },
+    "paragraph-4": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "paragraph-3": 144
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "paragraph-1",
+     "lower": "paragraph-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-2",
+     "lower": "paragraph-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-3",
+     "lower": "paragraph-4",
+     "upper_region_takes_lower_ink": 9,
+     "lower_region_takes_upper_ink": 144
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra (025) run-002 + ownership polygons (036)",
+   "path": "../../outputs/ryder-ten-princes-1927-page-030/036-gpt-6.1-terra-none-unlined-ink-ownership/run-002/regions.json",
+   "sha256": "22fccbb4460c78ab56b2677831f7f4b7aab821eab96dfd93047c01fe48a4696b",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "paragraph-1": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-2": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-3": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-4": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "paragraph-1",
+     "lower": "paragraph-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-2",
+     "lower": "paragraph-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-3",
+     "lower": "paragraph-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "beyond_reading_order_splits": 0,
+    "passages": {
+     "page-number-left": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "running-header-left": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-1": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-2": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "running-header-right": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "page-number-right": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-3": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-4": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     }
+    },
+    "ownership_png_sha256": "3c9b9d78d7321228d110a6cb4e1ed6f1876c8bf90fb352baa3a375c6b8c76422"
+   }
+  },
+  {
+   "label": "GPT-6.1 Terra, explicit units (037) run-002, boxes",
+   "path": "../../outputs/ryder-ten-princes-1927-page-030/037-gpt-6.1-terra-none-explicit-units/run-002/regions.json",
+   "sha256": "a3fab6689c5de4f2ae4c732b6c13693e4d1c4dafcac21eca695839c23db24507",
+   "totals": {
+    "other_passages_ink_included": 69,
+    "own_ink_left_out": 38,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 38,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "paragraph-1": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 14,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 14
+    },
+    "paragraph-2": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "paragraph-1": 3
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-3": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {
+      "paragraph-4": 53
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-4": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 24,
+     "other_included": {
+      "paragraph-3": 13
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 24
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "paragraph-1",
+     "lower": "paragraph-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 3
+    },
+    {
+     "upper": "paragraph-2",
+     "lower": "paragraph-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-3",
+     "lower": "paragraph-4",
+     "upper_region_takes_lower_ink": 53,
+     "lower_region_takes_upper_ink": 13
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra, explicit units (037) run-002 + ownership polygons (038)",
+   "path": "../../outputs/ryder-ten-princes-1927-page-030/038-gpt-6.1-terra-none-explicit-units-line-polygons/run-002/regions.json",
+   "sha256": "65f7df7cbacb93497ec33f6043ef22861fe6983656151033bc077f521e6c36ec",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "paragraph-1": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-2": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-3": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-4": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "paragraph-1",
+     "lower": "paragraph-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-2",
+     "lower": "paragraph-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-3",
+     "lower": "paragraph-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "beyond_reading_order_splits": 0,
+    "passages": {
+     "page-number-left": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "running-header-left": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-1": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-2": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "running-header-right": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "page-number-right": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-3": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-4": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     }
+    },
+    "ownership_png_sha256": "3c9b9d78d7321228d110a6cb4e1ed6f1876c8bf90fb352baa3a375c6b8c76422"
+   }
+  },
+  {
+   "label": "GPT-6.1 Terra, explicit units (037) run-002 + band-chained lines (039)",
+   "path": "../../outputs/ryder-ten-princes-1927-page-030/039-gpt-6.1-terra-none-explicit-units-band-chained-lines/run-002/regions.json",
+   "sha256": "1b6a2411d8c7fa54cb6ea8ffadb8f63065657ec7e544d39323ea7a286a24a399",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "paragraph-1": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-2": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-3": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-4": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "paragraph-1",
+     "lower": "paragraph-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-2",
+     "lower": "paragraph-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-3",
+     "lower": "paragraph-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "beyond_reading_order_splits": 0,
+    "passages": {
+     "page-number-left": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "running-header-left": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-1": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-2": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "running-header-right": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "page-number-right": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-3": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "paragraph-4": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     }
+    },
+    "ownership_png_sha256": "3c9b9d78d7321228d110a6cb4e1ed6f1876c8bf90fb352baa3a375c6b8c76422"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

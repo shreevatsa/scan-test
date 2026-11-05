@@ -1,0 +1,398 @@
+{
+ "note": "Fresh held-out test pages for the explicit-unit prompt (method 037) against method 025, and the local methods 036, 038 and 039. Selection rules are fixed per book and recorded per page; no page here was used to write any prompt or local rule. Render with: uv run --offline python inputs/render_pages.py inputs/pages-fresh.json",
+ "dpi": 300,
+ "new_books": {
+  "hertel-panchatantra": {
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "description": "Hertel's edition of the Pañcatantra (Harvard Oriental Series): Sanskrit prose and verse in Devanagari, with margin line numbers and a running header of book and tale titles; a scan without a text layer."
+  },
+  "ryder-gita-1929": {
+   "source_pdf": "~/w/ryder/1929-gita/Ryder-BG-orig.pdf",
+   "description": "A. W. Ryder's 1929 verse translation of the Bhagavad-Gita: photographed two-page spreads on a gray background, with page curvature; English stanzas, speaker headings, marginal verse numbers and italic marginal summaries."
+  },
+  "ryder-ten-princes-1927": {
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "description": "A. W. Ryder's 1927 translation of Dandin's Ten Princes, part 1: photographed two-page spreads of English prose, with running headers, page numbers, skew and curvature."
+  }
+ },
+ "pages": [
+  {
+   "input_id": "telang-dli-page-035",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 35,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "telang-dli-page-064",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 64,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "telang-dli-page-093",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 93,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "telang-dli-page-122",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 122,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "telang-dli-page-151",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 151,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "telang-dli-page-180",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 180,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "vavilla-page-058",
+   "book_id": "vavilla",
+   "source_pdf": "~/w/bhartrhari/data/images/RamchandraBudhendra-Vavilla.pdf",
+   "pdf_page": 58,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "vavilla-page-106",
+   "book_id": "vavilla",
+   "source_pdf": "~/w/bhartrhari/data/images/RamchandraBudhendra-Vavilla.pdf",
+   "pdf_page": 106,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "vavilla-page-154",
+   "book_id": "vavilla",
+   "source_pdf": "~/w/bhartrhari/data/images/RamchandraBudhendra-Vavilla.pdf",
+   "pdf_page": 154,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "vavilla-page-203",
+   "book_id": "vavilla",
+   "source_pdf": "~/w/bhartrhari/data/images/RamchandraBudhendra-Vavilla.pdf",
+   "pdf_page": 203,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "vavilla-page-251",
+   "book_id": "vavilla",
+   "source_pdf": "~/w/bhartrhari/data/images/RamchandraBudhendra-Vavilla.pdf",
+   "pdf_page": 251,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "vavilla-page-299",
+   "book_id": "vavilla",
+   "source_pdf": "~/w/bhartrhari/data/images/RamchandraBudhendra-Vavilla.pdf",
+   "pdf_page": 299,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1896-page-087",
+   "book_id": "gopinath-1896",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1896-XikpAAAAYAAJ/pdf/The_Nîtiśataka_Śringâraśataka_and_V.pdf",
+   "pdf_page": 87,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1896-page-159",
+   "book_id": "gopinath-1896",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1896-XikpAAAAYAAJ/pdf/The_Nîtiśataka_Śringâraśataka_and_V.pdf",
+   "pdf_page": 159,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1896-page-231",
+   "book_id": "gopinath-1896",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1896-XikpAAAAYAAJ/pdf/The_Nîtiśataka_Śringâraśataka_and_V.pdf",
+   "pdf_page": 231,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1896-page-303",
+   "book_id": "gopinath-1896",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1896-XikpAAAAYAAJ/pdf/The_Nîtiśataka_Śringâraśataka_and_V.pdf",
+   "pdf_page": 303,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1896-page-375",
+   "book_id": "gopinath-1896",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1896-XikpAAAAYAAJ/pdf/The_Nîtiśataka_Śringâraśataka_and_V.pdf",
+   "pdf_page": 375,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1896-page-447",
+   "book_id": "gopinath-1896",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1896-XikpAAAAYAAJ/pdf/The_Nîtiśataka_Śringâraśataka_and_V.pdf",
+   "pdf_page": 447,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1914-page-084",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 84,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1914-page-154",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 154,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1914-page-224",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 224,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1914-page-293",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 293,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1914-page-363",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 363,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "gopinath-1914-page-433",
+   "book_id": "gopinath-1914",
+   "source_pdf": "~/w/bhartrhari/data/images/gopinath/1914-VeBjAAAAMAAJ/pdf/The_Nītiśataka_Śrīṅgāraśataka_an.pdf",
+   "pdf_page": 433,
+   "selection": "Fresh held-out sample: a method 032 survey page not used in the cross-book test (the survey's evenly spaced 12-page sample, the six positions the cross-book test skipped); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "dutt-mahabharata-14f-chapter-069-page-002",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/14F_Chapter_069.pdf",
+   "pdf_page": 2,
+   "selection": "Fresh held-out sample: page 2 (as in the cross-book test) of a method 032 survey chapter file not used in the cross-book test; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "dutt-mahabharata-15f-chapter-080-page-002",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/15F_Chapter_080.pdf",
+   "pdf_page": 2,
+   "selection": "Fresh held-out sample: page 2 (as in the cross-book test) of a method 032 survey chapter file not used in the cross-book test; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-002",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/17F_Chapter_001.pdf",
+   "pdf_page": 2,
+   "selection": "Fresh held-out sample: page 2 (as in the cross-book test) of a method 032 survey chapter file not used in the cross-book test; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "dutt-mahabharata-18f-chapter-087-1-page-002",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/18F_Chapter_087_1.pdf",
+   "pdf_page": 2,
+   "selection": "Fresh held-out sample: page 2 (as in the cross-book test) of a method 032 survey chapter file not used in the cross-book test; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "dutt-mahabharata-20f-chapter-187-page-002",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/20F_Chapter_187.pdf",
+   "pdf_page": 2,
+   "selection": "Fresh held-out sample: page 2 (as in the cross-book test) of a method 032 survey chapter file not used in the cross-book test; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "dutt-mahabharata-21f-chapter-101-page-002",
+   "book_id": "dutt-mahabharata",
+   "source_pdf": "~/w/mahabharata-dutt/pdfs/21F_Chapter_101.pdf",
+   "pdf_page": 2,
+   "selection": "Fresh held-out sample: page 2 (as in the cross-book test) of a method 032 survey chapter file not used in the cross-book test; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "kale-1913-page-022",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 22,
+   "selection": "Fresh held-out sample: the midpoints between the cross-book test's evenly spaced Kale pages (1, 43, 85, 127, 169, 211) and the last page, 252; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "kale-1913-page-064",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 64,
+   "selection": "Fresh held-out sample: the midpoints between the cross-book test's evenly spaced Kale pages (1, 43, 85, 127, 169, 211) and the last page, 252; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "kale-1913-page-106",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 106,
+   "selection": "Fresh held-out sample: the midpoints between the cross-book test's evenly spaced Kale pages (1, 43, 85, 127, 169, 211) and the last page, 252; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "kale-1913-page-148",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 148,
+   "selection": "Fresh held-out sample: the midpoints between the cross-book test's evenly spaced Kale pages (1, 43, 85, 127, 169, 211) and the last page, 252; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "kale-1913-page-190",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 190,
+   "selection": "Fresh held-out sample: the midpoints between the cross-book test's evenly spaced Kale pages (1, 43, 85, 127, 169, 211) and the last page, 252; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "kale-1913-page-232",
+   "book_id": "kale-1913",
+   "source_pdf": "Kale-1913-pp21-272.pdf",
+   "pdf_page": 232,
+   "selection": "Fresh held-out sample: the midpoints between the cross-book test's evenly spaced Kale pages (1, 43, 85, 127, 169, 211) and the last page, 252; chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "hertel-panchatantra-page-037",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 37,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 360-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "hertel-panchatantra-page-094",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 94,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 360-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "hertel-panchatantra-page-152",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 152,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 360-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "hertel-panchatantra-page-209",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 209,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 360-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "hertel-panchatantra-page-267",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 267,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 360-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "hertel-panchatantra-page-324",
+   "book_id": "hertel-panchatantra",
+   "source_pdf": "~/w/panchatantra/hertel2/out.pdf",
+   "pdf_page": 324,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 360-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-gita-1929-page-011",
+   "book_id": "ryder-gita-1929",
+   "source_pdf": "~/w/ryder/1929-gita/Ryder-BG-orig.pdf",
+   "pdf_page": 11,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 96-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-gita-1929-page-026",
+   "book_id": "ryder-gita-1929",
+   "source_pdf": "~/w/ryder/1929-gita/Ryder-BG-orig.pdf",
+   "pdf_page": 26,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 96-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-gita-1929-page-041",
+   "book_id": "ryder-gita-1929",
+   "source_pdf": "~/w/ryder/1929-gita/Ryder-BG-orig.pdf",
+   "pdf_page": 41,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 96-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-gita-1929-page-056",
+   "book_id": "ryder-gita-1929",
+   "source_pdf": "~/w/ryder/1929-gita/Ryder-BG-orig.pdf",
+   "pdf_page": 56,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 96-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-gita-1929-page-071",
+   "book_id": "ryder-gita-1929",
+   "source_pdf": "~/w/ryder/1929-gita/Ryder-BG-orig.pdf",
+   "pdf_page": 71,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 96-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-gita-1929-page-087",
+   "book_id": "ryder-gita-1929",
+   "source_pdf": "~/w/ryder/1929-gita/Ryder-BG-orig.pdf",
+   "pdf_page": 87,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 96-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-008",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 8,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 69-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-019",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 19,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 69-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-030",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 30,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 69-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-040",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 40,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 69-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-051",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 51,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 69-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-062",
+   "book_id": "ryder-ten-princes-1927",
+   "source_pdf": "~/w/ryder/1927-ten-princes/Ryder10p-1.pdf",
+   "pdf_page": 62,
+   "selection": "Fresh held-out sample, new book: six pages evenly spaced from 10% to 90% of the 69-page file (the method 032 survey's sampling rule, six pages); chosen by rule on 2026-11-04 before any model run on it."
+  }
+ ]
+}

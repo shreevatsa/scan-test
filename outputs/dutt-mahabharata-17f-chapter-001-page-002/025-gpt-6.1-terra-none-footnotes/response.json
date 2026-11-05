@@ -1,0 +1,163 @@
+{
+  "id": "resp_054c16db5120a9d6016aebb04d9e3487d084c3af91a5579b88",
+  "object": "response",
+  "created_at": 1793830989,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793831001,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_054c16db5120a9d6016aebb04f06f887d0b414124ee921e69b",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"page_number\",\"box_1000\":[86,48,100,63],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"running_header\",\"box_1000\":[762,46,914,63],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[99,84,435,131],\"keep\":true,\"reading_order\":1,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[99,133,428,179],\"keep\":true,\"reading_order\":2,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[85,182,489,291],\"keep\":true,\"reading_order\":3,\"uncertain\":false},{\"type\":\"lead_in\",\"box_1000\":[244,299,331,317],\"keep\":true,\"reading_order\":4,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[98,324,394,371],\"keep\":true,\"reading_order\":5,\"uncertain\":false},{\"type\":\"lead_in\",\"box_1000\":[85,376,200,394],\"keep\":true,\"reading_order\":6,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[85,396,489,450],\"keep\":true,\"reading_order\":7,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[98,454,411,500],\"keep\":true,\"reading_order\":8,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[84,501,488,557],\"keep\":true,\"reading_order\":9,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[98,559,462,606],\"keep\":true,\"reading_order\":10,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[85,607,487,677],\"keep\":true,\"reading_order\":11,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[98,680,416,726],\"keep\":true,\"reading_order\":12,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[98,730,405,777],\"keep\":true,\"reading_order\":13,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[84,777,488,900],\"keep\":true,\"reading_order\":14,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[98,904,459,951],\"keep\":true,\"reading_order\":15,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[524,84,878,130],\"keep\":true,\"reading_order\":16,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,131,915,257],\"keep\":true,\"reading_order\":17,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[524,259,847,307],\"keep\":true,\"reading_order\":18,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,308,914,362],\"keep\":true,\"reading_order\":19,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[524,365,821,412],\"keep\":true,\"reading_order\":20,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[524,417,854,463],\"keep\":true,\"reading_order\":21,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,464,915,628],\"keep\":true,\"reading_order\":22,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[523,632,877,681],\"keep\":true,\"reading_order\":23,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,681,915,771],\"keep\":true,\"reading_order\":24,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[523,775,817,823],\"keep\":true,\"reading_order\":25,\"uncertain\":false},{\"type\":\"commentary\",\"box_1000\":[510,825,914,897],\"keep\":true,\"reading_order\":26,\"uncertain\":false},{\"type\":\"verse\",\"box_1000\":[523,900,835,949],\"keep\":true,\"reading_order\":27,\"uncertain\":false}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "verse",
+                    "commentary",
+                    "lead_in",
+                    "footnote",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 7523,
+    "input_tokens_details": {
+      "cache_write_tokens": 7520,
+      "cached_tokens": 0
+    },
+    "output_tokens": 926,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 8449
+  },
+  "user": null,
+  "metadata": {}
+}

@@ -1,0 +1,35 @@
+{
+  "input_id": "kale-1913-page-017",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before any method 033 or 034 output existed for this page; not yet human-reviewed",
+  "line_segmentation": "methods/032-line-skew-separability (copied unchanged into method 033), page-level line ids 0-29",
+  "split_lines_by_x": {
+    "0": [{"below_x": 400, "passage": "page-number"}, {"below_x": 1127.0, "passage": "running-header"}, {"passage": null}],
+    "27": [{"below_x": 1341.0, "passage": "commentary-36"}, {"passage": null}],
+    "29": [
+      {"below_x": 321.5, "passage": "footnote-1"},
+      {"below_x": 473.0, "passage": "footnote-2"},
+      {"below_x": 661.0, "passage": "footnote-3"},
+      {"below_x": 1011.5, "passage": "footnote-4"},
+      {"below_x": 1148.5, "passage": "footnote-5"},
+      {"passage": "footnote-6"}
+    ]
+  },
+  "passages": [
+    {"passage": "page-number", "type": "page_number", "keep": false},
+    {"passage": "running-header", "type": "running_header", "keep": false},
+    {"passage": "lead-in-35", "type": "lead_in", "keep": true, "lines": [1, 1], "note": "अथ महतां चरित्रमाहात्म्यमाह—"},
+    {"passage": "verse-35", "type": "verse", "keep": true, "lines": [2, 5], "note": "Four printed lines ending with ॥ ३५ ॥."},
+    {"passage": "commentary-35", "type": "commentary", "keep": true, "lines": [6, 13], "note": "Ends with हरिणीवृत्तम् ॥ on line 13."},
+    {"passage": "lead-in-36", "type": "lead_in", "keep": true, "lines": [14, 15], "note": "Indented paragraph ending with इत्याह—, introducing verse 36."},
+    {"passage": "verse-36", "type": "verse", "keep": true, "lines": [16, 19], "note": "Four printed lines ending with ॥ ३६ ॥."},
+    {"passage": "commentary-36", "type": "commentary", "keep": true, "lines": [20, 28]},
+    {"passage": "footnote-1", "type": "footnote", "keep": true},
+    {"passage": "footnote-2", "type": "footnote", "keep": true},
+    {"passage": "footnote-3", "type": "footnote", "keep": true},
+    {"passage": "footnote-4", "type": "footnote", "keep": true},
+    {"passage": "footnote-5", "type": "footnote", "keep": true},
+    {"passage": "footnote-6", "type": "footnote", "keep": true}
+  ],
+  "footnote_split_basis": "Each split is the center of an ink-free column run on footnote line 29 between one footnote's final punctuation and the next footnote's numeral. The run inside footnote 4 between प्राणत्यागः, and प्राणोच्छेदः (x 842-867) and the runs between each numeral and its text are not splits.",
+  "non_text": "Line 0 and line 27 each include a scanner-edge mark at x 1405-1407 that the line finder attached to them; these are left unlabeled. Detected rules are labeled separator."
+}

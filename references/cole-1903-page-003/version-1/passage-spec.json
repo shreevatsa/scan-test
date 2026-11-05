@@ -1,0 +1,156 @@
+{
+  "input_id": "cole-1903-page-003",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "line_segmentation": "methods/032-line-skew-separability (copied unchanged into method 033), page-level line ids 0-53",
+  "split_lines_by_x": {
+    "0": [
+      {
+        "below_x": 450,
+        "passage": "page-number"
+      },
+      {
+        "passage": "running-header"
+      }
+    ]
+  },
+  "passages": [
+    {
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "note": "136, left part of line 0."
+    },
+    {
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "lines": [
+        1,
+        1
+      ],
+      "note": "THE FACTORING OF LARGE NUMBERS. [Dec., right part of line 0; line 1 is the comma after Dec."
+    },
+    {
+      "passage": "text-1",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        2,
+        10
+      ],
+      "note": "of the same work ... examined. Continued from the previous page."
+    },
+    {
+      "passage": "text-2",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        11,
+        11
+      ],
+      "note": "3. For the number"
+    },
+    {
+      "passage": "display-1",
+      "type": "formula",
+      "keep": true,
+      "lines": [
+        12,
+        13
+      ],
+      "note": "2^67 - 1 = 147573952589676412927"
+    },
+    {
+      "passage": "text-3",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        14,
+        15
+      ],
+      "note": "I found the following apparently irreducible quadratic remainders:"
+    },
+    {
+      "passage": "display-2",
+      "type": "formula",
+      "keep": true,
+      "lines": [
+        16,
+        21
+      ],
+      "note": "The displayed list 2, -3, -7, ... 23.193, .... The line finder splits each printed row into two lines, one for the minus signs."
+    },
+    {
+      "passage": "text-4",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        22,
+        25
+      ],
+      "note": "The conclusion was inevitable ... greater than 1. Not indented; line 22 is the apostrophe of Lucas's."
+    },
+    {
+      "passage": "text-5",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        26,
+        36
+      ],
+      "note": "It is well known that every factor ... without result. Indented paragraph."
+    },
+    {
+      "passage": "text-6",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        37,
+        38
+      ],
+      "note": "Turning then to the resolution. Indented; line 37 is a detached mark of its T."
+    },
+    {
+      "passage": "display-3",
+      "type": "formula",
+      "keep": true,
+      "lines": [
+        39,
+        40
+      ],
+      "note": "2^67 - 1 = [1/2(u + v)]^2 - [1/2(u - v)]^2,"
+    },
+    {
+      "passage": "text-7",
+      "type": "paragraph",
+      "keep": true,
+      "lines": [
+        41,
+        42
+      ],
+      "note": "and noting that u - v is divisible ... determining 1/2(u + v):"
+    },
+    {
+      "passage": "display-4",
+      "type": "formula",
+      "keep": true,
+      "lines": [
+        43,
+        48
+      ],
+      "note": "The three congruence rows, 1/2(u + v) = 671 (mod 67^2) ... 64 (mod 81)."
+    },
+    {
+      "passage": "footnote",
+      "type": "footnote",
+      "keep": true,
+      "lines": [
+        49,
+        53
+      ],
+      "note": "* P. Seelhoff, l. c., p. 174. ... Mathematik, p. 48."
+    }
+  ],
+  "unit_definition": "One passage per visual block: each run of prose lines between displayed formulas, each displayed formula or list, and the footnote. A logical paragraph that runs through a display is several passages. Joining a display to the prose around it is a grouping difference, not an ownership error.",
+  "non_text": "The right three pieces of the footnote rule are labeled separator. Its broken left end (2-pixel-high fragments at y 2204, x 357-564, about 130 pixels) is classed as text and attached to footnote line 49, so this reference labels those fragments footnote."
+}

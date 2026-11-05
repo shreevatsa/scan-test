@@ -1,0 +1,489 @@
+{
+  "input_id": "dutt-mahabharata-14f-chapter-225-page-002",
+  "input_sha256": "1b9b6986581f46a160fbc7951bf8051b44c03334b75ff521afe2289d2f7ddeb4",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T18:18:15.725682+00:00",
+  "spec_sha256": "045462952fb4d279b5543298b023393c9d9d2dc41fedecb59a227c4a731bb785",
+  "labels_png_sha256": "75f0a6caf3da28e8085fdea50a618b5373f38dbe10f66acf3c2e25af16d63154",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 0.0,
+    "weak": 127.5,
+    "speck_area": 9
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 2068,
+      "components": 9,
+      "box": [
+        175,
+        139,
+        422,
+        167
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "heading-speaker",
+      "type": "heading",
+      "keep": true,
+      "pixels": 2551,
+      "components": 2,
+      "box": [
+        483,
+        220,
+        708,
+        260
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "verse-10",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15273,
+      "components": 26,
+      "box": [
+        204,
+        295,
+        890,
+        422
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "translation-1",
+      "type": "translation",
+      "keep": true,
+      "pixels": 16301,
+      "components": 100,
+      "box": [
+        174,
+        438,
+        1010,
+        579
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "verse-11",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16369,
+      "components": 20,
+      "box": [
+        202,
+        593,
+        820,
+        720
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "verse-12-first-half",
+      "type": "verse",
+      "keep": true,
+      "pixels": 7592,
+      "components": 7,
+      "box": [
+        203,
+        735,
+        743,
+        792
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "translation-2",
+      "type": "translation",
+      "keep": true,
+      "pixels": 29877,
+      "components": 181,
+      "box": [
+        172,
+        802,
+        1011,
+        1038
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "verse-12-second-half",
+      "type": "verse",
+      "keep": true,
+      "pixels": 7832,
+      "components": 14,
+      "box": [
+        202,
+        1060,
+        880,
+        1117
+      ]
+    },
+    {
+      "value": 9,
+      "passage": "verse-13-first-half",
+      "type": "verse",
+      "keep": true,
+      "pixels": 8617,
+      "components": 10,
+      "box": [
+        201,
+        1132,
+        869,
+        1186
+      ]
+    },
+    {
+      "value": 10,
+      "passage": "translation-3",
+      "type": "translation",
+      "keep": true,
+      "pixels": 14082,
+      "components": 83,
+      "box": [
+        171,
+        1202,
+        1009,
+        1336
+      ]
+    },
+    {
+      "value": 11,
+      "passage": "verse-13-second-half",
+      "type": "verse",
+      "keep": true,
+      "pixels": 8724,
+      "components": 13,
+      "box": [
+        201,
+        1360,
+        921,
+        1414
+      ]
+    },
+    {
+      "value": 12,
+      "passage": "verse-14",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15378,
+      "components": 21,
+      "box": [
+        200,
+        1434,
+        871,
+        1559
+      ]
+    },
+    {
+      "value": 13,
+      "passage": "verse-15",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15115,
+      "components": 25,
+      "box": [
+        200,
+        1575,
+        898,
+        1699
+      ]
+    },
+    {
+      "value": 14,
+      "passage": "translation-4",
+      "type": "translation",
+      "keep": true,
+      "pixels": 50186,
+      "components": 328,
+      "box": [
+        170,
+        1709,
+        1013,
+        2151
+      ]
+    },
+    {
+      "value": 15,
+      "passage": "verse-16",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16124,
+      "components": 25,
+      "box": [
+        199,
+        2167,
+        906,
+        2291
+      ]
+    },
+    {
+      "value": 16,
+      "passage": "verse-17",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16478,
+      "components": 27,
+      "box": [
+        199,
+        2311,
+        874,
+        2435
+      ]
+    },
+    {
+      "value": 17,
+      "passage": "translation-5",
+      "type": "translation",
+      "keep": true,
+      "pixels": 29179,
+      "components": 177,
+      "box": [
+        170,
+        2444,
+        1007,
+        2686
+      ]
+    },
+    {
+      "value": 18,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 588,
+      "components": 3,
+      "box": [
+        1847,
+        139,
+        1907,
+        169
+      ]
+    },
+    {
+      "value": 19,
+      "passage": "verse-18",
+      "type": "verse",
+      "keep": true,
+      "pixels": 14884,
+      "components": 19,
+      "box": [
+        1100,
+        226,
+        1775,
+        355
+      ]
+    },
+    {
+      "value": 20,
+      "passage": "translation-6",
+      "type": "translation",
+      "keep": true,
+      "pixels": 17890,
+      "components": 110,
+      "box": [
+        1071,
+        370,
+        1909,
+        513
+      ]
+    },
+    {
+      "value": 21,
+      "passage": "verse-19",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15175,
+      "components": 26,
+      "box": [
+        1099,
+        528,
+        1772,
+        653
+      ]
+    },
+    {
+      "value": 22,
+      "passage": "verse-20-first-half",
+      "type": "verse",
+      "keep": true,
+      "pixels": 7210,
+      "components": 8,
+      "box": [
+        1099,
+        670,
+        1674,
+        726
+      ]
+    },
+    {
+      "value": 23,
+      "passage": "translation-7",
+      "type": "translation",
+      "keep": true,
+      "pixels": 28502,
+      "components": 174,
+      "box": [
+        1069,
+        740,
+        1908,
+        978
+      ]
+    },
+    {
+      "value": 24,
+      "passage": "verse-20-second-half",
+      "type": "verse",
+      "keep": true,
+      "pixels": 7864,
+      "components": 13,
+      "box": [
+        1099,
+        1001,
+        1741,
+        1056
+      ]
+    },
+    {
+      "value": 25,
+      "passage": "verse-21",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15730,
+      "components": 23,
+      "box": [
+        1098,
+        1072,
+        1798,
+        1197
+      ]
+    },
+    {
+      "value": 26,
+      "passage": "translation-8",
+      "type": "translation",
+      "keep": true,
+      "pixels": 17751,
+      "components": 109,
+      "box": [
+        1069,
+        1218,
+        1906,
+        1356
+      ]
+    },
+    {
+      "value": 27,
+      "passage": "verse-22",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16704,
+      "components": 23,
+      "box": [
+        1097,
+        1383,
+        1812,
+        1510
+      ]
+    },
+    {
+      "value": 28,
+      "passage": "verse-23",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15526,
+      "components": 20,
+      "box": [
+        1097,
+        1525,
+        1810,
+        1652
+      ]
+    },
+    {
+      "value": 29,
+      "passage": "verse-24",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16019,
+      "components": 23,
+      "box": [
+        1098,
+        1668,
+        1780,
+        1792
+      ]
+    },
+    {
+      "value": 30,
+      "passage": "verse-25",
+      "type": "verse",
+      "keep": true,
+      "pixels": 15979,
+      "components": 25,
+      "box": [
+        1097,
+        1808,
+        1825,
+        1933
+      ]
+    },
+    {
+      "value": 31,
+      "passage": "translation-9",
+      "type": "translation",
+      "keep": true,
+      "pixels": 73355,
+      "components": 461,
+      "box": [
+        1068,
+        1950,
+        1907,
+        2548
+      ]
+    },
+    {
+      "value": 32,
+      "passage": "verse-26",
+      "type": "verse",
+      "keep": true,
+      "pixels": 16160,
+      "components": 24,
+      "box": [
+        1097,
+        2565,
+        1754,
+        2688
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 14,
+      "box": [
+        1035,
+        216,
+        1044,
+        2690
+      ],
+      "area": 8640,
+      "role": "large"
+    }
+  ],
+  "separator_pixels": 6627,
+  "method_files_sha256": {
+    "reference.py": "1b8bccaaf51bf9ab2b8bba5ad76abbe32e410e521bae09278ccdca9f9e9c4f51",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

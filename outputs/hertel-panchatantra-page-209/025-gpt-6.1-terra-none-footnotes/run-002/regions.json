@@ -1,0 +1,680 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-04T22:27:24.998567+00:00",
+  "method": {
+    "id": "025-gpt-6.1-terra-none-footnotes",
+    "name": "GPT-6.1 Terra without reasoning, individual footnotes",
+    "settings": {
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "none",
+      "image_detail": "original",
+      "max_output_tokens": 16384,
+      "store": false,
+      "coordinate_format": "xyxy_1000",
+      "prompt_variant": "individual-numbered-footnotes-v2",
+      "cache_lifetime": "30m (provider default)"
+    },
+    "files_sha256": {
+      "run.py": "6095a21a44dcbd78f6af7c2dd03dc01b93fc99914e84d4ca2bdf2542b21a768e",
+      "regions.py": "8ef770044193ffc9a6b5d00da314829207bbe635b1b530983abc78d1a183b2e2",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+      "prompt.txt": "82fabd9a6c7192c6e0b0bad9a9780631730513f1aa42cb3c49bd8e78ab39c3ca",
+      "response-schema.json": "3969420909546c6a5a26a02349269e62fb317e58f25968ed4776c03f266d2c1b",
+      "config.json": "8512635986d07118bf3436dc5d39a04a92a731c93ec70d6a3118108390b1735f",
+      "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    }
+  },
+  "input": {
+    "id": "hertel-panchatantra-page-209",
+    "path": "inputs/hertel-panchatantra-page-209.png",
+    "sha256": "d46832ccfe96265dd17c999c05c0f11ec763fbf0d6da41aa5206aa0906f5424c",
+    "width": 2088,
+    "height": 3121
+  },
+  "api": {
+    "endpoint": "https://api.openai.com/v1/responses",
+    "requested_model": "gpt-6.1-terra",
+    "returned_model": "gpt-6.1-terra",
+    "response_id": "resp_064965fb586e3875016aebb14dbb0c87d098c1a20b67457b85",
+    "request_id": "req_7c766fe3cbd94724b4e327c0d6e98c06",
+    "client_request_id": "592abbd5-1ce2-4bda-819d-478a6c625dba",
+    "api_wall_seconds": 10.664148834068328,
+    "usage": {
+      "input_tokens": 8156,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 8153
+      },
+      "output_tokens": 669,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 8825
+    },
+    "response_headers_seconds": 10.663913833908737,
+    "response_first_body_byte_seconds": 10.663932041730732,
+    "service_tier": "default",
+    "tokens_and_cost": {
+      "available": true,
+      "input_tokens": 8156,
+      "ordinary_input_tokens": 3,
+      "cached_input_tokens": 8153,
+      "cache_write_input_tokens": 0,
+      "output_tokens_including_reasoning": 669,
+      "reasoning_tokens": 0,
+      "non_reasoning_output_tokens": 669,
+      "total_token_count_matches": true,
+      "cache_write_lifetime": "30m (provider default)",
+      "estimated_paid_tier_input_cost_usd": 0.00041065000000000003,
+      "estimated_paid_tier_output_cost_usd": 0.003345,
+      "estimated_paid_tier_total_cost_usd": 0.00375565,
+      "pricing": {
+        "checked_on": "2026-11-03",
+        "currency": "USD",
+        "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+        "input_per_million_usd": 1.0,
+        "output_per_million_usd": 5.0,
+        "cached_input_per_million_usd": 0.05,
+        "cache_write_30m_per_million_usd": 1.25,
+        "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+      }
+    },
+    "response_sha256": "f275d0dc581f9dd483e0e63fa6d2cf1773c3a1faf61cca3058e251021d2da7f5",
+    "request_sha256": "6f68ee89d85fa97e180c64901869c963f5c3adf174614ac1416266a50069fbb7"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "running_header",
+      "box_1000": [
+        260,
+        81,
+        744,
+        98
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 1,
+      "label": "running_header",
+      "box": [
+        542.88,
+        252.801,
+        1553.472,
+        305.858
+      ],
+      "box_xyxy_1000": [
+        260.0,
+        81.0,
+        744.0,
+        98.0
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_1000": [
+        373,
+        107,
+        634,
+        120
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 2,
+      "label": "running_header",
+      "box": [
+        778.824,
+        333.947,
+        1323.792,
+        374.52
+      ],
+      "box_xyxy_1000": [
+        373.0,
+        107.0,
+        634.0,
+        120.0
+      ]
+    },
+    {
+      "type": "page_number",
+      "box_1000": [
+        907,
+        82,
+        957,
+        99
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 3,
+      "label": "page_number",
+      "box": [
+        1893.816,
+        255.922,
+        1998.216,
+        308.979
+      ],
+      "box_xyxy_1000": [
+        907.0,
+        82.0,
+        957.0,
+        99.0
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        102,
+        141,
+        185,
+        163
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "region_id": 4,
+      "label": "lead_in",
+      "box": [
+        212.976,
+        440.061,
+        386.28,
+        508.723
+      ],
+      "box_xyxy_1000": [
+        102.0,
+        141.0,
+        185.0,
+        163.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        140,
+        168,
+        718,
+        237
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "region_id": 5,
+      "label": "verse",
+      "box": [
+        292.32,
+        524.328,
+        1499.184,
+        739.677
+      ],
+      "box_xyxy_1000": [
+        140.0,
+        168.0,
+        718.0,
+        237.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        139,
+        236,
+        767,
+        305
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "region_id": 6,
+      "label": "verse",
+      "box": [
+        290.232,
+        736.556,
+        1601.496,
+        951.905
+      ],
+      "box_xyxy_1000": [
+        139.0,
+        236.0,
+        767.0,
+        305.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        139,
+        300,
+        872,
+        372
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "region_id": 7,
+      "label": "verse",
+      "box": [
+        290.232,
+        936.3,
+        1820.736,
+        1161.012
+      ],
+      "box_xyxy_1000": [
+        139.0,
+        300.0,
+        872.0,
+        372.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        138,
+        370,
+        862,
+        438
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "region_id": 8,
+      "label": "verse",
+      "box": [
+        288.144,
+        1154.77,
+        1799.856,
+        1366.998
+      ],
+      "box_xyxy_1000": [
+        138.0,
+        370.0,
+        862.0,
+        438.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        137,
+        440,
+        854,
+        506
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "region_id": 9,
+      "label": "verse",
+      "box": [
+        286.056,
+        1373.24,
+        1783.152,
+        1579.226
+      ],
+      "box_xyxy_1000": [
+        137.0,
+        440.0,
+        854.0,
+        506.0
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        95,
+        509,
+        224,
+        537
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "region_id": 10,
+      "label": "lead_in",
+      "box": [
+        198.36,
+        1588.589,
+        467.712,
+        1675.977
+      ],
+      "box_xyxy_1000": [
+        95.0,
+        509.0,
+        224.0,
+        537.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        134,
+        540,
+        896,
+        709
+      ],
+      "keep": true,
+      "reading_order": 8,
+      "uncertain": false,
+      "region_id": 11,
+      "label": "verse",
+      "box": [
+        279.792,
+        1685.34,
+        1870.848,
+        2212.789
+      ],
+      "box_xyxy_1000": [
+        134.0,
+        540.0,
+        896.0,
+        709.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        134,
+        711,
+        893,
+        782
+      ],
+      "keep": true,
+      "reading_order": 9,
+      "uncertain": false,
+      "region_id": 12,
+      "label": "verse",
+      "box": [
+        279.792,
+        2219.031,
+        1864.584,
+        2440.622
+      ],
+      "box_xyxy_1000": [
+        134.0,
+        711.0,
+        893.0,
+        782.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        134,
+        782,
+        787,
+        853
+      ],
+      "keep": true,
+      "reading_order": 10,
+      "uncertain": false,
+      "region_id": 13,
+      "label": "verse",
+      "box": [
+        279.792,
+        2440.622,
+        1643.256,
+        2662.213
+      ],
+      "box_xyxy_1000": [
+        134.0,
+        782.0,
+        787.0,
+        853.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        134,
+        853,
+        892,
+        923
+      ],
+      "keep": true,
+      "reading_order": 11,
+      "uncertain": false,
+      "region_id": 14,
+      "label": "verse",
+      "box": [
+        279.792,
+        2662.213,
+        1862.496,
+        2880.683
+      ],
+      "box_xyxy_1000": [
+        134.0,
+        853.0,
+        892.0,
+        923.0
+      ]
+    },
+    {
+      "type": "other",
+      "box_1000": [
+        905,
+        213,
+        921,
+        226
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 15,
+      "label": "other",
+      "box": [
+        1889.64,
+        664.773,
+        1923.048,
+        705.346
+      ],
+      "box_xyxy_1000": [
+        905.0,
+        213.0,
+        921.0,
+        226.0
+      ]
+    },
+    {
+      "type": "other",
+      "box_1000": [
+        904,
+        314,
+        922,
+        328
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 16,
+      "label": "other",
+      "box": [
+        1887.552,
+        979.994,
+        1925.136,
+        1023.688
+      ],
+      "box_xyxy_1000": [
+        904.0,
+        314.0,
+        922.0,
+        328.0
+      ]
+    },
+    {
+      "type": "other",
+      "box_1000": [
+        902,
+        415,
+        919,
+        429
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 17,
+      "label": "other",
+      "box": [
+        1883.376,
+        1295.215,
+        1918.872,
+        1338.909
+      ],
+      "box_xyxy_1000": [
+        902.0,
+        415.0,
+        919.0,
+        429.0
+      ]
+    },
+    {
+      "type": "other",
+      "box_1000": [
+        900,
+        520,
+        928,
+        535
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 18,
+      "label": "other",
+      "box": [
+        1879.2,
+        1622.92,
+        1937.664,
+        1669.735
+      ],
+      "box_xyxy_1000": [
+        900.0,
+        520.0,
+        928.0,
+        535.0
+      ]
+    },
+    {
+      "type": "other",
+      "box_1000": [
+        898,
+        621,
+        925,
+        635
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 19,
+      "label": "other",
+      "box": [
+        1875.024,
+        1938.141,
+        1931.4,
+        1981.835
+      ],
+      "box_xyxy_1000": [
+        898.0,
+        621.0,
+        925.0,
+        635.0
+      ]
+    },
+    {
+      "type": "other",
+      "box_1000": [
+        897,
+        719,
+        924,
+        733
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 20,
+      "label": "other",
+      "box": [
+        1872.936,
+        2243.999,
+        1929.312,
+        2287.693
+      ],
+      "box_xyxy_1000": [
+        897.0,
+        719.0,
+        924.0,
+        733.0
+      ]
+    },
+    {
+      "type": "other",
+      "box_1000": [
+        894,
+        824,
+        922,
+        838
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "region_id": 21,
+      "label": "other",
+      "box": [
+        1866.672,
+        2571.704,
+        1925.136,
+        2615.398
+      ],
+      "box_xyxy_1000": [
+        894.0,
+        824.0,
+        922.0,
+        838.0
+      ]
+    }
+  ],
+  "region_types": {
+    "running_header": 2,
+    "page_number": 1,
+    "lead_in": 2,
+    "verse": 9,
+    "other": 7
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 21,
+    "ink_pixels": 668996,
+    "uncovered_ink_pixels": 967,
+    "ink_coverage": 0.9985545504008992,
+    "partially_covered_components": 0
+  },
+  "kept_regions_metrics": {
+    "regions": 11,
+    "ink_pixels": 668996,
+    "uncovered_ink_pixels": 22049,
+    "ink_coverage": 0.9670416564523555,
+    "partially_covered_components": 0
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

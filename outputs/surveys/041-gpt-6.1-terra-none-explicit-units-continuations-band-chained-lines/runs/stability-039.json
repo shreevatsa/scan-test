@@ -1,0 +1,1377 @@
+{
+ "created_at_utc": "2026-11-05T00:54:07.121137+00:00",
+ "api_calls": 0,
+ "method": "039-gpt-6.1-terra-none-explicit-units-band-chained-lines",
+ "against": null,
+ "pages_list": "../../inputs/pages-runs.json",
+ "rule": {
+  "matching": "one to one, greedy by shared owned ink",
+  "split_or_merge_part": "at least 5% of the region's ink and 500 pixels"
+ },
+ "pages": [
+  {
+   "input_id": "kale-1913-page-106",
+   "regions": [
+    13,
+    13
+   ],
+   "kept": [
+    11,
+    11
+   ],
+   "ink_owned_in_either_run": 446644,
+   "ink_with_corresponding_owner": 446644,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 11,
+   "sources": [
+    "ad33f41035b71b35fa1a3aa659e04134ba688bc4165a14ba72d0d6c1e5cde2f3",
+    "f23512bfbd88fa54eaeb89ce9adacda74da2ea1701e2649397260940707330ca"
+   ]
+  },
+  {
+   "input_id": "kale-1913-page-107",
+   "regions": [
+    14,
+    14
+   ],
+   "kept": [
+    12,
+    12
+   ],
+   "ink_owned_in_either_run": 462633,
+   "ink_with_corresponding_owner": 462621,
+   "agreement": 0.99997,
+   "ink_owned_in_one_run_only": [
+    12,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 12,
+   "sources": [
+    "a612c26f758b5b2a054a5bdc690d6463fd3e3696c631e2a52298365f9b95eaa5",
+    "ad6aee6a4514c6b70d40222a17a15a082e7197949cfa8edfc721689675713102"
+   ]
+  },
+  {
+   "input_id": "kale-1913-page-108",
+   "regions": [
+    15,
+    13
+   ],
+   "kept": [
+    13,
+    11
+   ],
+   "ink_owned_in_either_run": 446900,
+   "ink_with_corresponding_owner": 413681,
+   "agreement": 0.92567,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [
+    {
+     "region": 11,
+     "type": "note",
+     "into": [
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 11621
+      },
+      {
+       "region": 12,
+       "type": "verse",
+       "pixels": 35018
+      },
+      {
+       "region": 13,
+       "type": "paragraph",
+       "pixels": 21598
+      }
+     ]
+    }
+   ],
+   "unmatched_regions": [
+    [
+     {
+      "region": 11,
+      "type": "note",
+      "pixels": 11621
+     },
+     {
+      "region": 13,
+      "type": "paragraph",
+      "pixels": 21598
+     }
+    ],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     12,
+     11,
+     "verse",
+     "note"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 11,
+   "sources": [
+    "48d2039c1d9ee385395a6b9caf0a8f356f75638c9dadecc5fc10c52ca8cd8dc9",
+    "5d73ed9b6eb111bf86c9aabf862c32cef3e5a57354268037b3f5214d860a31e0"
+   ]
+  },
+  {
+   "input_id": "kale-1913-page-109",
+   "regions": [
+    12,
+    12
+   ],
+   "kept": [
+    10,
+    10
+   ],
+   "ink_owned_in_either_run": 418759,
+   "ink_with_corresponding_owner": 418759,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 10,
+   "sources": [
+    "8b852b8a023bb918fb2b2e5c978273af29bcd24e5ed783140ecf4af0b3638805",
+    "0478c74be749f1e1bb9633dd23886b33a289c61001479aec83cf9a00e242ecfa"
+   ]
+  },
+  {
+   "input_id": "hertel-panchatantra-page-152",
+   "regions": [
+    11,
+    19
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 842228,
+   "ink_with_corresponding_owner": 839766,
+   "agreement": 0.99708,
+   "ink_owned_in_one_run_only": [
+    0,
+    272
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 12,
+      "type": "other",
+      "pixels": 339
+     },
+     {
+      "region": 13,
+      "type": "other",
+      "pixels": 339
+     },
+     {
+      "region": 14,
+      "type": "other",
+      "pixels": 319
+     },
+     {
+      "region": 15,
+      "type": "other",
+      "pixels": 193
+     },
+     {
+      "region": 16,
+      "type": "other",
+      "pixels": 534
+     },
+     {
+      "region": 17,
+      "type": "other",
+      "pixels": 466
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "791b2ad08c45753eab0265ee2add45543ca815076afbca9e3ac2ff0fcf829430",
+    "b24bf60d4431dbabb72eac90dd2b4c4441700ece2b7663f7b17c16836306757d"
+   ]
+  },
+  {
+   "input_id": "hertel-panchatantra-page-153",
+   "regions": [
+    18,
+    28
+   ],
+   "kept": [
+    13,
+    13
+   ],
+   "ink_owned_in_either_run": 825696,
+   "ink_with_corresponding_owner": 820156,
+   "agreement": 0.99329,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 18,
+     "type": "other",
+     "into": [
+      {
+       "region": 24,
+       "type": "other",
+       "pixels": 643
+      },
+      {
+       "region": 25,
+       "type": "other",
+       "pixels": 617
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 18,
+      "type": "other",
+      "pixels": 389
+     },
+     {
+      "region": 19,
+      "type": "other",
+      "pixels": 421
+     },
+     {
+      "region": 21,
+      "type": "other",
+      "pixels": 652
+     },
+     {
+      "region": 22,
+      "type": "other",
+      "pixels": 645
+     },
+     {
+      "region": 23,
+      "type": "other",
+      "pixels": 617
+     },
+     {
+      "region": 25,
+      "type": "other",
+      "pixels": 617
+     },
+     {
+      "region": 26,
+      "type": "other",
+      "pixels": 693
+     },
+     {
+      "region": 27,
+      "type": "other",
+      "pixels": 717
+     },
+     {
+      "region": 28,
+      "type": "other",
+      "pixels": 789
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 13,
+   "sources": [
+    "0a7b7fb4c2a1db82a5b20c6333e7b400e154cf7a83afbad79ac2b4459d7fd791",
+    "9a5065374cee0eac305b61776892693f95dee9425dcd78da589df7629fdc6e8a"
+   ]
+  },
+  {
+   "input_id": "hertel-panchatantra-page-154",
+   "regions": [
+    8,
+    15
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 891732,
+   "ink_with_corresponding_owner": 888286,
+   "agreement": 0.99614,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 8,
+      "type": "other",
+      "pixels": 379
+     },
+     {
+      "region": 9,
+      "type": "other",
+      "pixels": 364
+     },
+     {
+      "region": 10,
+      "type": "other",
+      "pixels": 375
+     },
+     {
+      "region": 11,
+      "type": "other",
+      "pixels": 573
+     },
+     {
+      "region": 12,
+      "type": "other",
+      "pixels": 561
+     },
+     {
+      "region": 13,
+      "type": "other",
+      "pixels": 627
+     },
+     {
+      "region": 14,
+      "type": "other",
+      "pixels": 567
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "4530465b93652911d533c753e03cecaccbb2f320187b8d0aaea16cae1af0c98e",
+    "92318bac71caa1c9e86f2f0c8d6ad259f7b8b24cba5a0f676323ca8e39c8c854"
+   ]
+  },
+  {
+   "input_id": "hertel-panchatantra-page-155",
+   "regions": [
+    5,
+    5
+   ],
+   "kept": [
+    2,
+    2
+   ],
+   "ink_owned_in_either_run": 945926,
+   "ink_with_corresponding_owner": 945926,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 2,
+   "sources": [
+    "f6df7c1753cd4d4d54be5c2e47c35e29098cb27bc8b151d086f3794dbd4c2da0",
+    "c66d2ae6ac6ed206b77314a6b148b6f7dfd3829ea41d5933c085574ec92e45b2"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-030",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 270366,
+   "ink_with_corresponding_owner": 270366,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "e3eacd54d006752f73a1ae537d4c3413e787e2465faebfc7a05100f03dca806a",
+    "1b6a2411d8c7fa54cb6ea8ffadb8f63065657ec7e544d39323ea7a286a24a399"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-031",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 272313,
+   "ink_with_corresponding_owner": 272313,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "25332c9c0e47090b5605b4fb7ccca03d7e565ae1936de4825f0f3d97fc339693",
+    "812e54962b5ef9814f39c28b5e231838f5955cc0220643cdcbddd3aac085e6af"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-032",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 152671,
+   "ink_with_corresponding_owner": 152671,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "792f50edb1169c1ef9c13bbdb7d1fb6eb1b17a90b1276e289a2991c22b20a316",
+    "00c647b152362124db8a2f108b029825858bf3a213127f4f9c3eaca386c3ba42"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-033",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    5,
+    5
+   ],
+   "ink_owned_in_either_run": 272853,
+   "ink_with_corresponding_owner": 272853,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "8e95ea238f7c232fc690224bc60dbad1b14eca3d09ad587eb7200979c26de494",
+    "b72092d7c015a7a7caa43df85f541ec3089b529cb334af114540dd0b13f136fa"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-001",
+   "regions": [
+    13,
+    13
+   ],
+   "kept": [
+    10,
+    10
+   ],
+   "ink_owned_in_either_run": 291355,
+   "ink_with_corresponding_owner": 291355,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     11,
+     11,
+     "heading",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "paragraph",
+     "other"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 10,
+   "sources": [
+    "a3d15603c587bf46a5d35dae89af0ea17c25b86c1ec42b508b92c9ace9b667de",
+    "116d136995cbe0f08f82070876b47e99b844cde2232580ba61245afeeabc6d7a"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-002",
+   "regions": [
+    11,
+    11
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 382510,
+   "ink_with_corresponding_owner": 382510,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "5759bb07f7ab5d92f9f6b6ac3bb30d18d6a76a4b8080fac9edd1b290a1ee28e2",
+    "bb59061dde14ae1faecaadeb309553c1ab24794d5f0b6e16cbd29411238fe324"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-003",
+   "regions": [
+    15,
+    15
+   ],
+   "kept": [
+    12,
+    12
+   ],
+   "ink_owned_in_either_run": 324615,
+   "ink_with_corresponding_owner": 324615,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 12,
+   "sources": [
+    "46ef5bac2ed658238897df95a931dc92e6b76bb581cb134def158ecbcbb0a55a",
+    "12aa14830a425b874dee1cd4647836b4aecf96bc3e4ab31ad58a6d385114ff87"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-004",
+   "regions": [
+    22,
+    22
+   ],
+   "kept": [
+    19,
+    19
+   ],
+   "ink_owned_in_either_run": 241873,
+   "ink_with_corresponding_owner": 241873,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 19,
+   "sources": [
+    "45f23598c86e5c38da3df21a643cdb35393e22c7f2516095abb2dfc9124b0ace",
+    "2d40242152efc55bd61e6340df161327fcaaf81962ec63aacb5d91cb33ef88d1"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-108",
+   "regions": [
+    11,
+    10
+   ],
+   "kept": [
+    10,
+    9
+   ],
+   "ink_owned_in_either_run": 331532,
+   "ink_with_corresponding_owner": 329841,
+   "agreement": 0.9949,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [
+    {
+     "region": 7,
+     "type": "note",
+     "into": [
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 5023
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 1691
+      }
+     ]
+    }
+   ],
+   "unmatched_regions": [
+    [
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 1691
+     }
+    ],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 9,
+   "sources": [
+    "19cee419a53c23ded64a9c5073699bf9fd712356fc93c8ad667f1f323b105fbc",
+    "10ee7b418d60d4d438e00549adbb303cbe72123e7daa4be78d76c7dada630bd8"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-109",
+   "regions": [
+    23,
+    18
+   ],
+   "kept": [
+    22,
+    17
+   ],
+   "ink_owned_in_either_run": 346798,
+   "ink_with_corresponding_owner": 316629,
+   "agreement": 0.91301,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 17,
+     "type": "note",
+     "into": [
+      {
+       "region": 14,
+       "type": "note",
+       "pixels": 29595
+      },
+      {
+       "region": 16,
+       "type": "note",
+       "pixels": 4986
+      }
+     ]
+    }
+   ],
+   "merges": [
+    {
+     "region": 8,
+     "type": "note",
+     "into": [
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 3511
+      },
+      {
+       "region": 9,
+       "type": "note",
+       "pixels": 6199
+      }
+     ]
+    },
+    {
+     "region": 9,
+     "type": "note",
+     "into": [
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 23383
+      },
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 2077
+      }
+     ]
+    },
+    {
+     "region": 13,
+     "type": "note",
+     "into": [
+      {
+       "region": 15,
+       "type": "note",
+       "pixels": 10119
+      },
+      {
+       "region": 16,
+       "type": "note",
+       "pixels": 2740
+      }
+     ]
+    },
+    {
+     "region": 16,
+     "type": "note",
+     "into": [
+      {
+       "region": 17,
+       "type": "note",
+       "pixels": 4986
+      },
+      {
+       "region": 19,
+       "type": "note",
+       "pixels": 3677
+      },
+      {
+       "region": 20,
+       "type": "note",
+       "pixels": 11584
+      }
+     ]
+    },
+    {
+     "region": 18,
+     "type": "note",
+     "into": [
+      {
+       "region": 21,
+       "type": "note",
+       "pixels": 12499
+      },
+      {
+       "region": 23,
+       "type": "note",
+       "pixels": 24771
+      }
+     ]
+    }
+   ],
+   "unmatched_regions": [
+    [
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 3511
+     },
+     {
+      "region": 11,
+      "type": "note",
+      "pixels": 2077
+     },
+     {
+      "region": 16,
+      "type": "note",
+      "pixels": 2740
+     },
+     {
+      "region": 19,
+      "type": "note",
+      "pixels": 3677
+     },
+     {
+      "region": 21,
+      "type": "note",
+      "pixels": 12499
+     },
+     {
+      "region": 22,
+      "type": "note",
+      "pixels": 679
+     }
+    ],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 16,
+   "sources": [
+    "9a4f1848467d025a716a1264d6d41ad5ddedc0edb8be66cc3dca7393d0658cd1",
+    "a8d763dff2e753cdb69cefbc6253a5c744231e582a01cbed0730e960883ea24a"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-110",
+   "regions": [
+    18,
+    13
+   ],
+   "kept": [
+    17,
+    12
+   ],
+   "ink_owned_in_either_run": 370322,
+   "ink_with_corresponding_owner": 331204,
+   "agreement": 0.89437,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 7,
+     "type": "note",
+     "into": [
+      {
+       "region": 6,
+       "type": "note",
+       "pixels": 12916
+      },
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 11130
+      }
+     ]
+    }
+   ],
+   "merges": [
+    {
+     "region": 6,
+     "type": "note",
+     "into": [
+      {
+       "region": 6,
+       "type": "note",
+       "pixels": 26271
+      },
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 12916
+      }
+     ]
+    },
+    {
+     "region": 9,
+     "type": "note",
+     "into": [
+      {
+       "region": 9,
+       "type": "note",
+       "pixels": 9462
+      },
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 4037
+      },
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 9553
+      }
+     ]
+    },
+    {
+     "region": 10,
+     "type": "note",
+     "into": [
+      {
+       "region": 12,
+       "type": "note",
+       "pixels": 23854
+      },
+      {
+       "region": 13,
+       "type": "note",
+       "pixels": 2456
+      }
+     ]
+    },
+    {
+     "region": 13,
+     "type": "note",
+     "into": [
+      {
+       "region": 16,
+       "type": "note",
+       "pixels": 12001
+      },
+      {
+       "region": 17,
+       "type": "note",
+       "pixels": 5065
+      },
+      {
+       "region": 18,
+       "type": "note",
+       "pixels": 5182
+      }
+     ]
+    }
+   ],
+   "unmatched_regions": [
+    [
+     {
+      "region": 9,
+      "type": "note",
+      "pixels": 9462
+     },
+     {
+      "region": 10,
+      "type": "note",
+      "pixels": 4037
+     },
+     {
+      "region": 13,
+      "type": "note",
+      "pixels": 2456
+     },
+     {
+      "region": 17,
+      "type": "note",
+      "pixels": 5065
+     },
+     {
+      "region": 18,
+      "type": "note",
+      "pixels": 5182
+     }
+    ],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 12,
+   "sources": [
+    "3cdab000b29e119f931356e133e4abfe0fd47a83e426536d10cc0f401db632c8",
+    "c9691a773864b09b41ceae8f09d58ce037ec14e70a413350df997851c2265a48"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-111",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 379735,
+   "ink_with_corresponding_owner": 379735,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "df33053c549588b0b8dfca430cce17928c9775727a5eefb4df78c27312853457",
+    "abc8c682f9ed07a282a75eb6756d3bf74974bfda24935fbc9823a3702f6bb13b"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-258",
+   "regions": [
+    7,
+    7
+   ],
+   "kept": [
+    5,
+    5
+   ],
+   "ink_owned_in_either_run": 319070,
+   "ink_with_corresponding_owner": 319070,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "27f77738c67f446229e271af9fe8ddaff3f4041441eb3345c3aee0e58a197b0c",
+    "3129522b0e96fdd375a26464512e21d0b0a5a1773fd1ac749bb5b0ea96fb1505"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-259",
+   "regions": [
+    6,
+    6
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 392213,
+   "ink_with_corresponding_owner": 392213,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "27d4c9d1527f7217ea206b9cec492c81f5eb114847128953e0dad5c08140f218",
+    "ac6e85eb1d23d9c6689cc3aa88c2bd1c0401137ce808bed5bb2eda5d0e250e7c"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-260",
+   "regions": [
+    6,
+    6
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 334510,
+   "ink_with_corresponding_owner": 334510,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "3f5f5e974b6d9ac0d01e42099178037f6315f3fc56ca6e56b5e2944ff7fce875",
+    "f25fa54c34849979b459b406deb67dd71a29adef5dcd15c358df6af05f5e2e3b"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-261",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 298558,
+   "ink_with_corresponding_owner": 298558,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "e1124174ca8a1fc5f32ff04a11ef688bd4851a1d6ff3ef9520940f9aaf52c11e",
+    "fb5d826f5f7c6d6cda3f65594088665e906a7dd049fc0ca4ce9a542faceb0b72"
+   ]
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-001",
+   "regions": [
+    31,
+    31
+   ],
+   "kept": [
+    31,
+    31
+   ],
+   "ink_owned_in_either_run": 388773,
+   "ink_with_corresponding_owner": 388773,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 30,
+   "sources": [
+    "35cdf597f466b8f43a52ec6ea2e53bd86f26da38fde7d25dd45d203264d24302",
+    "6ab687912dfcf7534683f124a6c18daa7b2d75abd394f8d1dfc237d4ee792f4e"
+   ]
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-002",
+   "regions": [
+    29,
+    29
+   ],
+   "kept": [
+    27,
+    27
+   ],
+   "ink_owned_in_either_run": 576356,
+   "ink_with_corresponding_owner": 576356,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 27,
+   "sources": [
+    "d2af892ca0424e3bc26afde2cfd2b46612924655e740e002e3f7a6119d501c7d",
+    "e942e5e8bc9d0afa07abb8d0417b03ddcf7ca4bddd946adb8da495cc1f762aa8"
+   ]
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-003",
+   "regions": [
+    25,
+    25
+   ],
+   "kept": [
+    23,
+    23
+   ],
+   "ink_owned_in_either_run": 624213,
+   "ink_with_corresponding_owner": 624213,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 23,
+   "sources": [
+    "2f2bc86fbff7119c58acbf9e178b2e5abd18f4f163465e6dba0040143d198739",
+    "f8e9b23bfeb722dc1ba55161928cfe8ca308ccf0d81dbde52f83d31869fb171e"
+   ]
+  },
+  {
+   "input_id": "dutt-mahabharata-17f-chapter-001-page-004",
+   "regions": [
+    32,
+    32
+   ],
+   "kept": [
+    30,
+    30
+   ],
+   "ink_owned_in_either_run": 441702,
+   "ink_with_corresponding_owner": 441702,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 30,
+   "sources": [
+    "c3bc587ad4d7faee6009769a3b0b51e3886d136c2584c14651323c6f00ab2edb",
+    "7bc0165d9ca84a4dbf38af100d3b7bcb8d29bd1c6312c3302edfe21b500db1cc"
+   ]
+  }
+ ],
+ "code_sha256": {
+  "stability.py": "d12b2b0fc4169531c399af916260ac31f42d3d6e88f5bff8cae5ac26d79deca2"
+ }
+}

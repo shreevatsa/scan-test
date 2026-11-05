@@ -29,14 +29,14 @@ The [Fable model and pricing](https://platform.claude.com/docs/en/models/opus-5-
 From the project root, using the existing project environment:
 
 ```sh
-uv run python methods/012-claude-opus-5.5-max/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/012-claude-opus-5.5-max/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/012-claude-opus-5.5-max/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/012-claude-opus-5.5-max/run.py inputs/kale-1913-page-017.png
 ```
 
 For a repeat call, choose a fresh output directory:
 
 ```sh
-uv run python methods/012-claude-opus-5.5-max/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/012-claude-opus-5.5-max/run-002
+uv run --offline python methods/012-claude-opus-5.5-max/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/012-claude-opus-5.5-max/run-002
 ```
 
 Existing output directories are protected against overwriting. Each invocation makes one request and preserves failures.

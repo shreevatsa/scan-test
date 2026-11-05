@@ -51,7 +51,7 @@ python3.12 -m venv .venv
 Run the method on the shared input:
 
 ```sh
-.venv/bin/python methods/001-geometry/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/001-geometry/run.py inputs/kale-1913-page-017.png
 ```
 
 The output directory is derived from the input filename and method directory:
@@ -66,7 +66,7 @@ outputs/kale-1913-page-017/001-geometry/
 For another run, provide a fresh output directory:
 
 ```sh
-.venv/bin/python methods/001-geometry/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/001-geometry/run-002
+uv run --offline python methods/001-geometry/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/001-geometry/run-002
 ```
 
 Existing nonempty output directories are preserved.

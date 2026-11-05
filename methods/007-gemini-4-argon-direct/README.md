@@ -46,8 +46,8 @@ The completed request body is byte-identical to both rejected requests. The repe
 From the project root, using the existing project environment:
 
 ```sh
-uv run python methods/007-gemini-4-argon-direct/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/007-gemini-4-argon-direct/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/007-gemini-4-argon-direct/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/007-gemini-4-argon-direct/run.py inputs/kale-1913-page-017.png
 ```
 
 The pinned image-processing dependencies are listed in `requirements.txt`. Authentication checks `GEMINI_API_KEY`, then `GOOGLE_API_KEY`, then the locally stored `llm` key named `gemini`. A different stored key name can be supplied with `--llm-key-name`. The key is sent in the `x-goog-api-key` header and excluded from saved request artifacts.
@@ -55,7 +55,7 @@ The pinned image-processing dependencies are listed in `requirements.txt`. Authe
 For a repeat request, choose a fresh output directory:
 
 ```sh
-uv run python methods/007-gemini-4-argon-direct/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/007-gemini-4-argon-direct/run-004
+uv run --offline python methods/007-gemini-4-argon-direct/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/007-gemini-4-argon-direct/run-004
 ```
 
 Existing nonempty output directories are preserved. Each invocation makes one request; errors, incomplete responses and validation failures are saved with that attempt.
@@ -87,7 +87,7 @@ The completed response appears to use `[y1,x1,y2,x2]` despite the prompt request
 A separate diagnostic applies permutation `[1,0,3,2]` before the same normalized-to-pixel conversion. It was generated with:
 
 ```sh
-uv run python methods/007-gemini-4-argon-direct/inspect_coordinates.py outputs/kale-1913-page-017/007-gemini-4-argon-direct/run-003
+uv run --offline python methods/007-gemini-4-argon-direct/inspect_coordinates.py outputs/kale-1913-page-017/007-gemini-4-argon-direct/run-003
 ```
 
 The diagnostic's `coordinate-order-check/overlay.png` displays this interpretation. Its `regions.json` stores both the returned arrays and converted coordinates, the explicit transformation, input metadata and source/script hashes. The diagnostic leaves the API request, response, model text and original run artifacts intact. Existing diagnostic output is protected against overwriting.

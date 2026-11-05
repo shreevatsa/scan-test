@@ -7,8 +7,8 @@ Coordinates follow Google's documented `[ymin,xmin,ymax,xmax]` convention normal
 ## Run
 
 ```sh
-uv run python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-017.png
 ```
 
 For another request, use a fresh `--output-dir`, such as `outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native/run-002`. Existing output is protected against overwriting. Authentication uses the configured Google environment variables or the stored `llm` key named `gemini`.
@@ -49,7 +49,7 @@ The estimated cost uses $0.75 per million input tokens and $3.75 per million out
 A 2× nearest-neighbor footnote crop is saved as `footnotes-detail.png`, with its source crop, scale and hashes in `footnotes-detail.json`. To create it from an overlay:
 
 ```sh
-uv run python methods/018-gemini-3.8-flash-low-native/inspect_footnotes.py outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native
+uv run --offline python methods/018-gemini-3.8-flash-low-native/inspect_footnotes.py outputs/kale-1913-page-017/018-gemini-3.8-flash-low-native
 ```
 
 Existing detail output is protected against overwriting.
@@ -110,8 +110,8 @@ Each of the six numbered footnotes has a separate box containing its marker and 
 Input: `kale-1913-page-097`, unannotated 300 dpi RGB render, 1374 × 2114 pixels. Started 2026-11-04 04:28:23 UTC. Requested and returned model `gemini-3.8-flash`. Settings and prompt are unchanged; coordinate conversion uses this input's actual width and height. HTTP 200, response completed.
 
 ```sh
-uv run python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-097.png --check
-uv run python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-097.png
+uv run --offline python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-097.png --check
+uv run --offline python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-097.png
 ```
 
 The completed artifacts are under `outputs/kale-1913-page-097/018-gemini-3.8-flash-low-native/`. Choose a fresh `--output-dir` for another API request.
@@ -142,8 +142,8 @@ Both four-line verses remain whole. The two commentary passages and the short le
 Input `kale-1913-page-113`, unchanged raw PNG, 1370 × 2118 pixels.
 
 ```sh
-uv run python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-113.png --check
-uv run python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-113.png
+uv run --offline python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-113.png --check
+uv run --offline python methods/018-gemini-3.8-flash-low-native/run.py inputs/kale-1913-page-113.png
 ```
 
 The completed output is `outputs/kale-1913-page-113/018-gemini-3.8-flash-low-native/`; use a fresh `--output-dir` for a repeat run.

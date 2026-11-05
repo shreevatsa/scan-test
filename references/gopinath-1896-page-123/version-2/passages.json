@@ -1,0 +1,528 @@
+{
+  "input_id": "gopinath-1896-page-123",
+  "input_sha256": "0361671dc5c57360331f210f9f4cbe771cb1cd77b6c5ab870ee1628d8264a47b",
+  "version": 2,
+  "status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+  "created_at_utc": "2026-11-04T19:56:39.661271+00:00",
+  "spec_sha256": "fed4f924e093e01eec29784feba93900828b40df44919034d19b3d41141aa79d",
+  "labels_png_sha256": "2d21c6feecdae60c0f842b794bb5b233caf971009e2ed0664ebff48c07b8d742",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 135.0,
+    "weak": 195.0,
+    "speck_area": 15
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 7625,
+      "components": 5,
+      "box": [
+        647,
+        145,
+        940,
+        211
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "verse-54",
+      "type": "verse",
+      "keep": true,
+      "pixels": 132115,
+      "components": 157,
+      "box": [
+        263,
+        295,
+        1320,
+        728
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "hindi-translation-54",
+      "type": "translation",
+      "keep": true,
+      "pixels": 123815,
+      "components": 199,
+      "box": [
+        232,
+        746,
+        1354,
+        1140
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "bhavartha-heading-54",
+      "type": "heading",
+      "keep": true,
+      "pixels": 2756,
+      "components": 3,
+      "box": [
+        716,
+        1161,
+        867,
+        1210
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "bhavartha-54",
+      "type": "translation",
+      "keep": true,
+      "pixels": 33680,
+      "components": 58,
+      "box": [
+        231,
+        1224,
+        1354,
+        1328
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "english-translation-54",
+      "type": "translation",
+      "keep": true,
+      "pixels": 71810,
+      "components": 379,
+      "box": [
+        230,
+        1349,
+        1355,
+        1700
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "note-source",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 16705,
+      "components": 72,
+      "box": [
+        231,
+        1803,
+        1354,
+        1903
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "note-cf-a",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 19543,
+      "components": 132,
+      "box": [
+        303,
+        1905,
+        1352,
+        2038
+      ]
+    },
+    {
+      "value": 9,
+      "passage": "note-cf-b",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 18769,
+      "components": 30,
+      "box": [
+        388,
+        2008,
+        1349,
+        2113
+      ]
+    },
+    {
+      "value": 10,
+      "passage": "note-cf-c",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 21602,
+      "components": 34,
+      "box": [
+        388,
+        2108,
+        1350,
+        2219
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 1,
+      "box": [
+        1466,
+        41,
+        1472,
+        55
+      ],
+      "area": 49,
+      "role": "text"
+    },
+    {
+      "component_id": 3,
+      "box": [
+        1394,
+        52,
+        1399,
+        56
+      ],
+      "area": 15,
+      "role": "text"
+    },
+    {
+      "component_id": 7,
+      "box": [
+        1468,
+        61,
+        1473,
+        68
+      ],
+      "area": 23,
+      "role": "text"
+    },
+    {
+      "component_id": 9,
+      "box": [
+        1203,
+        67,
+        1208,
+        72
+      ],
+      "area": 19,
+      "role": "text"
+    },
+    {
+      "component_id": 11,
+      "box": [
+        1465,
+        79,
+        1471,
+        85
+      ],
+      "area": 25,
+      "role": "text"
+    },
+    {
+      "component_id": 13,
+      "box": [
+        1468,
+        90,
+        1472,
+        97
+      ],
+      "area": 21,
+      "role": "text"
+    },
+    {
+      "component_id": 24,
+      "box": [
+        1384,
+        236,
+        1407,
+        2273
+      ],
+      "area": 25323,
+      "role": "large"
+    },
+    {
+      "component_id": 25,
+      "box": [
+        174,
+        253,
+        209,
+        2273
+      ],
+      "area": 28129,
+      "role": "large"
+    },
+    {
+      "component_id": 27,
+      "box": [
+        1380,
+        256,
+        1387,
+        372
+      ],
+      "area": 604,
+      "role": "text"
+    },
+    {
+      "component_id": 28,
+      "box": [
+        586,
+        261,
+        672,
+        267
+      ],
+      "area": 438,
+      "role": "text"
+    },
+    {
+      "component_id": 30,
+      "box": [
+        200,
+        279,
+        209,
+        706
+      ],
+      "area": 3153,
+      "role": "large"
+    },
+    {
+      "component_id": 61,
+      "box": [
+        1379,
+        375,
+        1385,
+        488
+      ],
+      "area": 475,
+      "role": "text"
+    },
+    {
+      "component_id": 96,
+      "box": [
+        143,
+        428,
+        149,
+        431
+      ],
+      "area": 16,
+      "role": "text"
+    },
+    {
+      "component_id": 109,
+      "box": [
+        1379,
+        490,
+        1387,
+        947
+      ],
+      "area": 1850,
+      "role": "large"
+    },
+    {
+      "component_id": 281,
+      "box": [
+        201,
+        888,
+        209,
+        1062
+      ],
+      "area": 1112,
+      "role": "large"
+    },
+    {
+      "component_id": 314,
+      "box": [
+        1379,
+        948,
+        1384,
+        1010
+      ],
+      "area": 200,
+      "role": "text"
+    },
+    {
+      "component_id": 351,
+      "box": [
+        1378,
+        1013,
+        1384,
+        1553
+      ],
+      "area": 2202,
+      "role": "large"
+    },
+    {
+      "component_id": 380,
+      "box": [
+        201,
+        1065,
+        208,
+        1079
+      ],
+      "area": 90,
+      "role": "text"
+    },
+    {
+      "component_id": 399,
+      "box": [
+        199,
+        1092,
+        209,
+        1215
+      ],
+      "area": 807,
+      "role": "large"
+    },
+    {
+      "component_id": 409,
+      "box": [
+        198,
+        1218,
+        209,
+        1485
+      ],
+      "area": 1836,
+      "role": "large"
+    },
+    {
+      "component_id": 661,
+      "box": [
+        200,
+        1500,
+        209,
+        1611
+      ],
+      "area": 639,
+      "role": "text"
+    },
+    {
+      "component_id": 735,
+      "box": [
+        1378,
+        1554,
+        1384,
+        2255
+      ],
+      "area": 3170,
+      "role": "large"
+    },
+    {
+      "component_id": 780,
+      "box": [
+        144,
+        1591,
+        148,
+        1596
+      ],
+      "area": 15,
+      "role": "text"
+    },
+    {
+      "component_id": 866,
+      "box": [
+        197,
+        1773,
+        209,
+        1995
+      ],
+      "area": 1465,
+      "role": "large"
+    },
+    {
+      "component_id": 1075,
+      "box": [
+        200,
+        1995,
+        208,
+        2014
+      ],
+      "area": 121,
+      "role": "text"
+    },
+    {
+      "component_id": 1088,
+      "box": [
+        198,
+        2019,
+        208,
+        2117
+      ],
+      "area": 578,
+      "role": "text"
+    },
+    {
+      "component_id": 1114,
+      "box": [
+        243,
+        2073,
+        248,
+        2078
+      ],
+      "area": 17,
+      "role": "text"
+    },
+    {
+      "component_id": 1125,
+      "box": [
+        195,
+        2119,
+        208,
+        2242
+      ],
+      "area": 694,
+      "role": "large"
+    }
+  ],
+  "component_rules_applied": [
+    {
+      "box": [
+        580,
+        255,
+        680,
+        272
+      ],
+      "label": null,
+      "components": [
+        {
+          "component_id": 28,
+          "box": [
+            586,
+            261,
+            672,
+            267
+          ],
+          "area": 438,
+          "role": "text",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "box": [
+        1332,
+        1912,
+        1357,
+        1940
+      ],
+      "label": "note-cf-a",
+      "components": [
+        {
+          "component_id": 987,
+          "box": [
+            1337,
+            1917,
+            1352,
+            1935
+          ],
+          "area": 174,
+          "role": "text",
+          "line": -1
+        }
+      ]
+    }
+  ],
+  "separator_pixels": 50149,
+  "builder": "methods/035-gpt-6.1-terra-none-column-margin-ownership/reference.py",
+  "method_files_sha256": {
+    "reference.py": "1a03a4bd97e5e13879c2c7108611fb0dae1876c2217e9b974d78034e779a9710",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}

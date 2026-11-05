@@ -40,8 +40,8 @@ The response is validated locally for the original region fields and types, exac
 From the project root, using the existing project environment:
 
 ```sh
-uv run python methods/008-claude-sonnet-5.5-direct/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/008-claude-sonnet-5.5-direct/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/008-claude-sonnet-5.5-direct/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/008-claude-sonnet-5.5-direct/run.py inputs/kale-1913-page-017.png
 ```
 
 The pinned image-processing dependencies are listed in `requirements.txt`. Authentication checks `ANTHROPIC_API_KEY`, then the locally stored `llm` key named `anthropic`. A different stored key name can be supplied with `--llm-key-name`. The key is sent as a bearer token and excluded from saved request artifacts.
@@ -51,7 +51,7 @@ A key scoped to a workspace can omit the workspace header. For an unscoped key, 
 For a repeat request, choose a fresh output directory:
 
 ```sh
-uv run python methods/008-claude-sonnet-5.5-direct/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/008-claude-sonnet-5.5-direct/run-002
+uv run --offline python methods/008-claude-sonnet-5.5-direct/run.py inputs/kale-1913-page-017.png --output-dir outputs/kale-1913-page-017/008-claude-sonnet-5.5-direct/run-002
 ```
 
 Existing nonempty output directories are preserved. Each invocation makes one request; errors, incomplete responses and validation failures are saved with that attempt.

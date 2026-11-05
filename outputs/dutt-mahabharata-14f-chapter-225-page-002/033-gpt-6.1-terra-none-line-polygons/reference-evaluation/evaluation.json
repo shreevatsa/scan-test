@@ -1,0 +1,961 @@
+{
+ "created_at_utc": "2026-11-04T18:22:01.799224+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/dutt-mahabharata-14f-chapter-225-page-002.png",
+  "sha256": "1b9b6986581f46a160fbc7951bf8051b44c03334b75ff521afe2289d2f7ddeb4"
+ },
+ "reference": {
+  "path": "../../references/dutt-mahabharata-14f-chapter-225-page-002",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "labels_png_sha256": "75f0a6caf3da28e8085fdea50a618b5373f38dbe10f66acf3c2e25af16d63154",
+  "spec_sha256": "045462952fb4d279b5543298b023393c9d9d2dc41fedecb59a227c4a731bb785"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra without reasoning (025), boxes",
+   "path": "../../outputs/dutt-mahabharata-14f-chapter-225-page-002/025-gpt-6.1-terra-none-footnotes/regions.json",
+   "sha256": "b771ce43c1c07b5d9d523b7aef0140268b6f281c1bfea9fabfbe5489c969fab3",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 24,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "heading-speaker": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-10": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-1": {
+     "matched_region_id": 5,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-11": {
+     "matched_region_id": 6,
+     "region_kind": "box",
+     "own_left_out": 6,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-12-first-half": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-2": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-12-second-half": {
+     "matched_region_id": 9,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-13-first-half": {
+     "matched_region_id": 10,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-3": {
+     "matched_region_id": 11,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-13-second-half": {
+     "matched_region_id": 12,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-14": {
+     "matched_region_id": 13,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-15": {
+     "matched_region_id": 14,
+     "region_kind": "box",
+     "own_left_out": 14,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-4": {
+     "matched_region_id": 15,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-16": {
+     "matched_region_id": 16,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-17": {
+     "matched_region_id": 17,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-5": {
+     "matched_region_id": 18,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-18": {
+     "matched_region_id": 19,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-6": {
+     "matched_region_id": 20,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-19": {
+     "matched_region_id": 21,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-20-first-half": {
+     "matched_region_id": 22,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-7": {
+     "matched_region_id": 23,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-20-second-half": {
+     "matched_region_id": 24,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-21": {
+     "matched_region_id": 25,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-8": {
+     "matched_region_id": 26,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-22": {
+     "matched_region_id": 27,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-23": {
+     "matched_region_id": 28,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-24": {
+     "matched_region_id": 29,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-25": {
+     "matched_region_id": 30,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-9": {
+     "matched_region_id": 31,
+     "region_kind": "box",
+     "own_left_out": 4,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-26": {
+     "matched_region_id": 32,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "heading-speaker",
+     "lower": "verse-10",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-10",
+     "lower": "translation-1",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-1",
+     "lower": "verse-11",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-11",
+     "lower": "verse-12-first-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-12-first-half",
+     "lower": "translation-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-2",
+     "lower": "verse-12-second-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-12-second-half",
+     "lower": "verse-13-first-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-13-first-half",
+     "lower": "translation-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-3",
+     "lower": "verse-13-second-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-13-second-half",
+     "lower": "verse-14",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-14",
+     "lower": "verse-15",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-15",
+     "lower": "translation-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-4",
+     "lower": "verse-16",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-16",
+     "lower": "verse-17",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-17",
+     "lower": "translation-5",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-5",
+     "lower": "verse-18",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-18",
+     "lower": "translation-6",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-6",
+     "lower": "verse-19",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-19",
+     "lower": "verse-20-first-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-20-first-half",
+     "lower": "translation-7",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-7",
+     "lower": "verse-20-second-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-20-second-half",
+     "lower": "verse-21",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-21",
+     "lower": "translation-8",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-8",
+     "lower": "verse-22",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-22",
+     "lower": "verse-23",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-23",
+     "lower": "verse-24",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-24",
+     "lower": "verse-25",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-25",
+     "lower": "translation-9",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-9",
+     "lower": "verse-26",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "GPT-6.1 Terra + line ownership polygons (033)",
+   "path": "../../outputs/dutt-mahabharata-14f-chapter-225-page-002/033-gpt-6.1-terra-none-line-polygons/regions.json",
+   "sha256": "d77e60ade1a351f9f902a76e6e41495bacd2dbcaee8c1d922c3a9696bec8111c",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "heading-speaker": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-10": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-1": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-11": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-12-first-half": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-2": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-12-second-half": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-13-first-half": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-3": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-13-second-half": {
+     "matched_region_id": 12,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-14": {
+     "matched_region_id": 13,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-15": {
+     "matched_region_id": 14,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-4": {
+     "matched_region_id": 15,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-16": {
+     "matched_region_id": 16,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-17": {
+     "matched_region_id": 17,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-5": {
+     "matched_region_id": 18,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-18": {
+     "matched_region_id": 19,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-6": {
+     "matched_region_id": 20,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-19": {
+     "matched_region_id": 21,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-20-first-half": {
+     "matched_region_id": 22,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-7": {
+     "matched_region_id": 23,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-20-second-half": {
+     "matched_region_id": 24,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-21": {
+     "matched_region_id": 25,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-8": {
+     "matched_region_id": 26,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-22": {
+     "matched_region_id": 27,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-23": {
+     "matched_region_id": 28,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-24": {
+     "matched_region_id": 29,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-25": {
+     "matched_region_id": 30,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "translation-9": {
+     "matched_region_id": 31,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    },
+    "verse-26": {
+     "matched_region_id": 32,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "heading-speaker",
+     "lower": "verse-10",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-10",
+     "lower": "translation-1",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-1",
+     "lower": "verse-11",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-11",
+     "lower": "verse-12-first-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-12-first-half",
+     "lower": "translation-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-2",
+     "lower": "verse-12-second-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-12-second-half",
+     "lower": "verse-13-first-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-13-first-half",
+     "lower": "translation-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-3",
+     "lower": "verse-13-second-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-13-second-half",
+     "lower": "verse-14",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-14",
+     "lower": "verse-15",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-15",
+     "lower": "translation-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-4",
+     "lower": "verse-16",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-16",
+     "lower": "verse-17",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-17",
+     "lower": "translation-5",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-5",
+     "lower": "verse-18",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-18",
+     "lower": "translation-6",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-6",
+     "lower": "verse-19",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-19",
+     "lower": "verse-20-first-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-20-first-half",
+     "lower": "translation-7",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-7",
+     "lower": "verse-20-second-half",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-20-second-half",
+     "lower": "verse-21",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-21",
+     "lower": "translation-8",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-8",
+     "lower": "verse-22",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-22",
+     "lower": "verse-23",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-23",
+     "lower": "verse-24",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-24",
+     "lower": "verse-25",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-25",
+     "lower": "translation-9",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-9",
+     "lower": "verse-26",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "passages": {
+     "running-header": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "heading-speaker": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-10": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-1": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-11": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-12-first-half": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-2": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-12-second-half": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-13-first-half": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-3": {
+      "main_owner_value": 11,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-13-second-half": {
+      "main_owner_value": 12,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-14": {
+      "main_owner_value": 13,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-15": {
+      "main_owner_value": 14,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-4": {
+      "main_owner_value": 15,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-16": {
+      "main_owner_value": 16,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-17": {
+      "main_owner_value": 17,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-5": {
+      "main_owner_value": 18,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "page-number": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-18": {
+      "main_owner_value": 19,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-6": {
+      "main_owner_value": 20,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-19": {
+      "main_owner_value": 21,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-20-first-half": {
+      "main_owner_value": 22,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-7": {
+      "main_owner_value": 23,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-20-second-half": {
+      "main_owner_value": 24,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-21": {
+      "main_owner_value": 25,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-8": {
+      "main_owner_value": 26,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-22": {
+      "main_owner_value": 27,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-23": {
+      "main_owner_value": 28,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-24": {
+      "main_owner_value": 29,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-25": {
+      "main_owner_value": 30,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "translation-9": {
+      "main_owner_value": 31,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     },
+     "verse-26": {
+      "main_owner_value": 32,
+      "pixels_owned_elsewhere_or_unassigned": 0
+     }
+    },
+    "ownership_png_sha256": "6230a4672702471e5e4d44b986db83239c840d6d22373027830c101d88215a9a"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "0670009e1bc23665794d5480d2f070a30132e36d744ad47d721f2bb35fe32f63",
+  "ownership.py": "2aa725f23aead27d685d1ee15d23cace4620ba99918ea7c3523e0cde9c6429ff",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

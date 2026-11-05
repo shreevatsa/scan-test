@@ -1,0 +1,169 @@
+{
+  "id": "resp_01d3fcb6ab968ee0016aeba1c75ec087d0bfab35a8f3f9d613",
+  "object": "response",
+  "created_at": 1793827271,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793827279,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_01d3fcb6ab968ee0016aeba1c94edc87d09d2344069d0b6474",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"page_number\",\"box_1000\":[146,46,175,62],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"running_header\",\"box_1000\":[440,47,573,64],\"keep\":false,\"reading_order\":null,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[155,96,865,154],\"keep\":true,\"reading_order\":1,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[153,155,866,204],\"keep\":true,\"reading_order\":2,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[153,209,867,284],\"keep\":true,\"reading_order\":3,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[220,286,618,314],\"keep\":true,\"reading_order\":4,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[153,316,865,368],\"keep\":true,\"reading_order\":5,\"uncertain\":false},{\"type\":\"heading\",\"box_1000\":[354,399,692,427],\"keep\":true,\"reading_order\":6,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[214,439,736,467],\"keep\":true,\"reading_order\":7,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[215,467,504,492],\"keep\":true,\"reading_order\":8,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[215,493,641,519],\"keep\":true,\"reading_order\":9,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[149,519,866,630],\"keep\":true,\"reading_order\":10,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[214,627,662,654],\"keep\":true,\"reading_order\":11,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[213,655,536,680],\"keep\":true,\"reading_order\":12,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[146,679,863,761],\"keep\":true,\"reading_order\":13,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[210,765,539,789],\"keep\":true,\"reading_order\":14,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[213,786,548,817],\"keep\":true,\"reading_order\":15,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[147,818,859,870],\"keep\":true,\"reading_order\":16,\"uncertain\":false},{\"type\":\"note\",\"box_1000\":[147,870,861,922],\"keep\":true,\"reading_order\":17,\"uncertain\":false}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "verse",
+                    "paragraph",
+                    "heading",
+                    "lead_in",
+                    "list_item",
+                    "formula",
+                    "note",
+                    "table",
+                    "figure",
+                    "caption",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5133,
+    "input_tokens_details": {
+      "cache_write_tokens": 5130,
+      "cached_tokens": 0
+    },
+    "output_tokens": 604,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 5737
+  },
+  "user": null,
+  "metadata": {}
+}

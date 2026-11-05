@@ -7,8 +7,8 @@ The prompt is copied byte-for-byte from method 013: it explicitly requests one r
 ## Run
 
 ```sh
-uv run python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-017.png --check
-uv run python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-017.png
+uv run --offline python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-017.png --check
+uv run --offline python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-017.png
 ```
 
 For a repeat request, use a fresh `--output-dir`, for example `outputs/kale-1913-page-017/020-gpt-6-astra-low-footnotes/run-002`. Existing output is protected against overwriting. Authentication checks `OPENAI_API_KEY`, then the locally stored `llm` key named `openai`.
@@ -55,8 +55,8 @@ The estimated cost uses $10 per million ordinary input tokens, $12.5 per million
 Input: `kale-1913-page-097`, unannotated 300 dpi RGB render, 1374 × 2114 pixels. Started 2026-11-04 04:28:51 UTC. Requested and returned model `gpt-6-astra`. Settings and prompt are unchanged; coordinate conversion uses this input's actual width and height. HTTP 200, response completed.
 
 ```sh
-uv run python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-097.png --check
-uv run python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-097.png
+uv run --offline python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-097.png --check
+uv run --offline python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-097.png
 ```
 
 The completed artifacts are under `outputs/kale-1913-page-097/020-gpt-6-astra-low-footnotes/`. Choose a fresh `--output-dir` for another API request.
@@ -89,8 +89,8 @@ Both four-line verses remain whole. The two commentary passages and the short le
 Input `kale-1913-page-113`, unchanged raw PNG, 1370 × 2118 pixels.
 
 ```sh
-uv run python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-113.png --check
-uv run python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-113.png
+uv run --offline python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-113.png --check
+uv run --offline python methods/020-gpt-6-astra-low-footnotes/run.py inputs/kale-1913-page-113.png
 ```
 
 The completed output is `outputs/kale-1913-page-113/020-gpt-6-astra-low-footnotes/`; use a fresh `--output-dir` for a repeat run.

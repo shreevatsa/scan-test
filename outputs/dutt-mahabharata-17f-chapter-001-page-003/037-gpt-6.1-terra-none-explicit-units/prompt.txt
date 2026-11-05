@@ -1,0 +1,28 @@
+Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.
+
+Return JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,
+with the origin at the top-left. Give each region a type, a keep flag, and
+reading_order among content regions. Furniture regions may have null order.
+
+Make each region exactly one unit: the finest unit that the page sets apart visually. Types:
+- verse: one verse or stanza, with all its lines and its number or end mark (for example ॥ १२ ॥). Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- paragraph: one prose paragraph, including one continued from the previous page or onto the next. Prose translations and commentary are paragraphs.
+- heading: one heading, title, or speaker line.
+- lead_in: one short line that introduces a following verse, quotation or display, set on a line of its own and often ending in a dash or colon.
+- list_item: one entry of a list, table of contents or index.
+- formula: one displayed formula, equation or list of values set apart from the prose. Lines that continue one another (for example a chain of = or ≡) form one formula; displays separated by prose or by space are separate.
+- note: one footnote, endnote or marginal note, or one entry of an apparatus of readings, including its marker. Separate neighboring notes even when they share a printed line. A paragraph or verse set apart within the notes area is its own region.
+- table: one table, including any rotated text in it.
+- figure, caption: an illustration and its caption, as separate regions.
+- running_header, page_number: page furniture, keep=false.
+- other: anything else. Printer's signature marks and catchwords are other, keep=false.
+
+- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.
+- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.
+- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.
+- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.
+- Do not transcribe, translate, or regenerate the text. Only propose regions.
+
+Schema:
+{"regions":[{"type":"verse|paragraph|heading|lead_in|list_item|formula|note|table|figure|caption|running_header|page_number|other",
+"box_1000":[0,0,1000,1000],"keep":true,"reading_order":1,"uncertain":false}]}

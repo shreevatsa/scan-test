@@ -1,0 +1,223 @@
+{
+  "input_id": "kale-1913-page-097",
+  "input_sha256": "8ea39bb8699404c96935d35c00b966d4f55ba74598d2df8c32a5d29d39467820",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before any method 033 or 034 output existed for this page; not yet human-reviewed",
+  "created_at_utc": "2026-11-04T15:39:00.102001+00:00",
+  "spec_sha256": "b31790c7eeb2c2f82cf382c2bb080b6104918871a277a3bc4d303bed91294972",
+  "labels_png_sha256": "55dae868367103728f354895fd5c03d3be795a03cae8d8d79308cc82635c0113",
+  "label_values": {
+    "unlabeled": 0,
+    "separator": 255,
+    "passages": "1..N, see passages"
+  },
+  "ink_mask": {
+    "method": "method 032 hysteresis mask",
+    "strong": 136.0,
+    "weak": 195.5,
+    "speck_area": 18
+  },
+  "passages": [
+    {
+      "value": 1,
+      "passage": "page-number",
+      "type": "page_number",
+      "keep": false,
+      "pixels": 1099,
+      "components": 2,
+      "box": [
+        177,
+        152,
+        243,
+        190
+      ]
+    },
+    {
+      "value": 2,
+      "passage": "running-header",
+      "type": "running_header",
+      "keep": false,
+      "pixels": 5698,
+      "components": 3,
+      "box": [
+        609,
+        126,
+        865,
+        193
+      ]
+    },
+    {
+      "value": 3,
+      "passage": "lead-in-96",
+      "type": "lead_in",
+      "keep": true,
+      "pixels": 7864,
+      "components": 4,
+      "box": [
+        229,
+        260,
+        686,
+        306
+      ]
+    },
+    {
+      "value": 4,
+      "passage": "verse-96",
+      "type": "verse",
+      "keep": true,
+      "pixels": 71923,
+      "components": 40,
+      "box": [
+        228,
+        322,
+        1215,
+        581
+      ]
+    },
+    {
+      "value": 5,
+      "passage": "commentary-96",
+      "type": "commentary",
+      "keep": true,
+      "pixels": 112440,
+      "components": 157,
+      "box": [
+        180,
+        602,
+        1294,
+        1012
+      ]
+    },
+    {
+      "value": 6,
+      "passage": "verse-97",
+      "type": "verse",
+      "keep": true,
+      "pixels": 71748,
+      "components": 48,
+      "box": [
+        281,
+        1027,
+        1298,
+        1286
+      ]
+    },
+    {
+      "value": 7,
+      "passage": "commentary-97",
+      "type": "commentary",
+      "keep": true,
+      "pixels": 149986,
+      "components": 157,
+      "box": [
+        176,
+        1303,
+        1296,
+        1834
+      ]
+    },
+    {
+      "value": 8,
+      "passage": "footnote-1",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 1513,
+      "components": 3,
+      "box": [
+        221,
+        1868,
+        321,
+        1900
+      ]
+    },
+    {
+      "value": 9,
+      "passage": "footnote-2",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 1587,
+      "components": 3,
+      "box": [
+        337,
+        1861,
+        439,
+        1901
+      ]
+    },
+    {
+      "value": 10,
+      "passage": "footnote-3",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 1636,
+      "components": 5,
+      "box": [
+        480,
+        1868,
+        596,
+        1899
+      ]
+    },
+    {
+      "value": 11,
+      "passage": "footnote-4",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 6553,
+      "components": 16,
+      "box": [
+        630,
+        1858,
+        1077,
+        1898
+      ]
+    },
+    {
+      "value": 12,
+      "passage": "footnote-5",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 2970,
+      "components": 4,
+      "box": [
+        1110,
+        1849,
+        1285,
+        1890
+      ]
+    },
+    {
+      "value": 13,
+      "passage": "footnote-6",
+      "type": "footnote",
+      "keep": true,
+      "pixels": 5081,
+      "components": 8,
+      "box": [
+        184,
+        1917,
+        520,
+        1953
+      ]
+    }
+  ],
+  "unlabeled_components": [
+    {
+      "component_id": 465,
+      "box": [
+        171,
+        1870,
+        187,
+        1881
+      ],
+      "area": 93,
+      "role": "text"
+    }
+  ],
+  "separator_pixels": 4640,
+  "method_files_sha256": {
+    "reference.py": "1b8bccaaf51bf9ab2b8bba5ad76abbe32e410e521bae09278ccdca9f9e9c4f51",
+    "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+    "geometry.py": "c52fdf1cf5c5beafcd472125f619dd7b163dcca40eed85639591485abebc8af2",
+    "line-config.json": "7567c6dd5d97d6fe562727b0897b7ccbd25fc1c15df564a1eb093f6403b6bd33"
+  }
+}
