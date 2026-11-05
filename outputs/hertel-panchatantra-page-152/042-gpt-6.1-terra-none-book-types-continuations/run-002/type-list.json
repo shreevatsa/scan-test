@@ -1,0 +1,21 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "hertel-panchatantra",
+ "title": "Pañcatantra, Hertel's edition (Book I: The Estranging of Friends)",
+ "description": "Sanskrit prose stories with numbered verses quoted by the speakers. Tales are told inside other tales. Prose is set in long paragraphs; a verse is displayed and indented, and the prose after it resumes flush left.",
+ "languages": ["sa-Deva"],
+ "flows": {"main": "The stories in reading order."},
+ "types": {
+  "story": {"description": "A story: the frame story of a book, or a tale told inside another story. An inner tale begins with its heading, such as ॥ कथा २१ ॥, and ends with a double danda.", "contains": ["heading", "paragraph", "verse", "story"], "flow": "main"},
+  "heading": {"description": "A tale heading such as ॥ कथा २१ ॥, or a book title.", "region": "heading"},
+  "paragraph": {"description": "A printed prose paragraph, from an indented line or the start of a tale to the next indented line, heading or tale. A verse quoted by a speaker is inside the paragraph, and the prose after it continues the same paragraph.", "region": "paragraph", "contains": ["verse", "lead_in"]},
+  "lead_in": {"description": "A short line of its own that introduces a quoted verse, such as किं च ।", "region": "lead_in"},
+  "verse": {"description": "One quoted verse with its number, such as ॥३४८॥.", "region": "verse", "numbered": true},
+  "running_header": {"description": "The running title and the tale title above the rule.", "role": "furniture", "region": "running_header"},
+  "page_number": {"description": "The printed page number.", "role": "furniture", "region": "page_number"},
+  "line_number": {"description": "The editor's line numbers in the outer margin (3, 6, 9, …).", "role": "furniture", "region": "other"},
+  "margin_mark": {"description": "Any other short mark in the outer margin beside a line.", "role": "furniture", "region": "other"}
+ },
+ "conventions": ["Transcribe Devanagari as printed, in Unicode NFC, keeping the edition's word separation, apostrophes and dandas."]
+}

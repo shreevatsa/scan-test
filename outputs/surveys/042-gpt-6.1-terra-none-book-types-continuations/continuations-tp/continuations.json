@@ -1,0 +1,1114 @@
+{
+ "created_at_utc": "2026-11-05T14:40:50.454466+00:00",
+ "api_calls": 0,
+ "method": "042-gpt-6.1-terra-none-book-types-continuations",
+ "truth": {
+  "path": "references/continuations/truth.json",
+  "sha256": "4454443fbaeab21cdf5c57ba9f069fc7104ad43883efdfe6c5672af8bebfd769"
+ },
+ "script": {
+  "path": "methods/042-gpt-6.1-terra-none-book-types-continuations/link.py",
+  "sha256": "2def0e70288046c595f8f16ae8b470eb4fcc6115acac12dd8f5ba11e66873b41"
+ },
+ "runs": [
+  "ryder-ten-princes-1927-030"
+ ],
+ "tolerance_px": 15,
+ "primary_rule": "both",
+ "summary": {
+  "run-001": {
+   "edges": 16,
+   "correct": 16,
+   "no_region": 0,
+   "true_positive": 10,
+   "false_negative": 0,
+   "false_positive": 0,
+   "true_negative": 6,
+   "stream_mismatch": 0,
+   "per_run": {
+    "ryder-ten-princes-1927-030": {
+     "correct": 16,
+     "edges": 16
+    }
+   },
+   "links": {
+    "both": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "earlier": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "either": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    }
+   }
+  },
+  "run-002": {
+   "edges": 16,
+   "correct": 16,
+   "no_region": 0,
+   "true_positive": 10,
+   "false_negative": 0,
+   "false_positive": 0,
+   "true_negative": 6,
+   "stream_mismatch": 0,
+   "per_run": {
+    "ryder-ten-princes-1927-030": {
+     "correct": 16,
+     "edges": 16
+    }
+   },
+   "links": {
+    "both": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "earlier": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "either": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    }
+   }
+  }
+ },
+ "results": [
+  {
+   "run": "ryder-ten-princes-1927-030",
+   "request": "run-001",
+   "edges": [
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-030",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "end",
+     "line": 28,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-030",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "start",
+     "line": 30,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-030",
+      7
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "end",
+     "line": 58,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-030",
+      8
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-031",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "end",
+     "line": 30,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-031",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "start",
+     "line": 32,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-031",
+      7
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "end",
+     "line": 60,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-031",
+      10
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-032",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "end",
+     "line": 10,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-032",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "start",
+     "line": 11,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-032",
+      4
+     ],
+     "region_type": "heading",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "end",
+     "line": 36,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-032",
+      7
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-033",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "end",
+     "line": 27,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-033",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "start",
+     "line": 29,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-033",
+      7
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "end",
+     "line": 57,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-033",
+      9
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "ryder-ten-princes-1927-page-031",
+      4
+     ],
+     "to_region": [
+      "ryder-ten-princes-1927-page-031",
+      7
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "ryder-ten-princes-1927-page-031",
+      10
+     ],
+     "to_region": [
+      "ryder-ten-princes-1927-page-032",
+      3
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "ryder-ten-princes-1927-page-032",
+      7
+     ],
+     "to_region": [
+      "ryder-ten-princes-1927-page-033",
+      3
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "ryder-ten-princes-1927-page-033",
+      4
+     ],
+     "to_region": [
+      "ryder-ten-princes-1927-page-033",
+      7
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-031",
+        7
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        10
+       ],
+       [
+        "ryder-ten-princes-1927-page-032",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-032",
+        7
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-033",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        7
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-031",
+        7
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        10
+       ],
+       [
+        "ryder-ten-princes-1927-page-032",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-032",
+        7
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-033",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        7
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-031",
+        7
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        10
+       ],
+       [
+        "ryder-ten-princes-1927-page-032",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-032",
+        7
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-033",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        7
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-031",
+        7
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        10
+       ],
+       [
+        "ryder-ten-princes-1927-page-032",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-032",
+        7
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-033",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        7
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "ryder-ten-princes-1927-page-030": {
+     "path": "outputs/ryder-ten-princes-1927-page-030/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "0ad66aabbc98fbd0406bc2d44541a1292bdf8ff9ec61b305c88c4bc93ed296aa"
+    },
+    "ryder-ten-princes-1927-page-031": {
+     "path": "outputs/ryder-ten-princes-1927-page-031/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "e01df9b3f703b228752ed87838c8c285a2fa492ebf9803ccb4215da7d1ffc152"
+    },
+    "ryder-ten-princes-1927-page-032": {
+     "path": "outputs/ryder-ten-princes-1927-page-032/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "67cf586eced7ec96fa4c29b7ba09781ce47b7005d0e9a8829e01ddb37eb95477"
+    },
+    "ryder-ten-princes-1927-page-033": {
+     "path": "outputs/ryder-ten-princes-1927-page-033/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "b98246d2ded28a0f66fa94d24a03bd42b74217cd638eb3bb543fc55f40019310"
+    }
+   }
+  },
+  {
+   "run": "ryder-ten-princes-1927-030",
+   "request": "run-002",
+   "edges": [
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-030",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "end",
+     "line": 28,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-030",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "start",
+     "line": 30,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-030",
+      7
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-030",
+     "stream": "body",
+     "edge": "end",
+     "line": 58,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-030",
+      8
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-031",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "end",
+     "line": 30,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-031",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "start",
+     "line": 32,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-031",
+      7
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-031",
+     "stream": "body",
+     "edge": "end",
+     "line": 60,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-031",
+      10
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-032",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "end",
+     "line": 10,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-032",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "start",
+     "line": 11,
+     "truth": false,
+     "region": [
+      "ryder-ten-princes-1927-page-032",
+      4
+     ],
+     "region_type": "heading",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-032",
+     "stream": "body",
+     "edge": "end",
+     "line": 36,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-032",
+      7
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-033",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "end",
+     "line": 27,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-033",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "start",
+     "line": 29,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-033",
+      7
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "ryder-ten-princes-1927-page-033",
+     "stream": "body",
+     "edge": "end",
+     "line": 57,
+     "truth": true,
+     "region": [
+      "ryder-ten-princes-1927-page-033",
+      9
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "ryder-ten-princes-1927-page-031",
+      4
+     ],
+     "to_region": [
+      "ryder-ten-princes-1927-page-031",
+      7
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "ryder-ten-princes-1927-page-031",
+      10
+     ],
+     "to_region": [
+      "ryder-ten-princes-1927-page-032",
+      3
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "ryder-ten-princes-1927-page-032",
+      7
+     ],
+     "to_region": [
+      "ryder-ten-princes-1927-page-033",
+      3
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "ryder-ten-princes-1927-page-033",
+      4
+     ],
+     "to_region": [
+      "ryder-ten-princes-1927-page-033",
+      7
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-031",
+        7
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        10
+       ],
+       [
+        "ryder-ten-princes-1927-page-032",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-032",
+        7
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-033",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        7
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-031",
+        7
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        10
+       ],
+       [
+        "ryder-ten-princes-1927-page-032",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-032",
+        7
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-033",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        7
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-031",
+        7
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        10
+       ],
+       [
+        "ryder-ten-princes-1927-page-032",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-032",
+        7
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-033",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        7
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-031",
+        7
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-031",
+        10
+       ],
+       [
+        "ryder-ten-princes-1927-page-032",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-032",
+        7
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        3
+       ]
+      ],
+      [
+       [
+        "ryder-ten-princes-1927-page-033",
+        4
+       ],
+       [
+        "ryder-ten-princes-1927-page-033",
+        7
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "ryder-ten-princes-1927-page-030": {
+     "path": "outputs/ryder-ten-princes-1927-page-030/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "5de45d7516aca837ae12d72b3ecb6ddccea13f215cc2a165c10f99069de410ce"
+    },
+    "ryder-ten-princes-1927-page-031": {
+     "path": "outputs/ryder-ten-princes-1927-page-031/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "52b99c741dee5fffc0a5495cd5fc41eae785dc3e33f73b3816772a644ca8bf88"
+    },
+    "ryder-ten-princes-1927-page-032": {
+     "path": "outputs/ryder-ten-princes-1927-page-032/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "01765e87af3ca012860e97b8ed837699b9f01ac438296cec49c15c180bc7190f"
+    },
+    "ryder-ten-princes-1927-page-033": {
+     "path": "outputs/ryder-ten-princes-1927-page-033/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "8e80af6d781daca9d51cabfbf1591047ce831b0b1f6fc29de8748cdac61ac9ad"
+    }
+   }
+  }
+ ]
+}

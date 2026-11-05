@@ -1,0 +1,674 @@
+{
+ "created_at_utc": "2026-11-05T14:41:00.262434+00:00",
+ "api_calls": 0,
+ "method": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+ "against": "039-gpt-6.1-terra-none-explicit-units-band-chained-lines",
+ "pages_list": "/private/tmp/claude-501/-Users-shreevatsa-w-scan-test/ec685348-dfb2-4132-9a4b-f713bb16857e/scratchpad/pages-tp.json",
+ "rule": {
+  "matching": "one to one, greedy by shared owned ink",
+  "split_or_merge_part": "at least 5% of the region's ink and 500 pixels"
+ },
+ "pages": [
+  {
+   "input_id": "ryder-ten-princes-1927-page-008",
+   "request": "run-001",
+   "regions": [
+    11,
+    11
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 247661,
+   "ink_with_corresponding_owner": 247661,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "803515d82afab05a2d221796367c78fea7fb281683fba282a0453f45b4cdbb10",
+    "b31613780c317445aa52f63a732520a088cf1d5f2fa3864d8a1c83f76b9ffbe0"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-019",
+   "request": "run-001",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 180704,
+   "ink_with_corresponding_owner": 180704,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "2f342c9859ea7c2fdbdb8c3b972f747d9aa59dd8232f60a9f46d2b7ecee8ad65",
+    "ea450554b33ec10120911def2c9b96afcdcbe1e60a6ca21e9408ea0a4fc7ad75"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-030",
+   "request": "run-001",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 270366,
+   "ink_with_corresponding_owner": 270366,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "5a22d32180e804ff6b7e36e8bc7d4c0b48112130f33f20efddf14fe67591b323",
+    "e3eacd54d006752f73a1ae537d4c3413e787e2465faebfc7a05100f03dca806a"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-031",
+   "request": "run-001",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 272313,
+   "ink_with_corresponding_owner": 272313,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "4b9f01ef2b8e48d0cc4e3c02de49143e4b10225322b352e11111dc663e758cc2",
+    "25332c9c0e47090b5605b4fb7ccca03d7e565ae1936de4825f0f3d97fc339693"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-032",
+   "request": "run-001",
+   "regions": [
+    8,
+    9
+   ],
+   "kept": [
+    5,
+    6
+   ],
+   "ink_owned_in_either_run": 152671,
+   "ink_with_corresponding_owner": 151238,
+   "agreement": 0.99061,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 4,
+     "type": "heading",
+     "into": [
+      {
+       "region": 4,
+       "type": "heading",
+       "pixels": 1433
+      },
+      {
+       "region": 5,
+       "type": "heading",
+       "pixels": 5318
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 4,
+      "type": "heading",
+      "pixels": 1433
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "ecf3b6ba34a594c946835149bbee3c12962084fe9dd0774e9c2e8e2dcc4d1b7c",
+    "792f50edb1169c1ef9c13bbdb7d1fb6eb1b17a90b1276e289a2991c22b20a316"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-033",
+   "request": "run-001",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    5,
+    5
+   ],
+   "ink_owned_in_either_run": 272853,
+   "ink_with_corresponding_owner": 272853,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "9ca5bb9628b46542d9e2b1971ff819bbb7d158562bed227e5cafe2a16baa9ba8",
+    "8e95ea238f7c232fc690224bc60dbad1b14eca3d09ad587eb7200979c26de494"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-040",
+   "request": "run-001",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 288879,
+   "ink_with_corresponding_owner": 288879,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "a85800fc093314e691feebd017f7d6a5bf0bb437db3cd2742d36760da53c0f2b",
+    "ab8daeacd244dc6ad54cfa795dfb79c903faaf8d3eae99bf6aebfeead2ca00ca"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-051",
+   "request": "run-001",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 235055,
+   "ink_with_corresponding_owner": 235055,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "3a927b9a0d686b7be22da05dc626f3e20d6569a1037257406aada3c26e0d5b21",
+    "e48d7ef92f27f25e3162754961ad77d8d65ebe35eff1544c5f3a02abb054551d"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-062",
+   "request": "run-001",
+   "regions": [
+    12,
+    12
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 251968,
+   "ink_with_corresponding_owner": 251968,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "87f0a73000baeab464d10ccc26bdd0840230096b756080d542a4cd9a77ec0429",
+    "87d9676608363d3e24ce2d708babf071c2644ad9e1392a5f09c621008cd35104"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-008",
+   "request": "run-002",
+   "regions": [
+    11,
+    11
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 247661,
+   "ink_with_corresponding_owner": 247661,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "4ed47efa87947a62c748e8236528d12b4cf2497826e0937bcd451309c7728960",
+    "330c46b693b8968838330f0b0f72e3961e1ca943f1a66835459bb1fbd2699735"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-019",
+   "request": "run-002",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 180704,
+   "ink_with_corresponding_owner": 180704,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "04abb3545b054d8d07f3d64786a7e79be2e475963e40f201569e2ec0bfcb022a",
+    "30fc671cd8352fda0d676bb06cc3c73a1dc093d7687d71a7d937d92ad92cd626"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-030",
+   "request": "run-002",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 270366,
+   "ink_with_corresponding_owner": 270366,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "cda2d0c29ba2b78ae1185723ce2fe1fa130bd1863edd0d088bbb2b9d7473fb1e",
+    "1b6a2411d8c7fa54cb6ea8ffadb8f63065657ec7e544d39323ea7a286a24a399"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-031",
+   "request": "run-002",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 272313,
+   "ink_with_corresponding_owner": 272313,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "cd8e9d1773f55d0f0c8c918bf9a87d16b39e22557053001986b7041c54939f29",
+    "812e54962b5ef9814f39c28b5e231838f5955cc0220643cdcbddd3aac085e6af"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-032",
+   "request": "run-002",
+   "regions": [
+    8,
+    9
+   ],
+   "kept": [
+    5,
+    6
+   ],
+   "ink_owned_in_either_run": 152671,
+   "ink_with_corresponding_owner": 151238,
+   "agreement": 0.99061,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 4,
+     "type": "heading",
+     "into": [
+      {
+       "region": 4,
+       "type": "heading",
+       "pixels": 1433
+      },
+      {
+       "region": 5,
+       "type": "heading",
+       "pixels": 5318
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 4,
+      "type": "heading",
+      "pixels": 1433
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "6e448450e04e2fb5090d156d4e40e2d557f0445d1c4039bc657c86151d46c1a3",
+    "00c647b152362124db8a2f108b029825858bf3a213127f4f9c3eaca386c3ba42"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-033",
+   "request": "run-002",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    5,
+    5
+   ],
+   "ink_owned_in_either_run": 272853,
+   "ink_with_corresponding_owner": 272853,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "8bcb20934ca46ad498b87b638f09aa548ff2af001b7373398b41907013255831",
+    "b72092d7c015a7a7caa43df85f541ec3089b529cb334af114540dd0b13f136fa"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-040",
+   "request": "run-002",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 288879,
+   "ink_with_corresponding_owner": 288879,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "d3a74d38426ed78629ea5029a5091504ca20048c99170f204ddc99c35822054e",
+    "a43b1ef7ca3114667b6ebceb858996b664e126ff088a2344c632ca06d861989c"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-051",
+   "request": "run-002",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 235055,
+   "ink_with_corresponding_owner": 235055,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "4161ace6683a9a436687ffc8615b55bc4ead07761994f5b9ac405fc0c3b3a07f",
+    "5a3ccb36e5d68fb4c4f4ad9bf87b3f690ad6ed54fd06c360164f5ef23188156c"
+   ]
+  },
+  {
+   "input_id": "ryder-ten-princes-1927-page-062",
+   "request": "run-002",
+   "regions": [
+    12,
+    12
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 251968,
+   "ink_with_corresponding_owner": 251968,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "243ef0acb20c4583f7dcc102d92c74b339e579cb01ad48bb83489aa6cdf8e4af",
+    "9c0967cd7833096f3c880eb46fb4f80ab015ffc7f74cc4a03dd972b847f52334"
+   ]
+  }
+ ],
+ "code_sha256": {
+  "stability.py": "b0c87685dbc262b4da0dfd2b6c041d012895b35ea028f32c93eab818df4d6841"
+ }
+}

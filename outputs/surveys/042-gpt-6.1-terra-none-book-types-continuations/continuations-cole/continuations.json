@@ -1,0 +1,2516 @@
+{
+ "created_at_utc": "2026-11-05T14:28:00.077799+00:00",
+ "api_calls": 0,
+ "method": "042-gpt-6.1-terra-none-book-types-continuations",
+ "truth": {
+  "path": "references/continuations/truth.json",
+  "sha256": "4454443fbaeab21cdf5c57ba9f069fc7104ad43883efdfe6c5672af8bebfd769"
+ },
+ "script": {
+  "path": "methods/042-gpt-6.1-terra-none-book-types-continuations/link.py",
+  "sha256": "2def0e70288046c595f8f16ae8b470eb4fcc6115acac12dd8f5ba11e66873b41"
+ },
+ "runs": [
+  "cole-1903-001"
+ ],
+ "tolerance_px": 15,
+ "primary_rule": "both",
+ "summary": {
+  "run-001": {
+   "edges": 16,
+   "correct": 16,
+   "no_region": 0,
+   "true_positive": 5,
+   "false_negative": 0,
+   "false_positive": 0,
+   "true_negative": 11,
+   "stream_mismatch": 0,
+   "per_run": {
+    "cole-1903-001": {
+     "correct": 16,
+     "edges": 16
+    }
+   },
+   "links": {
+    "both": {
+     "found": 2,
+     "truth": 2,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 2,
+     "truth": 2,
+     "wrong": 0,
+     "unscored": 12
+    },
+    "earlier": {
+     "found": 2,
+     "truth": 2,
+     "wrong": 0,
+     "unscored": 8
+    },
+    "either": {
+     "found": 2,
+     "truth": 2,
+     "wrong": 0,
+     "unscored": 20
+    }
+   }
+  },
+  "run-002": {
+   "edges": 16,
+   "correct": 16,
+   "no_region": 0,
+   "true_positive": 5,
+   "false_negative": 0,
+   "false_positive": 0,
+   "true_negative": 11,
+   "stream_mismatch": 0,
+   "per_run": {
+    "cole-1903-001": {
+     "correct": 16,
+     "edges": 16
+    }
+   },
+   "links": {
+    "both": {
+     "found": 2,
+     "truth": 2,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 2,
+     "truth": 2,
+     "wrong": 0,
+     "unscored": 12
+    },
+    "earlier": {
+     "found": 2,
+     "truth": 2,
+     "wrong": 0,
+     "unscored": 8
+    },
+    "either": {
+     "found": 2,
+     "truth": 2,
+     "wrong": 0,
+     "unscored": 20
+    }
+   }
+  }
+ },
+ "results": [
+  {
+   "run": "cole-1903-001",
+   "request": "run-001",
+   "edges": [
+    {
+     "page": "cole-1903-page-001",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": true,
+     "region": [
+      "cole-1903-page-001",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "body",
+     "edge": "end",
+     "line": 37,
+     "truth": true,
+     "region": [
+      "cole-1903-page-001",
+      11
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "notes",
+     "edge": "start",
+     "line": 38,
+     "truth": false,
+     "region": [
+      "cole-1903-page-001",
+      12
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "notes",
+     "edge": "end",
+     "line": 39,
+     "truth": false,
+     "region": [
+      "cole-1903-page-001",
+      12
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "cole-1903-page-002",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "body",
+     "edge": "end",
+     "line": 41,
+     "truth": true,
+     "region": [
+      "cole-1903-page-002",
+      8
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "notes",
+     "edge": "start",
+     "line": 42,
+     "truth": false,
+     "region": [
+      "cole-1903-page-002",
+      9
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "notes",
+     "edge": "end",
+     "line": 43,
+     "truth": false,
+     "region": [
+      "cole-1903-page-002",
+      9
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": true,
+     "region": [
+      "cole-1903-page-003",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "body",
+     "edge": "end",
+     "line": 47,
+     "truth": false,
+     "region": [
+      "cole-1903-page-003",
+      13
+     ],
+     "region_type": "formula",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "notes",
+     "edge": "start",
+     "line": 49,
+     "truth": false,
+     "region": [
+      "cole-1903-page-003",
+      14
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "notes",
+     "edge": "end",
+     "line": 53,
+     "truth": false,
+     "region": [
+      "cole-1903-page-003",
+      14
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "cole-1903-page-004",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "body",
+     "edge": "end",
+     "line": 34,
+     "truth": false,
+     "region": [
+      "cole-1903-page-004",
+      19
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "notes",
+     "edge": "start",
+     "line": 35,
+     "truth": false,
+     "region": [
+      "cole-1903-page-004",
+      20
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "notes",
+     "edge": "end",
+     "line": 37,
+     "truth": false,
+     "region": [
+      "cole-1903-page-004",
+      21
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "cole-1903-page-001",
+      11
+     ],
+     "to_region": [
+      "cole-1903-page-002",
+      3
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "cole-1903-page-002",
+      8
+     ],
+     "to_region": [
+      "cole-1903-page-003",
+      3
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "cole-1903-page-001",
+        11
+       ],
+       [
+        "cole-1903-page-002",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        8
+       ],
+       [
+        "cole-1903-page-003",
+        3
+       ]
+      ]
+     ],
+     "found": 2,
+     "truth": 2,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "cole-1903-page-001",
+        3
+       ],
+       [
+        "cole-1903-page-001",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        5
+       ],
+       [
+        "cole-1903-page-001",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        11
+       ],
+       [
+        "cole-1903-page-002",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        5
+       ],
+       [
+        "cole-1903-page-002",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        8
+       ],
+       [
+        "cole-1903-page-003",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        4
+       ],
+       [
+        "cole-1903-page-003",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        6
+       ],
+       [
+        "cole-1903-page-003",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        10
+       ],
+       [
+        "cole-1903-page-003",
+        11
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        12
+       ],
+       [
+        "cole-1903-page-003",
+        13
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        3
+       ],
+       [
+        "cole-1903-page-004",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        5
+       ],
+       [
+        "cole-1903-page-004",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        7
+       ],
+       [
+        "cole-1903-page-004",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        13
+       ],
+       [
+        "cole-1903-page-004",
+        14
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        16
+       ],
+       [
+        "cole-1903-page-004",
+        17
+       ]
+      ]
+     ],
+     "found": 2,
+     "truth": 2,
+     "wrong": [],
+     "unscored": [
+      [
+       [
+        "cole-1903-page-001",
+        3
+       ],
+       [
+        "cole-1903-page-001",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        5
+       ],
+       [
+        "cole-1903-page-001",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        5
+       ],
+       [
+        "cole-1903-page-002",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        4
+       ],
+       [
+        "cole-1903-page-003",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        6
+       ],
+       [
+        "cole-1903-page-003",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        10
+       ],
+       [
+        "cole-1903-page-003",
+        11
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        12
+       ],
+       [
+        "cole-1903-page-003",
+        13
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        3
+       ],
+       [
+        "cole-1903-page-004",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        5
+       ],
+       [
+        "cole-1903-page-004",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        7
+       ],
+       [
+        "cole-1903-page-004",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        13
+       ],
+       [
+        "cole-1903-page-004",
+        14
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        16
+       ],
+       [
+        "cole-1903-page-004",
+        17
+       ]
+      ]
+     ]
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "cole-1903-page-001",
+        4
+       ],
+       [
+        "cole-1903-page-001",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        11
+       ],
+       [
+        "cole-1903-page-002",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        6
+       ],
+       [
+        "cole-1903-page-002",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        8
+       ],
+       [
+        "cole-1903-page-003",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        5
+       ],
+       [
+        "cole-1903-page-003",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        7
+       ],
+       [
+        "cole-1903-page-003",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        11
+       ],
+       [
+        "cole-1903-page-003",
+        12
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        6
+       ],
+       [
+        "cole-1903-page-004",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        14
+       ],
+       [
+        "cole-1903-page-004",
+        15
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        17
+       ],
+       [
+        "cole-1903-page-004",
+        18
+       ]
+      ]
+     ],
+     "found": 2,
+     "truth": 2,
+     "wrong": [],
+     "unscored": [
+      [
+       [
+        "cole-1903-page-001",
+        4
+       ],
+       [
+        "cole-1903-page-001",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        6
+       ],
+       [
+        "cole-1903-page-002",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        5
+       ],
+       [
+        "cole-1903-page-003",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        7
+       ],
+       [
+        "cole-1903-page-003",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        11
+       ],
+       [
+        "cole-1903-page-003",
+        12
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        6
+       ],
+       [
+        "cole-1903-page-004",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        14
+       ],
+       [
+        "cole-1903-page-004",
+        15
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        17
+       ],
+       [
+        "cole-1903-page-004",
+        18
+       ]
+      ]
+     ]
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "cole-1903-page-001",
+        3
+       ],
+       [
+        "cole-1903-page-001",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        4
+       ],
+       [
+        "cole-1903-page-001",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        5
+       ],
+       [
+        "cole-1903-page-001",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        11
+       ],
+       [
+        "cole-1903-page-002",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        5
+       ],
+       [
+        "cole-1903-page-002",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        6
+       ],
+       [
+        "cole-1903-page-002",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        8
+       ],
+       [
+        "cole-1903-page-003",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        4
+       ],
+       [
+        "cole-1903-page-003",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        5
+       ],
+       [
+        "cole-1903-page-003",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        6
+       ],
+       [
+        "cole-1903-page-003",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        7
+       ],
+       [
+        "cole-1903-page-003",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        10
+       ],
+       [
+        "cole-1903-page-003",
+        11
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        11
+       ],
+       [
+        "cole-1903-page-003",
+        12
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        12
+       ],
+       [
+        "cole-1903-page-003",
+        13
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        3
+       ],
+       [
+        "cole-1903-page-004",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        5
+       ],
+       [
+        "cole-1903-page-004",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        6
+       ],
+       [
+        "cole-1903-page-004",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        7
+       ],
+       [
+        "cole-1903-page-004",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        13
+       ],
+       [
+        "cole-1903-page-004",
+        14
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        14
+       ],
+       [
+        "cole-1903-page-004",
+        15
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        16
+       ],
+       [
+        "cole-1903-page-004",
+        17
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        17
+       ],
+       [
+        "cole-1903-page-004",
+        18
+       ]
+      ]
+     ],
+     "found": 2,
+     "truth": 2,
+     "wrong": [],
+     "unscored": [
+      [
+       [
+        "cole-1903-page-001",
+        3
+       ],
+       [
+        "cole-1903-page-001",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        4
+       ],
+       [
+        "cole-1903-page-001",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        5
+       ],
+       [
+        "cole-1903-page-001",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        5
+       ],
+       [
+        "cole-1903-page-002",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        6
+       ],
+       [
+        "cole-1903-page-002",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        4
+       ],
+       [
+        "cole-1903-page-003",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        5
+       ],
+       [
+        "cole-1903-page-003",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        6
+       ],
+       [
+        "cole-1903-page-003",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        7
+       ],
+       [
+        "cole-1903-page-003",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        10
+       ],
+       [
+        "cole-1903-page-003",
+        11
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        11
+       ],
+       [
+        "cole-1903-page-003",
+        12
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        12
+       ],
+       [
+        "cole-1903-page-003",
+        13
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        3
+       ],
+       [
+        "cole-1903-page-004",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        5
+       ],
+       [
+        "cole-1903-page-004",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        6
+       ],
+       [
+        "cole-1903-page-004",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        7
+       ],
+       [
+        "cole-1903-page-004",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        13
+       ],
+       [
+        "cole-1903-page-004",
+        14
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        14
+       ],
+       [
+        "cole-1903-page-004",
+        15
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        16
+       ],
+       [
+        "cole-1903-page-004",
+        17
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        17
+       ],
+       [
+        "cole-1903-page-004",
+        18
+       ]
+      ]
+     ]
+    }
+   },
+   "sources": {
+    "cole-1903-page-001": {
+     "path": "outputs/cole-1903-page-001/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "fdeb1a9ddf21347c1985d717d1b47f1231e1f394efef787e23c7ee75547e4169"
+    },
+    "cole-1903-page-002": {
+     "path": "outputs/cole-1903-page-002/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "f2754eee59e820f38030cce83044eb74497035b05c58b4ff2b928383b3f2e73b"
+    },
+    "cole-1903-page-003": {
+     "path": "outputs/cole-1903-page-003/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "6d7340da09114cc51e9385f428536dcb5bdcbdd258947de55fdf530e444a8818"
+    },
+    "cole-1903-page-004": {
+     "path": "outputs/cole-1903-page-004/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "633f00ec6a3d2d0446b32c2457d9f5c1b63ebd14192116863903139a894aaac9"
+    }
+   }
+  },
+  {
+   "run": "cole-1903-001",
+   "request": "run-002",
+   "edges": [
+    {
+     "page": "cole-1903-page-001",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": true,
+     "region": [
+      "cole-1903-page-001",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "body",
+     "edge": "end",
+     "line": 37,
+     "truth": true,
+     "region": [
+      "cole-1903-page-001",
+      11
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "notes",
+     "edge": "start",
+     "line": 38,
+     "truth": false,
+     "region": [
+      "cole-1903-page-001",
+      12
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-001",
+     "stream": "notes",
+     "edge": "end",
+     "line": 39,
+     "truth": false,
+     "region": [
+      "cole-1903-page-001",
+      12
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "cole-1903-page-002",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "body",
+     "edge": "end",
+     "line": 41,
+     "truth": true,
+     "region": [
+      "cole-1903-page-002",
+      8
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "notes",
+     "edge": "start",
+     "line": 42,
+     "truth": false,
+     "region": [
+      "cole-1903-page-002",
+      9
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-002",
+     "stream": "notes",
+     "edge": "end",
+     "line": 43,
+     "truth": false,
+     "region": [
+      "cole-1903-page-002",
+      10
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": true,
+     "region": [
+      "cole-1903-page-003",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "body",
+     "edge": "end",
+     "line": 47,
+     "truth": false,
+     "region": [
+      "cole-1903-page-003",
+      13
+     ],
+     "region_type": "formula",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "notes",
+     "edge": "start",
+     "line": 49,
+     "truth": false,
+     "region": [
+      "cole-1903-page-003",
+      14
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-003",
+     "stream": "notes",
+     "edge": "end",
+     "line": 53,
+     "truth": false,
+     "region": [
+      "cole-1903-page-003",
+      14
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "cole-1903-page-004",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "body",
+     "edge": "end",
+     "line": 34,
+     "truth": false,
+     "region": [
+      "cole-1903-page-004",
+      19
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "notes",
+     "edge": "start",
+     "line": 35,
+     "truth": false,
+     "region": [
+      "cole-1903-page-004",
+      20
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "cole-1903-page-004",
+     "stream": "notes",
+     "edge": "end",
+     "line": 37,
+     "truth": false,
+     "region": [
+      "cole-1903-page-004",
+      21
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "cole-1903-page-001",
+      11
+     ],
+     "to_region": [
+      "cole-1903-page-002",
+      3
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "cole-1903-page-002",
+      8
+     ],
+     "to_region": [
+      "cole-1903-page-003",
+      3
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "cole-1903-page-001",
+        11
+       ],
+       [
+        "cole-1903-page-002",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        8
+       ],
+       [
+        "cole-1903-page-003",
+        3
+       ]
+      ]
+     ],
+     "found": 2,
+     "truth": 2,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "cole-1903-page-001",
+        3
+       ],
+       [
+        "cole-1903-page-001",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        5
+       ],
+       [
+        "cole-1903-page-001",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        11
+       ],
+       [
+        "cole-1903-page-002",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        5
+       ],
+       [
+        "cole-1903-page-002",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        8
+       ],
+       [
+        "cole-1903-page-003",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        4
+       ],
+       [
+        "cole-1903-page-003",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        6
+       ],
+       [
+        "cole-1903-page-003",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        10
+       ],
+       [
+        "cole-1903-page-003",
+        11
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        12
+       ],
+       [
+        "cole-1903-page-003",
+        13
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        3
+       ],
+       [
+        "cole-1903-page-004",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        5
+       ],
+       [
+        "cole-1903-page-004",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        7
+       ],
+       [
+        "cole-1903-page-004",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        13
+       ],
+       [
+        "cole-1903-page-004",
+        14
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        16
+       ],
+       [
+        "cole-1903-page-004",
+        17
+       ]
+      ]
+     ],
+     "found": 2,
+     "truth": 2,
+     "wrong": [],
+     "unscored": [
+      [
+       [
+        "cole-1903-page-001",
+        3
+       ],
+       [
+        "cole-1903-page-001",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        5
+       ],
+       [
+        "cole-1903-page-001",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        5
+       ],
+       [
+        "cole-1903-page-002",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        4
+       ],
+       [
+        "cole-1903-page-003",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        6
+       ],
+       [
+        "cole-1903-page-003",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        10
+       ],
+       [
+        "cole-1903-page-003",
+        11
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        12
+       ],
+       [
+        "cole-1903-page-003",
+        13
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        3
+       ],
+       [
+        "cole-1903-page-004",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        5
+       ],
+       [
+        "cole-1903-page-004",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        7
+       ],
+       [
+        "cole-1903-page-004",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        13
+       ],
+       [
+        "cole-1903-page-004",
+        14
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        16
+       ],
+       [
+        "cole-1903-page-004",
+        17
+       ]
+      ]
+     ]
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "cole-1903-page-001",
+        4
+       ],
+       [
+        "cole-1903-page-001",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        11
+       ],
+       [
+        "cole-1903-page-002",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        6
+       ],
+       [
+        "cole-1903-page-002",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        8
+       ],
+       [
+        "cole-1903-page-003",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        5
+       ],
+       [
+        "cole-1903-page-003",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        7
+       ],
+       [
+        "cole-1903-page-003",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        11
+       ],
+       [
+        "cole-1903-page-003",
+        12
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        6
+       ],
+       [
+        "cole-1903-page-004",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        14
+       ],
+       [
+        "cole-1903-page-004",
+        15
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        17
+       ],
+       [
+        "cole-1903-page-004",
+        18
+       ]
+      ]
+     ],
+     "found": 2,
+     "truth": 2,
+     "wrong": [],
+     "unscored": [
+      [
+       [
+        "cole-1903-page-001",
+        4
+       ],
+       [
+        "cole-1903-page-001",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        6
+       ],
+       [
+        "cole-1903-page-002",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        5
+       ],
+       [
+        "cole-1903-page-003",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        7
+       ],
+       [
+        "cole-1903-page-003",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        11
+       ],
+       [
+        "cole-1903-page-003",
+        12
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        6
+       ],
+       [
+        "cole-1903-page-004",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        14
+       ],
+       [
+        "cole-1903-page-004",
+        15
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        17
+       ],
+       [
+        "cole-1903-page-004",
+        18
+       ]
+      ]
+     ]
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "cole-1903-page-001",
+        3
+       ],
+       [
+        "cole-1903-page-001",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        4
+       ],
+       [
+        "cole-1903-page-001",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        5
+       ],
+       [
+        "cole-1903-page-001",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        11
+       ],
+       [
+        "cole-1903-page-002",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        5
+       ],
+       [
+        "cole-1903-page-002",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        6
+       ],
+       [
+        "cole-1903-page-002",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        8
+       ],
+       [
+        "cole-1903-page-003",
+        3
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        4
+       ],
+       [
+        "cole-1903-page-003",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        5
+       ],
+       [
+        "cole-1903-page-003",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        6
+       ],
+       [
+        "cole-1903-page-003",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        7
+       ],
+       [
+        "cole-1903-page-003",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        10
+       ],
+       [
+        "cole-1903-page-003",
+        11
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        11
+       ],
+       [
+        "cole-1903-page-003",
+        12
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        12
+       ],
+       [
+        "cole-1903-page-003",
+        13
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        3
+       ],
+       [
+        "cole-1903-page-004",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        5
+       ],
+       [
+        "cole-1903-page-004",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        6
+       ],
+       [
+        "cole-1903-page-004",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        7
+       ],
+       [
+        "cole-1903-page-004",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        13
+       ],
+       [
+        "cole-1903-page-004",
+        14
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        14
+       ],
+       [
+        "cole-1903-page-004",
+        15
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        16
+       ],
+       [
+        "cole-1903-page-004",
+        17
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        17
+       ],
+       [
+        "cole-1903-page-004",
+        18
+       ]
+      ]
+     ],
+     "found": 2,
+     "truth": 2,
+     "wrong": [],
+     "unscored": [
+      [
+       [
+        "cole-1903-page-001",
+        3
+       ],
+       [
+        "cole-1903-page-001",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        4
+       ],
+       [
+        "cole-1903-page-001",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-001",
+        5
+       ],
+       [
+        "cole-1903-page-001",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        5
+       ],
+       [
+        "cole-1903-page-002",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-002",
+        6
+       ],
+       [
+        "cole-1903-page-002",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        4
+       ],
+       [
+        "cole-1903-page-003",
+        5
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        5
+       ],
+       [
+        "cole-1903-page-003",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        6
+       ],
+       [
+        "cole-1903-page-003",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        7
+       ],
+       [
+        "cole-1903-page-003",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        10
+       ],
+       [
+        "cole-1903-page-003",
+        11
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        11
+       ],
+       [
+        "cole-1903-page-003",
+        12
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-003",
+        12
+       ],
+       [
+        "cole-1903-page-003",
+        13
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        3
+       ],
+       [
+        "cole-1903-page-004",
+        4
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        5
+       ],
+       [
+        "cole-1903-page-004",
+        6
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        6
+       ],
+       [
+        "cole-1903-page-004",
+        7
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        7
+       ],
+       [
+        "cole-1903-page-004",
+        8
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        13
+       ],
+       [
+        "cole-1903-page-004",
+        14
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        14
+       ],
+       [
+        "cole-1903-page-004",
+        15
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        16
+       ],
+       [
+        "cole-1903-page-004",
+        17
+       ]
+      ],
+      [
+       [
+        "cole-1903-page-004",
+        17
+       ],
+       [
+        "cole-1903-page-004",
+        18
+       ]
+      ]
+     ]
+    }
+   },
+   "sources": {
+    "cole-1903-page-001": {
+     "path": "outputs/cole-1903-page-001/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "af15fba08fcdfe3b681e66df358a86f5c9be846c9bb1089cce2125d22bb36b2e"
+    },
+    "cole-1903-page-002": {
+     "path": "outputs/cole-1903-page-002/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "fc5a615347ac3d78d47660aef83466a1f1656da8dce33ef9f3811ec01baf2e03"
+    },
+    "cole-1903-page-003": {
+     "path": "outputs/cole-1903-page-003/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "98e9072d3bf6d9e1494de8c45b48d152fcb1b81054bd13cb39e666ff90031974"
+    },
+    "cole-1903-page-004": {
+     "path": "outputs/cole-1903-page-004/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "1ab9cb5236df8d9a27997f14b296a2b3a4bffd35d97051f3ee7ca4638a70b264"
+    }
+   }
+  }
+ ]
+}

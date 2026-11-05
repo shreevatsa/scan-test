@@ -3521,3 +3521,123 @@ The lower mean comes from Telang pages 110 and 111, where the two method 040 req
 - **Other type differences:** Cole regions typed paragraph in one result and heading, lead_in or other in the other, and a Nītiśataka 1914 page 261 note typed paragraph.
 
 These are the same kinds of difference as between two requests under one prompt. Adding the flags did not change grouping beyond that variation.
+
+## Book types from the type list: the Kale, Hertel and Dutt runs
+
+### Method 042 — GPT-6.1 Terra without reasoning, region types from the book's type list, with continuation flags: 12 run pages, two requests each
+
+**Method:** [042-gpt-6.1-terra-none-book-types-continuations](methods/042-gpt-6.1-terra-none-book-types-continuations/README.md) is method 040 with the region types generated from the book's type list in `schema/types/` (the draft book schema, `schema/README.md`). The generated prompt describes the book, then lists each type printed as regions with the book's own description and the rule for its region class in method 040's wording, adds a catch-all `other`, and lists the larger units (Kale's section and group, Dutt's chapter, group and verse set, Hertel's story) for context only. For Hertel, whose paragraph contains verses and lead-ins, one rule is added: the inner unit is its own region, and the outer unit's text before and after it are separate regions of that unit. The response schema's type enum comes from the same list. The continuation, reading-order and other rules are method 040's, word for word.
+
+**Inputs:** the 12 pages of `inputs/pages-runs.json` from the three books with type lists: Kale 106–109, Hertel 152–155 and Dutt 17F chapter 1 pages 1–4. The type lists are the ones the user reviewed on 2026-11-05, with the Dutt list's `sentence_continues` relation dropped at the user's request; relations do not enter the region prompt.
+
+**Run:** 2026-11-05, four at a time: first requests 12:57:51–12:58:42 UTC (start of the first to end of the last), repeat requests 12:58:51–12:59:44. All 24 returned HTTP 200 with status `completed`, zero reasoning tokens and no validation warnings.
+
+| | Method 042, first | 042, repeat | Method 040 on the same pages, first | 040, repeat |
+| --- | ---: | ---: | ---: | ---: |
+| Input tokens | 86,144 | 86,211 (77,219 cached) | 84,932 | 84,999 (76,822 cached) |
+| Output tokens | 11,479 | 11,575 | 10,994 | 11,041 |
+| Regions returned | 239 | 241 | 230 | 231 |
+| Estimated cost | $0.1651 | $0.0730 | $0.1611 | $0.0693 |
+| API wall time per page, median / maximum | 12.7 s / 19.0 s | 13.6 s / 19.7 s | 12.4 s / 18.6 s | 11.8 s / 20.0 s |
+
+Both methods return 48 output tokens per region. The longer prompt adds about 100 input tokens per page. The 24 requests cost an estimated $0.24.
+
+**Types returned:** every type offered was used where the page has one. Kale pages have commentary, verse and footnote regions; Dutt pages have speaker regions (2 to 5 per page, none on page 3) besides heading, verse and translation; Hertel pages have line_number regions on every page (7 to 10) and one margin_mark on page 153. One region is typed `other` in each request, a small printer's mark (an "o") below the last line of Hertel page 154, with keep=false. The region counts by type are identical between the two requests on every page except Hertel 152 and 155, where one request returns the running title and the tale title as one running header and the other as two.
+
+**Continuation flags,** scored with method 042's `link.py` (method 040's linker, with streams from each region's class) against [references/continuations/truth.json](references/continuations/README.md) on the three runs, at 2026-11-05 13:02:29 UTC into `outputs/surveys/042-gpt-6.1-terra-none-book-types-continuations/continuations/`:
+
+| | Method 042, first | 042, repeat | Method 040, first | 040, repeat |
+| --- | ---: | ---: | ---: | ---: |
+| Truth edges correct (of 40) | 36 | 36 | 36 | 36 |
+| Truth links found, rule "both" (of 3) | 3 | 3 | 3 | 3 |
+| Wrong links, rule "both" | 0 | 0 | 0 | 0 |
+
+The wrong flags, the same in both requests of each method:
+- **Kale pages 108 and 109:** the commentary at the top of the page, whose verse ended the previous page, is flagged as continuing, under both methods. The verse, commentary and any lead-in are one group in the Kale type list, but the commentary begins there.
+- **Dutt page 3:** verse 26, which continues the sentence of verse 25 at the foot of page 2, is flagged under method 040 but not under method 042, whose Dutt list makes the verse set the larger unit.
+- **Hertel page 153, first region:** the prose resuming after verse 348 is flagged as continuing under both methods. The truth says it does not, but in the reviewed schema it does: the Hertel type list says that the prose after a quoted verse continues the same paragraph, and the example tree has that paragraph on both pages. Read that way, both methods have this edge right.
+- **Hertel page 153, last region:** "करटक आह । कथम् एतत् । सो ऽब्रवीत् ।", whose paragraph ends before the next tale's heading on page 154, is flagged as continuing under method 042 only.
+
+Inside Hertel's pages, method 042 flags the paragraph on both sides of each quoted verse (continues_later before it, continues_from_earlier after it), as the type list asks. Under the rule "later only", which takes the first region's flag alone, this gives 9 unscored links on the Hertel run, each from a paragraph region to the verse after it, and 1 wrong one, from page 153's last paragraph to page 154's tale heading. Under "both", there are none. On Hertel page 153, the second paragraph, "अतो ऽहं ब्रवीमि …", which begins the frame story's next paragraph after the inner tale's closing double danda, is also flagged as continuing. No truth edge scores it.
+
+### Method 043 — GPT-6.1 Terra without reasoning, book types with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions: 12 run pages
+
+**Method:** [043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines](methods/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/README.md) is method 041's recipe on method 042's boxes. Region records also carry the region class. Its `stability.py` adds class differences, and its new `book_types.py` compares the book types with the hand-written unit trees of the schema examples.
+
+**Run:** 2026-11-05 13:00:35–13:00:54 UTC on the first requests and 13:01:00–13:01:14 UTC on the repeats; then reference evaluations, stability comparisons and the book-type check, into `outputs/surveys/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/`. No API call was made.
+
+**References** (other passages' ink / own ink left out beyond reading-order splits / separator pixels; first request, then repeat):
+
+| Page | 042 boxes | 043 polygons | 041 polygons |
+| --- | --- | --- | --- |
+| Kale 106 | 225/350/0; 201/103/0 | 0/0/0; 0/0/0 | 0/0/0; 0/0/0 |
+| Hertel 152 | 0/0/0; 0/0/0 | 0/0/0; 0/0/0 | 0/0/0; 0/0/0 |
+| Dutt 17F 001, page 2 | 0/47/0; 0/35/0 | 0/0/0; 0/0/0 | 0/0/0; 0/0/0 |
+
+No result merges two kept reference passages, misses one or splits one.
+
+**Book types against the example trees:** the three schema examples, which Claude wrote on 2026-11-05 from the page images and method 041's first-request regions, give a book type to all 139 regions on Hertel 152–153, Kale 107–109 and Dutt pages 2–3. Each example region was matched to the method 043 region owning most of its ink.
+- **Types:** 139 of 139 match in both requests: commentary, footnote, lead_in, speaker, translation, line_number, margin_mark and the rest.
+- **Splits and unmatched regions:** none.
+- **Merges:** two, each of a single unit. Kale page 108's footnote 3 is one region in both requests; method 041 split it into its first line, beside footnotes 1 and 2, and the lines below, and the example tree had to give that footnote two regions. Hertel page 152's running title and tale title are one region in the first request, which the Hertel type list calls one running header.
+
+The example trees were written by Claude and have not been reviewed region by region, so this is agreement with Claude's reading, not with the user's.
+
+**Stability on the 12 pages:**
+
+| | Method 040 → 041 | Method 042 → 043 |
+| --- | --- | --- |
+| Pages with identical ownership and keep flags between requests | 11 of 12 | 10 of 12 |
+| Type differences over matched regions | 1 (Kale 108) | 0 |
+| Reading order of matched kept regions identical | 12 of 12 | 12 of 12 |
+
+The two method 043 pages that differ are Hertel 152 and 155, where one request returns the running header as two regions (agreement 0.993 and 0.985). Method 041's differing page is Kale 108, where the two requests split footnote 3 differently and type part of it verse in one.
+
+**Against method 041,** request by request, region classes agree on every matched region except the Kale 108 footnote that method 041's repeat typed verse. The ownership differences are those that follow the type lists:
+- **Kale page 108:** footnote 3 is one region (above).
+- **Hertel pages 152, 154 and 155:** the running title and tale title are one region; on pages 154 and 155, where method 040 returned no margin regions, method 042 returns 7 and 8 line_number regions, so the editor's line numbers are no longer owned by the paragraphs.
+- **Dutt page 1:** the chapter heading "CHAPTER 1 / (DRONABHISHEKA PARVA) / The questions of Dhritarashtra" is one heading region in both requests, against three under method 041. The Dutt type list's heading is "a chapter heading". "Vaishampayana said" and the other speaker lines are speaker regions.
+
+![Dutt 17F chapter 1 page 1, method 043's first request: the chapter heading as one region, and speaker regions](outputs/dutt-mahabharata-17f-chapter-001-page-001/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/overlay.png)
+
+### Methods 042 and 043 on the Telang run, with Claude's draft Telang type list: 4 run pages, two requests each
+
+**Type list:** `schema/types/telang-dli.json`, drafted by Claude on 2026-11-05 from twelve page images (introduction, index tables, text and notes pages) and not yet reviewed by the user. Its region types are heading, paragraph, table, lead_in, verse, apparatus_entry (flow apparatus), stanza_note, footnote (flow notes), page_number and running_header. The apparatus_entry description says that an entry can run onto the next page, where the apparatus then continues it without a numeral, for example from (c).
+
+**Inputs and run:** Telang 108–111 from `inputs/pages-runs.json`. Method 042 first requests 13:08:05–13:08:16 UTC on 2026-11-05 and repeat requests 13:08:16–13:08:26, four at a time; all 8 completed with no validation warnings, at an estimated $0.0384 and $0.0174 (method 040: $0.0423 and $0.0159). Method 043 ran immediately after; the reference evaluation, the stability comparisons into `outputs/surveys/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/runs-telang/`, and method 042's linker with `--runs telang-dli-108` into `outputs/surveys/042-gpt-6.1-terra-none-book-types-continuations/continuations-telang/` followed. No other API call was made.
+
+**Apparatus granularity:** method 042 returns one apparatus_entry per stanza's entry, 4, 5, 4 and 3 on pages 108–111, the same in both requests. Method 040 returned 6, 11, 23 and 3 note regions in its first request and 9, 12, 11 and 9 in its repeat, splitting entries into lines or groups of lines.
+
+**Reference, Telang 108** (other passages' ink / own ink left out beyond reading-order splits / separator pixels; first request, then repeat): method 042's boxes 17/77/0 and 28/43/0; method 043's polygons 0/0/0 and 0/0/0, with no passage split. Method 041 scored 0/0/0 too, but split the apparatus entry for verse 79 in reading order in its first request and those for verses 79–81 in its repeat.
+
+**Stability:** method 043's ownership and keep flags are identical between the two requests on all 4 pages (agreement 1.0000 each); method 041's on none (0.880, 0.955, 0.786, 0.797). Against method 041, every difference is an apparatus entry that method 041 split into several regions.
+
+**Continuation flags** (15 truth edges, 4 truth links, 2 of them through the apparatus):
+
+| | Method 042, first | 042, repeat | Method 040, first | 040, repeat |
+| --- | ---: | ---: | ---: | ---: |
+| Truth edges correct | 14 | 14 | 12 | 11 |
+| Truth links found, rule "both" | 3 | 3 | 2 | 2 |
+| Truth links found, rule "earlier" | 4 | 4 | 3 | 3 |
+| Wrong links, any rule | 0 | 0 | 0 | 0 |
+| Unscored links, rule "both" | 0 | 0 | 11 | 0 |
+
+- **Found:** the apparatus link from verse LXXXVI's entry at the foot of page 109 to its continuation at the top of page 110, in both requests, which method 040 never found. Both body links, as under method 040.
+- **Missed:** the apparatus link from verse LXXXII's entry at the foot of page 108 to page 109, in both requests: the continuation at the top of page 109 is flagged, but the entry at the foot of page 108, which ends "K. Bo. G. N.", is not. That is the one wrong edge.
+- **Unscored links:** method 040's first request linked 11 pairs of apparatus line pieces on page 110; method 042 returns no line pieces.
+
+### Methods 042 and 043 on the Cole run, with Claude's draft Cole type list: 4 run pages, two requests each
+
+**Type list:** `schema/types/cole-1903.json`, drafted by Claude on 2026-11-05 from the four page images and not yet reviewed by the user. The containers are article (title, byline, read-before note, text, signoff) and section (numbered, as in Cole's 1., 2., 3.). The region types are heading (class heading), byline (heading), read_before (heading), paragraph (paragraph, may contain formulas), formula (formula), signoff (other), footnote (note, flow notes), and the running_header and page_number furniture. The running_header description asks for the running title and the bracketed month or year as one region. The paragraph description says that a line such as "and" between two formulas is the paragraph's text, and that text after a formula that begins at the margin belongs to the same paragraph. The generated prompt therefore carries the nesting rule for a formula inside a paragraph.
+
+**Inputs and run:** Cole 1–4 from `inputs/pages-runs.json`. Method 042 first requests at 14:26:19 UTC on 2026-11-05 and repeat requests at 14:26:36, four at a time; all 8 completed with no validation warnings, at an estimated $0.0515 and $0.0153 (method 040: $0.0502 and $0.0161). API wall time per page 8.7–13.8 s and 8.2–13.3 s. Method 043 ran immediately after; the reference evaluation (14:27:44), the stability comparisons into `outputs/surveys/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/runs-cole/`, and method 042's linker with `--runs cole-1903-001` into `outputs/surveys/042-gpt-6.1-terra-none-book-types-continuations/continuations-cole/` (14:28:00) followed. No other API call was made.
+
+**Regions:** the two requests return the same regions, types and flags on every page (12, 10, 14 and 21 regions). The running header is one region on every page; methods 040 and 041 returned it as two, the running title and the bracketed month or year, on every page. The two article heads (pages 1 and 4) are heading, byline and read_before; both signoffs are signoff. Under method 041, those lines were paragraph, other or heading, and differed between its two requests on pages 1 and 4. On page 4, "The cases marked + give" and the "and" between two formulas are paragraph regions, flagged as continuing; method 041 typed both lead_in.
+
+**Reference, Cole page 3** (other passages' ink / own ink left out beyond reading-order splits / separator pixels; first request, then repeat): method 042's boxes 123/76/0 and 101/129/0; method 043's polygons 0/0/0 and 0/0/0, with no split or merge.
+
+**Stability:** method 043's ownership and keep flags are identical between the two requests on all 4 pages, with no type or class difference. Method 041's ownership is identical too, with 2 type differences on page 1 and 1 on page 4. Against method 041, request by request, the only ownership difference on each page is the running header, which method 041 split in two.
+
+**Continuation flags:** 16 of 16 truth edges in each request, and both truth links (1 → 2 and 2 → 3, body) found under rule "both" with none wrong, as under method 040. Under rule "later", 12 links are unscored: paragraphs flagged as continuing past a displayed formula on the same page, which the truth does not score.
+
+![Cole page 4, method 043's first request: one running header, the "and" between two formulas as a paragraph region, signoff, heading, byline and read_before](outputs/cole-1903-page-004/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/overlay.png)

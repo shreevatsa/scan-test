@@ -1,0 +1,174 @@
+{
+  "id": "resp_025df0d09168c16a016aec920d125087d1a0e25f5735204bbf",
+  "object": "response",
+  "created_at": 1793888781,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793888790,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_025df0d09168c16a016aec920ebf7c87d19d81bad3dabe867f",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"page_number\",\"box_1000\":[178,122,219,137],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"running_header\",\"box_1000\":[297,122,827,141],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[177,155,827,284],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[202,289,406,306],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"formula\",\"box_1000\":[310,314,694,332],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[175,338,827,371],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true},{\"type\":\"formula\",\"box_1000\":[175,379,827,429],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[176,436,827,485],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[174,484,826,630],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[202,629,522,647],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"formula\",\"box_1000\":[307,651,693,673],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[175,677,826,713],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true},{\"type\":\"formula\",\"box_1000\":[199,717,798,770],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"footnote\",\"box_1000\":[174,778,827,839],\"keep\":true,\"reading_order\":12,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain",
+                "continues_from_earlier",
+                "continues_later"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "heading",
+                    "byline",
+                    "read_before",
+                    "paragraph",
+                    "formula",
+                    "signoff",
+                    "footnote",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                },
+                "continues_from_earlier": {
+                  "type": "boolean"
+                },
+                "continues_later": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 7543,
+    "input_tokens_details": {
+      "cache_write_tokens": 7540,
+      "cached_tokens": 0
+    },
+    "output_tokens": 674,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 8217
+  },
+  "user": null,
+  "metadata": {}
+}

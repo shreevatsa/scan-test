@@ -1,0 +1,38 @@
+Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.
+
+The book: Cole (1903), On the factoring of large numbers: four pages of the Bulletin of the American Mathematical Society. Journal pages of English prose with inline and displayed mathematics. An article can begin or end anywhere on a page: it opens with its title, byline and a note on where it was read, and closes with the author's address and date, and a short rule separates it from the next article. The pages hold the end of the previous article, Cole's article, divided into numbered sections, and the beginning of the next article. Footnotes, marked *, † and so on, sit below a rule at the foot of the page and restart on each page.
+
+Return JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,
+with the origin at the top-left. Give each region a type, a keep flag, and
+reading_order among content regions. Furniture regions may have null order.
+
+Make each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:
+- heading: The title of an article, in capitals, such as ON THE FACTORING OF LARGE NUMBERS. A title of two lines is one heading.
+- byline: The author's line under the title, in small capitals, such as BY PROFESSOR F. N. COLE.
+- read_before: The line in parentheses under the byline saying where and when the paper was read, such as (Read before the American Mathematical Society, October 31, 1903.)
+- paragraph: A paragraph of prose with inline mathematics. Its first line is indented, and the first paragraph of a section begins with the section's number. A paragraph often contains displayed formulas, and its sentence goes on after them, as in …reduce N to the form [formula] the factors u and v being so chosen…; a line such as and between two formulas is the paragraph's text. Text after a formula that begins at the margin, not indented, belongs to the same paragraph. One region per paragraph, including one continued from the previous page or onto the next.
+- formula: Mathematics displayed on lines of its own, set apart from the prose: an equation, a chain of equations or congruences, or a list of numbers running over several lines. Lines that continue one another (for example a chain of = or ≡) form one region; displays separated by prose or by space are separate.
+- signoff: The author's address and date at the end of an article, in small capitals and italics, such as COLUMBIA UNIVERSITY, October, 1903., on two lines. One region for both lines.
+- footnote: One footnote below the rule, marked *, † or ‡. Include its marker. Separate neighboring notes even when they share a printed line.
+- running_header: The running title and the bracketed month or year beside it, such as THE FACTORING OF LARGE NUMBERS. [Dec., or 1903.] ON THE p-DISCRIMINANT. One region for both. Page furniture, keep=false.
+- page_number: The printed page number at the outer corner of the head, such as 134. Page furniture, keep=false.
+- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.
+
+Larger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:
+- article: One article: its title, byline and the note on where it was read, its text, and the author's address and date at the end.
+- section: A numbered section of an article. Its number, such as 1., begins its first paragraph.
+
+- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.
+- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.
+- A region holds the text of one unit only. Where one unit contains another, as with a formula inside a paragraph, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.
+- Continuation: give each region two flags.
+  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.
+  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.
+  Both are false for a unit that is complete in its region, and for page furniture.
+- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.
+- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.
+- Do not transcribe, translate, or regenerate the text. Only propose regions.
+
+Schema:
+{"regions":[{"type":"heading|byline|read_before|paragraph|formula|signoff|footnote|running_header|page_number|other",
+"box_1000":[0,0,1000,1000],"keep":true,"reading_order":1,"uncertain":false,"continues_from_earlier":false,"continues_later":false}]}

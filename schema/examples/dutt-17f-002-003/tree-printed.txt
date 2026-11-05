@@ -1,0 +1,93 @@
+flow main
+  chapter (chapter 1)   [spans pages 2–3; began before this range; goes on after this range]
+    group (verses 11–12)
+      verse_set
+        verse 11: p2 r3
+        verse 12: p2 r4
+      translation: p2 r5
+    group (verse 13)
+      speaker: p2 r6
+      verse_set
+        verse 13: p2 r7
+      speaker: p2 r8
+      translation: p2 r9
+    group (verse 14)
+      verse_set
+        verse 14: p2 r10
+      translation: p2 r11
+    group (verse 15)
+      verse_set
+        verse 15: p2 r12
+      translation: p2 r13
+    group (verses 16–17)
+      verse_set
+        verse 16: p2 r14
+        verse 17: p2 r15
+      translation: p2 r16
+    group (verses 18–19)
+      verse_set
+        verse 18: p2 r17
+        verse 19: p2 r18
+      translation: p2 r19
+    group (verse 20)
+      verse_set
+        verse 20: p2 r20
+      translation: p2 r21
+    group (verses 21–22)
+      verse_set
+        verse 21: p2 r22
+        verse 22: p2 r23
+      translation: p2 r24
+    group (verse 23)
+      verse_set
+        verse 23: p2 r25
+      translation: p2 r26
+    group (verse 24)
+      verse_set
+        verse 24: p2 r27
+      translation: p2 r28
+    group (verses 25–26)   [spans pages 2–3]
+      verse_set   [spans pages 2–3]
+        verse 25: p2 r29
+        verse 26: p3 r3
+      translation: p3 r4
+    group (verses 27–28)
+      verse_set
+        verse 27: p3 r5
+        verse 28: p3 r6
+      translation: p3 r7
+    group (verse 29)
+      verse_set
+        verse 29: p3 r8
+      translation: p3 r9
+    group (verse 30)
+      verse_set
+        verse 30: p3 r10
+      translation: p3 r11
+    group (verse 31)
+      verse_set
+        verse 31: p3 r12
+      translation: p3 r13
+    group (verses 32–33)
+      verse_set
+        verse 32: p3 r14
+        verse 33: p3 r15
+      translation: p3 r16
+    group (verses 34–36)
+      verse_set
+        verse 34: p3 r17
+        verse 35: p3 r18
+        verse 36: p3 r19
+      translation: p3 r20
+    group (verse 37)
+      verse_set
+        verse 37: p3 r21
+      translation: p3 r22
+    group (verses 38–39)   [goes on after this range]
+      verse_set
+        verse 38: p3 r23
+        verse 39: p3 r24
+      translation: p3 r25   [goes on after this range]
+
+Continuing across each page break, outermost first:
+page 2 → 3: chapter (chapter 1), group (verses 25–26), verse_set

@@ -1,0 +1,109 @@
+# Dutt 17F chapter 1, pages 2-3: verse sets with their translations, including sets split by a column or page break.
+# Regions are method 041's first request. Written by Claude from the page images on 2026-11-05.
+book dutt-mahabharata
+method 041-gpt-6.1-terra-none-explicit-units-continuations-band-chained-lines
+
+page dutt-mahabharata-17f-chapter-001-page-002 label=2
+furniture r1 page_number, r2 running_header
+flow main
+chapter id=ch "chapter 1" open=start,end
+  group "verses 11–12"
+    verse_set
+      verse 11: r3
+      verse 12: r4
+    translation: r5
+  # Speaker lines as printed. Verse 13 is still Dhṛtarāṣṭra's question, so they belong to verse 14; the user called it a mistake in the text, not to be corrected here.
+  group "verse 13"
+    speaker: r6
+    verse_set
+      verse 13: r7
+    speaker: r8
+    translation: r9
+  group "verse 14"
+    verse_set
+      verse 14: r10
+    translation: r11
+  group "verse 15"
+    verse_set
+      verse 15: r12
+    # Ends "…duties of the Kshatriya sect; and,". The user decided on 2026-11-05 to treat it as ending there.
+    translation: r13
+  group "verses 16–17"
+    verse_set
+      verse 16: r14
+      verse 17: r15
+    translation: r16
+  # Verse 18 ends the left column and verse 19 begins the right column.
+  group "verses 18–19"
+    verse_set
+      verse 18: r17
+      verse 19: r18
+    translation: r19
+  group "verse 20"
+    verse_set
+      verse 20: r20
+    translation: r21
+  group "verses 21–22"
+    verse_set
+      verse 21: r22
+      verse 22: r23
+    translation: r24
+  group "verse 23"
+    verse_set
+      verse 23: r25
+    translation: r26
+  group "verse 24"
+    verse_set
+      verse 24: r27
+    translation: r28
+  group id=g25 "verses 25–26" open=end
+    verse_set id=vs25 open=end
+      verse 25: r29
+
+page dutt-mahabharata-17f-chapter-001-page-003 label=3
+furniture r1 running_header, r2 page_number
+flow main
+chapter id=ch "chapter 1" open=start,end
+  group id=g25 "verses 25–26" open=start
+    verse_set id=vs25 open=start
+      verse 26: r3
+    translation: r4
+  group "verses 27–28"
+    verse_set
+      verse 27: r5
+      verse 28: r6
+    translation: r7
+  group "verse 29"
+    verse_set
+      verse 29: r8
+    translation: r9
+  group "verse 30"
+    verse_set
+      verse 30: r10
+    translation: r11
+  group "verse 31"
+    verse_set
+      verse 31: r12
+    translation: r13
+  # Verse 32 ends the left column and verse 33 begins the right column.
+  group "verses 32–33"
+    verse_set
+      verse 32: r14
+      verse 33: r15
+    translation: r16
+  group "verses 34–36"
+    verse_set
+      verse 34: r17
+      verse 35: r18
+      verse 36: r19
+    translation: r20
+  group "verse 37"
+    verse_set
+      verse 37: r21
+    translation: r22
+  # The translation of verses 38-39 goes on on page 4.
+  group "verses 38–39" open=end
+    verse_set
+      verse 38: r23
+      verse 39: r24
+    translation open=end: r25

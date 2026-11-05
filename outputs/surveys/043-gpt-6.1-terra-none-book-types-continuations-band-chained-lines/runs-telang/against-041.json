@@ -1,0 +1,1193 @@
+{
+ "created_at_utc": "2026-11-05T13:08:58.771049+00:00",
+ "api_calls": 0,
+ "method": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+ "against": "041-gpt-6.1-terra-none-explicit-units-continuations-band-chained-lines",
+ "pages_list": "/private/tmp/claude-501/-Users-shreevatsa-w-scan-test/ec685348-dfb2-4132-9a4b-f713bb16857e/scratchpad/pages-telang.json",
+ "rule": {
+  "matching": "one to one, greedy by shared owned ink",
+  "split_or_merge_part": "at least 5% of the region's ink and 500 pixels"
+ },
+ "pages": [
+  {
+   "input_id": "telang-dli-page-108",
+   "request": "run-001",
+   "regions": [
+    9,
+    11
+   ],
+   "kept": [
+    8,
+    10
+   ],
+   "ink_owned_in_either_run": 331546,
+   "ink_with_corresponding_owner": 324818,
+   "agreement": 0.97971,
+   "ink_owned_in_one_run_only": [
+    0,
+    14
+   ],
+   "splits": [
+    {
+     "region": 6,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 6,
+       "type": "note",
+       "pixels": 8080
+      },
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 5023
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 1691
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 7,
+      "type": "note",
+      "pixels": 5023
+     },
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 1691
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     7,
+     9,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     8,
+     10,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     9,
+     11,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     6,
+     6,
+     "apparatus_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "a4e5e4c02bc58e00069d500f9d795b4784e22bd0e5f440609dc13a4f46826889",
+    "607f01104c8b9ea2f08770c1fbfaa6b5830c7d842a01b7f0dbebda5beefd783d"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-109",
+   "request": "run-001",
+   "regions": [
+    11,
+    17
+   ],
+   "kept": [
+    10,
+    16
+   ],
+   "ink_owned_in_either_run": 346798,
+   "ink_with_corresponding_owner": 309896,
+   "agreement": 0.89359,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 7,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 8349
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 9710
+      }
+     ]
+    },
+    {
+     "region": 9,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 6943
+      },
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 4110
+      }
+     ]
+    },
+    {
+     "region": 10,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 12,
+       "type": "note",
+       "pixels": 12859
+      },
+      {
+       "region": 13,
+       "type": "note",
+       "pixels": 41780
+      },
+      {
+       "region": 15,
+       "type": "note",
+       "pixels": 11584
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 7,
+      "type": "note",
+      "pixels": 8349
+     },
+     {
+      "region": 11,
+      "type": "note",
+      "pixels": 4110
+     },
+     {
+      "region": 12,
+      "type": "note",
+      "pixels": 12859
+     },
+     {
+      "region": 15,
+      "type": "note",
+      "pixels": 11584
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     10,
+     13,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     11,
+     17,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     8,
+     9,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     7,
+     8,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     9,
+     10,
+     "apparatus_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 10,
+   "sources": [
+    "8f3193069f9099f3303df5842ad8a017f84714d38f54d943ad709cf07631ff0d",
+    "e8f4a0a4e5edf46df47d49c798ff18f57a38250bf7b1f34261b04b8f8b4a70d2"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-110",
+   "request": "run-001",
+   "regions": [
+    9,
+    28
+   ],
+   "kept": [
+    8,
+    27
+   ],
+   "ink_owned_in_either_run": 370322,
+   "ink_with_corresponding_owner": 242941,
+   "agreement": 0.65603,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 6,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 6,
+       "type": "note",
+       "pixels": 12952
+      },
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 13319
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 8579
+      },
+      {
+       "region": 9,
+       "type": "note",
+       "pixels": 4337
+      },
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 11130
+      }
+     ]
+    },
+    {
+     "region": 7,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 12117
+      },
+      {
+       "region": 12,
+       "type": "note",
+       "pixels": 12981
+      },
+      {
+       "region": 13,
+       "type": "note",
+       "pixels": 4745
+      },
+      {
+       "region": 14,
+       "type": "note",
+       "pixels": 4717
+      },
+      {
+       "region": 15,
+       "type": "note",
+       "pixels": 4037
+      },
+      {
+       "region": 16,
+       "type": "note",
+       "pixels": 9553
+      }
+     ]
+    },
+    {
+     "region": 8,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 17,
+       "type": "note",
+       "pixels": 14010
+      },
+      {
+       "region": 18,
+       "type": "note",
+       "pixels": 9844
+      },
+      {
+       "region": 19,
+       "type": "note",
+       "pixels": 2456
+      },
+      {
+       "region": 21,
+       "type": "note",
+       "pixels": 9696
+      },
+      {
+       "region": 22,
+       "type": "note",
+       "pixels": 8632
+      }
+     ]
+    },
+    {
+     "region": 9,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 23,
+       "type": "note",
+       "pixels": 13372
+      },
+      {
+       "region": 25,
+       "type": "note",
+       "pixels": 10607
+      },
+      {
+       "region": 27,
+       "type": "note",
+       "pixels": 3845
+      },
+      {
+       "region": 28,
+       "type": "note",
+       "pixels": 5182
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 6,
+      "type": "note",
+      "pixels": 12952
+     },
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 8579
+     },
+     {
+      "region": 9,
+      "type": "note",
+      "pixels": 4337
+     },
+     {
+      "region": 10,
+      "type": "note",
+      "pixels": 11130
+     },
+     {
+      "region": 11,
+      "type": "note",
+      "pixels": 12117
+     },
+     {
+      "region": 13,
+      "type": "note",
+      "pixels": 4745
+     },
+     {
+      "region": 14,
+      "type": "note",
+      "pixels": 4717
+     },
+     {
+      "region": 15,
+      "type": "note",
+      "pixels": 4037
+     },
+     {
+      "region": 16,
+      "type": "note",
+      "pixels": 9553
+     },
+     {
+      "region": 18,
+      "type": "note",
+      "pixels": 9844
+     },
+     {
+      "region": 19,
+      "type": "note",
+      "pixels": 2456
+     },
+     {
+      "region": 20,
+      "type": "note",
+      "pixels": 2338
+     },
+     {
+      "region": 21,
+      "type": "note",
+      "pixels": 9696
+     },
+     {
+      "region": 22,
+      "type": "note",
+      "pixels": 8632
+     },
+     {
+      "region": 24,
+      "type": "note",
+      "pixels": 1394
+     },
+     {
+      "region": 25,
+      "type": "note",
+      "pixels": 10607
+     },
+     {
+      "region": 26,
+      "type": "note",
+      "pixels": 1220
+     },
+     {
+      "region": 27,
+      "type": "note",
+      "pixels": 3845
+     },
+     {
+      "region": 28,
+      "type": "note",
+      "pixels": 5182
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     8,
+     17,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     9,
+     23,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     6,
+     7,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     7,
+     12,
+     "apparatus_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "3bc46c2635ff86fbc7d4d9fb056d32fcce1f203f8ee46a70db030e0b7493d5a2",
+    "42f0df3334572536332982feca1bab4e36582800ff67c8747e3887da6c296c76"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-111",
+   "request": "run-001",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 379735,
+   "ink_with_corresponding_owner": 379735,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     6,
+     6,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     7,
+     7,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     8,
+     8,
+     "apparatus_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "0dc1d11bca4af55c7faf7e96ac871397253df0b3a1f09571cbd380c8f71c5c27",
+    "12adf7d15765fefed10de45e8e37d2f1a538b871f6e5a427a119c528a0d385ba"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-108",
+   "request": "run-002",
+   "regions": [
+    9,
+    14
+   ],
+   "kept": [
+    8,
+    13
+   ],
+   "ink_owned_in_either_run": 331532,
+   "ink_with_corresponding_owner": 286680,
+   "agreement": 0.86471,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 6,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 6,
+       "type": "note",
+       "pixels": 8080
+      },
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 6714
+      }
+     ]
+    },
+    {
+     "region": 7,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 7092
+      },
+      {
+       "region": 9,
+       "type": "note",
+       "pixels": 6444
+      },
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 91595
+      }
+     ]
+    },
+    {
+     "region": 8,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 5536
+      },
+      {
+       "region": 12,
+       "type": "note",
+       "pixels": 19200
+      },
+      {
+       "region": 13,
+       "type": "note",
+       "pixels": 19066
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 7,
+      "type": "note",
+      "pixels": 6714
+     },
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 7092
+     },
+     {
+      "region": 9,
+      "type": "note",
+      "pixels": 6444
+     },
+     {
+      "region": 11,
+      "type": "note",
+      "pixels": 5536
+     },
+     {
+      "region": 13,
+      "type": "note",
+      "pixels": 19066
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     7,
+     10,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     8,
+     12,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     9,
+     14,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     6,
+     6,
+     "apparatus_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "213f1790af5cd802cd24f76648895be462b357450c59c27acc6b41806d42bc6d",
+    "9633aa62aed586cbf72d33fc65d7d556d2f2126f8e93d655840ed591cdbdeb9e"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-109",
+   "request": "run-002",
+   "regions": [
+    11,
+    18
+   ],
+   "kept": [
+    10,
+    17
+   ],
+   "ink_owned_in_either_run": 346798,
+   "ink_with_corresponding_owner": 294214,
+   "agreement": 0.84837,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 7,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 8349
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 9710
+      }
+     ]
+    },
+    {
+     "region": 8,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 9,
+       "type": "note",
+       "pixels": 25460
+      },
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 12160
+      }
+     ]
+    },
+    {
+     "region": 9,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 6943
+      },
+      {
+       "region": 12,
+       "type": "note",
+       "pixels": 4110
+      }
+     ]
+    },
+    {
+     "region": 10,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 13,
+       "type": "note",
+       "pixels": 12859
+      },
+      {
+       "region": 14,
+       "type": "note",
+       "pixels": 38258
+      },
+      {
+       "region": 15,
+       "type": "note",
+       "pixels": 3522
+      },
+      {
+       "region": 16,
+       "type": "note",
+       "pixels": 11584
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 7,
+      "type": "note",
+      "pixels": 8349
+     },
+     {
+      "region": 10,
+      "type": "note",
+      "pixels": 12160
+     },
+     {
+      "region": 12,
+      "type": "note",
+      "pixels": 4110
+     },
+     {
+      "region": 13,
+      "type": "note",
+      "pixels": 12859
+     },
+     {
+      "region": 15,
+      "type": "note",
+      "pixels": 3522
+     },
+     {
+      "region": 16,
+      "type": "note",
+      "pixels": 11584
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     10,
+     14,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     11,
+     18,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     8,
+     9,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     7,
+     8,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     9,
+     11,
+     "apparatus_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 10,
+   "sources": [
+    "754de31624f46055bd30b8a8167dee29062f2de232f119113ce2f8e8b4c64ec7",
+    "1afa57c652d9ff60cabf1e134ae5aaaa5ce839e369267054c827dc50c60249e9"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-110",
+   "request": "run-002",
+   "regions": [
+    9,
+    16
+   ],
+   "kept": [
+    8,
+    15
+   ],
+   "ink_owned_in_either_run": 370322,
+   "ink_with_corresponding_owner": 318726,
+   "agreement": 0.86067,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 6,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 6,
+       "type": "note",
+       "pixels": 39187
+      },
+      {
+       "region": 7,
+       "type": "note",
+       "pixels": 11130
+      }
+     ]
+    },
+    {
+     "region": 7,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 38597
+      },
+      {
+       "region": 9,
+       "type": "note",
+       "pixels": 9553
+      }
+     ]
+    },
+    {
+     "region": 8,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 26310
+      },
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 12034
+      },
+      {
+       "region": 12,
+       "type": "note",
+       "pixels": 8632
+      }
+     ]
+    },
+    {
+     "region": 9,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 13,
+       "type": "note",
+       "pixels": 25373
+      },
+      {
+       "region": 15,
+       "type": "note",
+       "pixels": 5065
+      },
+      {
+       "region": 16,
+       "type": "note",
+       "pixels": 5182
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 7,
+      "type": "note",
+      "pixels": 11130
+     },
+     {
+      "region": 9,
+      "type": "note",
+      "pixels": 9553
+     },
+     {
+      "region": 11,
+      "type": "note",
+      "pixels": 12034
+     },
+     {
+      "region": 12,
+      "type": "note",
+      "pixels": 8632
+     },
+     {
+      "region": 15,
+      "type": "note",
+      "pixels": 5065
+     },
+     {
+      "region": 16,
+      "type": "note",
+      "pixels": 5182
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     6,
+     6,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     7,
+     8,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     8,
+     10,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     9,
+     13,
+     "apparatus_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "32c33d1f87a5ec8fa51b5cc0d67a6f0dd52d1434640082884ec42372259349fc",
+    "226d74386e14ab8220394f2b52fe6713cdc41c6d49f081b4ff7e4fd013ff913d"
+   ]
+  },
+  {
+   "input_id": "telang-dli-page-111",
+   "request": "run-002",
+   "regions": [
+    8,
+    14
+   ],
+   "kept": [
+    7,
+    13
+   ],
+   "ink_owned_in_either_run": 379735,
+   "ink_with_corresponding_owner": 302730,
+   "agreement": 0.79721,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 6,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 6,
+       "type": "note",
+       "pixels": 12133
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 24615
+      },
+      {
+       "region": 9,
+       "type": "note",
+       "pixels": 60800
+      }
+     ]
+    },
+    {
+     "region": 7,
+     "type": "apparatus_entry",
+     "into": [
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 30093
+      },
+      {
+       "region": 11,
+       "type": "note",
+       "pixels": 14966
+      },
+      {
+       "region": 12,
+       "type": "note",
+       "pixels": 13467
+      },
+      {
+       "region": 13,
+       "type": "note",
+       "pixels": 8574
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 6,
+      "type": "note",
+      "pixels": 12133
+     },
+     {
+      "region": 7,
+      "type": "note",
+      "pixels": 3250
+     },
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 24615
+     },
+     {
+      "region": 11,
+      "type": "note",
+      "pixels": 14966
+     },
+     {
+      "region": 12,
+      "type": "note",
+      "pixels": 13467
+     },
+     {
+      "region": 13,
+      "type": "note",
+      "pixels": 8574
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     6,
+     9,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     8,
+     14,
+     "apparatus_entry",
+     "note"
+    ],
+    [
+     7,
+     10,
+     "apparatus_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "ea4753600affb070641f2b7028310176ce0f0de6488f79dae19bec25eeb8cde2",
+    "87322db9e86e1c647617212f63c10b3fe96d0d9744ccacc5385e0bd130a38c61"
+   ]
+  }
+ ],
+ "code_sha256": {
+  "stability.py": "b0c87685dbc262b4da0dfd2b6c041d012895b35ea028f32c93eab818df4d6841"
+ }
+}

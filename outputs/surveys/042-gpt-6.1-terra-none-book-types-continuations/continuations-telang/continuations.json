@@ -1,0 +1,1044 @@
+{
+ "created_at_utc": "2026-11-05T13:08:41.034629+00:00",
+ "api_calls": 0,
+ "method": "042-gpt-6.1-terra-none-book-types-continuations",
+ "truth": {
+  "path": "references/continuations/truth.json",
+  "sha256": "4454443fbaeab21cdf5c57ba9f069fc7104ad43883efdfe6c5672af8bebfd769"
+ },
+ "script": {
+  "path": "methods/042-gpt-6.1-terra-none-book-types-continuations/link.py",
+  "sha256": "2def0e70288046c595f8f16ae8b470eb4fcc6115acac12dd8f5ba11e66873b41"
+ },
+ "runs": [
+  "telang-dli-108"
+ ],
+ "tolerance_px": 15,
+ "primary_rule": "both",
+ "summary": {
+  "run-001": {
+   "edges": 15,
+   "correct": 14,
+   "no_region": 0,
+   "true_positive": 10,
+   "false_negative": 1,
+   "false_positive": 0,
+   "true_negative": 4,
+   "stream_mismatch": 0,
+   "per_run": {
+    "telang-dli-108": {
+     "correct": 14,
+     "edges": 15
+    }
+   },
+   "links": {
+    "both": {
+     "found": 3,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 3,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "earlier": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "either": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    }
+   }
+  },
+  "run-002": {
+   "edges": 15,
+   "correct": 14,
+   "no_region": 0,
+   "true_positive": 10,
+   "false_negative": 1,
+   "false_positive": 0,
+   "true_negative": 4,
+   "stream_mismatch": 0,
+   "per_run": {
+    "telang-dli-108": {
+     "correct": 14,
+     "edges": 15
+    }
+   },
+   "links": {
+    "both": {
+     "found": 3,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 3,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "earlier": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "either": {
+     "found": 4,
+     "truth": 4,
+     "wrong": 0,
+     "unscored": 0
+    }
+   }
+  }
+ },
+ "results": [
+  {
+   "run": "telang-dli-108",
+   "request": "run-001",
+   "edges": [
+    {
+     "page": "telang-dli-page-108",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "telang-dli-page-108",
+      2
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "body",
+     "edge": "end",
+     "line": 17,
+     "truth": true,
+     "region": [
+      "telang-dli-page-108",
+      5
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "notes",
+     "edge": "start",
+     "line": 19,
+     "truth": true,
+     "region": [
+      "telang-dli-page-108",
+      6
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "notes",
+     "edge": "end",
+     "line": 34,
+     "truth": true,
+     "region": [
+      "telang-dli-page-108",
+      9
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": false
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "telang-dli-page-109",
+      2
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "body",
+     "edge": "end",
+     "line": 15,
+     "truth": true,
+     "region": [
+      "telang-dli-page-109",
+      6
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "notes",
+     "edge": "start",
+     "line": 16,
+     "truth": true,
+     "region": [
+      "telang-dli-page-109",
+      7
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "notes",
+     "edge": "end",
+     "line": 32,
+     "truth": true,
+     "region": [
+      "telang-dli-page-109",
+      11
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "telang-dli-page-110",
+      2
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "body",
+     "edge": "end",
+     "line": 17,
+     "truth": false,
+     "region": [
+      "telang-dli-page-110",
+      5
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "notes",
+     "edge": "start",
+     "line": 19,
+     "truth": true,
+     "region": [
+      "telang-dli-page-110",
+      6
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "notes",
+     "edge": "end",
+     "line": 33,
+     "truth": false,
+     "region": [
+      "telang-dli-page-110",
+      9
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "telang-dli-page-111",
+      2
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "body",
+     "edge": "end",
+     "line": 14,
+     "truth": true,
+     "region": [
+      "telang-dli-page-111",
+      5
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "notes",
+     "edge": "start",
+     "line": 15,
+     "truth": false,
+     "region": [
+      "telang-dli-page-111",
+      6
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "telang-dli-page-108",
+      5
+     ],
+     "to_region": [
+      "telang-dli-page-109",
+      2
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "telang-dli-page-109",
+      6
+     ],
+     "to_region": [
+      "telang-dli-page-110",
+      2
+     ]
+    },
+    {
+     "stream": "notes",
+     "from_region": [
+      "telang-dli-page-108",
+      9
+     ],
+     "to_region": [
+      "telang-dli-page-109",
+      7
+     ]
+    },
+    {
+     "stream": "notes",
+     "from_region": [
+      "telang-dli-page-109",
+      11
+     ],
+     "to_region": [
+      "telang-dli-page-110",
+      6
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "telang-dli-page-108",
+        5
+       ],
+       [
+        "telang-dli-page-109",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        6
+       ],
+       [
+        "telang-dli-page-110",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        11
+       ],
+       [
+        "telang-dli-page-110",
+        6
+       ]
+      ]
+     ],
+     "found": 3,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "telang-dli-page-108",
+        5
+       ],
+       [
+        "telang-dli-page-109",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        6
+       ],
+       [
+        "telang-dli-page-110",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        11
+       ],
+       [
+        "telang-dli-page-110",
+        6
+       ]
+      ]
+     ],
+     "found": 3,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "telang-dli-page-108",
+        5
+       ],
+       [
+        "telang-dli-page-109",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        6
+       ],
+       [
+        "telang-dli-page-110",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-108",
+        9
+       ],
+       [
+        "telang-dli-page-109",
+        7
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        11
+       ],
+       [
+        "telang-dli-page-110",
+        6
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "telang-dli-page-108",
+        5
+       ],
+       [
+        "telang-dli-page-109",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        6
+       ],
+       [
+        "telang-dli-page-110",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-108",
+        9
+       ],
+       [
+        "telang-dli-page-109",
+        7
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        11
+       ],
+       [
+        "telang-dli-page-110",
+        6
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "telang-dli-page-108": {
+     "path": "outputs/telang-dli-page-108/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "dcfc80c7236736231a702e0d7f62d99a5ef58076190da7af6b056139842798a1"
+    },
+    "telang-dli-page-109": {
+     "path": "outputs/telang-dli-page-109/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "d55fb3646f28c50b1f305f82fac8eb835b2b45e91d42268a0fcb35e34b63c161"
+    },
+    "telang-dli-page-110": {
+     "path": "outputs/telang-dli-page-110/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "d6bd784c3272f1b65c71a3234e8825ba0f7ddc1eee8048786564ba84888c914b"
+    },
+    "telang-dli-page-111": {
+     "path": "outputs/telang-dli-page-111/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "fcf6883b5f2ec6ea83e3c94b2c3b541d621724e22b390c9849d84e53cc32de13"
+    }
+   }
+  },
+  {
+   "run": "telang-dli-108",
+   "request": "run-002",
+   "edges": [
+    {
+     "page": "telang-dli-page-108",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "telang-dli-page-108",
+      2
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "body",
+     "edge": "end",
+     "line": 17,
+     "truth": true,
+     "region": [
+      "telang-dli-page-108",
+      5
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "notes",
+     "edge": "start",
+     "line": 19,
+     "truth": true,
+     "region": [
+      "telang-dli-page-108",
+      6
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-108",
+     "stream": "notes",
+     "edge": "end",
+     "line": 34,
+     "truth": true,
+     "region": [
+      "telang-dli-page-108",
+      9
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": false
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "telang-dli-page-109",
+      2
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "body",
+     "edge": "end",
+     "line": 15,
+     "truth": true,
+     "region": [
+      "telang-dli-page-109",
+      6
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "notes",
+     "edge": "start",
+     "line": 16,
+     "truth": true,
+     "region": [
+      "telang-dli-page-109",
+      7
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-109",
+     "stream": "notes",
+     "edge": "end",
+     "line": 32,
+     "truth": true,
+     "region": [
+      "telang-dli-page-109",
+      11
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "telang-dli-page-110",
+      2
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "body",
+     "edge": "end",
+     "line": 17,
+     "truth": false,
+     "region": [
+      "telang-dli-page-110",
+      5
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "notes",
+     "edge": "start",
+     "line": 19,
+     "truth": true,
+     "region": [
+      "telang-dli-page-110",
+      6
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-110",
+     "stream": "notes",
+     "edge": "end",
+     "line": 33,
+     "truth": false,
+     "region": [
+      "telang-dli-page-110",
+      9
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "telang-dli-page-111",
+      2
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "body",
+     "edge": "end",
+     "line": 14,
+     "truth": true,
+     "region": [
+      "telang-dli-page-111",
+      5
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "telang-dli-page-111",
+     "stream": "notes",
+     "edge": "start",
+     "line": 15,
+     "truth": false,
+     "region": [
+      "telang-dli-page-111",
+      6
+     ],
+     "region_type": "apparatus_entry",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "telang-dli-page-108",
+      5
+     ],
+     "to_region": [
+      "telang-dli-page-109",
+      2
+     ]
+    },
+    {
+     "stream": "body",
+     "from_region": [
+      "telang-dli-page-109",
+      6
+     ],
+     "to_region": [
+      "telang-dli-page-110",
+      2
+     ]
+    },
+    {
+     "stream": "notes",
+     "from_region": [
+      "telang-dli-page-108",
+      9
+     ],
+     "to_region": [
+      "telang-dli-page-109",
+      7
+     ]
+    },
+    {
+     "stream": "notes",
+     "from_region": [
+      "telang-dli-page-109",
+      11
+     ],
+     "to_region": [
+      "telang-dli-page-110",
+      6
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "telang-dli-page-108",
+        5
+       ],
+       [
+        "telang-dli-page-109",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        6
+       ],
+       [
+        "telang-dli-page-110",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        11
+       ],
+       [
+        "telang-dli-page-110",
+        6
+       ]
+      ]
+     ],
+     "found": 3,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "telang-dli-page-108",
+        5
+       ],
+       [
+        "telang-dli-page-109",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        6
+       ],
+       [
+        "telang-dli-page-110",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        11
+       ],
+       [
+        "telang-dli-page-110",
+        6
+       ]
+      ]
+     ],
+     "found": 3,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "telang-dli-page-108",
+        5
+       ],
+       [
+        "telang-dli-page-109",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        6
+       ],
+       [
+        "telang-dli-page-110",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-108",
+        9
+       ],
+       [
+        "telang-dli-page-109",
+        7
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        11
+       ],
+       [
+        "telang-dli-page-110",
+        6
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "telang-dli-page-108",
+        5
+       ],
+       [
+        "telang-dli-page-109",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        6
+       ],
+       [
+        "telang-dli-page-110",
+        2
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-108",
+        9
+       ],
+       [
+        "telang-dli-page-109",
+        7
+       ]
+      ],
+      [
+       [
+        "telang-dli-page-109",
+        11
+       ],
+       [
+        "telang-dli-page-110",
+        6
+       ]
+      ]
+     ],
+     "found": 4,
+     "truth": 4,
+     "wrong": [],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "telang-dli-page-108": {
+     "path": "outputs/telang-dli-page-108/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "83ba9f664216b38f99f2bda246bee84535d2468e045331c4fda7674a2b47388a"
+    },
+    "telang-dli-page-109": {
+     "path": "outputs/telang-dli-page-109/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "839c40e031c21c607be0cdc8d49d7050fe743604bb67243ef99df94fefa6e47f"
+    },
+    "telang-dli-page-110": {
+     "path": "outputs/telang-dli-page-110/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "ff16d1c0f464bbac419b4b8751a8732fd7a0ea44efad907aa7e8cdf088023104"
+    },
+    "telang-dli-page-111": {
+     "path": "outputs/telang-dli-page-111/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "39ef05841316e1c1b1492f671839ba68dc5e85d1c77f016bb085c0dc30bdbcca"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,534 @@
+{
+ "created_at_utc": "2026-11-05T14:27:44.275971+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "../../inputs/cole-1903-page-003.png",
+  "sha256": "d4ea9bd561c16f7feda5eafd23eeb0620771202182cf0c5bd7e966e2271a99a2"
+ },
+ "reference": {
+  "path": "../../references/cole-1903-page-003",
+  "status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+  "labels_png_sha256": "823e6cbf7d0b9937a1e40d0d357c77c77e6188122abf2ad06aa6f3e70151892f",
+  "spec_sha256": "6f9694fa4aa91fb85b2fc439abcddebaf079c969ee9dc97988754178441ae1cb"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "GPT-6.1 Terra, book types with continuations (042), boxes",
+   "path": "../../outputs/cole-1903-page-003/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+   "sha256": "6d7340da09114cc51e9385f428536dcb5bdcbdd258947de55fdf530e444a8818",
+   "totals": {
+    "other_passages_ink_included": 123,
+    "own_ink_left_out": 76,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 76,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "text-1": {
+     "matched_region_id": 3,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-2": {
+     "matched_region_id": 4,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "display-1": {
+     "matched_region_id": 5,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-3": {
+     "matched_region_id": 6,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "display-2": {
+     "matched_region_id": 7,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-4": {
+     "matched_region_id": 8,
+     "region_kind": "box",
+     "own_left_out": 44,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 44
+    },
+    "text-5": {
+     "matched_region_id": 9,
+     "region_kind": "box",
+     "own_left_out": 29,
+     "other_included": {
+      "text-4": 73
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 29
+    },
+    "text-6": {
+     "matched_region_id": 10,
+     "region_kind": "box",
+     "own_left_out": 3,
+     "other_included": {
+      "text-5": 50
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 3
+    },
+    "display-3": {
+     "matched_region_id": 11,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-7": {
+     "matched_region_id": 12,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "display-4": {
+     "matched_region_id": 13,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "footnote": {
+     "matched_region_id": 14,
+     "region_kind": "box",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "text-1",
+     "lower": "text-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-2",
+     "lower": "display-1",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "display-1",
+     "lower": "text-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-3",
+     "lower": "display-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "display-2",
+     "lower": "text-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-4",
+     "lower": "text-5",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 73
+    },
+    {
+     "upper": "text-5",
+     "lower": "text-6",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 50
+    },
+    {
+     "upper": "text-6",
+     "lower": "display-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "display-3",
+     "lower": "text-7",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-7",
+     "lower": "display-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  },
+  {
+   "label": "Method 043 polygons",
+   "path": "../../outputs/cole-1903-page-003/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+   "sha256": "7ce4c2894b9e1d0ee473daec5c2942ce7b52b78a6e395f0364c14ba6da479a6c",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "text-1": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-2": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "display-1": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-3": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "display-2": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-4": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-5": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-6": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "display-3": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "text-7": {
+     "matched_region_id": 12,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "display-4": {
+     "matched_region_id": 13,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "footnote": {
+     "matched_region_id": 14,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "text-1",
+     "lower": "text-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-2",
+     "lower": "display-1",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "display-1",
+     "lower": "text-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-3",
+     "lower": "display-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "display-2",
+     "lower": "text-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-4",
+     "lower": "text-5",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-5",
+     "lower": "text-6",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-6",
+     "lower": "display-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "display-3",
+     "lower": "text-7",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-7",
+     "lower": "display-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "beyond_reading_order_splits": 0,
+    "passages": {
+     "page-number": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "running-header": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "text-1": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "text-2": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "display-1": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "text-3": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "display-2": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "text-4": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "text-5": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "text-6": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "display-3": {
+      "main_owner_value": 11,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "text-7": {
+      "main_owner_value": 12,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "display-4": {
+      "main_owner_value": 13,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "footnote": {
+      "main_owner_value": 14,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     }
+    },
+    "ownership_png_sha256": "823e6cbf7d0b9937a1e40d0d357c77c77e6188122abf2ad06aa6f3e70151892f"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

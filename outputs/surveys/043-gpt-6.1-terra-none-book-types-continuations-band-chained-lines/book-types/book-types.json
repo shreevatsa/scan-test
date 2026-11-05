@@ -1,0 +1,2170 @@
+{
+ "created_at_utc": "2026-11-05T13:03:51.705267+00:00",
+ "api_calls": 0,
+ "method": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+ "example_method": "041-gpt-6.1-terra-none-explicit-units-continuations-band-chained-lines",
+ "examples": [
+  {
+   "path": "schema/examples/dutt-17f-002-003/pages/dutt-mahabharata-17f-chapter-001-page-002.json",
+   "sha256": "5a41999c0925d76c08c4b5e20f6341c49e3e01cb5d69c95b5b20c8beb32e80ac"
+  },
+  {
+   "path": "schema/examples/dutt-17f-002-003/pages/dutt-mahabharata-17f-chapter-001-page-003.json",
+   "sha256": "23715fcec501b7ea4253cf849bfc138faa6189df2e1446a03a786ea77aa4df49"
+  },
+  {
+   "path": "schema/examples/hertel-152-153/pages/hertel-panchatantra-page-152.json",
+   "sha256": "b6765f8e904b6d1295dca27e4a41a12aa0bb459b66cb366e7f7f39dac5e7331d"
+  },
+  {
+   "path": "schema/examples/hertel-152-153/pages/hertel-panchatantra-page-153.json",
+   "sha256": "daa6d836051fbf4f2c4229082e9603e63d5d803e74b32db3dad2ad29f3d46e28"
+  },
+  {
+   "path": "schema/examples/kale-107-109/pages/kale-1913-page-107.json",
+   "sha256": "7c0a72d1b0ef82d436307a59b126f09576a2d2fc362d0b59d6bd01b69ab55067"
+  },
+  {
+   "path": "schema/examples/kale-107-109/pages/kale-1913-page-108.json",
+   "sha256": "16194e1db18860dc5d85722351eddfdeb35266f001816e59b9222a5aef933791"
+  },
+  {
+   "path": "schema/examples/kale-107-109/pages/kale-1913-page-109.json",
+   "sha256": "d6afa112090a4c081cae88ce80c81e90644df6e1310f101eea6b033ef60adba1"
+  }
+ ],
+ "script_sha256": "0565177fbe77676a4bb19c82404220a37de75148e5e1e322ad85e16be957fad8",
+ "summary": {
+  "run-001": {
+   "example_regions": 139,
+   "same_type": 139,
+   "mismatches": {},
+   "splits": 0,
+   "merges": 2,
+   "unmatched": 0
+  },
+  "run-002": {
+   "example_regions": 139,
+   "same_type": 139,
+   "mismatches": {},
+   "splits": 0,
+   "merges": 1,
+   "unmatched": 0
+  }
+ },
+ "results": [
+  {
+   "page": "dutt-mahabharata-17f-chapter-001-page-002",
+   "request": "run-001",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "page_number",
+     "matched": 1,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "verse",
+     "matched": 3,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "translation",
+     "matched": 5,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "speaker",
+     "matched": 6,
+     "type": "speaker",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "verse",
+     "matched": 7,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "speaker",
+     "matched": 8,
+     "type": "speaker",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "translation",
+     "matched": 9,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "translation",
+     "matched": 11,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "verse",
+     "matched": 12,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "translation",
+     "matched": 13,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "verse",
+     "matched": 14,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 15,
+     "example_type": "verse",
+     "matched": 15,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 16,
+     "example_type": "translation",
+     "matched": 16,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 17,
+     "example_type": "verse",
+     "matched": 17,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 18,
+     "example_type": "verse",
+     "matched": 18,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 19,
+     "example_type": "translation",
+     "matched": 19,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 20,
+     "example_type": "verse",
+     "matched": 20,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 21,
+     "example_type": "translation",
+     "matched": 21,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 22,
+     "example_type": "verse",
+     "matched": 22,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 23,
+     "example_type": "verse",
+     "matched": 23,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 24,
+     "example_type": "translation",
+     "matched": 24,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 25,
+     "example_type": "verse",
+     "matched": 25,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 26,
+     "example_type": "translation",
+     "matched": 26,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 27,
+     "example_type": "verse",
+     "matched": 27,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 28,
+     "example_type": "translation",
+     "matched": 28,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 29,
+     "example_type": "verse",
+     "matched": 29,
+     "type": "verse",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "dutt-mahabharata-17f-chapter-001-page-003",
+   "request": "run-001",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "page_number",
+     "matched": 2,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "verse",
+     "matched": 3,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "translation",
+     "matched": 4,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "verse",
+     "matched": 5,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "translation",
+     "matched": 7,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "translation",
+     "matched": 9,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "translation",
+     "matched": 11,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "verse",
+     "matched": 12,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "translation",
+     "matched": 13,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "verse",
+     "matched": 14,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 15,
+     "example_type": "verse",
+     "matched": 15,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 16,
+     "example_type": "translation",
+     "matched": 16,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 17,
+     "example_type": "verse",
+     "matched": 17,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 18,
+     "example_type": "verse",
+     "matched": 18,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 19,
+     "example_type": "verse",
+     "matched": 19,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 20,
+     "example_type": "translation",
+     "matched": 20,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 21,
+     "example_type": "verse",
+     "matched": 21,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 22,
+     "example_type": "translation",
+     "matched": 22,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 23,
+     "example_type": "verse",
+     "matched": 23,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 24,
+     "example_type": "verse",
+     "matched": 24,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 25,
+     "example_type": "translation",
+     "matched": 25,
+     "type": "translation",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "hertel-panchatantra-page-152",
+   "request": "run-001",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "page_number",
+     "matched": 2,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "paragraph",
+     "matched": 3,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "lead_in",
+     "matched": 5,
+     "type": "lead_in",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "paragraph",
+     "matched": 7,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "paragraph",
+     "matched": 9,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "line_number",
+     "matched": 11,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "line_number",
+     "matched": 12,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "line_number",
+     "matched": 13,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 15,
+     "example_type": "line_number",
+     "matched": 14,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 16,
+     "example_type": "line_number",
+     "matched": 15,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 17,
+     "example_type": "line_number",
+     "matched": 16,
+     "type": "line_number",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [
+    {
+     "region": 1,
+     "type": "running_header",
+     "example_regions": [
+      1,
+      2
+     ]
+    }
+   ],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "hertel-panchatantra-page-153",
+   "request": "run-001",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "page_number",
+     "matched": 4,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "running_header",
+     "matched": 3,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "paragraph",
+     "matched": 5,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "paragraph",
+     "matched": 6,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "paragraph",
+     "matched": 7,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "paragraph",
+     "matched": 9,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "paragraph",
+     "matched": 11,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "verse",
+     "matched": 12,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "paragraph",
+     "matched": 13,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "verse",
+     "matched": 14,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 15,
+     "example_type": "paragraph",
+     "matched": 15,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 16,
+     "example_type": "verse",
+     "matched": 16,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 17,
+     "example_type": "paragraph",
+     "matched": 17,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 18,
+     "example_type": "margin_mark",
+     "matched": 28,
+     "type": "margin_mark",
+     "same": true
+    },
+    {
+     "region": 19,
+     "example_type": "line_number",
+     "matched": 18,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 20,
+     "example_type": "line_number",
+     "matched": 19,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 21,
+     "example_type": "line_number",
+     "matched": 20,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 22,
+     "example_type": "line_number",
+     "matched": 21,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 23,
+     "example_type": "line_number",
+     "matched": 22,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 24,
+     "example_type": "line_number",
+     "matched": 23,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 25,
+     "example_type": "line_number",
+     "matched": 24,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 26,
+     "example_type": "line_number",
+     "matched": 25,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 27,
+     "example_type": "line_number",
+     "matched": 26,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 28,
+     "example_type": "line_number",
+     "matched": 27,
+     "type": "line_number",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "kale-1913-page-107",
+   "request": "run-001",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "page_number",
+     "matched": 1,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "commentary",
+     "matched": 3,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "commentary",
+     "matched": 5,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "commentary",
+     "matched": 7,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "commentary",
+     "matched": 9,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "footnote",
+     "matched": 11,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "footnote",
+     "matched": 12,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "footnote",
+     "matched": 13,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "footnote",
+     "matched": 14,
+     "type": "footnote",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "kale-1913-page-108",
+   "request": "run-001",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "page_number",
+     "matched": 2,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "commentary",
+     "matched": 3,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "commentary",
+     "matched": 5,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "commentary",
+     "matched": 7,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "footnote",
+     "matched": 9,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "footnote",
+     "matched": 10,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "footnote",
+     "matched": 11,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "footnote",
+     "matched": 11,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "footnote",
+     "matched": 12,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "footnote",
+     "matched": 13,
+     "type": "footnote",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [
+    {
+     "region": 11,
+     "type": "footnote",
+     "example_regions": [
+      11,
+      12
+     ]
+    }
+   ],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "kale-1913-page-109",
+   "request": "run-001",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "page_number",
+     "matched": 1,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "commentary",
+     "matched": 3,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "commentary",
+     "matched": 5,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "commentary",
+     "matched": 7,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "commentary",
+     "matched": 9,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "footnote",
+     "matched": 10,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "footnote",
+     "matched": 11,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "footnote",
+     "matched": 12,
+     "type": "footnote",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "dutt-mahabharata-17f-chapter-001-page-002",
+   "request": "run-002",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "page_number",
+     "matched": 1,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "verse",
+     "matched": 3,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "translation",
+     "matched": 5,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "speaker",
+     "matched": 6,
+     "type": "speaker",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "verse",
+     "matched": 7,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "speaker",
+     "matched": 8,
+     "type": "speaker",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "translation",
+     "matched": 9,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "translation",
+     "matched": 11,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "verse",
+     "matched": 12,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "translation",
+     "matched": 13,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "verse",
+     "matched": 14,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 15,
+     "example_type": "verse",
+     "matched": 15,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 16,
+     "example_type": "translation",
+     "matched": 16,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 17,
+     "example_type": "verse",
+     "matched": 17,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 18,
+     "example_type": "verse",
+     "matched": 18,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 19,
+     "example_type": "translation",
+     "matched": 19,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 20,
+     "example_type": "verse",
+     "matched": 20,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 21,
+     "example_type": "translation",
+     "matched": 21,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 22,
+     "example_type": "verse",
+     "matched": 22,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 23,
+     "example_type": "verse",
+     "matched": 23,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 24,
+     "example_type": "translation",
+     "matched": 24,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 25,
+     "example_type": "verse",
+     "matched": 25,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 26,
+     "example_type": "translation",
+     "matched": 26,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 27,
+     "example_type": "verse",
+     "matched": 27,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 28,
+     "example_type": "translation",
+     "matched": 28,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 29,
+     "example_type": "verse",
+     "matched": 29,
+     "type": "verse",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "dutt-mahabharata-17f-chapter-001-page-003",
+   "request": "run-002",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "page_number",
+     "matched": 2,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "verse",
+     "matched": 3,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "translation",
+     "matched": 4,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "verse",
+     "matched": 5,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "translation",
+     "matched": 7,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "translation",
+     "matched": 9,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "translation",
+     "matched": 11,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "verse",
+     "matched": 12,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "translation",
+     "matched": 13,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "verse",
+     "matched": 14,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 15,
+     "example_type": "verse",
+     "matched": 15,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 16,
+     "example_type": "translation",
+     "matched": 16,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 17,
+     "example_type": "verse",
+     "matched": 17,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 18,
+     "example_type": "verse",
+     "matched": 18,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 19,
+     "example_type": "verse",
+     "matched": 19,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 20,
+     "example_type": "translation",
+     "matched": 20,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 21,
+     "example_type": "verse",
+     "matched": 21,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 22,
+     "example_type": "translation",
+     "matched": 22,
+     "type": "translation",
+     "same": true
+    },
+    {
+     "region": 23,
+     "example_type": "verse",
+     "matched": 23,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 24,
+     "example_type": "verse",
+     "matched": 24,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 25,
+     "example_type": "translation",
+     "matched": 25,
+     "type": "translation",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "hertel-panchatantra-page-152",
+   "request": "run-002",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "page_number",
+     "matched": 3,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "paragraph",
+     "matched": 4,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "verse",
+     "matched": 5,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "lead_in",
+     "matched": 6,
+     "type": "lead_in",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "verse",
+     "matched": 7,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "paragraph",
+     "matched": 8,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "verse",
+     "matched": 9,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "paragraph",
+     "matched": 10,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "verse",
+     "matched": 11,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "line_number",
+     "matched": 12,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "line_number",
+     "matched": 13,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "line_number",
+     "matched": 14,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 15,
+     "example_type": "line_number",
+     "matched": 15,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 16,
+     "example_type": "line_number",
+     "matched": 16,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 17,
+     "example_type": "line_number",
+     "matched": 17,
+     "type": "line_number",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "hertel-panchatantra-page-153",
+   "request": "run-002",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "page_number",
+     "matched": 4,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "running_header",
+     "matched": 3,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "paragraph",
+     "matched": 5,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "paragraph",
+     "matched": 6,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "paragraph",
+     "matched": 7,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "paragraph",
+     "matched": 9,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "paragraph",
+     "matched": 11,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "verse",
+     "matched": 12,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "paragraph",
+     "matched": 13,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "verse",
+     "matched": 14,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 15,
+     "example_type": "paragraph",
+     "matched": 15,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 16,
+     "example_type": "verse",
+     "matched": 16,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 17,
+     "example_type": "paragraph",
+     "matched": 17,
+     "type": "paragraph",
+     "same": true
+    },
+    {
+     "region": 18,
+     "example_type": "margin_mark",
+     "matched": 28,
+     "type": "margin_mark",
+     "same": true
+    },
+    {
+     "region": 19,
+     "example_type": "line_number",
+     "matched": 18,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 20,
+     "example_type": "line_number",
+     "matched": 19,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 21,
+     "example_type": "line_number",
+     "matched": 20,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 22,
+     "example_type": "line_number",
+     "matched": 21,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 23,
+     "example_type": "line_number",
+     "matched": 22,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 24,
+     "example_type": "line_number",
+     "matched": 23,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 25,
+     "example_type": "line_number",
+     "matched": 24,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 26,
+     "example_type": "line_number",
+     "matched": 25,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 27,
+     "example_type": "line_number",
+     "matched": 26,
+     "type": "line_number",
+     "same": true
+    },
+    {
+     "region": 28,
+     "example_type": "line_number",
+     "matched": 27,
+     "type": "line_number",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "kale-1913-page-107",
+   "request": "run-002",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "page_number",
+     "matched": 1,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "commentary",
+     "matched": 3,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "commentary",
+     "matched": 5,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "commentary",
+     "matched": 7,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "commentary",
+     "matched": 9,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "verse",
+     "matched": 10,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "footnote",
+     "matched": 11,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "footnote",
+     "matched": 12,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "footnote",
+     "matched": 13,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "footnote",
+     "matched": 14,
+     "type": "footnote",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "kale-1913-page-108",
+   "request": "run-002",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "running_header",
+     "matched": 1,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "page_number",
+     "matched": 2,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "commentary",
+     "matched": 3,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "commentary",
+     "matched": 5,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "commentary",
+     "matched": 7,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "footnote",
+     "matched": 9,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "footnote",
+     "matched": 10,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "footnote",
+     "matched": 11,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "footnote",
+     "matched": 11,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 13,
+     "example_type": "footnote",
+     "matched": 12,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 14,
+     "example_type": "footnote",
+     "matched": 13,
+     "type": "footnote",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [
+    {
+     "region": 11,
+     "type": "footnote",
+     "example_regions": [
+      11,
+      12
+     ]
+    }
+   ],
+   "unmatched": [],
+   "mismatches": []
+  },
+  {
+   "page": "kale-1913-page-109",
+   "request": "run-002",
+   "regions": [
+    {
+     "region": 1,
+     "example_type": "page_number",
+     "matched": 1,
+     "type": "page_number",
+     "same": true
+    },
+    {
+     "region": 2,
+     "example_type": "running_header",
+     "matched": 2,
+     "type": "running_header",
+     "same": true
+    },
+    {
+     "region": 3,
+     "example_type": "commentary",
+     "matched": 3,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 4,
+     "example_type": "verse",
+     "matched": 4,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 5,
+     "example_type": "commentary",
+     "matched": 5,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 6,
+     "example_type": "verse",
+     "matched": 6,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 7,
+     "example_type": "commentary",
+     "matched": 7,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 8,
+     "example_type": "verse",
+     "matched": 8,
+     "type": "verse",
+     "same": true
+    },
+    {
+     "region": 9,
+     "example_type": "commentary",
+     "matched": 9,
+     "type": "commentary",
+     "same": true
+    },
+    {
+     "region": 10,
+     "example_type": "footnote",
+     "matched": 10,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 11,
+     "example_type": "footnote",
+     "matched": 11,
+     "type": "footnote",
+     "same": true
+    },
+    {
+     "region": 12,
+     "example_type": "footnote",
+     "matched": 12,
+     "type": "footnote",
+     "same": true
+    }
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched": [],
+   "mismatches": []
+  }
+ ]
+}

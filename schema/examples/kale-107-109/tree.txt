@@ -1,0 +1,72 @@
+# Kale pages 107-109 (printed 58-60): verse + commentary groups that continue across page breaks, and footnotes.
+# Regions are method 041's first request. Written by Claude from the page images on 2026-11-05.
+book kale-1913
+method 041-gpt-6.1-terra-none-explicit-units-continuations-band-chained-lines
+
+page kale-1913-page-107 label=58
+furniture r1 page_number, r2 running_header
+flow main
+section id=s "वैराग्यशतकम्" open=start,end
+  group id=g22 "verse 22" open=start
+    commentary open=start: r3
+  group "verse 23"
+    verse 23: r4
+    commentary: r5
+  group "verse 24"
+    verse 24: r6
+    commentary: r7
+  group "verse 25"
+    verse 25: r8
+    commentary: r9
+  group id=g26 "verse 26" open=end
+    verse 26: r10
+flow notes
+footnote 1: r11
+footnote 2: r12
+footnote 3: r13
+footnote 4: r14
+# Two markers whose verses Claude could identify from the variant readings.
+relation note r6 marker=1 -> footnote-1
+relation note r10 marker=4 -> footnote-4
+
+page kale-1913-page-108 label=59
+furniture r1 running_header, r2 page_number
+flow main
+section id=s "वैराग्यशतकम्" open=start,end
+  group id=g26 "verse 26" open=start
+    commentary: r3
+  group "verse 27"
+    verse 27: r4
+    commentary: r5
+  group "verse 28"
+    verse 28: r6
+    commentary: r7
+  group id=g29 "verse 29" open=end
+    verse 29: r8
+flow notes
+footnote 1: r9
+footnote 2: r10
+# Footnote 3 is printed as two regions: its first line, beside footnotes 1 and 2, and the lines below.
+footnote 3: r11 r12
+footnote 4: r13
+footnote 5: r14
+
+page kale-1913-page-109 label=60
+furniture r1 page_number, r2 running_header
+flow main
+section id=s "वैराग्यशतकम्" open=start,end
+  group id=g29 "verse 29" open=start
+    commentary: r3
+  group "verse 30"
+    verse 30: r4
+    commentary: r5
+  group "verse 31"
+    verse 31: r6
+    commentary: r7
+  group "verse 32"
+    verse 32: r8
+    commentary: r9
+flow notes
+footnote 1: r10
+footnote 2: r11
+footnote 3: r12

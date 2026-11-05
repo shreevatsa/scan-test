@@ -1,0 +1,11 @@
+{
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "none",
+  "image_detail": "original",
+  "max_output_tokens": 16384,
+  "store": false,
+  "coordinate_format": "xyxy_1000",
+  "prompt_variant": "book-types-continuations-v1",
+  "cache_lifetime": "30m (provider default)",
+  "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+}

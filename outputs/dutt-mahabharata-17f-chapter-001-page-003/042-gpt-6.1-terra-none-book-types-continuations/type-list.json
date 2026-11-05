@@ -1,0 +1,21 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "dutt-mahabharata",
+ "title": "Mahābhārata, Sanskrit text with M. N. Dutt's English translation",
+ "description": "Two columns. A set of one or more Sanskrit verses is followed by one English paragraph translating the whole set. A set can run across a column or page break. Speaker lines, such as संजय उवाच and Sanjaya said, are printed with the verses and with the translation.",
+ "languages": ["sa-Deva", "en"],
+ "flows": {"main": "The chapters in reading order."},
+ "types": {
+  "chapter": {"description": "One chapter, with its heading.", "contains": ["heading", "group"], "flow": "main"},
+  "heading": {"description": "A chapter heading.", "region": "heading"},
+  "group": {"description": "A set of verses with the translation of the set, and any speaker lines printed with them.", "contains": ["speaker", "verse_set", "translation"]},
+  "speaker": {"description": "A speaker line: centered Sanskrit, such as संजय उवाच, or bold English, such as Sanjaya said.", "region": "heading"},
+  "verse_set": {"description": "One or more consecutive verses translated together.", "contains": ["verse"]},
+  "verse": {"description": "One Sanskrit verse, usually two lines, with its number, such as ॥२५॥.", "region": "verse", "lang": "sa-Deva", "numbered": true},
+  "translation": {"description": "The English translation of a verse set, one paragraph.", "region": "paragraph", "lang": "en"},
+  "running_header": {"description": "The running title, such as DRONA PARVA or MAHĀBHĀRATA.", "role": "furniture", "region": "running_header"},
+  "page_number": {"description": "The printed page number.", "role": "furniture", "region": "page_number"}
+ },
+ "conventions": ["Transcribe Devanagari and English as printed, in Unicode NFC, with the printed digits and dandas."]
+}

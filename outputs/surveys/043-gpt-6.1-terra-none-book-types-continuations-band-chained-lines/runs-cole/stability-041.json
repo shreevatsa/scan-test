@@ -1,0 +1,188 @@
+{
+ "created_at_utc": "2026-11-05T14:27:54.290849+00:00",
+ "api_calls": 0,
+ "method": "041-gpt-6.1-terra-none-explicit-units-continuations-band-chained-lines",
+ "against": null,
+ "pages_list": "/private/tmp/claude-501/-Users-shreevatsa-w-scan-test/ec685348-dfb2-4132-9a4b-f713bb16857e/scratchpad/pages-cole.json",
+ "rule": {
+  "matching": "one to one, greedy by shared owned ink",
+  "split_or_merge_part": "at least 5% of the region's ink and 500 pixels"
+ },
+ "pages": [
+  {
+   "input_id": "cole-1903-page-001",
+   "regions": [
+    13,
+    13
+   ],
+   "kept": [
+    10,
+    10
+   ],
+   "ink_owned_in_either_run": 291355,
+   "ink_with_corresponding_owner": 291355,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     11,
+     11,
+     "paragraph",
+     "other"
+    ],
+    [
+     8,
+     8,
+     "paragraph",
+     "other"
+    ]
+   ],
+   "class_differences": [
+    [
+     11,
+     11,
+     "paragraph",
+     "other"
+    ],
+    [
+     8,
+     8,
+     "paragraph",
+     "other"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 10,
+   "sources": [
+    "fbad1d88b4e32b29900696611e7c01e0a24c4c6032b1fb61551169b7903d71f9",
+    "02112f457e3b77b2b468fb42a6af32944914ec5a2bedbe9378ee4820b8cde882"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-002",
+   "regions": [
+    11,
+    11
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 382510,
+   "ink_with_corresponding_owner": 382510,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "a770fa6e8bed7b8cc1043fa3a2387450e3852b99fcbcf822ce7046ea2dd4218f",
+    "bfab143197f53b1c1b88a94d92d5264fca3e75cea8a62211f6f38f22aba38b34"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-003",
+   "regions": [
+    15,
+    15
+   ],
+   "kept": [
+    12,
+    12
+   ],
+   "ink_owned_in_either_run": 324615,
+   "ink_with_corresponding_owner": 324615,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 12,
+   "sources": [
+    "cb4af3ec8ef0af555b62d81e1c483aa339a682095b881b1a08dbe12edaee4aa5",
+    "eda8c7d7754edcf1669689dd1cf52617c458f1a528ecd9692ffd32fc969085e1"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-004",
+   "regions": [
+    22,
+    22
+   ],
+   "kept": [
+    19,
+    19
+   ],
+   "ink_owned_in_either_run": 241873,
+   "ink_with_corresponding_owner": 241873,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     13,
+     13,
+     "other",
+     "heading"
+    ]
+   ],
+   "class_differences": [
+    [
+     13,
+     13,
+     "other",
+     "heading"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 19,
+   "sources": [
+    "c77668f19234e4e49697b016bae55bb99c56c2373a4cc7763a3aa9e690639106",
+    "a9edc4a8bf7a5964b8d59ce9ce9bbef6fe785050e14876cbd5f62a3bc853b4b5"
+   ]
+  }
+ ],
+ "code_sha256": {
+  "stability.py": "b0c87685dbc262b4da0dfd2b6c041d012895b35ea028f32c93eab818df4d6841"
+ }
+}

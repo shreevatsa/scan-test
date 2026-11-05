@@ -1,0 +1,700 @@
+{
+ "created_at_utc": "2026-11-05T14:27:54.000857+00:00",
+ "api_calls": 0,
+ "method": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+ "against": "041-gpt-6.1-terra-none-explicit-units-continuations-band-chained-lines",
+ "pages_list": "/private/tmp/claude-501/-Users-shreevatsa-w-scan-test/ec685348-dfb2-4132-9a4b-f713bb16857e/scratchpad/pages-cole.json",
+ "rule": {
+  "matching": "one to one, greedy by shared owned ink",
+  "split_or_merge_part": "at least 5% of the region's ink and 500 pixels"
+ },
+ "pages": [
+  {
+   "input_id": "cole-1903-page-001",
+   "request": "run-001",
+   "regions": [
+    12,
+    13
+   ],
+   "kept": [
+    10,
+    10
+   ],
+   "ink_owned_in_either_run": 291355,
+   "ink_with_corresponding_owner": 290214,
+   "agreement": 0.99608,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 2,
+     "type": "running_header",
+     "into": [
+      {
+       "region": 2,
+       "type": "running_header",
+       "pixels": 6291
+      },
+      {
+       "region": 3,
+       "type": "running_header",
+       "pixels": 1141
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 3,
+      "type": "running_header",
+      "pixels": 1141
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     12,
+     13,
+     "footnote",
+     "note"
+    ],
+    [
+     10,
+     11,
+     "read_before",
+     "paragraph"
+    ],
+    [
+     7,
+     8,
+     "signoff",
+     "paragraph"
+    ],
+    [
+     9,
+     10,
+     "byline",
+     "heading"
+    ]
+   ],
+   "class_differences": [
+    [
+     10,
+     11,
+     "heading",
+     "paragraph"
+    ],
+    [
+     7,
+     8,
+     "other",
+     "paragraph"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 10,
+   "sources": [
+    "0da4f35c229ef04bf800383d5e523ca4ac86a0582a7564b8893eee0c0690dab6",
+    "fbad1d88b4e32b29900696611e7c01e0a24c4c6032b1fb61551169b7903d71f9"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-002",
+   "request": "run-001",
+   "regions": [
+    10,
+    11
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 382510,
+   "ink_with_corresponding_owner": 381249,
+   "agreement": 0.9967,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 1,
+     "type": "running_header",
+     "into": [
+      {
+       "region": 1,
+       "type": "running_header",
+       "pixels": 1261
+      },
+      {
+       "region": 2,
+       "type": "running_header",
+       "pixels": 5648
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 1,
+      "type": "running_header",
+      "pixels": 1261
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     10,
+     11,
+     "footnote",
+     "note"
+    ],
+    [
+     9,
+     10,
+     "footnote",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "912d5f67ab7024ff94ab89cc658db92c3a0b5fa9046215ea05bede874aa007cf",
+    "a770fa6e8bed7b8cc1043fa3a2387450e3852b99fcbcf822ce7046ea2dd4218f"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-003",
+   "request": "run-001",
+   "regions": [
+    14,
+    15
+   ],
+   "kept": [
+    12,
+    12
+   ],
+   "ink_owned_in_either_run": 324615,
+   "ink_with_corresponding_owner": 323407,
+   "agreement": 0.99628,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 2,
+     "type": "running_header",
+     "into": [
+      {
+       "region": 2,
+       "type": "running_header",
+       "pixels": 6415
+      },
+      {
+       "region": 3,
+       "type": "running_header",
+       "pixels": 1208
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 3,
+      "type": "running_header",
+      "pixels": 1208
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     14,
+     15,
+     "footnote",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 12,
+   "sources": [
+    "7ce4c2894b9e1d0ee473daec5c2942ce7b52b78a6e395f0364c14ba6da479a6c",
+    "cb4af3ec8ef0af555b62d81e1c483aa339a682095b881b1a08dbe12edaee4aa5"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-004",
+   "request": "run-001",
+   "regions": [
+    21,
+    22
+   ],
+   "kept": [
+    19,
+    19
+   ],
+   "ink_owned_in_either_run": 241873,
+   "ink_with_corresponding_owner": 240576,
+   "agreement": 0.99464,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 1,
+     "type": "running_header",
+     "into": [
+      {
+       "region": 1,
+       "type": "running_header",
+       "pixels": 1297
+      },
+      {
+       "region": 2,
+       "type": "running_header",
+       "pixels": 4028
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 1,
+      "type": "running_header",
+      "pixels": 1297
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     20,
+     21,
+     "footnote",
+     "note"
+    ],
+    [
+     21,
+     22,
+     "footnote",
+     "note"
+    ],
+    [
+     12,
+     13,
+     "read_before",
+     "other"
+    ],
+    [
+     3,
+     4,
+     "paragraph",
+     "lead_in"
+    ],
+    [
+     9,
+     10,
+     "signoff",
+     "other"
+    ],
+    [
+     11,
+     12,
+     "byline",
+     "heading"
+    ],
+    [
+     7,
+     8,
+     "paragraph",
+     "lead_in"
+    ]
+   ],
+   "class_differences": [
+    [
+     12,
+     13,
+     "heading",
+     "other"
+    ],
+    [
+     3,
+     4,
+     "paragraph",
+     "lead_in"
+    ],
+    [
+     7,
+     8,
+     "paragraph",
+     "lead_in"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 19,
+   "sources": [
+    "1e751644e1697f976c0a2f1161ba15826b073861bbf895e69603d9a5ad941cf8",
+    "c77668f19234e4e49697b016bae55bb99c56c2373a4cc7763a3aa9e690639106"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-001",
+   "request": "run-002",
+   "regions": [
+    12,
+    13
+   ],
+   "kept": [
+    10,
+    10
+   ],
+   "ink_owned_in_either_run": 291355,
+   "ink_with_corresponding_owner": 290214,
+   "agreement": 0.99608,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 2,
+     "type": "running_header",
+     "into": [
+      {
+       "region": 2,
+       "type": "running_header",
+       "pixels": 6291
+      },
+      {
+       "region": 3,
+       "type": "running_header",
+       "pixels": 1141
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 3,
+      "type": "running_header",
+      "pixels": 1141
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     12,
+     13,
+     "footnote",
+     "note"
+    ],
+    [
+     10,
+     11,
+     "read_before",
+     "other"
+    ],
+    [
+     7,
+     8,
+     "signoff",
+     "other"
+    ],
+    [
+     9,
+     10,
+     "byline",
+     "heading"
+    ]
+   ],
+   "class_differences": [
+    [
+     10,
+     11,
+     "heading",
+     "other"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 10,
+   "sources": [
+    "43f07d97a6c8c3f1c8abf76696f806873ad6e523f248ef64787738f40a92cb21",
+    "02112f457e3b77b2b468fb42a6af32944914ec5a2bedbe9378ee4820b8cde882"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-002",
+   "request": "run-002",
+   "regions": [
+    10,
+    11
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 382510,
+   "ink_with_corresponding_owner": 381249,
+   "agreement": 0.9967,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 1,
+     "type": "running_header",
+     "into": [
+      {
+       "region": 1,
+       "type": "running_header",
+       "pixels": 1261
+      },
+      {
+       "region": 2,
+       "type": "running_header",
+       "pixels": 5648
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 1,
+      "type": "running_header",
+      "pixels": 1261
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     10,
+     11,
+     "footnote",
+     "note"
+    ],
+    [
+     9,
+     10,
+     "footnote",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "6940513ed6fb2f199c0ddf78d5d629b33dada59183fc074eebad1b9eb8151e26",
+    "bfab143197f53b1c1b88a94d92d5264fca3e75cea8a62211f6f38f22aba38b34"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-003",
+   "request": "run-002",
+   "regions": [
+    14,
+    15
+   ],
+   "kept": [
+    12,
+    12
+   ],
+   "ink_owned_in_either_run": 324615,
+   "ink_with_corresponding_owner": 323407,
+   "agreement": 0.99628,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 2,
+     "type": "running_header",
+     "into": [
+      {
+       "region": 2,
+       "type": "running_header",
+       "pixels": 6415
+      },
+      {
+       "region": 3,
+       "type": "running_header",
+       "pixels": 1208
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 3,
+      "type": "running_header",
+      "pixels": 1208
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     14,
+     15,
+     "footnote",
+     "note"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 12,
+   "sources": [
+    "65c9c4f1204a25ae2c77e0e0839c9052a2e211b232bea5492c10065de27fa82a",
+    "eda8c7d7754edcf1669689dd1cf52617c458f1a528ecd9692ffd32fc969085e1"
+   ]
+  },
+  {
+   "input_id": "cole-1903-page-004",
+   "request": "run-002",
+   "regions": [
+    21,
+    22
+   ],
+   "kept": [
+    19,
+    19
+   ],
+   "ink_owned_in_either_run": 241873,
+   "ink_with_corresponding_owner": 240576,
+   "agreement": 0.99464,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 1,
+     "type": "running_header",
+     "into": [
+      {
+       "region": 1,
+       "type": "running_header",
+       "pixels": 1297
+      },
+      {
+       "region": 2,
+       "type": "running_header",
+       "pixels": 4028
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 1,
+      "type": "running_header",
+      "pixels": 1297
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     20,
+     21,
+     "footnote",
+     "note"
+    ],
+    [
+     21,
+     22,
+     "footnote",
+     "note"
+    ],
+    [
+     12,
+     13,
+     "read_before",
+     "heading"
+    ],
+    [
+     3,
+     4,
+     "paragraph",
+     "lead_in"
+    ],
+    [
+     9,
+     10,
+     "signoff",
+     "other"
+    ],
+    [
+     11,
+     12,
+     "byline",
+     "heading"
+    ],
+    [
+     7,
+     8,
+     "paragraph",
+     "lead_in"
+    ]
+   ],
+   "class_differences": [
+    [
+     3,
+     4,
+     "paragraph",
+     "lead_in"
+    ],
+    [
+     7,
+     8,
+     "paragraph",
+     "lead_in"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 19,
+   "sources": [
+    "35e856ae20d911b40bc4374b2d12eef683d924f185229432c90a74dc840374e8",
+    "a9edc4a8bf7a5964b8d59ce9ce9bbef6fe785050e14876cbd5f62a3bc853b4b5"
+   ]
+  }
+ ],
+ "code_sha256": {
+  "stability.py": "b0c87685dbc262b4da0dfd2b6c041d012895b35ea028f32c93eab818df4d6841"
+ }
+}

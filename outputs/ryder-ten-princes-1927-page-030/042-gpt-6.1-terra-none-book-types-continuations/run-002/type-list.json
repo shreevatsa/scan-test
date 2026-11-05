@@ -1,0 +1,24 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "ryder-ten-princes-1927",
+ "title": "Ryder (1927), The Ten Princes: Dandin's Dasha-kumara-charita, translated from the Sanskrit",
+ "description": "An English prose translation, scanned as two-page spreads: each image holds a left and a right page, each with its own running header and page number. A translator's introduction, signed and dated, and a table of contents come first, then the chapters, each opening with its number and title. The prose is in paragraphs full of quoted speech. Short rhymed poems are set into it, indented and in smaller type or italics.",
+ "languages": ["en"],
+ "flows": {
+  "main": "The introduction, the contents and the chapters, in reading order."
+ },
+ "types": {
+  "introduction": {"description": "The translator's introduction, ending with the translator's name, place and date.", "contains": ["heading", "paragraph", "signoff"], "flow": "main"},
+  "contents": {"description": "The table of contents.", "contains": ["heading", "contents_entry"], "flow": "main"},
+  "chapter": {"description": "One chapter, such as CHAPTER I, THE PRINCES ARE BORN.", "contains": ["heading", "paragraph", "verse"], "flow": "main", "numbered": true},
+  "heading": {"description": "A heading: a chapter's number and title, such as CHAPTER I above THE PRINCES ARE BORN, which together are one heading; or the title of the introduction or of the table of contents.", "region": "heading"},
+  "paragraph": {"description": "A prose paragraph, beginning with an indented line. Quoted speech, even several speakers' turns, is part of the paragraph. A paragraph can contain a poem, as in The prince took the letter and read: [poem]. Text after the poem that begins with an indented line is a new paragraph.", "region": "paragraph", "lang": "en", "contains": ["verse"]},
+  "verse": {"description": "A short rhymed poem set apart from the prose, indented and in smaller type or italics. A poem of several couplets separated by space, such as the benediction facing Chapter I, is one verse.", "region": "verse", "lang": "en", "flow": "main"},
+  "contents_entry": {"description": "One line of the table of contents: a chapter's Roman numeral, its title and its page number.", "region": "list_item"},
+  "signoff": {"description": "The translator's name, place and date at the end of the introduction, such as ARTHUR W. RYDER, Berkeley, California, April, 1927. One region for all its lines.", "region": "other"},
+  "running_header": {"description": "The running title of one page of the spread: THE TEN PRINCES on the left page, and the chapter's title or TRANSLATOR'S INTRODUCTION on the right page.", "role": "furniture", "region": "running_header"},
+  "page_number": {"description": "The page number of one page of the spread, beside its running header or centered at the foot of a chapter's first page; Roman numerals in the introduction and contents.", "role": "furniture", "region": "page_number"}
+ },
+ "conventions": ["Transcribe as printed, in Unicode NFC, keeping the accents and diacritics of Sanskrit names and words, such as Avánti and kāsi vāsu, and the accent in belovèd."]
+}

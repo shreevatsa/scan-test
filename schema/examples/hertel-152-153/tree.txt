@@ -1,0 +1,43 @@
+# Hertel pages 152-153 (printed 95-96): a paragraph that quotes verses and continues across the page break.
+# Regions are method 041's first request. Written by Claude from the page images on 2026-11-05.
+book hertel-panchatantra
+method 041-gpt-6.1-terra-none-explicit-units-continuations-band-chained-lines
+
+page hertel-panchatantra-page-152 label=95
+furniture r1 running_header, r2 running_header, r3 page_number, r12-r17 line_number
+omit r18 r19
+flow main
+story id=frame "Book I frame story" open=start,end
+  story id=tale15 "Tale xv: Strand-bird and sea" open=start,end
+    paragraph id=p1 open=start,end
+      r4
+      verse 345: r5
+      lead_in: r6
+      verse 346: r7
+      r8
+      verse 347: r9
+      r10
+      verse 348: r11
+
+page hertel-panchatantra-page-153 label=96
+furniture r1 running_header, r2 page_number, r3 running_header, r4 running_header, r18 margin_mark, r19-r28 line_number
+flow main
+story id=frame "Book I frame story" open=start,end
+  story id=tale15 "Tale xv: Strand-bird and sea" open=start
+    # The speech resumes after verse 348 ("तद् आगच्छ …") and the tale ends with a double danda.
+    paragraph id=p1 open=start: r5
+  # The frame story resumes in smaller type ("अतो ऽहं ब्रवीमि …").
+  paragraph: r6
+  # A new, indented paragraph; the prose after each verse continues it.
+  paragraph
+    r7
+    verse 349: r8
+    r9
+    verse 350: r10
+    r11
+    verse 351: r12
+    r13
+    verse 352: r14
+    r15
+    verse 353: r16
+    r17

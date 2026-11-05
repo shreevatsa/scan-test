@@ -1,0 +1,3766 @@
+{
+ "created_at_utc": "2026-11-05T13:02:29.380701+00:00",
+ "api_calls": 0,
+ "method": "042-gpt-6.1-terra-none-book-types-continuations",
+ "truth": {
+  "path": "references/continuations/truth.json",
+  "sha256": "4454443fbaeab21cdf5c57ba9f069fc7104ad43883efdfe6c5672af8bebfd769"
+ },
+ "script": {
+  "path": "methods/042-gpt-6.1-terra-none-book-types-continuations/link.py",
+  "sha256": "2def0e70288046c595f8f16ae8b470eb4fcc6115acac12dd8f5ba11e66873b41"
+ },
+ "runs": [
+  "kale-1913-106",
+  "hertel-panchatantra-152",
+  "dutt-17f-chapter-001"
+ ],
+ "tolerance_px": 15,
+ "primary_rule": "both",
+ "summary": {
+  "run-001": {
+   "edges": 40,
+   "correct": 36,
+   "no_region": 0,
+   "true_positive": 9,
+   "false_negative": 0,
+   "false_positive": 4,
+   "true_negative": 27,
+   "stream_mismatch": 0,
+   "per_run": {
+    "kale-1913-106": {
+     "correct": 14,
+     "edges": 16
+    },
+    "hertel-panchatantra-152": {
+     "correct": 6,
+     "edges": 8
+    },
+    "dutt-17f-chapter-001": {
+     "correct": 16,
+     "edges": 16
+    }
+   },
+   "links": {
+    "both": {
+     "found": 3,
+     "truth": 3,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 3,
+     "truth": 3,
+     "wrong": 1,
+     "unscored": 9
+    },
+    "earlier": {
+     "found": 3,
+     "truth": 3,
+     "wrong": 3,
+     "unscored": 9
+    },
+    "either": {
+     "found": 3,
+     "truth": 3,
+     "wrong": 4,
+     "unscored": 18
+    }
+   }
+  },
+  "run-002": {
+   "edges": 40,
+   "correct": 36,
+   "no_region": 0,
+   "true_positive": 9,
+   "false_negative": 0,
+   "false_positive": 4,
+   "true_negative": 27,
+   "stream_mismatch": 0,
+   "per_run": {
+    "kale-1913-106": {
+     "correct": 14,
+     "edges": 16
+    },
+    "hertel-panchatantra-152": {
+     "correct": 6,
+     "edges": 8
+    },
+    "dutt-17f-chapter-001": {
+     "correct": 16,
+     "edges": 16
+    }
+   },
+   "links": {
+    "both": {
+     "found": 3,
+     "truth": 3,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 3,
+     "truth": 3,
+     "wrong": 1,
+     "unscored": 9
+    },
+    "earlier": {
+     "found": 3,
+     "truth": 3,
+     "wrong": 3,
+     "unscored": 9
+    },
+    "either": {
+     "found": 3,
+     "truth": 3,
+     "wrong": 4,
+     "unscored": 18
+    }
+   }
+  }
+ },
+ "results": [
+  {
+   "run": "kale-1913-106",
+   "request": "run-001",
+   "edges": [
+    {
+     "page": "kale-1913-page-106",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "kale-1913-page-106",
+      3
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "body",
+     "edge": "end",
+     "line": 29,
+     "truth": true,
+     "region": [
+      "kale-1913-page-106",
+      9
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "notes",
+     "edge": "start",
+     "line": 30,
+     "truth": false,
+     "region": [
+      "kale-1913-page-106",
+      10
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "notes",
+     "edge": "end",
+     "line": 30,
+     "truth": false,
+     "region": [
+      "kale-1913-page-106",
+      13
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": true,
+     "region": [
+      "kale-1913-page-107",
+      3
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "body",
+     "edge": "end",
+     "line": 30,
+     "truth": false,
+     "region": [
+      "kale-1913-page-107",
+      10
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "notes",
+     "edge": "start",
+     "line": 31,
+     "truth": false,
+     "region": [
+      "kale-1913-page-107",
+      11
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "notes",
+     "edge": "end",
+     "line": 32,
+     "truth": false,
+     "region": [
+      "kale-1913-page-107",
+      14
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "kale-1913-page-108",
+      3
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "body",
+     "edge": "end",
+     "line": 27,
+     "truth": false,
+     "region": [
+      "kale-1913-page-108",
+      8
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "notes",
+     "edge": "start",
+     "line": 28,
+     "truth": false,
+     "region": [
+      "kale-1913-page-108",
+      9
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "notes",
+     "edge": "end",
+     "line": 32,
+     "truth": false,
+     "region": [
+      "kale-1913-page-108",
+      13
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": false,
+     "region": [
+      "kale-1913-page-109",
+      3
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "body",
+     "edge": "end",
+     "line": 28,
+     "truth": false,
+     "region": [
+      "kale-1913-page-109",
+      9
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "notes",
+     "edge": "start",
+     "line": 29,
+     "truth": false,
+     "region": [
+      "kale-1913-page-109",
+      10
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "notes",
+     "edge": "end",
+     "line": 29,
+     "truth": false,
+     "region": [
+      "kale-1913-page-109",
+      12
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "kale-1913-page-106",
+      9
+     ],
+     "to_region": [
+      "kale-1913-page-107",
+      3
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "kale-1913-page-106",
+        9
+       ],
+       [
+        "kale-1913-page-107",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "kale-1913-page-106",
+        9
+       ],
+       [
+        "kale-1913-page-107",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "kale-1913-page-106",
+        9
+       ],
+       [
+        "kale-1913-page-107",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-107",
+        10
+       ],
+       [
+        "kale-1913-page-108",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-108",
+        8
+       ],
+       [
+        "kale-1913-page-109",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "kale-1913-page-107",
+        10
+       ],
+       [
+        "kale-1913-page-108",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-108",
+        8
+       ],
+       [
+        "kale-1913-page-109",
+        3
+       ]
+      ]
+     ],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "kale-1913-page-106",
+        9
+       ],
+       [
+        "kale-1913-page-107",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-107",
+        10
+       ],
+       [
+        "kale-1913-page-108",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-108",
+        8
+       ],
+       [
+        "kale-1913-page-109",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "kale-1913-page-107",
+        10
+       ],
+       [
+        "kale-1913-page-108",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-108",
+        8
+       ],
+       [
+        "kale-1913-page-109",
+        3
+       ]
+      ]
+     ],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "kale-1913-page-106": {
+     "path": "outputs/kale-1913-page-106/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "18a298cb682e4ab381a905f6c7e5d71121e8f0756d20007045418382e6de8d3c"
+    },
+    "kale-1913-page-107": {
+     "path": "outputs/kale-1913-page-107/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "8a114420ec10d49a892e01044db2e29b9fd18a1b6bb3a9a658a862ce0d3c8033"
+    },
+    "kale-1913-page-108": {
+     "path": "outputs/kale-1913-page-108/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "21e264f2fb623dcd261f70c5f05016419a36624c52800797d5ddc8596a9f232d"
+    },
+    "kale-1913-page-109": {
+     "path": "outputs/kale-1913-page-109/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "e91ee12fba89e86636cefc037d7e9fc92af3838b11ced509bc8f940703b78656"
+    }
+   }
+  },
+  {
+   "run": "hertel-panchatantra-152",
+   "request": "run-001",
+   "edges": [
+    {
+     "page": "hertel-panchatantra-page-152",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "hertel-panchatantra-page-152",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-152",
+     "stream": "body",
+     "edge": "end",
+     "line": 24,
+     "truth": false,
+     "region": [
+      "hertel-panchatantra-page-152",
+      10
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-153",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "hertel-panchatantra-page-153",
+      5
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "hertel-panchatantra-page-153",
+     "stream": "body",
+     "edge": "end",
+     "line": 31,
+     "truth": false,
+     "region": [
+      "hertel-panchatantra-page-153",
+      17
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "hertel-panchatantra-page-154",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "hertel-panchatantra-page-154",
+      3
+     ],
+     "region_type": "heading",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-154",
+     "stream": "body",
+     "edge": "end",
+     "line": 23,
+     "truth": true,
+     "region": [
+      "hertel-panchatantra-page-154",
+      6
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-155",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "hertel-panchatantra-page-155",
+      3
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-155",
+     "stream": "body",
+     "edge": "end",
+     "line": 24,
+     "truth": true,
+     "region": [
+      "hertel-panchatantra-page-155",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "hertel-panchatantra-page-154",
+      6
+     ],
+     "to_region": [
+      "hertel-panchatantra-page-155",
+      3
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-155",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        3
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        4
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        3
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-155",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        3
+       ]
+      ]
+     ],
+     "unscored": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        3
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        4
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ]
+      ]
+     ]
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-155",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ]
+      ]
+     ],
+     "unscored": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ]
+      ]
+     ]
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        3
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        4
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        3
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-155",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        3
+       ]
+      ]
+     ],
+     "unscored": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        3
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        4
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ]
+      ]
+     ]
+    }
+   },
+   "sources": {
+    "hertel-panchatantra-page-152": {
+     "path": "outputs/hertel-panchatantra-page-152/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "8798510bb2d2e9a8dc0d5cc946f3d0e30f80c253609303a7a8e333441b290d1f"
+    },
+    "hertel-panchatantra-page-153": {
+     "path": "outputs/hertel-panchatantra-page-153/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "95b99b94092900a7f3e8e7333e516733fea6645bc08d98cb419eefbc7211334d"
+    },
+    "hertel-panchatantra-page-154": {
+     "path": "outputs/hertel-panchatantra-page-154/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "a457ddf41f520fa896ebc06f7ee2d388644417776700355024096343ade33a90"
+    },
+    "hertel-panchatantra-page-155": {
+     "path": "outputs/hertel-panchatantra-page-155/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "724383c9f27627f4d245b49675d8fcac4043d0c77fa54e31eb398d73d86d0015"
+    }
+   }
+  },
+  {
+   "run": "dutt-17f-chapter-001",
+   "request": "run-001",
+   "edges": [
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-001",
+      3
+     ],
+     "region_type": "heading",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "end",
+     "line": 50,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-001",
+      15
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-001",
+      16
+     ],
+     "region_type": "speaker",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "end",
+     "line": 50,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-001",
+      29
+     ],
+     "region_type": "translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-002",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "end",
+     "line": 41,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-002",
+      17
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "start",
+     "line": 43,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-002",
+      18
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "end",
+     "line": 84,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-002",
+      29
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "end",
+     "line": 43,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      14
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "start",
+     "line": 45,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      15
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "end",
+     "line": 87,
+     "truth": true,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      25
+     ],
+     "region_type": "translation",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      3
+     ],
+     "region_type": "translation",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "end",
+     "line": 42,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      16
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "start",
+     "line": 44,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      17
+     ],
+     "region_type": "translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "end",
+     "line": 84,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      32
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      25
+     ],
+     "to_region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      3
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "dutt-mahabharata-17f-chapter-001-page-003",
+        25
+       ],
+       [
+        "dutt-mahabharata-17f-chapter-001-page-004",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "dutt-mahabharata-17f-chapter-001-page-003",
+        25
+       ],
+       [
+        "dutt-mahabharata-17f-chapter-001-page-004",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "dutt-mahabharata-17f-chapter-001-page-003",
+        25
+       ],
+       [
+        "dutt-mahabharata-17f-chapter-001-page-004",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "dutt-mahabharata-17f-chapter-001-page-003",
+        25
+       ],
+       [
+        "dutt-mahabharata-17f-chapter-001-page-004",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "dutt-mahabharata-17f-chapter-001-page-001": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-001/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "e3fe9c632fd0f4ac423e7f4b9e789218665d3ba7d355853e3e2722d7db514a0f"
+    },
+    "dutt-mahabharata-17f-chapter-001-page-002": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-002/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "e3ca6eb6c5b95c1a5949546773c9bea32858d01712433fd76c77f15d9b5b3fc2"
+    },
+    "dutt-mahabharata-17f-chapter-001-page-003": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-003/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "9dc1385c848c5e787259ce2795ffb072ab2ac62b196a2b35c06a4ea42c742ee3"
+    },
+    "dutt-mahabharata-17f-chapter-001-page-004": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-004/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "635163f32949d8d0b388402ba3d8ae19ac1677bdd21e8ba2a32ce15e1df51ddc"
+    }
+   }
+  },
+  {
+   "run": "kale-1913-106",
+   "request": "run-002",
+   "edges": [
+    {
+     "page": "kale-1913-page-106",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "kale-1913-page-106",
+      3
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "body",
+     "edge": "end",
+     "line": 29,
+     "truth": true,
+     "region": [
+      "kale-1913-page-106",
+      9
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "notes",
+     "edge": "start",
+     "line": 30,
+     "truth": false,
+     "region": [
+      "kale-1913-page-106",
+      10
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-106",
+     "stream": "notes",
+     "edge": "end",
+     "line": 30,
+     "truth": false,
+     "region": [
+      "kale-1913-page-106",
+      13
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": true,
+     "region": [
+      "kale-1913-page-107",
+      3
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "body",
+     "edge": "end",
+     "line": 30,
+     "truth": false,
+     "region": [
+      "kale-1913-page-107",
+      10
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "notes",
+     "edge": "start",
+     "line": 31,
+     "truth": false,
+     "region": [
+      "kale-1913-page-107",
+      11
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-107",
+     "stream": "notes",
+     "edge": "end",
+     "line": 32,
+     "truth": false,
+     "region": [
+      "kale-1913-page-107",
+      14
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "kale-1913-page-108",
+      3
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "body",
+     "edge": "end",
+     "line": 27,
+     "truth": false,
+     "region": [
+      "kale-1913-page-108",
+      8
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "notes",
+     "edge": "start",
+     "line": 28,
+     "truth": false,
+     "region": [
+      "kale-1913-page-108",
+      9
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-108",
+     "stream": "notes",
+     "edge": "end",
+     "line": 32,
+     "truth": false,
+     "region": [
+      "kale-1913-page-108",
+      13
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": false,
+     "region": [
+      "kale-1913-page-109",
+      3
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "body",
+     "edge": "end",
+     "line": 28,
+     "truth": false,
+     "region": [
+      "kale-1913-page-109",
+      9
+     ],
+     "region_type": "commentary",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "notes",
+     "edge": "start",
+     "line": 29,
+     "truth": false,
+     "region": [
+      "kale-1913-page-109",
+      10
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "kale-1913-page-109",
+     "stream": "notes",
+     "edge": "end",
+     "line": 29,
+     "truth": false,
+     "region": [
+      "kale-1913-page-109",
+      12
+     ],
+     "region_type": "footnote",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "kale-1913-page-106",
+      9
+     ],
+     "to_region": [
+      "kale-1913-page-107",
+      3
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "kale-1913-page-106",
+        9
+       ],
+       [
+        "kale-1913-page-107",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "kale-1913-page-106",
+        9
+       ],
+       [
+        "kale-1913-page-107",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "kale-1913-page-106",
+        9
+       ],
+       [
+        "kale-1913-page-107",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-107",
+        10
+       ],
+       [
+        "kale-1913-page-108",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-108",
+        8
+       ],
+       [
+        "kale-1913-page-109",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "kale-1913-page-107",
+        10
+       ],
+       [
+        "kale-1913-page-108",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-108",
+        8
+       ],
+       [
+        "kale-1913-page-109",
+        3
+       ]
+      ]
+     ],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "kale-1913-page-106",
+        9
+       ],
+       [
+        "kale-1913-page-107",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-107",
+        10
+       ],
+       [
+        "kale-1913-page-108",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-108",
+        8
+       ],
+       [
+        "kale-1913-page-109",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "kale-1913-page-107",
+        10
+       ],
+       [
+        "kale-1913-page-108",
+        3
+       ]
+      ],
+      [
+       [
+        "kale-1913-page-108",
+        8
+       ],
+       [
+        "kale-1913-page-109",
+        3
+       ]
+      ]
+     ],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "kale-1913-page-106": {
+     "path": "outputs/kale-1913-page-106/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "f82aba17c3799e910a025d3b211e21fa205c782aca7c12846c9a04549519e87b"
+    },
+    "kale-1913-page-107": {
+     "path": "outputs/kale-1913-page-107/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "c19949b5ed3aeb70fed306214a6876f597326759661eae9ba4ab2225c8c91f5a"
+    },
+    "kale-1913-page-108": {
+     "path": "outputs/kale-1913-page-108/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "731ffee1401aeb301dcca48dfa7c5efa409acd1c6a312423ab9ef0ef7a3aa244"
+    },
+    "kale-1913-page-109": {
+     "path": "outputs/kale-1913-page-109/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "20cf697b427fb7883efc33e02ee624704da029d7104f7e2686e465ccb4dcb96e"
+    }
+   }
+  },
+  {
+   "run": "hertel-panchatantra-152",
+   "request": "run-002",
+   "edges": [
+    {
+     "page": "hertel-panchatantra-page-152",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "hertel-panchatantra-page-152",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-152",
+     "stream": "body",
+     "edge": "end",
+     "line": 24,
+     "truth": false,
+     "region": [
+      "hertel-panchatantra-page-152",
+      11
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-153",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "hertel-panchatantra-page-153",
+      5
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "hertel-panchatantra-page-153",
+     "stream": "body",
+     "edge": "end",
+     "line": 31,
+     "truth": false,
+     "region": [
+      "hertel-panchatantra-page-153",
+      17
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "hertel-panchatantra-page-154",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "hertel-panchatantra-page-154",
+      3
+     ],
+     "region_type": "heading",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-154",
+     "stream": "body",
+     "edge": "end",
+     "line": 23,
+     "truth": true,
+     "region": [
+      "hertel-panchatantra-page-154",
+      6
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-155",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "hertel-panchatantra-page-155",
+      4
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "hertel-panchatantra-page-155",
+     "stream": "body",
+     "edge": "end",
+     "line": 24,
+     "truth": true,
+     "region": [
+      "hertel-panchatantra-page-155",
+      5
+     ],
+     "region_type": "paragraph",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "hertel-panchatantra-page-154",
+      6
+     ],
+     "to_region": [
+      "hertel-panchatantra-page-155",
+      4
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-155",
+        4
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        3
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-155",
+        4
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        3
+       ]
+      ]
+     ],
+     "unscored": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ]
+      ]
+     ]
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-155",
+        4
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ]
+      ]
+     ],
+     "unscored": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ]
+      ]
+     ]
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        3
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ],
+       [
+        "hertel-panchatantra-page-155",
+        4
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        3
+       ]
+      ]
+     ],
+     "unscored": [
+      [
+       [
+        "hertel-panchatantra-page-152",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-152",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-152",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        6
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        7
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        8
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        9
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        10
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        11
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        12
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        13
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        14
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        15
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-153",
+        16
+       ],
+       [
+        "hertel-panchatantra-page-153",
+        17
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        4
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ]
+      ],
+      [
+       [
+        "hertel-panchatantra-page-154",
+        5
+       ],
+       [
+        "hertel-panchatantra-page-154",
+        6
+       ]
+      ]
+     ]
+    }
+   },
+   "sources": {
+    "hertel-panchatantra-page-152": {
+     "path": "outputs/hertel-panchatantra-page-152/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "ff2e40bd4ed1721202149739c34350cba61560073181b3908e6056fa527b9880"
+    },
+    "hertel-panchatantra-page-153": {
+     "path": "outputs/hertel-panchatantra-page-153/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "1fec02dafe9e31e48cc9674700cea6bb3145100713e98519dc911a0cb70e1bde"
+    },
+    "hertel-panchatantra-page-154": {
+     "path": "outputs/hertel-panchatantra-page-154/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "f2ab741399f1d22cbb67e4ea77c283a6907d023aff2ad6a7c9070e6186b22597"
+    },
+    "hertel-panchatantra-page-155": {
+     "path": "outputs/hertel-panchatantra-page-155/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "6d3152b99835753e2dd7c2af299f2ef134ff70a57c6151d9560acc728ea6a472"
+    }
+   }
+  },
+  {
+   "run": "dutt-17f-chapter-001",
+   "request": "run-002",
+   "edges": [
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-001",
+      3
+     ],
+     "region_type": "heading",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "end",
+     "line": 50,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-001",
+      15
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-001",
+      16
+     ],
+     "region_type": "speaker",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-001",
+     "stream": "body",
+     "edge": "end",
+     "line": 50,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-001",
+      29
+     ],
+     "region_type": "translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-002",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "end",
+     "line": 41,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-002",
+      17
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "start",
+     "line": 43,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-002",
+      18
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-002",
+     "stream": "body",
+     "edge": "end",
+     "line": 84,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-002",
+      29
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "end",
+     "line": 43,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      14
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "start",
+     "line": 45,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      15
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-003",
+     "stream": "body",
+     "edge": "end",
+     "line": 87,
+     "truth": true,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      25
+     ],
+     "region_type": "translation",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "start",
+     "line": 1,
+     "truth": true,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      3
+     ],
+     "region_type": "translation",
+     "region_stream": "body",
+     "flag": true,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "end",
+     "line": 42,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      16
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "start",
+     "line": 44,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      17
+     ],
+     "region_type": "translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "dutt-mahabharata-17f-chapter-001-page-004",
+     "stream": "body",
+     "edge": "end",
+     "line": 84,
+     "truth": false,
+     "region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      32
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [
+    {
+     "stream": "body",
+     "from_region": [
+      "dutt-mahabharata-17f-chapter-001-page-003",
+      25
+     ],
+     "to_region": [
+      "dutt-mahabharata-17f-chapter-001-page-004",
+      3
+     ]
+    }
+   ],
+   "links": {
+    "both": {
+     "predicted": [
+      [
+       [
+        "dutt-mahabharata-17f-chapter-001-page-003",
+        25
+       ],
+       [
+        "dutt-mahabharata-17f-chapter-001-page-004",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [
+      [
+       [
+        "dutt-mahabharata-17f-chapter-001-page-003",
+        25
+       ],
+       [
+        "dutt-mahabharata-17f-chapter-001-page-004",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "dutt-mahabharata-17f-chapter-001-page-003",
+        25
+       ],
+       [
+        "dutt-mahabharata-17f-chapter-001-page-004",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "dutt-mahabharata-17f-chapter-001-page-003",
+        25
+       ],
+       [
+        "dutt-mahabharata-17f-chapter-001-page-004",
+        3
+       ]
+      ]
+     ],
+     "found": 1,
+     "truth": 1,
+     "wrong": [],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "dutt-mahabharata-17f-chapter-001-page-001": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-001/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "414f2fa8ec0a5f8beac39a582bdf7ede31c1cfdf7d8662ace246fa5471b59151"
+    },
+    "dutt-mahabharata-17f-chapter-001-page-002": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-002/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "de0486cf2436d5d2700bbd123ee698a58c2b1c50edca0e45ec8a716a6415ac4c"
+    },
+    "dutt-mahabharata-17f-chapter-001-page-003": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-003/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "3d1bf71a80362c1eea013fa6a35c83d831bb7816bbb5c57a20dbaa71aafca13e"
+    },
+    "dutt-mahabharata-17f-chapter-001-page-004": {
+     "path": "outputs/dutt-mahabharata-17f-chapter-001-page-004/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "bf22e70133385029603921fbcaaec0f8eaa18899182cfc1a27b76a3943894ab0"
+    }
+   }
+  }
+ ]
+}

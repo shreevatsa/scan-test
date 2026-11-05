@@ -1,0 +1,36 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "telang-dli",
+ "title": "Telang's edition of Bhartṛhari's śatakas (Digital Library of India scan)",
+ "description": "An English introduction with footnotes; an index of stanzas in tables printed sideways; the Sanskrit text, in sections, with a critical apparatus of variant readings below a rule on each page; and English notes on the stanzas.",
+ "languages": ["sa-Deva", "en"],
+ "flows": {
+  "main": "The parts of the book in reading order.",
+  "apparatus": "The variant readings, in page order.",
+  "notes": "The footnotes of the introduction and the index, in page order."
+ },
+ "types": {
+  "introduction": {"description": "The English preface and introduction.", "contains": ["heading", "paragraph"], "flow": "main"},
+  "index": {"description": "The index of stanzas: tables giving each stanza's number in other editions and manuscripts.", "contains": ["heading", "table"], "flow": "main"},
+  "shataka": {"description": "The Sanskrit text of one śataka, with its title and sections.", "contains": ["heading", "section"], "flow": "main"},
+  "section": {"description": "A group of stanzas on one theme, with its heading, such as अथ दुर्जनप्रशंसा ।", "contains": ["heading", "lead_in", "verse"]},
+  "notes": {"description": "The English notes on the stanzas, after the text.", "contains": ["heading", "stanza_note"], "flow": "main"},
+  "heading": {"description": "A title or heading: of a part, of a śataka, or of a section, such as अथ दुर्जनप्रशंसा ।", "region": "heading"},
+  "paragraph": {"description": "A paragraph of the English introduction.", "region": "paragraph", "lang": "en"},
+  "table": {"description": "One index table, printed sideways, with its column heads (the sigla of editions and manuscripts) and the first words of each stanza.", "region": "table"},
+  "lead_in": {"description": "A short Sanskrit line of its own that introduces the next stanza, such as साहंकारं पुरुषमुद्दिश्याह ।", "region": "lead_in", "lang": "sa-Deva"},
+  "verse": {"description": "One Sanskrit stanza with its number in Devanagari digits, such as ॥ २९ ॥. Its lines are set alternately flush and indented. A stanza can begin at the foot of one page and end at the top of the next.", "region": "verse", "lang": "sa-Deva", "numbered": true},
+  "apparatus_entry": {"description": "The variant readings of one stanza, below the rule: the stanza's Roman numeral, such as XXVIII., then readings for its quarters (a) to (d) with the sigla of the sources, such as K. Bo. M. An entry can run onto the next page; the apparatus at the top of that page then continues it without a numeral, for example from (c).", "region": "note", "flow": "apparatus", "numbered": true},
+  "stanza_note": {"description": "The English note on one stanza, beginning with its number, such as St. XXXIII.—, and often ending with the name of the metre, such as —Anushṭubh. A note can run across pages.", "region": "paragraph", "lang": "en", "numbered": true},
+  "footnote": {"description": "A footnote below the rule in the introduction or the index, marked *, †, ‡, §, ¶ or ‖.", "region": "note", "flow": "notes"},
+  "page_number": {"description": "The page number at the head of the page: Devanagari digits in brackets on text pages, such as [ ७२ ]; roman numerals in the introduction; Arabic digits in the notes.", "role": "furniture", "region": "page_number"},
+  "running_header": {"description": "The running title beside the page number, such as NOTES.", "role": "furniture", "region": "running_header"}
+ },
+ "relations": {
+  "note": "A footnote marker in the text points to its footnote.",
+  "readings": "An apparatus entry gives the readings of the stanza with the same number.",
+  "comments_on": "A stanza note comments on the stanza with the same number."
+ },
+ "conventions": ["Transcribe Devanagari and English as printed, in Unicode NFC, with the printed digits and dandas. Keep the edition's romanization in the English, such as S'ringâras'ataka and Kâvyasangraha, and the degree signs (°) that mark abbreviated readings in the apparatus."]
+}
