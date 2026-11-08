@@ -1,0 +1,21 @@
+{
+  "name": "GPT-6.1 Terra with low reasoning: method 047's transcription request (method 043's regions, neighbor context)",
+  "provider": "openai",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "low",
+  "max_output_tokens": 32768,
+  "prompt_variant": "region-transcription-neighbor-context-v1",
+  "image_detail": "original",
+  "store": false,
+  "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "cutout_padding_char": 0.5,
+  "gutter_width_char": 1.6,
+  "gutter_min_px": 36,
+  "gutter_font_char": 0.55,
+  "gutter_font_min_px": 14,
+  "overview_label_char": 0.8,
+  "overview_label_min_px": 18,
+  "overview_outline_px": 3,
+  "context_lines": 2,
+  "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+}

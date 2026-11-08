@@ -9,6 +9,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import book as bk  # noqa: E402
+import inline  # noqa: E402
 
 SQUARE = [[[0, 0], [10, 0], [10, 10], [0, 10]]]
 TYPES = {
@@ -119,6 +120,61 @@ class Tests(unittest.TestCase):
         for book_path in sorted((HERE / "examples").glob("*/book.json")):
             doc = json.loads(book_path.read_text())
             self.assertEqual(bk.validate(doc) + bk.check_document(doc, doc["types"])[0], [], book_path)
+
+
+class InlineTests(unittest.TestCase):
+    """Schema 0.2: inline spans, note markers and anchors (schema/inline.py and the checks in book.py)."""
+
+    def test_parse_line(self):
+        plain, spans, still, nxt = inline.parse_line("the <i>Supreme Ens</i>, which")
+        self.assertEqual(plain, "the Supreme Ens, which")
+        self.assertEqual(spans, [dict(start=4, end=15, kind="italic")])
+        self.assertEqual((still, nxt), ((), 1))
+
+    def test_markers_leave_the_text(self):
+        plain, spans, _, nxt = inline.parse_line("कचसंचये च[१] वदने")
+        self.assertEqual(plain, "कचसंचये च वदने")
+        self.assertEqual(spans, [dict(start=9, end=9, kind="note_marker", id="m1", marker="१")])
+        self.assertEqual(nxt, 2)
+
+    def test_tag_across_lines(self):
+        a, sa, still, n = inline.parse_line("made use of the <i>Variæ")
+        b, sb, still2, _ = inline.parse_line("lectiones e codicibus</i> collected", still, n)
+        self.assertEqual((still, still2), (("italic",), ()))
+        runs = inline.formatted_runs([dict(text=a, spans=sa), dict(text=b, spans=sb)])
+        self.assertEqual(runs, [("italic", "Variæ lectiones e codicibus")])
+
+    def page02(self):
+        doc = page("p1", [("r1", "paragraph"), ("r2", "footnote")],
+                   [{"id": "s", "type": "story", "children": [{"unit": "para"}]},
+                    {"id": "para", "type": "paragraph", "children": [{"region": "p1#r1"}]},
+                    {"id": "fn", "type": "footnote", "number": "1", "children": [{"region": "p1#r2"}]}],
+                   {"main": ["s"], "notes": ["fn"]},
+                   [{"type": "note", "from": {"region": "p1#r1", "line": 1, "start": 5, "end": 8, "marker": "1"}, "to": {"unit": "fn"}}])
+        doc["page"]["regions"][0]["lines"] = [{"line": 1, "polygons": SQUARE, "text": "Some[1] text"}]
+        doc["page"]["regions"][1]["lines"] = [{"line": 2, "polygons": SQUARE, "text": "1 A note."}]
+        return doc
+
+    def test_upgrade_and_anchor(self):
+        old = self.page02()
+        old["page"]["regions"][0]["lines"][0]["text"] = "Some [1] text"
+        new = inline.upgrade_page(old)
+        line = new["page"]["regions"][0]["lines"][0]
+        self.assertEqual(line["text"], "Some  text")
+        self.assertEqual(line["spans"], [dict(start=5, end=5, kind="note_marker", id="m1", marker="1")])
+        self.assertEqual(new["relations"][0]["from"]["anchor"], "p1#m1")
+        self.assertEqual(bk.validate(new) + bk.check_document(new, TYPES)[0], [])
+
+    def test_span_rules(self):
+        doc = inline.upgrade_page(self.page02())
+        spans = doc["page"]["regions"][0]["lines"][0].setdefault("spans", [])
+        spans.append(dict(start=2, end=40, kind="italic"))
+        spans.append(dict(start=1, end=2, kind="note_marker", id="m9"))
+        spans.append(dict(start=0, end=1, kind="sparkly"))
+        doc["relations"].append({"type": "note", "from": {"anchor": "p1#m77"}, "to": {"unit": "fn"}})
+        errors = bk.check_document(doc, TYPES)[0]
+        for expected in ["outside the text", "must be zero-width", "unknown kind sparkly", "unknown anchor p1#m77"]:
+            self.assertTrue(any(expected in e for e in errors), (expected, errors))
 
 
 if __name__ == "__main__":

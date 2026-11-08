@@ -1,0 +1,1487 @@
+{
+ "note": "All 200 pages of the Telang DLI scan, for the full-book walk, as a series of its own (telang-dli-book-page-NNN) so that the 15 pages rendered earlier as telang-dli-page-NNN keep their renders. Preprocessing, chosen by a survey of the raw pages on 2026-11-06: 'flatten' where method 043's line analysis failed or took more than a fifth of a non-blank page as ink (pages 1, 5-12, 158, 200); 'rotate_cw' for the index tables printed sideways (pages 35-50). Render with: uv run --offline python inputs/render_pages.py inputs/pages-telang-book.json",
+ "dpi": 300,
+ "pages": [
+  {
+   "input_id": "telang-dli-book-page-001",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 1,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-002",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 2,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-003",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 3,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-004",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 4,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-005",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 5,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-006",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 6,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-007",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 7,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-008",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 8,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-009",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 9,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-010",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 10,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-011",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 11,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-012",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 12,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-013",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 13,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-014",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 14,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-015",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 15,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-016",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 16,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-017",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 17,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-018",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 18,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-019",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 19,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-020",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 20,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-021",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 21,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-022",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 22,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-023",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 23,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-024",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 24,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-025",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 25,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-026",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 26,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-027",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 27,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-028",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 28,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-029",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 29,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-030",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 30,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-031",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 31,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-032",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 32,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-033",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 33,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-034",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 34,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-035",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 35,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-036",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 36,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-037",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 37,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-038",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 38,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-039",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 39,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-040",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 40,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-041",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 41,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-042",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 42,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-043",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 43,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-044",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 44,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-045",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 45,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-046",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 46,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-047",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 47,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-048",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 48,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-049",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 49,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-050",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 50,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "rotate_cw"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-051",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 51,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-052",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 52,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-053",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 53,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-054",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 54,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-055",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 55,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-056",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 56,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-057",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 57,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-058",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 58,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-059",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 59,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-060",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 60,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-061",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 61,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-062",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 62,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-063",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 63,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-064",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 64,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-065",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 65,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-066",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 66,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-067",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 67,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-068",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 68,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-069",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 69,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-070",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 70,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-071",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 71,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-072",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 72,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-073",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 73,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-074",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 74,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-075",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 75,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-076",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 76,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-077",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 77,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-078",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 78,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-079",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 79,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-080",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 80,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-081",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 81,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-082",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 82,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-083",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 83,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-084",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 84,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-085",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 85,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-086",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 86,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-087",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 87,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-088",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 88,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-089",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 89,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-090",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 90,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-091",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 91,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-092",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 92,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-093",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 93,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-094",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 94,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-095",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 95,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-096",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 96,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-097",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 97,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-098",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 98,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-099",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 99,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-100",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 100,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-101",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 101,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-102",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 102,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-103",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 103,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-104",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 104,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-105",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 105,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-106",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 106,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-107",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 107,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-108",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 108,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-109",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 109,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-110",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 110,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-111",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 111,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-112",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 112,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-113",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 113,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-114",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 114,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-115",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 115,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-116",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 116,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-117",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 117,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-118",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 118,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-119",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 119,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-120",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 120,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-121",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 121,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-122",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 122,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-123",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 123,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-124",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 124,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-125",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 125,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-126",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 126,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-127",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 127,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-128",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 128,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-129",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 129,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-130",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 130,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-131",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 131,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-132",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 132,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-133",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 133,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-134",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 134,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-135",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 135,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-136",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 136,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-137",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 137,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-138",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 138,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-139",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 139,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-140",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 140,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-141",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 141,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-142",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 142,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-143",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 143,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-144",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 144,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-145",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 145,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-146",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 146,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-147",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 147,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-148",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 148,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-149",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 149,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-150",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 150,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-151",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 151,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-152",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 152,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-153",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 153,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-154",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 154,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-155",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 155,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-156",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 156,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-157",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 157,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-158",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 158,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  },
+  {
+   "input_id": "telang-dli-book-page-159",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 159,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-160",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 160,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-161",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 161,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-162",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 162,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-163",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 163,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-164",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 164,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-165",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 165,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-166",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 166,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-167",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 167,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-168",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 168,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-169",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 169,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-170",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 170,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-171",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 171,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-172",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 172,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-173",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 173,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-174",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 174,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-175",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 175,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-176",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 176,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-177",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 177,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-178",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 178,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-179",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 179,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-180",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 180,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-181",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 181,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-182",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 182,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-183",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 183,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-184",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 184,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-185",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 185,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-186",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 186,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-187",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 187,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-188",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 188,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-189",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 189,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-190",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 190,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-191",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 191,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-192",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 192,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-193",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 193,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-194",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 194,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-195",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 195,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-196",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 196,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-197",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 197,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-198",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 198,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-199",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 199,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request."
+  },
+  {
+   "input_id": "telang-dli-book-page-200",
+   "book_id": "telang-dli",
+   "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+   "pdf_page": 200,
+   "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+   "preprocess": [
+    "flatten"
+   ]
+  }
+ ]
+}

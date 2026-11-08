@@ -1,6 +1,97 @@
-# Layout-box experiments: session handoff
+# Scanned books, source-aware: session handoff
 
-Updated 2026-11-05 UTC, after the cross-book test (Terra 025 and method 033 on 43 more pages from seven books), method 035, the user's review of the six new references (version 2 of four of them, with re-evaluation), method 036, the explicit-unit prompt (methods 037 and 038), the band-chained line finder (method 039), a held-out test on 54 fresh pages from ten books, a continuation test on seven four-page runs (methods 040 and 041), the user's review of the continuation truth, a first draft of the book schema (`schema/`) and the user's answers on it, methods 042 and 043 (region types generated from the book's type list), and the Telang (accepted) and Cole (draft) type lists tested with them. Repository: `/Users/shreevatsa/w/scan-test`. Starting revision: `3c04e63` (`Try more methods`). The changes described below are uncommitted. All experiments below are complete.
+Updated 2026-11-07 UTC. "Current state" below is the summary to start from. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every test, in order.
+
+## Current state (2026-11-07)
+
+**Goal (unchanged):**
+- turn a book's PDF into a digital book whose every unit (paragraph, verse, saying, footnote…) links to its page regions;
+- do it in a statically hosted web app that uses the user's own API keys.
+
+**Two pipelines into page documents:**
+- **scans** (model calls), as the app's Make pages runs them:
+  1. method 042: page regions, with GPT-6.1 Terra;
+  2. method 043: the local step (ink lines, outlines);
+  3. method 055: transcription with formatting, with Gemini 4 Argon, writing schema 0.2;
+
+  Earlier book runs: Kale (method 052) and Telang (methods 052 and 054);
+- **digital PDFs** (no model calls):
+  1. method 058: our Nudi/Baraha converter, `nudi.py`, which reads the PDF's legacy-encoded text;
+  2. method 062: units from the typography, with figures and ornaments, columns, hidden text left out, and styles. Method 062 supersedes 059, 060 and 061.
+
+  The vachana book (252 pages, 1,286 units, all valid) is made this way. Its type list (`schema/types/vachana.json`) was written by Claude and is not yet reviewed by the user.
+
+**Schema (draft 0.3):**
+- 0.2's line pieces, spans, note markers and relations;
+- optional styles (a per-book style sheet, and `style` on units and line pieces, presentation only), with rows for side-by-side units;
+- figures: a region class with no line pieces;
+- type lists: one per book in `schema/types/`, written by hand so far. 0.1 and 0.2 documents stay valid.
+
+**The web app (`webapp/`, README there):**
+- **modes:** Read (as printed, with rows side by side) · Edit book (Types, Style sheet, Problems, Make pages) · Edit pages · Export (book JSON, text, a web page as printed, a .chaya.pdf, the source PDF);
+- **input:** PDFs only;
+- **storage:** books are kept in the browser's private file system, with autosave, and saved as one file, a `.chaya.pdf`. That is the original PDF's bytes, unchanged, plus one update attaching `chaya.json` with the book's data; the original is recoverable exactly. Pages are drawn from the PDF;
+- **published books** open by URL, read only;
+- **editing:** split at the caret, move text to a column, make a unit page furniture, unit styles, the style sheet editor;
+- **tests:** `node --test webapp/test/*.test.mjs` (57) and `uv run --offline python schema/test_book.py`.
+
+**Running:**
+- `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/;
+- in this session the same server was also bound to the Tailscale address (100.115.7.63:8765) for the user's other machine. Over plain http to a non-local name the browser gives no secure context, so the app only opens `.chaya.pdf` files read only there;
+- `tailscale serve --bg 8765` (HTTPS within the tailnet) would give the full app. It changes the user's Tailscale settings, so it is not done without the user's go-ahead.
+
+**Books ready to open** (`outputs/books/`):
+- `vachana.chaya.pdf` (1.6 MB), `kale-1913.chaya.pdf` (15.6 MB) and `telang-dli.chaya.pdf` (67 MB), made with `webapp/tools/make_chaya_pdf.mjs`;
+- their folders;
+- the earlier vachana folders (`vachana-059`, `-060`, `-061`), and `superseded/`.
+
+**The user's decisions, by date:**
+- **2026-11-04:**
+  - source-aware and structure-aware from the start;
+  - book-specific type lists;
+  - spreads may be split; unreadable scans need not be handled;
+- **2026-11-06:**
+  - the GPL knconverter was for testing only; the app needs our own converter;
+  - illustrations are kept (the schema accounts for them);
+- **2026-11-07:**
+  - unlabelled pictures (ornaments) are page furniture by default;
+  - styling is kept separate from the semantic structure;
+  - modes Read · Edit book · Edit pages · Export;
+  - PDF is the only input (page images go through img2pdf first);
+  - the book is kept inside its PDF (`.chaya.pdf`): append-only saving is not required, but the original PDF must be recoverable.
+
+**Open, roughly in order:**
+1. **Committing** (done 2026-11-07, the user's option (a); NOTEBOOK, "Committing: what goes into git"):
+   - the source and the irreplaceable results are committed. Regenerable binaries are left out by `.gitignore`: page images and crops, requests that embed images, book folders and `.chaya.pdf` files;
+   - the private book ("vachana", methods 056–062) is kept out completely: rules in `.git/info/exclude`, where its files are in `PRIVATE.md` (both local only);
+   - **open:** the public books' `.chaya.pdf` files (Kale, Telang) could go on a GitHub Release; the private one never;
+   - the first commit went on a new branch, for the user to merge.
+2. **The text-layer path in the app:**
+   - port `nudi.py` and method 062's rules to JavaScript;
+   - recognize legacy-encoded fonts;
+   - infer the font roles and the typography profile, which are written per book now;
+   - use scanned PDFs' hidden OCR text layers (Kale's has one) as a free first reading or check.
+3. **Type lists:** draft one from a few sample pages with one model call; edit them in the app (with care: removing or renaming a type invalidates page documents); the user's review of the vachana list.
+4. **vachana:** line joins are about 87% right; a cheap text-only pass could fix the rest. The ornaments have no labels.
+5. **Output:** a LaTeX or Typst export from the styles; bundled web fonts (Noto Serif and Sans Kannada); contents entries' page numbers flush right.
+6. **Smaller items:**
+   - Safari's fallback for saving into browser storage is untested;
+   - Telang's 27 flattened pages are drawn unflattened;
+   - retries of invalid pages, preprocessing (flatten, rotate), and interruptions below a flow's top level, as listed in `webapp/README.md` under "Not yet".
+
+**Where the evidence is:**
+- NOTEBOOK.md (every test, newest last);
+- `methods/NNN-*/README.md`;
+- `outputs/surveys/<method>/<run>/`;
+- `outputs/<page id>/<method>/<run>/`.
+
+The conventions at the end of this file still hold: method ids, immutable runs, NOTEBOOK entries, `uv run --offline`, and keys never printed.
+
+## Earlier notes (2026-11-04 to 2026-11-06)
+
+The earlier handoff, as it was last updated:
+
+Updated 2026-11-05 UTC, after the cross-book test (Terra 025 and method 033 on 43 more pages from seven books), method 035, the user's review of the six new references (version 2 of four of them, with re-evaluation), method 036, the explicit-unit prompt (methods 037 and 038), the band-chained line finder (method 039), a held-out test on 54 fresh pages from ten books, a continuation test on seven four-page runs (methods 040 and 041), the user's review of the continuation truth, a first draft of the book schema (`schema/`) and the user's answers on it, methods 042 and 043 (region types generated from the book's type list), type lists for all ten books, tested with them and accepted by the user, transcription methods 044–047 (second call, single call, neighbor context, whole-book runs), a Kale full-book walk, and a test of whether a second reading catches transcription errors. Repository: `/Users/shreevatsa/w/scan-test`. Starting revision: `3c04e63` (`Try more methods`). The user committed the work in progress as `4013d31` (`Everything`) and, on 2026-11-05 at 14:41 UTC, `f67b3cd` (`more stuff`); it holds the Ten Princes type list and outputs but not their NOTEBOOK entry. Everything after that is uncommitted: the Ten Princes NOTEBOOK entry, the Nītiśataka, Vavilla and Gita type lists, methods 044–047, the transcription references, the extended Kale type list, the Kale page renders and all their outputs and records. All experiments below are complete.
 
 ## Goal
 
@@ -268,8 +359,160 @@ The total is about $2.76.
      - **cost and latency:** about 2.5% more than method 040 ($0.0138 against $0.0134 per page, first request); median API time 12.7 s against 12.4 s.
      - **Telang, with Claude's draft type list:** one apparatus_entry region per entry, identical in both requests (method 040: 3 to 23 note regions per page, unstable). 043 ownership identical between requests on all 4 run pages (041: none). Telang 108 reference 0 / 0 / 0 with no split entry. Flags 14 of 15 (040: 12 and 11); 3 of 4 links with none wrong (040: 2), including the 109 → 110 apparatus link; the entry at the foot of page 108 is still not flagged.
      - **Cole, with Claude's draft type list (2026-11-05; the user then found the recommendations "fine overall" and said not to worry much about the journal case for now):** article and numbered section as containers; heading, byline, read_before, paragraph (may contain formulas), formula, signoff and footnote as region types. Both requests return the same regions, types and flags on all 4 pages. The running header is one region (methods 040/041: two on every page), the article heads and signoffs get their own types (041's varied between requests), and the "and" between two formulas is a paragraph region. Cole page 3 reference 0 / 0 / 0. Flags 16 of 16 and both links, as under method 040. $0.067 for both requests.
+     - **The other five books, with Claude's draft type lists (2026-11-05, after the user said "Go ahead to the other books"; the user then accepted all five as drafted, "Yes all this sounds good. Go ahead"):** Ten Princes, Nītiśataka 1896 and 1914, Vavilla, the Gita (`schema/types/`; NOTEBOOK has one entry per book). Two requests on every input page of each book, 54 pages in all, $0.64:
+       - **references:** 0 / 0 / 0 on all four referenced pages in both requests;
+       - **stability:** same regions, types and flags in both requests on 50 of 54 pages (the differences are flags only); 043 ownership identical on 51 of 54, at least 0.997 on the rest;
+       - **grouping against method 039:** the differences follow the lists. Ten Princes' chapter number and title are one heading. Each below-rule Nītiśataka note is one region, where 039 split some parallels into lead-in, verse and note. Vavilla's commentary keeps its line before a quotation;
+       - **flags:** Ten Princes 16 of 16 and 4 of 4 links (as 040); Nītiśataka 1914 control 16 and 15 of 16 (040: 15 and 15). By inspection, a probable missed continuation on Gita spread 11 (right page flush left after a full stop);
+       - **1896 list revised once:** it first lacked hindi_gloss, and page 195's glosses came back as uncertain bhavartha; with the 1914 list's gloss type added, both repeats typed them hindi_gloss (`run-003/`, `run-004/`). The other 1896 pages were not repeated.
      - **Proposed:** method 042 + 043 as the region step for books with a type list, method 040 + 041 for books without one.
-   - **Next:** type lists for the other books, one at a time, for the user's review (Claude drafts each; Telang was drafted, tested and accepted on 2026-11-05: `schema/types/telang-dli.json`; Cole drafted, tested and accepted the same day, `schema/types/cole-1903.json`; the user then said to go ahead with the other books: Ten Princes, the two Nītiśataka editions, Vavilla and the Gita); then the transcription call, which returns per-line text and the page's unit tree with open ends, on 043's regions, and a single-call variant. Later, one full book (Kale, then Telang) page by page, to cover title pages, contents and other parts the type lists miss.
+   - **Type lists: done.** All ten books have one, all accepted by the user by 2026-11-05 (Telang, Cole, then Ten Princes, the two Nītiśataka editions, Vavilla and the Gita, drafted by Claude and tested before review).
+   - **Method 044, the transcription call: done on 2026-11-05, not yet reviewed by the user.** [Method 044](methods/044-gpt-6.1-terra-none-region-transcription/README.md) sends the page with method 043's regions outlined and tagged, plus a cut-out of each region with its line pieces numbered, and gets back one line of text per line piece and a flat unit tree with open ends; a local step writes a schema page document and checks it. Two requests on the 12 Kale, Hertel and Dutt run pages, $0.56 in all (NOTEBOOK, "Transcription and unit tree on method 043's regions"):
+     - **transcription references:** Claude wrote three (Hertel 152, Kale 106, Dutt page 2) before the first run; not yet reviewed by the user;
+     - **text:** character error rate, markers ignored, 0.44% / 1.31% (Hertel, first request / repeat), 1.87% / 2.25% (Kale's worn scan), 0.34% / 0.43% (Dutt). The errors are misread words, often a familiar form for an unusual one; Kale's tiny footnote markers are missed;
+     - **trees:** all 159 example units found with the right type and regions (one missed in the repeat), all region types right; open ends wrong at four of nine page breaks, always at a page edge, the same in both requests;
+     - **validity:** 10 of 12 page documents valid in the first request, 9 in the repeat (an open start not on a first child; a misnumbered unit id; a unit in no flow);
+     - **stability:** units identical between requests on 11 of 12 pages; text differs on 0.1–3.3% of characters.
+   - **Method 045, the single call, and method 046, the second call with neighbor context: done on 2026-11-05, not yet reviewed by the user.** Two requests each on the same 12 pages (NOTEBOOK, "Method 045" and "Method 046"):
+     - [method 045](methods/045-gpt-6.1-terra-none-single-call-regions-text-units/README.md) (one call for regions, line text and units, then method 043's local step): regions 0 / 0 / 0 on the three referenced pages; text on the line pieces of 233 of 236 regions; text error 0.44–2.31%, a little worse than method 044 in the repeats; the same tree quality and the same open-end mistakes except at Dutt page 2; $0.35 for 12 pages against $0.55 for methods 042 + 044, but a longer wait (median 38 s against about 41 s for both calls one after the other);
+     - [method 046](methods/046-gpt-6.1-terra-none-region-transcription-neighbor-context/README.md) (method 044 plus the neighboring pages' edge lines, from their method 043 regions, as context): open ends right at every page break in the first request (method 044: wrong at four of nine), one wrong in the repeat; Kale 106–109 assembles without a warning in both requests; text error 0.27–2.25%; cost as method 044.
+     - **Claude's recommendation:** method 042 + 043 + 046 for whole books, since the region step for all pages comes first anyway, and the context then costs nothing in parallelism.
+     - **Remaining tree errors:** Hertel's frame story resuming after an inner tale on the same page (page 153, invalid in every method), and the flat unit list's ids (Dutt page 1: a group given another group's id). A nested unit tree in the response, with no ids to keep, would remove the second kind.
+   - **The Kale full-book walk: done on 2026-11-06, not yet reviewed by the user.** NOTEBOOK, "The Kale full-book walk":
+     - **survey and type list:** the scan has an English contents page, the Sanskrit text (pages 2–113), an English translation (114–165) and English notes (166–252). `schema/types/kale-1913.json` was extended by Claude for the parts outside the Sanskrit text (schema/README.md, "Decided on 2026-11-05", lists the additions);
+     - **run:** method 042 + 043 on all 252 pages, run `book-001`, then [method 047](methods/047-gpt-6.1-terra-none-region-transcription-neighbor-context-runs/README.md) (method 046 with a `--run` option). The OpenAI credits ran out after 125 pages; after the user added credits, the 127 refused attempts were renamed `book-001-refused-429` and rerun. $7.45 in all;
+     - **result** (`outputs/surveys/047-…/kale-book-001-full/`, with `book/transcript.txt`): 251 of 252 pages valid; 2,136 units; open-end mismatches at 5 of 250 page breaks. Verse counts match the contents (133 and 145). The number-sequence check found five misread verse numbers (९ as १) and a few oddities in the English parts;
+     - **three gaps in Claude's extension of the type list, found by the walk:**
+       1. commentary allowed directly in a section (for the commentator's introduction) let page 4 put a continued commentary there instead of in its group;
+       2. paragraph is allowed only in the contents, so page 130's editor's note made the page invalid;
+       3. the translation and notes descriptions do not say that each is one unit across both śatakas, so the model closed them before the headings on pages 138 and 208.
+
+       Proposed fixes: a separate type for the commentator's introduction, with commentary only in groups; paragraph for editor's notes in the translation and notes too; and descriptions saying each part is one unit with headings inside. Then rerun the whole book as `book-002`, together with whatever transcription fix the error tests choose.
+   - **Transcription errors such as दौर्योधने → दुर्योधने (the user's question, 2026-11-06), tested the same day at the user's request.** NOTEBOOK: "Transcription errors: are they caught by a second reading?", "Stronger readers…" and "A check call…":
+     - **the error:** the OpenAI readers write the familiar form of a word or verse. On 6 lines, all four readings (methods 044 and 046, two requests each) agree on the same wrong text, so repeats and voting cannot catch it;
+     - **Tesseract as a second reader:** it flags 21–22 of 22 wrong words, and 25–33% of all words once its zero-width non-joiners are removed;
+     - **stronger readers** (method 047's request, two requests on the three referenced pages; character error rate with markers ignored):
+       - Terra with reasoning (048): no better;
+       - Astra (049): slightly better at ten times the cost, with the same substitutions;
+       - **Gemini 4 Argon with low thinking (052): 0% / 0% on Hertel 152, 0.19% / 0.06% on Kale 106, 0.03% / 0% on Dutt page 2.** It reads all six "familiar form" lines as printed, and finds and relates all four of Kale 106's footnote markers. Its trees are as good as Terra's. About $0.08 per page. Gemini refused the schema with fixed line counts and one property per region as too complex on a 29-region page (methods 050 and 051), so method 052 uses a region list;
+     - **check call** (053: Terra checks the words Tesseract disputes): as run, worse (51 → 68 edits) because of two mechanical faults; with outside punctuation removed, 51 → 26 edits and five of the six familiar-form errors fixed. Still well behind Gemini reading the page itself;
+     - **Claude's recommendation:** use Gemini 4 Argon (method 052's request) as the transcription reader; keep the region step on Terra. Keep the number-sequence check, and a check for characters outside the book's scripts, as cheap flags. Tesseract plus a check call is not needed for now.
+   - **The second Kale full-book run, `book-002`: done on 2026-11-06, after the user agreed to the recommendation** (NOTEBOOK, "The second Kale full-book run"):
+     - **setup:** the revised Kale type list, the region step on Terra (method 042 + 043), and transcription by Gemini 4 Argon (method 052 with `--run book-002`); $18.12;
+     - **result** (`outputs/surveys/052-…/kale-book-002/`, with `book/transcript.txt` and `report.txt`): 250 of 252 pages valid; 2,105 units; open-end mismatches at 4 page breaks; the translation and the notes each one unit; the Vairāgyaśataka's verse numbers complete with no misreading; no stray characters;
+     - **against `book-001`:** the print agrees with Gemini in 16 of 18 sampled word differences. Gemini also keeps the book's own misprints, as asked;
+     - **retry and page numbers (2026-11-06, at the user's request):** the two invalid pages (29 and 47) were retried once and are now valid, so all 252 pages are in the book (2,142 units; mismatches at 2 page breaks). A page-number check in `book_report.py` flags 9 pages whose transcribed number does not fit its neighbors. The viewer marks them;
+     - **open:** the heading inside a continued group on page 34, which the schema cannot express yet (interruptions are allowed only at the top level of a flow); the commentary at 38 → 39; misread page numbers.
+   - **Viewer for looking at a book:** `schema/viewer/build.py` writes static HTML per page (image with outlines next to units and text, line hover, note markers linked to their notes, open ends, problems). The user finds the exact marker position useful (2026-11-06): markers stay where the superscript is printed, even inside a word. The Kale `book-002` viewer is `outputs/surveys/052-…/kale-book-002/viewer/index.html`. It is a review tool, not the web app.
+   - **The Telang full-book walk: done on 2026-11-06, not yet reviewed by the user** (the Gemini prepaid credits ran out once, and the user added more; NOTEBOOK, "The Telang full-book walk"):
+     - **inputs:** a series of its own, `telang-dli-book-page-NNN` (`inputs/pages-telang-book.json`), rendered with per-page preprocessing in `inputs/render_pages.py`: background flattening for the dark preface and gray pages (1, 5–12, 158, 200), and a quarter turn for the sideways index tables (35–50);
+     - **type list:** `schema/types/telang-dli.json` extended and revised three times by Claude, not yet reviewed. It adds the critical notice, the corrigenda, scan matter, footnotes everywhere, a table convention (rows as lines, cells separated by " | "), and parts that go on across their internal headings;
+     - **pipeline:** Terra regions (method 042 + 043), Gemini transcription (method 052, run `book-001`). On the 11 pages whose ink mask is dominated by dark bands, method 054 (cut-outs that keep unowned ink in the region's box) restores the words at the line ends;
+     - **result** (`outputs/surveys/052-…/telang-book-001-full/`, viewer in `viewer/index.html`): 195 pages, all valid; 1,070 units; open-end mismatches at 4 page breaks, all in the critical notice and the index; verse counts 133 and 156 with no gaps; one notes unit of 287 notes; index tables transcribed row by row; $13.14;
+     - **open:** the region outlines on the banded pages still exclude the words in the bands (the text is complete); two Vairāgyaśataka note gaps unchecked; INDEX No. 2 as a second index unit.
+   - **Before the web app: chaya, the user's ProseMirror doc, inline formatting and editing (2026-11-06, at the user's request).** The user noticed that inline formatting such as bold, very common in books, had not come up yet, and asked that regions, marker–note links and everything else be easy to edit:
+     - **chaya** (`~/w/chaya`, all versions):
+       - **the 2024 OCR editor** (root, with snapshots 2024.01–2024.04 on branches): a ProseMirror document of chunks typed paragraph, verse or heading. Each chunk holds lines, and each line carries its page number, vertical range and words, with text marked strong or em. Chunks can be joined, split, deleted and retyped, with a line image strip beside each line. Text comes from Tesseract (kan+eng) or Google Vision, and is saved as `.chaya` JSON. This is already close to schema 0.2: chunks are units, lines are line pieces, marks are spans. What it lacks: nesting, polygons and note links;
+       - **`versions/splitchunk`:** unfinished;
+       - **Bookchop and `bookchop-markonly`** (2025): labeled rectangle regions in fractional page coordinates, Gemini text with Vision word boxes, few-shot examples, and a Read tab. A `.chaya` ZIP bundles the PDF with the annotations. Continuation across pages is a shared label, and links are a label convention. Lessons: a rectangle is the natural handle for editing a region (schema 0.2's `box`), and a single file with scan plus annotations is portable;
+       - **`versions/prototypes`:** retry experiments;
+     - **the user's doc "ProseMirror: What and Why"** (2023, for Ambuda): a schema-driven structured editor with no visible markup, where structuring is part of proofreading. Also a preview, proofreading tools (spellcheck, ligatures, metre), and closing the loop from reader to editor so a text is always improvable. Its costs: complexity, diffs and history, and testing on mobile and with Devanagari input methods;
+     - **schema 0.2, drafted by Claude, not yet reviewed by the user** ([schema/README.md](schema/README.md), "Inline spans and note markers" and "Editing"):
+       - formatting as spans on line pieces, which map one to one onto ProseMirror marks;
+       - note markers as zero-width spans with ids, outside the running text, so search is not broken by markers;
+       - note relations by anchor, which survives text edits;
+       - a region's editable `box`, from which the outline is recomputed locally;
+       - one natural edit per kind of element, and an edited document must pass `book.py check`.
+
+       `schema/inline.py upgrade` turns 0.1 documents into 0.2: both books' documents upgrade with all pages valid and every located marker anchored;
+     - **formatting test, done** (NOTEBOOK, "Inline formatting: schema 0.2 and method 055 on six pages"): [method 055](methods/055-gemini-4-argon-low-region-transcription-formatting/README.md) is method 052 asked for `<b>`, `<i>`, `<sc>`, `<sup>` and `<sub>`, writing 0.2 documents. On six pages with 24 reference spans (Kale 2, 166, 208; Telang 13, 25, 127; references by Claude, unreviewed), it found 22 exactly and 1 with its text read differently, missed 1 (a bold अथ), and made no false marks. Kale's uniformly heavy Devanagari was not taken as bold. Its plain text is at least as faithful as method 052's: 16 edits where 055 agrees with the print and 052 does not, against 4 the other way. $0.31. The viewer now reads 0.2;
+     - **open:**
+       - method 055 on plain pages, to measure false marks;
+       - a type list's `inline` kinds (such as Kale's bold pratīkas), not yet tried;
+       - relation slips (a relation with no marker sign, or a sign not in its line; 2 of 9 here, the same as method 052), to be fixed locally: by the line's only marker, or by the note's own sign;
+       - whether to transcribe Kale and Telang again with method 055 for their formatting: about $16 and $11 at method 052's cost.
+   - **The web app, first version: built on 2026-11-06** (the user: "go ahead with the web app. You don't have to use the chaya app and the doc, just use your judgment"). See [webapp/README.md](webapp/README.md) and NOTEBOOK, "The web app, first version":
+     - **form:** static, plain JavaScript modules, no build step, no dependencies, running entirely in the browser;
+     - **document model:** schema 0.2 page documents. The editor works at the line-piece level, with one editing host per region, so ProseMirror was not needed: text is typed, and every other change is a function in `js/ops.js` on a copy of the document, which keeps the previous one for undo;
+     - **storage:** book folders, with the model's results in `pages/` and the user's corrected versions in `edits/` beside them (the decision of 2026-11-05: no history). A folder opens from disk (Chrome or Edge) or read-only from a URL, with corrections in IndexedDB;
+     - **checks:** the same rules as `book.py`, ported and tested for parity on both books and on broken pages. A page is saved only when it passes; otherwise it is kept as a draft;
+     - **views:** page editor (text, formatting, markers and links, units, regions and boxes, line pieces), reader (assembled book with source preview), check, export;
+     - **method 043's local step in the browser: done** (`webapp/js/local/`; NOTEBOOK, "Method 043's local step in the browser"). On six pages, the analysis is identical to Python's, every region gets the same line pieces, and the outline overlap is 0.98–1.0. A box edit or a drawn region recomputes all outlines in a worker (about 2.5 s per page), and every line piece keeps its text;
+     - **making a book in the app: done** (`webapp/js/pipeline/`; NOTEBOOK, "Making a book in the browser"). "Make a new book from scans…" and the Make view run method 042's region call (OpenAI), the local step and method 055's transcription call (Gemini) with the user's own keys, which are kept in the browser. The prompts and schemas equal the methods' byte for byte for all 10 type lists, and the page documents equal method 055's on its six test pages. A three-page Kale book made in headless Chrome cost an estimated $0.26 and took 19 s for regions and 42 s for transcription. Its scan page 106 has the same regions, types and units as `book-002`, with 238 of 245 words the same;
+     - **tests:** `node --test webapp/test/*.test.mjs` (43 tests: parity with `book.py`, `inline.py`, methods 042, 043 and 055, and the edits); `webapp/test/browser.mjs` for scripted runs in headless Chrome;
+     - **book folders made so far:** `outputs/books/` (Kale `book-002`, Telang, and the two formatting-test books). Their images are hard links to `inputs/`;
+     - **open:**
+       - PDF import: done (bundled pdf.js, render_pages.py's resolution rule), with a generic type list (`schema/types/generic.json`, unreviewed). render_pages.py's preprocessing (flattening, rotation) is not in the app yet;
+       - method 054's cut-outs for dark-band pages;
+       - an automatic retry of invalid pages;
+       - interruptions below a flow's top level;
+       - a type-list editor;
+       - dragging regions and units in the tree;
+       - hosting (any static host; `?book=` needs a fetchable URL).
+   - **Cheaper readers (the user's brainstorm, 2026-11-06; nothing built):** transcription is about 85–90% of the cost (NOTEBOOK, "Where the cost goes"). Ideas to measure on the referenced pages before choosing, with error rate and cost per page as in the "Stronger readers" table:
+     - a lighter request: no overview image, a lower image resolution, no neighbor context, and the providers' batch modes;
+     - cheaper models as a per-book setting;
+     - OCR engines: Google Cloud Vision's document text detection, or Document AI, with words placed on our line pieces by geometry and units from the region call; and Tesseract in the browser (free; poor on the Kale scans, where it disagreed on 25–33% of words);
+     - cascades: a cheap reader, with the strong model only where readers disagree or confidence is low;
+     - for digital PDFs, no reading at all: the text layer converted (from a legacy font encoding where needed, as in the vachana PDF), lines and fonts from the PDF's spans, and units from the region call or a text-only call.
+   - **Digital PDFs with legacy-font text (tried 2026-11-06; NOTEBOOK, "The vachana PDF's text layer"):** converting the text layer of the vachana PDF with the GPL tool knconverter agreed with a Gemini reading on 99.2% of characters. The converter's own errors come from three gaps in its table (8 words in 906). Gemini made 3 errors where the converted text is right. The user's decision (2026-11-06): the GPL tool was for testing only; conversion in the web app needs our own converter (no GPL code). Plan, not yet started:
+     - **converter:** our own Nudi/Baraha-style mapping and reordering rules, written and tested against the converted pages and Gemini readings, with per-font tables for punctuation (`|`→।, `||`→॥, `` ` ``/``` `` ```/`''`→‘ “ ”), for the `Ç` o-sign form, the avagraha `„`, and the Sanskrit fonts' variants;
+     - **checks:** a check for leftover Latin-1 characters, plus a cheap second reader on a sample of pages (method 057 costs about $0.01 a page);
+     - **page documents:** line pieces with exact boxes from the PDF's spans; formatting from a per-font style table; units from the region call (about $0.009 a page) or a text-only call;
+     - **rendering:** for digital PDFs, 300 dpi without render_pages.py's embedded-image cap, which an ornament triggered here (pages 61 and 115 came out at 240 dpi).
+   - **The vachana PDF transcribed (2026-11-06, at the user's request; NOTEBOOK, "The vachana PDF transcribed"):**
+     - **result:** our own converter (method 058, `nudi.py`) and units from the typography (method 059). No model calls; checking cost $0.21;
+     - **text:** 99.86% agreement with Gemini readings on 15 random pages, with no converter error among the differences: they are Gemini's errors, misprints Gemini corrected, and conventions;
+     - **structure:** 4 volumes, 46 chapters, 801 sayings, 258 paragraphs, 66 footnotes, all 252 pages valid;
+     - **files:** the book folder `outputs/books/vachana`, and its text `vachana.txt`;
+     - **open:**
+       - line ends: about 87% right; a cheap text-only model pass, or the user's corrections, would fix the missed joins;
+       - the type list and the structure are not yet reviewed by the user;
+       - for the web app: port `nudi.py` to JS, detect legacy-encoded fonts automatically, and infer a typography profile, which is now written per book.
+   - **After the user's review of the front matter (2026-11-06; NOTEBOOK, "The vachana book after the user's review"):**
+     - **method 060** replaces 059 for this book. Its fixes:
+       - figures from the PDF's images;
+       - columns;
+       - text that is not printed (white, or under a later fill or image) left out;
+       - the page's own margins;
+       - verses set in heading fonts;
+       - invocations and ornaments belong to the chapter they precede;
+       - gaps between blocks;
+       - kept line breaks in short lines;
+       - lines on one baseline merged.
+     - **book folder:** `outputs/books/vachana` is now 060's `book-008` (1,367 units, 85 figures, all pages valid, 65 of 65 markers linked). The 059 folder is `outputs/books/vachana-059`;
+     - **schema and app:**
+       - figures are units of a `figure` type with a region and no line pieces, labelled in the unit;
+       - the reader shows figures and the text export names them;
+       - the editor has "Start a new unit at the caret's line", "Split the region at the caret's line" and "Move the text after the caret to a column on the right";
+     - **open:**
+       - the user's review of the rest of the book;
+       - figure labels for the ornaments (unlabelled now), or making them `ornament` furniture (a type added at the user's question, so that a picture can leave the reading order without being deleted); the generic type list has no such type yet;
+       - whether title-page groups should be a type of their own rather than headings;
+       - the same detections (images, columns, hidden text) for the app's own PDF import, when the converter is ported.
+     - **styles and ornaments (2026-11-06; NOTEBOOK, "Ornaments as furniture, side-by-side blocks, and the book's typography"):**
+       - **schema draft 0.3:** a per-book style sheet (format `style`) and `style` on units and line pieces, presentation only;
+       - **method 061:** measures styles from the PDF, makes unlabelled pictures `ornament` furniture, and finds chapter 2's 31 sayings that 059 and 060 missed;
+       - **the app:** an "as printed" reading view, rows side by side, an HTML export as printed, style controls in the unit inspector, and a Style view to see and edit the style sheet with a live preview (saved in the folder, or in the browser for a book opened by URL);
+       - **method 062 (2026-11-07):** 061 with inline bold and italic taken from the font roles too (9 missed bold spans, such as a title on page 7); `outputs/books/vachana` is now 062's `book-001`, and 061's folder is `vachana-061`;
+       - **the app's modes (2026-11-07, the user's proposals):**
+         - Read · Edit book · Edit pages · Export;
+         - Edit book has tabs: Types (the type list, view only, with counts), Style sheet, Problems (was Check) and Make pages;
+         - Edit pages has the page navigator, undo and redo;
+       - **PDF is the only input format (the user's decision, 2026-11-07; NOTEBOOK, "PDF as the only input"):**
+         - **done:** the app makes books from a PDF only; the folder keeps `source.pdf`; pages are rendered at 300 dpi, with the scan's resolution cap only for scanned pages; each page records its images and text layer;
+         - **existing folders:** all eight have their source PDF (hard links);
+         - **a book inside its PDF (2026-11-07, the user's request; NOTEBOOK, "A book inside its PDF"):**
+           - `.chaya.pdf` = the original PDF's bytes and one update attaching `chaya.json` (the folder's files but the PDF and the images); the original is recoverable by its recorded length and sha256, and saving again does not grow the file;
+           - books are kept in the browser's private file system, with autosave, and pages are drawn from the PDF;
+           - the library opens PDFs and `.chaya.pdf` files; Export saves a `.chaya.pdf`;
+           - `outputs/books/{vachana,kale-1913,telang-dli}.chaya.pdf` were made with `webapp/tools/make_chaya_pdf.mjs`;
+           - **open:** over plain http (Tailscale) only read-only opening works, so `tailscale serve` would give the full app; Telang's 27 flattened pages are drawn unflattened; a `.chaya.pdf` from a book opened by URL takes the served folder's pages and the browser's corrections;
+         - **next:** the text-layer path in the app, with the converter and the typography rules ported to JavaScript, legacy fonts recognized, and the font roles inferred. Scanned PDFs often carry a hidden OCR text layer (Kale's: 1,433 characters on page 106), a possible free first reading or check;
+       - **type lists are written by hand so far** (the user asked whether they are generated by sampling pages: not yet). Open: drafting a type list from a few sample pages with one model call, and editing type lists in the app (with care: removing or renaming a type invalidates page documents);
+       - **open:** a LaTeX or Typst export from the same styles; bundled web fonts (Noto Serif and Sans Kannada, OFL); contents entries' page numbers flush right; the style step for scanned books (from the region boxes and the line finder's heights, where there is no PDF).
+     - **access:** the app is also served on the Tailscale address (port 8765) for the user's other machine. There, plain http has no secure context, so only reading by URL works; `tailscale serve` (HTTPS) would give the full app, but needs the user's go-ahead because it changes their Tailscale settings.
+   - **Next:** the user's review of the app (webapp/README.md, "Running it"), then the open items above. Possible improvements, for later: allow an interruption before a continued unit at every level of the tree (Kale page 34); a nested unit tree in the response (no ids to keep); retry an invalid page once automatically (two retries fixed both invalid Kale pages); the model-box fallback where the ink mask fails (Telang's preface); a markers convention check (relations whose marker is not in the line).
    - **Book-specific types (the user's requirement, 2026-11-04):** the schema must be flexible, with a book-specific set of unit types, because some books have no verses or commentary and some have no formulas. One option is a small common core (passage, page region, line, note link, continuation) plus a per-book type list with descriptions:
      - **Kale:** verse, commentary, lead-in, footnote;
      - **Telang:** verse, apparatus entry;
@@ -354,4 +597,4 @@ The total is about $2.76.
 
 This handoff is kept up to date during the session rather than written only at the end.
 
-A useful next-session opening instruction is: “Read HANDOFF.md and schema/README.md. Continue next experiment 1: the type lists for the remaining books, one at a time, then a transcription method on method 043's regions for a few referenced pages (I approve the cost).”
+A useful next-session opening instruction is: “Read HANDOFF.md and schema/README.md. Both full-book walks (Kale, Telang) are done; write the brief for the web app session, then pick up the improvements listed under experiment 1.”

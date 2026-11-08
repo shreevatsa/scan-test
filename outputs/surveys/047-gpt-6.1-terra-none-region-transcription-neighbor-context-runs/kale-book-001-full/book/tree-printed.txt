@@ -1,0 +1,2581 @@
+flow main
+  contents (Contents)
+    heading: p1 r1
+    paragraph: p1 r2
+    heading: p1 r3
+    contents_entry 1: p1 r4
+    contents_entry 2–14: p1 r5
+    contents_entry 15–28: p1 r6
+    contents_entry 29–38: p1 r7
+    contents_entry 39–51: p1 r8
+    contents_entry 52–61: p1 r9
+    contents_entry 62–69: p1 r10
+    contents_entry 70–79: p1 r11
+    contents_entry 80–89: p1 r12
+    contents_entry 90–96: p1 r13
+    contents_entry 99–106: p1 r14
+    contents_entry 1–25 (Miscellaneous): p1 r15
+    heading: p1 r16
+    contents_entry 1: p1 r17
+    contents_entry 2–11: p1 r18
+    contents_entry 12–21: p1 r19
+    contents_entry 22–31: p1 r20
+    contents_entry 32–41: p1 r21
+    contents_entry 42–51: p1 r22
+    contents_entry 52–61: p1 r23
+    contents_entry 62–71: p1 r24
+    contents_entry 72–81: p1 r25
+    contents_entry 82–91: p1 r26
+    contents_entry 92–101: p1 r27
+    contents_entry 1–44 (Miscellaneous): p1 r28
+  section (नीतिशतकम्)   [spans pages 2–49]
+    heading: p2 r1
+    heading: p2 r2
+    commentator_verse: p2 r3
+    commentator_verse: p2 r4
+    commentator_verse: p2 r5
+    commentary: p2 r6
+    group 1   [spans pages 2–3]
+      verse 1: p2 r7
+      commentary: p2 r8, p3 r3   [spans pages 2–3]
+    group 2   [goes on after this range]
+      lead_in: p3 r4
+      verse 2: p3 r5
+      commentary: p3 r6   [goes on after this range]
+    commentary: p4 r3   [began before this range]
+    group 3
+      lead_in: p4 r4
+      verse 3: p4 r5
+      commentary: p4 r6
+    group 4   [spans pages 4–5]
+      lead_in: p4 r7
+      verse 4: p4 r8
+      commentary: p4 r9, p5 r3   [spans pages 4–5]
+    group 5
+      lead_in: p5 r4
+      verse 5: p5 r5
+      commentary: p5 r6
+    group 6   [spans pages 5–6]
+      lead_in: p5 r7
+      verse 6: p6 r3
+      commentary: p6 r4
+    group 7
+      verse 7: p6 r5
+      commentary: p6 r6
+    group 8
+      lead_in: p7 r3
+      verse 8: p7 r4
+      commentary: p7 r5
+    group 9
+      lead_in: p7 r6
+      verse 9: p7 r7
+      commentary: p7 r8
+    group 10
+      verse 10: p8 r3
+      commentary: p8 r4
+    group 11
+      verse 11: p8 r5
+      commentary: p8 r6
+    group 12   [spans pages 8–9]
+      verse 12: p8 r7
+      commentary: p8 r8, p9 r3   [spans pages 8–9]
+    group 13
+      verse 13: p9 r4
+      commentary: p9 r5
+    group 14
+      verse 14: p9 r6
+      commentary: p9 r7
+    group 15
+      lead_in: p9 r8
+      verse 15: p9 r9
+      commentary: p9 r10
+    group 16   [spans pages 9–10]
+      lead_in: p9 r11
+      verse 16: p10 r3
+      commentary: p10 r4
+    group 17
+      lead_in: p10 r5
+      verse 17: p10 r6
+      commentary: p10 r7
+    group 18   [spans pages 10–11]
+      lead_in: p10 r8
+      verse 18: p10 r9
+      commentary: p11 r3
+    group 19
+      verse 19: p11 r4
+      commentary: p11 r5
+    group 20
+      verse 20: p11 r6
+      commentary: p11 r7
+    group 21
+      verse 21: p12 r3
+      commentary: p12 r4
+    group 22
+      lead_in: p12 r5
+      verse 22: p12 r6
+      commentary: p12 r7
+    group 23   [spans pages 12–13]
+      lead_in: p12 r8
+      verse 23: p12 r9, p13 r3   [spans pages 12–13]
+      commentary: p13 r4
+    group 24
+      lead_in: p13 r5
+      verse 24: p13 r6
+      commentary: p13 r7
+    group 25
+      verse 25: p13 r8
+      commentary: p13 r9
+    group 26   [spans pages 13–14]
+      verse 26: p13 r10
+      commentary: p14 r3
+    group 27
+      verse 27: p14 r4
+      commentary: p14 r5
+    group 28
+      lead_in: p14 r6
+      verse 28: p14 r7
+      commentary: p14 r8
+    heading (मानशौर्यपद्धतिः): p14 r9
+    group 29   [spans pages 14–15]
+      verse 29: p14 r10
+      commentary: p14 r11, p15 r3   [spans pages 14–15]
+    group 30
+      lead_in: p15 r4
+      verse 30: p15 r5
+      commentary: p15 r6
+    group 31
+      lead_in: p15 r7
+      verse 31: p15 r8
+      commentary: p15 r9
+    group 32   [spans pages 15–16]
+      verse 32: p15 r10
+      commentary: p15 r11, p16 r3   [spans pages 15–16]
+    group 33
+      lead_in: p16 r4
+      verse 33: p16 r5
+      commentary: p16 r6
+    group 34
+      lead_in: p16 r7
+      verse 34: p16 r8
+      commentary: p16 r9
+    group 35
+      lead_in: p17 r3
+      verse 35: p17 r4
+      commentary: p17 r5
+    group 36
+      lead_in: p17 r6
+      verse 36: p17 r7
+      commentary: p17 r8
+    group 37
+      lead_in: p18 r3
+      verse 37: p18 r4
+      commentary: p18 r5
+    group 38
+      lead_in: p18 r6
+      verse 38: p18 r7
+      commentary: p18 r8
+    heading (अर्थपद्धतिः): p18 r9
+    group 39
+      lead_in: p18 r10
+      verse 39: p18 r11
+      commentary: p18 r12
+    group 40
+      verse 40: p19 r3
+      commentary: p19 r4
+    group 41
+      lead_in: p19 r5
+      verse 41: p19 r6
+      commentary: p19 r7
+    group 42   [spans pages 19–20]
+      lead_in: p19 r8
+      verse 42: p19 r9
+      commentary: p19 r10, p20 r3   [spans pages 19–20]
+    group 43
+      verse 43: p20 r4
+      commentary: p20 r5
+    group 44   [spans pages 20–21]
+      lead_in: p20 r6
+      verse 44: p20 r7
+      commentary: p20 r8, p21 r3   [spans pages 20–21]
+    group 45
+      lead_in: p21 r4
+      verse 45: p21 r5
+      commentary: p21 r6
+    group 46
+      lead_in: p21 r7
+      verse 46: p21 r8
+      commentary: p21 r9
+    group 47
+      lead_in: p22 r3
+      verse 47: p22 r4
+      commentary: p22 r5
+    group 48
+      lead_in: p22 r6
+      verse 48: p22 r7
+      commentary: p22 r8
+    group 49   [spans pages 22–23]
+      lead_in: p22 r9
+      verse 49: p22 r10
+      commentary: p22 r11, p23 r3   [spans pages 22–23]
+    group 50
+      verse 50: p23 r4
+      commentary: p23 r5
+    group 51
+      lead_in: p23 r6
+      verse 51: p23 r7
+      commentary: p23 r8
+    heading (दुर्जनपद्धतिः): p23 r9
+    group 52
+      lead_in: p23 r10
+      verse 52: p23 r11
+      commentary: p23 r12
+    group 53
+      lead_in: p24 r3
+      verse 53: p24 r4
+      commentary: p24 r5
+    group 54
+      lead_in: p24 r6
+      verse 54: p24 r7
+      commentary: p24 r8
+    group 55   [spans pages 24–25]
+      lead_in: p24 r9
+      verse 55: p24 r10
+      commentary: p24 r11, p25 r3   [spans pages 24–25]
+    group 56
+      lead_in: p25 r4
+      verse 56: p25 r5
+      commentary: p25 r6
+    group 57
+      lead_in: p25 r7
+      verse 57: p25 r8
+      commentary: p25 r9
+    group 58   [spans pages 25–26]
+      lead_in: p25 r10
+      verse 58: p25 r11, p26 r3   [spans pages 25–26]
+      commentary: p26 r4
+    group 59
+      lead_in: p26 r5
+      verse 59: p26 r6
+      commentary: p26 r7
+    group 60
+      lead_in: p26 r8
+      verse 60: p26 r9
+      commentary: p26 r10
+    group 61
+      lead_in: p27 r3
+      verse 61: p27 r4
+      commentary: p27 r5
+    heading (सुजनपद्धतिः): p27 r6
+    group 62
+      lead_in: p27 r7
+      verse 62: p27 r8
+      commentary: p27 r9
+    group 63
+      lead_in: p27 r10
+      verse 63: p27 r11
+      commentary: p27 r12
+    group 64
+      lead_in: p28 r3
+      verse 64: p28 r4
+      commentary: p28 r5
+    group 65
+      lead_in: p28 r6
+      verse 65: p28 r7
+      commentary: p28 r8
+    group 66
+      lead_in: p28 r9
+      verse 66: p28 r10
+      commentary: p28 r11
+    group 67
+      lead_in: p29 r3
+      verse 67: p29 r4
+      commentary: p29 r5
+    group 68
+      lead_in: p29 r6
+      verse 68: p29 r7
+      commentary: p29 r8
+    group 69   [spans pages 29–30]
+      lead_in: p29 r9
+      verse 69: p29 r10
+      commentary: p30 r3
+    heading (परोपकारपद्धतिः): p30 r4
+    group 70
+      lead_in: p30 r5
+      verse 70: p30 r6
+      commentary: p30 r7
+    group 71
+      lead_in: p30 r8
+      verse 71: p30 r9
+      commentary: p30 r10
+    group 72   [spans pages 30–31]
+      lead_in: p30 r11
+      verse 72: p30 r12
+      commentary: p30 r13, p31 r3   [spans pages 30–31]
+    group 73
+      lead_in: p31 r4
+      verse 73: p31 r5
+      commentary: p31 r6
+    group 74
+      lead_in: p31 r7
+      verse 74: p31 r8
+      commentary: p31 r9
+    group 75   [spans pages 31–32]
+      lead_in: p31 r10
+      verse 75: p31 r11, p32 r3   [spans pages 31–32]
+      commentary: p32 r4
+    group 76
+      verse 76: p32 r5
+      commentary: p32 r6
+    group 77   [spans pages 32–33]
+      lead_in: p32 r7
+      verse 77: p32 r8
+      commentary: p32 r9, p33 r3   [spans pages 32–33]
+    group 78
+      lead_in: p33 r4
+      verse 78: p33 r5
+      commentary: p33 r6
+    group 79
+      lead_in: p33 r7
+      verse 79: p33 r8
+      commentary: p33 r9
+    group 80
+      verse 80: p33 r10
+    group 80   [began before this range]
+      commentary: p34 r4
+    heading: p34 r3
+    group 81
+      lead_in: p34 r5
+      verse 81: p34 r6
+      commentary: p34 r7
+    group 82   [spans pages 34–35]
+      lead_in: p34 r8
+      verse 82: p34 r9
+      commentary: p34 r10, p35 r3   [spans pages 34–35]
+    group 83
+      lead_in: p35 r4
+      verse 83: p35 r5
+      commentary: p35 r6
+    group 84
+      lead_in: p35 r7
+      verse 84: p35 r8
+      commentary: p35 r9
+    group 85
+      lead_in: p35 r10
+      verse 85: p35 r11
+      commentary: p35 r12
+    group 86
+      verse 86: p36 r3
+      commentary: p36 r4
+    group 87
+      lead_in: p36 r5
+      verse 87: p36 r6
+      commentary: p36 r7
+    group 88
+      lead_in: p36 r8
+      verse 88: p36 r9
+      commentary: p36 r10
+    group 89
+      lead_in: p37 r3
+      verse 89: p37 r4
+      commentary: p37 r5
+    heading (दैवपद्धतिः): p37 r6
+    group 90
+      verse 90: p37 r7
+      commentary: p37 r8
+    group 91
+      lead_in: p37 r9
+      verse 91: p37 r10
+      commentary: p37 r11
+    group 92   [spans pages 37–38]
+      lead_in: p37 r12
+      verse 92: p37 r13
+      commentary: p38 r3
+    group 13
+      lead_in: p38 r4
+      verse 13: p38 r5
+      commentary: p38 r6
+    group 14
+      lead_in: p38 r7
+      verse 14: p38 r8
+      commentary: p38 r9
+    group 15
+      lead_in: p38 r10
+      verse 15: p38 r11
+      commentary: p38 r12
+    group 16   [spans pages 38–39]
+      lead_in: p38 r13
+      verse 16: p38 r14
+      commentary: p39 r3
+    group 97
+      lead_in: p39 r4
+      verse 97: p39 r5
+      commentary: p39 r6
+    group 98
+      lead_in: p39 r7
+      verse 98: p39 r8
+      commentary: p39 r9
+    heading: p40 r3
+    group 99
+      lead_in: p40 r4
+      verse 99: p40 r5
+      commentary: p40 r6
+    group 100
+      lead_in: p40 r7
+      verse 100: p40 r8
+      commentary: p40 r9
+    group 101   [spans pages 40–41]
+      lead_in: p40 r10
+      verse 101: p40 r11
+      commentary: p41 r3
+    group 102
+      lead_in: p41 r4
+      verse 102: p41 r5
+      commentary: p41 r6
+    group 103
+      lead_in: p41 r7
+      verse 103: p41 r8
+      commentary: p41 r9
+    group 104   [spans pages 41–42]
+      lead_in: p41 r10
+      verse 104: p41 r11
+      commentary: p41 r12, p42 r3   [spans pages 41–42]
+    group 105
+      lead_in: p42 r4
+      verse 105: p42 r5
+      commentary: p42 r6
+    group 106   [spans pages 42–43]
+      lead_in: p42 r7
+      verse 106: p42 r8
+      commentary: p42 r9, p43 r3   [spans pages 42–43]
+    group 107
+      lead_in: p43 r4
+      verse 107: p43 r5
+      commentary: p43 r6
+    group 108
+      lead_in: p43 r7
+      verse 108: p43 r8
+      commentary: p43 r9
+    heading: p43 r10
+    heading: p44 r3
+    group 1
+      verse 1: p44 r4
+      commentary: p44 r5
+    group 2
+      verse 2: p44 r6
+      commentary: p44 r7
+    group 3
+      verse 3: p44 r8
+      commentary: p44 r9
+    group 4
+      verse 4: p44 r10
+      commentary: p44 r11
+    group 5
+      verse 5: p44 r12
+      commentary: p44 r13
+    group 6
+      verse 6: p45 r3
+      commentary: p45 r4
+    group 7
+      verse 7: p45 r5
+      commentary: p45 r6
+    group 8
+      verse 8: p45 r7
+      commentary: p45 r8
+    group 9   [spans pages 45–46]
+      verse 9: p45 r9
+      commentary: p46 r3
+    group 10
+      verse 10: p46 r4
+      commentary: p46 r5
+    group 11
+      verse 11: p46 r6
+      commentary: p46 r7
+    group 12
+      verse 12: p46 r8
+      commentary: p46 r9
+    group 13   [spans pages 46–47]
+      verse 13: p46 r10, p47 r3   [spans pages 46–47]
+      commentary: p47 r4
+    group 14
+      verse 14: p47 r5
+      commentary: p47 r6
+    group 15
+      verse 15: p47 r7
+      commentary: p47 r8
+    group 16
+      verse 16: p47 r9
+      commentary: p47 r10
+    group 17
+      verse 17: p47 r11
+      commentary: p47 r12
+    group 18
+      verse 18: p48 r3
+      commentary: p48 r4
+    group 19
+      verse 19: p48 r5
+      commentary: p48 r6
+    group 20
+      verse 20: p48 r7
+      commentary: p48 r8
+    group 21
+      verse 21: p48 r9
+      commentary: p48 r10
+    group 22
+      verse 22: p48 r11
+      commentary: p48 r12
+    group 23   [spans pages 48–49]
+      verse 23: p48 r13
+      commentary: p49 r3
+    group 24
+      verse 24: p49 r4
+      commentary: p49 r5
+    group 25
+      verse 25: p49 r6
+      commentary: p49 r7
+  section (वैराग्यशतकम्)   [spans pages 50–113]
+    heading: p50 r1
+    heading: p50 r2
+    group 1
+      verse 1: p50 r3
+      commentary: p50 r4
+    group 2
+      lead_in: p50 r5
+      verse 2: p50 r6
+      commentary: p50 r7
+    heading (तृष्णादूषणम्): p50 r8
+    group 3   [spans pages 50–51]
+      lead_in: p50 r9
+      verse 3: p50 r10, p51 r3   [spans pages 50–51]
+      commentary: p51 r4
+    group 4
+      verse 4: p51 r5
+      commentary: p51 r6
+    group 5   [spans pages 51–52]
+      verse 5: p51 r7
+      commentary: p51 r8, p52 r3   [spans pages 51–52]
+    group 6
+      lead_in: p52 r4
+      verse 6: p52 r5
+      commentary: p52 r6
+    group 7   [spans pages 52–53]
+      lead_in: p52 r7
+      verse 7: p52 r8
+      commentary: p52 r9, p53 r3   [spans pages 52–53]
+    group 8
+      lead_in: p53 r4
+      verse 8: p53 r5
+      commentary: p53 r6
+    group 9
+      verse 9: p53 r7
+      commentary: p53 r8
+    group 10   [spans pages 53–54]
+      verse 10: p53 r9
+      commentary: p53 r10, p54 r3   [spans pages 53–54]
+    group 11
+      lead_in: p54 r4
+      verse 11: p54 r5
+      commentary: p54 r6
+    heading: p55 r3
+    group 12
+      lead_in: p55 r4
+      verse 12: p55 r5
+      commentary: p55 r6
+    group 13   [spans pages 55–56]
+      lead_in: p55 r7
+      verse 13: p55 r8
+      commentary: p55 r9, p56 r3   [spans pages 55–56]
+    group 14
+      lead_in: p56 r4
+      verse 14: p56 r5
+      commentary: p56 r6
+    group 15   [spans pages 56–57]
+      verse 15: p56 r7
+      commentary: p56 r8, p57 r3   [spans pages 56–57]
+    group 16
+      lead_in: p57 r4
+      verse 16: p57 r5
+      commentary: p57 r6
+    group 17   [spans pages 57–58]
+      lead_in: p57 r7
+      verse 17: p57 r8
+      commentary: p57 r9, p58 r3   [spans pages 57–58]
+    group 18
+      lead_in: p58 r4
+      verse 18: p58 r5
+      commentary: p58 r6
+    group 19   [spans pages 58–59]
+      lead_in: p58 r7
+      verse 19: p58 r8
+      commentary: p58 r9, p59 r3   [spans pages 58–59]
+    group 20
+      lead_in: p59 r4
+      verse 20: p59 r5
+      commentary: p59 r6
+    group 21   [spans pages 59–60]
+      lead_in: p59 r7
+      verse 21: p59 r8
+      commentary: p59 r9, p60 r3   [spans pages 59–60]
+    group 22
+      lead_in: p60 r4
+      verse 22: p60 r5
+      commentary: p60 r6
+    group 23   [spans pages 60–61]
+      lead_in: p60 r7
+      verse 23: p60 r8
+      commentary: p60 r9, p61 r3   [spans pages 60–61]
+    group 24
+      lead_in: p61 r4
+      verse 24: p61 r5
+      commentary: p61 r6
+    group 25   [spans pages 61–62]
+      lead_in: p61 r7
+      verse 25: p61 r8
+      commentary: p61 r9, p62 r3   [spans pages 61–62]
+    group 26
+      lead_in: p62 r4
+      verse 26: p62 r5
+      commentary: p62 r6
+    group 27   [spans pages 62–63]
+      lead_in: p62 r7
+      verse 27: p62 r8
+      commentary: p63 r3
+    group 28
+      lead_in: p63 r4
+      verse 28: p63 r5
+      commentary: p63 r6
+    group 29   [spans pages 63–64]
+      lead_in: p63 r7
+      verse 29: p63 r8
+      commentary: p64 r3
+    group 30
+      verse 30: p64 r4
+      commentary: p64 r5
+    group 31
+      lead_in: p64 r6
+      verse 31: p64 r7
+      commentary: p64 r8
+    heading: p65 r3
+    group 32
+      lead_in: p65 r4
+      verse 32: p65 r5
+      commentary: p65 r6
+    group 33   [spans pages 65–66]
+      lead_in: p65 r7
+      verse 33: p65 r8
+      commentary: p65 r9, p66 r3   [spans pages 65–66]
+    group 34
+      lead_in: p66 r4
+      verse 34: p66 r5
+      commentary: p66 r6
+    group 35
+      lead_in: p66 r7
+      verse 35: p66 r8
+      commentary: p66 r9
+    group 36
+      lead_in: p67 r3
+      verse 36: p67 r4
+      commentary: p67 r5
+    group 37
+      verse 37: p67 r6
+      commentary: p67 r7
+    group 38
+      lead_in: p68 r3
+      verse 38: p68 r4
+      commentary: p68 r5
+    group 39
+      lead_in: p68 r6
+      verse 39: p68 r7
+      commentary: p68 r8
+    group 40
+      lead_in: p69 r3
+      verse 40: p69 r4
+      commentary: p69 r5
+    group 41   [spans pages 69–70]
+      lead_in: p69 r6
+      verse 41: p69 r7
+      commentary: p70 r3
+    heading: p70 r4
+    group 42   [spans pages 70–71]
+      lead_in: p70 r5
+      verse 42: p70 r6
+      commentary: p70 r7, p71 r3   [spans pages 70–71]
+    group 43
+      lead_in: p71 r4
+      verse 43: p71 r5
+      commentary: p71 r6
+    group 44   [spans pages 71–72]
+      lead_in: p71 r7
+      verse 44: p71 r8
+      commentary: p71 r9, p72 r3   [spans pages 71–72]
+    group 45
+      lead_in: p72 r4
+      verse 45: p72 r5
+      commentary: p72 r6
+    group 46   [spans pages 72–73]
+      lead_in: p72 r7
+      verse 46: p72 r8
+      commentary: p72 r9, p73 r3   [spans pages 72–73]
+    group 47
+      verse 47: p73 r4
+      commentary: p73 r5
+    group 48   [spans pages 73–74]
+      lead_in: p73 r6
+      verse 48: p73 r7, p74 r3   [spans pages 73–74]
+      commentary: p74 r4
+    group 49
+      lead_in: p74 r5
+      verse 49: p74 r6
+      commentary: p74 r7
+    group 50   [spans pages 74–75]
+      lead_in: p74 r8
+      verse 50: p74 r9
+      commentary: p75 r3
+    group 51
+      lead_in: p75 r4
+      verse 51: p75 r5
+      commentary: p75 r6
+    heading (यतिनृपतिसंवादः): p75 r7
+    group 52   [spans pages 75–76]
+      lead_in: p75 r8
+      verse 52: p75 r9
+      commentary: p75 r10, p76 r3   [spans pages 75–76]
+    group 53
+      lead_in: p76 r4
+      verse 53: p76 r5
+      commentary: p76 r6
+    group 54   [spans pages 76–77]
+      lead_in: p76 r7
+      verse 54: p76 r8
+      commentary: p76 r9, p77 r3   [spans pages 76–77]
+    group 55
+      lead_in: p77 r4
+      verse 55: p77 r5
+      commentary: p77 r6
+    group 56
+      lead_in: p77 r7
+      verse 56: p77 r8
+      commentary: p77 r9
+    group 57   [spans pages 77–78]
+      lead_in: p77 r10
+      verse 57: p77 r11
+      commentary: p77 r12, p78 r3   [spans pages 77–78]
+    group 58
+      verse 58: p78 r4
+      commentary: p78 r5
+    group 59
+      verse 59: p78 r6
+      commentary: p78 r7
+    group 60
+      lead_in: p79 r3
+      verse 60: p79 r4
+      commentary: p79 r5
+    group 61
+      lead_in: p79 r6
+      verse 61: p79 r7
+      commentary: p79 r8
+    heading: p80 r3
+    group 62
+      lead_in: p80 r4
+      verse 62: p80 r5
+      commentary: p80 r6
+    group 63
+      lead_in: p80 r7
+      verse 63: p80 r8
+      commentary: p80 r9
+    group 64
+      lead_in: p81 r3
+      verse 64: p81 r4
+      commentary: p81 r5
+    group 65
+      lead_in: p81 r6
+      verse 65: p81 r7
+      commentary: p81 r8
+    group 66
+      lead_in: p82 r3
+      verse 66: p82 r4
+      commentary: p82 r5
+    group 67
+      lead_in: p82 r6
+      verse 67: p82 r7
+      commentary: p82 r8
+    group 68
+      lead_in: p83 r3
+      verse 68: p83 r4
+      commentary: p83 r5
+    group 69
+      lead_in: p83 r6
+      verse 69: p83 r7
+      commentary: p83 r8
+    group 70   [spans pages 83–84]
+      lead_in: p83 r9
+      verse 70: p83 r10, p84 r3   [spans pages 83–84]
+      commentary: p84 r4
+    group 71
+      lead_in: p84 r5
+      verse 71: p84 r6
+      commentary: p84 r7
+    heading (नित्यानित्यवस्तुविचारः): p85 r3
+    group 72
+      lead_in: p85 r4
+      verse 72: p85 r5
+      commentary: p85 r6
+    group 73
+      lead_in: p85 r7
+      verse 73: p85 r8
+      commentary: p85 r9
+    group 74
+      lead_in: p86 r3
+      verse 74: p86 r4
+      commentary: p86 r5
+    group 75
+      verse 75: p86 r6
+      commentary: p86 r7
+    group 76   [spans pages 86–87]
+      lead_in: p86 r8
+      verse 76: p86 r9, p87 r3   [spans pages 86–87]
+      commentary: p87 r4
+    group 77
+      lead_in: p87 r5
+      verse 77: p87 r6
+      commentary: p87 r7
+    group 78   [spans pages 87–88]
+      lead_in: p87 r8
+      verse 78: p87 r9, p88 r3   [spans pages 87–88]
+      commentary: p88 r4
+    group 79
+      lead_in: p88 r5
+      verse 79: p88 r6
+      commentary: p88 r7
+    group 80   [spans pages 88–89]
+      lead_in: p88 r8
+      verse 80: p88 r9
+      commentary: p89 r3
+    group 81
+      lead_in: p89 r4
+      verse 81: p89 r5
+      commentary: p89 r6
+    heading (शिवार्चनपद्धतिः): p89 r7
+    group 82   [spans pages 89–90]
+      lead_in: p89 r8
+      verse 82: p89 r9
+      commentary: p90 r3
+    group 83
+      lead_in: p90 r4
+      verse 83: p90 r5
+      commentary: p90 r6
+    group 84
+      lead_in: p91 r3
+      verse 84: p91 r4
+      commentary: p91 r5
+    group 85
+      lead_in: p91 r6
+      verse 85: p91 r7
+      commentary: p91 r8
+    group 86
+      lead_in: p92 r3
+      verse 86: p92 r4
+      commentary: p92 r5
+    group 87
+      verse 87: p92 r6
+      commentary: p92 r7
+    group 88   [spans pages 92–93]
+      verse 88: p92 r8, p93 r3   [spans pages 92–93]
+      commentary: p93 r4
+    group 89
+      verse 89: p93 r5
+      commentary: p93 r6
+    group 90   [spans pages 93–94]
+      verse 90: p93 r7
+      commentary: p94 r3
+    group 91
+      lead_in: p94 r4
+      verse 91: p94 r5
+      commentary: p94 r6
+    heading: p95 r3
+    group 92
+      lead_in: p95 r4
+      verse 92: p95 r5
+      commentary: p95 r6
+    group 93
+      lead_in: p95 r7
+      verse 93: p95 r8
+      commentary: p95 r9
+    group 94   [spans pages 95–96]
+      lead_in: p95 r10
+      verse 94: p95 r11
+      commentary: p96 r3
+    group 15
+      lead_in: p96 r4
+      verse 15: p96 r5
+      commentary: p96 r6
+    group 96
+      lead_in: p97 r3
+      verse 96: p97 r4
+      commentary: p97 r5
+    group 97
+      verse 97: p97 r6
+      commentary: p97 r7
+    group 98
+      lead_in: p98 r3
+      verse 98: p98 r4
+      commentary: p98 r5
+    group 99   [spans pages 98–99]
+      lead_in: p98 r6
+      verse 99: p98 r7
+      commentary: p98 r8, p99 r3   [spans pages 98–99]
+    group 100
+      lead_in: p99 r4
+      verse 100: p99 r5
+      commentary: p99 r6
+    group 101
+      lead_in: p99 r7
+      verse 101: p99 r8
+      commentary: p99 r9
+    heading: p99 r10
+    heading: p100 r3
+    group 1
+      verse 1: p100 r4
+      commentary: p100 r5
+    group 2
+      verse 2: p100 r6
+      commentary: p100 r7
+    group 3   [spans pages 100–101]
+      verse 3: p100 r8
+      commentary: p100 r9, p101 r3   [spans pages 100–101]
+    group 4
+      verse 4: p101 r4
+      commentary: p101 r5
+    group 5
+      verse 5: p101 r6
+      commentary: p101 r7
+    group 6   [spans pages 101–102]
+      verse 6: p101 r8
+      commentary: p101 r9, p102 r3   [spans pages 101–102]
+    group 7
+      verse 7: p102 r4
+      commentary: p102 r5
+    group 8
+      verse 8: p102 r6
+      commentary: p102 r7
+    group 9
+      verse 9: p102 r8
+      commentary: p102 r9
+    group 10
+      verse 10: p103 r3
+      commentary: p103 r4
+    group 11
+      verse 11: p103 r5
+      commentary: p103 r6
+    group 12
+      verse 12: p103 r7
+      commentary: p103 r8
+    group 13
+      verse 13: p104 r3
+      commentary: p104 r4
+    group 14
+      verse 14: p104 r5
+      commentary: p104 r6
+    group 15
+      verse 15: p104 r7
+      commentary: p104 r8
+    group 16
+      verse 16: p105 r3
+      commentary: p105 r4
+    group 17
+      verse 17: p105 r5
+      commentary: p105 r6
+    group 18
+      verse 18: p105 r7
+      commentary: p105 r8
+    group 19   [spans pages 105–106]
+      verse 19: p105 r9
+      commentary: p105 r10, p106 r3   [spans pages 105–106]
+    group 20
+      verse 20: p106 r4
+      commentary: p106 r5
+    group 21
+      verse 21: p106 r6
+      commentary: p106 r7
+    group 22   [spans pages 106–107]
+      verse 22: p106 r8
+      commentary: p106 r9, p107 r3   [spans pages 106–107]
+    group 23
+      verse 23: p107 r4
+      commentary: p107 r5
+    group 24
+      verse 24: p107 r6
+      commentary: p107 r7
+    group 25
+      verse 25: p107 r8
+      commentary: p107 r9
+    group 26   [spans pages 107–108]
+      verse 26: p107 r10
+      commentary: p108 r3
+    group 27
+      verse 27: p108 r4
+      commentary: p108 r5
+    group 28
+      verse 28: p108 r6
+      commentary: p108 r7
+    group 29   [spans pages 108–109]
+      verse 29: p108 r8
+      commentary: p109 r3
+    group 30
+      verse 30: p109 r4
+      commentary: p109 r5
+    group 31
+      verse 31: p109 r6
+      commentary: p109 r7
+    group 32
+      verse 32: p109 r8
+      commentary: p109 r9
+    group 33
+      verse 33: p110 r3
+      commentary: p110 r4
+    group 34
+      verse 34: p110 r5
+      commentary: p110 r6
+    group 35
+      verse 35: p110 r7
+      commentary: p110 r8
+    group 36   [spans pages 110–111]
+      verse 36: p110 r9, p111 r3   [spans pages 110–111]
+      commentary: p111 r4
+    group 37
+      verse 37: p111 r5
+      commentary: p111 r6
+    heading: p111 r7
+    group 38
+      verse 38: p111 r8
+      commentary: p111 r9
+    group 39   [spans pages 111–112]
+      verse 39: p111 r10, p112 r3   [spans pages 111–112]
+      commentary: p112 r4
+    group 40
+      verse 40: p112 r5
+      commentary: p112 r6
+    group 41
+      verse 41: p112 r7
+      commentary: p112 r8
+    group 42
+      verse 42: p113 r3
+      commentary: p113 r4
+    group 43
+      verse 43: p113 r5
+      commentary: p113 r6
+    group 44
+      verse 44: p113 r7
+      commentary: p113 r8
+  translation (Translation)   [spans pages 114–137]
+    heading: p114 r1
+    heading: p114 r2
+    translated_stanza 1: p114 r3
+    translated_stanza 2: p114 r4
+    translated_stanza 3: p114 r5
+    translated_stanza 4: p114 r6
+    translated_stanza 5: p114 r7
+    translated_stanza 6: p114 r8, p115 r2   [spans pages 114–115]
+    translated_stanza 7: p115 r3
+    translated_stanza 8: p115 r4
+    translated_stanza 9: p115 r5
+    translated_stanza 10: p115 r6
+    translated_stanza 11: p115 r7
+    translated_stanza 12: p116 r2
+    translated_stanza 13: p116 r3
+    translated_stanza 14: p116 r4
+    translated_stanza 15: p116 r5
+    translated_stanza 16: p116 r6
+    translated_stanza 17: p116 r7
+    translated_stanza 18: p116 r8, p117 r2   [spans pages 116–117]
+    translated_stanza 19: p117 r3
+    translated_stanza 20: p117 r4
+    translated_stanza 21: p117 r5
+    translated_stanza 22: p117 r6, p118 r2   [spans pages 117–118]
+    translated_stanza 23: p118 r3
+    translated_stanza 24: p118 r4
+    translated_stanza 25: p118 r5
+    translated_stanza 26: p118 r6
+    translated_stanza 27: p118 r7
+    translated_stanza 28: p118 r8, p119 r2   [spans pages 118–119]
+    translated_stanza 29: p119 r3
+    translated_stanza 30: p119 r4
+    translated_stanza 31: p119 r5
+    translated_stanza 32: p119 r6
+    translated_stanza 33: p119 r7
+    translated_stanza 34: p120 r2
+    translated_stanza 35: p120 r3
+    translated_stanza 36: p120 r4
+    translated_stanza 37: p120 r5
+    translated_stanza 38: p120 r6
+    translated_stanza 39: p120 r7, p121 r2   [spans pages 120–121]
+    translated_stanza 40: p121 r3
+    translated_stanza 41: p121 r4
+    translated_stanza 42: p121 r5
+    translated_stanza 43: p121 r6
+    translated_stanza 44: p121 r7
+    translated_stanza 45: p121 r8, p122 r2   [spans pages 121–122]
+    translated_stanza 46: p122 r3
+    translated_stanza 47: p122 r4
+    translated_stanza 48: p122 r5
+    translated_stanza 49: p122 r6
+    translated_stanza 50: p122 r7
+    translated_stanza 51: p122 r8, p123 r2   [spans pages 122–123]
+    translated_stanza 52: p123 r3
+    translated_stanza 53: p123 r4
+    translated_stanza 54: p123 r5
+    translated_stanza 55: p123 r6
+    translated_stanza 56: p123 r7, p124 r2   [spans pages 123–124]
+    translated_stanza 57: p124 r3
+    translated_stanza 58: p124 r4
+    translated_stanza 59: p124 r5
+    translated_stanza 60: p124 r6
+    translated_stanza 61: p124 r7
+    translated_stanza 62: p124 r8, p125 r2   [spans pages 124–125]
+    translated_stanza 63: p125 r3
+    translated_stanza 64: p125 r4
+    translated_stanza 65: p125 r5
+    translated_stanza 66: p125 r6
+    translated_stanza 67: p125 r7
+    translated_stanza 68: p126 r2
+    translated_stanza 69: p126 r3
+    translated_stanza 70: p126 r4
+    translated_stanza 71: p126 r5
+    translated_stanza 72: p126 r6
+    translated_stanza 73: p126 r7
+    translated_stanza 74: p127 r2
+    translated_stanza 75: p127 r3
+    translated_stanza 76: p127 r4
+    translated_stanza 77: p127 r5
+    translated_stanza 78: p127 r6, p128 r2   [spans pages 127–128]
+    translated_stanza 79: p128 r3
+    translated_stanza 80: p128 r4
+    translated_stanza 81: p128 r5
+    translated_stanza 82: p128 r6
+    translated_stanza 83: p128 r7
+    translated_stanza 84: p129 r2
+    translated_stanza 85: p129 r3
+    translated_stanza 86: p129 r4
+    translated_stanza 87: p129 r5
+    translated_stanza 88: p129 r6
+    translated_stanza 89: p129 r7
+    translated_stanza 90: p129 r8
+    translated_stanza: p131 r2   [began before this range]
+    translated_stanza 97: p131 r3
+    translated_stanza 98: p131 r4
+    translated_stanza 99: p131 r5
+    translated_stanza 100: p131 r6
+    translated_stanza 101: p131 r7, p132 r2   [spans pages 131–132]
+    translated_stanza 102: p132 r3
+    translated_stanza 103: p132 r4
+    translated_stanza 104: p132 r5
+    translated_stanza 105: p132 r6
+    translated_stanza 106: p132 r7
+    translated_stanza 107: p133 r2
+    translated_stanza 108: p133 r3
+    heading (MISCELLANEOUS.): p133 r4
+    translated_stanza 1: p133 r5
+    translated_stanza 2: p133 r6
+    translated_stanza 3: p133 r7
+    translated_stanza 4: p133 r8
+    translated_stanza 5: p133 r9, p134 r2   [spans pages 133–134]
+    translated_stanza 6: p134 r3
+    translated_stanza 7: p134 r4
+    translated_stanza 8: p134 r5
+    translated_stanza 9: p134 r6
+    translated_stanza 10: p134 r7
+    translated_stanza 11: p134 r8, p135 r2   [spans pages 134–135]
+    translated_stanza 12: p135 r3
+    translated_stanza 13: p135 r4
+    translated_stanza 14: p135 r5
+    translated_stanza 15: p135 r6
+    translated_stanza 16: p135 r7, p136 r2   [spans pages 135–136]
+    translated_stanza 17: p136 r3
+    translated_stanza 18: p136 r4
+    translated_stanza 19: p136 r5
+    translated_stanza 20: p136 r6
+    translated_stanza 21: p136 r7
+    translated_stanza 22: p136 r8
+    translated_stanza 23: p136 r9
+    translated_stanza 24: p137 r2
+    translated_stanza 25: p137 r3
+  translation (Translation)   [spans pages 138–165; began before this range]
+    heading (VAIRA'GYAS'ATAKA): p138 r1
+    translated_stanza 1: p138 r2
+    translated_stanza 2: p138 r3
+    translated_stanza 3: p138 r4
+    translated_stanza 4: p138 r5
+    translated_stanza 5: p139 r2
+    translated_stanza 6: p139 r3
+    translated_stanza 7: p139 r4
+    translated_stanza 8: p139 r5
+    translated_stanza 9: p139 r6
+    translated_stanza 10: p139 r7, p140 r2   [spans pages 139–140]
+    translated_stanza 11: p140 r3
+    translated_stanza 12: p140 r4
+    translated_stanza 13: p140 r5
+    translated_stanza 14: p140 r6
+    translated_stanza 15: p140 r7, p141 r2   [spans pages 140–141]
+    translated_stanza 16: p141 r3
+    translated_stanza 17: p141 r4
+    translated_stanza 18: p141 r5
+    translated_stanza 19: p141 r6
+    translated_stanza 20: p141 r7, p142 r2   [spans pages 141–142]
+    translated_stanza 21: p142 r3
+    translated_stanza 22: p142 r4
+    translated_stanza 23: p142 r5
+    translated_stanza 24: p142 r6
+    translated_stanza 25: p143 r2
+    translated_stanza 26: p143 r3
+    translated_stanza 27: p143 r4
+    translated_stanza 28: p143 r5
+    translated_stanza 29: p143 r6
+    translated_stanza 30: p144 r2
+    translated_stanza 31: p144 r3
+    translated_stanza 32: p144 r4
+    translated_stanza 33: p144 r5
+    translated_stanza 34: p144 r6, p145 r2   [spans pages 144–145]
+    translated_stanza 35: p145 r3
+    translated_stanza 36: p145 r4
+    translated_stanza 37: p145 r5
+    translated_stanza 38: p145 r6
+    translated_stanza 39: p146 r2
+    translated_stanza 40: p146 r3
+    translated_stanza 41: p146 r4
+    translated_stanza 42: p146 r5
+    translated_stanza 43: p146 r6, p147 r2   [spans pages 146–147]
+    translated_stanza 44: p147 r3
+    translated_stanza 45: p147 r4
+    translated_stanza 46: p147 r5
+    translated_stanza 47: p147 r6
+    translated_stanza 48: p148 r2
+    translated_stanza 49: p148 r3
+    translated_stanza 50: p148 r4
+    translated_stanza 51: p148 r5
+    translated_stanza 52: p148 r6
+    translated_stanza 53: p148 r7, p149 r2   [spans pages 148–149]
+    translated_stanza 54: p149 r3
+    translated_stanza 55: p149 r4
+    translated_stanza 56: p149 r5
+    translated_stanza 57: p149 r6
+    translated_stanza 58: p149 r7
+    translated_stanza 59: p149 r8, p150 r2   [spans pages 149–150]
+    translated_stanza 60: p150 r3
+    translated_stanza 61: p150 r4
+    translated_stanza 62: p150 r5
+    translated_stanza 63: p150 r6
+    translated_stanza 64: p150 r7
+    translated_stanza 65: p151 r2
+    translated_stanza 66: p151 r3
+    translated_stanza 67: p151 r4
+    translated_stanza 68: p151 r5
+    translated_stanza 69: p151 r6
+    translated_stanza 70: p151 r7
+    translated_stanza 71: p152 r2
+    translated_stanza 72: p152 r3
+    translated_stanza 73: p152 r4
+    translated_stanza 4: p152 r5
+    translated_stanza 75: p152 r6
+    translated_stanza 76: p152 r7, p153 r2   [spans pages 152–153]
+    translated_stanza 77: p153 r3
+    translated_stanza 78: p153 r4
+    translated_stanza 79: p153 r5
+    translated_stanza 80: p153 r6
+    translated_stanza 81: p153 r7, p154 r2   [spans pages 153–154]
+    translated_stanza 82: p154 r3
+    translated_stanza 83: p154 r4
+    translated_stanza 84: p154 r5
+    translated_stanza 85: p154 r6
+    translated_stanza 86: p154 r7, p155 r2   [spans pages 154–155]
+    translated_stanza 87: p155 r3
+    translated_stanza 88: p155 r4
+    translated_stanza 89: p155 r5
+    translated_stanza 90: p155 r6
+    translated_stanza 91: p155 r7
+    translated_stanza 92: p156 r2
+    translated_stanza 93: p156 r3
+    translated_stanza 94: p156 r4
+    translated_stanza 95: p156 r5
+    translated_stanza 96: p156 r6
+    translated_stanza 97: p157 r2
+    translated_stanza 98: p157 r3
+    translated_stanza 99: p157 r4
+    translated_stanza 100: p157 r5
+    translated_stanza 101: p157 r6
+    heading: p158 r2
+    translated_stanza 1: p158 r3
+    translated_stanza 2: p158 r4
+    translated_stanza 3: p158 r5
+    translated_stanza 4: p158 r6
+    translated_stanza 5: p158 r7
+    translated_stanza 6: p158 r8, p159 r2   [spans pages 158–159]
+    translated_stanza 7: p159 r3
+    translated_stanza 8: p159 r4
+    translated_stanza 9: p159 r5
+    translated_stanza 10: p159 r6
+    translated_stanza 11: p159 r7, p160 r2   [spans pages 159–160]
+    translated_stanza 12: p160 r3
+    translated_stanza 13: p160 r4
+    translated_stanza 14: p160 r5
+    translated_stanza 15: p160 r6
+    translated_stanza 16: p160 r7
+    translated_stanza 17: p160 r8, p161 r2   [spans pages 160–161]
+    translated_stanza 18: p161 r3
+    translated_stanza 19: p161 r4
+    translated_stanza 20: p161 r5
+    translated_stanza 21: p161 r6
+    translated_stanza 22: p161 r7, p162 r2   [spans pages 161–162]
+    translated_stanza 23: p162 r3
+    translated_stanza 24: p162 r4
+    translated_stanza 25: p162 r5
+    translated_stanza 26: p162 r6
+    translated_stanza 27: p162 r7
+    translated_stanza 27: p162 r8, p163 r2   [spans pages 162–163]
+    translated_stanza 28: p163 r3
+    translated_stanza 29: p163 r4
+    translated_stanza 30: p163 r5
+    translated_stanza 31: p163 r6
+    translated_stanza 32: p163 r7
+    translated_stanza 33: p163 r8, p164 r2   [spans pages 163–164]
+    translated_stanza 34: p164 r3
+    translated_stanza 35: p164 r4
+    translated_stanza 36: p164 r5
+    translated_stanza 37: p164 r6
+    translated_stanza 38: p164 r7
+    translated_stanza 39: p164 r8, p165 r2   [spans pages 164–165]
+    translated_stanza 40: p165 r3
+    translated_stanza 41: p165 r4
+    translated_stanza 42: p165 r5
+    translated_stanza 43: p165 r6
+    translated_stanza 44: p165 r7
+  notes (Notes)   [spans pages 166–207]
+    heading: p166 r1
+    stanza_note 1: p166 r2, p166 r3, p167 r2, p167 r3, p167 r4, p167 r5   [spans pages 166–167]
+    stanza_note 2: p167 r6, p168 r2, p168 r3, p168 r4, p168 r5, p169 r2   [spans pages 167–169]
+    stanza_note 3: p169 r3
+    stanza_note 4: p169 r4, p169 r5, p170 r2   [spans pages 169–170]
+    stanza_note 5: p170 r3
+    stanza_note 6: p170 r4, p171 r2, p171 r3   [spans pages 170–171]
+    stanza_note 7: p171 r4
+    stanza_note 8: p171 r5
+    stanza_note 9: p171 r6, p172 r2   [spans pages 171–172]
+    stanza_note 10: p172 r3, p173 r2   [spans pages 172–173]
+    stanza_note 11: p173 r3, p173 r4
+    stanza_note 12: p173 r5
+    stanza_note 13: p173 r6, p173 r7
+    stanza_note 14: p173 r8, p174 r2   [spans pages 173–174]
+    stanza_note 15: p174 r3, p174 r4, p175 r2   [spans pages 174–175]
+    stanza_note 16: p175 r3
+    stanza_note 17: p175 r4
+    stanza_note 18: p175 r5, p176 r2   [spans pages 175–176]
+    stanza_note 19: p176 r3
+    stanza_note 20: p176 r4, p176 r5, p177 r2   [spans pages 176–177]
+    stanza_note 21: p177 r3
+    stanza_note 22: p177 r4
+    stanza_note 23: p177 r5, p178 r2   [spans pages 177–178]
+    stanza_note 24: p178 r3
+    stanza_note 25: p178 r4
+    stanza_note 26: p179 r2
+    stanza_note 27: p179 r3
+    stanza_note 28: p179 r4, p180 r2   [spans pages 179–180]
+    stanza_note 29: p180 r3, p180 r4
+    stanza_note 30: p180 r5, p181 r2   [spans pages 180–181]
+    stanza_note 31: p181 r3
+    stanza_note 32: p181 r4
+    stanza_note 33: p181 r5
+    stanza_note 34: p182 r2, p182 r3
+    stanza_note 35: p182 r4, p183 r2   [spans pages 182–183]
+    stanza_note 36: p183 r3
+    stanza_note 37: p183 r4, p184 r2   [spans pages 183–184]
+    stanza_note 38: p184 r3
+    stanza_note 39: p184 r4
+    stanza_note 40: p184 r5, p185 r2   [spans pages 184–185]
+    stanza_note 41: p185 r3
+    stanza_note 42: p185 r4, p186 r2   [spans pages 185–186]
+    stanza_note 43: p186 r3
+    stanza_note 44: p186 r4, p186 r5, p187 r2, p187 r3   [spans pages 186–187]
+    stanza_note 45: p187 r4, p187 r5
+    stanza_note 46: p187 r6
+    stanza_note 47: p187 r7, p188 r2   [spans pages 187–188]
+    stanza_note 48: p188 r3
+    stanza_note 49: p188 r4
+    stanza_note 50: p188 r5
+    stanza_note 51: p188 r6, p189 r2   [spans pages 188–189]
+    stanza_note 52: p189 r3
+    stanza_note 53: p189 r4
+    stanza_note 54: p189 r5
+    stanza_note 55: p189 r6
+    stanza_note 56: p189 r7, p190 r2   [spans pages 189–190]
+    stanza_note 57: p190 r3
+    stanza_note 58: p190 r4, p191 r2   [spans pages 190–191]
+    stanza_note 59: p191 r3
+    stanza_note 60: p191 r4, p191 r5
+    stanza_note 61: p191 r6
+    stanza_note 62: p191 r7, p192 r2   [spans pages 191–192]
+    stanza_note 63: p192 r3
+    stanza_note 64: p192 r4
+    stanza_note 65: p192 r5
+    stanza_note 66: p193 r2
+    stanza_note 67: p193 r3
+    stanza_note 68: p193 r4
+    stanza_note 69: p193 r5, p194 r2   [spans pages 193–194]
+    stanza_note 70: p194 r3
+    stanza_note 71: p194 r4
+    stanza_note 72: p194 r5
+    stanza_note 73: p194 r6
+    stanza_note 74: p194 r7, p195 r2   [spans pages 194–195]
+    stanza_note 75: p195 r3
+    stanza_note 76: p195 r4
+    stanza_note 77: p195 r5, p196 r2   [spans pages 195–196]
+    stanza_note 78: p196 r3
+    stanza_note 79: p196 r4
+    stanza_note 80: p196 r5
+    stanza_note 81: p197 r2
+    stanza_note 82: p197 r3
+    stanza_note 83: p197 r4
+    stanza_note 84: p197 r5
+    stanza_note 85: p197 r6
+    stanza_note 86: p198 r2
+    stanza_note 87: p198 r3
+    stanza_note 88: p198 r4
+    stanza_note 89: p198 r5
+    stanza_note 90: p198 r6, p199 r2   [spans pages 198–199]
+    stanza_note 91: p199 r3
+    stanza_note 92: p199 r4
+    stanza_note 93: p199 r5
+    stanza_note 94: p199 r6
+    stanza_note 95: p199 r7, p200 r2   [spans pages 199–200]
+    stanza_note 96: p200 r3
+    stanza_note 97: p200 r4, p201 r2   [spans pages 200–201]
+    stanza_note 98: p201 r3
+    stanza_note 99: p201 r4, p202 r2   [spans pages 201–202]
+    stanza_note 100: p202 r3, p203 r2, p203 r3, p204 r2   [spans pages 202–204]
+    stanza_note 101: p204 r3
+    stanza_note 102: p204 r4
+    stanza_note 103: p204 r5, p205 r2   [spans pages 204–205]
+    stanza_note 104: p205 r3
+    stanza_note 105: p205 r4
+    stanza_note 106: p205 r5, p206 r2   [spans pages 205–206]
+    stanza_note 107: p206 r3, p207 r2   [spans pages 206–207]
+    stanza_note 108: p207 r3
+  notes (Notes)   [spans pages 208–252; began before this range]
+    heading (Miscellaneous): p208 r2
+    stanza_note 1: p208 r3
+    stanza_note 2: p208 r4
+    stanza_note 3: p208 r5
+    stanza_note 4: p208 r6
+    stanza_note 5: p208 r7
+    stanza_note 6: p208 r8, p209 r2   [spans pages 208–209]
+    stanza_note 7: p209 r3
+    stanza_note 8: p209 r4, p210 r2   [spans pages 209–210]
+    stanza_note 9: p210 r3
+    stanza_note 10: p210 r4, p211 r2   [spans pages 210–211]
+    stanza_note 11: p211 r3
+    stanza_note 12: p211 r4, p211 r5
+    stanza_note 12: p211 r6, p212 r2   [spans pages 211–212]
+    stanza_note 14: p212 r3
+    stanza_note 15: p212 r4
+    stanza_note 16: p212 r5, p213 r2   [spans pages 212–213]
+    stanza_note 17: p213 r3
+    stanza_note 18: p213 r4
+    stanza_note 19: p213 r5
+    stanza_note 20: p213 r6
+    stanza_note 21: p213 r7
+    stanza_note 22: p213 r8, p214 r2   [spans pages 213–214]
+    stanza_note 23: p214 r3
+    stanza_note 24: p214 r4, p215 r2   [spans pages 214–215]
+    stanza_note 25: p215 r3
+    heading (VAIRA'GYAS'ATAKA): p216 r2
+    stanza_note 1: p216 r3
+    stanza_note 2: p216 r4
+    stanza_note 3: p216 r5
+    stanza_note 4: p216 r6, p217 r2   [spans pages 216–217]
+    stanza_note 5: p217 r3
+    stanza_note 6: p217 r4
+    stanza_note 7: p217 r5, p218 r2   [spans pages 217–218]
+    stanza_note 8: p218 r3
+    stanza_note 9: p218 r4
+    stanza_note 10: p218 r5, p219 r2   [spans pages 218–219]
+    stanza_note 11: p219 r3
+    stanza_note 12: p219 r4
+    stanza_note 13: p219 r5, p220 r2   [spans pages 219–220]
+    stanza_note 14: p220 r3
+    stanza_note 15: p220 r4
+    stanza_note 16: p220 r5
+    stanza_note 17: p220 r6
+    stanza_note 18: p220 r7, p221 r2   [spans pages 220–221]
+    stanza_note 19: p221 r3
+    stanza_note 20: p221 r4
+    stanza_note 21: p221 r5
+    stanza_note 22: p221 r6, p222 r2   [spans pages 221–222]
+    stanza_note 23: p222 r3
+    stanza_note 24: p222 r4, p222 r5, p223 r2   [spans pages 222–223]
+    stanza_note 25: p223 r3
+    stanza_note 26: p223 r4
+    stanza_note 27: p223 r5
+    stanza_note 28: p223 r6
+    stanza_note 29: p223 r7, p224 r2   [spans pages 223–224]
+    stanza_note 30: p224 r3
+    stanza_note 31: p224 r4, p225 r2   [spans pages 224–225]
+    stanza_note 32: p225 r3
+    stanza_note 33: p225 r4
+    stanza_note 34: p225 r5, p226 r2   [spans pages 225–226]
+    stanza_note 35: p226 r3
+    stanza_note 36: p226 r4, p227 r2   [spans pages 226–227]
+    stanza_note 37: p227 r3
+    stanza_note 38: p227 r4
+    stanza_note 39: p227 r5
+    stanza_note 40: p228 r2
+    stanza_note 41: p228 r3
+    stanza_note 42: p228 r4
+    stanza_note 43: p228 r5, p229 r2   [spans pages 228–229]
+    stanza_note 44: p229 r3
+    stanza_note 45: p229 r4
+    stanza_note 46: p229 r5
+    stanza_note 47: p230 r2
+    stanza_note 48: p230 r3
+    stanza_note 49: p230 r4
+    stanza_note 50: p230 r5, p231 r2   [spans pages 230–231]
+    stanza_note 51: p231 r3
+    stanza_note 52: p231 r4
+    stanza_note 53: p231 r5
+    stanza_note 54: p231 r6, p232 r2   [spans pages 231–232]
+    stanza_note 55: p232 r3
+    stanza_note 56: p232 r4
+    stanza_note 57: p232 r5, p232 r6
+    stanza_note 58: p232 r7
+    stanza_note 59: p232 r8, p233 r2   [spans pages 232–233]
+    stanza_note 60: p233 r3
+    stanza_note 61: p233 r4
+    stanza_note 62: p233 r5, p234 r2   [spans pages 233–234]
+    stanza_note 63: p234 r3
+    stanza_note 64: p234 r4
+    stanza_note 65: p234 r5
+    stanza_note 66: p234 r6, p235 r2   [spans pages 234–235]
+    stanza_note 67: p235 r3
+    stanza_note 68: p235 r4
+    stanza_note 69: p235 r5
+    stanza_note 70: p235 r6
+    stanza_note 71: p235 r7, p236 r2   [spans pages 235–236]
+    stanza_note 72: p236 r3
+    stanza_note 73: p236 r4
+    stanza_note 74: p236 r5
+    stanza_note 75: p236 r6
+    stanza_note 76: p236 r7, p237 r2   [spans pages 236–237]
+    stanza_note 77: p237 r3
+    stanza_note 78: p237 r4
+    stanza_note 79: p237 r5, p238 r2   [spans pages 237–238]
+    stanza_note 80: p238 r3
+    stanza_note 81: p238 r4
+    stanza_note 82: p238 r5, p239 r2   [spans pages 238–239]
+    stanza_note 83: p239 r3
+    stanza_note 84: p239 r4
+    stanza_note 85: p239 r5
+    stanza_note 86: p239 r6
+    stanza_note 87: p240 r2
+    stanza_note 88: p240 r3
+    stanza_note 89: p240 r4
+    stanza_note 90: p240 r5
+    stanza_note 91: p240 r6, p241 r2   [spans pages 240–241]
+    stanza_note 92: p241 r3
+    stanza_note 93: p241 r4
+    stanza_note 94: p241 r5
+    stanza_note 95: p241 r6
+    stanza_note 96: p241 r7, p242 r2   [spans pages 241–242]
+    stanza_note 97: p242 r3
+    stanza_note 98: p242 r4
+    stanza_note 99: p242 r5, p243 r2   [spans pages 242–243]
+    stanza_note 100: p243 r3
+    stanza_note 101: p243 r4
+    heading (MISCLLANEOUS.): p243 r5
+    stanza_note 1: p243 r6
+    stanza_note 2: p244 r2
+    stanza_note 3: p244 r3
+    stanza_note 4: p244 r4
+    stanza_note 5: p244 r5, p245 r2   [spans pages 244–245]
+    stanza_note 6: p245 r3
+    stanza_note 7: p245 r4
+    stanza_note 8: p245 r5
+    stanza_note 9: p245 r6
+    stanza_note 10: p245 r7
+    stanza_note 11: p246 r2
+    stanza_note 12: p246 r3
+    stanza_note 13: p246 r4
+    stanza_note 14: p246 r5
+    stanza_note 15: p246 r6, p247 r2   [spans pages 246–247]
+    stanza_note 16: p247 r3
+    stanza_note 17: p247 r4
+    stanza_note 18: p247 r5
+    stanza_note 19: p247 r6
+    stanza_note 20: p247 r7
+    stanza_note 21: p247 r8, p248 r2   [spans pages 247–248]
+    stanza_note 22: p248 r3
+    stanza_note 23: p248 r4
+    stanza_note 24: p248 r5, p248 r6, p249 r2   [spans pages 248–249]
+    stanza_note 25: p249 r3
+    stanza_note 26: p249 r4
+    stanza_note 27: p249 r5
+    stanza_note (Additional Sl.): p249 r6, p250 r2   [spans pages 249–250]
+    stanza_note 28: p250 r3
+    stanza_note 29: p250 r4
+    stanza_note 30: p250 r5
+    stanza_note 31: p250 r6
+    stanza_note 32: p250 r7
+    stanza_note 33: p250 r8
+    stanza_note 34: p250 r9, p251 r2   [spans pages 250–251]
+    stanza_note 35: p251 r3
+    stanza_note 36: p251 r4
+    stanza_note 37: p251 r5
+    stanza_note 39: p251 r6
+    stanza_note 40: p251 r7
+    stanza_note 41: p251 r8
+    stanza_note 42: p252 r2
+    stanza_note 43: p252 r3
+    stanza_note 44: p252 r4
+flow notes
+  footnote 1: p2 r9
+  footnote 2: p2 r10
+  footnote 3: p2 r11
+  footnote 1: p3 r7
+  footnote 2: p3 r8
+  footnote (*): p4 r10
+  footnote 1: p4 r11
+  footnote 2: p4 r12
+  footnote 3: p4 r13
+  footnote 1: p6 r7
+  footnote 2: p6 r8
+  footnote 3: p6 r9
+  footnote 1: p7 r9
+  footnote 2: p7 r10
+  footnote 3: p7 r11
+  footnote 4: p7 r12
+  footnote 5: p7 r13
+  footnote 1: p8 r9
+  footnote 2: p8 r10
+  footnote 3: p8 r11
+  footnote 4: p8 r12
+  footnote 5: p8 r13
+  footnote 1: p9 r12
+  footnote 2: p9 r13
+  footnote 3: p9 r14
+  footnote 4: p9 r15
+  footnote 1: p10 r10
+  footnote 2: p10 r11
+  footnote 3: p10 r12
+  footnote 1: p11 r8
+  footnote 2: p11 r9
+  footnote 3: p11 r10
+  footnote 4: p11 r11
+  footnote 1: p12 r10
+  footnote 2: p12 r11
+  footnote 3: p12 r12
+  footnote 4: p12 r13
+  footnote 1: p13 r11
+  footnote 2: p13 r12
+  footnote 1: p14 r12
+  footnote 2: p14 r13
+  footnote 3: p14 r14
+  footnote 4: p14 r15
+  footnote 5: p14 r16
+  footnote 1: p15 r12
+  footnote 2: p15 r13
+  footnote 3: p15 r14
+  footnote 4: p15 r15
+  footnote 5: p15 r16
+  footnote 1: p16 r10
+  footnote 2: p16 r11
+  footnote 3: p16 r12
+  footnote 4: p16 r13
+  footnote 5: p16 r14
+  footnote 1: p17 r9
+  footnote 2: p17 r10
+  footnote 3: p17 r11
+  footnote 4: p17 r12
+  footnote 5: p17 r13
+  footnote 6: p17 r14
+  footnote 1: p18 r13
+  footnote 2: p18 r14
+  footnote 3: p18 r15
+  footnote 1: p19 r11
+  footnote 2: p19 r12
+  footnote 1: p20 r9
+  footnote 2: p20 r10
+  footnote 3: p20 r11
+  footnote 4: p20 r12
+  footnote 5: p20 r13
+  footnote 1: p21 r10
+  footnote 2: p21 r11
+  footnote 3: p21 r12
+  footnote 4: p21 r13
+  footnote 1: p22 r12
+  footnote 2: p22 r13
+  footnote 3: p22 r14
+  footnote 4: p22 r15
+  footnote 1: p23 r13
+  footnote 2: p23 r14
+  footnote 3: p23 r15
+  footnote 4: p23 r16
+  footnote 5: p23 r17
+  footnote 1: p24 r12
+  footnote 2: p24 r13
+  footnote 3: p24 r14
+  footnote 4: p24 r15
+  footnote 5: p24 r16
+  footnote 6: p24 r17, p24 r18
+  footnote 7: p24 r19
+  footnote 8: p24 r20
+  footnote 9: p24 r21
+  footnote 1: p25 r12
+  footnote 2: p25 r13
+  footnote 3: p25 r14
+  footnote 4: p25 r15
+  footnote 1: p26 r11
+  footnote 2: p26 r12
+  footnote 3: p26 r13
+  footnote 1: p27 r13
+  footnote 2: p27 r14
+  footnote 3: p27 r15
+  footnote 4: p27 r16
+  footnote 5: p27 r17
+  footnote 6: p27 r18
+  footnote 7: p27 r19
+  footnote 1: p28 r12
+  footnote 2: p28 r13
+  footnote 3: p28 r14
+  footnote 4: p28 r15
+  footnote 1: p29 r11
+  footnote 2: p29 r12
+  footnote 3: p29 r13
+  footnote 4: p29 r14
+  footnote 5: p29 r15
+  footnote 6: p29 r16, p29 r17
+  footnote 7: p29 r18
+  footnote 8: p29 r19
+  footnote 9: p29 r20
+  footnote 10: p29 r21
+  footnote 11: p29 r22, p29 r23
+  footnote 1: p30 r14
+  footnote 2: p30 r15
+  footnote 3: p30 r16
+  footnote 1: p31 r12
+  footnote 2: p31 r13
+  footnote 3: p31 r14
+  footnote 4: p31 r15
+  footnote 5: p31 r16
+  footnote 6: p31 r17
+  footnote 7: p31 r18
+  footnote 8: p31 r19
+  footnote 1: p32 r10
+  footnote 2: p32 r11
+  footnote (*): p32 r12, p32 r13
+  footnote 3: p32 r14
+  footnote 4: p32 r15
+  footnote 1: p33 r11
+  footnote 2: p33 r12
+  footnote 3: p33 r13
+  footnote 1: p34 r11
+  footnote 2: p34 r12
+  footnote 3: p34 r13
+  footnote 1: p35 r13
+  footnote 2: p35 r14
+  footnote 3: p35 r15
+  footnote 4: p35 r16
+  footnote 1: p36 r11
+  footnote 2: p36 r12
+  footnote 3: p36 r13
+  footnote 4: p36 r14
+  footnote 5: p36 r15
+  footnote 6: p36 r16
+  footnote 1: p37 r14
+  footnote 2: p37 r15
+  footnote 3: p37 r16
+  footnote 4: p37 r17
+  footnote 5: p37 r18
+  footnote 6: p37 r19
+  footnote 7: p37 r20
+  footnote 8: p37 r21
+  footnote (*): p37 r22
+  footnote 1: p38 r15
+  footnote 2: p38 r16
+  footnote 3: p38 r17
+  footnote 4: p38 r18
+  footnote 5: p38 r19
+  footnote 6: p38 r20, p38 r21
+  footnote 1: p39 r10
+  footnote 1: p40 r12
+  footnote 2: p40 r13
+  footnote 1: p41 r13
+  footnote 1: p42 r10
+  footnote 2: p42 r11
+  footnote 3: p42 r12
+  footnote 4: p42 r13
+  footnote 5: p42 r14
+  footnote 6: p42 r15
+  footnote 1: p43 r11
+  footnote 2: p43 r12
+  footnote 3: p43 r13
+  footnote 4: p43 r14
+  footnote 5: p43 r15
+  footnote 1: p44 r14
+  footnote 2: p44 r15
+  footnote 3: p44 r16
+  footnote 4: p44 r17
+  footnote 1: p45 r10
+  footnote 2: p45 r11
+  footnote 1: p46 r11
+  footnote 1: p47 r13
+  footnote 2: p47 r14
+  footnote 3: p47 r15
+  footnote 1: p48 r14
+  footnote 1: p50 r11
+  footnote 2: p50 r12
+  footnote 3: p50 r13
+  footnote 1: p51 r9
+  footnote 2: p51 r10
+  footnote 3: p51 r11
+  footnote 4: p51 r12
+  footnote 5: p51 r13
+  footnote 6: p51 r14, p51 r15
+  footnote 7: p51 r16
+  footnote 8: p51 r17
+  footnote 9: p51 r18
+  footnote 10: p51 r19
+  footnote 1: p52 r10
+  footnote 2: p52 r11
+  footnote 3: p52 r12
+  footnote 4: p52 r13
+  footnote 5: p52 r14, p52 r15
+  footnote 6: p52 r16
+  footnote 1: p53 r11
+  footnote 2: p53 r12
+  footnote 3: p53 r13
+  footnote 4: p53 r14
+  footnote 5: p53 r15
+  footnote 1: p54 r7
+  footnote 2: p54 r8
+  footnote 1: p55 r10
+  footnote 2: p55 r11
+  footnote 1: p56 r9
+  footnote 2: p56 r10
+  footnote 3: p56 r11
+  footnote 4: p56 r12
+  footnote 5: p56 r13
+  footnote 6: p56 r14, p56 r15
+  footnote 7: p56 r16
+  footnote 1: p57 r10
+  footnote 2: p57 r11
+  footnote 1: p58 r10
+  footnote 2: p58 r11
+  footnote 3: p58 r12
+  footnote 1: p59 r10
+  footnote 2: p59 r11
+  footnote 3: p59 r12
+  footnote 4: p59 r13
+  footnote 5: p59 r14
+  footnote 1: p60 r10
+  footnote 2: p60 r11
+  footnote 3: p60 r12
+  footnote 4: p60 r13
+  footnote 5: p60 r14
+  footnote 1: p61 r10
+  footnote 2: p61 r11
+  footnote 3: p61 r12
+  footnote 4: p61 r13
+  footnote 5: p61 r14
+  footnote 6: p61 r15
+  footnote 7: p61 r16
+  footnote 1: p62 r9
+  footnote 2: p62 r10
+  footnote 3: p62 r11
+  footnote 4: p62 r12, p62 r13
+  footnote 5: p62 r14
+  footnote 6: p62 r15
+  footnote 7: p62 r16
+  footnote 8: p62 r17
+  footnote 9: p62 r18
+  footnote 1: p63 r9
+  footnote 2: p63 r10
+  footnote 3: p63 r11
+  footnote 1: p65 r10
+  footnote 2: p65 r11
+  footnote 3: p65 r12
+  footnote 1: p66 r10
+  footnote 2: p66 r11
+  footnote 3: p66 r12
+  footnote 4: p66 r13
+  footnote 5: p66 r14
+  footnote 6: p66 r15, p66 r16
+  footnote 7: p66 r17
+  footnote 8: p66 r18
+  footnote 1: p67 r8
+  footnote 2: p67 r9
+  footnote 3: p67 r10
+  footnote 4: p67 r11
+  footnote 1: p68 r9
+  footnote 2: p68 r10
+  footnote 3: p68 r11
+  footnote 1: p69 r8
+  footnote 2: p69 r9
+  footnote 3: p69 r10
+  footnote 4: p69 r11, p69 r12
+  footnote 1: p70 r8
+  footnote 2: p70 r9
+  footnote 3: p70 r10, p70 r11
+  footnote 4: p70 r12
+  footnote 1: p71 r10
+  footnote 2: p71 r11
+  footnote 3: p71 r12
+  footnote 4: p71 r13
+  footnote 5: p71 r14
+  footnote 6: p71 r15
+  footnote 7: p71 r16, p71 r17
+  footnote 8: p71 r18
+  footnote 1: p72 r10
+  footnote 2: p72 r11
+  footnote 3: p72 r12
+  footnote 4: p72 r13
+  footnote 5: p72 r14
+  footnote 6: p72 r15
+  footnote 7: p72 r16
+  footnote 1: p73 r8
+  footnote 2: p73 r9
+  footnote 1: p74 r10
+  footnote 2: p74 r11
+  footnote 3: p74 r12
+  footnote 4: p74 r13
+  footnote 5: p74 r14
+  footnote 6: p74 r15
+  footnote 7: p74 r16
+  footnote 1: p76 r10
+  footnote 2: p76 r11
+  footnote 3: p76 r12
+  footnote 4: p76 r13
+  footnote 5: p76 r14
+  footnote 6: p76 r15, p76 r16
+  footnote 7: p76 r17
+  footnote 8: p76 r18
+  footnote 9: p76 r19
+  footnote 10: p76 r20
+  footnote 1: p77 r13
+  footnote 2: p77 r14
+  footnote 3: p77 r15
+  footnote 4: p77 r16, p77 r17
+  footnote 5: p77 r18
+  footnote 1: p78 r8
+  footnote 2: p78 r9
+  footnote 3: p78 r10
+  footnote 4: p78 r11
+  footnote 5: p78 r12
+  footnote 1: p79 r9
+  footnote 2: p79 r10
+  footnote 3: p79 r11, p79 r12
+  footnote 4: p79 r13
+  footnote 5: p79 r14
+  footnote 1: p80 r10
+  footnote 2: p80 r11
+  footnote 3: p80 r12
+  footnote 4: p80 r13
+  footnote 5: p80 r14
+  footnote 6: p80 r15
+  footnote 1: p81 r9
+  footnote 2: p81 r10
+  footnote 3: p81 r11
+  footnote 4: p81 r12
+  footnote 5: p81 r13, p81 r14
+  footnote 6: p81 r15
+  footnote 1: p82 r9
+  footnote 2: p82 r10
+  footnote 3: p82 r11
+  footnote 4: p82 r12
+  footnote 1: p83 r11
+  footnote 2: p83 r12
+  footnote 3: p83 r13
+  footnote 1: p84 r8
+  footnote 2: p84 r9
+  footnote 3: p84 r10
+  footnote 4: p84 r11
+  footnote 1: p85 r10
+  footnote 2: p85 r11
+  footnote 3: p85 r12
+  footnote 4: p85 r13
+  footnote 5: p85 r14
+  footnote 1: p86 r10
+  footnote 2: p86 r11
+  footnote 3: p86 r12
+  footnote 4: p86 r13
+  footnote 5: p86 r14
+  footnote 1: p87 r10
+  footnote 2: p87 r11
+  footnote 3: p87 r12
+  footnote 4: p87 r13
+  footnote 5: p87 r14
+  footnote 6: p87 r15
+  footnote 7: p87 r16
+  footnote 8: p87 r17
+  footnote 1: p88 r10
+  footnote 2: p88 r11
+  footnote 3: p88 r12
+  footnote 4: p88 r13
+  footnote 1: p89 r10
+  footnote 2: p89 r11
+  footnote 3: p89 r12
+  footnote 4: p89 r13
+  footnote 1: p91 r9
+  footnote 2: p91 r10
+  footnote 3: p91 r11
+  footnote 4: p91 r12
+  footnote 5: p91 r13, p91 r14
+  footnote 1: p92 r9
+  footnote 2: p92 r10
+  footnote 3: p92 r11
+  footnote 4: p92 r12
+  footnote 5: p92 r13
+  footnote 6: p92 r14
+  footnote 7: p92 r15, p92 r16
+  footnote 8: p92 r17
+  footnote 1: p93 r8
+  footnote 2: p93 r9
+  footnote 3: p93 r10
+  footnote 4: p93 r11
+  footnote 1: p94 r7
+  footnote 1: p95 r12
+  footnote 2: p95 r13
+  footnote 3: p95 r14
+  footnote 4: p95 r15
+  footnote 5: p95 r16
+  footnote 6: p95 r17
+  footnote 7: p95 r18, p95 r19
+  footnote 8: p95 r20
+  footnote 9: p95 r21
+  footnote 10: p95 r22
+  footnote 11: p95 r23
+  footnote 12: p95 r24
+  footnote 1: p96 r7
+  footnote 2: p96 r8
+  footnote 3: p96 r9
+  footnote 4: p96 r10
+  footnote 1: p97 r8
+  footnote 2: p97 r9
+  footnote 3: p97 r10
+  footnote 4: p97 r11
+  footnote 5: p97 r12
+  footnote 6: p97 r13
+  footnote 1: p98 r9
+  footnote 2: p98 r10
+  footnote 3: p98 r11
+  footnote 4: p98 r12
+  footnote 5: p98 r13
+  footnote 6: p98 r14, p98 r15
+  footnote 1: p99 r11
+  footnote 2: p99 r12
+  footnote 3: p99 r13
+  footnote 4: p99 r14
+  footnote 5: p99 r15
+  footnote 1: p100 r10
+  footnote 2: p100 r11
+  footnote 3: p100 r12
+  footnote 4: p100 r13
+  footnote 5: p100 r14
+  footnote 6: p100 r15
+  footnote 1: p101 r10
+  footnote 2: p101 r11
+  footnote 3: p101 r12
+  footnote 4: p101 r13
+  footnote 5: p101 r14
+  footnote 1: p102 r10
+  footnote 2: p102 r11
+  footnote 3: p102 r12
+  footnote 4: p102 r13
+  footnote 5: p102 r14
+  footnote 6: p102 r15
+  footnote 7: p102 r16
+  footnote 1: p103 r9
+  footnote 2: p103 r10
+  footnote 3: p103 r11
+  footnote 1: p104 r9
+  footnote 2: p104 r10
+  footnote 3: p104 r11
+  footnote 1: p105 r11
+  footnote 2: p105 r12
+  footnote 3: p105 r13
+  footnote 4: p105 r14
+  footnote 5: p105 r15
+  footnote 6: p105 r16
+  footnote 1: p106 r10
+  footnote 2: p106 r11
+  footnote 3: p106 r12
+  footnote 4: p106 r13
+  footnote 1: p107 r11
+  footnote 2: p107 r12
+  footnote 3: p107 r13
+  footnote 4: p107 r14
+  footnote 1: p108 r9
+  footnote 2: p108 r10
+  footnote 3: p108 r11
+  footnote 4: p108 r12
+  footnote 5: p108 r13
+  footnote 1: p109 r10
+  footnote 2: p109 r11
+  footnote 3: p109 r12
+  footnote 1: p111 r11
+  footnote 2: p111 r12
+  footnote 3: p111 r13
+  footnote 4: p111 r14
+  footnote 5: p111 r15
+  footnote 6: p111 r16
+  footnote 7: p111 r17
+  footnote 8: p111 r18, p111 r19
+  footnote 1: p112 r9
+  footnote 2: p112 r10
+  footnote 1: p113 r9
+  footnote 2: p113 r10
+  footnote 3: p113 r11
+  footnote 4: p113 r12
+  footnote 5: p113 r13
+  footnote 6: p113 r14
+  footnote (*): p146 r7
+  footnote (*): p166 r4
+  footnote (*): p168 r6
+  footnote (*): p207 r4
+
+Continuing across each page break, outermost first:
+page 1 → 2: nothing continues
+page 2 → 3: section (नीतिशतकम्), group 1, commentary
+page 3 → 4: section (नीतिशतकम्)
+page 4 → 5: section (नीतिशतकम्), group 4, commentary
+page 5 → 6: section (नीतिशतकम्), group 6
+page 6 → 7: section (नीतिशतकम्)
+page 7 → 8: section (नीतिशतकम्)
+page 8 → 9: section (नीतिशतकम्), group 12, commentary
+page 9 → 10: section (नीतिशतकम्), group 16
+page 10 → 11: section (नीतिशतकम्), group 18
+page 11 → 12: section (नीतिशतकम्)
+page 12 → 13: section (नीतिशतकम्), group 23, verse 23
+page 13 → 14: section (नीतिशतकम्), group 26
+page 14 → 15: section (नीतिशतकम्), group 29, commentary
+page 15 → 16: section (नीतिशतकम्), group 32, commentary
+page 16 → 17: section (नीतिशतकम्)
+page 17 → 18: section (नीतिशतकम्)
+page 18 → 19: section (नीतिशतकम्)
+page 19 → 20: section (नीतिशतकम्), group 42, commentary
+page 20 → 21: section (नीतिशतकम्), group 44, commentary
+page 21 → 22: section (नीतिशतकम्)
+page 22 → 23: section (नीतिशतकम्), group 49, commentary
+page 23 → 24: section (नीतिशतकम्)
+page 24 → 25: section (नीतिशतकम्), group 55, commentary
+page 25 → 26: section (नीतिशतकम्), group 58, verse 58
+page 26 → 27: section (नीतिशतकम्)
+page 27 → 28: section (नीतिशतकम्)
+page 28 → 29: section (नीतिशतकम्)
+page 29 → 30: section (नीतिशतकम्), group 69
+page 30 → 31: section (नीतिशतकम्), group 72, commentary
+page 31 → 32: section (नीतिशतकम्), group 75, verse 75
+page 32 → 33: section (नीतिशतकम्), group 77, commentary
+page 33 → 34: section (नीतिशतकम्)
+page 34 → 35: section (नीतिशतकम्), group 82, commentary
+page 35 → 36: section (नीतिशतकम्)
+page 36 → 37: section (नीतिशतकम्)
+page 37 → 38: section (नीतिशतकम्), group 92
+page 38 → 39: section (नीतिशतकम्), group 16
+page 39 → 40: section (नीतिशतकम्)
+page 40 → 41: section (नीतिशतकम्), group 101
+page 41 → 42: section (नीतिशतकम्), group 104, commentary
+page 42 → 43: section (नीतिशतकम्), group 106, commentary
+page 43 → 44: section (नीतिशतकम्)
+page 44 → 45: section (नीतिशतकम्)
+page 45 → 46: section (नीतिशतकम्), group 9
+page 46 → 47: section (नीतिशतकम्), group 13, verse 13
+page 47 → 48: section (नीतिशतकम्)
+page 48 → 49: section (नीतिशतकम्), group 23
+page 49 → 50: nothing continues
+page 50 → 51: section (वैराग्यशतकम्), group 3, verse 3
+page 51 → 52: section (वैराग्यशतकम्), group 5, commentary
+page 52 → 53: section (वैराग्यशतकम्), group 7, commentary
+page 53 → 54: section (वैराग्यशतकम्), group 10, commentary
+page 54 → 55: section (वैराग्यशतकम्)
+page 55 → 56: section (वैराग्यशतकम्), group 13, commentary
+page 56 → 57: section (वैराग्यशतकम्), group 15, commentary
+page 57 → 58: section (वैराग्यशतकम्), group 17, commentary
+page 58 → 59: section (वैराग्यशतकम्), group 19, commentary
+page 59 → 60: section (वैराग्यशतकम्), group 21, commentary
+page 60 → 61: section (वैराग्यशतकम्), group 23, commentary
+page 61 → 62: section (वैराग्यशतकम्), group 25, commentary
+page 62 → 63: section (वैराग्यशतकम्), group 27
+page 63 → 64: section (वैराग्यशतकम्), group 29
+page 64 → 65: section (वैराग्यशतकम्)
+page 65 → 66: section (वैराग्यशतकम्), group 33, commentary
+page 66 → 67: section (वैराग्यशतकम्)
+page 67 → 68: section (वैराग्यशतकम्)
+page 68 → 69: section (वैराग्यशतकम्)
+page 69 → 70: section (वैराग्यशतकम्), group 41
+page 70 → 71: section (वैराग्यशतकम्), group 42, commentary
+page 71 → 72: section (वैराग्यशतकम्), group 44, commentary
+page 72 → 73: section (वैराग्यशतकम्), group 46, commentary
+page 73 → 74: section (वैराग्यशतकम्), group 48, verse 48
+page 74 → 75: section (वैराग्यशतकम्), group 50
+page 75 → 76: section (वैराग्यशतकम्), group 52, commentary
+page 76 → 77: section (वैराग्यशतकम्), group 54, commentary
+page 77 → 78: section (वैराग्यशतकम्), group 57, commentary
+page 78 → 79: section (वैराग्यशतकम्)
+page 79 → 80: section (वैराग्यशतकम्)
+page 80 → 81: section (वैराग्यशतकम्)
+page 81 → 82: section (वैराग्यशतकम्)
+page 82 → 83: section (वैराग्यशतकम्)
+page 83 → 84: section (वैराग्यशतकम्), group 70, verse 70
+page 84 → 85: section (वैराग्यशतकम्)
+page 85 → 86: section (वैराग्यशतकम्)
+page 86 → 87: section (वैराग्यशतकम्), group 76, verse 76
+page 87 → 88: section (वैराग्यशतकम्), group 78, verse 78
+page 88 → 89: section (वैराग्यशतकम्), group 80
+page 89 → 90: section (वैराग्यशतकम्), group 82
+page 90 → 91: section (वैराग्यशतकम्)
+page 91 → 92: section (वैराग्यशतकम्)
+page 92 → 93: section (वैराग्यशतकम्), group 88, verse 88
+page 93 → 94: section (वैराग्यशतकम्), group 90
+page 94 → 95: section (वैराग्यशतकम्)
+page 95 → 96: section (वैराग्यशतकम्), group 94
+page 96 → 97: section (वैराग्यशतकम्)
+page 97 → 98: section (वैराग्यशतकम्)
+page 98 → 99: section (वैराग्यशतकम्), group 99, commentary
+page 99 → 100: section (वैराग्यशतकम्)
+page 100 → 101: section (वैराग्यशतकम्), group 3, commentary
+page 101 → 102: section (वैराग्यशतकम्), group 6, commentary
+page 102 → 103: section (वैराग्यशतकम्)
+page 103 → 104: section (वैराग्यशतकम्)
+page 104 → 105: section (वैराग्यशतकम्)
+page 105 → 106: section (वैराग्यशतकम्), group 19, commentary
+page 106 → 107: section (वैराग्यशतकम्), group 22, commentary
+page 107 → 108: section (वैराग्यशतकम्), group 26
+page 108 → 109: section (वैराग्यशतकम्), group 29
+page 109 → 110: section (वैराग्यशतकम्)
+page 110 → 111: section (वैराग्यशतकम्), group 36, verse 36
+page 111 → 112: section (वैराग्यशतकम्), group 39, verse 39
+page 112 → 113: section (वैराग्यशतकम्)
+page 113 → 114: nothing continues
+page 114 → 115: translation (Translation), translated_stanza 6
+page 115 → 116: translation (Translation)
+page 116 → 117: translation (Translation), translated_stanza 18
+page 117 → 118: translation (Translation), translated_stanza 22
+page 118 → 119: translation (Translation), translated_stanza 28
+page 119 → 120: translation (Translation)
+page 120 → 121: translation (Translation), translated_stanza 39
+page 121 → 122: translation (Translation), translated_stanza 45
+page 122 → 123: translation (Translation), translated_stanza 51
+page 123 → 124: translation (Translation), translated_stanza 56
+page 124 → 125: translation (Translation), translated_stanza 62
+page 125 → 126: translation (Translation)
+page 126 → 127: translation (Translation)
+page 127 → 128: translation (Translation), translated_stanza 78
+page 128 → 129: translation (Translation)
+page 129 → 131: translation (Translation)
+page 131 → 132: translation (Translation), translated_stanza 101
+page 132 → 133: translation (Translation)
+page 133 → 134: translation (Translation), translated_stanza 5
+page 134 → 135: translation (Translation), translated_stanza 11
+page 135 → 136: translation (Translation), translated_stanza 16
+page 136 → 137: translation (Translation)
+page 137 → 138: nothing continues
+page 138 → 139: translation (Translation)
+page 139 → 140: translation (Translation), translated_stanza 10
+page 140 → 141: translation (Translation), translated_stanza 15
+page 141 → 142: translation (Translation), translated_stanza 20
+page 142 → 143: translation (Translation)
+page 143 → 144: translation (Translation)
+page 144 → 145: translation (Translation), translated_stanza 34
+page 145 → 146: translation (Translation)
+page 146 → 147: translation (Translation), translated_stanza 43
+page 147 → 148: translation (Translation)
+page 148 → 149: translation (Translation), translated_stanza 53
+page 149 → 150: translation (Translation), translated_stanza 59
+page 150 → 151: translation (Translation)
+page 151 → 152: translation (Translation)
+page 152 → 153: translation (Translation), translated_stanza 76
+page 153 → 154: translation (Translation), translated_stanza 81
+page 154 → 155: translation (Translation), translated_stanza 86
+page 155 → 156: translation (Translation)
+page 156 → 157: translation (Translation)
+page 157 → 158: translation (Translation)
+page 158 → 159: translation (Translation), translated_stanza 6
+page 159 → 160: translation (Translation), translated_stanza 11
+page 160 → 161: translation (Translation), translated_stanza 17
+page 161 → 162: translation (Translation), translated_stanza 22
+page 162 → 163: translation (Translation), translated_stanza 27
+page 163 → 164: translation (Translation), translated_stanza 33
+page 164 → 165: translation (Translation), translated_stanza 39
+page 165 → 166: nothing continues
+page 166 → 167: notes (Notes), stanza_note 1
+page 167 → 168: notes (Notes), stanza_note 2
+page 168 → 169: notes (Notes), stanza_note 2
+page 169 → 170: notes (Notes), stanza_note 4
+page 170 → 171: notes (Notes), stanza_note 6
+page 171 → 172: notes (Notes), stanza_note 9
+page 172 → 173: notes (Notes), stanza_note 10
+page 173 → 174: notes (Notes), stanza_note 14
+page 174 → 175: notes (Notes), stanza_note 15
+page 175 → 176: notes (Notes), stanza_note 18
+page 176 → 177: notes (Notes), stanza_note 20
+page 177 → 178: notes (Notes), stanza_note 23
+page 178 → 179: notes (Notes)
+page 179 → 180: notes (Notes), stanza_note 28
+page 180 → 181: notes (Notes), stanza_note 30
+page 181 → 182: notes (Notes)
+page 182 → 183: notes (Notes), stanza_note 35
+page 183 → 184: notes (Notes), stanza_note 37
+page 184 → 185: notes (Notes), stanza_note 40
+page 185 → 186: notes (Notes), stanza_note 42
+page 186 → 187: notes (Notes), stanza_note 44
+page 187 → 188: notes (Notes), stanza_note 47
+page 188 → 189: notes (Notes), stanza_note 51
+page 189 → 190: notes (Notes), stanza_note 56
+page 190 → 191: notes (Notes), stanza_note 58
+page 191 → 192: notes (Notes), stanza_note 62
+page 192 → 193: notes (Notes)
+page 193 → 194: notes (Notes), stanza_note 69
+page 194 → 195: notes (Notes), stanza_note 74
+page 195 → 196: notes (Notes), stanza_note 77
+page 196 → 197: notes (Notes)
+page 197 → 198: notes (Notes)
+page 198 → 199: notes (Notes), stanza_note 90
+page 199 → 200: notes (Notes), stanza_note 95
+page 200 → 201: notes (Notes), stanza_note 97
+page 201 → 202: notes (Notes), stanza_note 99
+page 202 → 203: notes (Notes), stanza_note 100
+page 203 → 204: notes (Notes), stanza_note 100
+page 204 → 205: notes (Notes), stanza_note 103
+page 205 → 206: notes (Notes), stanza_note 106
+page 206 → 207: notes (Notes), stanza_note 107
+page 207 → 208: nothing continues
+page 208 → 209: notes (Notes), stanza_note 6
+page 209 → 210: notes (Notes), stanza_note 8
+page 210 → 211: notes (Notes), stanza_note 10
+page 211 → 212: notes (Notes), stanza_note 12
+page 212 → 213: notes (Notes), stanza_note 16
+page 213 → 214: notes (Notes), stanza_note 22
+page 214 → 215: notes (Notes), stanza_note 24
+page 215 → 216: notes (Notes)
+page 216 → 217: notes (Notes), stanza_note 4
+page 217 → 218: notes (Notes), stanza_note 7
+page 218 → 219: notes (Notes), stanza_note 10
+page 219 → 220: notes (Notes), stanza_note 13
+page 220 → 221: notes (Notes), stanza_note 18
+page 221 → 222: notes (Notes), stanza_note 22
+page 222 → 223: notes (Notes), stanza_note 24
+page 223 → 224: notes (Notes), stanza_note 29
+page 224 → 225: notes (Notes), stanza_note 31
+page 225 → 226: notes (Notes), stanza_note 34
+page 226 → 227: notes (Notes), stanza_note 36
+page 227 → 228: notes (Notes)
+page 228 → 229: notes (Notes), stanza_note 43
+page 229 → 230: notes (Notes)
+page 230 → 231: notes (Notes), stanza_note 50
+page 231 → 232: notes (Notes), stanza_note 54
+page 232 → 233: notes (Notes), stanza_note 59
+page 233 → 234: notes (Notes), stanza_note 62
+page 234 → 235: notes (Notes), stanza_note 66
+page 235 → 236: notes (Notes), stanza_note 71
+page 236 → 237: notes (Notes), stanza_note 76
+page 237 → 238: notes (Notes), stanza_note 79
+page 238 → 239: notes (Notes), stanza_note 82
+page 239 → 240: notes (Notes)
+page 240 → 241: notes (Notes), stanza_note 91
+page 241 → 242: notes (Notes), stanza_note 96
+page 242 → 243: notes (Notes), stanza_note 99
+page 243 → 244: notes (Notes)
+page 244 → 245: notes (Notes), stanza_note 5
+page 245 → 246: notes (Notes)
+page 246 → 247: notes (Notes), stanza_note 15
+page 247 → 248: notes (Notes), stanza_note 21
+page 248 → 249: notes (Notes), stanza_note 24
+page 249 → 250: notes (Notes), stanza_note (Additional Sl.)
+page 250 → 251: notes (Notes), stanza_note 34
+page 251 → 252: notes (Notes)
+
+Relations:
+note: kale-1913-page-002#r7 marker १ → kale-1913-page-002#u11
+note: kale-1913-page-002#r7 marker ३ → kale-1913-page-002#u13
+note: kale-1913-page-003#r5 marker १ → kale-1913-page-003#u8
+note: kale-1913-page-003#r5 marker २ → kale-1913-page-003#u9
+note: kale-1913-page-004#r3 marker * → kale-1913-page-004#u11
+note: kale-1913-page-004#r5 marker १ → kale-1913-page-004#u12
+note: kale-1913-page-004#r8 marker २ → kale-1913-page-004#u13
+note: kale-1913-page-004#r8 marker ३ → kale-1913-page-004#u14
+note: kale-1913-page-006#r3 marker १ → kale-1913-page-006#u8
+note: kale-1913-page-006#r5 marker ३ → kale-1913-page-006#u10
+note: kale-1913-page-007#r4 marker १ → kale-1913-page-007#u10
+note: kale-1913-page-007#r4 marker २ → kale-1913-page-007#u11
+note: kale-1913-page-007#r7 marker ३ → kale-1913-page-007#u12
+note: kale-1913-page-007#r7 marker ५ → kale-1913-page-007#u14
+note: kale-1913-page-008#r5 marker ३ → kale-1913-page-008#u13
+note: kale-1913-page-009#r9 marker ३ → kale-1913-page-009#u18
+note: kale-1913-page-009#r9 marker ४ → kale-1913-page-009#u19
+note: kale-1913-page-011#r4 marker १ → kale-1913-page-011#u10
+note: kale-1913-page-011#r4 marker २ → kale-1913-page-011#u11
+note: kale-1913-page-011#r6 marker ३ → kale-1913-page-011#u12
+note: kale-1913-page-011#r6 marker ४ → kale-1913-page-011#u13
+note: kale-1913-page-012#r3 marker १ → kale-1913-page-012#u12
+note: kale-1913-page-012#r6 marker २ → kale-1913-page-012#u13
+note: kale-1913-page-012#r6 marker ३ → kale-1913-page-012#u14
+note: kale-1913-page-012#r6 marker ४ → kale-1913-page-012#u15
+note: kale-1913-page-013#r8 marker १ → kale-1913-page-013#u14
+note: kale-1913-page-013#r10 marker २ → kale-1913-page-013#u15
+note: kale-1913-page-016#r5 marker १ → kale-1913-page-016#u12
+note: kale-1913-page-016#r5 marker २ → kale-1913-page-016#u13
+note: kale-1913-page-016#r8 marker ३ → kale-1913-page-016#u14
+note: kale-1913-page-016#r8 marker ४ → kale-1913-page-016#u15
+note: kale-1913-page-016#r8 marker ५ → kale-1913-page-016#u16
+note: kale-1913-page-017#r4 marker १ → kale-1913-page-017#u10
+note: kale-1913-page-017#r4 marker २ → kale-1913-page-017#u11
+note: kale-1913-page-017#r7 marker ४ → kale-1913-page-017#u13
+note: kale-1913-page-017#r7 marker ५ → kale-1913-page-017#u14
+note: kale-1913-page-017#r7 marker ६ → kale-1913-page-017#u15
+note: kale-1913-page-018#r4 marker १ → kale-1913-page-018#u15
+note: kale-1913-page-018#r11 marker २ → kale-1913-page-018#u16
+note: kale-1913-page-018#r11 marker ३ → kale-1913-page-018#u17
+note: kale-1913-page-020#r7 marker १ → kale-1913-page-020#u11
+note: kale-1913-page-020#r7 marker २ → kale-1913-page-020#u12
+note: kale-1913-page-020#r7 marker ३ → kale-1913-page-020#u13
+note: kale-1913-page-020#r7 marker ४ → kale-1913-page-020#u14
+note: kale-1913-page-020#r7 marker ५ → kale-1913-page-020#u15
+note: kale-1913-page-021#r8 marker २ → kale-1913-page-021#u13
+note: kale-1913-page-021#r8 marker ३ → kale-1913-page-021#u14
+note: kale-1913-page-021#r8 marker ४ → kale-1913-page-021#u15
+note: kale-1913-page-024#r7 marker ३ → kale-1913-page-024#u16
+note: kale-1913-page-024#r7 marker ४ → kale-1913-page-024#u17
+note: kale-1913-page-025#r5 marker १ → kale-1913-page-025#u15
+note: kale-1913-page-025#r8 marker २ → kale-1913-page-025#u16
+note: kale-1913-page-025#r11 marker ३ → kale-1913-page-025#u17
+note: kale-1913-page-026#r6 marker १ → kale-1913-page-026#u13
+note: kale-1913-page-026#r6 marker २ → kale-1913-page-026#u14
+note: kale-1913-page-026#r6 marker ३ → kale-1913-page-026#u15
+note: kale-1913-page-028#r4 marker १ → kale-1913-page-028#u14
+note: kale-1913-page-028#r4 marker २ → kale-1913-page-028#u15
+note: kale-1913-page-028#r7 marker ३ → kale-1913-page-028#u16
+note: kale-1913-page-028#r7 marker ४ → kale-1913-page-028#u17
+note: kale-1913-page-031#r5 marker १ → kale-1913-page-031#u15
+note: kale-1913-page-031#r5 marker २ → kale-1913-page-031#u16
+note: kale-1913-page-031#r8 marker ३ → kale-1913-page-031#u17
+note: kale-1913-page-031#r8 marker ४ → kale-1913-page-031#u18
+note: kale-1913-page-031#r8 marker ५ → kale-1913-page-031#u19
+note: kale-1913-page-031#r11 marker ६ → kale-1913-page-031#u20
+note: kale-1913-page-031#r11 marker ७ → kale-1913-page-031#u21
+note: kale-1913-page-031#r11 marker ८ → kale-1913-page-031#u22
+note: kale-1913-page-032#r5 marker * → kale-1913-page-032#u14
+note: kale-1913-page-033#r5 marker १ → kale-1913-page-033#u14
+note: kale-1913-page-033#r8 marker २ → kale-1913-page-033#u15
+note: kale-1913-page-033#r10 marker ३ → kale-1913-page-033#u16
+note: kale-1913-page-034#r6 marker १ → kale-1913-page-034#u13
+note: kale-1913-page-034#r6 marker २ → kale-1913-page-034#u14
+note: kale-1913-page-034#r9 marker ३ → kale-1913-page-034#u15
+note: kale-1913-page-035#r11 marker ३ → kale-1913-page-035#u18
+note: kale-1913-page-035#r11 marker ४ → kale-1913-page-035#u19
+note: kale-1913-page-037#r4 marker * → kale-1913-page-037#u25
+note: kale-1913-page-040#r5 marker १ → kale-1913-page-040#u14
+note: kale-1913-page-042#r5 marker १ → kale-1913-page-042#u12
+note: kale-1913-page-042#r5 marker २ → kale-1913-page-042#u13
+note: kale-1913-page-042#r8 marker ३ → kale-1913-page-042#u14
+note: kale-1913-page-042#r8 marker ४ → kale-1913-page-042#u15
+note: kale-1913-page-042#r8 marker ५ → kale-1913-page-042#u16
+note: kale-1913-page-043#r5 marker १ → kale-1913-page-043#u13
+note: kale-1913-page-043#r5 marker २ → kale-1913-page-043#u14
+note: kale-1913-page-044#r4 marker १ → kale-1913-page-044#u18
+note: kale-1913-page-044#r4 marker २ → kale-1913-page-044#u19
+note: kale-1913-page-044#r8 marker ३ → kale-1913-page-044#u20
+note: kale-1913-page-044#r12 marker ४ → kale-1913-page-044#u21
+note: kale-1913-page-045#r3 marker १ → kale-1913-page-045#u13
+note: kale-1913-page-045#r5 marker २ → kale-1913-page-045#u14
+note: kale-1913-page-047#r7 marker ३ → kale-1913-page-047#u19
+note: kale-1913-page-050#r6 marker ३ → kale-1913-page-050#u17
+note: kale-1913-page-053#r9 marker २ → kale-1913-page-053#u15
+note: kale-1913-page-053#r9 marker ३ → kale-1913-page-053#u16
+note: kale-1913-page-053#r9 marker ४ → kale-1913-page-053#u17
+note: kale-1913-page-053#r9 marker ५ → kale-1913-page-053#u18
+note: kale-1913-page-057#r5 marker १ → kale-1913-page-057#u12
+note: kale-1913-page-057#r5 marker २ → kale-1913-page-057#u13
+note: kale-1913-page-058#r8 marker २ → kale-1913-page-058#u13
+note: kale-1913-page-058#r8 marker ३ → kale-1913-page-058#u14
+note: kale-1913-page-063#r8 marker १ → kale-1913-page-063#u11
+note: kale-1913-page-063#r8 marker ३ → kale-1913-page-063#u13
+note: kale-1913-page-065#r8 marker ३ → kale-1913-page-065#u13
+note: kale-1913-page-066#r5 marker १ → kale-1913-page-066#u12
+note: kale-1913-page-066#r5 marker २ → kale-1913-page-066#u13
+note: kale-1913-page-066#r5 marker ३ → kale-1913-page-066#u14
+note: kale-1913-page-066#r5 marker ४ → kale-1913-page-066#u15
+note: kale-1913-page-066#r8 marker ५ → kale-1913-page-066#u16
+note: kale-1913-page-066#r8 marker ६ → kale-1913-page-066#u17
+note: kale-1913-page-066#r8 marker ७ → kale-1913-page-066#u18
+note: kale-1913-page-069#r4 marker १ → kale-1913-page-069#u9
+note: kale-1913-page-069#r4 marker २ → kale-1913-page-069#u10
+note: kale-1913-page-069#r4 marker ३ → kale-1913-page-069#u11
+note: kale-1913-page-069#r7 marker ४ → kale-1913-page-069#u12
+note: kale-1913-page-070#r6 marker १ → kale-1913-page-070#u9
+note: kale-1913-page-070#r6 marker २ → kale-1913-page-070#u10
+note: kale-1913-page-070#r6 marker ३ → kale-1913-page-070#u11
+note: kale-1913-page-071#r5 marker १ → kale-1913-page-071#u12
+note: kale-1913-page-071#r5 marker २ → kale-1913-page-071#u13
+note: kale-1913-page-071#r5 marker ३ → kale-1913-page-071#u14
+note: kale-1913-page-071#r5 marker ४ → kale-1913-page-071#u15
+note: kale-1913-page-071#r5 marker ५ → kale-1913-page-071#u16
+note: kale-1913-page-071#r8 marker ७ → kale-1913-page-071#u18
+note: kale-1913-page-073#r4 marker १ → kale-1913-page-073#u10
+note: kale-1913-page-073#r4 marker २ → kale-1913-page-073#u11
+note: kale-1913-page-074#r6 marker ३ → kale-1913-page-074#u14
+note: kale-1913-page-074#r6 marker ४ → kale-1913-page-074#u15
+note: kale-1913-page-074#r6 marker ५ → kale-1913-page-074#u16
+note: kale-1913-page-078#r4 marker १ → kale-1913-page-078#u10
+note: kale-1913-page-078#r4 marker २ → kale-1913-page-078#u11
+note: kale-1913-page-078#r6 marker ३ → kale-1913-page-078#u12
+note: kale-1913-page-078#r6 marker ४ → kale-1913-page-078#u13
+note: kale-1913-page-078#r6 marker ५ → kale-1913-page-078#u14
+note: kale-1913-page-079#r4 marker १ → kale-1913-page-079#u10
+note: kale-1913-page-079#r4 marker २ → kale-1913-page-079#u11
+note: kale-1913-page-079#r4 marker ३ → kale-1913-page-079#u12
+note: kale-1913-page-079#r7 marker ४ → kale-1913-page-079#u13
+note: kale-1913-page-082#r4 marker १ → kale-1913-page-082#u10
+note: kale-1913-page-082#r4 marker २ → kale-1913-page-082#u11
+note: kale-1913-page-082#r7 marker ३ → kale-1913-page-082#u12
+note: kale-1913-page-082#r7 marker ४ → kale-1913-page-082#u13
+note: kale-1913-page-084#r6 marker १ → kale-1913-page-084#u9
+note: kale-1913-page-084#r6 marker २ → kale-1913-page-084#u10
+note: kale-1913-page-084#r6 marker ३ → kale-1913-page-084#u11
+note: kale-1913-page-084#r6 marker ४ → kale-1913-page-084#u12
+note: kale-1913-page-087#r6 marker २ → kale-1913-page-087#u13
+note: kale-1913-page-087#r6 marker ३ → kale-1913-page-087#u14
+note: kale-1913-page-087#r9 marker ४ → kale-1913-page-087#u15
+note: kale-1913-page-087#r9 marker ५ → kale-1913-page-087#u16
+note: kale-1913-page-087#r9 marker ६ → kale-1913-page-087#u17
+note: kale-1913-page-087#r9 marker ७ → kale-1913-page-087#u18
+note: kale-1913-page-087#r9 marker ८ → kale-1913-page-087#u19
+note: kale-1913-page-088#r6 marker २ → kale-1913-page-088#u13
+note: kale-1913-page-088#r9 marker ३ → kale-1913-page-088#u14
+note: kale-1913-page-088#r9 marker ४ → kale-1913-page-088#u15
+note: kale-1913-page-094#r5 marker १ → kale-1913-page-094#u8
+note: kale-1913-page-098#r4 marker १ → kale-1913-page-098#u10
+note: kale-1913-page-098#r4 marker २ → kale-1913-page-098#u11
+note: kale-1913-page-098#r4 marker ३ → kale-1913-page-098#u12
+note: kale-1913-page-098#r7 marker ५ → kale-1913-page-098#u14
+note: kale-1913-page-098#r7 marker ६ → kale-1913-page-098#u15
+note: kale-1913-page-102#r4 marker १ → kale-1913-page-102#u13
+note: kale-1913-page-102#r6 marker २ → kale-1913-page-102#u14
+note: kale-1913-page-102#r6 marker ४ → kale-1913-page-102#u16
+note: kale-1913-page-102#r6 marker ५ → kale-1913-page-102#u17
+note: kale-1913-page-103#r5 marker १ → kale-1913-page-103#u11
+note: kale-1913-page-103#r5 marker २ → kale-1913-page-103#u12
+note: kale-1913-page-103#r7 marker ३ → kale-1913-page-103#u13
+note: kale-1913-page-104#r5 marker १ → kale-1913-page-104#u11
+note: kale-1913-page-104#r7 marker २ → kale-1913-page-104#u12
+note: kale-1913-page-104#r7 marker ३ → kale-1913-page-104#u13
+note: kale-1913-page-106#r4 marker २ → kale-1913-page-106#u14
+note: kale-1913-page-106#r4 marker ३ → kale-1913-page-106#u15
+note: kale-1913-page-107#r6 marker १ → kale-1913-page-107#u15
+note: kale-1913-page-107#r6 marker २ → kale-1913-page-107#u16
+note: kale-1913-page-107#r10 marker ३ → kale-1913-page-107#u17
+note: kale-1913-page-107#r10 marker ४ → kale-1913-page-107#u18
+note: kale-1913-page-111#r5 marker ४ → kale-1913-page-111#u17
+note: kale-1913-page-113#r3 marker १ → kale-1913-page-113#u11
+note: kale-1913-page-113#r3 marker २ → kale-1913-page-113#u12
+note: kale-1913-page-113#r3 marker ३ → kale-1913-page-113#u13
+note: kale-1913-page-113#r3 marker ४ → kale-1913-page-113#u14
+note: kale-1913-page-113#r3 marker ५ → kale-1913-page-113#u15
+note: kale-1913-page-146#r4 marker * → kale-1913-page-146#u7
+note: kale-1913-page-166#r2 marker * → kale-1913-page-166#u4
+note: kale-1913-page-168#r2 marker * → kale-1913-page-168#u3
+note: kale-1913-page-207#r2 marker * → kale-1913-page-207#u4

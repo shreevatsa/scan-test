@@ -1,0 +1,27 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "ryder-gita-1929",
+ "title": "Ryder (1929), The Bhagavad-Gita, translated from the Sanskrit",
+ "description": "An English verse translation, scanned as two-page spreads: each image holds a left and a right page, each with its own running header and page number. A translator's introduction, in numbered sections that quote stanzas of the poem, and a table of contents come first. Then come the eighteen cantos. Each opens with its heading between dotted rules and an italic summary, and continues as rhymed stanzas. A speaker line such as THE BLESSÈD ONE SAID: introduces a speech, and short italic topic headings at the right mark its subjects.",
+ "languages": ["en"],
+ "flows": {
+  "main": "The introduction, the contents and the cantos, in reading order."
+ },
+ "types": {
+  "introduction": {"description": "The translator's introduction, in sections numbered with Roman numerals.", "contains": ["heading", "paragraph", "verse", "signoff"], "flow": "main"},
+  "contents": {"description": "The table of contents.", "contains": ["heading", "contents_entry"], "flow": "main"},
+  "canto": {"description": "One canto, such as CANTO XIII, with its summary, speaker lines, topic headings and stanzas.", "contains": ["heading", "argument", "speaker", "topic", "verse"], "flow": "main", "numbered": true},
+  "heading": {"description": "A heading: a canto's heading, such as CANTO XIII, between dotted rules; the title of the introduction or of the contents; or a section number of the introduction, such as V.", "region": "heading"},
+  "argument": {"description": "The italic summary of a canto below its heading, such as The body, called the field; the soul, called the knower of the field….", "region": "paragraph", "lang": "en"},
+  "speaker": {"description": "A speaker line in capitals, such as THE BLESSÈD ONE SAID: or ARJUNA SAID:.", "region": "heading", "lang": "en"},
+  "topic": {"description": "A short italic heading set to the right between stanzas, naming the subject of what follows, such as The constituents of the field. It can take two lines.", "region": "heading", "lang": "en"},
+  "verse": {"description": "One rhymed stanza, usually of four lines and sometimes of six, its lines set alternately flush and indented, with the stanza number in parentheses at the right margin, such as (5) or (35), when printed (every fifth stanza). A stanza can begin at the foot of the left page and end at the top of the right page, or run on to the next spread. In the introduction, a quoted stanza ends with its reference, such as (xiv. 5).", "region": "verse", "lang": "en"},
+  "paragraph": {"description": "A prose paragraph of the introduction, beginning with an indented line.", "region": "paragraph", "lang": "en"},
+  "contents_entry": {"description": "One line of the table of contents, with its page number.", "region": "list_item"},
+  "signoff": {"description": "The translator's name, place and date at the end of the introduction, if printed. One region for all its lines.", "region": "other"},
+  "running_header": {"description": "The italic running title of one page of the spread, above a dotted rule: The Bhagavad-Gita on the left page and the canto's name, such as The Thirteenth Canto, or Translator's Introduction on the right page.", "role": "furniture", "region": "running_header"},
+  "page_number": {"description": "The page number of one page of the spread, centered at its foot in brackets, such as ·[ 98 ]·; Roman numerals in the introduction.", "role": "furniture", "region": "page_number"}
+ },
+ "conventions": ["Transcribe as printed, in Unicode NFC, keeping the accent in words such as blessèd and learnèd, and each stanza's line breaks."]
+}

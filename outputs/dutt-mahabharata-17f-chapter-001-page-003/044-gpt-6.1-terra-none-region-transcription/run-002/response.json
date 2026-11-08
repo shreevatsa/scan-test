@@ -1,0 +1,1777 @@
+{
+  "id": "resp_08385894b2a18d0c016aecba8a92c887d18c81b70b1e4f6a2a",
+  "object": "response",
+  "created_at": 1793899146,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793899195,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32768,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_08385894b2a18d0c016aecba8d2af887d188f655caba2e00d5",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":{\"r3\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0935\u093f\u092a\u094d\u0930\u0938\u0938\u094d\u092f\u0947\u0935 \u092e\u0939\u0940 \u0935\u093e\u0915\u094d \u091a\u0948\u0935\u093e\u0938\u0902\u0938\u094d\u0915\u0943\u0924\u093e \u0924\u0925\u093e\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0906\u0938\u0941\u0930\u0940\u0935 \u092f\u0925\u093e \u0938\u0947\u0928\u093e \u0928\u093f\u0917\u0943\u0939\u0940\u0924\u0947 \u0928\u0943\u092a\u0947 \u092c\u0932\u094c\u0965\u0968\u096c\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r4\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"On the fall of that foremost of the Bharata\",\"end\":\"space\"},{\"n\":2,\"text\":\"race, the army of the Kurus resembled the\",\"end\":\"space\"},{\"n\":3,\"text\":\"heavenly dome stripped of the stars or the sky\",\"end\":\"space\"},{\"n\":4,\"text\":\"deprived of the atmosphere; or the earth with\",\"end\":\"space\"},{\"n\":5,\"text\":\"her crops blighted; or a discourse teeming with\",\"end\":\"space\"},{\"n\":6,\"text\":\"unrefined expressions; or the army of the\",\"end\":\"space\"},{\"n\":7,\"text\":\"Asuras when in the days of yore, Bali had been\",\"end\":\"space\"},{\"n\":8,\"text\":\"(thoroughly) humiliated.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r5\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0935\u093f\u0927\u0935\u0947\u0935 \u0935\u0930\u093e\u0930\u094b\u0939\u093e \u0936\u0941\u0937\u094d\u0915\u0924\u094b\u092f\u0947\u0935 \u0928\u093f\u092e\u094d\u0928\u0917\u093e\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0935\u0943\u0915\u0948\u0930\u093f\u0935 \u0935\u0928\u0947 \u0930\u0941\u0926\u094d\u0927\u093e \u092a\u0943\u0937\u0924\u0940 \u0939\u0924\u092f\u0942\u0925\u092a\u093e\u0965\u0968\u096d\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r6\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0936\u0930\u092d\u093e\u0939\u0924\u0938\u093f\u0902\u0939\u0947\u0935 \u092e\u0939\u0924\u0940 \u0917\u093f\u0930\u093f\u0915\u0928\u094d\u0926\u0930\u093e\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u092d\u093e\u0930\u0924\u0940 \u092d\u0930\u0924\u0936\u094d\u0930\u0947\u0937\u094d\u0920\u0947 \u092a\u0924\u093f\u0924\u0947 \u091c\u093e\u0939\u094d\u0928\u0935\u0940\u0938\u0941\u0924\u0947\u0965\u0968\u096e\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r7\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"Or a charming lady deprived of her lord; a\",\"end\":\"space\"},{\"n\":2,\"text\":\"stream the waters of which had been dried up;\",\"end\":\"space\"},{\"n\":3,\"text\":\"or a doe deprived of her mate, surrounded by\",\"end\":\"space\"},{\"n\":4,\"text\":\"wolves in the forest or the wide, extended,\",\"end\":\"space\"},{\"n\":5,\"text\":\"mountain-cave having its lion slain by the\",\"end\":\"space\"},{\"n\":6,\"text\":\"fabulous Sarabha. Or the slaughter of Janhavi\u2019s\",\"end\":\"space\"},{\"n\":7,\"text\":\"son, O foremost of the Bharata race, the army\",\"end\":\"space\"},{\"n\":8,\"text\":\"of the Bharatas.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r8\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0935\u093f\u0936\u094d\u0935\u0917\u094d\u0935\u093e\u0924\u093e\u0939\u0924\u093e \u0930\u0941\u0917\u094d\u0923\u093e \u0928\u094c\u0930\u093f\u0935\u093e\u0938\u0940\u0928\u094d\u092e\u0939\u093e\u0930\u094d\u0923\u0935\u0947\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u092c\u0932\u093f\u092d\u093f\u0903 \u092a\u093e\u0923\u094d\u0921\u0935\u0948\u0930\u094d\u0935\u0940\u0930\u0948\u0930\u094d\u0932\u092c\u094d\u0927\u0932\u0915\u094d\u0937\u0948\u0930\u094d\u092d\u0943\u0936\u093e\u0930\u094d\u0926\u093f\u0924\u093e\u0965\u0968\u096f\u0965\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"Some conjuncts in the second line are difficult to distinguish.\"},\"r9\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"Resembled a tiny bark thrown up and down\",\"end\":\"space\"},{\"n\":2,\"text\":\"on the bosom of the mighty main, driven by the\",\"end\":\"space\"},{\"n\":3,\"text\":\"gale rushing from all sides. It was then greatly\",\"end\":\"space\"},{\"n\":4,\"text\":\"harassed by the powerful Pandavas heroes of\",\"end\":\"space\"},{\"n\":5,\"text\":\"infallible aims.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r10\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0938\u093e \u0924\u0926\u093e\u093d\u093d\u0938\u0940\u0926\u094d \u092d\u0943\u0936\u0902 \u0938\u0947\u0928\u093e \u0935\u094d\u092f\u093e\u0915\u0941\u0932\u093e\u0936\u094d\u0935\u0930\u0925\u0926\u094d\u0935\u093f\u092a\u093e\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0935\u093f\u092a\u094d\u0930\u092d\u0942\u092f\u093f\u0937\u094d\u0920\u0928\u0930\u093e \u0915\u0943\u092a\u0923\u093e \u0927\u094d\u0935\u0938\u094d\u0924\u092e\u093e\u0928\u0938\u093e\u0965\u0969\u0966\u0965\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"The compound at the beginning of the second line is difficult to read.\"},\"r11\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"Then that host, with its elephants, horses\",\"end\":\"space\"},{\"n\":2,\"text\":\"and car-warriors, was much distressed and\",\"end\":\"space\"},{\"n\":3,\"text\":\"exceedingly jeopardised and rendered helpless\",\"end\":\"space\"},{\"n\":4,\"text\":\"and terror-stricken.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r12\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0924\u0938\u094d\u092f\u093e\u0902 \u0924\u094d\u0930\u0938\u094d\u0924\u093e \u0928\u0943\u092a\u0924\u092f\u0903 \u0938\u0948\u0928\u093f\u0915\u093e\u0936\u094d\u091a \u092a\u0943\u0925\u0917\u094d\u0935\u093f\u0927\u093e\u0903\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u092a\u093e\u0924\u093e\u0932 \u0907\u0935 \u092e\u091c\u094d\u091c\u0928\u094d\u0924\u094b \u0939\u0940\u0928\u093e \u0926\u0947\u0935\u0935\u094d\u0930\u0924\u0947\u0928 \u0924\u0947\u0965\u0969\u0967\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r13\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"Then, in that army, bereft of Devavrata, the\",\"end\":\"space\"},{\"n\":2,\"text\":\"kings and the (common) soldiers, individually\",\"end\":\"space\"},{\"n\":3,\"text\":\"struck with panic, seemed to be sinking into the\",\"end\":\"space\"},{\"n\":4,\"text\":\"nethermost regions.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r14\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0915\u0930\u094d\u0923\u0902 \u0939\u093f \u0915\u0941\u0930\u0935\u094b\u093d\u0938\u094d\u092e\u093e\u0930\u094d\u0937\u0941\u0903 \u0938 \u0939\u093f \u0926\u0947\u0935\u0935\u094d\u0930\u0924\u094b\u092a\u092e\u0903\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0938\u0930\u094d\u0935\u0936\u0938\u094d\u0924\u094d\u0930\u092d\u0943\u0924\u093e\u0902 \u0936\u094d\u0930\u0947\u0937\u094d\u0920\u0902 \u0930\u094b\u091a\u092e\u093e\u0928\u092e\u093f\u0935\u093e\u0924\u093f\u0925\u093f\u092e\u094d\u0965\u0969\u0968\u0965\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"The verb in the first line is not entirely clear.\"},\"r15\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u092c\u0928\u094d\u0927\u0941\u092e\u093e\u092a\u0926\u094d\u0917\u0924\u0938\u094d\u092f\u0947\u0935 \u0924\u092e\u0947\u0935\u094b\u092a\u093e\u0917\u092e\u0928\u094d\u092e\u0928\u0903\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u091a\u0941\u0915\u094d\u0930\u0941\u0936\u0941\u0903 \u0915\u0930\u094d\u0923 \u0915\u0930\u094d\u0923\u0947\u0924\u093f \u0924\u0924\u094d\u0930 \u092d\u093e\u0930\u0924 \u092a\u093e\u0930\u094d\u0925\u093f\u0935\u093e\u0903\u0965\u0969\u0969\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r16\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"Thereafter the Kauravas remembered\",\"end\":\"space\"},{\"n\":2,\"text\":\"Karna, who was equal to Devavrata himself\",\"end\":\"space\"},{\"n\":3,\"text\":\"and who was the foremost of all wielders of\",\"end\":\"space\"},{\"n\":4,\"text\":\"weapons and resplendent like a guest. Then\",\"end\":\"space\"},{\"n\":5,\"text\":\"like the heart of a distressed person looking for\",\"end\":\"space\"},{\"n\":6,\"text\":\"a friend, their hearts turned towards him\",\"end\":\"space\"},{\"n\":7,\"text\":\"(Karna); and, O Bharata, the kings then broke\",\"end\":\"space\"},{\"n\":8,\"text\":\"out into exclamations saying, \\\"O Karna, O\",\"end\":\"space\"},{\"n\":9,\"text\":\"Karna.\u201d\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r17\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0930\u093e\u0927\u0947\u092f\u0902 \u0939\u093f\u0924\u092e\u0938\u094d\u092e\u093e\u0915\u0902 \u0938\u0942\u0924\u092a\u0941\u0924\u094d\u0930\u0902 \u0924\u0928\u0941\u0924\u094d\u092f\u091c\u092e\u094d\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0938 \u0939\u093f \u0928\u093e\u092f\u0941\u0927\u094d\u092f\u0924 \u0924\u0926\u093e \u0926\u0936\u093e\u0939\u093e\u0928\u093f \u092e\u0939\u093e\u092f\u0936\u093e\u0903\u0965\u0969\u096a\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r18\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0938\u093e\u092e\u093e\u0924\u094d\u092f\u092c\u0928\u094d\u0927\u0941\u0903 \u0915\u0930\u094d\u0923\u094b \u0935\u0948 \u0924\u092e\u093e\u0928\u092f\u0924 \u092e\u093e \u091a\u093f\u0930\u092e\u094d\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u092d\u0940\u0937\u094d\u092e\u0947\u0923 \u0939\u093f \u092e\u0939\u093e\u092c\u093e\u0939\u0941\u0903 \u0938\u0930\u094d\u0935\u0915\u094d\u0937\u0924\u094d\u0930\u0938\u094d\u092f \u092a\u0936\u094d\u092f\u0924\u0903\u0965\u0969\u096b\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r19\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0930\u0925\u0947\u0937\u0941 \u0917\u0923\u094d\u092f\u092e\u093e\u0928\u0947\u0937\u0941 \u092c\u0932\u0935\u093f\u0915\u094d\u0930\u092e\u0936\u093e\u0932\u093f\u0937\u0941\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0938\u0902\u0916\u094d\u092f\u093e\u0924\u094b\u093d\u0930\u094d\u0927\u0930\u0925\u0903 \u0915\u0930\u094d\u0923\u094b \u0926\u094d\u0935\u093f\u0917\u0941\u0923\u0903 \u0938 \u0928\u0930\u0930\u094d\u0937\u092d\u0903\u0965\u0969\u096c\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r20\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"That son of Radha, that benefactor of ours,\",\"end\":\"space\"},{\"n\":2,\"text\":\"that progeny of Suta, he that will sacrifice his\",\"end\":\"space\"},{\"n\":3,\"text\":\"life in battle, that one of illustrious renown\",\"end\":\"space\"},{\"n\":4,\"text\":\"with his followers and friends, has refrained\",\"end\":\"space\"},{\"n\":5,\"text\":\"from fighting these ten days; summon him\",\"end\":\"space\"},{\"n\":6,\"text\":\"without delay. That foremost of men, that hero\",\"end\":\"space\"},{\"n\":7,\"text\":\"of mighty arms, Karna, had been reckoned by\",\"end\":\"space\"},{\"n\":8,\"text\":\"Bhishma as only an Ardharatha, in the\",\"end\":\"space\"},{\"n\":9,\"text\":\"presence of all the Kshatriyas, during the tale\",\"end\":\"space\"},{\"n\":10,\"text\":\"of car-warriors of valour and prowess, in spite\",\"end\":\"space\"},{\"n\":11,\"text\":\"of his being equal to two Maharathas.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r21\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0930\u0925\u093e\u0924\u093f\u0930\u0925\u0938\u0902\u0916\u094d\u092f\u093e\u092f\u093e\u0902 \u092f\u094b\u093d\u0917\u094d\u0930\u0923\u0940\u0903 \u0936\u0942\u0930\u0938\u092e\u094d\u092e\u0924\u0903\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0938\u093e\u0938\u0941\u0930\u093e\u0928\u092a\u093f \u0926\u0947\u0935\u0947\u0936\u093e\u0928\u094d \u0930\u0923\u0947 \u092f\u094b \u092f\u094b\u0926\u094d\u0927\u0941\u092e\u0941\u0924\u094d\u0938\u0939\u0947\u0924\u094d\u0965\u0969\u096d\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r22\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"Indeed in that enumeration of Rathas and\",\"end\":\"space\"},{\"n\":2,\"text\":\"Atirathas, Karna was thus reckoned-Karna who\",\"end\":\"space\"},{\"n\":3,\"text\":\"is the foremost (of all fighters), who is held in\",\"end\":\"space\"},{\"n\":4,\"text\":\"high respect by the heroes and who would dare\",\"end\":\"space\"},{\"n\":5,\"text\":\"give battle even to Yama, Kubera, Varuna and\",\"end\":\"space\"},{\"n\":6,\"text\":\"Indra.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r23\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0938 \u0924\u0941 \u0924\u0947\u0928\u0948\u0935 \u0915\u094b\u092a\u0947\u0928 \u0930\u093e\u091c\u0928\u094d \u0917\u093e\u0919\u094d\u0917\u0947\u092f\u092e\u0941\u0915\u094d\u0924\u0935\u093e\u0928\u094d\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0924\u094d\u0935\u092f\u093f \u091c\u0940\u0935\u0924\u093f \u0915\u094c\u0930\u0935\u094d\u092f \u0928\u093e\u0939\u0902 \u092f\u094b\u0924\u094d\u0938\u094d\u092f\u0947 \u0915\u0926\u093e\u091a\u0928\u0965\u0969\u096e\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r24\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0924\u094d\u0935\u092f\u093e \u0924\u0941 \u092a\u093e\u0923\u094d\u0921\u0935\u0947\u092f\u0947\u0937\u0941 \u0928\u093f\u0939\u0924\u0947\u0937\u0941 \u092e\u0939\u093e\u092e\u0943\u0927\u0947\u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0926\u0941\u0930\u094d\u092f\u094b\u0927\u0928\u092e\u0928\u0941\u091c\u094d\u091e\u093e\u092a\u094d\u092f \u0935\u0928\u0902 \u092f\u093e\u0938\u094d\u092f\u093e\u092e\u093f \u0915\u094c\u0930\u0935\u0965\u0969\u096f\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r25\":{\"type\":\"translation\",\"lines\":[{\"n\":1,\"text\":\"Out of wrath (excited by this classification\",\"end\":\"space\"},{\"n\":2,\"text\":\"of himself) he had thus addressed, O king, the\",\"end\":\"space\"},{\"n\":3,\"text\":\"son of Ganga - \u2018O Kaurava, I will not fight so\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r1\":{\"type\":\"running_header\",\"lines\":[{\"n\":1,\"text\":\"DRONA PARVA\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r2\":{\"type\":\"page_number\",\"lines\":[{\"n\":1,\"text\":\"3\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null}},\"units\":[{\"id\":\"u1\",\"type\":\"chapter\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":true,\"children\":[\"u2\",\"u6\",\"u11\",\"u15\",\"u19\",\"u23\",\"u28\",\"u34\",\"u38\"]},{\"id\":\"u2\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":false,\"children\":[\"u3\",\"u5\"]},{\"id\":\"u3\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":false,\"children\":[\"u4\"]},{\"id\":\"u4\",\"type\":\"verse\",\"number\":\"26\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r3\"]},{\"id\":\"u5\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r4\"]},{\"id\":\"u6\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u7\",\"u10\"]},{\"id\":\"u7\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u8\",\"u9\"]},{\"id\":\"u8\",\"type\":\"verse\",\"number\":\"27\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r5\"]},{\"id\":\"u9\",\"type\":\"verse\",\"number\":\"28\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r6\"]},{\"id\":\"u10\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r7\"]},{\"id\":\"u11\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u12\",\"u14\"]},{\"id\":\"u12\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u13\"]},{\"id\":\"u13\",\"type\":\"verse\",\"number\":\"29\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r8\"]},{\"id\":\"u14\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r9\"]},{\"id\":\"u15\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u16\",\"u18\"]},{\"id\":\"u16\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u17\"]},{\"id\":\"u17\",\"type\":\"verse\",\"number\":\"30\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r10\"]},{\"id\":\"u18\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r11\"]},{\"id\":\"u19\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u20\",\"u22\"]},{\"id\":\"u20\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u21\"]},{\"id\":\"u21\",\"type\":\"verse\",\"number\":\"31\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r12\"]},{\"id\":\"u22\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r13\"]},{\"id\":\"u23\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u24\",\"u27\"]},{\"id\":\"u24\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u25\",\"u26\"]},{\"id\":\"u25\",\"type\":\"verse\",\"number\":\"32\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r14\"]},{\"id\":\"u26\",\"type\":\"verse\",\"number\":\"33\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r15\"]},{\"id\":\"u27\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r16\"]},{\"id\":\"u28\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u29\",\"u33\"]},{\"id\":\"u29\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u30\",\"u31\",\"u32\"]},{\"id\":\"u30\",\"type\":\"verse\",\"number\":\"34\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r17\"]},{\"id\":\"u31\",\"type\":\"verse\",\"number\":\"35\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r18\"]},{\"id\":\"u32\",\"type\":\"verse\",\"number\":\"36\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r19\"]},{\"id\":\"u33\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r20\"]},{\"id\":\"u34\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u35\",\"u37\"]},{\"id\":\"u35\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u36\"]},{\"id\":\"u36\",\"type\":\"verse\",\"number\":\"37\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r21\"]},{\"id\":\"u37\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r22\"]},{\"id\":\"u38\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":true,\"children\":[\"u39\",\"u42\"]},{\"id\":\"u39\",\"type\":\"verse_set\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u40\",\"u41\"]},{\"id\":\"u40\",\"type\":\"verse\",\"number\":\"38\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r23\"]},{\"id\":\"u41\",\"type\":\"verse\",\"number\":\"39\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r24\"]},{\"id\":\"u42\",\"type\":\"translation\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":true,\"children\":[\"r25\"]}],\"flows\":[{\"flow\":\"main\",\"units\":[\"u1\"]}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_transcription",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions",
+          "units",
+          "flows"
+        ],
+        "properties": {
+          "regions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r3",
+              "r4",
+              "r5",
+              "r6",
+              "r7",
+              "r8",
+              "r9",
+              "r10",
+              "r11",
+              "r12",
+              "r13",
+              "r14",
+              "r15",
+              "r16",
+              "r17",
+              "r18",
+              "r19",
+              "r20",
+              "r21",
+              "r22",
+              "r23",
+              "r24",
+              "r25",
+              "r1",
+              "r2"
+            ],
+            "properties": {
+              "r3": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r4": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 8,
+                    "maxItems": 8,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r5": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r6": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r7": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 8,
+                    "maxItems": 8,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r8": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r9": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r10": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r11": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r12": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r13": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r14": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r15": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r16": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 9,
+                    "maxItems": 9,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r17": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r18": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r19": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r20": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 11,
+                    "maxItems": 11,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r21": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r22": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 6,
+                    "maxItems": 6,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r23": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r24": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r25": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r1": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r2": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "speaker",
+                      "verse",
+                      "translation",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "type",
+                "number",
+                "label",
+                "open_start",
+                "open_end",
+                "children"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "chapter",
+                    "heading",
+                    "group",
+                    "speaker",
+                    "verse_set",
+                    "verse",
+                    "translation"
+                  ]
+                },
+                "number": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "open_start": {
+                  "type": "boolean"
+                },
+                "open_end": {
+                  "type": "boolean"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "flows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "flow",
+                "units"
+              ],
+              "properties": {
+                "flow": {
+                  "enum": [
+                    "main"
+                  ]
+                },
+                "units": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 17211,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 17208
+    },
+    "output_tokens": 4175,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 21386
+  },
+  "user": null,
+  "metadata": {}
+}

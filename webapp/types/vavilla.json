@@ -1,0 +1,25 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "vavilla",
+ "title": "Bhartṛhari's three śatakas (भर्तृहरिसुभाषितम्) with Rāmacandra Budhendra's Sanskrit commentary, Vavilla edition",
+ "description": "Sanskrit only. Each stanza, in larger type with its number at the right margin, is followed by its commentary, which begins व्या.— and often quotes verses from other works, set apart on lines of their own. The name of the metre can follow the commentary on a line of its own. The stanzas are grouped in sections (paddhatis) with a heading such as ॥ कामिनीगर्हणम् ॥, and a section can end with a closing line in small type, such as इति शृङ्गारशतके … सम्पूर्णम् ॥.",
+ "languages": ["sa-Deva"],
+ "flows": {
+  "main": "The śatakas in reading order."
+ },
+ "types": {
+  "shataka": {"description": "One of the three śatakas, with its sections.", "contains": ["heading", "section"], "flow": "main"},
+  "section": {"description": "A section (paddhati) of a śataka: its heading, its stanzas with their commentary, and its closing line if printed.", "contains": ["heading", "group", "colophon"]},
+  "group": {"description": "One stanza with its commentary and its metre line. The app can show each group on its own.", "contains": ["verse", "commentary", "metre"], "numbered": true},
+  "heading": {"description": "A heading: the title of a śataka, or of a section, such as ॥ कामिनीगर्हणम् ॥.", "region": "heading"},
+  "verse": {"description": "One stanza of Bhartṛhari in the larger type, with its number in Devanagari digits at the right margin of its last line, such as २४. A stanza can begin at the foot of one page and end at the top of the next.", "region": "verse", "lang": "sa-Deva", "numbered": true},
+  "commentary": {"description": "One paragraph of the commentary on the stanza, in smaller type. The first begins व्या.—. The commentary often quotes verses after words such as तदुक्तम्.—; the quoted lines are a quotation, and the commentary's text before and after them, even a short line such as कामशास्त्रोक्तास्तु—, belongs to the commentary. A metre name printed at the end of its last line, such as आर्याभेदः ॥, belongs to the commentary.", "region": "paragraph", "lang": "sa-Deva", "contains": ["quotation"]},
+  "quotation": {"description": "Lines of verse quoted in the commentary and set apart, indented, usually in quotation marks and followed by इति.", "region": "verse", "lang": "sa-Deva"},
+  "metre": {"description": "The name of the stanza's metre on a line of its own after the commentary, such as वसन्ततिलकावृत्तम् - लक्षणं तूक्तम् ॥.", "region": "other", "lang": "sa-Deva"},
+  "colophon": {"description": "The closing line of a section, in small type and centered, such as इति शृङ्गारशतके पञ्चद्वयानिरूपणं सम्पूर्णम् ॥.", "region": "other", "lang": "sa-Deva"},
+  "running_header": {"description": "The running title: the śataka's name, such as नीतिशतके, on left pages, and the section's name, such as सुविरक्तपद्धतिः, on right pages.", "role": "furniture", "region": "running_header"},
+  "page_number": {"description": "The page number in Devanagari digits at the outer corner of the head.", "role": "furniture", "region": "page_number"}
+ },
+ "conventions": ["Transcribe Devanagari as printed, in Unicode NFC, with the printed digits, dandas, avagrahas and the small flower-shaped marks that introduce grammatical rules in the commentary."]
+}

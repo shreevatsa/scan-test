@@ -1,0 +1,189 @@
+{
+  "id": "resp_0dbdc9c9f7d6c61c016aed4d9a39ac87d083d4114b3fe17a68",
+  "object": "response",
+  "created_at": 1793936794,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793936812,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32768,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_0dbdc9c9f7d6c61c016aed4d9cf7c487d097c7e302b71f1697",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"items\":[{\"id\":\"w1\",\"spelling\":\"\u0915 \u0930\u093f \u0937\u094d\u092f \u0924\u093f\",\"text\":\"\u0915\u0930\u093f\u0937\u094d\u092f\u0924\u093f\",\"verdict\":\"A\"},{\"id\":\"w2\",\"spelling\":\"\u0926\u0942 \u0924\",\"text\":\"\u0926\u0942\u0924\",\"verdict\":\"A\"},{\"id\":\"w3\",\"spelling\":\"\u0915 \u0926\u093e \u091a\u093f \u0926\u094d\",\"text\":\"\u0915\u0926\u093e\u091a\u093f\u0926\u094d\",\"verdict\":\"A\"},{\"id\":\"w4\",\"spelling\":\"\u0935\u093f \u0930\u0942 \u092a \u092e\u094d \u0905 \u092d\u093f \u0939\u093f \u0924 \u092e\u094d \u0964\",\"text\":\"\u0935\u093f\u0930\u0942\u092a\u092e\u094d \u0905\u092d\u093f\u0939\u093f\u0924\u092e\u094d \u0964\",\"verdict\":\"neither\"},{\"id\":\"w5\",\"spelling\":\"\u0924 \u0924\u094d\",\"text\":\"\u0924\u0924\u094d\",\"verdict\":\"A\"},{\"id\":\"w6\",\"spelling\":\"\u092d \u0917 \u0935 \u0928\u094d\u0924\u0902 \u092a\u094d\u0930 \u0924\u094d\u092f\u094d\",\"text\":\"\u092d\u0917\u0935\u0928\u094d\u0924\u0902 \u092a\u094d\u0930\u0924\u094d\u092f\u094d\",\"verdict\":\"A\"},{\"id\":\"w7\",\"spelling\":\"\u0938 \u092e\u093e \u0936\u094d\u0930 \u092f \u092d\u0942 \u0924\u0947 \u0928 \u0938 \u092e\u0941 \u0926\u094d\u0930\u0947 \u0923\u093e \u2038 \u0938\u094d\u092e \u0926\u094d\u092d\u0943 \u0924\u094d\u092f \u0938\u094d\u092f \u091f\u093f \u091f\u094d\u091f\u093f \u092d \u0938\u094d\u092f\u093e \u2038 \u0923\u094d\u0921 \u0915\u093e \u0928\u094d\u092f\u094d \u0905 \u092a \u0939\u0943 \u0924\u093e \u0928\u093f \u0964\",\"text\":\"\u0938\u092e\u093e\u0936\u094d\u0930\u092f\u092d\u0942\u0924\u0947\u0928 \u0938\u092e\u0941\u0926\u094d\u0930\u0947\u0923\u093e\u2038\u0938\u094d\u092e\u0926\u094d\u092d\u0943\u0924\u094d\u092f\u0938\u094d\u092f \u091f\u093f\u091f\u094d\u091f\u093f\u092d\u0938\u094d\u092f\u093e\u2038\u0923\u094d\u0921\u0915\u093e\u0928\u094d\u092f\u094d \u0905\u092a\u0939\u0943\u0924\u093e\u0928\u093f \u0964\",\"verdict\":\"neither\"},{\"id\":\"w8\",\"spelling\":\"\u0924 \u0926\u094d \u092f \u0926\u093f\",\"text\":\"\u0924\u0926\u094d \u092f\u0926\u093f\",\"verdict\":\"A\"},{\"id\":\"w9\",\"spelling\":\"\u0928\u093f \u0917\u094d\u0930 \u0939\u0902\",\"text\":\"\u0928\u093f\u0917\u094d\u0930\u0939\u0902\",\"verdict\":\"A\"},{\"id\":\"w10\",\"spelling\":\"\u0928\u093f \u0935\u0947 \u0926 \u0928\u0940 \u092f \u092e\u094d\",\"text\":\"\u0928\u093f\u0935\u0947\u0926\u0928\u0940\u092f\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w11\",\"spelling\":\"\u0926\u0942 \u0924 \u092e\u0941 \u0916\u0947 \u0928\",\"text\":\"\u0926\u0942\u0924\u092e\u0941\u0916\u0947\u0928\",\"verdict\":\"A\"},{\"id\":\"w12\",\"spelling\":\"\u0917 \u0930\u0941 \u0924\u094d\u092e \u0928\u094d\u0924\u0902\",\"text\":\"\u0917\u0930\u0941\u0924\u094d\u092e\u0928\u094d\u0924\u0902\",\"verdict\":\"A\"},{\"id\":\"w13\",\"spelling\":\"\u091a\u093f \u0928\u094d\u0924 \u092f\u093e \u092e\u094d\",\"text\":\"\u091a\u093f\u0928\u094d\u0924\u092f\u093e\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w14\",\"spelling\":\"\u0935\u0948 \u0928 \u0924\u0947 \u092f \u0938\u094d\u092f\",\"text\":\"\u0935\u0948\u0928\u0924\u0947\u092f\u0938\u094d\u092f\",\"verdict\":\"A\"},{\"id\":\"w15\",\"spelling\":\"\u0924 \u0924\u094d \u0938\u094d\u0935 \u092f \u092e\u094d\",\"text\":\"\u0924\u0924\u094d \u0938\u094d\u0935\u092f\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w16\",\"spelling\":\"\u0938\u0902 \u092e\u093e \u0928 \u092a\u0941 \u0930\u0903 \u0938 \u0930 \u092e\u094d\",\"text\":\"\u0938\u0902\u092e\u093e\u0928\u092a\u0941\u0930\u0903\u0938\u0930\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w17\",\"spelling\":\"\u092d\u0943 \u0924\u094d\u092f \u092e\u094d \u0905 \u092a \u092e\u093e \u0928 \u092f\u0947 \u0924\u094d \u0964\",\"text\":\"\u092d\u0943\u0924\u094d\u092f\u092e\u094d \u0905\u092a\u092e\u093e\u0928\u092f\u0947\u0924\u094d \u0964\",\"verdict\":\"neither\"},{\"id\":\"w18\",\"spelling\":\"\u092a\u0941 \u0924\u094d\u0930 \u0935 \u0932\u094d \u0932\u093e \u0932 \u092f\u0947 \u0928\u094d\",\"text\":\"\u092a\u0941\u0924\u094d\u0930\u0935\u0932\u094d \u0932\u093e\u0932\u092f\u0947\u0928\u094d\",\"verdict\":\"A\"},{\"id\":\"w19\",\"spelling\":\"\u092f \u0926\u0940 \u2038 \u091a\u094d\u091b\u0947 \u091a\u094d * \u0936\u094d\u0930\u093f \u092f \u092e\u094d\",\"text\":\"\u092f\u0926\u0940\u2038\u091a\u094d\u091b\u0947\u091a\u094d *\u0936\u094d\u0930\u093f\u092f\u092e\u094d\",\"verdict\":\"neither\"},{\"id\":\"w20\",\"spelling\":\"\u0915\u093f\u0902 \u091a \u0964\",\"text\":\"\u0915\u093f\u0902 \u091a \u0964\",\"verdict\":\"neither\"},{\"id\":\"w21\",\"spelling\":\"\u092e\u093e \u0928 \u092e\u093e \u0924\u094d\u0930\u0902\",\"text\":\"\u092e\u093e\u0928\u092e\u093e\u0924\u094d\u0930\u0902\",\"verdict\":\"A\"},{\"id\":\"w22\",\"spelling\":\"\u0938\u0902 \u092e\u093e \u0928\u093f \u0924\u093e \u0938\u094d\",\"text\":\"\u0938\u0902\u092e\u093e\u0928\u093f\u0924\u093e\u0938\u094d\",\"verdict\":\"A\"},{\"id\":\"w23\",\"spelling\":\"\u092a\u094d\u0930\u093e \u0923\u0948 \u0930\u094d \u0905 \u092a\u094d\u092f\u094d \u0909 \u092a \u0915\u0941 \u0930\u094d\u0935 \u0924\u0947\",\"text\":\"\u092a\u094d\u0930\u093e\u0923\u0948\u0930\u094d \u0905\u092a\u094d\u092f\u094d \u0909\u092a\u0915\u0941\u0930\u094d\u0935\u0924\u0947\",\"verdict\":\"A\"},{\"id\":\"w24\",\"spelling\":\"\u0938\u0902 \u092a\u094d\u0930 \u0927\u093e \u0930\u094d\u092f\",\"text\":\"\u0938\u0902\u092a\u094d\u0930\u0927\u093e\u0930\u094d\u092f\",\"verdict\":\"A\"},{\"id\":\"w25\",\"spelling\":\"\u0917 \u0930\u0941 \u0921 \u0938 \u0915\u093e \u0936 \u092e\u094d \u0905 \u0917 \u092e \u0924\u094d \u0964\",\"text\":\"\u0917\u0930\u0941\u0921\u0938\u0915\u093e\u0936\u092e\u094d \u0905\u0917\u092e\u0924\u094d \u0964\",\"verdict\":\"neither\"},{\"id\":\"w26\",\"spelling\":\"\u0917\u0943 \u0939\u093e \u0917 \u0924 \u092e\u094d\",\"text\":\"\u0917\u0943\u0939\u093e\u0917\u0924\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w27\",\"spelling\":\"\u091a \u092a\u093e \u0927\u094b \u092e\u0941 \u0916\u0903 \u092a\u094d\u0930 \u0923 \u092e\u094d\u092f\u094b \u2038 \u0935\u093e \u091a\",\"text\":\"\u091a\u092a\u093e\u0927\u094b\u092e\u0941\u0916\u0903 \u092a\u094d\u0930\u0923\u092e\u094d\u092f\u094b\u2038\u0935\u093e\u091a\",\"verdict\":\"neither\"},{\"id\":\"w28\",\"spelling\":\"\u092d \u0917 \u0935 \u0928\u094d\",\"text\":\"\u092d\u0917\u0935\u0928\u094d\",\"verdict\":\"A\"},{\"id\":\"w29\",\"spelling\":\"\u092d\u0943 \u0924\u094d\u092f \u0938\u094d\u092f\u093e \u2038 \u0923\u094d\u0921 \u0915\u093e \u0928\u094d\u092f\u094d\",\"text\":\"\u092d\u0943\u0924\u094d\u092f\u0938\u094d\u092f\u093e\u2038\u0923\u094d\u0921\u0915\u093e\u0928\u094d\u092f\u094d\",\"verdict\":\"neither\"},{\"id\":\"w30\",\"spelling\":\"\u092e \u092e\u093e \u2038 \u092a \u092e\u093e \u0928\u0902 \u0935\u093f \u0939\u093f \u0924 \u092e\u094d\",\"text\":\"\u092e\u092e\u093e\u2038\u092a\u092e\u093e\u0928\u0902 \u0935\u093f\u0939\u093f\u0924\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w31\",\"spelling\":\"\u0935\u093f \u0932 \u092e\u094d\u092c\u093f \u0924 \u092e\u094d\",\"text\":\"\u0935\u093f\u0932\u092e\u094d\u092c\u093f\u0924\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w32\",\"spelling\":\"\u091a\u0947 \u0924\u094d\",\"text\":\"\u091a\u0947\u0924\u094d\",\"verdict\":\"A\"},{\"id\":\"w33\",\"spelling\":\"\u090f \u0928 \u092e\u094d\",\"text\":\"\u090f\u0928\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w34\",\"spelling\":\"\u0938\u094d\u0925 \u0932 \u0924\u093e \u092e\u094d \u0905 \u0926\u094d\u092f\u0948 \u2038 \u0935\",\"text\":\"\u0938\u094d\u0925\u0932\u0924\u093e\u092e\u094d \u0905\u0926\u094d\u092f\u0948\u2038\u0935\",\"verdict\":\"A\"},{\"id\":\"w35\",\"spelling\":\"\u0938\u094d\u092f\u093e \u0932\u094d\",\"text\":\"\u0938\u094d\u092f\u093e\u0932\u094d\",\"verdict\":\"A\"},{\"id\":\"w36\",\"spelling\":\"\u0924 \u0924\u094d \u0915 \u0930\u094d\u092e\",\"text\":\"\u0924\u0924\u094d \u0915\u0930\u094d\u092e\",\"verdict\":\"A\"},{\"id\":\"w37\",\"spelling\":\"\u0915\u0941 \u0930\u094d\u092f\u093e \u0924\u094d\",\"text\":\"\u0915\u0941\u0930\u094d\u092f\u093e\u0924\u094d\",\"verdict\":\"A\"},{\"id\":\"w38\",\"spelling\":\"\u0965 \u0969 \u096a \u096d \u0965\",\"text\":\"\u0965\u0969\u096a\u096d\u0965\",\"verdict\":\"neither\"},{\"id\":\"w39\",\"spelling\":\"\u0907 \u0924\u094d\u092f\u094d\",\"text\":\"\u0907\u0924\u094d\u092f\u094d\",\"verdict\":\"A\"},{\"id\":\"w40\",\"spelling\":\"\u092d \u0917 \u0935\u093e \u0928\u094d\",\"text\":\"\u092d\u0917\u0935\u093e\u0928\u094d\",\"verdict\":\"A\"},{\"id\":\"w41\",\"spelling\":\"\u0938 \u0924\u094d\u092f \u092e\u094d\",\"text\":\"\u0938\u0924\u094d\u092f\u092e\u094d\",\"verdict\":\"A\"},{\"id\":\"w42\",\"spelling\":\"\u0926 \u0923\u094d\u0921 \u092f\u0947 \u0924\u094d\",\"text\":\"\u0926\u0923\u094d\u0921\u092f\u0947\u0924\u094d\",\"verdict\":\"A\"},{\"id\":\"w43\",\"spelling\":\"\u0965 \u0969 \u096a \u096e \u0965\",\"text\":\"\u0965\u0969\u096a\u096e\u0965\",\"verdict\":\"neither\"}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "word_check",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "spelling",
+                "text",
+                "verdict"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "w1",
+                    "w2",
+                    "w3",
+                    "w4",
+                    "w5",
+                    "w6",
+                    "w7",
+                    "w8",
+                    "w9",
+                    "w10",
+                    "w11",
+                    "w12",
+                    "w13",
+                    "w14",
+                    "w15",
+                    "w16",
+                    "w17",
+                    "w18",
+                    "w19",
+                    "w20",
+                    "w21",
+                    "w22",
+                    "w23",
+                    "w24",
+                    "w25",
+                    "w26",
+                    "w27",
+                    "w28",
+                    "w29",
+                    "w30",
+                    "w31",
+                    "w32",
+                    "w33",
+                    "w34",
+                    "w35",
+                    "w36",
+                    "w37",
+                    "w38",
+                    "w39",
+                    "w40",
+                    "w41",
+                    "w42",
+                    "w43"
+                  ]
+                },
+                "spelling": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "verdict": {
+                  "enum": [
+                    "A",
+                    "B",
+                    "neither",
+                    "unclear"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 14689,
+    "input_tokens_details": {
+      "cache_write_tokens": 14686,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1406,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 16095
+  },
+  "user": null,
+  "metadata": {}
+}

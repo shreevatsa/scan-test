@@ -1,0 +1,48 @@
+You are given one scanned page of a book, already divided into regions, one per printed unit of text. Transcribe each region line by line, and build the page's tree of units.
+
+The book: Kale (1913): Bhartṛhari's śatakas with a Sanskrit commentary. The scan begins with an English table of contents. Then comes the Sanskrit text of two śatakas, the Nītiśataka and the Vairāgyaśataka, each followed by its miscellaneous stanzas: each verse, in large type, is followed by its Sanskrit commentary in smaller type, some verses are introduced by a short lead-in, and numbered footnotes, mostly variant readings, sit below a rule at the foot of the page and restart at 1 on each page. After the Sanskrit text come an English translation, one numbered paragraph per stanza, and English notes on the stanzas, which quote Sanskrit words in Devanagari.
+
+The first image is the whole page, with each region outlined in color and labeled with its id (r1, r2, …). After it, each region follows on its own: a line with its id, its type and its number of lines, then an image of the region cut out of the page, with everything outside the region blanked. In the gray strip at the left of each cut-out, the numbers 1, 2, … mark the lines found in the region, from the top. The strip is not part of the page. Last come small context images from the neighboring pages, described under 2.
+
+1. Transcription
+- For each region, return its lines in order, one entry per numbered line, with its number n and its text. Transcribe what is printed on that line inside the cut-out; use the whole page only for context.
+- If a numbered line holds only a stray piece of a neighboring line, such as a detached vowel sign or a dot, transcribe that piece with the line it belongs to and give an empty text for the numbered line.
+- Transcribe exactly as printed. Do not correct, modernize, complete or translate the text, and do not expand abbreviations. Keep the printed punctuation, digits and spelling.
+- A note marker printed in the text, such as a superscript number, an asterisk or a dagger that refers to a footnote or note, is written in square brackets right after the word that carries it, as in word[1] or word[*], with the marker as printed. A footnote's own number at its start is written as printed, without brackets.
+- end says how a line joins the next line of the same unit: "hyphen" if it ends with a hyphen that divides a word (keep the hyphen in the text), "join" if a word runs on to the next line without a hyphen, "line" if the line break is part of the text, as between the lines of a verse, and "space" otherwise. For a region's last line, say how it joins the unit's next text, wherever that is (on the next page, or after an interruption); use "space" if the unit ends there.
+- type: the region's type. Keep the type it was given unless it is clearly wrong.
+- Set uncertain=true for a region whose reading you are unsure of, and say why in note; otherwise note is null.
+- Conventions for this book:
+  - Transcribe Devanagari as printed, in Unicode NFC, with the printed digits and dandas.
+  - Transcribe English as printed, with the diacritics and apostrophes of transliterated Sanskrit as printed, such as S'ataka, Kâvyâdars'a and mâlatí. Italics are not marked.
+
+2. Units
+The book's unit types:
+- contents (a larger unit, made of other units; contains heading, paragraph, contents_entry; may stand at the top of flow main): The table of contents at the start of the scan.
+- section (a larger unit, made of other units; contains heading, commentator_verse, commentary, group; may stand at the top of flow main): One śataka of the Sanskrit text, such as वैराग्यशतकम्, with its opening, its stanzas and its miscellaneous stanzas.
+- translation (a larger unit, made of other units; contains heading, translated_stanza; may stand at the top of flow main): The English translation, after the Sanskrit text, with headings such as TRANSLATION, NĪTIS'ATAK. and MISCELLANEOUS.
+- notes (a larger unit, made of other units; contains heading, stanza_note; may stand at the top of flow main): The English notes on the stanzas, after the translation, with headings such as NOTES, MISCELLANEOUS. and VAIRĀGYAS'ATAKA.
+- heading (printed as regions): A title or heading: a part's title, such as CONTENTS., TRANSLATION or NOTES.; a śataka's title, such as अथ श्रीमद्भर्तृहरिविरचितं above नीतिशतकम् ।; an invocation above it, such as ॥ श्रीः ॥ or ॥ श्रीगणेशाय नमः ॥; a topic heading inside a śataka, such as अथ तृष्णादूषणम् ।; or a heading for the miscellaneous stanzas.
+- paragraph (printed as regions): A line of prose in the table of contents, such as The S'atakas treat of the following themes:—.
+- contents_entry (printed as regions): One line of the table of contents: a range of stanza numbers and its theme, such as 2—14 अज्ञनिन्दा or Ignorance censured.
+- commentator_verse (printed as regions): One of the commentator's own opening verses at the start of the Nītiśataka, in the commentary's type, before his introduction; each ends with ॥.
+- group (a larger unit, made of other units; contains lead_in, verse, commentary): One verse with its lead-in, if any, and its commentary. The app can show each group on its own.
+- lead_in (printed as regions): A short line of its own that introduces the verse.
+- verse (printed as regions): One verse in large type, with its number, such as ॥ २६ ॥.
+- commentary (printed as regions): The Sanskrit commentary on the verse, in smaller type. It usually ends with the name of the metre, such as शिखरिणी ॥. The commentator's introduction at the start of a śataka, before its first verse, is also commentary.
+- translated_stanza (printed as regions): The English translation of one stanza: a paragraph beginning with the stanza's number, such as 4. or I.; some are only a cross-reference, such as 1 See p. 16.
+- stanza_note (printed as regions): The English note on one stanza, from its number, such as Sl. 5., to the next note. A note can have several paragraphs, each its own region, and can run across pages.
+- footnote (printed as regions; may stand at the top of flow notes): One footnote below the rule: in the Sanskrit text, a numbered variant reading; in the English parts, a note marked * or †.
+
+- Every region that is not furniture is a child of exactly one unit of its own type. A unit printed as several regions, such as a paragraph interrupted by something it contains, lists all of them.
+- Larger units contain smaller ones, as their types allow. List each unit's children in reading order, as region ids and unit ids.
+- Furniture regions (running_header, page_number) and regions of type other belong to no unit.
+- Give each unit an id (u1, u2, …), its printed number in ASCII digits if it has one (a verse numbered ॥२१॥ is "21"), and a short label or null.
+- Set open_start=true for a unit that began on an earlier page, and open_end=true for a unit that goes on on a later page. A unit open at its end is the last child of its parent, and the parent is open at its end too; likewise, a unit open at its start is the first child of a parent open at its start. A unit around the whole page, such as a chapter whose beginning and end are not on this page, is open at both ends.
+- Context: after the regions come up to four images that are not part of this page: the last lines of the previous page's main text and of its notes, and the first lines of the next page's main text and of its notes. Do not transcribe them. Use them only for the open ends. A unit of this page is open at its start only if the previous page breaks off inside it (mid-sentence, mid-verse, or with a divided word), and open at its end only if the next page's first lines go on with it rather than begin a new unit (a heading, a new numbered verse, an indented paragraph, a new note). A larger unit can be open while all its children are complete: if the previous page ends with a verse and this page begins with that verse's commentary, their group is open at its start and the commentary is not. Where no image is given for a side, judge from this page alone.
+- flows: the top-level units of each flow, in reading order. The book's flows:
+  - main: The contents, the Sanskrit text, the translation and the notes, in reading order.
+  - notes: The footnotes, in page order.
+- relations: only those whose both ends are on this page. For a note marker you wrote in square brackets, a relation of type note from the region and the line number n where the marker stands, with the marker as written without the brackets, to the id of the note's unit. Use an empty marker for a relation without one. The book's relation types:
+  - note: A footnote marker in the text points to its footnote.
+Return JSON only, in the given schema.

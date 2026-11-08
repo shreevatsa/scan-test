@@ -1,0 +1,365 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "045-gpt-6.1-terra-none-single-call-regions-text-units",
+  "note": "method 042-style boxes from the single call"
+ },
+ "input": {
+  "id": "hertel-panchatantra-page-155",
+  "path": "inputs/hertel-panchatantra-page-155.png",
+  "sha256": "a3b372dabd79c5c415f45ed5d78d00d1ccbe5d8d4ccafed5a7150d5cac3658ba",
+  "width": 2088,
+  "height": 3121
+ },
+ "regions": [
+  {
+   "type": "running_header",
+   "box_1000": [
+    258,
+    80,
+    771,
+    121
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 1,
+   "label": "running_header",
+   "region_class": "running_header",
+   "box": [
+    538.704,
+    249.68,
+    1609.848,
+    377.641
+   ],
+   "box_xyxy_1000": [
+    258.0,
+    80.0,
+    771.0,
+    121.0
+   ]
+  },
+  {
+   "type": "page_number",
+   "box_1000": [
+    922,
+    82,
+    955,
+    99
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 2,
+   "label": "page_number",
+   "region_class": "page_number",
+   "box": [
+    1925.136,
+    255.922,
+    1994.04,
+    308.979
+   ],
+   "box_xyxy_1000": [
+    922.0,
+    82.0,
+    955.0,
+    99.0
+   ]
+  },
+  {
+   "type": "paragraph",
+   "box_1000": [
+    118,
+    136,
+    916,
+    194
+   ],
+   "keep": true,
+   "reading_order": 1,
+   "uncertain": false,
+   "continues_from_earlier": true,
+   "continues_later": false,
+   "region_id": 3,
+   "label": "paragraph",
+   "region_class": "paragraph",
+   "box": [
+    246.384,
+    424.456,
+    1912.608,
+    605.474
+   ],
+   "box_xyxy_1000": [
+    118.0,
+    136.0,
+    916.0,
+    194.0
+   ]
+  },
+  {
+   "type": "paragraph",
+   "box_1000": [
+    117,
+    202,
+    918,
+    916
+   ],
+   "keep": true,
+   "reading_order": 2,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": true,
+   "region_id": 4,
+   "label": "paragraph",
+   "region_class": "paragraph",
+   "box": [
+    244.296,
+    630.442,
+    1916.784,
+    2858.836
+   ],
+   "box_xyxy_1000": [
+    117.0,
+    202.0,
+    918.0,
+    916.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    923,
+    212,
+    938,
+    224
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 5,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1927.224,
+    661.652,
+    1958.544,
+    699.104
+   ],
+   "box_xyxy_1000": [
+    923.0,
+    212.0,
+    938.0,
+    224.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    923,
+    308,
+    938,
+    320
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 6,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1927.224,
+    961.268,
+    1958.544,
+    998.72
+   ],
+   "box_xyxy_1000": [
+    923.0,
+    308.0,
+    938.0,
+    320.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    923,
+    405,
+    938,
+    418
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 7,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1927.224,
+    1264.005,
+    1958.544,
+    1304.578
+   ],
+   "box_xyxy_1000": [
+    923.0,
+    405.0,
+    938.0,
+    418.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    921,
+    501,
+    946,
+    514
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 8,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1923.048,
+    1563.621,
+    1975.248,
+    1604.194
+   ],
+   "box_xyxy_1000": [
+    921.0,
+    501.0,
+    946.0,
+    514.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    921,
+    598,
+    946,
+    611
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 9,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1923.048,
+    1866.358,
+    1975.248,
+    1906.931
+   ],
+   "box_xyxy_1000": [
+    921.0,
+    598.0,
+    946.0,
+    611.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    921,
+    694,
+    946,
+    708
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 10,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1923.048,
+    2165.974,
+    1975.248,
+    2209.668
+   ],
+   "box_xyxy_1000": [
+    921.0,
+    694.0,
+    946.0,
+    708.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    920,
+    792,
+    945,
+    805
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 11,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1920.96,
+    2471.832,
+    1973.16,
+    2512.405
+   ],
+   "box_xyxy_1000": [
+    920.0,
+    792.0,
+    945.0,
+    805.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    920,
+    890,
+    945,
+    903
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 12,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1920.96,
+    2777.69,
+    1973.16,
+    2818.263
+   ],
+   "box_xyxy_1000": [
+    920.0,
+    890.0,
+    945.0,
+    903.0
+   ]
+  }
+ ],
+ "validation_warnings": []
+}

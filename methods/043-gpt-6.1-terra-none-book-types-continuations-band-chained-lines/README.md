@@ -40,6 +40,8 @@ See "Book types from the type list" in [NOTEBOOK.md](../../NOTEBOOK.md). In brie
 
 **Cole run** (Cole 1–4, with Claude's draft type list): 0 / 0 / 0 on Cole page 3 in both requests, with no split or merge. Ownership, keep flags and types are identical between the two requests on all 4 pages (method 041: ownership identical, with 3 type differences). Against method 041, the only ownership difference on each page is the running header, which method 041 split in two. Survey outputs are in `runs-cole/`.
 
+**The other five books** (Ten Princes, Nītiśataka 1896 and 1914, Vavilla, the Gita, with Claude's draft type lists): 0 / 0 / 0 on all four referenced pages (Ten Princes spread 30, 1896 page 123, 1914 page 258, Vavilla page 34) in both requests. Ownership and keep flags identical between the two requests on 9 of 9, 12 of 12, 14 of 15, 10 of 12 and 6 of 6 pages, with agreement at least 0.997 on the others and no split or merge. Against method 039, the grouping differences follow the type lists: Ten Princes chapter heading as one region; each Nītiśataka below-rule note as one region, where method 039 split some parallels; Vavilla commentary lines before a quotation kept in the commentary. Survey outputs are in `runs-tp/`, `runs-g96/`, `runs-g14/`, `runs-vav/` and `runs-gita/`.
+
 ## Limitations
 
 Those of method 041.

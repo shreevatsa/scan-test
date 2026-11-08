@@ -1,0 +1,285 @@
+{
+  "id": "resp_063401992537f4cb016aecbc29c24087d19155c0238372d006",
+  "object": "response",
+  "created_at": 1793899561,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793899599,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32768,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_063401992537f4cb016aecbc2c09f487d19eccf15c323b680a",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"running_header\",\"box_1000\":[253,80,768,99],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"Book I. THE ESTRANGING OF FRIENDS;\",\"end\":\"space\"}],\"note\":null},{\"type\":\"running_header\",\"box_1000\":[115,107,361,120],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"Tale xv: Strand-bird and sea.\",\"end\":\"space\"}],\"note\":null},{\"type\":\"running_header\",\"box_1000\":[802,108,910,121],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"Frame-story.\",\"end\":\"space\"}],\"note\":null},{\"type\":\"page_number\",\"box_1000\":[916,82,950,99],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"96\",\"end\":\"space\"}],\"note\":null},{\"type\":\"paragraph\",\"box_1000\":[113,135,912,356],\"keep\":true,\"reading_order\":1,\"uncertain\":true,\"continues_from_earlier\":true,\"continues_later\":false,\"lines\":[{\"text\":\"\u0924\u0926\u094d \u0906\u0917\u091a\u094d\u091b \u0964 \u092f\u0947\u0928 \u0938\u092e\u0941\u0926\u094d\u0930\u093e\u0926\u094d \u0905\u0923\u094d\u0921\u0915\u093e\u0928\u094d\u092f\u094d \u0906\u0926\u093e\u092f \u091f\u093f\u091f\u094d\u091f\u093f\u092d\u0902 \u091a \u0938\u0902\u0924\u094b\u0937\u094d\u092f\",\"end\":\"space\"},{\"text\":\"\u0938\u0941\u0930\u0915\u093e\u0930\u094d\u092f\u093e\u0930\u094d\u0925\u093e\u2038\u092e\u0930\u093e\u0935\u0924\u0940\u0902 \u0917\u091a\u094d\u091b\u093e\u0935\u0903 \u0964 \u0924\u0925\u0947\u2038\u0924\u093f \u092a\u094d\u0930\u0924\u093f\u092a\u0928\u094d\u0928\u0947 \u0938\u092e\u0941\u0926\u094d\u0930\u0902 \u0928\u093f\u0930\u094d\u092d\u0930\u094d\u0924\u094d\u0938\u094d\u092f\",\"end\":\"space\"},{\"text\":\"\u092d\u0917\u0935\u0924\u093e \u0927\u0928\u0941\u0937\u094d\u092f\u094d \u0906\u0917\u094d\u0928\u0947\u092f\u0902 \u0936\u0930\u0902 \u0938\u0902\u0927\u093e\u092f\u093e\u2038\u092d\u093f\u0939\u093f\u0924\u092e\u094d \u0964 \u092d\u094b \u0926\u0941\u0930\u093e\u0924\u094d\u092e\u0928\u094d '\",\"end\":\"space\"},{\"text\":\"\u0926\u0940\u092f\u0924\u093e\u092e\u094d \u0905\u0938\u094d\u092f \u091f\u093f\u091f\u094d\u091f\u093f\u092d\u0938\u094d\u092f\u093e\u2038\u0923\u094d\u0921\u0915\u093e\u0928\u093f \u0964 \u0928\u094b \u091a\u0947\u0924\u094d ' \u0924\u094d\u0935\u093e\u0902 \u0938\u094d\u0925\u0932\u0924\u093e\u0902\",\"end\":\"space\"},{\"text\":\"\u0928\u0947\u0937\u094d\u092f\u093e\u092e\u093f \u0964 \u0907\u0924\u093f \u0936\u094d\u0930\u0941\u0924\u094d\u0935\u093e \u0938\u092e\u0941\u0926\u094d\u0930\u094b \u093d\u092a\u093f \u092d\u092f\u091a\u0915\u093f\u0924\u0938\u0915\u0932\u092a\u0930\u093f\u0935\u093e\u0930\u094b\",\"end\":\"space\"},{\"text\":\"\u0935\u0947\u092a\u092e\u093e\u0928\u0938\u094d \u0924\u093e\u0928\u094d\u092f\u094d \u0905\u0923\u094d\u0921\u0915\u093e\u0928\u093f \u0917\u0943\u0939\u0940\u0924\u094d\u0935\u093e \u092d\u0917\u0935\u0926\u094d\u0926\u0924\u094d\u0924\u0902 \u091f\u093f\u091f\u094d\u091f\u093f\u092d\u0938\u094d\u092f\",\"end\":\"space\"},{\"text\":\"\u0938\u092e\u0930\u094d\u092a\u092f\u093e\u092e\u094d \u0906\u0938 \u0965\",\"end\":\"space\"}],\"note\":\"Some readings and sandhi marks in the large type are uncertain.\"},{\"type\":\"paragraph\",\"box_1000\":[113,383,913,499],\"keep\":true,\"reading_order\":2,\"uncertain\":true,\"continues_from_earlier\":true,\"continues_later\":false,\"lines\":[{\"text\":\"\u0905\u0924\u094b \u093d\u0939\u0902 \u092c\u094d\u0930\u0935\u0940\u092e\u093f \u0964 \u0936\u0924\u094d\u0930\u094b\u0930\u094d \u092c\u0932\u092e\u094d \u0905\u0935\u093f\u091c\u094d\u091e\u093e\u092f \u0964 \u0907\u0924\u093f \u0964 \u0905\u0935\u0917\u0924\u0924\u0924\u094d\u0924\u094d\u0935\u093e\u0930\u094d\u0925\u0936\u094d \u091a \u0938\u0902\u091c\u0940\u0935\u0915\u0938\u094d \u0924\u092e\u094d\",\"end\":\"space\"},{\"text\":\"\u0905\u092a\u0943\u091a\u094d\u091b\u0924\u094d \u0964 \u0935\u092f\u0938\u094d\u092f \u0964 \u0915\u0925\u092f \u0964 \u0915\u0938\u094d \u0924\u0938\u094d\u092f \u092f\u0941\u0926\u094d\u0927\u092e\u093e\u0930\u094d\u0917\u0903 \u0964 \u0907\u0924\u093f \u0964 \u0938\u094b \u093d\u092c\u094d\u0930\u0935\u0940\u0924\u094d \u0964 \u0905\u0928\u094d\u092f\u0926\u093e\u2038\u0938\u094c\",\"end\":\"space\"},{\"text\":\"*\u0938\u094d\u0935\u0938\u094d\u0925\u093e\u0919\u094d\u0917\u0903 \u0936\u093f\u0932\u093e\u0924\u0932\u0938\u094d\u0925\u093f\u0924\u094b \u092f\u0925\u093e \u0924\u0925\u093e\u2038\u0938\u0940\u0924\u094d \u0964 \u0905\u0926\u094d\u092f \u092f\u0926\u093f \u092a\u094d\u0930\u0925\u092e\u092e\u094d \u090f\u0935 \u0938\u0902\u0917\u0943\u0939\u0940\u0924\u0932\u093e\u0919\u094d\u0917\u0942\u0932\u0903\",\"end\":\"space\"},{\"text\":\"\u0938\u0902\u0939\u093f\u0924\u091a\u0924\u0941\u0937\u094d\u091a\u0930\u0923\u0938\u094d\u0924\u092c\u094d\u0927\u0915\u0930\u094d\u0923\u094b \u0926\u0942\u0930\u093e\u0926\u094d \u090f\u0935 \u0924\u094d\u0935\u0924\u094d\u0938\u0902\u092e\u0941\u0916\u092e\u094d \u0908\u0915\u094d\u0937\u092e\u093e\u0923\u0938\u094d \u0924\u093f\u0937\u094d\u0920\u0924\u093f \u0964 \u0924\u0924\u0938\u094d \u0924\u094d\u0935\u092f\u093e\u2038\u0935\u0917-\",\"end\":\"hyphen\"},{\"text\":\"\u0928\u094d\u0924\u0935\u094d\u092f\u0903 \u0964 \u092e\u092e\u094b\u2038\u092a\u0930\u093f \u0926\u094d\u0930\u094b\u0939\u092c\u0941\u0926\u094d\u0927\u093f\u0903 \u0964 \u0907\u0924\u093f \u0964\",\"end\":\"space\"}],\"note\":\"Several words and the printed asterisk are difficult to resolve; the asterisk appears inline.\"},{\"type\":\"paragraph\",\"box_1000\":[113,498,913,563],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true,\"lines\":[{\"text\":\"\u090f\u0935\u092e\u094d \u0909\u0915\u094d\u0924\u094d\u0935\u093e \u0926\u092e\u0928\u0915\u0903 \u0915\u0930\u091f\u0915\u0938\u0915\u093e\u0936\u0902 \u0917\u0924\u0903 \u0964 \u0924\u0947\u0928 \u091a\u093e\u2038\u092d\u093f\u0939\u093f\u0924\u092e\u094d \u0964 \u0915\u093f\u092e\u094d \u0905\u0928\u0941\u0937\u094d\u0920\u093f\u0924\u0902 \u092d\u0935\u0924\u093e \u0964\",\"end\":\"space\"},{\"text\":\"\u0938\u094b \u093d\u092c\u094d\u0930\u0935\u0940\u0924\u094d \u0964 *\u092d\u0947\u0926\u093f\u0924\u094c \u0924\u094c \u0924\u093e\u0935\u0924\u094d \u092a\u0930\u0938\u094d\u092a\u0930\u0902 \u092e\u092f\u093e \u0964 \u0915\u0930\u091f\u0915 \u0906\u0939 \u0964 \u0915\u093f\u0902 \u0938\u0924\u094d\u092f\u092e\u094d \u0964 \u0926\u092e\u0928\u0915\u094b\",\"end\":\"space\"},{\"text\":\"\u093d\u092c\u094d\u0930\u0935\u0940\u0924\u094d \u0964 \u092b\u0932\u0947\u0928 \u091c\u094d\u091e\u093e\u0938\u094d\u092f\u0924\u093f \u092d\u0935\u093e\u0928\u094d \u0964 \u0915\u0930\u091f\u0915 \u0906\u0939 \u0964 \u0915\u094b \u093d\u0924\u094d\u0930 \u0935\u093f\u0938\u094d\u092e\u092f\u0903 \u0964 \u0909\u0915\u094d\u0924\u0902 \u091a \u0964\",\"end\":\"space\"}],\"note\":null},{\"type\":\"verse\",\"box_1000\":[254,565,745,608],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u092d\u093f\u0928\u0924\u094d\u0924\u093f \u0938\u092e\u094d\u092f\u0915\u094d \u092a\u094d\u0930\u0939\u093f\u0924\u094b \u0964 \u092d\u0947\u0926\u0903 \u0938\u094d\u0925\u093f\u0930\u092e\u0924\u0940\u0928\u094d \u0905\u092a\u093f \u0964\",\"end\":\"line\"},{\"text\":\"\u092d\u0942\u0927\u0930\u093e\u0928\u094d \u0938\u0902\u0939\u0924\u0936\u093f\u0932\u093e\u0928\u094d \u0964 \u092e\u0939\u093e\u092a\u0942\u0930 \u0907\u0935\u093e\u2038\u092e\u094d\u092d\u0938\u093e\u092e\u094d \u0965\u0969\u096a\u096f\u0965\",\"end\":\"space\"}],\"note\":null},{\"type\":\"paragraph\",\"box_1000\":[113,609,749,632],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true,\"lines\":[{\"text\":\"\u0926\u092e\u0928\u0915 \u0906\u0939 \u0964 \u092d\u0947\u0926\u092e\u094d \u0909\u0924\u094d\u092a\u093e\u0926\u094d\u092f \u0938\u0930\u094d\u0935\u0925\u093e \u092a\u0941\u0930\u0941\u0937\u0947\u0923\u093e\u2038\u0924\u094d\u092e\u0939\u093f\u0924\u0902 \u0915\u093e\u0930\u094d\u092f\u092e\u094d \u0964 \u0909\u0915\u094d\u0924\u0902 \u091a \u0964\",\"end\":\"space\"}],\"note\":null},{\"type\":\"verse\",\"box_1000\":[254,631,812,675],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u092f\u094b \u093d\u0927\u0940\u0924\u094d\u092f \u0936\u093e\u0938\u094d\u0924\u094d\u0930\u092e\u094d \u0905\u0916\u093f\u0932\u0902 \u0964 \u0936\u093e\u0938\u094d\u0924\u094d\u0930\u093e\u0930\u094d\u0925\u0902 \u0924\u0924\u094d\u0924\u094d\u0935\u0924\u0936\u094d \u091a \u0935\u093f\u091c\u094d\u091e\u093e\u092f \u0964\",\"end\":\"line\"},{\"text\":\"\u0906\u0924\u094d\u092e\u0939\u093f\u0924\u0902 \u0928 \u0939\u093f \u0915\u0941\u0930\u0941\u0924\u0947 \u0964 \u0936\u094d\u0930\u092e\u093e\u0935\u0939\u0938\u094d \u0924\u0938\u094d\u092f \u0915\u093f\u0902 \u0936\u093e\u0938\u094d\u0924\u094d\u0930\u0948\u0903 \u0965\u0969\u096b\u0966\u0965\",\"end\":\"space\"}],\"note\":null},{\"type\":\"paragraph\",\"box_1000\":[114,676,614,699],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true,\"lines\":[{\"text\":\"\u0915\u0930\u091f\u0915 \u0906\u0939 \u0964 \u0924\u0924\u094d\u0924\u094d\u0935\u0924\u094b \u0928 \u0915\u093f\u0902\u091a\u093f\u0926\u094d \u0906\u0924\u094d\u092e\u0939\u093f\u0924\u092e\u094d \u0964 \u092f\u0924\u0903 \u0964\",\"end\":\"space\"}],\"note\":null},{\"type\":\"verse\",\"box_1000\":[255,697,770,743],\"keep\":true,\"reading_order\":8,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0915\u094d\u0937\u092f\u092f\u094b \u092d\u0938\u094d\u092e \u0935\u093f\u0937\u094d\u0920\u093e \u0935\u093e \u0964 \u0928\u093f\u0937\u094d\u0920\u093e \u092f\u0938\u094d\u092f\u0947\u2038\u092f\u092e\u094d \u0908\u0926\u0943\u0936\u0940 \u0964\",\"end\":\"line\"},{\"text\":\"\u0938 \u0915\u093e\u092f\u0903 \u092a\u0930\u092a\u0940\u0921\u093e\u092d\u093f\u0903 \u0964 \u092a\u094b\u0937\u094d\u092f\u0924\u0947 \u092f\u0924\u094d \u0938 \u0915\u094b \u0928\u092f\u0903 \u0965\u0969\u096b\u0967\u0965\",\"end\":\"space\"}],\"note\":\"The first word of the verse is uncertain.\"},{\"type\":\"paragraph\",\"box_1000\":[113,743,909,786],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true,\"lines\":[{\"text\":\"\u0926\u092e\u0928\u0915 \u0906\u0939 \u0964 \u0905\u0928\u092d\u093f\u091c\u094d\u091e\u094b \u093d\u0938\u093f \u092e\u0928\u094d\u0924\u094d\u0930\u093f\u0915\u0941\u0932\u092e\u0942\u0932\u0935\u0947\u0924\u0928\u0938\u094d\u092f \u092a\u094d\u0930\u0915\u0943\u0924\u093f\u0915\u0941\u091f\u093f\u0932\u0938\u094d\u092f \u0928\u0940\u0924\u093f\u092e\u093e\u0930\u094d\u0917\u0938\u094d\u092f \u0964\",\"end\":\"space\"},{\"text\":\"\u0924\u0924\u094d\u0930\u0948\u2038\u0935 \u0909\u0915\u094d\u0924\u092e\u094d \u0964\",\"end\":\"space\"}],\"note\":null},{\"type\":\"verse\",\"box_1000\":[253,786,768,829],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0928\u093f\u0938\u094d\u0924\u094d\u0930\u093f\u0902\u0936\u0902 \u0939\u0943\u0926\u092f\u0902 \u0915\u0943\u0924\u094d\u0935\u093e \u0964 \u0935\u093e\u0923\u0940\u0902 \u091a\u0947\u2038\u0915\u094d\u0937\u0941\u0930\u0938\u094b\u092a\u092e\u093e\u092e\u094d \u0964\",\"end\":\"line\"},{\"text\":\"\u0935\u093f\u0915\u0932\u094d\u092a\u094b \u093d\u0924\u094d\u0930 \u0928 \u0915\u0930\u094d\u0924\u0935\u094d\u092f\u094b \u0964 \u0939\u0928\u094d\u092f\u093e\u0924\u094d \u092a\u0942\u0930\u094d\u0935\u093e\u092a\u0915\u093e\u0930\u093f\u0923\u092e\u094d \u0965\u0969\u096b\u0968\u0965\",\"end\":\"space\"}],\"note\":null},{\"type\":\"paragraph\",\"box_1000\":[113,830,816,853],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true,\"lines\":[{\"text\":\"\u0905\u0928\u094d\u092f\u091a\u094d \u091a \u0964 \u0928\u093f\u0939\u0924\u094b \u093d\u092a\u094d\u092f\u094d \u090f\u0937 \u0938\u0902\u091c\u0940\u0935\u0915\u094b \u093d\u0938\u094d\u092e\u093e\u0915\u092e\u094d \u0909\u092a\u092d\u094b\u0917\u094d\u092f\u094b \u092d\u0935\u093f\u0937\u094d\u092f\u0924\u093f \u0964 \u092f\u0924\u0903 \u0964\",\"end\":\"space\"}],\"note\":null},{\"type\":\"verse\",\"box_1000\":[254,852,703,895],\"keep\":true,\"reading_order\":12,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u092a\u0930\u0938\u094d\u092f \u092a\u0940\u0921\u0928\u0902 \u0915\u0941\u0930\u094d\u0935\u0928\u094d \u0964 \u0938\u094d\u0935\u093e\u0930\u094d\u0925\u0938\u093f\u0926\u094d\u0927\u093f\u0902 \u091a \u092a\u0923\u094d\u0921\u093f\u0924\u0903 \u0964\",\"end\":\"line\"},{\"text\":\"\u0917\u0942\u0922\u092c\u0941\u0926\u094d\u0927\u093f\u0930\u094d \u0928 \u0932\u0915\u094d\u0937\u094d\u092f\u0947\u0924 \u0964 \u0935\u0928\u0947 \u091a\u0924\u0941\u0930\u0915\u094b \u092f\u0925\u093e \u0965\u0969\u096b\u0969\u0965\",\"end\":\"space\"}],\"note\":null},{\"type\":\"paragraph\",\"box_1000\":[113,895,501,919],\"keep\":true,\"reading_order\":13,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true,\"lines\":[{\"text\":\"\u0915\u0930\u091f\u0915 \u0906\u0939 \u0964 \u0915\u0925\u092e\u094d \u090f\u0924\u0924\u094d \u0964 \u0938\u094b \u093d\u092c\u094d\u0930\u0935\u0940\u0924\u094d \u0964\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[915,207,933,222],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"3\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[915,303,933,319],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"6\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[916,411,933,425],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"9\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[915,478,940,493],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"12\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[914,544,940,559],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"15\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[915,609,940,624],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"18\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[915,677,940,692],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"21\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[915,745,940,760],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"24\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[915,811,940,826],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"27\",\"end\":\"space\"}],\"note\":null},{\"type\":\"line_number\",\"box_1000\":[915,877,940,892],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"30\",\"end\":\"space\"}],\"note\":null},{\"type\":\"margin_mark\",\"box_1000\":[886,655,912,671],\"keep\":false,\"reading_order\":null,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0101r\",\"end\":\"space\"}],\"note\":\"Small Latin marginal mark; reading uncertain.\"}],\"units\":[{\"id\":\"u1\",\"type\":\"story\",\"number\":null,\"label\":\"Frame-story\",\"open_start\":true,\"open_end\":true,\"children\":[\"u2\",\"u4\",\"u5\"]},{\"id\":\"u2\",\"type\":\"story\",\"number\":\"15\",\"label\":\"Strand-bird and sea\",\"open_start\":true,\"open_end\":false,\"children\":[\"u3\"]},{\"id\":\"u3\",\"type\":\"paragraph\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":false,\"children\":[\"r5\"]},{\"id\":\"u4\",\"type\":\"paragraph\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":false,\"children\":[\"r6\"]},{\"id\":\"u5\",\"type\":\"paragraph\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":true,\"children\":[\"r7\",\"u6\",\"r9\",\"u7\",\"r11\",\"u8\",\"r13\",\"u9\",\"r15\",\"u10\",\"r17\"]},{\"id\":\"u6\",\"type\":\"verse\",\"number\":\"349\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r8\"]},{\"id\":\"u7\",\"type\":\"verse\",\"number\":\"350\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r10\"]},{\"id\":\"u8\",\"type\":\"verse\",\"number\":\"351\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r12\"]},{\"id\":\"u9\",\"type\":\"verse\",\"number\":\"352\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r14\"]},{\"id\":\"u10\",\"type\":\"verse\",\"number\":\"353\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r16\"]}],\"flows\":[{\"flow\":\"main\",\"units\":[\"u1\"]}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions_text_units",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions",
+          "units",
+          "flows"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain",
+                "continues_from_earlier",
+                "continues_later",
+                "lines",
+                "note"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "heading",
+                    "paragraph",
+                    "lead_in",
+                    "verse",
+                    "running_header",
+                    "page_number",
+                    "line_number",
+                    "margin_mark",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                },
+                "continues_from_earlier": {
+                  "type": "boolean"
+                },
+                "continues_later": {
+                  "type": "boolean"
+                },
+                "lines": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "text",
+                      "end"
+                    ],
+                    "properties": {
+                      "text": {
+                        "type": "string"
+                      },
+                      "end": {
+                        "enum": [
+                          "space",
+                          "hyphen",
+                          "join",
+                          "line"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "type",
+                "number",
+                "label",
+                "open_start",
+                "open_end",
+                "children"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "story",
+                    "heading",
+                    "paragraph",
+                    "lead_in",
+                    "verse"
+                  ]
+                },
+                "number": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "open_start": {
+                  "type": "boolean"
+                },
+                "open_end": {
+                  "type": "boolean"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "flows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "flow",
+                "units"
+              ],
+              "properties": {
+                "flow": {
+                  "enum": [
+                    "main"
+                  ]
+                },
+                "units": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 9909,
+    "input_tokens_details": {
+      "cache_write_tokens": 9906,
+      "cached_tokens": 0
+    },
+    "output_tokens": 3236,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 13145
+  },
+  "user": null,
+  "metadata": {}
+}

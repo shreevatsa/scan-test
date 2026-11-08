@@ -1,0 +1,86 @@
+{
+ "status": "completed",
+ "started_at_utc": "2026-11-06T03:39:19.987280+00:00",
+ "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+ "credential_source": "llm stored key: gemini",
+ "client_request_id": "9ed16d23-be38-4976-8de2-36039785d9be",
+ "request_sha256": "8a71907dd21400bd500ea7caf1d53be937965d0568b5380756fc43ca6e654187",
+ "method_id": "051-gemini-4-argon-low-region-transcription-neighbor-context-free-line-counts",
+ "settings": {
+  "name": "Gemini 4 Argon with low thinking: method 047's transcription request (method 043's regions, neighbor context), with no fixed line counts in the response schema",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking_level": "low",
+  "image_resolution": "high",
+  "max_output_tokens": 32768,
+  "prompt_variant": "region-transcription-neighbor-context-v1",
+  "store": false,
+  "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "cutout_padding_char": 0.5,
+  "gutter_width_char": 1.6,
+  "gutter_min_px": 36,
+  "gutter_font_char": 0.55,
+  "gutter_font_min_px": 14,
+  "overview_label_char": 0.8,
+  "overview_label_min_px": 18,
+  "overview_outline_px": 3,
+  "context_lines": 2,
+  "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+  "image_detail": "original",
+  "image_detail_note": "The OpenAI detail setting, used only when building the content list; the Gemini request uses image_resolution.",
+  "schema_fixed_line_counts": false
+ },
+ "files_sha256": {
+  "run.py": "e334cf539b266141da2548174cef3fa5a1b38573d2a4ee50dc9623a97b4bf234",
+  "prompt.py": "159655c6f9e1c7251fcc1814b00893c94637a5119c6399e9dbf9c3fb118a0997",
+  "prompt-template.txt": "1d451cee4378c77e02bea16e6692603485b2235793e968c2cb905b2c1c220986",
+  "cutouts.py": "7d5f320391cde8c336c234a68d37ce5d973f697a13d30a4ebfa74aa42c84cb54",
+  "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+  "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+  "config.json": "5394fe3d24bd60e450d40fd840b3dd9f1f77cb4a47b462628b24f9936f0ce248",
+  "pricing.json": "c952aa34dfd3bfc4c4ba995261db51a1172fc43ab713a6df3ae20dee1a467bd6",
+  "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+ },
+ "type_list": {
+  "path": "schema/types/hertel-panchatantra.json",
+  "sha256": "cdb0d5be39ef1dd52033101d8201bf417cd42a92676008cbc2c77b2089b22101",
+  "book_id": "hertel-panchatantra"
+ },
+ "source_regions": {
+  "path": "outputs/hertel-panchatantra-page-152/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+  "sha256": "07d41748dc7e1ea7e09818f6742184d8c5375675cc6eff4497aee2d14c339e03"
+ },
+ "prompt_sha256": "d08349d7141800e73bded17f0688cc111d98cbc21e932b15921c5d9a74e55881",
+ "response_headers_seconds": 22.784278708975762,
+ "http_status": 200,
+ "request_id": null,
+ "api_wall_seconds": 22.784633208997548,
+ "response_id": null,
+ "returned_model": "gemini-4-argon",
+ "response_status": "completed",
+ "usage": {
+  "total_tokens": 28108,
+  "total_input_tokens": 26098,
+  "input_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 6587
+   },
+   {
+    "modality": "image",
+    "tokens": 19511
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 2010,
+  "output_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 2010
+   }
+  ],
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 0,
+  "initial_input_tokens": 26098
+ }
+}

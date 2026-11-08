@@ -1,0 +1,691 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "045-gpt-6.1-terra-none-single-call-regions-text-units",
+  "name": "GPT-6.1 Terra without reasoning, one call for regions (book types, continuation flags), per-line text and the unit tree; method 043's local step; page document",
+  "settings": {
+   "name": "GPT-6.1 Terra without reasoning, one call for regions (book types, continuation flags), per-line text and the unit tree; method 043's local step; page document",
+   "model": "gpt-6.1-terra",
+   "reasoning_effort": "none",
+   "image_detail": "original",
+   "max_output_tokens": 32768,
+   "store": false,
+   "coordinate_format": "xyxy_1000",
+   "prompt_variant": "single-call-regions-text-units-v1",
+   "local_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+   "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+  },
+  "files_sha256": {
+   "run.py": "83d0397dc4021ed1be0e27d52ba3f6796075583b6464540474a7bb22e829b4a6",
+   "prompt.py": "97c12c20cf85034946632c951d7f5a852d83fe67ddc9d9e6ddd0751e6d668a15",
+   "prompt-template.txt": "37317cf25251332c294181df620b82b0ae831708e4239e9fa4ff209b5524dba6",
+   "region_prompt.py": "eff510f80417505ec27a9585846893660b5b9c6c3b5527f1c212747070c507cf",
+   "transcription_prompt.py": "a142af6d66d6dee521f569b34c48b86e833a2576bc721b41a19fa6d7f00bc7cf",
+   "regions.py": "1beb4c729a2d8bca063dea767c00889b5819d2f2ca307d74c431e0c526fb382d",
+   "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+   "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+   "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+   "config.json": "ed3cc12981fd4082620e4890e942b7c893354bf62e4738ae6984bd07a7dbe663",
+   "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+   "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+ },
+ "input": {
+  "id": "hertel-panchatantra-page-155",
+  "path": "inputs/hertel-panchatantra-page-155.png",
+  "sha256": "a3b372dabd79c5c415f45ed5d78d00d1ccbe5d8d4ccafed5a7150d5cac3658ba"
+ },
+ "type_list": {
+  "path": "schema/types/hertel-panchatantra.json",
+  "sha256": "cdb0d5be39ef1dd52033101d8201bf417cd42a92676008cbc2c77b2089b22101",
+  "book_id": "hertel-panchatantra"
+ },
+ "api": {
+  "endpoint": "https://api.openai.com/v1/responses",
+  "returned_model": "gpt-6.1-terra",
+  "response_id": "resp_01f1b04910c67658016aecbca5e35887d187f6c952832bf0a0",
+  "request_id": "req_f64a0017d60c4e4983ece9b45d0b864d",
+  "api_wall_seconds": 41.85692225024104,
+  "usage": {
+   "input_tokens": 9909,
+   "input_tokens_details": {
+    "cache_write_tokens": 0,
+    "cached_tokens": 9906
+   },
+   "output_tokens": 1788,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 11697
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 9909,
+   "ordinary_input_tokens": 3,
+   "cached_input_tokens": 9906,
+   "cache_write_input_tokens": 0,
+   "output_tokens_including_reasoning": 1788,
+   "reasoning_tokens": 0,
+   "non_reasoning_output_tokens": 1788,
+   "total_token_count_matches": true,
+   "cache_write_lifetime": "30m (provider default)",
+   "estimated_paid_tier_input_cost_usd": 0.0004983,
+   "estimated_paid_tier_output_cost_usd": 0.00894,
+   "estimated_paid_tier_total_cost_usd": 0.0094383,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+    "input_per_million_usd": 1.0,
+    "output_per_million_usd": 5.0,
+    "cached_input_per_million_usd": 0.05,
+    "cache_write_30m_per_million_usd": 1.25,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+   }
+  },
+  "request_sha256": "008c8f7c71106baf9b80ed072d48c91ffba65bcdbd76c131e5a1446bec324dd8",
+  "response_sha256": "01a56b6bf0af4c727099dcf3f1a656b9880d3cd9534909f7dce816b3c344ed43"
+ },
+ "box_validation_warnings": [],
+ "local_step": {
+  "method": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "seconds": 4.13,
+  "diagnostics": {
+   "lines": 25,
+   "whole_lines": 16,
+   "split_lines": 9,
+   "uncovered_lines": 0,
+   "empty_lines": 0,
+   "uncovered_line_ids": [],
+   "dropped_components": [],
+   "band_chained_components": [
+    {
+     "component_id": 299,
+     "from_line": 13,
+     "to_line": 12
+    },
+    {
+     "component_id": 366,
+     "from_line": 14,
+     "to_line": 15
+    },
+    {
+     "component_id": 567,
+     "from_line": 23,
+     "to_line": 24
+    },
+    {
+     "component_id": 568,
+     "from_line": -1,
+     "to_line": 24
+    }
+   ],
+   "rule_pieces": [],
+   "attached_components": [
+    {
+     "component_id": 2,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 47,
+     "gap_px": 47.0,
+     "round": 1,
+     "box": [
+      1264,
+      259,
+      1295,
+      295
+     ],
+     "area": 530
+    },
+    {
+     "component_id": 3,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 37,
+     "gap_px": 48.0,
+     "round": 1,
+     "box": [
+      1297,
+      259,
+      1328,
+      293
+     ],
+     "area": 494
+    },
+    {
+     "component_id": 4,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 36,
+     "gap_px": 46.1,
+     "round": 1,
+     "box": [
+      798,
+      261,
+      836,
+      296
+     ],
+     "area": 700
+    },
+    {
+     "component_id": 5,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 41,
+     "gap_px": 46.0,
+     "round": 1,
+     "box": [
+      904,
+      261,
+      934,
+      296
+     ],
+     "area": 582
+    },
+    {
+     "component_id": 6,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 44,
+     "gap_px": 46.0,
+     "round": 1,
+     "box": [
+      1067,
+      261,
+      1102,
+      296
+     ],
+     "area": 603
+    },
+    {
+     "component_id": 7,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 45,
+     "gap_px": 45.0,
+     "round": 1,
+     "box": [
+      1104,
+      261,
+      1138,
+      297
+     ],
+     "area": 565
+    },
+    {
+     "component_id": 8,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 46,
+     "gap_px": 47.0,
+     "round": 1,
+     "box": [
+      1139,
+      260,
+      1159,
+      295
+     ],
+     "area": 358
+    },
+    {
+     "component_id": 9,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 46,
+     "gap_px": 49.8,
+     "round": 1,
+     "box": [
+      1161,
+      261,
+      1195,
+      296
+     ],
+     "area": 585
+    },
+    {
+     "component_id": 10,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 48,
+     "gap_px": 52.0,
+     "round": 1,
+     "box": [
+      1198,
+      261,
+      1232,
+      296
+     ],
+     "area": 558
+    },
+    {
+     "component_id": 11,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 38,
+     "gap_px": 44.0,
+     "round": 1,
+     "box": [
+      1360,
+      260,
+      1391,
+      296
+     ],
+     "area": 555
+    },
+    {
+     "component_id": 12,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 50,
+     "gap_px": 51.0,
+     "round": 1,
+     "box": [
+      1392,
+      261,
+      1425,
+      296
+     ],
+     "area": 661
+    },
+    {
+     "component_id": 13,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 51,
+     "gap_px": 51.0,
+     "round": 1,
+     "box": [
+      1427,
+      260,
+      1446,
+      296
+     ],
+     "area": 349
+    },
+    {
+     "component_id": 14,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 51,
+     "gap_px": 56.9,
+     "round": 1,
+     "box": [
+      1449,
+      260,
+      1480,
+      295
+     ],
+     "area": 601
+    },
+    {
+     "component_id": 15,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 51,
+     "gap_px": 76.5,
+     "round": 1,
+     "box": [
+      1483,
+      260,
+      1516,
+      296
+     ],
+     "area": 609
+    },
+    {
+     "component_id": 16,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 51,
+     "gap_px": 106.1,
+     "round": 1,
+     "box": [
+      1519,
+      261,
+      1552,
+      296
+     ],
+     "area": 565
+    },
+    {
+     "component_id": 18,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 35,
+     "gap_px": 57.8,
+     "round": 1,
+     "box": [
+      680,
+      263,
+      702,
+      295
+     ],
+     "area": 384
+    },
+    {
+     "component_id": 19,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 35,
+     "gap_px": 44.0,
+     "round": 1,
+     "box": [
+      765,
+      262,
+      796,
+      297
+     ],
+     "area": 516
+    },
+    {
+     "component_id": 20,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 36,
+     "gap_px": 44.0,
+     "round": 1,
+     "box": [
+      838,
+      262,
+      870,
+      297
+     ],
+     "area": 613
+    },
+    {
+     "component_id": 21,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 42,
+     "gap_px": 45.3,
+     "round": 1,
+     "box": [
+      938,
+      262,
+      962,
+      297
+     ],
+     "area": 435
+    },
+    {
+     "component_id": 22,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 42,
+     "gap_px": 46.0,
+     "round": 1,
+     "box": [
+      964,
+      262,
+      994,
+      296
+     ],
+     "area": 460
+    },
+    {
+     "component_id": 23,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 43,
+     "gap_px": 45.0,
+     "round": 1,
+     "box": [
+      997,
+      262,
+      1030,
+      297
+     ],
+     "area": 594
+    },
+    {
+     "component_id": 24,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 44,
+     "gap_px": 45.7,
+     "round": 1,
+     "box": [
+      1031,
+      262,
+      1066,
+      297
+     ],
+     "area": 469
+    },
+    {
+     "component_id": 28,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 35,
+     "gap_px": 93.5,
+     "round": 1,
+     "box": [
+      625,
+      264,
+      655,
+      296
+     ],
+     "area": 517
+    },
+    {
+     "component_id": 30,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 35,
+     "gap_px": 120.7,
+     "round": 1,
+     "box": [
+      603,
+      272,
+      625,
+      296
+     ],
+     "area": 329
+    },
+    {
+     "component_id": 32,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 35,
+     "gap_px": 49.2,
+     "round": 1,
+     "box": [
+      706,
+      287,
+      715,
+      297
+     ],
+     "area": 68
+    },
+    {
+     "component_id": 39,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 64,
+     "gap_px": 1.0,
+     "round": 1,
+     "box": [
+      1366,
+      340,
+      1374,
+      347
+     ],
+     "area": 44
+    },
+    {
+     "component_id": 17,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 16,
+     "gap_px": 1.0,
+     "round": 2,
+     "box": [
+      1553,
+      261,
+      1580,
+      296
+     ],
+     "area": 522
+    },
+    {
+     "component_id": 27,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 30,
+     "gap_px": 27.0,
+     "round": 2,
+     "box": [
+      543,
+      264,
+      576,
+      296
+     ],
+     "area": 635
+    },
+    {
+     "component_id": 29,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 30,
+     "gap_px": 1.0,
+     "round": 2,
+     "box": [
+      578,
+      272,
+      602,
+      297
+     ],
+     "area": 364
+    },
+    {
+     "component_id": 31,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 16,
+     "gap_px": 41.0,
+     "round": 2,
+     "box": [
+      1593,
+      273,
+      1602,
+      283
+     ],
+     "area": 67
+    },
+    {
+     "component_id": 33,
+     "region_index": 0,
+     "line_id": 1,
+     "nearest_component_id": 16,
+     "gap_px": 41.0,
+     "round": 2,
+     "box": [
+      1593,
+      288,
+      1602,
+      304
+     ],
+     "area": 100
+    }
+   ],
+   "unassigned_text_pixels": 0,
+   "unassigned_text_components_not_on_lines": 0,
+   "regions_without_ink": [],
+   "regions_with_several_pieces": [],
+   "polygon_overlap_pixels": 84,
+   "ink_in_polygon_overlaps": 0,
+   "own_ink_outside_polygons": 0,
+   "other_regions_ink_inside_polygons": 0,
+   "separator_pixels_inside_polygons": 1611,
+   "line_polygon_pixels_outside_region_polygons": 178,
+   "line_polygon_pixels": 4152256,
+   "polygon_vertices": 320
+  }
+ },
+ "alignment": {
+  "r1": {
+   "model_lines": 2,
+   "pieces": 1,
+   "result": "2 lines for 1 pieces"
+  },
+  "r2": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r3": {
+   "model_lines": 2,
+   "pieces": 2,
+   "result": "equal"
+  },
+  "r4": {
+   "model_lines": 22,
+   "pieces": 22,
+   "result": "equal"
+  },
+  "r5": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r6": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r7": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r8": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r9": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r10": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r11": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r12": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  }
+ },
+ "regions_aligned": 11,
+ "regions_with_pieces": 12,
+ "regions_skipped": [],
+ "problems": [
+  "r1: 2 lines returned for 1 line pieces; no line text kept"
+ ],
+ "check": {
+  "errors": [],
+  "warnings": [],
+  "valid": true
+ },
+ "counts": {
+  "regions": 12,
+  "units": 4,
+  "relations": 0,
+  "line_pieces": 34
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0"
+  }
+ }
+}

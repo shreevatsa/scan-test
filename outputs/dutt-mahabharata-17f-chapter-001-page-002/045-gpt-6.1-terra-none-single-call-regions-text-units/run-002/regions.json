@@ -1,0 +1,858 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "045-gpt-6.1-terra-none-single-call-regions-text-units",
+  "note": "method 042-style boxes from the single call"
+ },
+ "input": {
+  "id": "dutt-mahabharata-17f-chapter-001-page-002",
+  "path": "inputs/dutt-mahabharata-17f-chapter-001-page-002.png",
+  "sha256": "30d5598a048c41029b6674bafa288f7a0319cdf78f9c47d19d87b336e6d25449",
+  "width": 2106,
+  "height": 2852
+ },
+ "regions": [
+  {
+   "type": "page_number",
+   "box_1000": [
+    86,
+    48,
+    100,
+    62
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 1,
+   "label": "page_number",
+   "region_class": "page_number",
+   "box": [
+    181.116,
+    136.896,
+    210.6,
+    176.824
+   ],
+   "box_xyxy_1000": [
+    86.0,
+    48.0,
+    100.0,
+    62.0
+   ]
+  },
+  {
+   "type": "running_header",
+   "box_1000": [
+    763,
+    48,
+    913,
+    62
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 2,
+   "label": "running_header",
+   "region_class": "running_header",
+   "box": [
+    1606.878,
+    136.896,
+    1922.778,
+    176.824
+   ],
+   "box_xyxy_1000": [
+    763.0,
+    48.0,
+    913.0,
+    62.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    99,
+    83,
+    435,
+    130
+   ],
+   "keep": true,
+   "reading_order": 1,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 3,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    208.494,
+    236.716,
+    916.11,
+    370.76
+   ],
+   "box_xyxy_1000": [
+    99.0,
+    83.0,
+    435.0,
+    130.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    99,
+    133,
+    429,
+    179
+   ],
+   "keep": true,
+   "reading_order": 2,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 4,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    208.494,
+    379.316,
+    903.474,
+    510.508
+   ],
+   "box_xyxy_1000": [
+    99.0,
+    133.0,
+    429.0,
+    179.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    85,
+    182,
+    489,
+    291
+   ],
+   "keep": true,
+   "reading_order": 3,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 5,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    179.01,
+    519.064,
+    1029.834,
+    829.932
+   ],
+   "box_xyxy_1000": [
+    85.0,
+    181.99999999999997,
+    489.00000000000006,
+    291.0
+   ]
+  },
+  {
+   "type": "speaker",
+   "box_1000": [
+    244,
+    299,
+    332,
+    317
+   ],
+   "keep": true,
+   "reading_order": 4,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 6,
+   "label": "speaker",
+   "region_class": "heading",
+   "box": [
+    513.864,
+    852.748,
+    699.192,
+    904.084
+   ],
+   "box_xyxy_1000": [
+    244.00000000000003,
+    299.0,
+    332.0,
+    317.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    99,
+    325,
+    393,
+    370
+   ],
+   "keep": true,
+   "reading_order": 5,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 7,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    208.494,
+    926.9,
+    827.658,
+    1055.24
+   ],
+   "box_xyxy_1000": [
+    99.0,
+    325.0,
+    393.0,
+    370.0
+   ]
+  },
+  {
+   "type": "speaker",
+   "box_1000": [
+    85,
+    377,
+    198,
+    394
+   ],
+   "keep": true,
+   "reading_order": 6,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 8,
+   "label": "speaker",
+   "region_class": "heading",
+   "box": [
+    179.01,
+    1075.204,
+    416.988,
+    1123.688
+   ],
+   "box_xyxy_1000": [
+    85.0,
+    377.0,
+    198.0,
+    394.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    85,
+    396,
+    489,
+    449
+   ],
+   "keep": true,
+   "reading_order": 7,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 9,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    179.01,
+    1129.392,
+    1029.834,
+    1280.548
+   ],
+   "box_xyxy_1000": [
+    85.0,
+    396.0,
+    489.00000000000006,
+    449.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    99,
+    454,
+    409,
+    499
+   ],
+   "keep": true,
+   "reading_order": 8,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 10,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    208.494,
+    1294.808,
+    861.354,
+    1423.148
+   ],
+   "box_xyxy_1000": [
+    99.0,
+    454.0,
+    409.0,
+    499.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    85,
+    502,
+    488,
+    555
+   ],
+   "keep": true,
+   "reading_order": 9,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 11,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    179.01,
+    1431.704,
+    1027.728,
+    1582.86
+   ],
+   "box_xyxy_1000": [
+    85.0,
+    502.0,
+    488.00000000000006,
+    555.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    98,
+    559,
+    462,
+    607
+   ],
+   "keep": true,
+   "reading_order": 10,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 12,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    206.388,
+    1594.268,
+    972.972,
+    1731.164
+   ],
+   "box_xyxy_1000": [
+    98.0,
+    559.0,
+    462.0,
+    607.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    85,
+    607,
+    488,
+    678
+   ],
+   "keep": true,
+   "reading_order": 11,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 13,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    179.01,
+    1731.164,
+    1027.728,
+    1933.656
+   ],
+   "box_xyxy_1000": [
+    85.0,
+    607.0,
+    488.00000000000006,
+    678.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    99,
+    680,
+    417,
+    728
+   ],
+   "keep": true,
+   "reading_order": 12,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 14,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    208.494,
+    1939.36,
+    878.202,
+    2076.256
+   ],
+   "box_xyxy_1000": [
+    99.0,
+    680.0,
+    417.0,
+    727.9999999999999
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    99,
+    730,
+    405,
+    777
+   ],
+   "keep": true,
+   "reading_order": 13,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 15,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    208.494,
+    2081.96,
+    852.93,
+    2216.004
+   ],
+   "box_xyxy_1000": [
+    99.0,
+    730.0,
+    405.0,
+    777.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    85,
+    778,
+    489,
+    900
+   ],
+   "keep": true,
+   "reading_order": 14,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 16,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    179.01,
+    2218.856,
+    1029.834,
+    2566.8
+   ],
+   "box_xyxy_1000": [
+    85.0,
+    778.0,
+    489.00000000000006,
+    900.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    99,
+    903,
+    458,
+    951
+   ],
+   "keep": true,
+   "reading_order": 15,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 17,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    208.494,
+    2575.356,
+    964.548,
+    2712.252
+   ],
+   "box_xyxy_1000": [
+    99.0,
+    903.0,
+    458.0,
+    951.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    524,
+    83,
+    878,
+    130
+   ],
+   "keep": true,
+   "reading_order": 16,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 18,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    1103.544,
+    236.716,
+    1849.068,
+    370.76
+   ],
+   "box_xyxy_1000": [
+    524.0,
+    83.0,
+    878.0,
+    130.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    510,
+    131,
+    915,
+    255
+   ],
+   "keep": true,
+   "reading_order": 17,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 19,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    1074.06,
+    373.612,
+    1926.99,
+    727.26
+   ],
+   "box_xyxy_1000": [
+    510.0,
+    131.0,
+    915.0,
+    255.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    524,
+    258,
+    847,
+    305
+   ],
+   "keep": true,
+   "reading_order": 18,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 20,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    1103.544,
+    735.816,
+    1783.782,
+    869.86
+   ],
+   "box_xyxy_1000": [
+    524.0,
+    258.0,
+    847.0,
+    305.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    510,
+    307,
+    914,
+    361
+   ],
+   "keep": true,
+   "reading_order": 19,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 21,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    1074.06,
+    875.564,
+    1924.884,
+    1029.572
+   ],
+   "box_xyxy_1000": [
+    510.0,
+    307.0,
+    914.0,
+    360.99999999999994
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    523,
+    366,
+    821,
+    411
+   ],
+   "keep": true,
+   "reading_order": 20,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 22,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    1101.438,
+    1043.832,
+    1729.026,
+    1172.172
+   ],
+   "box_xyxy_1000": [
+    523.0,
+    366.00000000000006,
+    821.0,
+    411.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    523,
+    417,
+    853,
+    461
+   ],
+   "keep": true,
+   "reading_order": 21,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 23,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    1101.438,
+    1189.284,
+    1796.418,
+    1314.772
+   ],
+   "box_xyxy_1000": [
+    523.0,
+    417.0,
+    853.0,
+    461.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    510,
+    464,
+    914,
+    628
+   ],
+   "keep": true,
+   "reading_order": 22,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 24,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    1074.06,
+    1323.328,
+    1924.884,
+    1791.056
+   ],
+   "box_xyxy_1000": [
+    510.0,
+    464.0,
+    914.0,
+    628.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    524,
+    632,
+    879,
+    679
+   ],
+   "keep": true,
+   "reading_order": 23,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 25,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    1103.544,
+    1802.464,
+    1851.174,
+    1936.508
+   ],
+   "box_xyxy_1000": [
+    524.0,
+    632.0,
+    879.0,
+    679.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    510,
+    680,
+    914,
+    771
+   ],
+   "keep": true,
+   "reading_order": 24,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 26,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    1074.06,
+    1939.36,
+    1924.884,
+    2198.892
+   ],
+   "box_xyxy_1000": [
+    510.0,
+    680.0,
+    914.0,
+    771.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    523,
+    775,
+    818,
+    824
+   ],
+   "keep": true,
+   "reading_order": 25,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 27,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    1101.438,
+    2210.3,
+    1722.708,
+    2350.048
+   ],
+   "box_xyxy_1000": [
+    523.0,
+    775.0,
+    818.0,
+    824.0
+   ]
+  },
+  {
+   "type": "translation",
+   "box_1000": [
+    510,
+    824,
+    913,
+    895
+   ],
+   "keep": true,
+   "reading_order": 26,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 28,
+   "label": "translation",
+   "region_class": "paragraph",
+   "box": [
+    1074.06,
+    2350.048,
+    1922.778,
+    2552.54
+   ],
+   "box_xyxy_1000": [
+    510.0,
+    824.0,
+    913.0,
+    895.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    523,
+    900,
+    837,
+    949
+   ],
+   "keep": true,
+   "reading_order": 27,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 29,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    1101.438,
+    2566.8,
+    1762.722,
+    2706.548
+   ],
+   "box_xyxy_1000": [
+    523.0,
+    900.0,
+    837.0,
+    949.0
+   ]
+  }
+ ],
+ "validation_warnings": []
+}

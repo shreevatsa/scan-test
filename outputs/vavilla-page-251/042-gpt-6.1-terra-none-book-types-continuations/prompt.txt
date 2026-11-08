@@ -1,0 +1,38 @@
+Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.
+
+The book: Bhartṛhari's three śatakas (भर्तृहरिसुभाषितम्) with Rāmacandra Budhendra's Sanskrit commentary, Vavilla edition. Sanskrit only. Each stanza, in larger type with its number at the right margin, is followed by its commentary, which begins व्या.— and often quotes verses from other works, set apart on lines of their own. The name of the metre can follow the commentary on a line of its own. The stanzas are grouped in sections (paddhatis) with a heading such as ॥ कामिनीगर्हणम् ॥, and a section can end with a closing line in small type, such as इति शृङ्गारशतके … सम्पूर्णम् ॥.
+
+Return JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,
+with the origin at the top-left. Give each region a type, a keep flag, and
+reading_order among content regions. Furniture regions may have null order.
+
+Make each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:
+- heading: A heading: the title of a śataka, or of a section, such as ॥ कामिनीगर्हणम् ॥.
+- verse: One stanza of Bhartṛhari in the larger type, with its number in Devanagari digits at the right margin of its last line, such as २४. A stanza can begin at the foot of one page and end at the top of the next. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- commentary: One paragraph of the commentary on the stanza, in smaller type. The first begins व्या.—. The commentary often quotes verses after words such as तदुक्तम्.—; the quoted lines are a quotation, and the commentary's text before and after them, even a short line such as कामशास्त्रोक्तास्तु—, belongs to the commentary. A metre name printed at the end of its last line, such as आर्याभेदः ॥, belongs to the commentary. One region per paragraph, including one continued from the previous page or onto the next.
+- quotation: Lines of verse quoted in the commentary and set apart, indented, usually in quotation marks and followed by इति. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- metre: The name of the stanza's metre on a line of its own after the commentary, such as वसन्ततिलकावृत्तम् - लक्षणं तूक्तम् ॥.
+- colophon: The closing line of a section, in small type and centered, such as इति शृङ्गारशतके पञ्चद्वयानिरूपणं सम्पूर्णम् ॥.
+- running_header: The running title: the śataka's name, such as नीतिशतके, on left pages, and the section's name, such as सुविरक्तपद्धतिः, on right pages. Page furniture, keep=false.
+- page_number: The page number in Devanagari digits at the outer corner of the head. Page furniture, keep=false.
+- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.
+
+Larger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:
+- shataka: One of the three śatakas, with its sections.
+- section: A section (paddhati) of a śataka: its heading, its stanzas with their commentary, and its closing line if printed.
+- group: One stanza with its commentary and its metre line. The app can show each group on its own.
+
+- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.
+- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.
+- A region holds the text of one unit only. Where one unit contains another, as with a quotation inside a commentary, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.
+- Continuation: give each region two flags.
+  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.
+  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.
+  Both are false for a unit that is complete in its region, and for page furniture.
+- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.
+- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.
+- Do not transcribe, translate, or regenerate the text. Only propose regions.
+
+Schema:
+{"regions":[{"type":"heading|verse|commentary|quotation|metre|colophon|running_header|page_number|other",
+"box_1000":[0,0,1000,1000],"keep":true,"reading_order":1,"uncertain":false,"continues_from_earlier":false,"continues_later":false}]}

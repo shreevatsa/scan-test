@@ -1,0 +1,721 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-05T17:40:06.395600+00:00",
+  "method": {
+    "id": "042-gpt-6.1-terra-none-book-types-continuations",
+    "name": "GPT-6.1 Terra without reasoning, explicit units, book types from the type list and continuation flags",
+    "settings": {
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "none",
+      "image_detail": "original",
+      "max_output_tokens": 16384,
+      "store": false,
+      "coordinate_format": "xyxy_1000",
+      "prompt_variant": "book-types-continuations-v1",
+      "cache_lifetime": "30m (provider default)",
+      "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+    },
+    "files_sha256": {
+      "run.py": "9db6615121323cc6f247ae49002a9679631cd9188b3b8adfafe941ff674afff2",
+      "regions.py": "1beb4c729a2d8bca063dea767c00889b5819d2f2ca307d74c431e0c526fb382d",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+      "prompt.py": "eff510f80417505ec27a9585846893660b5b9c6c3b5527f1c212747070c507cf",
+      "prompt-template.txt": "35d2fda7ce837fedb3a0f982e81d54ac0af3ccfc73c6b384d641e7db70ed4c9e",
+      "response-schema-template.json": "79e5fdbbc0134fd5a7534d0ea0975bdb7730f9e59e630793758a6ef30cd591d4",
+      "config.json": "87fa1a906d09706dd2ed77f0fd2e924511836da413a76e1d9a23de6d3bcf3b0b",
+      "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    },
+    "type_list": {
+      "path": "schema/types/kale-1913.json",
+      "sha256": "4737e5e691053a12df24f552d4c2d59bbdc7dd062a2c20233170fec3316c1eb7",
+      "book_id": "kale-1913"
+    },
+    "prompt_sha256": "fe5ce0f98ff038b139e088a403ee8e905381e0eb29894208e026ac692e41bab4",
+    "response_schema_sha256": "f261408e5a1fea74c2c16da780d70af012117f377244eabd19d028fcfb1bdcff",
+    "region_classes": {
+      "heading": "heading",
+      "paragraph": "paragraph",
+      "contents_entry": "list_item",
+      "commentator_verse": "verse",
+      "lead_in": "lead_in",
+      "verse": "verse",
+      "commentary": "paragraph",
+      "translated_stanza": "paragraph",
+      "stanza_note": "paragraph",
+      "footnote": "note",
+      "running_header": "running_header",
+      "page_number": "page_number",
+      "other": "other"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-031",
+    "path": "inputs/kale-1913-page-031.png",
+    "sha256": "104a8637f071a0a3621ca4a8faa7603b9e35995ba3d2b722343f992403bcf46f",
+    "width": 1403,
+    "height": 2122
+  },
+  "api": {
+    "endpoint": "https://api.openai.com/v1/responses",
+    "requested_model": "gpt-6.1-terra",
+    "returned_model": "gpt-6.1-terra",
+    "response_id": "resp_01b32061d178cd3c016aecbf76de9487d19fa79716fc7fe9c0",
+    "request_id": "req_7937a5cb908b4bfc8fcb14315a15eb38",
+    "client_request_id": "c9d5f244-14c7-4752-a1d2-41e01c2c3ec3",
+    "api_wall_seconds": 11.945582624990493,
+    "usage": {
+      "input_tokens": 5264,
+      "input_tokens_details": {
+        "cache_write_tokens": 5261,
+        "cached_tokens": 0
+      },
+      "output_tokens": 922,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 6186
+    },
+    "response_headers_seconds": 11.943095209077,
+    "response_first_body_byte_seconds": 11.943123249802738,
+    "service_tier": "default",
+    "tokens_and_cost": {
+      "available": true,
+      "input_tokens": 5264,
+      "ordinary_input_tokens": 3,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 5261,
+      "output_tokens_including_reasoning": 922,
+      "reasoning_tokens": 0,
+      "non_reasoning_output_tokens": 922,
+      "total_token_count_matches": true,
+      "cache_write_lifetime": "30m (provider default)",
+      "estimated_paid_tier_input_cost_usd": 0.00657925,
+      "estimated_paid_tier_output_cost_usd": 0.00461,
+      "estimated_paid_tier_total_cost_usd": 0.011189250000000001,
+      "pricing": {
+        "checked_on": "2026-11-03",
+        "currency": "USD",
+        "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+        "input_per_million_usd": 1.0,
+        "output_per_million_usd": 5.0,
+        "cached_input_per_million_usd": 0.05,
+        "cache_write_30m_per_million_usd": 1.25,
+        "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+      }
+    },
+    "response_sha256": "b2a5558a8425e634d4d3d50f83369745caaf79016c5a12108438f8764be2b635",
+    "request_sha256": "81fe6e20eb693ea7d43dd70497f5b0f3b9b755a4513cbbfe9ae740b56575f32e"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "page_number",
+      "box_1000": [
+        85,
+        66,
+        150,
+        97
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 1,
+      "label": "page_number",
+      "region_class": "page_number",
+      "box": [
+        119.255,
+        140.052,
+        210.45,
+        205.834
+      ],
+      "box_xyxy_1000": [
+        85.0,
+        66.0,
+        150.0,
+        97.0
+      ]
+    },
+    {
+      "type": "running_header",
+      "box_1000": [
+        420,
+        65,
+        595,
+        98
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 2,
+      "label": "running_header",
+      "region_class": "running_header",
+      "box": [
+        589.26,
+        137.93,
+        834.785,
+        207.956
+      ],
+      "box_xyxy_1000": [
+        420.0,
+        65.0,
+        595.0,
+        98.0
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        94,
+        120,
+        896,
+        179
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "continues_from_earlier": true,
+      "continues_later": false,
+      "region_id": 3,
+      "label": "commentary",
+      "region_class": "paragraph",
+      "box": [
+        131.882,
+        254.64,
+        1257.088,
+        379.838
+      ],
+      "box_xyxy_1000": [
+        94.0,
+        120.0,
+        896.0,
+        179.0
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        132,
+        180,
+        666,
+        214
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 4,
+      "label": "lead_in",
+      "region_class": "lead_in",
+      "box": [
+        185.196,
+        381.96,
+        934.398,
+        454.108
+      ],
+      "box_xyxy_1000": [
+        132.0,
+        180.0,
+        666.0,
+        214.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        168,
+        213,
+        765,
+        335
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 5,
+      "label": "verse",
+      "region_class": "verse",
+      "box": [
+        235.704,
+        451.986,
+        1073.295,
+        710.87
+      ],
+      "box_xyxy_1000": [
+        168.0,
+        213.0,
+        765.0,
+        335.0
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        92,
+        338,
+        905,
+        503
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 6,
+      "label": "commentary",
+      "region_class": "paragraph",
+      "box": [
+        129.076,
+        717.236,
+        1269.715,
+        1067.366
+      ],
+      "box_xyxy_1000": [
+        92.0,
+        338.0,
+        905.0,
+        503.0
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        149,
+        506,
+        513,
+        531
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 7,
+      "label": "lead_in",
+      "region_class": "lead_in",
+      "box": [
+        209.047,
+        1073.732,
+        719.739,
+        1126.782
+      ],
+      "box_xyxy_1000": [
+        149.0,
+        506.0,
+        513.0,
+        531.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        173,
+        532,
+        904,
+        656
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 8,
+      "label": "verse",
+      "region_class": "verse",
+      "box": [
+        242.719,
+        1128.904,
+        1268.312,
+        1392.032
+      ],
+      "box_xyxy_1000": [
+        173.0,
+        532.0,
+        904.0,
+        656.0
+      ]
+    },
+    {
+      "type": "commentary",
+      "box_1000": [
+        99,
+        657,
+        906,
+        770
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 9,
+      "label": "commentary",
+      "region_class": "paragraph",
+      "box": [
+        138.897,
+        1394.154,
+        1271.118,
+        1633.94
+      ],
+      "box_xyxy_1000": [
+        99.0,
+        657.0,
+        906.0,
+        770.0
+      ]
+    },
+    {
+      "type": "lead_in",
+      "box_1000": [
+        141,
+        772,
+        572,
+        798
+      ],
+      "keep": true,
+      "reading_order": 8,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 10,
+      "label": "lead_in",
+      "region_class": "lead_in",
+      "box": [
+        197.823,
+        1638.184,
+        802.516,
+        1693.356
+      ],
+      "box_xyxy_1000": [
+        141.0,
+        772.0,
+        572.0,
+        798.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        178,
+        803,
+        874,
+        862
+      ],
+      "keep": true,
+      "reading_order": 9,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": true,
+      "region_id": 11,
+      "label": "verse",
+      "region_class": "verse",
+      "box": [
+        249.734,
+        1703.966,
+        1226.222,
+        1829.164
+      ],
+      "box_xyxy_1000": [
+        178.0,
+        803.0,
+        874.0,
+        862.0
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        136,
+        875,
+        338,
+        896
+      ],
+      "keep": true,
+      "reading_order": 10,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 12,
+      "label": "footnote",
+      "region_class": "note",
+      "box": [
+        190.808,
+        1856.75,
+        474.214,
+        1901.312
+      ],
+      "box_xyxy_1000": [
+        136.0,
+        875.0,
+        338.0,
+        896.0
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        349,
+        875,
+        583,
+        896
+      ],
+      "keep": true,
+      "reading_order": 11,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 13,
+      "label": "footnote",
+      "region_class": "note",
+      "box": [
+        489.647,
+        1856.75,
+        817.949,
+        1901.312
+      ],
+      "box_xyxy_1000": [
+        349.0,
+        875.0,
+        583.0,
+        896.0
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        602,
+        876,
+        675,
+        896
+      ],
+      "keep": true,
+      "reading_order": 12,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 14,
+      "label": "footnote",
+      "region_class": "note",
+      "box": [
+        844.606,
+        1858.872,
+        947.025,
+        1901.312
+      ],
+      "box_xyxy_1000": [
+        602.0,
+        876.0,
+        675.0,
+        896.0
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        679,
+        875,
+        798,
+        896
+      ],
+      "keep": true,
+      "reading_order": 13,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 15,
+      "label": "footnote",
+      "region_class": "note",
+      "box": [
+        952.637,
+        1856.75,
+        1119.594,
+        1901.312
+      ],
+      "box_xyxy_1000": [
+        679.0,
+        875.0,
+        798.0,
+        896.0
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        807,
+        875,
+        912,
+        898
+      ],
+      "keep": true,
+      "reading_order": 14,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 16,
+      "label": "footnote",
+      "region_class": "note",
+      "box": [
+        1132.221,
+        1856.75,
+        1279.536,
+        1905.556
+      ],
+      "box_xyxy_1000": [
+        807.0,
+        875.0,
+        912.0,
+        898.0
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        108,
+        897,
+        388,
+        921
+      ],
+      "keep": true,
+      "reading_order": 15,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 17,
+      "label": "footnote",
+      "region_class": "note",
+      "box": [
+        151.524,
+        1903.434,
+        544.364,
+        1954.362
+      ],
+      "box_xyxy_1000": [
+        108.0,
+        897.0,
+        388.0,
+        921.0
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        409,
+        897,
+        527,
+        920
+      ],
+      "keep": true,
+      "reading_order": 16,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 18,
+      "label": "footnote",
+      "region_class": "note",
+      "box": [
+        573.827,
+        1903.434,
+        739.381,
+        1952.24
+      ],
+      "box_xyxy_1000": [
+        409.0,
+        897.0,
+        527.0,
+        920.0
+      ]
+    },
+    {
+      "type": "footnote",
+      "box_1000": [
+        538,
+        898,
+        644,
+        920
+      ],
+      "keep": true,
+      "reading_order": 17,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 19,
+      "label": "footnote",
+      "region_class": "note",
+      "box": [
+        754.814,
+        1905.556,
+        903.532,
+        1952.24
+      ],
+      "box_xyxy_1000": [
+        538.0,
+        898.0,
+        644.0,
+        920.0
+      ]
+    }
+  ],
+  "region_types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 3,
+    "verse": 3,
+    "footnote": 8
+  },
+  "region_class_counts": {
+    "page_number": 1,
+    "running_header": 1,
+    "paragraph": 3,
+    "lead_in": 3,
+    "verse": 3,
+    "note": 8
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 19,
+    "ink_pixels": 402308,
+    "uncovered_ink_pixels": 922,
+    "ink_coverage": 0.9977082235501158,
+    "partially_covered_components": 0
+  },
+  "kept_regions_metrics": {
+    "regions": 17,
+    "ink_pixels": 402308,
+    "uncovered_ink_pixels": 7966,
+    "ink_coverage": 0.9801992503256212,
+    "partially_covered_components": 0
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "prompt": "prompt.txt",
+    "response_schema": "response-schema.json",
+    "type_list": "type-list.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

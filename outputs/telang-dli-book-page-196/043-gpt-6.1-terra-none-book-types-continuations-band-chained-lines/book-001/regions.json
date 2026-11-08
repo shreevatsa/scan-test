@@ -1,0 +1,585 @@
+{
+ "schema_version": 1,
+ "created_at_utc": "2026-11-06T07:00:35.705076+00:00",
+ "method": {
+  "id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "name": "GPT-6.1 Terra without reasoning, book types from the type list with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions"
+ },
+ "input": {
+  "path": "inputs/telang-dli-book-page-196.png",
+  "sha256": "8a12a5b767960e3b56640a33757ae7896a7dc0523a3603d5e58e85ba1afb87ed",
+  "width": 1500,
+  "height": 2500
+ },
+ "source": {
+  "method_id": "042-gpt-6.1-terra-none-book-types-continuations",
+  "regions_path": "outputs/telang-dli-book-page-196/042-gpt-6.1-terra-none-book-types-continuations/book-001/regions.json",
+  "regions_sha256": "4685b7e3445048d9a30d336f6458095adb20966b0aa7e199ebb4b0449423e5f3",
+  "note": "The source model call is not repeated; its cost and timing are in the source output."
+ },
+ "api_calls": 0,
+ "coordinates": "Polygon rings are in input-image pixel indices, outer boundary only, largest piece first. Vertex (x, y) is the center of pixel column x and row y, and a region is its closed polygon including boundary pixels. In a corner-based system such as SVG with the image at (0, 0), add 0.5 to both coordinates. model_box is the source result's derived box, unchanged.",
+ "line_analysis": {
+  "char_h": 44.0,
+  "page_angle_deg": 0.009999999999978318,
+  "lines": 1,
+  "columns": 1,
+  "ink_thresholds": {
+   "strong": 134.0,
+   "weak": 194.5,
+   "speck_area": 19
+  }
+ },
+ "settings": {
+  "name": "GPT-6.1 Terra without reasoning, book types from the type list with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions",
+  "base_method_id": "042-gpt-6.1-terra-none-book-types-continuations",
+  "component_in_box_fraction": 0.5,
+  "minimum_line_share": 0.25,
+  "local_box_maximum_line_coverage": 0.9,
+  "local_box_minimum_ink_share": 0.5,
+  "remainder_minimum_line_share": 0.25,
+  "side_by_side_maximum_overlap_fraction": 0.1,
+  "maximum_outside_gap_char": 1.0,
+  "isolation_gap_char": 2.0,
+  "unlined_attach_gap_char": 2.0,
+  "rule_piece_max_height_char": 0.25,
+  "rule_piece_band_tolerance_char": 0.1,
+  "rule_piece_gap_char": 3.0,
+  "envelope_padding_char": 0.25,
+  "polygon_epsilon_px": 1.0,
+  "distance_mask_size": 5
+ },
+ "line_settings": {
+  "name": "Text-line skew, curvature and boundary separability",
+  "maximum_strong_threshold": 200,
+  "speck_area_page_fraction": 5e-07,
+  "speck_size_char_fraction": 0.1,
+  "rule_minimum_aspect": 10,
+  "rule_maximum_height_char": 0.4,
+  "rule_minimum_width_char": 3,
+  "large_component_height_char": 3.0,
+  "large_component_width_page": 0.6,
+  "minimum_text_pixels_char2": 20,
+  "angle_sample_limit": 400000,
+  "angle_search_deg": 6,
+  "angle_coarse_step_deg": 0.1,
+  "angle_fine_step_deg": 0.01,
+  "gutter_minimum_width_char": 1.5,
+  "gutter_minimum_side_fraction": 0.1,
+  "main_minimum_height_char": 0.55,
+  "main_maximum_height_char": 2.2,
+  "line_split_gap_char": 0.35,
+  "assign_horizontal_pad_char": 1.0,
+  "assign_maximum_distance_char": 1.2,
+  "band_chain_gap_char": 1.0,
+  "long_line_column_fraction": 0.6,
+  "long_line_minimum_char": 10,
+  "segment_width_char": 5,
+  "maximum_segments": 10,
+  "maximum_segment_offset_char": 0.6,
+  "minimum_segment_pixels_char2": 0.3,
+  "pair_minimum_overlap_char": 2,
+  "pair_minimum_pixels_char2": 1.0,
+  "straight_search_deg": 6,
+  "straight_step_deg": 0.01,
+  "separable_margin_px": 1.0,
+  "conflict_pixel_tolerance": 0
+ },
+ "regions": [
+  {
+   "region_id": 1,
+   "type": "scan_matter",
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "other",
+   "model_box": [
+    568.5,
+    1092.5,
+    1050.0,
+    1290.0
+   ],
+   "status": "ok",
+   "polygons": [
+    [
+     [
+      564,
+      1085
+     ],
+     [
+      564,
+      1294
+     ],
+     [
+      1053,
+      1294
+     ],
+     [
+      1053,
+      1085
+     ]
+    ]
+   ],
+   "bounds": [
+    564,
+    1085,
+    1054,
+    1295
+   ],
+   "ink_pixels": 41143,
+   "components": 30,
+   "line_ids": [
+    0
+   ],
+   "lines": [
+    {
+     "line_id": 0,
+     "shared_with_other_regions": false,
+     "ink_pixels": 41143,
+     "polygons": [
+      [
+       [
+        564,
+        1085
+       ],
+       [
+        564,
+        1294
+       ],
+       [
+        1053,
+        1294
+       ],
+       [
+        1053,
+        1085
+       ]
+      ]
+     ]
+    }
+   ],
+   "vertices": 4,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  }
+ ],
+ "line_decisions": [
+  {
+   "line_id": 0,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    0
+   ],
+   "ink_pixels": 6351,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "0": 1.0
+   },
+   "region_ids": [
+    1
+   ]
+  }
+ ],
+ "diagnostics": {
+  "lines": 1,
+  "whole_lines": 1,
+  "split_lines": 0,
+  "uncovered_lines": 0,
+  "empty_lines": 0,
+  "uncovered_line_ids": [],
+  "dropped_components": [],
+  "band_chained_components": [],
+  "rule_pieces": [],
+  "attached_components": [
+   {
+    "component_id": 2,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 25,
+    "gap_px": 8.0,
+    "round": 1,
+    "box": [
+     795,
+     1096,
+     809,
+     1227
+    ],
+    "area": 1789
+   },
+   {
+    "component_id": 4,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 26,
+    "gap_px": 77.9,
+    "round": 1,
+    "box": [
+     593,
+     1099,
+     601,
+     1225
+    ],
+    "area": 940
+   },
+   {
+    "component_id": 5,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 26,
+    "gap_px": 48.3,
+    "round": 1,
+    "box": [
+     611,
+     1099,
+     631,
+     1226
+    ],
+    "area": 2490
+   },
+   {
+    "component_id": 6,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 26,
+    "gap_px": 26.4,
+    "round": 1,
+    "box": [
+     640,
+     1099,
+     654,
+     1226
+    ],
+    "area": 1733
+   },
+   {
+    "component_id": 7,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 26,
+    "gap_px": 13.0,
+    "round": 1,
+    "box": [
+     658,
+     1099,
+     671,
+     1226
+    ],
+    "area": 1644
+   },
+   {
+    "component_id": 8,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 26,
+    "gap_px": 11.0,
+    "round": 1,
+    "box": [
+     681,
+     1099,
+     695,
+     1226
+    ],
+    "area": 1769
+   },
+   {
+    "component_id": 9,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 26,
+    "gap_px": 11.0,
+    "round": 1,
+    "box": [
+     703,
+     1099,
+     713,
+     1226
+    ],
+    "area": 982
+   },
+   {
+    "component_id": 10,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 27,
+    "gap_px": 11.0,
+    "round": 1,
+    "box": [
+     723,
+     1098,
+     731,
+     1226
+    ],
+    "area": 1009
+   },
+   {
+    "component_id": 11,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 28,
+    "gap_px": 11.0,
+    "round": 1,
+    "box": [
+     746,
+     1099,
+     762,
+     1226
+    ],
+    "area": 1773
+   },
+   {
+    "component_id": 12,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 25,
+    "gap_px": 9.0,
+    "round": 1,
+    "box": [
+     771,
+     1100,
+     779,
+     1226
+    ],
+    "area": 1000
+   },
+   {
+    "component_id": 13,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 25,
+    "gap_px": 8.2,
+    "round": 1,
+    "box": [
+     810,
+     1100,
+     832,
+     1227
+    ],
+    "area": 2408
+   },
+   {
+    "component_id": 14,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 29,
+    "gap_px": 10.0,
+    "round": 1,
+    "box": [
+     836,
+     1100,
+     862,
+     1227
+    ],
+    "area": 3196
+   },
+   {
+    "component_id": 15,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 29,
+    "gap_px": 10.0,
+    "round": 1,
+    "box": [
+     866,
+     1100,
+     875,
+     1227
+    ],
+    "area": 956
+   },
+   {
+    "component_id": 16,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 30,
+    "gap_px": 10.0,
+    "round": 1,
+    "box": [
+     883,
+     1100,
+     891,
+     1227
+    ],
+    "area": 1007
+   },
+   {
+    "component_id": 17,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 30,
+    "gap_px": 10.0,
+    "round": 1,
+    "box": [
+     901,
+     1100,
+     909,
+     1227
+    ],
+    "area": 993
+   },
+   {
+    "component_id": 18,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 32,
+    "gap_px": 11.0,
+    "round": 1,
+    "box": [
+     930,
+     1100,
+     946,
+     1227
+    ],
+    "area": 1762
+   },
+   {
+    "component_id": 19,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 32,
+    "gap_px": 20.2,
+    "round": 1,
+    "box": [
+     953,
+     1100,
+     961,
+     1227
+    ],
+    "area": 976
+   },
+   {
+    "component_id": 20,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 32,
+    "gap_px": 31.0,
+    "round": 1,
+    "box": [
+     965,
+     1100,
+     979,
+     1227
+    ],
+    "area": 1672
+   },
+   {
+    "component_id": 21,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 32,
+    "gap_px": 59.0,
+    "round": 1,
+    "box": [
+     994,
+     1100,
+     1013,
+     1227
+    ],
+    "area": 2405
+   },
+   {
+    "component_id": 22,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 32,
+    "gap_px": 81.7,
+    "round": 1,
+    "box": [
+     1017,
+     1100,
+     1026,
+     1227
+    ],
+    "area": 889
+   },
+   {
+    "component_id": 3,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 4,
+    "gap_px": 4.0,
+    "round": 2,
+    "box": [
+     575,
+     1099,
+     589,
+     1226
+    ],
+    "area": 1674
+   },
+   {
+    "component_id": 23,
+    "region_index": 0,
+    "line_id": 0,
+    "nearest_component_id": 22,
+    "gap_px": 2.0,
+    "round": 2,
+    "box": [
+     1028,
+     1100,
+     1043,
+     1227
+    ],
+    "area": 1725
+   }
+  ],
+  "unassigned_text_pixels": 0,
+  "unassigned_text_components_not_on_lines": 0,
+  "regions_without_ink": [],
+  "regions_with_several_pieces": [],
+  "polygon_overlap_pixels": 0,
+  "ink_in_polygon_overlaps": 0,
+  "own_ink_outside_polygons": 0,
+  "other_regions_ink_inside_polygons": 0,
+  "separator_pixels_inside_polygons": 0,
+  "line_polygon_pixels_outside_region_polygons": 0,
+  "line_polygon_pixels": 102900,
+  "polygon_vertices": 4
+ },
+ "ownership_png": {
+  "path": "ownership.png",
+  "values": "0 unassigned or background, 1..N region index + 1 in source order, 255 rules and large non-text",
+  "sha256": "e076ee92d8e601537299c62b00c38d69ad6c8958eff1ac070aed9e6dc2c91b36"
+ },
+ "local_seconds": {
+  "line_analysis": 0.135,
+  "ownership": 0.001,
+  "outlines": 0.129,
+  "total_including_audit_and_drawing": 0.541
+ },
+ "code_sha256": {
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+  "book_types.py": "0565177fbe77676a4bb19c82404220a37de75148e5e1e322ad85e16be957fad8",
+  "config.json": "1074dace61dc55103d9b7e4fd6bee63bedae8661bbd37766ae5c228f0ddc96e2",
+  "crossbook.py": "b19064edf5fa57e5b87bae81c492dbb1aa171857b27d050c826e5aed8b3ea815",
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "geometry.py": "0ad52d9a91bf0cee2e8721f8e671fc5f412c50d0e3fea5d23d37e56064fdeacd",
+  "line-config.json": "f6b515c719b5be95e01514a354a6d9a3f85b1efae9037a9d32d7390a4bee30d5",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "run.py": "0bd7629e75b60f1d528e6df8f0f4be9c3f8bf2c5c5741314f601e47d1ba119d3",
+  "stability.py": "b0c87685dbc262b4da0dfd2b6c041d012895b35ea028f32c93eab818df4d6841",
+  "sweep.py": "4db8c8b9335965eea28305aa95dbc81193da0691327b2bda84f9750a44c9153e"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0",
+   "opencv-python-headless": "5.0.0.93"
+  }
+ }
+}

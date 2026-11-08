@@ -2,3 +2,16 @@
 __pycache__/
 *.pyc
 methods/003-pp-doclayoutv3/models/v3/PP-DocLayoutV3.onnx.data
+
+# ---- Regenerable binaries (2026-11-07): kept on the machine, not in git.
+# Rendered page images, crops and overlays (from the source PDFs; inputs/*.json record each image's sha256).
+/inputs/*.png
+/outputs/**/*.png
+# Requests that embed page images (each method rebuilds them; the responses and results are committed).
+/outputs/**/request.json
+# Book folders and .chaya.pdf files (webapp/tools/make_book_folder.py, add_source_pdf.py, make_chaya_pdf.mjs).
+/outputs/books/
+*.chaya.pdf
+
+# ---- Local-only files: PRIVATE.md says what else is kept out (with rules in .git/info/exclude).
+PRIVATE.md

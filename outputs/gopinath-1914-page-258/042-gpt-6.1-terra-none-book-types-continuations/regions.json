@@ -1,0 +1,376 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-05T14:45:21.845550+00:00",
+  "method": {
+    "id": "042-gpt-6.1-terra-none-book-types-continuations",
+    "name": "GPT-6.1 Terra without reasoning, explicit units, book types from the type list and continuation flags",
+    "settings": {
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "none",
+      "image_detail": "original",
+      "max_output_tokens": 16384,
+      "store": false,
+      "coordinate_format": "xyxy_1000",
+      "prompt_variant": "book-types-continuations-v1",
+      "cache_lifetime": "30m (provider default)",
+      "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+    },
+    "files_sha256": {
+      "run.py": "9db6615121323cc6f247ae49002a9679631cd9188b3b8adfafe941ff674afff2",
+      "regions.py": "1beb4c729a2d8bca063dea767c00889b5819d2f2ca307d74c431e0c526fb382d",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+      "prompt.py": "eff510f80417505ec27a9585846893660b5b9c6c3b5527f1c212747070c507cf",
+      "prompt-template.txt": "35d2fda7ce837fedb3a0f982e81d54ac0af3ccfc73c6b384d641e7db70ed4c9e",
+      "response-schema-template.json": "79e5fdbbc0134fd5a7534d0ea0975bdb7730f9e59e630793758a6ef30cd591d4",
+      "config.json": "87fa1a906d09706dd2ed77f0fd2e924511836da413a76e1d9a23de6d3bcf3b0b",
+      "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    },
+    "type_list": {
+      "path": "schema/types/gopinath-1914.json",
+      "sha256": "df9edf1d492639753ecd4ea83c795fdf0e93d4ea7bfcae2d8f3690b2c403ea64",
+      "book_id": "gopinath-1914"
+    },
+    "prompt_sha256": "d2b06d4828df18be785d5286e649805d8f4d757f209cd0c98045ad668dee07ef",
+    "response_schema_sha256": "94dde17c2dfdb3a37fa89755bf3528057393af94fcbd373be3540577fc2ca289",
+    "region_classes": {
+      "heading": "heading",
+      "paragraph": "paragraph",
+      "table": "table",
+      "verse": "verse",
+      "hindi_translation": "paragraph",
+      "bhavartha": "paragraph",
+      "hindi_gloss": "list_item",
+      "english_translation": "paragraph",
+      "english_comment": "paragraph",
+      "note": "note",
+      "variant_entry": "list_item",
+      "note_paragraph": "paragraph",
+      "quotation": "verse",
+      "list_entry": "list_item",
+      "running_header": "running_header",
+      "page_number": "page_number",
+      "other": "other"
+    }
+  },
+  "input": {
+    "id": "gopinath-1914-page-258",
+    "path": "inputs/gopinath-1914-page-258.png",
+    "sha256": "7d1fb165f28d2a846898d10b8ad007c12acef6c89f0f3360a7afa7505256b2cc",
+    "width": 1524,
+    "height": 2344
+  },
+  "api": {
+    "endpoint": "https://api.openai.com/v1/responses",
+    "requested_model": "gpt-6.1-terra",
+    "returned_model": "gpt-6.1-terra",
+    "response_id": "resp_0ead5d67819f1081016aec9682198887d1b75a163a160c3456",
+    "request_id": "req_8c14bf0e390e4b398dc50c180b95e4b4",
+    "client_request_id": "846f5299-3b91-4fde-a1fb-fdac87a901ba",
+    "api_wall_seconds": 5.593454542104155,
+    "usage": {
+      "input_tokens": 6369,
+      "input_tokens_details": {
+        "cache_write_tokens": 6366,
+        "cached_tokens": 0
+      },
+      "output_tokens": 347,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 6716
+    },
+    "response_headers_seconds": 5.5929910419508815,
+    "response_first_body_byte_seconds": 5.593027582857758,
+    "service_tier": "default",
+    "tokens_and_cost": {
+      "available": true,
+      "input_tokens": 6369,
+      "ordinary_input_tokens": 3,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 6366,
+      "output_tokens_including_reasoning": 347,
+      "reasoning_tokens": 0,
+      "non_reasoning_output_tokens": 347,
+      "total_token_count_matches": true,
+      "cache_write_lifetime": "30m (provider default)",
+      "estimated_paid_tier_input_cost_usd": 0.0079605,
+      "estimated_paid_tier_output_cost_usd": 0.001735,
+      "estimated_paid_tier_total_cost_usd": 0.009695500000000001,
+      "pricing": {
+        "checked_on": "2026-11-03",
+        "currency": "USD",
+        "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+        "input_per_million_usd": 1.0,
+        "output_per_million_usd": 5.0,
+        "cached_input_per_million_usd": 0.05,
+        "cache_write_30m_per_million_usd": 1.25,
+        "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+      }
+    },
+    "response_sha256": "2f1374fa7b2d122e3c386563cbb560e34ae30e293ff83a7afbcc163aaeed5d32",
+    "request_sha256": "cae3318be18abcafe26f9ebd2c73509dffd4c9f9b46fda00103bc92ff9a644ee"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "running_header",
+      "box_1000": [
+        372,
+        51,
+        602,
+        81
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 1,
+      "label": "running_header",
+      "region_class": "running_header",
+      "box": [
+        566.928,
+        119.544,
+        917.448,
+        189.864
+      ],
+      "box_xyxy_1000": [
+        372.0,
+        51.0,
+        602.0,
+        81.0
+      ]
+    },
+    {
+      "type": "page_number",
+      "box_1000": [
+        806,
+        53,
+        872,
+        80
+      ],
+      "keep": false,
+      "reading_order": null,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 2,
+      "label": "page_number",
+      "region_class": "page_number",
+      "box": [
+        1228.344,
+        124.232,
+        1328.928,
+        187.52
+      ],
+      "box_xyxy_1000": [
+        806.0,
+        53.0,
+        872.0,
+        80.0
+      ]
+    },
+    {
+      "type": "verse",
+      "box_1000": [
+        141,
+        117,
+        854,
+        259
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 3,
+      "label": "verse",
+      "region_class": "verse",
+      "box": [
+        214.884,
+        274.248,
+        1301.496,
+        607.096
+      ],
+      "box_xyxy_1000": [
+        141.0,
+        117.0,
+        854.0,
+        259.0
+      ]
+    },
+    {
+      "type": "hindi_translation",
+      "box_1000": [
+        86,
+        305,
+        879,
+        423
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 4,
+      "label": "hindi_translation",
+      "region_class": "paragraph",
+      "box": [
+        131.064,
+        714.92,
+        1339.596,
+        991.512
+      ],
+      "box_xyxy_1000": [
+        86.0,
+        305.0,
+        879.0,
+        423.0
+      ]
+    },
+    {
+      "type": "english_translation",
+      "box_1000": [
+        84,
+        469,
+        876,
+        609
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 5,
+      "label": "english_translation",
+      "region_class": "paragraph",
+      "box": [
+        128.016,
+        1099.336,
+        1335.024,
+        1427.496
+      ],
+      "box_xyxy_1000": [
+        83.99999999999999,
+        469.0,
+        876.0,
+        609.0
+      ]
+    },
+    {
+      "type": "note",
+      "box_1000": [
+        81,
+        648,
+        877,
+        751
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 6,
+      "label": "note",
+      "region_class": "note",
+      "box": [
+        123.444,
+        1518.912,
+        1336.548,
+        1760.344
+      ],
+      "box_xyxy_1000": [
+        81.0,
+        648.0,
+        877.0,
+        751.0
+      ]
+    },
+    {
+      "type": "note",
+      "box_1000": [
+        79,
+        766,
+        878,
+        913
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 7,
+      "label": "note",
+      "region_class": "note",
+      "box": [
+        120.396,
+        1795.504,
+        1338.072,
+        2140.072
+      ],
+      "box_xyxy_1000": [
+        79.0,
+        766.0,
+        878.0,
+        913.0
+      ]
+    }
+  ],
+  "region_types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 1,
+    "hindi_translation": 1,
+    "english_translation": 1,
+    "note": 2
+  },
+  "region_class_counts": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 1,
+    "paragraph": 2,
+    "note": 2
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 7,
+    "ink_pixels": 389320,
+    "uncovered_ink_pixels": 93237,
+    "ink_coverage": 0.7605132025069352,
+    "partially_covered_components": 1
+  },
+  "kept_regions_metrics": {
+    "regions": 5,
+    "ink_pixels": 389320,
+    "uncovered_ink_pixels": 103560,
+    "ink_coverage": 0.7339977396486181,
+    "partially_covered_components": 1
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "prompt": "prompt.txt",
+    "response_schema": "response-schema.json",
+    "type_list": "type-list.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

@@ -1,0 +1,45 @@
+Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.
+
+The book: Telang's edition of Bhartṛhari's śatakas (Digital Library of India scan). The scan of the Digital Library of India begins and ends with the library's cover, labels and barcode pages. The book has an English preface and introduction with footnotes; a critical notice describing the sources; addenda et corrigenda; an index of stanzas in tables printed sideways; the Sanskrit text of the Nītiśataka and the Vairāgyaśataka, in sections, with a critical apparatus of variant readings below a rule on each page; and English notes on the stanzas.
+
+Return JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,
+with the origin at the top-left. Give each region a type, a keep flag, and
+reading_order among content regions. Furniture regions may have null order.
+
+Make each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:
+- heading: A title or heading: of a part, of a śataka, or of a section, such as अथ दुर्जनप्रशंसा ।
+- paragraph: A paragraph of the English preface, introduction or critical notice, such as one describing an edition, C. The Bombay Oblong edition, … One region per paragraph, including one continued from the previous page or onto the next.
+- corrigendum: One correction of the addenda et corrigenda, such as P. 6. (Text) line 1 from bottom, for … read …, with its page reference. One region per entry.
+- table: One index table, with its column heads (the sigla of editions and manuscripts) and, in each row, the first words of a stanza and its numbers. The tables are printed sideways; the page images of the index have been turned upright. One region per table, including any rotated text in it.
+- lead_in: A short Sanskrit line of its own that introduces the next stanza, such as साहंकारं पुरुषमुद्दिश्याह । It often ends in a dash or colon.
+- verse: One Sanskrit stanza with its number in Devanagari digits, such as ॥ २९ ॥. Its lines are set alternately flush and indented. A stanza can begin at the foot of one page and end at the top of the next. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- apparatus_entry: The variant readings of one stanza, below the rule: the stanza's Roman numeral, such as XXVIII., then readings for its quarters (a) to (d) with the sigla of the sources, such as K. Bo. M. An entry can run onto the next page; the apparatus at the top of that page then continues it without a numeral, for example from (c). Include its marker. Separate neighboring notes even when they share a printed line.
+- stanza_note: The English note on one stanza, beginning with its number, such as St. XXXIII.—, and often ending with the name of the metre, such as —Anushṭubh. A note can run across pages. One region per paragraph, including one continued from the previous page or onto the next.
+- footnote: A footnote below the rule in the preface, introduction, critical notice or notes, marked *, †, ‡, §, ¶ or ‖; or a note printed below an index table, such as N. B.—The numbers marked * refer to the Miscellaneous Stanzas…. Include its marker. Separate neighboring notes even when they share a printed line.
+- page_number: The page number at the head of the page: Devanagari digits in brackets on text pages, such as [ ७२ ]; roman numerals in the introduction; Arabic digits in the notes. Page furniture, keep=false.
+- running_header: The running title beside the page number, such as NOTES. Page furniture, keep=false.
+- scan_matter: Matter of the scan, not of the book: the library's covers and labels (NOT TO BE ISSUED OUT OF THE LIBRARY.), stamps, barcodes and accession numbers, and the note Digitized with financial assistance from the Government of Maharashtra. Page furniture, keep=false.
+- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.
+
+Larger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:
+- introduction: The English preface and introduction, with page numbers in roman numerals.
+- critical_notice: The critical notice after the introduction, headed CRITICAL NOTICE., describing the printed editions and manuscripts used and their sigla.
+- corrigenda: The page headed ADDENDA ET CORRIGENDA., a list of corrections.
+- index: The index of stanzas: tables giving each stanza's number in other editions and manuscripts, with the headings INDEX. and INDEX No. 2.
+- shataka: The Sanskrit text of one śataka, with its title and sections.
+- section: A group of stanzas on one theme, with its heading, such as अथ दुर्जनप्रशंसा ।
+- notes: The English notes on the stanzas, after the text.
+
+- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.
+- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.
+- Continuation: give each region two flags.
+  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.
+  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.
+  Both are false for a unit that is complete in its region, and for page furniture.
+- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.
+- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.
+- Do not transcribe, translate, or regenerate the text. Only propose regions.
+
+Schema:
+{"regions":[{"type":"heading|paragraph|corrigendum|table|lead_in|verse|apparatus_entry|stanza_note|footnote|page_number|running_header|scan_matter|other",
+"box_1000":[0,0,1000,1000],"keep":true,"reading_order":1,"uncertain":false,"continues_from_earlier":false,"continues_later":false}]}

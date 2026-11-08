@@ -130,6 +130,9 @@ def depth_first(units, flows):
             yield from walk(flow, uid, 0)
 
 
+FORMATTING = {"bold", "italic", "small_caps", "superscript", "subscript", "underline", "spaced"}
+
+
 def check_document(doc, tl):
     """Rules for a page document or a book document. Returns (errors, warnings)."""
     errors, warnings, types = [], [], tl["types"]
@@ -143,6 +146,29 @@ def check_document(doc, tl):
             regions[ref] = r
             if r["type"] not in types:
                 errors.append(f"region {ref}: unknown type {r['type']}")
+    # 0.2: spans on line pieces, and the note markers relations may name.
+    span_kinds = FORMATTING | {"note_marker"} | set(tl.get("inline", {}))
+    anchors = {}
+    for p in pages:
+        for r in p["regions"]:
+            for L in r.get("lines", []):
+                n = len(L.get("text", ""))
+                for k, sp in enumerate(L.get("spans", [])):
+                    where = f"region {p['id']}#{r['id']} line {L.get('line')} span {k}"
+                    if not 0 <= sp["start"] <= sp["end"] <= n:
+                        errors.append(f"{where}: [{sp['start']}, {sp['end']}) is outside the text of length {n}")
+                    if sp["kind"] not in span_kinds:
+                        errors.append(f"{where}: unknown kind {sp['kind']}")
+                    if sp["kind"] == "note_marker":
+                        if sp["start"] != sp["end"]:
+                            errors.append(f"{where}: a note marker must be zero-width")
+                        if "id" not in sp:
+                            errors.append(f"{where}: a note marker needs an id")
+                    if "id" in sp:
+                        ref = f"{p['id']}#{sp['id']}"
+                        if ref in anchors or ref in regions:
+                            errors.append(f"{where}: duplicate id {sp['id']}")
+                        anchors[ref] = sp
     units = {}
     for u in doc["units"]:
         if u["id"] in units:
@@ -203,8 +229,28 @@ def check_document(doc, tl):
     for uid in units:
         if uid not in parent and uid not in in_flow:
             errors.append(f"unit {uid}: neither a child nor in a flow")
+    def relation_errors():
+        out = []
+        for i, rel in enumerate(doc.get("relations", [])):
+            if rel["type"] not in tl.get("relations", {}):
+                out.append(f"relation {i}: unknown type {rel['type']}")
+            for side in ("from", "to"):
+                if "unit" in rel[side] and rel[side]["unit"] not in units:
+                    out.append(f"relation {i}: unknown {side} unit {rel[side]['unit']}")
+            if "region" in rel["from"] and rel["from"]["region"] not in regions:
+                out.append(f"relation {i}: unknown region {rel['from']['region']}")
+            if "anchor" in rel["from"]:
+                a = anchors.get(rel["from"]["anchor"])
+                if a is None:
+                    out.append(f"relation {i}: unknown anchor {rel['from']['anchor']}")
+                elif a["kind"] != "note_marker" and rel["type"] == "note":
+                    out.append(f"relation {i}: anchor {rel['from']['anchor']} is not a note marker")
+            if not ("unit" in rel["from"] or "region" in rel["from"] or "anchor" in rel["from"]):
+                out.append(f"relation {i}: from needs a unit, a region or an anchor")
+        return out
+
     if errors:
-        return errors, warnings
+        return errors + relation_errors(), warnings
     seen = [x for _, x, _ in depth_first(units, doc["flows"]) if x[0] == "unit"]
     if len(seen) != len(set(seen)) or len(seen) != len(units):
         errors.append("units do not form a tree")
@@ -224,16 +270,7 @@ def check_document(doc, tl):
                 errors.append(f"unit {uid}: open at the {end} but not the {word} child of {parent[uid]}")
             if not units[parent[uid]].get("open", {}).get(end):
                 errors.append(f"unit {uid}: open at the {end} but its parent {parent[uid]} is not")
-    for i, rel in enumerate(doc.get("relations", [])):
-        if rel["type"] not in tl.get("relations", {}):
-            errors.append(f"relation {i}: unknown type {rel['type']}")
-        for side in ("from", "to"):
-            if "unit" in rel[side] and rel[side]["unit"] not in units:
-                errors.append(f"relation {i}: unknown {side} unit {rel[side]['unit']}")
-        if "region" in rel["from"] and rel["from"]["region"] not in regions:
-            errors.append(f"relation {i}: unknown region {rel['from']['region']}")
-        if not ("unit" in rel["from"] or "region" in rel["from"]):
-            errors.append(f"relation {i}: from needs a unit or a region")
+    errors += relation_errors()
     for p in pages:
         if doc["format"] != "page":
             break
@@ -334,7 +371,8 @@ def assemble(page_docs, tl):
                 if "unit" in rel[side]:
                     rel[side]["unit"] = final(f"{pid}#{rel[side]['unit']}")
             relations.append(rel)
-    book = dict(format="book", schema_version="0.1", types=tl, pages=[pd["page"] for pd in page_docs],
+    version = max((pd.get("schema_version", "0.1") for pd in page_docs), default="0.1")
+    book = dict(format="book", schema_version=version, types=tl, pages=[pd["page"] for pd in page_docs],
                 units=list(units.values()), flows=flows, relations=relations,
                 source=dict(assembled_by="schema/book.py", pages=[pd["page"]["id"] for pd in page_docs],
                             page_sources=[pd.get("source", {}) for pd in page_docs],

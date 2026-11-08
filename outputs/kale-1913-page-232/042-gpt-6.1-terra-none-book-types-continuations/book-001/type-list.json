@@ -1,0 +1,32 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "kale-1913",
+ "title": "Kale (1913): Bhartṛhari's śatakas with a Sanskrit commentary",
+ "description": "The scan begins with an English table of contents. Then comes the Sanskrit text of two śatakas, the Nītiśataka and the Vairāgyaśataka, each followed by its miscellaneous stanzas: each verse, in large type, is followed by its Sanskrit commentary in smaller type, some verses are introduced by a short lead-in, and numbered footnotes, mostly variant readings, sit below a rule at the foot of the page and restart at 1 on each page. After the Sanskrit text come an English translation, one numbered paragraph per stanza, and English notes on the stanzas, which quote Sanskrit words in Devanagari.",
+ "languages": ["sa-Deva", "en"],
+ "flows": {"main": "The contents, the Sanskrit text, the translation and the notes, in reading order.", "notes": "The footnotes, in page order."},
+ "types": {
+  "contents": {"description": "The table of contents at the start of the scan.", "contains": ["heading", "paragraph", "contents_entry"], "flow": "main"},
+  "section": {"description": "One śataka of the Sanskrit text, such as वैराग्यशतकम्, with its opening, its stanzas and its miscellaneous stanzas.", "contains": ["heading", "commentator_verse", "commentary", "group"], "flow": "main"},
+  "translation": {"description": "The English translation, after the Sanskrit text, with headings such as TRANSLATION, NĪTIS'ATAK. and MISCELLANEOUS.", "contains": ["heading", "translated_stanza"], "flow": "main"},
+  "notes": {"description": "The English notes on the stanzas, after the translation, with headings such as NOTES, MISCELLANEOUS. and VAIRĀGYAS'ATAKA.", "contains": ["heading", "stanza_note"], "flow": "main"},
+  "heading": {"description": "A title or heading: a part's title, such as CONTENTS., TRANSLATION or NOTES.; a śataka's title, such as अथ श्रीमद्भर्तृहरिविरचितं above नीतिशतकम् ।; an invocation above it, such as ॥ श्रीः ॥ or ॥ श्रीगणेशाय नमः ॥; a topic heading inside a śataka, such as अथ तृष्णादूषणम् ।; or a heading for the miscellaneous stanzas.", "region": "heading"},
+  "paragraph": {"description": "A line of prose in the table of contents, such as The S'atakas treat of the following themes:—.", "region": "paragraph", "lang": "en"},
+  "contents_entry": {"description": "One line of the table of contents: a range of stanza numbers and its theme, such as 2—14 अज्ञनिन्दा or Ignorance censured.", "region": "list_item"},
+  "commentator_verse": {"description": "One of the commentator's own opening verses at the start of the Nītiśataka, in the commentary's type, before his introduction; each ends with ॥.", "region": "verse", "lang": "sa-Deva"},
+  "group": {"description": "One verse with its lead-in, if any, and its commentary. The app can show each group on its own.", "contains": ["lead_in", "verse", "commentary"], "numbered": true},
+  "lead_in": {"description": "A short line of its own that introduces the verse.", "region": "lead_in"},
+  "verse": {"description": "One verse in large type, with its number, such as ॥ २६ ॥.", "region": "verse", "numbered": true},
+  "commentary": {"description": "The Sanskrit commentary on the verse, in smaller type. It usually ends with the name of the metre, such as शिखरिणी ॥. The commentator's introduction at the start of a śataka, before its first verse, is also commentary.", "region": "paragraph"},
+  "translated_stanza": {"description": "The English translation of one stanza: a paragraph beginning with the stanza's number, such as 4. or I.; some are only a cross-reference, such as 1 See p. 16.", "region": "paragraph", "lang": "en", "numbered": true},
+  "stanza_note": {"description": "The English note on one stanza, from its number, such as Sl. 5., to the next note. A note can have several paragraphs, each its own region, and can run across pages.", "region": "paragraph", "lang": "en", "numbered": true},
+  "footnote": {"description": "One footnote below the rule: in the Sanskrit text, a numbered variant reading; in the English parts, a note marked * or †.", "region": "note", "flow": "notes", "numbered": true},
+  "running_header": {"description": "The running title of the Sanskrit text, such as वैराग्यशतकम् ।", "role": "furniture", "region": "running_header"},
+  "page_number": {"description": "The printed page number: in Devanagari digits in the Sanskrit text, and in the English parts in brackets, such as [ 20 ], or parentheses, such as ( 43 ), at the head of the page.", "role": "furniture", "region": "page_number"}
+ },
+ "relations": {"note": "A footnote marker in the text points to its footnote."},
+ "conventions": ["Transcribe Devanagari as printed, in Unicode NFC, with the printed digits and dandas.",
+  "Transcribe English as printed, with the diacritics and apostrophes of transliterated Sanskrit as printed, such as S'ataka, Kâvyâdars'a and mâlatí. Italics are not marked."],
+ "source": {"revision": "2026-11-05: Claude's additions for the parts of the scan outside the Sanskrit text, for the full-book walk, not yet reviewed by the user: contents, translation and notes with their types, commentator_verse, commentary at the start of a section, the English footnotes, the English page numbers and the second convention. The list the user accepted (sha256 54cb7a4f8c9fe0e7c10780eba448655b175630ef7bcc432e77e3c57fc48c5350) is saved as type-list.json with every method 042, 044, 045 and 046 result on Kale."}
+}

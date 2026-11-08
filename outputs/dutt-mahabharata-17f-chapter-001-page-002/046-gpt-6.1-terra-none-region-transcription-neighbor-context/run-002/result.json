@@ -1,0 +1,1014 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "046-gpt-6.1-terra-none-region-transcription-neighbor-context",
+  "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions, with the neighboring pages' edge lines as context for open ends",
+  "settings": {
+   "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions, with the neighboring pages' edge lines as context for open ends",
+   "model": "gpt-6.1-terra",
+   "reasoning_effort": "none",
+   "image_detail": "original",
+   "max_output_tokens": 32768,
+   "store": false,
+   "prompt_variant": "region-transcription-neighbor-context-v1",
+   "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+   "cutout_padding_char": 0.5,
+   "gutter_width_char": 1.6,
+   "gutter_min_px": 36,
+   "gutter_font_char": 0.55,
+   "gutter_font_min_px": 14,
+   "overview_label_char": 0.8,
+   "overview_label_min_px": 18,
+   "overview_outline_px": 3,
+   "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+   "context_lines": 2
+  },
+  "files_sha256": {
+   "run.py": "ecb469b42c20a87c21c1d3362648a18f4b3aedf6aa377cd692b8dd643c5729b1",
+   "prompt.py": "a142af6d66d6dee521f569b34c48b86e833a2576bc721b41a19fa6d7f00bc7cf",
+   "prompt-template.txt": "1d451cee4378c77e02bea16e6692603485b2235793e968c2cb905b2c1c220986",
+   "cutouts.py": "7d5f320391cde8c336c234a68d37ce5d973f697a13d30a4ebfa74aa42c84cb54",
+   "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+   "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+   "config.json": "881bf11f03c5c73067487f36414637c6c3e81265447045aa053af67230a0495e",
+   "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+   "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+ },
+ "input": {
+  "id": "dutt-mahabharata-17f-chapter-001-page-002",
+  "path": "inputs/dutt-mahabharata-17f-chapter-001-page-002.png",
+  "sha256": "30d5598a048c41029b6674bafa288f7a0319cdf78f9c47d19d87b336e6d25449"
+ },
+ "type_list": {
+  "path": "schema/types/dutt-mahabharata.json",
+  "sha256": "6f09fc648de94f8f5f418d160c97a30da28769c9389973d6860ea20c487eaf56",
+  "book_id": "dutt-mahabharata"
+ },
+ "source_regions": {
+  "path": "outputs/dutt-mahabharata-17f-chapter-001-page-002/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+  "sha256": "daf0eccb6ec7d8668172f523ef0c246f6af4d38862775569ee1c82812a3a3031"
+ },
+ "api": {
+  "endpoint": "https://api.openai.com/v1/responses",
+  "returned_model": "gpt-6.1-terra",
+  "response_id": "resp_06919a56654c7475016aecbd407ed887d190daff97eff2b527",
+  "request_id": "req_ada501f7c65c410b92aea603c3e0575d",
+  "api_wall_seconds": 51.89578908402473,
+  "usage": {
+   "input_tokens": 18123,
+   "input_tokens_details": {
+    "cache_write_tokens": 0,
+    "cached_tokens": 18120
+   },
+   "output_tokens": 4443,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 22566
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 18123,
+   "ordinary_input_tokens": 3,
+   "cached_input_tokens": 18120,
+   "cache_write_input_tokens": 0,
+   "output_tokens_including_reasoning": 4443,
+   "reasoning_tokens": 0,
+   "non_reasoning_output_tokens": 4443,
+   "total_token_count_matches": true,
+   "cache_write_lifetime": "30m (provider default)",
+   "estimated_paid_tier_input_cost_usd": 0.000909,
+   "estimated_paid_tier_output_cost_usd": 0.022215,
+   "estimated_paid_tier_total_cost_usd": 0.023124,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+    "input_per_million_usd": 1.0,
+    "output_per_million_usd": 5.0,
+    "cached_input_per_million_usd": 0.05,
+    "cache_write_30m_per_million_usd": 1.25,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+   }
+  },
+  "request_sha256": "9fd0643857ae3082e9d08f67b8657e968d0e4b43d515ddf08977664f05b975be",
+  "response_sha256": "01af3552e263eb33b15bc4dc939cb07f6e1d1a8c0a7cdb4f4064820fa4230df8"
+ },
+ "regions_sent": [
+  {
+   "id": "r3",
+   "region_id": 3,
+   "type": "verse",
+   "line_ids": [
+    1,
+    2
+   ],
+   "cutout": {
+    "crop_box": [
+     192,
+     221,
+     932,
+     394
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     1,
+     2
+    ],
+    "sha256": "bb5b4cdb1cc67ee77dcb95d1e96f545da2071f3f543dcbf777d566d80d848645",
+    "size": [
+     788,
+     173
+    ]
+   }
+  },
+  {
+   "id": "r4",
+   "region_id": 4,
+   "type": "verse",
+   "line_ids": [
+    3,
+    4
+   ],
+   "cutout": {
+    "crop_box": [
+     192,
+     363,
+     916,
+     528
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     3,
+     4
+    ],
+    "sha256": "73ce6ea6d675bac0ce4d8a9d446b7a4dd7d52dc36065c7c50c81b7afc3e1fefa",
+    "size": [
+     772,
+     165
+    ]
+   }
+  },
+  {
+   "id": "r5",
+   "region_id": 5,
+   "type": "translation",
+   "line_ids": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "cutout": {
+    "crop_box": [
+     162,
+     507,
+     1049,
+     846
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     5,
+     6,
+     7,
+     8,
+     9,
+     10
+    ],
+    "sha256": "f20ec459d77ace050a9fee19b5517a2759dcccec24249ba5b216e682507d8ba8",
+    "size": [
+     935,
+     339
+    ]
+   }
+  },
+  {
+   "id": "r6",
+   "region_id": 6,
+   "type": "speaker",
+   "line_ids": [
+    11
+   ],
+   "cutout": {
+    "crop_box": [
+     496,
+     841,
+     715,
+     920
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     11
+    ],
+    "sha256": "9f4fd7d0b866d5f86e1a5471af6aad2ba131c98c6a49316bad74e765febcd4a3",
+    "size": [
+     267,
+     79
+    ]
+   }
+  },
+  {
+   "id": "r7",
+   "region_id": 7,
+   "type": "verse",
+   "line_ids": [
+    12,
+    13
+   ],
+   "cutout": {
+    "crop_box": [
+     192,
+     909,
+     844,
+     1079
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     12,
+     13
+    ],
+    "sha256": "6162c79d37f8653aabd24c96ea0c96a07fb77806bc4f0a0e4d5131aea5f2d2d5",
+    "size": [
+     700,
+     170
+    ]
+   }
+  },
+  {
+   "id": "r8",
+   "region_id": 8,
+   "type": "speaker",
+   "line_ids": [
+    14
+   ],
+   "cutout": {
+    "crop_box": [
+     164,
+     1061,
+     434,
+     1144
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     14
+    ],
+    "sha256": "d77ccdd3def00e45cfff7fdb04cf80c3c199cc27ff5a557cff7c3f73841e03a0",
+    "size": [
+     318,
+     83
+    ]
+   }
+  },
+  {
+   "id": "r9",
+   "region_id": 9,
+   "type": "translation",
+   "line_ids": [
+    15,
+    16,
+    17
+   ],
+   "cutout": {
+    "crop_box": [
+     163,
+     1119,
+     1049,
+     1303
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     15,
+     16,
+     17
+    ],
+    "sha256": "2c8bf4bc4ebfe0831b3465af96114d3e14d27ccec4e5e922c13883a712164439",
+    "size": [
+     934,
+     184
+    ]
+   }
+  },
+  {
+   "id": "r10",
+   "region_id": 10,
+   "type": "verse",
+   "line_ids": [
+    18,
+    19
+   ],
+   "cutout": {
+    "crop_box": [
+     191,
+     1275,
+     879,
+     1446
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     18,
+     19
+    ],
+    "sha256": "6ff2ff0ea0c8b01c1dbb5b6339f6bdf7b1bf45d2d0616276020bf0f8e74f0924",
+    "size": [
+     736,
+     171
+    ]
+   }
+  },
+  {
+   "id": "r11",
+   "region_id": 11,
+   "type": "translation",
+   "line_ids": [
+    20,
+    21,
+    22
+   ],
+   "cutout": {
+    "crop_box": [
+     161,
+     1417,
+     1044,
+     1606
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     20,
+     21,
+     22
+    ],
+    "sha256": "2a57f32adc772b4b761ad30f67fa51f6b853df216319eb932cd4c9996a2f4be5",
+    "size": [
+     931,
+     189
+    ]
+   }
+  },
+  {
+   "id": "r12",
+   "region_id": 12,
+   "type": "verse",
+   "line_ids": [
+    23,
+    24
+   ],
+   "cutout": {
+    "crop_box": [
+     190,
+     1581,
+     986,
+     1750
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     23,
+     24
+    ],
+    "sha256": "10698df50c747a8b5e56a7706bf539fc38a6912d3dc1a9addab425f9ab628f20",
+    "size": [
+     844,
+     169
+    ]
+   }
+  },
+  {
+   "id": "r13",
+   "region_id": 13,
+   "type": "translation",
+   "line_ids": [
+    25,
+    26,
+    27,
+    28
+   ],
+   "cutout": {
+    "crop_box": [
+     162,
+     1721,
+     1044,
+     1956
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     25,
+     26,
+     27,
+     28
+    ],
+    "sha256": "7b03c9350d7e1052d8947c6b638a3f733f6cf8f39a0cb174e0b66ded99813520",
+    "size": [
+     930,
+     235
+    ]
+   }
+  },
+  {
+   "id": "r14",
+   "region_id": 14,
+   "type": "verse",
+   "line_ids": [
+    29,
+    30
+   ],
+   "cutout": {
+    "crop_box": [
+     191,
+     1925,
+     893,
+     2089
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     29,
+     30
+    ],
+    "sha256": "a6e94232473f59d781f9171045e082add2113d8ea56d76ba6255e387444768d6",
+    "size": [
+     750,
+     164
+    ]
+   }
+  },
+  {
+   "id": "r15",
+   "region_id": 15,
+   "type": "verse",
+   "line_ids": [
+    31,
+    32
+   ],
+   "cutout": {
+    "crop_box": [
+     191,
+     2066,
+     867,
+     2229
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     31,
+     32
+    ],
+    "sha256": "2a9fda718d75004107d34c8e5410eb1af0d1b8eef67998674ef8f7487add1505",
+    "size": [
+     724,
+     163
+    ]
+   }
+  },
+  {
+   "id": "r16",
+   "region_id": 16,
+   "type": "translation",
+   "line_ids": [
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39
+   ],
+   "cutout": {
+    "crop_box": [
+     160,
+     2205,
+     1048,
+     2584
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     33,
+     34,
+     35,
+     36,
+     37,
+     38,
+     39
+    ],
+    "sha256": "14ca4c1c3d1681f74023a15966309d19e1041e5529784d1107137ef80e955740",
+    "size": [
+     936,
+     379
+    ]
+   }
+  },
+  {
+   "id": "r17",
+   "region_id": 17,
+   "type": "verse",
+   "line_ids": [
+    40,
+    41
+   ],
+   "cutout": {
+    "crop_box": [
+     190,
+     2565,
+     978,
+     2731
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     40,
+     41
+    ],
+    "sha256": "14d2ff6ac3f595d12bde6e52afec22f0d5e55576b01bd570995dbb8caadf29c7",
+    "size": [
+     836,
+     166
+    ]
+   }
+  },
+  {
+   "id": "r18",
+   "region_id": 18,
+   "type": "verse",
+   "line_ids": [
+    43,
+    44
+   ],
+   "cutout": {
+    "crop_box": [
+     1088,
+     222,
+     1864,
+     394
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     43,
+     44
+    ],
+    "sha256": "52a2b86ca2f7fd93b876ffc3e4a5e86237c35912dca2a723009c3fc6b513729b",
+    "size": [
+     824,
+     172
+    ]
+   }
+  },
+  {
+   "id": "r19",
+   "region_id": 19,
+   "type": "translation",
+   "line_ids": [
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+   ],
+   "cutout": {
+    "crop_box": [
+     1059,
+     363,
+     1942,
+     751
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     45,
+     46,
+     47,
+     48,
+     49,
+     50,
+     51
+    ],
+    "sha256": "23e7c9ecb90d08656e43fdef9f70cd66ec0aa722d2a81fd56227981799fd8dfe",
+    "size": [
+     931,
+     388
+    ]
+   }
+  },
+  {
+   "id": "r20",
+   "region_id": 20,
+   "type": "verse",
+   "line_ids": [
+    52,
+    53
+   ],
+   "cutout": {
+    "crop_box": [
+     1087,
+     720,
+     1799,
+     892
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     52,
+     53
+    ],
+    "sha256": "102cf247890f60d71fee39260679b7dea74096147985fc71b71c3c9696396300",
+    "size": [
+     760,
+     172
+    ]
+   }
+  },
+  {
+   "id": "r21",
+   "region_id": 21,
+   "type": "translation",
+   "line_ids": [
+    54,
+    55,
+    56
+   ],
+   "cutout": {
+    "crop_box": [
+     1059,
+     863,
+     1941,
+     1053
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     54,
+     55,
+     56
+    ],
+    "sha256": "59acd181dffd731b4d5e9506608891561df9a99cd390dfa6278805ce8f1bd148",
+    "size": [
+     930,
+     190
+    ]
+   }
+  },
+  {
+   "id": "r22",
+   "region_id": 22,
+   "type": "verse",
+   "line_ids": [
+    57,
+    58
+   ],
+   "cutout": {
+    "crop_box": [
+     1088,
+     1027,
+     1743,
+     1192
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     57,
+     58
+    ],
+    "sha256": "c1707ba8715e16cd653d273e6063602ff8f85f77c544b8c87218d844b667b654",
+    "size": [
+     703,
+     165
+    ]
+   }
+  },
+  {
+   "id": "r23",
+   "region_id": 23,
+   "type": "verse",
+   "line_ids": [
+    59,
+    60
+   ],
+   "cutout": {
+    "crop_box": [
+     1087,
+     1170,
+     1811,
+     1341
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     59,
+     60
+    ],
+    "sha256": "a600c3427db6d683a705077aba0edccb0886d10323714c66a3474049e73a467c",
+    "size": [
+     772,
+     171
+    ]
+   }
+  },
+  {
+   "id": "r24",
+   "region_id": 24,
+   "type": "translation",
+   "line_ids": [
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69
+   ],
+   "cutout": {
+    "crop_box": [
+     1058,
+     1311,
+     1946,
+     1813
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     61,
+     62,
+     63,
+     64,
+     65,
+     66,
+     67,
+     68,
+     69
+    ],
+    "sha256": "b9dd7e158e8238769abc1ec57954c12a4ddb250fe19b3382f6beccebd74c63cf",
+    "size": [
+     936,
+     502
+    ]
+   }
+  },
+  {
+   "id": "r25",
+   "region_id": 25,
+   "type": "verse",
+   "line_ids": [
+    70,
+    71
+   ],
+   "cutout": {
+    "crop_box": [
+     1087,
+     1788,
+     1863,
+     1959
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     70,
+     71
+    ],
+    "sha256": "3e5ad77f39123dae0f4dc7b3fa41cd0e35b25b82a80f3dfbebdef17a37efed7d",
+    "size": [
+     824,
+     171
+    ]
+   }
+  },
+  {
+   "id": "r26",
+   "region_id": 26,
+   "type": "translation",
+   "line_ids": [
+    72,
+    73,
+    74,
+    75,
+    76
+   ],
+   "cutout": {
+    "crop_box": [
+     1058,
+     1929,
+     1945,
+     2223
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     72,
+     73,
+     74,
+     75,
+     76
+    ],
+    "sha256": "b7e1e62e6d82df96eeffa93e9a24c1d83f9b91e75b667e0c72ef9eea0500c6db",
+    "size": [
+     935,
+     294
+    ]
+   }
+  },
+  {
+   "id": "r27",
+   "region_id": 27,
+   "type": "verse",
+   "line_ids": [
+    77,
+    78
+   ],
+   "cutout": {
+    "crop_box": [
+     1087,
+     2197,
+     1734,
+     2367
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     77,
+     78
+    ],
+    "sha256": "92ba2d48ca49af7f3055d03622a9f1d4813f4fc820c89f54c697befe2c7b8f7e",
+    "size": [
+     695,
+     170
+    ]
+   }
+  },
+  {
+   "id": "r28",
+   "region_id": 28,
+   "type": "translation",
+   "line_ids": [
+    79,
+    80,
+    81,
+    82
+   ],
+   "cutout": {
+    "crop_box": [
+     1057,
+     2338,
+     1939,
+     2581
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     79,
+     80,
+     81,
+     82
+    ],
+    "sha256": "af50910d1e12dc2ba160301d57e00a9b982bd476e80f0243a59dcb813c98eb1e",
+    "size": [
+     930,
+     243
+    ]
+   }
+  },
+  {
+   "id": "r29",
+   "region_id": 29,
+   "type": "verse",
+   "line_ids": [
+    83,
+    84
+   ],
+   "cutout": {
+    "crop_box": [
+     1086,
+     2555,
+     1773,
+     2724
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     83,
+     84
+    ],
+    "sha256": "4529830a363808364aa71ebc4ca893fa19a674bc7fbfdc22cc6811f8cea82263",
+    "size": [
+     735,
+     169
+    ]
+   }
+  },
+  {
+   "id": "r1",
+   "region_id": 1,
+   "type": "page_number",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     164,
+     122,
+     228,
+     196
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     0
+    ],
+    "sha256": "a28fde58c3f12d03cdd9a0f6b3a874821c5bbcc6122c67cf2013a1812c0df73e",
+    "size": [
+     112,
+     74
+    ]
+   }
+  },
+  {
+   "id": "r2",
+   "region_id": 2,
+   "type": "running_header",
+   "line_ids": [
+    42
+   ],
+   "cutout": {
+    "crop_box": [
+     1591,
+     119,
+     1941,
+     197
+    ],
+    "gutter_px": 48,
+    "line_ids": [
+     42
+    ],
+    "sha256": "f538d4149a5a1a579a7ea7b7fda560c0c3ea5d7a435bf3af06d5f37c2dc82364",
+    "size": [
+     398,
+     78
+    ]
+   }
+  }
+ ],
+ "regions_skipped": [],
+ "context": [
+  {
+   "side": "previous",
+   "page": "dutt-mahabharata-17f-chapter-001-page-001",
+   "stream": "main",
+   "region_id": 29,
+   "type": "translation",
+   "regions": "outputs/dutt-mahabharata-17f-chapter-001-page-001/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+   "regions_sha256": "85a5af4946833e5ee7ab19793e2d57a59e03f0871dc690496a5d9b05bee108c3",
+   "sha256": "218a374eb983d3b8e117ff051a569dead7954652913b8b60b6db0bb79c81f9d0",
+   "crop_box": [
+    1062,
+    2486,
+    1941,
+    2624
+   ],
+   "line_ids": [
+    49,
+    50
+   ]
+  },
+  {
+   "side": "next",
+   "page": "dutt-mahabharata-17f-chapter-001-page-003",
+   "stream": "main",
+   "region_id": 3,
+   "type": "verse",
+   "regions": "outputs/dutt-mahabharata-17f-chapter-001-page-003/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+   "regions_sha256": "ce06ed1571d70ebd60e2bf5ecd6d4cf52cb7e79e4023d6c0c662100caa0e0387",
+   "sha256": "4f783f99a9d0e5eb29f2a0e880b1dd59c8e6483beb66a98f8039a82b929cad37",
+   "crop_box": [
+    192,
+    217,
+    907,
+    389
+   ],
+   "line_ids": [
+    1,
+    2
+   ]
+  }
+ ],
+ "problems": [],
+ "check": {
+  "errors": [],
+  "warnings": [],
+  "valid": true
+ },
+ "counts": {
+  "regions": 29,
+  "units": 50,
+  "relations": 0,
+  "line_pieces": 85,
+  "retyped": [],
+  "uncertain": [
+   "r22"
+  ]
+ },
+ "artifacts": {
+  "request": "request.json",
+  "raw_response": "response.json",
+  "prompt": "prompt.txt",
+  "schema": "response-schema.json",
+  "overview": "overview.png",
+  "cutouts": "cutouts/",
+  "context": "context/",
+  "page_document": "page.json",
+  "transcript": "transcript.txt"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0"
+  }
+ }
+}

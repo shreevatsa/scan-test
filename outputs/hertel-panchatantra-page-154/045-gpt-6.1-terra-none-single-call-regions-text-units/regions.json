@@ -1,0 +1,423 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "045-gpt-6.1-terra-none-single-call-regions-text-units",
+  "note": "method 042-style boxes from the single call"
+ },
+ "input": {
+  "id": "hertel-panchatantra-page-154",
+  "path": "inputs/hertel-panchatantra-page-154.png",
+  "sha256": "5f30fd070bfef89ff4bf1dfff93e26575ad489a6737c64dc099fe79acce32362",
+  "width": 2088,
+  "height": 3121
+ },
+ "regions": [
+  {
+   "type": "running_header",
+   "box_1000": [
+    220,
+    81,
+    727,
+    122
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 1,
+   "label": "running_header",
+   "region_class": "running_header",
+   "box": [
+    459.36,
+    252.801,
+    1517.976,
+    380.762
+   ],
+   "box_xyxy_1000": [
+    220.0,
+    81.0,
+    727.0,
+    122.0
+   ]
+  },
+  {
+   "type": "page_number",
+   "box_1000": [
+    880,
+    82,
+    911,
+    100
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 2,
+   "label": "page_number",
+   "region_class": "page_number",
+   "box": [
+    1837.44,
+    255.922,
+    1902.168,
+    312.1
+   ],
+   "box_xyxy_1000": [
+    880.0,
+    82.0,
+    911.0,
+    100.0
+   ]
+  },
+  {
+   "type": "heading",
+   "box_1000": [
+    391,
+    172,
+    562,
+    195
+   ],
+   "keep": true,
+   "reading_order": 1,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 3,
+   "label": "heading",
+   "region_class": "heading",
+   "box": [
+    816.408,
+    536.812,
+    1173.456,
+    608.595
+   ],
+   "box_xyxy_1000": [
+    391.0,
+    172.0,
+    562.0,
+    195.0
+   ]
+  },
+  {
+   "type": "paragraph",
+   "box_1000": [
+    75,
+    214,
+    877,
+    563
+   ],
+   "keep": true,
+   "reading_order": 2,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": true,
+   "region_id": 4,
+   "label": "paragraph",
+   "region_class": "paragraph",
+   "box": [
+    156.6,
+    667.894,
+    1831.176,
+    1757.123
+   ],
+   "box_xyxy_1000": [
+    75.0,
+    214.0,
+    877.0,
+    563.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    115,
+    567,
+    864,
+    630
+   ],
+   "keep": true,
+   "reading_order": 3,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 5,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    240.12,
+    1769.607,
+    1804.032,
+    1966.23
+   ],
+   "box_xyxy_1000": [
+    115.0,
+    567.0,
+    864.0,
+    630.0
+   ]
+  },
+  {
+   "type": "paragraph",
+   "box_1000": [
+    75,
+    633,
+    876,
+    922
+   ],
+   "keep": true,
+   "reading_order": 4,
+   "uncertain": true,
+   "continues_from_earlier": true,
+   "continues_later": true,
+   "region_id": 6,
+   "label": "paragraph",
+   "region_class": "paragraph",
+   "box": [
+    156.6,
+    1975.593,
+    1829.088,
+    2877.562
+   ],
+   "box_xyxy_1000": [
+    75.0,
+    633.0,
+    876.0,
+    922.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    879,
+    254,
+    895,
+    269
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 7,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1835.352,
+    792.734,
+    1868.76,
+    839.549
+   ],
+   "box_xyxy_1000": [
+    879.0,
+    254.0,
+    895.0,
+    269.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    879,
+    350,
+    895,
+    365
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 8,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1835.352,
+    1092.35,
+    1868.76,
+    1139.165
+   ],
+   "box_xyxy_1000": [
+    879.0,
+    350.0,
+    895.0,
+    365.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    879,
+    447,
+    895,
+    462
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 9,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1835.352,
+    1395.087,
+    1868.76,
+    1441.902
+   ],
+   "box_xyxy_1000": [
+    879.0,
+    447.0,
+    895.0,
+    462.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    879,
+    544,
+    903,
+    558
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 10,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1835.352,
+    1697.824,
+    1885.464,
+    1741.518
+   ],
+   "box_xyxy_1000": [
+    879.0,
+    544.0,
+    903.0,
+    558.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    879,
+    641,
+    903,
+    655
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 11,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1835.352,
+    2000.561,
+    1885.464,
+    2044.255
+   ],
+   "box_xyxy_1000": [
+    879.0,
+    641.0,
+    903.0,
+    655.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    879,
+    738,
+    903,
+    752
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 12,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1835.352,
+    2303.298,
+    1885.464,
+    2346.992
+   ],
+   "box_xyxy_1000": [
+    879.0,
+    738.0,
+    903.0,
+    752.0
+   ]
+  },
+  {
+   "type": "line_number",
+   "box_1000": [
+    878,
+    835,
+    903,
+    849
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 13,
+   "label": "line_number",
+   "region_class": "other",
+   "box": [
+    1833.264,
+    2606.035,
+    1885.464,
+    2649.729
+   ],
+   "box_xyxy_1000": [
+    878.0,
+    835.0,
+    903.0,
+    849.0
+   ]
+  },
+  {
+   "type": "other",
+   "box_1000": [
+    781,
+    924,
+    799,
+    938
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 14,
+   "label": "other",
+   "region_class": "other",
+   "box": [
+    1630.728,
+    2883.804,
+    1668.312,
+    2927.498
+   ],
+   "box_xyxy_1000": [
+    781.0,
+    924.0,
+    799.0,
+    938.0
+   ]
+  }
+ ],
+ "validation_warnings": []
+}

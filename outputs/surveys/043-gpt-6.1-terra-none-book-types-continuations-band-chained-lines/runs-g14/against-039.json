@@ -1,0 +1,2478 @@
+{
+ "created_at_utc": "2026-11-05T14:47:45.619431+00:00",
+ "api_calls": 0,
+ "method": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+ "against": "039-gpt-6.1-terra-none-explicit-units-band-chained-lines",
+ "pages_list": "/private/tmp/claude-501/-Users-shreevatsa-w-scan-test/ec685348-dfb2-4132-9a4b-f713bb16857e/scratchpad/pages-g14-039.json",
+ "rule": {
+  "matching": "one to one, greedy by shared owned ink",
+  "split_or_merge_part": "at least 5% of the region's ink and 500 pixels"
+ },
+ "pages": [
+  {
+   "input_id": "gopinath-1914-page-049",
+   "request": "run-001",
+   "regions": [
+    5,
+    5
+   ],
+   "kept": [
+    3,
+    3
+   ],
+   "ink_owned_in_either_run": 306498,
+   "ink_with_corresponding_owner": 305831,
+   "agreement": 0.99782,
+   "ink_owned_in_one_run_only": [
+    0,
+    667
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 3,
+   "sources": [
+    "8a8643f1836ca3327b878a6b7eae7eb47d156ca40fe134e1fbbec0ae93bfd245",
+    "218ac924eb84fe002085634ca64cbd017768fbc383a2835de9d2c82666f9f160"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-084",
+   "request": "run-001",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 449011,
+   "ink_with_corresponding_owner": 449011,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "bhavartha",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "b7ffed524173ef3b37a512818a4532baff7b9c4f57bf6d445a0aba9a1b733f41",
+    "88b48512f8463c9e7510a28a7f1f6ce2cc1ffa78dd899c13e4fef6a0677e7713"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-119",
+   "request": "run-001",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 403214,
+   "ink_with_corresponding_owner": 403214,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ]
+   ],
+   "class_differences": [
+    [
+     7,
+     7,
+     "note",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "84c1ea67433b7a7bab56c3b059c4ff5edd2e4b4d0b1ad36e837f5c05705f7557",
+    "c6606e9b057f8d65a7c0272513308b6f74eb97b42ec90ca377c909d06b30981e"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-154",
+   "request": "run-001",
+   "regions": [
+    8,
+    10
+   ],
+   "kept": [
+    6,
+    8
+   ],
+   "ink_owned_in_either_run": 331989,
+   "ink_with_corresponding_owner": 320719,
+   "agreement": 0.96605,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 7,
+     "type": "note",
+     "into": [
+      {
+       "region": 7,
+       "type": "verse",
+       "pixels": 40599
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 4950
+      }
+     ]
+    },
+    {
+     "region": 8,
+     "type": "note",
+     "into": [
+      {
+       "region": 9,
+       "type": "verse",
+       "pixels": 15468
+      },
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 6320
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 4950
+     },
+     {
+      "region": 10,
+      "type": "note",
+      "pixels": 6320
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     8,
+     9,
+     "note",
+     "verse"
+    ]
+   ],
+   "class_differences": [
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     8,
+     9,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "a0c6f8497d9399b8de53f97008e8ebb099a0a7a4dddcb950648402ffc29ff0a4",
+    "0dfb3667f273fe1d77f8109585e5b56e5aa760e758bbc14239535d6270a971a5"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-189",
+   "request": "run-001",
+   "regions": [
+    8,
+    8
+   ],
+   "kept": [
+    6,
+    6
+   ],
+   "ink_owned_in_either_run": 359523,
+   "ink_with_corresponding_owner": 359523,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     7,
+     7,
+     "english_comment",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     3,
+     3,
+     "hindi_gloss",
+     "list_item"
+    ],
+    [
+     5,
+     5,
+     "hindi_gloss",
+     "list_item"
+    ],
+    [
+     4,
+     4,
+     "hindi_gloss",
+     "list_item"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "96ab2ffa894904bae51dad14604888b4a842e7ae6af600c5c8d6d472271009dc",
+    "3cc16f9b2c520d2ff0305fe1f359550abfb8b8bedee2883fd92106736364ca14"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-224",
+   "request": "run-001",
+   "regions": [
+    7,
+    7
+   ],
+   "kept": [
+    5,
+    5
+   ],
+   "ink_owned_in_either_run": 503954,
+   "ink_with_corresponding_owner": 503954,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "53ec7267fd5541704eba4001db94ce28eab6ee46f6f2463431b3f30e011349aa",
+    "f3c5996dadb22ff243b8960f5b63c751616bda0ef8b961f55f3d3c49cde946a4"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-258",
+   "request": "run-001",
+   "regions": [
+    7,
+    7
+   ],
+   "kept": [
+    5,
+    5
+   ],
+   "ink_owned_in_either_run": 319070,
+   "ink_with_corresponding_owner": 319070,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     7,
+     7,
+     "note",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [
+    [
+     7,
+     7,
+     "note",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "39bf542b89efd963b2300a2b8461450c80ea90618ea28ec6c4afca55854e1381",
+    "27f77738c67f446229e271af9fe8ddaff3f4041441eb3345c3aee0e58a197b0c"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-259",
+   "request": "run-001",
+   "regions": [
+    6,
+    6
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 392213,
+   "ink_with_corresponding_owner": 392213,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "0950729ae9373bb96064f0accd6df8a35871cf46bf32c4e99fdb200d81fde23a",
+    "27d4c9d1527f7217ea206b9cec492c81f5eb114847128953e0dad5c08140f218"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-260",
+   "request": "run-001",
+   "regions": [
+    6,
+    6
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 334510,
+   "ink_with_corresponding_owner": 334510,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "8cf36ab6f332cbbb805dcfe51cc9faee6e384f44f2f429abba2a9ff0c3653861",
+    "3f5f5e974b6d9ac0d01e42099178037f6315f3fc56ca6e56b5e2944ff7fce875"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-261",
+   "request": "run-001",
+   "regions": [
+    8,
+    10
+   ],
+   "kept": [
+    6,
+    8
+   ],
+   "ink_owned_in_either_run": 302036,
+   "ink_with_corresponding_owner": 285105,
+   "agreement": 0.94394,
+   "ink_owned_in_one_run_only": [
+    3478,
+    0
+   ],
+   "splits": [
+    {
+     "region": 7,
+     "type": "note",
+     "into": [
+      {
+       "region": 7,
+       "type": "verse",
+       "pixels": 42609
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 4944
+      }
+     ]
+    },
+    {
+     "region": 8,
+     "type": "note",
+     "into": [
+      {
+       "region": 9,
+       "type": "verse",
+       "pixels": 20918
+      },
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 8509
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 4944
+     },
+     {
+      "region": 10,
+      "type": "note",
+      "pixels": 8509
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     8,
+     9,
+     "note",
+     "verse"
+    ]
+   ],
+   "class_differences": [
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     8,
+     9,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "36a050048393faffe4d87529881c6afd5ca9cf4577f5dbe9cafd6263d8a2862c",
+    "e1124174ca8a1fc5f32ff04a11ef688bd4851a1d6ff3ef9520940f9aaf52c11e"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-293",
+   "request": "run-001",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 331200,
+   "ink_with_corresponding_owner": 331200,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ],
+    [
+     9,
+     9,
+     "note",
+     "verse"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     10,
+     10,
+     "note",
+     "verse"
+    ]
+   ],
+   "class_differences": [
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ],
+    [
+     9,
+     9,
+     "note",
+     "verse"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     10,
+     10,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "0b7fe735cdbb469dc5ccc221e31673de4c958479a664156c5b74ca5b0cae84ce",
+    "fe80002719daf9112a56a924bebb46ee0a7a3a5461f7b9e12053c0df9188d33d"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-328",
+   "request": "run-001",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 400207,
+   "ink_with_corresponding_owner": 400207,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "d4980907229113fdee2bdb8b93509041143dfcc004430c8e9e940b07c09093f2",
+    "81788592a20e5bb30085dd8c364bfa6b0c1a0d434d99ad2e36d2ee630a8f34b0"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-363",
+   "request": "run-001",
+   "regions": [
+    6,
+    6
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 430870,
+   "ink_with_corresponding_owner": 430870,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "1787bc563df03477011fc3f96f5aee4230b7446f6dc809bdcb3e2039c97c12cd",
+    "266df8e14f883d6535da41760e67c624899dcb616079b4fd5366614aef09fe38"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-398",
+   "request": "run-001",
+   "regions": [
+    18,
+    18
+   ],
+   "kept": [
+    15,
+    15
+   ],
+   "ink_owned_in_either_run": 295805,
+   "ink_with_corresponding_owner": 295805,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     12,
+     12,
+     "variant_entry",
+     "note"
+    ],
+    [
+     10,
+     10,
+     "variant_entry",
+     "note"
+    ],
+    [
+     5,
+     5,
+     "variant_entry",
+     "note"
+    ],
+    [
+     14,
+     14,
+     "variant_entry",
+     "note"
+    ],
+    [
+     8,
+     8,
+     "variant_entry",
+     "note"
+    ],
+    [
+     13,
+     13,
+     "variant_entry",
+     "note"
+    ],
+    [
+     7,
+     7,
+     "variant_entry",
+     "note"
+    ],
+    [
+     11,
+     11,
+     "variant_entry",
+     "note"
+    ],
+    [
+     16,
+     16,
+     "variant_entry",
+     "note"
+    ],
+    [
+     4,
+     4,
+     "variant_entry",
+     "note"
+    ],
+    [
+     15,
+     15,
+     "variant_entry",
+     "note"
+    ],
+    [
+     9,
+     9,
+     "variant_entry",
+     "note"
+    ],
+    [
+     3,
+     3,
+     "variant_entry",
+     "note"
+    ],
+    [
+     6,
+     6,
+     "variant_entry",
+     "note"
+    ],
+    [
+     17,
+     17,
+     "variant_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [
+    [
+     12,
+     12,
+     "list_item",
+     "note"
+    ],
+    [
+     10,
+     10,
+     "list_item",
+     "note"
+    ],
+    [
+     5,
+     5,
+     "list_item",
+     "note"
+    ],
+    [
+     14,
+     14,
+     "list_item",
+     "note"
+    ],
+    [
+     8,
+     8,
+     "list_item",
+     "note"
+    ],
+    [
+     13,
+     13,
+     "list_item",
+     "note"
+    ],
+    [
+     7,
+     7,
+     "list_item",
+     "note"
+    ],
+    [
+     11,
+     11,
+     "list_item",
+     "note"
+    ],
+    [
+     16,
+     16,
+     "list_item",
+     "note"
+    ],
+    [
+     4,
+     4,
+     "list_item",
+     "note"
+    ],
+    [
+     15,
+     15,
+     "list_item",
+     "note"
+    ],
+    [
+     9,
+     9,
+     "list_item",
+     "note"
+    ],
+    [
+     3,
+     3,
+     "list_item",
+     "note"
+    ],
+    [
+     6,
+     6,
+     "list_item",
+     "note"
+    ],
+    [
+     17,
+     17,
+     "list_item",
+     "note"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 15,
+   "sources": [
+    "35cdc7a1343ebed35c8536b26ccc577c7bc3702e3fca3eb169b36b1ce381dc55",
+    "938f500bf327450942c1ee20b29a782f2c6e32c3e75291164b8fe1016b379c7f"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-433",
+   "request": "run-001",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 392689,
+   "ink_with_corresponding_owner": 392689,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     3,
+     3,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     9,
+     9,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "note_paragraph",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "de84f016582254774b3d1350ef5605a2da71ae4df3c0d0312de3da181aa06185",
+    "6bb6013b8dcccce475ed00a9f713750d5d3ff48e950f6e9efe0a4da9e911c0f5"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-049",
+   "request": "run-002",
+   "regions": [
+    5,
+    5
+   ],
+   "kept": [
+    3,
+    3
+   ],
+   "ink_owned_in_either_run": 306498,
+   "ink_with_corresponding_owner": 306498,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 3,
+   "sources": [
+    "df1745d1bc2a2fcd2b7fc149d9753ae982c98234865c4fb51dde1785719651b1",
+    "666e6c08a71d2e0fcf6ce727f05c1a3403ef3d4e1b529ae2a943e7858e272871"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-084",
+   "request": "run-002",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 449011,
+   "ink_with_corresponding_owner": 449011,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "bhavartha",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "8409b4eee7c474c3b23701896e4b58a9985abaa635a809001771dd8902bc7cb2",
+    "5a69074f17a9e87193b8f5bb4b917d63d2877fc01cf2e0685b2b9b8e7379dfb0"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-119",
+   "request": "run-002",
+   "regions": [
+    8,
+    9
+   ],
+   "kept": [
+    6,
+    7
+   ],
+   "ink_owned_in_either_run": 403214,
+   "ink_with_corresponding_owner": 400238,
+   "agreement": 0.99262,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 8,
+     "type": "note",
+     "into": [
+      {
+       "region": 8,
+       "type": "verse",
+       "pixels": 15738
+      },
+      {
+       "region": 9,
+       "type": "other",
+       "pixels": 2976
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 9,
+      "type": "other",
+      "pixels": 2976
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ]
+   ],
+   "class_differences": [
+    [
+     7,
+     7,
+     "note",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "620e41442718312799a69eb95ec318be0631edc7a795fa426f4057127287e856",
+    "fcf2497d6b8beeeeeaaacaf1ed5fc8ede582323829a415ed8611f2af78a32047"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-154",
+   "request": "run-002",
+   "regions": [
+    8,
+    10
+   ],
+   "kept": [
+    6,
+    8
+   ],
+   "ink_owned_in_either_run": 331989,
+   "ink_with_corresponding_owner": 320719,
+   "agreement": 0.96605,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 7,
+     "type": "note",
+     "into": [
+      {
+       "region": 7,
+       "type": "verse",
+       "pixels": 40599
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 4950
+      }
+     ]
+    },
+    {
+     "region": 8,
+     "type": "note",
+     "into": [
+      {
+       "region": 9,
+       "type": "verse",
+       "pixels": 15468
+      },
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 6320
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 4950
+     },
+     {
+      "region": 10,
+      "type": "note",
+      "pixels": 6320
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     8,
+     9,
+     "note",
+     "verse"
+    ]
+   ],
+   "class_differences": [
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     8,
+     9,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "32a7752990713bbe6c663fae3bbbcadadfa69fdf015633c431af7f12eb5e13f7",
+    "e645338ade57c4aad80684dde4f9054fe65de99d0a0158b5f7c6858acc9e39d2"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-189",
+   "request": "run-002",
+   "regions": [
+    8,
+    9
+   ],
+   "kept": [
+    6,
+    7
+   ],
+   "ink_owned_in_either_run": 359523,
+   "ink_with_corresponding_owner": 352014,
+   "agreement": 0.97911,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [
+    {
+     "region": 8,
+     "type": "note",
+     "into": [
+      {
+       "region": 8,
+       "type": "verse",
+       "pixels": 19041
+      },
+      {
+       "region": 9,
+       "type": "note",
+       "pixels": 7509
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 9,
+      "type": "note",
+      "pixels": 7509
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     7,
+     7,
+     "english_comment",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     3,
+     3,
+     "hindi_gloss",
+     "list_item"
+    ],
+    [
+     5,
+     5,
+     "hindi_gloss",
+     "list_item"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ],
+    [
+     4,
+     4,
+     "hindi_gloss",
+     "list_item"
+    ]
+   ],
+   "class_differences": [
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "ae7e9fc27b2267bef03d1a49e0653caeb8daf568501a21d586af2164a48fdd8b",
+    "de25ea479e634727af3c83ceaa294486f39fb275bef2bc49a2dec039029e824f"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-224",
+   "request": "run-002",
+   "regions": [
+    7,
+    7
+   ],
+   "kept": [
+    5,
+    5
+   ],
+   "ink_owned_in_either_run": 505811,
+   "ink_with_corresponding_owner": 503954,
+   "agreement": 0.99633,
+   "ink_owned_in_one_run_only": [
+    0,
+    1857
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ]
+   ],
+   "class_differences": [
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "6d7281da3486feff56b3053a59be723717b73d0772f0087322d62fb7b0838307",
+    "81ee7a44edd4b22945f72987302799fa19a461c59aa1e703ad69273e0a4dc06d"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-258",
+   "request": "run-002",
+   "regions": [
+    7,
+    7
+   ],
+   "kept": [
+    5,
+    5
+   ],
+   "ink_owned_in_either_run": 319070,
+   "ink_with_corresponding_owner": 319070,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     7,
+     7,
+     "note",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [
+    [
+     7,
+     7,
+     "note",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 5,
+   "sources": [
+    "4175447e85ad087899d123bf852ac7b1e419d699b626370f5031e5f574b51b45",
+    "3129522b0e96fdd375a26464512e21d0b0a5a1773fd1ac749bb5b0ea96fb1505"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-259",
+   "request": "run-002",
+   "regions": [
+    6,
+    6
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 392213,
+   "ink_with_corresponding_owner": 392213,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "c8fe7d03a8af1df48430ede46eb48c2775f1b7d9007902d3235cb9fb69db8641",
+    "ac6e85eb1d23d9c6689cc3aa88c2bd1c0401137ce808bed5bb2eda5d0e250e7c"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-260",
+   "request": "run-002",
+   "regions": [
+    6,
+    6
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 334510,
+   "ink_with_corresponding_owner": 334510,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "5c38a900275578644f57d83b82e89cc5c5140e02ce5b9fe998e2362fb3739616",
+    "f25fa54c34849979b459b406deb67dd71a29adef5dcd15c358df6af05f5e2e3b"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-261",
+   "request": "run-002",
+   "regions": [
+    8,
+    10
+   ],
+   "kept": [
+    6,
+    8
+   ],
+   "ink_owned_in_either_run": 302036,
+   "ink_with_corresponding_owner": 285105,
+   "agreement": 0.94394,
+   "ink_owned_in_one_run_only": [
+    3478,
+    0
+   ],
+   "splits": [
+    {
+     "region": 7,
+     "type": "note",
+     "into": [
+      {
+       "region": 7,
+       "type": "verse",
+       "pixels": 42609
+      },
+      {
+       "region": 8,
+       "type": "note",
+       "pixels": 4944
+      }
+     ]
+    },
+    {
+     "region": 8,
+     "type": "note",
+     "into": [
+      {
+       "region": 9,
+       "type": "verse",
+       "pixels": 20918
+      },
+      {
+       "region": 10,
+       "type": "note",
+       "pixels": 8509
+      }
+     ]
+    }
+   ],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    [
+     {
+      "region": 8,
+      "type": "note",
+      "pixels": 4944
+     },
+     {
+      "region": 10,
+      "type": "note",
+      "pixels": 8509
+     }
+    ]
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     8,
+     9,
+     "note",
+     "verse"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     8,
+     9,
+     "note",
+     "verse"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 6,
+   "sources": [
+    "8ed3dd53897f69b76f40a6d88a1afd1efe221a9b58e5ee4f8ad7d5d620c50614",
+    "fb5d826f5f7c6d6cda3f65594088665e906a7dd049fc0ca4ce9a542faceb0b72"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-293",
+   "request": "run-002",
+   "regions": [
+    10,
+    10
+   ],
+   "kept": [
+    8,
+    8
+   ],
+   "ink_owned_in_either_run": 331200,
+   "ink_with_corresponding_owner": 331200,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ],
+    [
+     9,
+     9,
+     "note",
+     "verse"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     10,
+     10,
+     "note",
+     "verse"
+    ]
+   ],
+   "class_differences": [
+    [
+     6,
+     6,
+     "note",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note",
+     "verse"
+    ],
+    [
+     9,
+     9,
+     "note",
+     "verse"
+    ],
+    [
+     7,
+     7,
+     "note",
+     "verse"
+    ],
+    [
+     10,
+     10,
+     "note",
+     "verse"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 8,
+   "sources": [
+    "66a65379988d8345dafbfdea6f0050ddda33a2bceccbd7ae95e1af064479e3e6",
+    "4aa9cf51c67c9eff40cf936f76a0d615057dd3db4a4241290eed1cfd5f1b3fc5"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-328",
+   "request": "run-002",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 400207,
+   "ink_with_corresponding_owner": 400207,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "7e344334186f6db998424908085dbfa0cc2ae057544c7341b24eb390a71c27e5",
+    "d93459937c1685c5cd9db51f95d59e9bac8cb06f456ab109d5a7b340441cd0f2"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-363",
+   "request": "run-002",
+   "regions": [
+    6,
+    6
+   ],
+   "kept": [
+    4,
+    4
+   ],
+   "ink_owned_in_either_run": 430870,
+   "ink_with_corresponding_owner": 430870,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     5,
+     5,
+     "english_translation",
+     "paragraph"
+    ],
+    [
+     4,
+     4,
+     "hindi_translation",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 4,
+   "sources": [
+    "1ff4e9bae7eb2d5adf3383eff01cc8d88bf0416a3865d68f35aea6571f16fc08",
+    "15db030dea4c54867dca48e67afdbb255c9325791d4fc014e02f2448850e9951"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-398",
+   "request": "run-002",
+   "regions": [
+    18,
+    18
+   ],
+   "kept": [
+    15,
+    15
+   ],
+   "ink_owned_in_either_run": 295805,
+   "ink_with_corresponding_owner": 295805,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     12,
+     12,
+     "variant_entry",
+     "note"
+    ],
+    [
+     10,
+     10,
+     "variant_entry",
+     "note"
+    ],
+    [
+     5,
+     5,
+     "variant_entry",
+     "note"
+    ],
+    [
+     14,
+     14,
+     "variant_entry",
+     "note"
+    ],
+    [
+     8,
+     8,
+     "variant_entry",
+     "note"
+    ],
+    [
+     13,
+     13,
+     "variant_entry",
+     "note"
+    ],
+    [
+     7,
+     7,
+     "variant_entry",
+     "note"
+    ],
+    [
+     11,
+     11,
+     "variant_entry",
+     "note"
+    ],
+    [
+     16,
+     16,
+     "variant_entry",
+     "note"
+    ],
+    [
+     4,
+     4,
+     "variant_entry",
+     "note"
+    ],
+    [
+     15,
+     15,
+     "variant_entry",
+     "note"
+    ],
+    [
+     9,
+     9,
+     "variant_entry",
+     "note"
+    ],
+    [
+     3,
+     3,
+     "variant_entry",
+     "note"
+    ],
+    [
+     6,
+     6,
+     "variant_entry",
+     "note"
+    ],
+    [
+     17,
+     17,
+     "variant_entry",
+     "note"
+    ]
+   ],
+   "class_differences": [
+    [
+     12,
+     12,
+     "list_item",
+     "note"
+    ],
+    [
+     10,
+     10,
+     "list_item",
+     "note"
+    ],
+    [
+     5,
+     5,
+     "list_item",
+     "note"
+    ],
+    [
+     14,
+     14,
+     "list_item",
+     "note"
+    ],
+    [
+     8,
+     8,
+     "list_item",
+     "note"
+    ],
+    [
+     13,
+     13,
+     "list_item",
+     "note"
+    ],
+    [
+     7,
+     7,
+     "list_item",
+     "note"
+    ],
+    [
+     11,
+     11,
+     "list_item",
+     "note"
+    ],
+    [
+     16,
+     16,
+     "list_item",
+     "note"
+    ],
+    [
+     4,
+     4,
+     "list_item",
+     "note"
+    ],
+    [
+     15,
+     15,
+     "list_item",
+     "note"
+    ],
+    [
+     9,
+     9,
+     "list_item",
+     "note"
+    ],
+    [
+     3,
+     3,
+     "list_item",
+     "note"
+    ],
+    [
+     6,
+     6,
+     "list_item",
+     "note"
+    ],
+    [
+     17,
+     17,
+     "list_item",
+     "note"
+    ]
+   ],
+   "reading_order_same": true,
+   "matched_kept_regions": 15,
+   "sources": [
+    "317d3819ced1d4342cfa53814f842c8707a498a5b0a67111620dda41064e7c96",
+    "80e8cdf8f556b60b0fdfffebeb9d6d8e1919f290fcbc3d546d44476cff20556a"
+   ]
+  },
+  {
+   "input_id": "gopinath-1914-page-433",
+   "request": "run-002",
+   "regions": [
+    9,
+    9
+   ],
+   "kept": [
+    7,
+    7
+   ],
+   "ink_owned_in_either_run": 392689,
+   "ink_with_corresponding_owner": 392689,
+   "agreement": 1.0,
+   "ink_owned_in_one_run_only": [
+    0,
+    0
+   ],
+   "splits": [],
+   "merges": [],
+   "unmatched_regions": [
+    [],
+    []
+   ],
+   "keep_differences": [],
+   "type_differences": [
+    [
+     4,
+     4,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     7,
+     7,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     3,
+     3,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     6,
+     6,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     9,
+     9,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     8,
+     8,
+     "note_paragraph",
+     "paragraph"
+    ],
+    [
+     5,
+     5,
+     "note_paragraph",
+     "paragraph"
+    ]
+   ],
+   "class_differences": [],
+   "reading_order_same": true,
+   "matched_kept_regions": 7,
+   "sources": [
+    "2e8337d2a19d2065d60c165174a1d735c550a835b80704ddc694e5efe55f9f0e",
+    "5e1f6d3ddbc3d3bea693178b607c4d7d901486e14cf5bc337a1b1e04c33d9374"
+   ]
+  }
+ ],
+ "code_sha256": {
+  "stability.py": "b0c87685dbc262b4da0dfd2b6c041d012895b35ea028f32c93eab818df4d6841"
+ }
+}

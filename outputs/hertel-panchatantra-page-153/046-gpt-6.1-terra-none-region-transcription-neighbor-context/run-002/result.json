@@ -1,0 +1,916 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "046-gpt-6.1-terra-none-region-transcription-neighbor-context",
+  "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions, with the neighboring pages' edge lines as context for open ends",
+  "settings": {
+   "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions, with the neighboring pages' edge lines as context for open ends",
+   "model": "gpt-6.1-terra",
+   "reasoning_effort": "none",
+   "image_detail": "original",
+   "max_output_tokens": 32768,
+   "store": false,
+   "prompt_variant": "region-transcription-neighbor-context-v1",
+   "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+   "cutout_padding_char": 0.5,
+   "gutter_width_char": 1.6,
+   "gutter_min_px": 36,
+   "gutter_font_char": 0.55,
+   "gutter_font_min_px": 14,
+   "overview_label_char": 0.8,
+   "overview_label_min_px": 18,
+   "overview_outline_px": 3,
+   "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+   "context_lines": 2
+  },
+  "files_sha256": {
+   "run.py": "ecb469b42c20a87c21c1d3362648a18f4b3aedf6aa377cd692b8dd643c5729b1",
+   "prompt.py": "a142af6d66d6dee521f569b34c48b86e833a2576bc721b41a19fa6d7f00bc7cf",
+   "prompt-template.txt": "1d451cee4378c77e02bea16e6692603485b2235793e968c2cb905b2c1c220986",
+   "cutouts.py": "7d5f320391cde8c336c234a68d37ce5d973f697a13d30a4ebfa74aa42c84cb54",
+   "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+   "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+   "config.json": "881bf11f03c5c73067487f36414637c6c3e81265447045aa053af67230a0495e",
+   "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+   "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+ },
+ "input": {
+  "id": "hertel-panchatantra-page-153",
+  "path": "inputs/hertel-panchatantra-page-153.png",
+  "sha256": "43c4ff9f2a5d8f677e6682526659eefce418eb50df38ee046ef6b17db3b97705"
+ },
+ "type_list": {
+  "path": "schema/types/hertel-panchatantra.json",
+  "sha256": "cdb0d5be39ef1dd52033101d8201bf417cd42a92676008cbc2c77b2089b22101",
+  "book_id": "hertel-panchatantra"
+ },
+ "source_regions": {
+  "path": "outputs/hertel-panchatantra-page-153/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+  "sha256": "0876b2c7b6602446479afc03de8be2ab484c44aee0f34fb3856976ada3273060"
+ },
+ "api": {
+  "endpoint": "https://api.openai.com/v1/responses",
+  "returned_model": "gpt-6.1-terra",
+  "response_id": "resp_0d0e8161aff73e72016aecbd460b4087d197fb2201f8e731d5",
+  "request_id": "req_8045dce3f70b4947907d24663c47a264",
+  "api_wall_seconds": 36.78819241607562,
+  "usage": {
+   "input_tokens": 19967,
+   "input_tokens_details": {
+    "cache_write_tokens": 0,
+    "cached_tokens": 19964
+   },
+   "output_tokens": 2458,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 22425
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 19967,
+   "ordinary_input_tokens": 3,
+   "cached_input_tokens": 19964,
+   "cache_write_input_tokens": 0,
+   "output_tokens_including_reasoning": 2458,
+   "reasoning_tokens": 0,
+   "non_reasoning_output_tokens": 2458,
+   "total_token_count_matches": true,
+   "cache_write_lifetime": "30m (provider default)",
+   "estimated_paid_tier_input_cost_usd": 0.0010012,
+   "estimated_paid_tier_output_cost_usd": 0.01229,
+   "estimated_paid_tier_total_cost_usd": 0.013291200000000001,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+    "input_per_million_usd": 1.0,
+    "output_per_million_usd": 5.0,
+    "cached_input_per_million_usd": 0.05,
+    "cache_write_30m_per_million_usd": 1.25,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+   }
+  },
+  "request_sha256": "510474e6f82e0d6df88a33ecd25c8c124ac3e6b15ac9a8a572774fe92a49ef63",
+  "response_sha256": "fdc980ee9b0a9e27af01535b84de98ac179ffcb8d25e8425a8b4598f2ef1374d"
+ },
+ "regions_sent": [
+  {
+   "id": "r5",
+   "region_id": 5,
+   "type": "paragraph",
+   "line_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "cutout": {
+    "crop_box": [
+     206,
+     394,
+     1940,
+     1154
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "sha256": "71bab2dace6e8bacbcb6dac34da65582761477fe2ba44a6d6360b54052178537",
+    "size": [
+     1814,
+     760
+    ]
+   }
+  },
+  {
+   "id": "r6",
+   "region_id": 6,
+   "type": "paragraph",
+   "line_ids": [
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "cutout": {
+    "crop_box": [
+     205,
+     1169,
+     1942,
+     1590
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "sha256": "cc4e4467878f919354f0f42e791ae5e01e4d4b527c2ad2fea25a5f2b87e6d31a",
+    "size": [
+     1817,
+     421
+    ]
+   }
+  },
+  {
+   "id": "r7",
+   "region_id": 7,
+   "type": "paragraph",
+   "line_ids": [
+    13,
+    14,
+    15
+   ],
+   "cutout": {
+    "crop_box": [
+     206,
+     1524,
+     1937,
+     1794
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     13,
+     14,
+     15
+    ],
+    "sha256": "9151cd432e33ca036165fc37892971999f2a79407551d10e7a123eb8044e9fec",
+    "size": [
+     1811,
+     270
+    ]
+   }
+  },
+  {
+   "id": "r8",
+   "region_id": 8,
+   "type": "verse",
+   "line_ids": [
+    16,
+    17
+   ],
+   "cutout": {
+    "crop_box": [
+     502,
+     1729,
+     1578,
+     1935
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     16,
+     17
+    ],
+    "sha256": "6ddef2ebd03e55a61a41c3ffd085dabe4239bc031a89767f284ad359e2339556",
+    "size": [
+     1156,
+     206
+    ]
+   }
+  },
+  {
+   "id": "r9",
+   "region_id": 9,
+   "type": "paragraph",
+   "line_ids": [
+    18
+   ],
+   "cutout": {
+    "crop_box": [
+     206,
+     1866,
+     1586,
+     2006
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     18
+    ],
+    "sha256": "f9d08fb0770069f101c317a2b883a35fffd8e06f0f6e46bd4eef90edc579ed45",
+    "size": [
+     1460,
+     140
+    ]
+   }
+  },
+  {
+   "id": "r10",
+   "region_id": 10,
+   "type": "verse",
+   "line_ids": [
+    19,
+    20
+   ],
+   "cutout": {
+    "crop_box": [
+     502,
+     1937,
+     1717,
+     2142
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     19,
+     20
+    ],
+    "sha256": "a5bf5d3655536eedb3dd9aeca73010fe0ebf330242c241cca3a02de09ffb6c95",
+    "size": [
+     1295,
+     205
+    ]
+   }
+  },
+  {
+   "id": "r11",
+   "region_id": 11,
+   "type": "paragraph",
+   "line_ids": [
+    21
+   ],
+   "cutout": {
+    "crop_box": [
+     207,
+     2076,
+     1294,
+     2214
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     21
+    ],
+    "sha256": "3198922758130680a48e6d044615eeeadf24357b3158ea6df9e81023670d18cc",
+    "size": [
+     1167,
+     138
+    ]
+   }
+  },
+  {
+   "id": "r12",
+   "region_id": 12,
+   "type": "verse",
+   "line_ids": [
+    22,
+    23
+   ],
+   "cutout": {
+    "crop_box": [
+     502,
+     2143,
+     1619,
+     2346
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     22,
+     23
+    ],
+    "sha256": "971d18e1647d49caa73970bfd807484d35e7443abec87d76251c057b4fe0784a",
+    "size": [
+     1197,
+     203
+    ]
+   }
+  },
+  {
+   "id": "r13",
+   "region_id": 13,
+   "type": "paragraph",
+   "line_ids": [
+    24,
+    25
+   ],
+   "cutout": {
+    "crop_box": [
+     207,
+     2279,
+     1932,
+     2492
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     24,
+     25
+    ],
+    "sha256": "2f7e5bb489d781dc76d390545fd1fca75548ca265c477467d16e3b8a126e8da4",
+    "size": [
+     1805,
+     213
+    ]
+   }
+  },
+  {
+   "id": "r14",
+   "region_id": 14,
+   "type": "verse",
+   "line_ids": [
+    26,
+    27
+   ],
+   "cutout": {
+    "crop_box": [
+     501,
+     2419,
+     1629,
+     2623
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     26,
+     27
+    ],
+    "sha256": "cb320351645ba498ac9fb8ff71d3336105cf6c723aabdc7ab7a31e24f410bcbf",
+    "size": [
+     1208,
+     204
+    ]
+   }
+  },
+  {
+   "id": "r15",
+   "region_id": 15,
+   "type": "paragraph",
+   "line_ids": [
+    28
+   ],
+   "cutout": {
+    "crop_box": [
+     207,
+     2558,
+     1726,
+     2694
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     28
+    ],
+    "sha256": "d3d7b96ce35bea697ddfcd650bbf2126364972a02bf278434b5948ace538dcbf",
+    "size": [
+     1599,
+     136
+    ]
+   }
+  },
+  {
+   "id": "r16",
+   "region_id": 16,
+   "type": "verse",
+   "line_ids": [
+    29,
+    30
+   ],
+   "cutout": {
+    "crop_box": [
+     501,
+     2625,
+     1485,
+     2837
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     29,
+     30
+    ],
+    "sha256": "a2541333f93e913e83020489933a9d0b9601c61aa05c179cf003cfa86021bcc0",
+    "size": [
+     1064,
+     212
+    ]
+   }
+  },
+  {
+   "id": "r17",
+   "region_id": 17,
+   "type": "paragraph",
+   "line_ids": [
+    31
+   ],
+   "cutout": {
+    "crop_box": [
+     207,
+     2764,
+     1065,
+     2897
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     31
+    ],
+    "sha256": "54f1f3ca50edced07ad1f3919c58efa50ba7fe1c19d734fab4320b5992bbf07f",
+    "size": [
+     938,
+     133
+    ]
+   }
+  },
+  {
+   "id": "r1",
+   "region_id": 1,
+   "type": "running_header",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     497,
+     225,
+     1634,
+     345
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     0
+    ],
+    "sha256": "27773c00acaca5648d981c10c428a79e66888ff4cb86f11e1d5cd97cd08f8442",
+    "size": [
+     1217,
+     120
+    ]
+   }
+  },
+  {
+   "id": "r2",
+   "region_id": 2,
+   "type": "running_header",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     207,
+     303,
+     785,
+     405
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     0
+    ],
+    "sha256": "55eecf8bb8a447aad194dad03effb47902115a9ffc5e248c4a4cd41f9bc5d483",
+    "size": [
+     658,
+     102
+    ]
+   }
+  },
+  {
+   "id": "r3",
+   "region_id": 3,
+   "type": "running_header",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     1645,
+     306,
+     1934,
+     411
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     0
+    ],
+    "sha256": "1130cf202d6375a31b61c8198cd4d31d999f5f058634156ef6bce5e9be70dc60",
+    "size": [
+     369,
+     105
+    ]
+   }
+  },
+  {
+   "id": "r4",
+   "region_id": 4,
+   "type": "page_number",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     1883,
+     228,
+     2015,
+     342
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     0
+    ],
+    "sha256": "ec277f6838d19219314e538194e1538696d493337d89fe05ed9e97dfaed6277e",
+    "size": [
+     212,
+     114
+    ]
+   }
+  },
+  {
+   "id": "r18",
+   "region_id": 18,
+   "type": "line_number",
+   "line_ids": [
+    3
+   ],
+   "cutout": {
+    "crop_box": [
+     1882,
+     620,
+     1977,
+     722
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     3
+    ],
+    "sha256": "6ba2c0b21797bd15f57fae5a731be502b3945bd4e3ad4dad37922ca2a57d9a6f",
+    "size": [
+     175,
+     102
+    ]
+   }
+  },
+  {
+   "id": "r19",
+   "region_id": 19,
+   "type": "line_number",
+   "line_ids": [
+    6
+   ],
+   "cutout": {
+    "crop_box": [
+     1882,
+     918,
+     1978,
+     1022
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     6
+    ],
+    "sha256": "78275239ebad86d4ac19ac0b9f3ecb5bdf67ecb567a90cf3ea94a9ecbb3acb69",
+    "size": [
+     176,
+     104
+    ]
+   }
+  },
+  {
+   "id": "r20",
+   "region_id": 20,
+   "type": "line_number",
+   "line_ids": [
+    9
+   ],
+   "cutout": {
+    "crop_box": [
+     1882,
+     1252,
+     1979,
+     1355
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     9
+    ],
+    "sha256": "050f5ac996f9e39576c72bf68d65db7b89a558d8158473af5671db24af09210b",
+    "size": [
+     177,
+     103
+    ]
+   }
+  },
+  {
+   "id": "r21",
+   "region_id": 21,
+   "type": "line_number",
+   "line_ids": [
+    12
+   ],
+   "cutout": {
+    "crop_box": [
+     1885,
+     1464,
+     1998,
+     1568
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     12
+    ],
+    "sha256": "066b78d775758dccf05cbb4d3abee1581686058b06732cb75b2f030fd485ab20",
+    "size": [
+     193,
+     104
+    ]
+   }
+  },
+  {
+   "id": "r22",
+   "region_id": 22,
+   "type": "line_number",
+   "line_ids": [
+    15
+   ],
+   "cutout": {
+    "crop_box": [
+     1886,
+     1670,
+     1998,
+     1774
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     15
+    ],
+    "sha256": "686b9afb26aaed26106668e97deacb6673a12ab55b836e4a6af1f8e9d0095c51",
+    "size": [
+     192,
+     104
+    ]
+   }
+  },
+  {
+   "id": "r23",
+   "region_id": 23,
+   "type": "line_number",
+   "line_ids": [
+    18
+   ],
+   "cutout": {
+    "crop_box": [
+     1886,
+     1875,
+     1999,
+     1978
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     18
+    ],
+    "sha256": "2142aea279925a67f5501789027d410b6998568d0038ff75d37de067a5292aeb",
+    "size": [
+     193,
+     103
+    ]
+   }
+  },
+  {
+   "id": "r24",
+   "region_id": 24,
+   "type": "line_number",
+   "line_ids": [
+    21
+   ],
+   "cutout": {
+    "crop_box": [
+     1882,
+     2087,
+     1995,
+     2190
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     21
+    ],
+    "sha256": "73da5ff2ef3960647dd9a6281db2f5fcceaf82a304677e1bc6444130cb7d9d31",
+    "size": [
+     193,
+     103
+    ]
+   }
+  },
+  {
+   "id": "r25",
+   "region_id": 25,
+   "type": "line_number",
+   "line_ids": [
+    24
+   ],
+   "cutout": {
+    "crop_box": [
+     1881,
+     2298,
+     1996,
+     2402
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     24
+    ],
+    "sha256": "b9eb6247e68d43768d512e474ebbd0a7bcc1b876b5ee27b46432cf377b51f670",
+    "size": [
+     195,
+     104
+    ]
+   }
+  },
+  {
+   "id": "r26",
+   "region_id": 26,
+   "type": "line_number",
+   "line_ids": [
+    27
+   ],
+   "cutout": {
+    "crop_box": [
+     1881,
+     2504,
+     1995,
+     2608
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     27
+    ],
+    "sha256": "9b75e7c0aa1d943d2d0b288bba4c2ed8447f9f7a62b30a70b5af2da4ccfac61e",
+    "size": [
+     194,
+     104
+    ]
+   }
+  },
+  {
+   "id": "r27",
+   "region_id": 27,
+   "type": "line_number",
+   "line_ids": [
+    30
+   ],
+   "cutout": {
+    "crop_box": [
+     1881,
+     2708,
+     1997,
+     2812
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     30
+    ],
+    "sha256": "1af2045898435e6093c46b29d1218c8704d99ecffa15497cbf2e1d61d4331bac",
+    "size": [
+     196,
+     104
+    ]
+   }
+  },
+  {
+   "id": "r28",
+   "region_id": 28,
+   "type": "margin_mark",
+   "line_ids": [
+    21
+   ],
+   "cutout": {
+    "crop_box": [
+     1822,
+     2023,
+     1936,
+     2128
+    ],
+    "gutter_px": 80,
+    "line_ids": [
+     21
+    ],
+    "sha256": "88f3109d0d757050c65aa3d39adc8769f16fc1c191334384f169e2d2b1b13c86",
+    "size": [
+     194,
+     105
+    ]
+   }
+  }
+ ],
+ "regions_skipped": [],
+ "context": [
+  {
+   "side": "previous",
+   "page": "hertel-panchatantra-page-152",
+   "stream": "main",
+   "region_id": 10,
+   "type": "verse",
+   "regions": "outputs/hertel-panchatantra-page-152/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+   "regions_sha256": "07d41748dc7e1ea7e09818f6742184d8c5375675cc6eff4497aee2d14c339e03",
+   "sha256": "cd8b72c9c9162537e29453ebca0079a5952a6915d771c88ecd7f875bc7adf00b",
+   "crop_box": [
+    218,
+    2640,
+    1661,
+    2910
+   ],
+   "line_ids": [
+    23,
+    24
+   ]
+  },
+  {
+   "side": "next",
+   "page": "hertel-panchatantra-page-154",
+   "stream": "main",
+   "region_id": 3,
+   "type": "heading",
+   "regions": "outputs/hertel-panchatantra-page-154/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+   "regions_sha256": "47f18acd472fbf9359727f41e92c2064b017174524bef138d22121760d6c7af8",
+   "sha256": "0e5cd0837a118ce7b12c786823255cf0043c11d496e90d0a3f83cc2116475b00",
+   "crop_box": [
+    785,
+    505,
+    1207,
+    646
+   ],
+   "line_ids": [
+    1
+   ]
+  }
+ ],
+ "problems": [],
+ "check": {
+  "errors": [
+   "$.units[10].children: fewer than 1 items"
+  ],
+  "warnings": [],
+  "valid": false
+ },
+ "counts": {
+  "regions": 28,
+  "units": 11,
+  "relations": 0,
+  "line_pieces": 46,
+  "retyped": [],
+  "uncertain": [
+   "r5",
+   "r6",
+   "r13"
+  ]
+ },
+ "artifacts": {
+  "request": "request.json",
+  "raw_response": "response.json",
+  "prompt": "prompt.txt",
+  "schema": "response-schema.json",
+  "overview": "overview.png",
+  "cutouts": "cutouts/",
+  "context": "context/",
+  "page_document": "page.json",
+  "transcript": "transcript.txt"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0"
+  }
+ }
+}

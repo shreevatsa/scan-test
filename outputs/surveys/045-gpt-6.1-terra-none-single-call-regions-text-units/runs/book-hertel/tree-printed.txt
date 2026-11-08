@@ -1,0 +1,24 @@
+flow main
+  story 15 (Strand-bird and sea)   [began before this range; goes on after this range]
+    paragraph   [began before this range; goes on after this range]
+      · p152 r3
+      verse 345: p152 r7
+      lead_in: p152 r8
+      verse 346: p152 r10
+      · p152 r11
+      verse 347: p152 r14
+      · p152 r16
+      verse 348: p152 r17
+  story 21 (Jackal outwits camel and lion)   [spans pages 154–155; goes on after this range]
+    heading 21: p154 r3
+    paragraph   [goes on after this range]
+      · p154 r4
+      verse 354: p154 r5
+      · p154 r6
+    story 21 (Jackal outwits camel and lion)   [began before this range; goes on after this range]
+      paragraph: p155 r3   [began before this range]
+      paragraph: p155 r4   [goes on after this range]
+
+Continuing across each page break, outermost first:
+page 152 → 154: nothing continues
+page 154 → 155: story 21 (Jackal outwits camel and lion)

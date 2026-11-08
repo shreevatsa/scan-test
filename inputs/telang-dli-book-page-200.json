@@ -1,0 +1,44 @@
+{
+  "input_id": "telang-dli-book-page-200",
+  "image": "telang-dli-book-page-200.png",
+  "image_sha256": "2987f62bd9145f4e011c3044ce75570e5794d9bad016b8c3d51d58c2bd7329ae",
+  "width": 1500,
+  "height": 2413,
+  "book_id": "telang-dli",
+  "source_pdf": "~/w/bhartrhari/data/images/dli.granth.78136_jp2_Telang.pdf",
+  "source_pdf_sha256": "37dffcba76cf1d038140cd671e8a522eaca4995ea2505106c4b544b2e09fd122",
+  "pdf_page": 200,
+  "pdf_page_index": 199,
+  "pdf_page_count": 200,
+  "pdf_page_size_points": [
+    1125.0,
+    1809.75
+  ],
+  "selection": "Telang full-book walk (2026-11-06): every page of the scan, at the user's request.",
+  "render": {
+    "library": "PyMuPDF",
+    "version": "1.26.6",
+    "dpi": 300,
+    "zoom": 1.3333333333333333,
+    "effective_dpi": 96.0,
+    "native_image_size": [
+      1500,
+      2413
+    ],
+    "colorspace": "RGB",
+    "alpha": false,
+    "script": "inputs/render_pages.py",
+    "page_list": "inputs/pages-telang-book.json"
+  },
+  "preprocess": {
+    "steps": [
+      {
+        "step": "flatten",
+        "scale": 4,
+        "max_filter": 13,
+        "blur_radius": 6
+      }
+    ],
+    "unprocessed_sha256": "bebaae2c218dafc7f275f5be18595e9dffbad658d3ccabf2a5068ce4c6d75e67"
+  }
+}

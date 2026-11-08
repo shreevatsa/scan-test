@@ -1,0 +1,9550 @@
+[
+ {
+  "page": "kale-1913-page-001",
+  "regions_call": {
+   "cost": 0.013528,
+   "seconds": 17.0,
+   "types": {
+    "heading": 3,
+    "paragraph": 1,
+    "contents_entry": 24
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 28,
+   "units": 29,
+   "relations": 0,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.110846,
+   "seconds": 34.6,
+   "output_tokens": 3683
+  }
+ },
+ {
+  "page": "kale-1913-page-002",
+  "regions_call": {
+   "cost": 0.009618,
+   "seconds": 9.3,
+   "types": {
+    "heading": 3,
+    "commentator_verse": 3,
+    "introduction": 1,
+    "verse": 1,
+    "commentary": 1,
+    "footnote": 3
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 14,
+   "relations": 3,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "section",
+   "group 1",
+   "commentary 1"
+  ],
+  "transcription_call": {
+   "cost": 0.073958,
+   "seconds": 30.7,
+   "output_tokens": 3231
+  }
+ },
+ {
+  "page": "kale-1913-page-003",
+  "regions_call": {
+   "cost": 0.008743,
+   "seconds": 6.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 2,
+    "lead_in": 1,
+    "verse": 1,
+    "footnote": 2
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 2,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 1",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 2",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.056040000000000006,
+   "seconds": 20.3,
+   "output_tokens": 2082
+  }
+ },
+ {
+  "page": "kale-1913-page-004",
+  "regions_call": {
+   "cost": 0.009838,
+   "seconds": 9.4,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "introduction": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 4
+   }
+  },
+  "label": "3",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u12: marker [ * ] not in r3 line 3"
+  ],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [
+    "r3"
+   ],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 2",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 4",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.081738,
+   "seconds": 36.1,
+   "output_tokens": 3794
+  }
+ },
+ {
+  "page": "kale-1913-page-005",
+  "regions_call": {
+   "cost": 0.008503,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 2,
+    "lead_in": 2,
+    "verse": 1
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 4",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group"
+  ],
+  "transcription_call": {
+   "cost": 0.05204399999999999,
+   "seconds": 20.8,
+   "output_tokens": 1920
+  }
+ },
+ {
+  "page": "kale-1913-page-006",
+  "regions_call": {
+   "cost": 0.008878,
+   "seconds": 7.2,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 3
+   }
+  },
+  "label": "5",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 6"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.066274,
+   "seconds": 28.6,
+   "output_tokens": 3086
+  }
+ },
+ {
+  "page": "kale-1913-page-007",
+  "regions_call": {
+   "cost": 0.009937999999999999,
+   "seconds": 9.2,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 5
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 14,
+   "relations": 5,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.07234,
+   "seconds": 96.9,
+   "output_tokens": 2616
+  }
+ },
+ {
+  "page": "kale-1913-page-008",
+  "regions_call": {
+   "cost": 0.00986675,
+   "seconds": 9.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 5
+   }
+  },
+  "label": "7",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 5,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 12",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.084358,
+   "seconds": 36.6,
+   "output_tokens": 3834
+  }
+ },
+ {
+  "page": "kale-1913-page-009",
+  "regions_call": {
+   "cost": 0.010413,
+   "seconds": 10.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "verse": 3,
+    "lead_in": 2,
+    "footnote": 4
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 19,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 12",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 16"
+  ],
+  "transcription_call": {
+   "cost": 0.078286,
+   "seconds": 28.2,
+   "output_tokens": 2779
+  }
+ },
+ {
+  "page": "kale-1913-page-010",
+  "regions_call": {
+   "cost": 0.009592999999999999,
+   "seconds": 8.4,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 2,
+    "lead_in": 2,
+    "footnote": 3
+   }
+  },
+  "label": "9",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 14,
+   "relations": 3,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 16"
+  ],
+  "open_end": [
+   "section",
+   "group 18"
+  ],
+  "transcription_call": {
+   "cost": 0.078878,
+   "seconds": 31.0,
+   "output_tokens": 3498
+  }
+ },
+ {
+  "page": "kale-1913-page-011",
+  "regions_call": {
+   "cost": 0.009391749999999999,
+   "seconds": 8.2,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "verse": 2,
+    "footnote": 4
+   }
+  },
+  "label": "10",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 18"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.07650799999999999,
+   "seconds": 31.6,
+   "output_tokens": 3460
+  }
+ },
+ {
+  "page": "kale-1913-page-012",
+  "regions_call": {
+   "cost": 0.009767999999999999,
+   "seconds": 9.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 2,
+    "lead_in": 2,
+    "footnote": 4
+   }
+  },
+  "label": "11",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 23",
+   "verse 23"
+  ],
+  "transcription_call": {
+   "cost": 0.071276,
+   "seconds": 26.5,
+   "output_tokens": 2502
+  }
+ },
+ {
+  "page": "kale-1913-page-013",
+  "regions_call": {
+   "cost": 0.009688,
+   "seconds": 7.8,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 4,
+    "commentary": 3,
+    "lead_in": 1,
+    "footnote": 2
+   }
+  },
+  "label": "12",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 15,
+   "relations": 2,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": [
+    "r11"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 23",
+   "verse 23"
+  ],
+  "open_end": [
+   "section",
+   "group 26"
+  ],
+  "transcription_call": {
+   "cost": 0.067986,
+   "seconds": 26.6,
+   "output_tokens": 2415
+  }
+ },
+ {
+  "page": "kale-1913-page-014",
+  "regions_call": {
+   "cost": 0.010648,
+   "seconds": 10.2,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "verse": 3,
+    "lead_in": 1,
+    "heading": 1,
+    "footnote": 5
+   }
+  },
+  "label": "13",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 19,
+   "relations": 6,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": [
+    "r2"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 26"
+  ],
+  "open_end": [
+   "section",
+   "group 29",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.096472,
+   "seconds": 38.9,
+   "output_tokens": 4346
+  }
+ },
+ {
+  "page": "kale-1913-page-015",
+  "regions_call": {
+   "cost": 0.010653,
+   "seconds": 10.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "lead_in": 2,
+    "verse": 3,
+    "footnote": 5
+   }
+  },
+  "label": "14",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 19,
+   "relations": 5,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": [
+    "r13"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 29",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 32",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.096144,
+   "seconds": 36.3,
+   "output_tokens": 4334
+  }
+ },
+ {
+  "page": "kale-1913-page-016",
+  "regions_call": {
+   "cost": 0.010078,
+   "seconds": 9.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 5
+   }
+  },
+  "label": "15",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 16,
+   "relations": 5,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": [
+    "r12"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 32",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.074934,
+   "seconds": 26.1,
+   "output_tokens": 2672
+  }
+ },
+ {
+  "page": "kale-1913-page-017",
+  "regions_call": {
+   "cost": 0.010178,
+   "seconds": 9.2,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 6
+   }
+  },
+  "label": "16",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 15,
+   "relations": 6,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.07552,
+   "seconds": 25.1,
+   "output_tokens": 2720
+  }
+ },
+ {
+  "page": "kale-1913-page-018",
+  "regions_call": {
+   "cost": 0.010543,
+   "seconds": 11.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 3,
+    "heading": 1,
+    "footnote": 3,
+    "other": 1
+   }
+  },
+  "label": "17",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 17,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.09185199999999999,
+   "seconds": 39.4,
+   "output_tokens": 3929
+  }
+ },
+ {
+  "page": "kale-1913-page-019",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 8.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 3,
+    "commentary": 3,
+    "lead_in": 2,
+    "footnote": 2
+   }
+  },
+  "label": "18",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 14,
+   "relations": 2,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 42",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.07721800000000001,
+   "seconds": 32.8,
+   "output_tokens": 3329
+  }
+ },
+ {
+  "page": "kale-1913-page-020",
+  "regions_call": {
+   "cost": 0.009838,
+   "seconds": 8.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "verse": 2,
+    "lead_in": 1,
+    "footnote": 5
+   }
+  },
+  "label": "19",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 5,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 42",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 44",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.08452799999999999,
+   "seconds": 35.9,
+   "output_tokens": 3834
+  }
+ },
+ {
+  "page": "kale-1913-page-021",
+  "regions_call": {
+   "cost": 0.009937999999999999,
+   "seconds": 8.9,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 4
+   }
+  },
+  "label": "20",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": [
+    "r10"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 44",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.082708,
+   "seconds": 33.6,
+   "output_tokens": 3672
+  }
+ },
+ {
+  "page": "kale-1913-page-022",
+  "regions_call": {
+   "cost": 0.010413,
+   "seconds": 9.6,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 4
+   }
+  },
+  "label": "21",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 17,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 49",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.077278,
+   "seconds": 28.3,
+   "output_tokens": 2662
+  }
+ },
+ {
+  "page": "kale-1913-page-023",
+  "regions_call": {
+   "cost": 0.010888,
+   "seconds": 10.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "verse": 3,
+    "lead_in": 2,
+    "heading": 1,
+    "footnote": 5
+   }
+  },
+  "label": "22",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 17,
+   "units": 20,
+   "relations": 5,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 49",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.098556,
+   "seconds": 58.4,
+   "output_tokens": 4364
+  }
+ },
+ {
+  "page": "kale-1913-page-024",
+  "regions_call": {
+   "cost": 0.011786749999999999,
+   "seconds": 13.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 10
+   }
+  },
+  "label": "23",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 21,
+   "units": 22,
+   "relations": 9,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 55",
+   "commentary 55"
+  ],
+  "transcription_call": {
+   "cost": 0.114504,
+   "seconds": 52.8,
+   "output_tokens": 5059
+  }
+ },
+ {
+  "page": "kale-1913-page-025",
+  "regions_call": {
+   "cost": 0.010413,
+   "seconds": 9.5,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 3,
+    "verse": 3,
+    "footnote": 4
+   }
+  },
+  "label": "24",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 18,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 55",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 58",
+   "verse 58"
+  ],
+  "transcription_call": {
+   "cost": 0.077908,
+   "seconds": 26.4,
+   "output_tokens": 2740
+  }
+ },
+ {
+  "page": "kale-1913-page-026",
+  "regions_call": {
+   "cost": 0.009833,
+   "seconds": 10.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 3,
+    "lead_in": 2,
+    "footnote": 3
+   }
+  },
+  "label": "25",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 58",
+   "verse 58"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.07016599999999999,
+   "seconds": 24.4,
+   "output_tokens": 2405
+  }
+ },
+ {
+  "page": "kale-1913-page-027",
+  "regions_call": {
+   "cost": 0.011368,
+   "seconds": 12.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 3,
+    "heading": 1,
+    "footnote": 7
+   }
+  },
+  "label": "26",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 19,
+   "units": 21,
+   "relations": 7,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.107112,
+   "seconds": 50.1,
+   "output_tokens": 4755
+  }
+ },
+ {
+  "page": "kale-1913-page-028",
+  "regions_call": {
+   "cost": 0.010413,
+   "seconds": 9.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 4
+   }
+  },
+  "label": "27",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 17,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.076838,
+   "seconds": 25.6,
+   "output_tokens": 2641
+  }
+ },
+ {
+  "page": "kale-1913-page-029",
+  "regions_call": {
+   "cost": 0.01243425,
+   "seconds": 14.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 2,
+    "footnote": 13
+   }
+  },
+  "label": "18",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 23,
+   "units": 23,
+   "relations": 11,
+   "line_pieces": 41,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 69"
+  ],
+  "transcription_call": {
+   "cost": 0.104536,
+   "seconds": 35.8,
+   "output_tokens": 3647
+  }
+ },
+ {
+  "page": "kale-1913-page-030",
+  "regions_call": {
+   "cost": 0.010648,
+   "seconds": 10.4,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "heading": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "footnote": 3
+   }
+  },
+  "label": "29",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 19,
+   "relations": 3,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 69"
+  ],
+  "open_end": [
+   "section",
+   "group 72",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.080164,
+   "seconds": 29.6,
+   "output_tokens": 2739
+  }
+ },
+ {
+  "page": "kale-1913-page-031",
+  "regions_call": {
+   "cost": 0.011373000000000001,
+   "seconds": 11.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 3,
+    "verse": 3,
+    "footnote": 8
+   }
+  },
+  "label": "30",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 19,
+   "units": 22,
+   "relations": 8,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 72",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 75",
+   "verse 75"
+  ],
+  "transcription_call": {
+   "cost": 0.091488,
+   "seconds": 33.4,
+   "output_tokens": 3191
+  }
+ },
+ {
+  "page": "kale-1913-page-032",
+  "regions_call": {
+   "cost": 0.01034675,
+   "seconds": 9.9,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 3,
+    "lead_in": 1,
+    "footnote": 6
+   }
+  },
+  "label": "31",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u14: marker [ * ] not in r5 line 5"
+  ],
+  "counts": {
+   "regions": 15,
+   "units": 16,
+   "relations": 5,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 75",
+   "verse 75"
+  ],
+  "open_end": [
+   "section",
+   "group 77",
+   "commentary 77"
+  ],
+  "transcription_call": {
+   "cost": 0.091404,
+   "seconds": 41.6,
+   "output_tokens": 4097
+  }
+ },
+ {
+  "page": "kale-1913-page-033",
+  "regions_call": {
+   "cost": 0.00986675,
+   "seconds": 8.5,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 3,
+    "footnote": 3
+   }
+  },
+  "label": "32",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 16,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 77",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.070324,
+   "seconds": 25.9,
+   "output_tokens": 2425
+  }
+ },
+ {
+  "page": "kale-1913-page-034",
+  "regions_call": {
+   "cost": 0.010168,
+   "seconds": 9.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "heading": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 3,
+    "other": 1
+   }
+  },
+  "label": "33",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 80"
+  ],
+  "open_end": [
+   "section",
+   "group 82",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.085006,
+   "seconds": 70.6,
+   "output_tokens": 3683
+  }
+ },
+ {
+  "page": "kale-1913-page-035",
+  "regions_call": {
+   "cost": 0.010653,
+   "seconds": 10.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "lead_in": 3,
+    "verse": 3,
+    "footnote": 4
+   }
+  },
+  "label": "34",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 19,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 82",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.079888,
+   "seconds": 25.6,
+   "output_tokens": 2720
+  }
+ },
+ {
+  "page": "kale-1913-page-036",
+  "regions_call": {
+   "cost": 0.010653,
+   "seconds": 10.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 3,
+    "lead_in": 2,
+    "footnote": 6
+   }
+  },
+  "label": "35",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 18,
+   "relations": 6,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.095082,
+   "seconds": 38.0,
+   "output_tokens": 4227
+  }
+ },
+ {
+  "page": "kale-1913-page-037",
+  "regions_call": {
+   "cost": 0.012083,
+   "seconds": 13.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 3,
+    "verse": 4,
+    "commentary": 3,
+    "heading": 1,
+    "footnote": 9
+   }
+  },
+  "label": "36",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u25: marker [०] not in r4 line 2"
+  ],
+  "counts": {
+   "regions": 22,
+   "units": 25,
+   "relations": 9,
+   "line_pieces": 40,
+   "retyped": [],
+   "uncertain": [
+    "r10"
+   ]
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 92"
+  ],
+  "transcription_call": {
+   "cost": 0.103592,
+   "seconds": 35.1,
+   "output_tokens": 3759
+  }
+ },
+ {
+  "page": "kale-1913-page-038",
+  "regions_call": {
+   "cost": 0.011748,
+   "seconds": 12.6,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "lead_in": 4,
+    "verse": 4,
+    "footnote": 7
+   }
+  },
+  "label": "37",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 21,
+   "units": 24,
+   "relations": 6,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 92"
+  ],
+  "open_end": [
+   "section",
+   "group 96"
+  ],
+  "transcription_call": {
+   "cost": 0.096022,
+   "seconds": 34.3,
+   "output_tokens": 3269
+  }
+ },
+ {
+  "page": "kale-1913-page-039",
+  "regions_call": {
+   "cost": 0.009218,
+   "seconds": 6.8,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 1
+   }
+  },
+  "label": "38",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 12,
+   "relations": 1,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": [
+    "r10"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 96",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.060548,
+   "seconds": 21.9,
+   "output_tokens": 2110
+  }
+ },
+ {
+  "page": "kale-1913-page-040",
+  "regions_call": {
+   "cost": 0.009928,
+   "seconds": 8.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "heading": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 2,
+    "footnote": 2
+   }
+  },
+  "label": "39",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 2,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 101"
+  ],
+  "transcription_call": {
+   "cost": 0.070542,
+   "seconds": 26.6,
+   "output_tokens": 2428
+  }
+ },
+ {
+  "page": "kale-1913-page-041",
+  "regions_call": {
+   "cost": 0.009933,
+   "seconds": 9.8,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "lead_in": 3,
+    "verse": 3,
+    "footnote": 1
+   }
+  },
+  "label": "40",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 16,
+   "relations": 1,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 101"
+  ],
+  "open_end": [
+   "section",
+   "group 104",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.07064200000000001,
+   "seconds": 23.9,
+   "output_tokens": 2468
+  }
+ },
+ {
+  "page": "kale-1913-page-042",
+  "regions_call": {
+   "cost": 0.010418,
+   "seconds": 9.9,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 6
+   }
+  },
+  "label": "41",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 17,
+   "relations": 6,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 106",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.07880999999999999,
+   "seconds": 29.8,
+   "output_tokens": 2812
+  }
+ },
+ {
+  "page": "kale-1913-page-043",
+  "regions_call": {
+   "cost": 0.010413,
+   "seconds": 10.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "heading": 1,
+    "footnote": 5
+   }
+  },
+  "label": "42",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 17,
+   "relations": 5,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": [
+    "r8",
+    "r10"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 106",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.076524,
+   "seconds": 26.8,
+   "output_tokens": 2600
+  }
+ },
+ {
+  "page": "kale-1913-page-044",
+  "regions_call": {
+   "cost": 0.010778,
+   "seconds": 10.6,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "heading": 1,
+    "verse": 5,
+    "commentary": 5,
+    "footnote": 4
+   }
+  },
+  "label": "43",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 17,
+   "units": 21,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.08316799999999999,
+   "seconds": 27.8,
+   "output_tokens": 2858
+  }
+ },
+ {
+  "page": "kale-1913-page-045",
+  "regions_call": {
+   "cost": 0.009448,
+   "seconds": 9.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 4,
+    "commentary": 3,
+    "footnote": 2
+   }
+  },
+  "label": "44",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 14,
+   "relations": 2,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 9"
+  ],
+  "transcription_call": {
+   "cost": 0.06365599999999999,
+   "seconds": 22.0,
+   "output_tokens": 2209
+  }
+ },
+ {
+  "page": "kale-1913-page-046",
+  "regions_call": {
+   "cost": 0.009448,
+   "seconds": 7.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "verse": 4,
+    "footnote": 1
+   }
+  },
+  "label": "45",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 15,
+   "relations": 1,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 9"
+  ],
+  "open_end": [
+   "section",
+   "group 13",
+   "verse 13"
+  ],
+  "transcription_call": {
+   "cost": 0.074236,
+   "seconds": 28.2,
+   "output_tokens": 3237
+  }
+ },
+ {
+  "page": "kale-1913-page-047",
+  "regions_call": {
+   "cost": 0.010303,
+   "seconds": 9.5,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 5,
+    "commentary": 5,
+    "footnote": 3
+   }
+  },
+  "label": "46",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 19,
+   "relations": 3,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 13",
+   "verse 13"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.090294,
+   "seconds": 37.4,
+   "output_tokens": 4000
+  }
+ },
+ {
+  "page": "kale-1913-page-048",
+  "regions_call": {
+   "cost": 0.009993,
+   "seconds": 9.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 6,
+    "commentary": 5,
+    "footnote": 1
+   }
+  },
+  "label": "40",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 19,
+   "relations": 1,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 23"
+  ],
+  "transcription_call": {
+   "cost": 0.08318,
+   "seconds": 34.1,
+   "output_tokens": 3720
+  }
+ },
+ {
+  "page": "kale-1913-page-049",
+  "regions_call": {
+   "cost": 0.008498,
+   "seconds": 5.3,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "verse": 2
+   }
+  },
+  "label": "48",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 20,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 23"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.047844,
+   "seconds": 17.9,
+   "output_tokens": 1466
+  }
+ },
+ {
+  "page": "kale-1913-page-050",
+  "regions_call": {
+   "cost": 0.009753,
+   "seconds": 8.6,
+   "types": {
+    "heading": 3,
+    "verse": 3,
+    "commentary": 2,
+    "lead_in": 2,
+    "footnote": 3
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 17,
+   "relations": 3,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "section",
+   "group 3",
+   "verse 3"
+  ],
+  "transcription_call": {
+   "cost": 0.080234,
+   "seconds": 31.2,
+   "output_tokens": 3625
+  }
+ },
+ {
+  "page": "kale-1913-page-051",
+  "regions_call": {
+   "cost": 0.011373000000000001,
+   "seconds": 12.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 11
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 19,
+   "units": 20,
+   "relations": 10,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": [
+    "r18"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 3",
+   "verse 3"
+  ],
+  "open_end": [
+   "section",
+   "group 5",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.08524000000000001,
+   "seconds": 35.8,
+   "output_tokens": 2606
+  }
+ },
+ {
+  "page": "kale-1913-page-052",
+  "regions_call": {
+   "cost": 0.010558,
+   "seconds": 10.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 7
+   }
+  },
+  "label": "3",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 17,
+   "relations": 6,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": [
+    "r14"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 5",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 7",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.09456600000000001,
+   "seconds": 38.7,
+   "output_tokens": 4175
+  }
+ },
+ {
+  "page": "kale-1913-page-053",
+  "regions_call": {
+   "cost": 0.010413,
+   "seconds": 9.5,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "lead_in": 1,
+    "verse": 3,
+    "footnote": 5
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 18,
+   "relations": 5,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 7",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 10",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.078264,
+   "seconds": 37.5,
+   "output_tokens": 2770
+  }
+ },
+ {
+  "page": "kale-1913-page-054",
+  "regions_call": {
+   "cost": 0.008643,
+   "seconds": 5.8,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 2,
+    "lead_in": 1,
+    "verse": 1,
+    "footnote": 2
+   }
+  },
+  "label": "5",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 2,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 10",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06451,
+   "seconds": 31.2,
+   "output_tokens": 2914
+  }
+ },
+ {
+  "page": "kale-1913-page-055",
+  "regions_call": {
+   "cost": 0.009453,
+   "seconds": 7.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "heading": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 2
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 2,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 13",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.06454,
+   "seconds": 25.3,
+   "output_tokens": 2277
+  }
+ },
+ {
+  "page": "kale-1913-page-056",
+  "regions_call": {
+   "cost": 0.010558,
+   "seconds": 10.2,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 1,
+    "verse": 2,
+    "footnote": 8
+   }
+  },
+  "label": "7",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 17,
+   "relations": 7,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": [
+    "r10",
+    "r11"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 15",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.08199,
+   "seconds": 29.6,
+   "output_tokens": 2990
+  }
+ },
+ {
+  "page": "kale-1913-page-057",
+  "regions_call": {
+   "cost": 0.009458,
+   "seconds": 7.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 2
+   }
+  },
+  "label": "8",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 2,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 15",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 17",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.065634,
+   "seconds": 23.8,
+   "output_tokens": 2353
+  }
+ },
+ {
+  "page": "kale-1913-page-058",
+  "regions_call": {
+   "cost": 0.009698,
+   "seconds": 8.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 3
+   }
+  },
+  "label": "9",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 14,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": [
+    "r10"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 17",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 19",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.078572,
+   "seconds": 31.4,
+   "output_tokens": 3480
+  }
+ },
+ {
+  "page": "kale-1913-page-059",
+  "regions_call": {
+   "cost": 0.010178,
+   "seconds": 9.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 5
+   }
+  },
+  "label": "10",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 16,
+   "relations": 5,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 19",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 21",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.07581,
+   "seconds": 26.2,
+   "output_tokens": 2758
+  }
+ },
+ {
+  "page": "kale-1913-page-060",
+  "regions_call": {
+   "cost": 0.010178,
+   "seconds": 9.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 5
+   }
+  },
+  "label": "11",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 16,
+   "relations": 5,
+   "line_pieces": 35,
+   "retyped": [
+    "r4"
+   ],
+   "uncertain": [
+    "r5",
+    "r8",
+    "r12"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 21",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 23",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.076834,
+   "seconds": 30.0,
+   "output_tokens": 2822
+  }
+ },
+ {
+  "page": "kale-1913-page-061",
+  "regions_call": {
+   "cost": 0.010658,
+   "seconds": 10.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 7
+   }
+  },
+  "label": "22",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 18,
+   "relations": 7,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 23",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 25",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.095498,
+   "seconds": 37.7,
+   "output_tokens": 4300
+  }
+ },
+ {
+  "page": "kale-1913-page-062",
+  "regions_call": {
+   "cost": 0.011138,
+   "seconds": 11.6,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 2,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 10
+   }
+  },
+  "label": "13",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 18,
+   "units": 19,
+   "relations": 9,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 25",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 27"
+  ],
+  "transcription_call": {
+   "cost": 0.08940000000000001,
+   "seconds": 31.5,
+   "output_tokens": 3224
+  }
+ },
+ {
+  "page": "kale-1913-page-063",
+  "regions_call": {
+   "cost": 0.009391749999999999,
+   "seconds": 7.9,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 2,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 3
+   }
+  },
+  "label": "34",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 27"
+  ],
+  "open_end": [
+   "section",
+   "group 29"
+  ],
+  "transcription_call": {
+   "cost": 0.062948,
+   "seconds": 28.0,
+   "output_tokens": 2317
+  }
+ },
+ {
+  "page": "kale-1913-page-064",
+  "regions_call": {
+   "cost": 0.008638,
+   "seconds": 6.4,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "verse": 2,
+    "lead_in": 1
+   }
+  },
+  "label": "15",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 10,
+   "relations": 0,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 29"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.063494,
+   "seconds": 32.6,
+   "output_tokens": 2810
+  }
+ },
+ {
+  "page": "kale-1913-page-065",
+  "regions_call": {
+   "cost": 0.00962675,
+   "seconds": 8.3,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "heading": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 3
+   }
+  },
+  "label": "16",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 13,
+   "relations": 3,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 33",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.076728,
+   "seconds": 34.7,
+   "output_tokens": 3500
+  }
+ },
+ {
+  "page": "kale-1913-page-066",
+  "regions_call": {
+   "cost": 0.011273,
+   "seconds": 11.9,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 9,
+    "other": 1
+   }
+  },
+  "label": "17",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 18,
+   "units": 19,
+   "relations": 8,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 33",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.10702400000000001,
+   "seconds": 41.7,
+   "output_tokens": 4764
+  }
+ },
+ {
+  "page": "kale-1913-page-067",
+  "regions_call": {
+   "cost": 0.009358,
+   "seconds": 8.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 1,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 4
+   }
+  },
+  "label": "38",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.07650799999999999,
+   "seconds": 31.5,
+   "output_tokens": 3491
+  }
+ },
+ {
+  "page": "kale-1913-page-068",
+  "regions_call": {
+   "cost": 0.009458,
+   "seconds": 7.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 3
+   }
+  },
+  "label": "19",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 3,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.073464,
+   "seconds": 29.5,
+   "output_tokens": 3164
+  }
+ },
+ {
+  "page": "kale-1913-page-069",
+  "regions_call": {
+   "cost": 0.009698,
+   "seconds": 8.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 1,
+    "footnote": 5
+   }
+  },
+  "label": "20",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 41"
+  ],
+  "transcription_call": {
+   "cost": 0.06878,
+   "seconds": 26.4,
+   "output_tokens": 2485
+  }
+ },
+ {
+  "page": "kale-1913-page-070",
+  "regions_call": {
+   "cost": 0.009597999999999999,
+   "seconds": 9.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 2,
+    "heading": 1,
+    "lead_in": 1,
+    "verse": 1,
+    "footnote": 5
+   }
+  },
+  "label": "29",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 41"
+  ],
+  "open_end": [
+   "section",
+   "group 42",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.07884,
+   "seconds": 31.5,
+   "output_tokens": 3490
+  }
+ },
+ {
+  "page": "kale-1913-page-071",
+  "regions_call": {
+   "cost": 0.011038,
+   "seconds": 12.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 9
+   }
+  },
+  "label": "22",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 18,
+   "units": 19,
+   "relations": 8,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 42",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 44",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.103712,
+   "seconds": 41.1,
+   "output_tokens": 4656
+  }
+ },
+ {
+  "page": "kale-1913-page-072",
+  "regions_call": {
+   "cost": 0.010558,
+   "seconds": 10.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 7
+   }
+  },
+  "label": "23",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 18,
+   "relations": 7,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 44",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 46",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.09587200000000001,
+   "seconds": 40.3,
+   "output_tokens": 4318
+  }
+ },
+ {
+  "page": "kale-1913-page-073",
+  "regions_call": {
+   "cost": 0.008978,
+   "seconds": 7.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 2,
+    "verse": 2,
+    "lead_in": 1,
+    "footnote": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 11,
+   "relations": 2,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 46",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 48",
+   "verse 48"
+  ],
+  "transcription_call": {
+   "cost": 0.06567200000000001,
+   "seconds": 30.6,
+   "output_tokens": 3036
+  }
+ },
+ {
+  "page": "kale-1913-page-074",
+  "regions_call": {
+   "cost": 0.010553,
+   "seconds": 10.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 2,
+    "lead_in": 2,
+    "footnote": 7
+   }
+  },
+  "label": "25",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 18,
+   "relations": 7,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": [
+    "r11"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 48",
+   "verse 48"
+  ],
+  "open_end": [
+   "section",
+   "group 50"
+  ],
+  "transcription_call": {
+   "cost": 0.094222,
+   "seconds": 37.5,
+   "output_tokens": 4372
+  }
+ },
+ {
+  "page": "kale-1913-page-075",
+  "regions_call": {
+   "cost": 0.009448,
+   "seconds": 7.5,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "heading": 1,
+    "other": 1
+   }
+  },
+  "label": "26",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 1,
+   "line_pieces": 29,
+   "retyped": [
+    "r11"
+   ],
+   "uncertain": [
+    "r9",
+    "r11"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 50"
+  ],
+  "open_end": [
+   "section",
+   "group 52",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.064078,
+   "seconds": 22.2,
+   "output_tokens": 2223
+  }
+ },
+ {
+  "page": "kale-1913-page-076",
+  "regions_call": {
+   "cost": 0.01141675,
+   "seconds": 12.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "footnote": 11
+   }
+  },
+  "label": "27",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 20,
+   "units": 21,
+   "relations": 10,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 52",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 54",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.093054,
+   "seconds": 32.7,
+   "output_tokens": 3397
+  }
+ },
+ {
+  "page": "kale-1913-page-077",
+  "regions_call": {
+   "cost": 0.011033,
+   "seconds": 11.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "lead_in": 3,
+    "verse": 3,
+    "footnote": 6
+   }
+  },
+  "label": "28",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 18,
+   "units": 20,
+   "relations": 5,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 54",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 57",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.10105,
+   "seconds": 40.0,
+   "output_tokens": 4457
+  }
+ },
+ {
+  "page": "kale-1913-page-078",
+  "regions_call": {
+   "cost": 0.009533,
+   "seconds": 8.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "verse": 2,
+    "footnote": 5
+   }
+  },
+  "label": "29",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 14,
+   "relations": 5,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 57",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.080532,
+   "seconds": 33.2,
+   "output_tokens": 3670
+  }
+ },
+ {
+  "page": "kale-1913-page-079",
+  "regions_call": {
+   "cost": 0.00987675,
+   "seconds": 9.3,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 6
+   }
+  },
+  "label": "30",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 14,
+   "relations": 5,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.086228,
+   "seconds": 45.2,
+   "output_tokens": 3774
+  }
+ },
+ {
+  "page": "kale-1913-page-080",
+  "regions_call": {
+   "cost": 0.01021175,
+   "seconds": 9.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "heading": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 6
+   }
+  },
+  "label": "31",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 16,
+   "relations": 6,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.078184,
+   "seconds": 29.0,
+   "output_tokens": 2770
+  }
+ },
+ {
+  "page": "kale-1913-page-081",
+  "regions_call": {
+   "cost": 0.010317999999999999,
+   "seconds": 9.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 7
+   }
+  },
+  "label": "32",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 15,
+   "relations": 6,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.077558,
+   "seconds": 27.0,
+   "output_tokens": 2716
+  }
+ },
+ {
+  "page": "kale-1913-page-082",
+  "regions_call": {
+   "cost": 0.009698,
+   "seconds": 8.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 4
+   }
+  },
+  "label": "33",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 13,
+   "relations": 4,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.079702,
+   "seconds": 34.2,
+   "output_tokens": 3584
+  }
+ },
+ {
+  "page": "kale-1913-page-083",
+  "regions_call": {
+   "cost": 0.009933,
+   "seconds": 9.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 2,
+    "footnote": 3
+   }
+  },
+  "label": "34",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 70",
+   "verse 70"
+  ],
+  "transcription_call": {
+   "cost": 0.081566,
+   "seconds": 32.2,
+   "output_tokens": 3552
+  }
+ },
+ {
+  "page": "kale-1913-page-084",
+  "regions_call": {
+   "cost": 0.009358,
+   "seconds": 7.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 2,
+    "commentary": 2,
+    "lead_in": 1,
+    "footnote": 4
+   }
+  },
+  "label": "35",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 70",
+   "verse 70"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.07500799999999999,
+   "seconds": 28.7,
+   "output_tokens": 3317
+  }
+ },
+ {
+  "page": "kale-1913-page-085",
+  "regions_call": {
+   "cost": 0.010072999999999999,
+   "seconds": 9.3,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "heading": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 5
+   }
+  },
+  "label": "36",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 15,
+   "relations": 5,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.087862,
+   "seconds": 36.2,
+   "output_tokens": 3929
+  }
+ },
+ {
+  "page": "kale-1913-page-086",
+  "regions_call": {
+   "cost": 0.010072999999999999,
+   "seconds": 9.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 2,
+    "verse": 3,
+    "commentary": 2,
+    "footnote": 5
+   }
+  },
+  "label": "37",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 16,
+   "relations": 5,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 76",
+   "verse 76"
+  ],
+  "transcription_call": {
+   "cost": 0.074848,
+   "seconds": 23.4,
+   "output_tokens": 2669
+  }
+ },
+ {
+  "page": "kale-1913-page-087",
+  "regions_call": {
+   "cost": 0.010893,
+   "seconds": 10.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 3,
+    "commentary": 2,
+    "lead_in": 2,
+    "footnote": 8
+   }
+  },
+  "label": "38",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 17,
+   "units": 19,
+   "relations": 8,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 76",
+   "verse 76"
+  ],
+  "open_end": [
+   "section",
+   "group 78",
+   "verse 78"
+  ],
+  "transcription_call": {
+   "cost": 0.10101199999999999,
+   "seconds": 39.7,
+   "output_tokens": 4613
+  }
+ },
+ {
+  "page": "kale-1913-page-088",
+  "regions_call": {
+   "cost": 0.009833,
+   "seconds": 8.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 2,
+    "lead_in": 2,
+    "footnote": 4
+   }
+  },
+  "label": "39",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 4,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": [
+    "r12"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 78",
+   "verse 78"
+  ],
+  "open_end": [
+   "section",
+   "group 80"
+  ],
+  "transcription_call": {
+   "cost": 0.072546,
+   "seconds": 25.4,
+   "output_tokens": 2632
+  }
+ },
+ {
+  "page": "kale-1913-page-089",
+  "regions_call": {
+   "cost": 0.009833,
+   "seconds": 8.5,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 2,
+    "lead_in": 2,
+    "verse": 2,
+    "heading": 1,
+    "footnote": 4
+   }
+  },
+  "label": "40",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 80"
+  ],
+  "open_end": [
+   "section",
+   "group 82"
+  ],
+  "transcription_call": {
+   "cost": 0.081182,
+   "seconds": 35.3,
+   "output_tokens": 3741
+  }
+ },
+ {
+  "page": "kale-1913-page-090",
+  "regions_call": {
+   "cost": 0.008163,
+   "seconds": 5.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 2,
+    "lead_in": 1,
+    "verse": 1
+   }
+  },
+  "label": "41",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 82"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.049224000000000004,
+   "seconds": 21.1,
+   "output_tokens": 1833
+  }
+ },
+ {
+  "page": "kale-1913-page-091",
+  "regions_call": {
+   "cost": 0.010078,
+   "seconds": 9.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 6
+   }
+  },
+  "label": "42",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 14,
+   "relations": 5,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.083626,
+   "seconds": 33.6,
+   "output_tokens": 3770
+  }
+ },
+ {
+  "page": "kale-1913-page-092",
+  "regions_call": {
+   "cost": 0.010793,
+   "seconds": 10.9,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 1,
+    "verse": 3,
+    "commentary": 2,
+    "footnote": 9
+   }
+  },
+  "label": "43",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 17,
+   "units": 18,
+   "relations": 8,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 88",
+   "verse 88"
+  ],
+  "transcription_call": {
+   "cost": 0.099546,
+   "seconds": 38.5,
+   "output_tokens": 4466
+  }
+ },
+ {
+  "page": "kale-1913-page-093",
+  "regions_call": {
+   "cost": 0.009353,
+   "seconds": 7.5,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 3,
+    "commentary": 2,
+    "footnote": 4
+   }
+  },
+  "label": "44",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 4,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": [
+    "r11"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 88",
+   "verse 88"
+  ],
+  "open_end": [
+   "section",
+   "group 90"
+  ],
+  "transcription_call": {
+   "cost": 0.06663,
+   "seconds": 23.4,
+   "output_tokens": 2514
+  }
+ },
+ {
+  "page": "kale-1913-page-094",
+  "regions_call": {
+   "cost": 0.008503,
+   "seconds": 5.4,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 2,
+    "lead_in": 1,
+    "verse": 1,
+    "footnote": 1
+   }
+  },
+  "label": "45",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 8,
+   "relations": 1,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 90"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.052434,
+   "seconds": 20.1,
+   "output_tokens": 1956
+  }
+ },
+ {
+  "page": "kale-1913-page-095",
+  "regions_call": {
+   "cost": 0.012468,
+   "seconds": 14.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "heading": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "commentary": 2,
+    "footnote": 13
+   }
+  },
+  "label": "46",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 24,
+   "units": 25,
+   "relations": 12,
+   "line_pieces": 42,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 94"
+  ],
+  "transcription_call": {
+   "cost": 0.128782,
+   "seconds": 49.2,
+   "output_tokens": 5839
+  }
+ },
+ {
+  "page": "kale-1913-page-096",
+  "regions_call": {
+   "cost": 0.009123,
+   "seconds": 7.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 2,
+    "lead_in": 1,
+    "verse": 1,
+    "footnote": 4
+   }
+  },
+  "label": "47",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 94"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.072498,
+   "seconds": 36.2,
+   "output_tokens": 3292
+  }
+ },
+ {
+  "page": "kale-1913-page-097",
+  "regions_call": {
+   "cost": 0.009838,
+   "seconds": 8.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "lead_in": 1,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 6
+   }
+  },
+  "label": "48",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 14,
+   "relations": 6,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": [
+    "r10",
+    "r11",
+    "r13"
+   ]
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.083982,
+   "seconds": 34.1,
+   "output_tokens": 3812
+  }
+ },
+ {
+  "page": "kale-1913-page-098",
+  "regions_call": {
+   "cost": 0.010313,
+   "seconds": 10.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "lead_in": 2,
+    "verse": 2,
+    "commentary": 2,
+    "footnote": 6,
+    "other": 1
+   }
+  },
+  "label": "49",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 15,
+   "relations": 6,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": [
+    "r5"
+   ]
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 99",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.079194,
+   "seconds": 32.1,
+   "output_tokens": 2863
+  }
+ },
+ {
+  "page": "kale-1913-page-099",
+  "regions_call": {
+   "cost": 0.010313,
+   "seconds": 9.9,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 3,
+    "lead_in": 2,
+    "verse": 2,
+    "heading": 1,
+    "footnote": 5
+   }
+  },
+  "label": "50",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 17,
+   "relations": 5,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 99",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.09262000000000001,
+   "seconds": 37.9,
+   "output_tokens": 4199
+  }
+ },
+ {
+  "page": "kale-1913-page-100",
+  "regions_call": {
+   "cost": 0.010408,
+   "seconds": 9.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "heading": 1,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 6
+   }
+  },
+  "label": "51",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 15,
+   "units": 17,
+   "relations": 6,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": [
+    "r10",
+    "r11",
+    "r12",
+    "r13",
+    "r14",
+    "r15"
+   ]
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 3",
+   "commentary 3"
+  ],
+  "transcription_call": {
+   "cost": 0.092778,
+   "seconds": 36.5,
+   "output_tokens": 4207
+  }
+ },
+ {
+  "page": "kale-1913-page-101",
+  "regions_call": {
+   "cost": 0.010072999999999999,
+   "seconds": 9.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "verse": 3,
+    "footnote": 5
+   }
+  },
+  "label": "52",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 17,
+   "relations": 5,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 6",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.08834600000000001,
+   "seconds": 36.9,
+   "output_tokens": 4025
+  }
+ },
+ {
+  "page": "kale-1913-page-102",
+  "regions_call": {
+   "cost": 0.010653,
+   "seconds": 10.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "verse": 3,
+    "footnote": 7
+   }
+  },
+  "label": "53",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 19,
+   "relations": 7,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": [
+    "r16"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 6",
+   "commentary"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.09704399999999999,
+   "seconds": 40.2,
+   "output_tokens": 4458
+  }
+ },
+ {
+  "page": "kale-1913-page-103",
+  "regions_call": {
+   "cost": 0.009453,
+   "seconds": 7.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 3
+   }
+  },
+  "label": "54",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 3,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": [
+    "r11"
+   ]
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.065774,
+   "seconds": 23.0,
+   "output_tokens": 2382
+  }
+ },
+ {
+  "page": "kale-1913-page-104",
+  "regions_call": {
+   "cost": 0.009353,
+   "seconds": 7.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 3
+   }
+  },
+  "label": "55",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 3,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.072958,
+   "seconds": 29.7,
+   "output_tokens": 3133
+  }
+ },
+ {
+  "page": "kale-1913-page-105",
+  "regions_call": {
+   "cost": 0.010548,
+   "seconds": 10.3,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 4,
+    "commentary": 4,
+    "footnote": 6
+   }
+  },
+  "label": "56",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 16,
+   "units": 19,
+   "relations": 6,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 19",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.09634999999999999,
+   "seconds": 38.5,
+   "output_tokens": 4374
+  }
+ },
+ {
+  "page": "kale-1913-page-106",
+  "regions_call": {
+   "cost": 0.009833,
+   "seconds": 8.9,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "verse": 3,
+    "footnote": 4
+   }
+  },
+  "label": "57",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 16,
+   "relations": 4,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 19",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 22",
+   "commentary"
+  ],
+  "transcription_call": {
+   "cost": 0.0852,
+   "seconds": 37.8,
+   "output_tokens": 3905
+  }
+ },
+ {
+  "page": "kale-1913-page-107",
+  "regions_call": {
+   "cost": 0.010168,
+   "seconds": 9.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "verse": 4,
+    "footnote": 4
+   }
+  },
+  "label": "58",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 18,
+   "relations": 4,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": [
+    "r13"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 22",
+   "commentary"
+  ],
+  "open_end": [
+   "section",
+   "group 26"
+  ],
+  "transcription_call": {
+   "cost": 0.077324,
+   "seconds": 28.9,
+   "output_tokens": 2868
+  }
+ },
+ {
+  "page": "kale-1913-page-108",
+  "regions_call": {
+   "cost": 0.009833,
+   "seconds": 8.9,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 3,
+    "verse": 3,
+    "footnote": 5
+   }
+  },
+  "label": "59",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 16,
+   "relations": 5,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": [
+    "r11"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 26"
+  ],
+  "open_end": [
+   "section",
+   "group 29"
+  ],
+  "transcription_call": {
+   "cost": 0.087102,
+   "seconds": 35.8,
+   "output_tokens": 4083
+  }
+ },
+ {
+  "page": "kale-1913-page-109",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 8.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 4,
+    "verse": 3,
+    "footnote": 3
+   }
+  },
+  "label": "60",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 15,
+   "relations": 3,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 29"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.067166,
+   "seconds": 25.0,
+   "output_tokens": 2513
+  }
+ },
+ {
+  "page": "kale-1913-page-110",
+  "regions_call": {
+   "cost": 0.008868,
+   "seconds": 6.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 4,
+    "commentary": 3
+   }
+  },
+  "label": "61",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 12,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [
+   "section",
+   "group 36",
+   "verse 36"
+  ],
+  "transcription_call": {
+   "cost": 0.06733,
+   "seconds": 28.0,
+   "output_tokens": 2979
+  }
+ },
+ {
+  "page": "kale-1913-page-111",
+  "regions_call": {
+   "cost": 0.011363,
+   "seconds": 11.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 4,
+    "commentary": 3,
+    "heading": 1,
+    "footnote": 9
+   }
+  },
+  "label": "62",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 19,
+   "units": 21,
+   "relations": 8,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": [
+    "r18",
+    "r19"
+   ]
+  },
+  "open_start": [
+   "section",
+   "group 36",
+   "verse 36"
+  ],
+  "open_end": [
+   "section",
+   "group 39",
+   "verse 39"
+  ],
+  "transcription_call": {
+   "cost": 0.107152,
+   "seconds": 53.5,
+   "output_tokens": 4995
+  }
+ },
+ {
+  "page": "kale-1913-page-112",
+  "regions_call": {
+   "cost": 0.009113,
+   "seconds": 7.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 2
+   }
+  },
+  "label": "63",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 12,
+   "relations": 2,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section",
+   "group 39",
+   "verse 39"
+  ],
+  "open_end": [
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.072244,
+   "seconds": 30.9,
+   "output_tokens": 3280
+  }
+ },
+ {
+  "page": "kale-1913-page-113",
+  "regions_call": {
+   "cost": 0.010072999999999999,
+   "seconds": 9.2,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 3,
+    "commentary": 3,
+    "footnote": 6
+   }
+  },
+  "label": "64",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 14,
+   "units": 16,
+   "relations": 6,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "section"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.08713199999999999,
+   "seconds": 40.8,
+   "output_tokens": 4110
+  }
+ },
+ {
+  "page": "kale-1913-page-114",
+  "regions_call": {
+   "cost": 0.008667999999999999,
+   "seconds": 6.0,
+   "types": {
+    "heading": 2,
+    "translated_stanza": 6
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "translation",
+   "translated_stanza 6"
+  ],
+  "transcription_call": {
+   "cost": 0.05688,
+   "seconds": 21.5,
+   "output_tokens": 2395
+  }
+ },
+ {
+  "page": "kale-1913-page-115",
+  "regions_call": {
+   "cost": 0.008538,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 6"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.052711999999999995,
+   "seconds": 21.4,
+   "output_tokens": 2412
+  }
+ },
+ {
+  "page": "kale-1913-page-116",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.3,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "3",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 18"
+  ],
+  "transcription_call": {
+   "cost": 0.055594,
+   "seconds": 22.8,
+   "output_tokens": 2473
+  }
+ },
+ {
+  "page": "kale-1913-page-117",
+  "regions_call": {
+   "cost": 0.008293,
+   "seconds": 10.4,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 18"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 22"
+  ],
+  "transcription_call": {
+   "cost": 0.049266,
+   "seconds": 20.9,
+   "output_tokens": 2260
+  }
+ },
+ {
+  "page": "kale-1913-page-118",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "5",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 22"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 28"
+  ],
+  "transcription_call": {
+   "cost": 0.046924,
+   "seconds": 16.9,
+   "output_tokens": 1631
+  }
+ },
+ {
+  "page": "kale-1913-page-119",
+  "regions_call": {
+   "cost": 0.008538,
+   "seconds": 5.8,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 28"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.052252,
+   "seconds": 21.4,
+   "output_tokens": 2353
+  }
+ },
+ {
+  "page": "kale-1913-page-120",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "7",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 39"
+  ],
+  "transcription_call": {
+   "cost": 0.0519,
+   "seconds": 21.3,
+   "output_tokens": 2353
+  }
+ },
+ {
+  "page": "kale-1913-page-121",
+  "regions_call": {
+   "cost": 0.008716749999999999,
+   "seconds": 6.4,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "8",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 45"
+  ],
+  "transcription_call": {
+   "cost": 0.056304,
+   "seconds": 23.3,
+   "output_tokens": 2525
+  }
+ },
+ {
+  "page": "kale-1913-page-122",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "9",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 45"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 51"
+  ],
+  "transcription_call": {
+   "cost": 0.056846,
+   "seconds": 24.0,
+   "output_tokens": 2608
+  }
+ },
+ {
+  "page": "kale-1913-page-123",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.5,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "10",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 51"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 56"
+  ],
+  "transcription_call": {
+   "cost": 0.044317999999999996,
+   "seconds": 16.2,
+   "output_tokens": 1579
+  }
+ },
+ {
+  "page": "kale-1913-page-124",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "11",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 56"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 62"
+  ],
+  "transcription_call": {
+   "cost": 0.055396,
+   "seconds": 22.3,
+   "output_tokens": 2475
+  }
+ },
+ {
+  "page": "kale-1913-page-125",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "12",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.044334,
+   "seconds": 17.2,
+   "output_tokens": 1601
+  }
+ },
+ {
+  "page": "kale-1913-page-126",
+  "regions_call": {
+   "cost": 0.008538,
+   "seconds": 5.4,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "13",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.051868,
+   "seconds": 20.6,
+   "output_tokens": 2329
+  }
+ },
+ {
+  "page": "kale-1913-page-127",
+  "regions_call": {
+   "cost": 0.008128,
+   "seconds": 5.1,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "14",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 78"
+  ],
+  "transcription_call": {
+   "cost": 0.049212,
+   "seconds": 22.1,
+   "output_tokens": 2275
+  }
+ },
+ {
+  "page": "kale-1913-page-128",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "15",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 78"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.043958,
+   "seconds": 18.7,
+   "output_tokens": 1545
+  }
+ },
+ {
+  "page": "kale-1913-page-129",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "16",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.056179999999999994,
+   "seconds": 24.0,
+   "output_tokens": 2524
+  }
+ },
+ {
+  "page": "kale-1913-page-130",
+  "regions_call": {
+   "cost": 0.009153,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "paragraph": 1,
+    "translated_stanza": 7,
+    "other": 1
+   }
+  },
+  "label": "17",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 96"
+  ],
+  "transcription_call": {
+   "cost": 0.0625,
+   "seconds": 26.0,
+   "output_tokens": 2748
+  }
+ },
+ {
+  "page": "kale-1913-page-131",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 6.5,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "18",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 96"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 101"
+  ],
+  "transcription_call": {
+   "cost": 0.052528000000000005,
+   "seconds": 23.3,
+   "output_tokens": 2399
+  }
+ },
+ {
+  "page": "kale-1913-page-132",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 7.4,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "19",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 101"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.051784,
+   "seconds": 21.9,
+   "output_tokens": 2332
+  }
+ },
+ {
+  "page": "kale-1913-page-133",
+  "regions_call": {
+   "cost": 0.008917999999999999,
+   "seconds": 6.4,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7,
+    "heading": 1
+   }
+  },
+  "label": "20",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 5"
+  ],
+  "transcription_call": {
+   "cost": 0.050012,
+   "seconds": 18.1,
+   "output_tokens": 1729
+  }
+ },
+ {
+  "page": "kale-1913-page-134",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 5.9,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "21",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 5"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 11"
+  ],
+  "transcription_call": {
+   "cost": 0.055064,
+   "seconds": 23.6,
+   "output_tokens": 2431
+  }
+ },
+ {
+  "page": "kale-1913-page-135",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.5,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "22",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 11"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 16"
+  ],
+  "transcription_call": {
+   "cost": 0.044636,
+   "seconds": 17.5,
+   "output_tokens": 1606
+  }
+ },
+ {
+  "page": "kale-1913-page-136",
+  "regions_call": {
+   "cost": 0.008928,
+   "seconds": 6.7,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 8
+   }
+  },
+  "label": "23",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": [
+    "r9"
+   ]
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.05891,
+   "seconds": 24.0,
+   "output_tokens": 2581
+  }
+ },
+ {
+  "page": "kale-1913-page-137",
+  "regions_call": {
+   "cost": 0.007457999999999999,
+   "seconds": 4.2,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 2
+   }
+  },
+  "label": "24",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 13,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.029595999999999997,
+   "seconds": 11.4,
+   "output_tokens": 967
+  }
+ },
+ {
+  "page": "kale-1913-page-138",
+  "regions_call": {
+   "cost": 0.007943,
+   "seconds": 4.6,
+   "types": {
+    "heading": 1,
+    "translated_stanza": 4
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.037718,
+   "seconds": 17.5,
+   "output_tokens": 1356
+  }
+ },
+ {
+  "page": "kale-1913-page-139",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "26",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 10"
+  ],
+  "transcription_call": {
+   "cost": 0.051930000000000004,
+   "seconds": 22.2,
+   "output_tokens": 2342
+  }
+ },
+ {
+  "page": "kale-1913-page-140",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "27",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 10"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 15"
+  ],
+  "transcription_call": {
+   "cost": 0.044796,
+   "seconds": 20.1,
+   "output_tokens": 1610
+  }
+ },
+ {
+  "page": "kale-1913-page-141",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "28",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 15"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 20"
+  ],
+  "transcription_call": {
+   "cost": 0.05319,
+   "seconds": 24.7,
+   "output_tokens": 2447
+  }
+ },
+ {
+  "page": "kale-1913-page-142",
+  "regions_call": {
+   "cost": 0.008192999999999999,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "29",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 20"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.041319999999999996,
+   "seconds": 17.2,
+   "output_tokens": 1506
+  }
+ },
+ {
+  "page": "kale-1913-page-143",
+  "regions_call": {
+   "cost": 0.008293,
+   "seconds": 5.2,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "30",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.049304,
+   "seconds": 22.6,
+   "output_tokens": 2272
+  }
+ },
+ {
+  "page": "kale-1913-page-144",
+  "regions_call": {
+   "cost": 0.008128,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "31",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 34"
+  ],
+  "transcription_call": {
+   "cost": 0.041314,
+   "seconds": 15.6,
+   "output_tokens": 1496
+  }
+ },
+ {
+  "page": "kale-1913-page-145",
+  "regions_call": {
+   "cost": 0.008293,
+   "seconds": 5.2,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "32",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 34"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.043454,
+   "seconds": 25.8,
+   "output_tokens": 1485
+  }
+ },
+ {
+  "page": "kale-1913-page-146",
+  "regions_call": {
+   "cost": 0.008667999999999999,
+   "seconds": 6.3,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5,
+    "footnote": 1,
+    "other": 1
+   }
+  },
+  "label": "33",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u7: marker [8] not in r4 line 8"
+  ],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 1,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 43"
+  ],
+  "transcription_call": {
+   "cost": 0.056576,
+   "seconds": 24.5,
+   "output_tokens": 2589
+  }
+ },
+ {
+  "page": "kale-1913-page-147",
+  "regions_call": {
+   "cost": 0.008128,
+   "seconds": 4.8,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "34",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 43"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.05142,
+   "seconds": 21.5,
+   "output_tokens": 2265
+  }
+ },
+ {
+  "page": "kale-1913-page-148",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "35",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 53"
+  ],
+  "transcription_call": {
+   "cost": 0.052968,
+   "seconds": 23.0,
+   "output_tokens": 2434
+  }
+ },
+ {
+  "page": "kale-1913-page-149",
+  "regions_call": {
+   "cost": 0.008716749999999999,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "36",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 53"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 59"
+  ],
+  "transcription_call": {
+   "cost": 0.056282,
+   "seconds": 23.3,
+   "output_tokens": 2564
+  }
+ },
+ {
+  "page": "kale-1913-page-150",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "37",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 59"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.05216,
+   "seconds": 30.8,
+   "output_tokens": 2361
+  }
+ },
+ {
+  "page": "kale-1913-page-151",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "38",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.053146,
+   "seconds": 22.7,
+   "output_tokens": 2468
+  }
+ },
+ {
+  "page": "kale-1913-page-152",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "39",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 76"
+  ],
+  "transcription_call": {
+   "cost": 0.045548,
+   "seconds": 16.2,
+   "output_tokens": 1695
+  }
+ },
+ {
+  "page": "kale-1913-page-153",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "40",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 81"
+  ],
+  "transcription_call": {
+   "cost": 0.053246,
+   "seconds": 23.7,
+   "output_tokens": 2467
+  }
+ },
+ {
+  "page": "kale-1913-page-154",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "41",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 81"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 86"
+  ],
+  "transcription_call": {
+   "cost": 0.053264,
+   "seconds": 27.2,
+   "output_tokens": 2454
+  }
+ },
+ {
+  "page": "kale-1913-page-155",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "42",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 86"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.05277,
+   "seconds": 26.7,
+   "output_tokens": 2397
+  }
+ },
+ {
+  "page": "kale-1913-page-156",
+  "regions_call": {
+   "cost": 0.008192999999999999,
+   "seconds": 5.2,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "43",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.041772000000000004,
+   "seconds": 18.6,
+   "output_tokens": 1526
+  }
+ },
+ {
+  "page": "kale-1913-page-157",
+  "regions_call": {
+   "cost": 0.008128,
+   "seconds": 5.3,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 5
+   }
+  },
+  "label": "44",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation"
+  ],
+  "transcription_call": {
+   "cost": 0.049126,
+   "seconds": 33.0,
+   "output_tokens": 2267
+  }
+ },
+ {
+  "page": "kale-1913-page-158",
+  "regions_call": {
+   "cost": 0.008673,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "heading": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "45",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 6"
+  ],
+  "transcription_call": {
+   "cost": 0.056304,
+   "seconds": 23.0,
+   "output_tokens": 2541
+  }
+ },
+ {
+  "page": "kale-1913-page-159",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "46",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 6"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 11"
+  ],
+  "transcription_call": {
+   "cost": 0.053071999999999994,
+   "seconds": 23.3,
+   "output_tokens": 2438
+  }
+ },
+ {
+  "page": "kale-1913-page-160",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "47",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 17"
+  ],
+  "transcription_call": {
+   "cost": 0.056538000000000005,
+   "seconds": 25.5,
+   "output_tokens": 2579
+  }
+ },
+ {
+  "page": "kale-1913-page-161",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "48",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 17"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 22"
+  ],
+  "transcription_call": {
+   "cost": 0.044942,
+   "seconds": 21.3,
+   "output_tokens": 1631
+  }
+ },
+ {
+  "page": "kale-1913-page-162",
+  "regions_call": {
+   "cost": 0.00881675,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7,
+    "other": 1
+   }
+  },
+  "label": "49",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": [
+    "r8"
+   ]
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza"
+  ],
+  "transcription_call": {
+   "cost": 0.051642,
+   "seconds": 28.0,
+   "output_tokens": 1851
+  }
+ },
+ {
+  "page": "kale-1913-page-163",
+  "regions_call": {
+   "cost": 0.008618,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "50",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 33"
+  ],
+  "transcription_call": {
+   "cost": 0.04826,
+   "seconds": 17.3,
+   "output_tokens": 1764
+  }
+ },
+ {
+  "page": "kale-1913-page-164",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 7
+   }
+  },
+  "label": "51",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 33"
+  ],
+  "open_end": [
+   "translation",
+   "translated_stanza 39"
+  ],
+  "transcription_call": {
+   "cost": 0.05568,
+   "seconds": 24.6,
+   "output_tokens": 2518
+  }
+ },
+ {
+  "page": "kale-1913-page-165",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 5.5,
+   "types": {
+    "page_number": 1,
+    "translated_stanza": 6
+   }
+  },
+  "label": "52",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "translation",
+   "translated_stanza 39"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.054802000000000003,
+   "seconds": 22.3,
+   "output_tokens": 2402
+  }
+ },
+ {
+  "page": "kale-1913-page-166",
+  "regions_call": {
+   "cost": 0.0075917499999999995,
+   "seconds": 3.6,
+   "types": {
+    "heading": 1,
+    "stanza_note": 2,
+    "footnote": 1
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 1,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "notes",
+   "stanza_note 1"
+  ],
+  "transcription_call": {
+   "cost": 0.036968,
+   "seconds": 15.6,
+   "output_tokens": 1518
+  }
+ },
+ {
+  "page": "kale-1913-page-167",
+  "regions_call": {
+   "cost": 0.008128,
+   "seconds": 5.0,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 1"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 2"
+  ],
+  "transcription_call": {
+   "cost": 0.053599999999999995,
+   "seconds": 21.8,
+   "output_tokens": 2276
+  }
+ },
+ {
+  "page": "kale-1913-page-168",
+  "regions_call": {
+   "cost": 0.008187999999999999,
+   "seconds": 5.1,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4,
+    "footnote": 1
+   }
+  },
+  "label": "3",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 3,
+   "relations": 1,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note"
+  ],
+  "transcription_call": {
+   "cost": 0.04227,
+   "seconds": 17.9,
+   "output_tokens": 1599
+  }
+ },
+ {
+  "page": "kale-1913-page-169",
+  "regions_call": {
+   "cost": 0.007883,
+   "seconds": 4.7,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 4"
+  ],
+  "transcription_call": {
+   "cost": 0.050708,
+   "seconds": 46.3,
+   "output_tokens": 2430
+  }
+ },
+ {
+  "page": "kale-1913-page-170",
+  "regions_call": {
+   "cost": 0.007703,
+   "seconds": 4.0,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "5",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 6"
+  ],
+  "transcription_call": {
+   "cost": 0.03778,
+   "seconds": 18.1,
+   "output_tokens": 1580
+  }
+ },
+ {
+  "page": "kale-1913-page-171",
+  "regions_call": {
+   "cost": 0.00802925,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 6"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 9"
+  ],
+  "transcription_call": {
+   "cost": 0.043084,
+   "seconds": 17.2,
+   "output_tokens": 1658
+  }
+ },
+ {
+  "page": "kale-1913-page-172",
+  "regions_call": {
+   "cost": 0.007457999999999999,
+   "seconds": 3.8,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 2
+   }
+  },
+  "label": "7",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "transcription_call": {
+   "cost": 0.041074,
+   "seconds": 18.6,
+   "output_tokens": 2121
+  }
+ },
+ {
+  "page": "kale-1913-page-173",
+  "regions_call": {
+   "cost": 0.008618,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "8",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 14"
+  ],
+  "transcription_call": {
+   "cost": 0.050044000000000005,
+   "seconds": 18.6,
+   "output_tokens": 1922
+  }
+ },
+ {
+  "page": "kale-1913-page-174",
+  "regions_call": {
+   "cost": 0.007703,
+   "seconds": 4.2,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "9",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 14"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 15"
+  ],
+  "transcription_call": {
+   "cost": 0.045,
+   "seconds": 24.9,
+   "output_tokens": 2309
+  }
+ },
+ {
+  "page": "kale-1913-page-175",
+  "regions_call": {
+   "cost": 0.0077842499999999995,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "10",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 18"
+  ],
+  "transcription_call": {
+   "cost": 0.041422,
+   "seconds": 17.5,
+   "output_tokens": 1702
+  }
+ },
+ {
+  "page": "kale-1913-page-176",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "11",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 20"
+  ],
+  "transcription_call": {
+   "cost": 0.041854,
+   "seconds": 19.6,
+   "output_tokens": 1763
+  }
+ },
+ {
+  "page": "kale-1913-page-177",
+  "regions_call": {
+   "cost": 0.007883,
+   "seconds": 4.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "12",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 23"
+  ],
+  "transcription_call": {
+   "cost": 0.049228,
+   "seconds": 23.8,
+   "output_tokens": 2501
+  }
+ },
+ {
+  "page": "kale-1913-page-178",
+  "regions_call": {
+   "cost": 0.007703,
+   "seconds": 3.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "13",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.038408,
+   "seconds": 17.1,
+   "output_tokens": 1629
+  }
+ },
+ {
+  "page": "kale-1913-page-179",
+  "regions_call": {
+   "cost": 0.007638,
+   "seconds": 4.3,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "14",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 28"
+  ],
+  "transcription_call": {
+   "cost": 0.045266,
+   "seconds": 24.5,
+   "output_tokens": 2308
+  }
+ },
+ {
+  "page": "kale-1913-page-180",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.2,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "15",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 30"
+  ],
+  "transcription_call": {
+   "cost": 0.04845,
+   "seconds": 23.5,
+   "output_tokens": 2411
+  }
+ },
+ {
+  "page": "kale-1913-page-181",
+  "regions_call": {
+   "cost": 0.007883,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "16",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 30"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.041438,
+   "seconds": 17.2,
+   "output_tokens": 1714
+  }
+ },
+ {
+  "page": "kale-1913-page-182",
+  "regions_call": {
+   "cost": 0.007938,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3,
+    "other": 1
+   }
+  },
+  "label": "17",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": [
+    "r4"
+   ]
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 35"
+  ],
+  "transcription_call": {
+   "cost": 0.04826,
+   "seconds": 30.6,
+   "output_tokens": 2387
+  }
+ },
+ {
+  "page": "kale-1913-page-183",
+  "regions_call": {
+   "cost": 0.007638,
+   "seconds": 3.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "18",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 35"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 37"
+  ],
+  "transcription_call": {
+   "cost": 0.04551,
+   "seconds": 21.6,
+   "output_tokens": 2357
+  }
+ },
+ {
+  "page": "kale-1913-page-184",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.6,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "19",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 40"
+  ],
+  "transcription_call": {
+   "cost": 0.041754,
+   "seconds": 18.5,
+   "output_tokens": 1755
+  }
+ },
+ {
+  "page": "kale-1913-page-185",
+  "regions_call": {
+   "cost": 0.007638,
+   "seconds": 4.1,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "20",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 40"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 42"
+  ],
+  "transcription_call": {
+   "cost": 0.045702,
+   "seconds": 20.1,
+   "output_tokens": 2382
+  }
+ },
+ {
+  "page": "kale-1913-page-186",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.7,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "21",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 44"
+  ],
+  "transcription_call": {
+   "cost": 0.046664,
+   "seconds": 22.4,
+   "output_tokens": 2251
+  }
+ },
+ {
+  "page": "kale-1913-page-187",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 5.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "22",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 47"
+  ],
+  "transcription_call": {
+   "cost": 0.04546,
+   "seconds": 17.6,
+   "output_tokens": 1679
+  }
+ },
+ {
+  "page": "kale-1913-page-188",
+  "regions_call": {
+   "cost": 0.008192999999999999,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "23",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 47"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 51"
+  ],
+  "transcription_call": {
+   "cost": 0.051398,
+   "seconds": 24.0,
+   "output_tokens": 2499
+  }
+ },
+ {
+  "page": "kale-1913-page-189",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 7.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "24",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 56"
+  ],
+  "transcription_call": {
+   "cost": 0.055080000000000004,
+   "seconds": 24.1,
+   "output_tokens": 2633
+  }
+ },
+ {
+  "page": "kale-1913-page-190",
+  "regions_call": {
+   "cost": 0.007703,
+   "seconds": 4.2,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "25",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 56"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 58"
+  ],
+  "transcription_call": {
+   "cost": 0.038376,
+   "seconds": 18.4,
+   "output_tokens": 1646
+  }
+ },
+ {
+  "page": "kale-1913-page-191",
+  "regions_call": {
+   "cost": 0.00827425,
+   "seconds": 5.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "26",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 62"
+  ],
+  "transcription_call": {
+   "cost": 0.053236,
+   "seconds": 25.7,
+   "output_tokens": 2443
+  }
+ },
+ {
+  "page": "kale-1913-page-192",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.7,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "27",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.040526,
+   "seconds": 27.9,
+   "output_tokens": 1650
+  }
+ },
+ {
+  "page": "kale-1913-page-193",
+  "regions_call": {
+   "cost": 0.0077842499999999995,
+   "seconds": 4.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "28",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 69"
+  ],
+  "transcription_call": {
+   "cost": 0.047636,
+   "seconds": 21.3,
+   "output_tokens": 2337
+  }
+ },
+ {
+  "page": "kale-1913-page-194",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "29",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 74"
+  ],
+  "transcription_call": {
+   "cost": 0.055206,
+   "seconds": 26.1,
+   "output_tokens": 2659
+  }
+ },
+ {
+  "page": "kale-1913-page-195",
+  "regions_call": {
+   "cost": 0.00798175,
+   "seconds": 4.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "30",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 77"
+  ],
+  "transcription_call": {
+   "cost": 0.04105,
+   "seconds": 17.9,
+   "output_tokens": 1685
+  }
+ },
+ {
+  "page": "kale-1913-page-196",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "31",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 77"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.048920000000000005,
+   "seconds": 23.4,
+   "output_tokens": 2457
+  }
+ },
+ {
+  "page": "kale-1913-page-197",
+  "regions_call": {
+   "cost": 0.00822675,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "32",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.051379999999999995,
+   "seconds": 23.4,
+   "output_tokens": 2481
+  }
+ },
+ {
+  "page": "kale-1913-page-198",
+  "regions_call": {
+   "cost": 0.008428,
+   "seconds": 5.8,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5,
+    "other": 1
+   }
+  },
+  "label": "33",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": [
+    "r5"
+   ]
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 90"
+  ],
+  "transcription_call": {
+   "cost": 0.047326,
+   "seconds": 21.0,
+   "output_tokens": 1870
+  }
+ },
+ {
+  "page": "kale-1913-page-199",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 5.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "34",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 95"
+  ],
+  "transcription_call": {
+   "cost": 0.047478,
+   "seconds": 19.0,
+   "output_tokens": 1860
+  }
+ },
+ {
+  "page": "kale-1913-page-200",
+  "regions_call": {
+   "cost": 0.007703,
+   "seconds": 4.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "35",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 41,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 97"
+  ],
+  "transcription_call": {
+   "cost": 0.046588000000000004,
+   "seconds": 23.3,
+   "output_tokens": 2457
+  }
+ },
+ {
+  "page": "kale-1913-page-201",
+  "regions_call": {
+   "cost": 0.007638,
+   "seconds": 4.2,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "36",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 99"
+  ],
+  "transcription_call": {
+   "cost": 0.039438,
+   "seconds": 19.0,
+   "output_tokens": 1731
+  }
+ },
+ {
+  "page": "kale-1913-page-202",
+  "regions_call": {
+   "cost": 0.007457999999999999,
+   "seconds": 3.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 2
+   }
+  },
+  "label": "37",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 100"
+  ],
+  "transcription_call": {
+   "cost": 0.041597999999999996,
+   "seconds": 21.0,
+   "output_tokens": 2188
+  }
+ },
+ {
+  "page": "kale-1913-page-203",
+  "regions_call": {
+   "cost": 0.007392999999999999,
+   "seconds": 3.3,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 2
+   }
+  },
+  "label": "38",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note"
+  ],
+  "transcription_call": {
+   "cost": 0.037582000000000004,
+   "seconds": 17.2,
+   "output_tokens": 1771
+  }
+ },
+ {
+  "page": "kale-1913-page-204",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.7,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "39",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 103"
+  ],
+  "transcription_call": {
+   "cost": 0.04815,
+   "seconds": 21.9,
+   "output_tokens": 2379
+  }
+ },
+ {
+  "page": "kale-1913-page-205",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "40",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 106"
+  ],
+  "transcription_call": {
+   "cost": 0.042013999999999996,
+   "seconds": 17.8,
+   "output_tokens": 1772
+  }
+ },
+ {
+  "page": "kale-1913-page-206",
+  "regions_call": {
+   "cost": 0.007457999999999999,
+   "seconds": 3.3,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 2
+   }
+  },
+  "label": "41",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 40,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 107"
+  ],
+  "transcription_call": {
+   "cost": 0.043980000000000005,
+   "seconds": 21.5,
+   "output_tokens": 2212
+  }
+ },
+ {
+  "page": "kale-1913-page-207",
+  "regions_call": {
+   "cost": 0.007731749999999999,
+   "seconds": 4.6,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 2,
+    "footnote": 1
+   }
+  },
+  "label": "42",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 1,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.03985,
+   "seconds": 21.9,
+   "output_tokens": 1779
+  }
+ },
+ {
+  "page": "kale-1913-page-208",
+  "regions_call": {
+   "cost": 0.008673,
+   "seconds": 5.9,
+   "types": {
+    "page_number": 1,
+    "heading": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "43",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 6"
+  ],
+  "transcription_call": {
+   "cost": 0.052012,
+   "seconds": 18.6,
+   "output_tokens": 1922
+  }
+ },
+ {
+  "page": "kale-1913-page-209",
+  "regions_call": {
+   "cost": 0.007803,
+   "seconds": 4.3,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "44",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 6"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 8"
+  ],
+  "transcription_call": {
+   "cost": 0.038886000000000004,
+   "seconds": 18.7,
+   "output_tokens": 1680
+  }
+ },
+ {
+  "page": "kale-1913-page-210",
+  "regions_call": {
+   "cost": 0.007703,
+   "seconds": 4.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "45",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 8"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "transcription_call": {
+   "cost": 0.038542,
+   "seconds": 17.8,
+   "output_tokens": 1641
+  }
+ },
+ {
+  "page": "kale-1913-page-211",
+  "regions_call": {
+   "cost": 0.008128,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "46",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 12"
+  ],
+  "transcription_call": {
+   "cost": 0.050232,
+   "seconds": 22.5,
+   "output_tokens": 2368
+  }
+ },
+ {
+  "page": "kale-1913-page-212",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "47",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 16"
+  ],
+  "transcription_call": {
+   "cost": 0.047484,
+   "seconds": 22.1,
+   "output_tokens": 2337
+  }
+ },
+ {
+  "page": "kale-1913-page-213",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "48",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 16"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 22"
+  ],
+  "transcription_call": {
+   "cost": 0.058656,
+   "seconds": 24.9,
+   "output_tokens": 2803
+  }
+ },
+ {
+  "page": "kale-1913-page-214",
+  "regions_call": {
+   "cost": 0.007938,
+   "seconds": 4.8,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3,
+    "other": 1
+   }
+  },
+  "label": "49",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 22"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 24"
+  ],
+  "transcription_call": {
+   "cost": 0.041915999999999995,
+   "seconds": 17.9,
+   "output_tokens": 1789
+  }
+ },
+ {
+  "page": "kale-1913-page-215",
+  "regions_call": {
+   "cost": 0.007491749999999999,
+   "seconds": 3.3,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 2
+   }
+  },
+  "label": "50",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 22,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.030872000000000004,
+   "seconds": 12.9,
+   "output_tokens": 1101
+  }
+ },
+ {
+  "page": "kale-1913-page-216",
+  "regions_call": {
+   "cost": 0.008183,
+   "seconds": 5.1,
+   "types": {
+    "page_number": 1,
+    "heading": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "51",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 4"
+  ],
+  "transcription_call": {
+   "cost": 0.05,
+   "seconds": 22.8,
+   "output_tokens": 2378
+  }
+ },
+ {
+  "page": "kale-1913-page-217",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "52",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 4"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 7"
+  ],
+  "transcription_call": {
+   "cost": 0.041527999999999995,
+   "seconds": 16.2,
+   "output_tokens": 1732
+  }
+ },
+ {
+  "page": "kale-1913-page-218",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "53",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": [
+    "r4"
+   ]
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "transcription_call": {
+   "cost": 0.048098,
+   "seconds": 22.0,
+   "output_tokens": 2387
+  }
+ },
+ {
+  "page": "kale-1913-page-219",
+  "regions_call": {
+   "cost": 0.008048,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "54",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 13"
+  ],
+  "transcription_call": {
+   "cost": 0.048202,
+   "seconds": 23.1,
+   "output_tokens": 2401
+  }
+ },
+ {
+  "page": "kale-1913-page-220",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "55",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 13"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 18"
+  ],
+  "transcription_call": {
+   "cost": 0.054598,
+   "seconds": 25.2,
+   "output_tokens": 2589
+  }
+ },
+ {
+  "page": "kale-1913-page-221",
+  "regions_call": {
+   "cost": 0.008128,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "56",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 18"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 22"
+  ],
+  "transcription_call": {
+   "cost": 0.052394,
+   "seconds": 23.6,
+   "output_tokens": 2610
+  }
+ },
+ {
+  "page": "kale-1913-page-222",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "57",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 22"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 24"
+  ],
+  "transcription_call": {
+   "cost": 0.047854,
+   "seconds": 26.1,
+   "output_tokens": 2363
+  }
+ },
+ {
+  "page": "kale-1913-page-223",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "58",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 29"
+  ],
+  "transcription_call": {
+   "cost": 0.054788,
+   "seconds": 23.2,
+   "output_tokens": 2633
+  }
+ },
+ {
+  "page": "kale-1913-page-224",
+  "regions_call": {
+   "cost": 0.007703,
+   "seconds": 4.1,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "59",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 29"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 31"
+  ],
+  "transcription_call": {
+   "cost": 0.044598,
+   "seconds": 19.7,
+   "output_tokens": 2240
+  }
+ },
+ {
+  "page": "kale-1913-page-225",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.3,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "60",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 41,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 34"
+  ],
+  "transcription_call": {
+   "cost": 0.041586,
+   "seconds": 20.4,
+   "output_tokens": 1735
+  }
+ },
+ {
+  "page": "kale-1913-page-226",
+  "regions_call": {
+   "cost": 0.007703,
+   "seconds": 4.1,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "61",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 34"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 36"
+  ],
+  "transcription_call": {
+   "cost": 0.03869,
+   "seconds": 17.4,
+   "output_tokens": 1655
+  }
+ },
+ {
+  "page": "kale-1913-page-227",
+  "regions_call": {
+   "cost": 0.008048,
+   "seconds": 4.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "62",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 36"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.041532,
+   "seconds": 19.7,
+   "output_tokens": 1743
+  }
+ },
+ {
+  "page": "kale-1913-page-228",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "63",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": [
+    "r4"
+   ]
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 43"
+  ],
+  "transcription_call": {
+   "cost": 0.041268,
+   "seconds": 17.8,
+   "output_tokens": 1721
+  }
+ },
+ {
+  "page": "kale-1913-page-229",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 5.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "64",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.04786,
+   "seconds": 22.8,
+   "output_tokens": 2387
+  }
+ },
+ {
+  "page": "kale-1913-page-230",
+  "regions_call": {
+   "cost": 0.008183,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4,
+    "other": 1
+   }
+  },
+  "label": "65",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 50"
+  ],
+  "transcription_call": {
+   "cost": 0.051194,
+   "seconds": 23.5,
+   "output_tokens": 2477
+  }
+ },
+ {
+  "page": "kale-1913-page-231",
+  "regions_call": {
+   "cost": 0.008192999999999999,
+   "seconds": 5.0,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "66",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 54"
+  ],
+  "transcription_call": {
+   "cost": 0.044402,
+   "seconds": 17.9,
+   "output_tokens": 1807
+  }
+ },
+ {
+  "page": "kale-1913-page-232",
+  "regions_call": {
+   "cost": 0.008683,
+   "seconds": 6.3,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "67",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 59"
+  ],
+  "transcription_call": {
+   "cost": 0.058292,
+   "seconds": 25.8,
+   "output_tokens": 2757
+  }
+ },
+ {
+  "page": "kale-1913-page-233",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.6,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "68",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 62"
+  ],
+  "transcription_call": {
+   "cost": 0.048914,
+   "seconds": 23.8,
+   "output_tokens": 2470
+  }
+ },
+ {
+  "page": "kale-1913-page-234",
+  "regions_call": {
+   "cost": 0.008192999999999999,
+   "seconds": 4.8,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "69",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 62"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 66"
+  ],
+  "transcription_call": {
+   "cost": 0.052396,
+   "seconds": 23.2,
+   "output_tokens": 2589
+  }
+ },
+ {
+  "page": "kale-1913-page-235",
+  "regions_call": {
+   "cost": 0.00847175,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "70",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 71"
+  ],
+  "transcription_call": {
+   "cost": 0.05655,
+   "seconds": 25.9,
+   "output_tokens": 2798
+  }
+ },
+ {
+  "page": "kale-1913-page-236",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "71",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": [
+    "r3"
+   ]
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 76"
+  ],
+  "transcription_call": {
+   "cost": 0.047512,
+   "seconds": 18.3,
+   "output_tokens": 1896
+  }
+ },
+ {
+  "page": "kale-1913-page-237",
+  "regions_call": {
+   "cost": 0.007883,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "72",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 76"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 79"
+  ],
+  "transcription_call": {
+   "cost": 0.04056,
+   "seconds": 15.8,
+   "output_tokens": 1608
+  }
+ },
+ {
+  "page": "kale-1913-page-238",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.4,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "73",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 82"
+  ],
+  "transcription_call": {
+   "cost": 0.048082,
+   "seconds": 20.9,
+   "output_tokens": 2378
+  }
+ },
+ {
+  "page": "kale-1913-page-239",
+  "regions_call": {
+   "cost": 0.00822675,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "74",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 82"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.051414,
+   "seconds": 24.7,
+   "output_tokens": 2511
+  }
+ },
+ {
+  "page": "kale-1913-page-240",
+  "regions_call": {
+   "cost": 0.008192999999999999,
+   "seconds": 5.1,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "75",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 91"
+  ],
+  "transcription_call": {
+   "cost": 0.053478,
+   "seconds": 30.1,
+   "output_tokens": 2707
+  }
+ },
+ {
+  "page": "kale-1913-page-241",
+  "regions_call": {
+   "cost": 0.008373,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "76",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 96"
+  ],
+  "transcription_call": {
+   "cost": 0.056136000000000005,
+   "seconds": 27.4,
+   "output_tokens": 2782
+  }
+ },
+ {
+  "page": "kale-1913-page-242",
+  "regions_call": {
+   "cost": 0.007948,
+   "seconds": 4.6,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "77",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 99"
+  ],
+  "transcription_call": {
+   "cost": 0.047256000000000006,
+   "seconds": 21.5,
+   "output_tokens": 2295
+  }
+ },
+ {
+  "page": "kale-1913-page-243",
+  "regions_call": {
+   "cost": 0.008183,
+   "seconds": 5.0,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4,
+    "heading": 1
+   }
+  },
+  "label": "78",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.043614,
+   "seconds": 17.2,
+   "output_tokens": 1720
+  }
+ },
+ {
+  "page": "kale-1913-page-244",
+  "regions_call": {
+   "cost": 0.00784675,
+   "seconds": 4.8,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "79",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 5"
+  ],
+  "transcription_call": {
+   "cost": 0.041679999999999995,
+   "seconds": 20.3,
+   "output_tokens": 1749
+  }
+ },
+ {
+  "page": "kale-1913-page-245",
+  "regions_call": {
+   "cost": 0.008438,
+   "seconds": 5.8,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "80",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 5"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.054722,
+   "seconds": 23.0,
+   "output_tokens": 2604
+  }
+ },
+ {
+  "page": "kale-1913-page-246",
+  "regions_call": {
+   "cost": 0.008428,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5,
+    "other": 1
+   }
+  },
+  "label": "81",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 15"
+  ],
+  "transcription_call": {
+   "cost": 0.054202,
+   "seconds": 27.7,
+   "output_tokens": 2531
+  }
+ },
+ {
+  "page": "kale-1913-page-247",
+  "regions_call": {
+   "cost": 0.008618,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "82",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 21"
+  ],
+  "transcription_call": {
+   "cost": 0.050148,
+   "seconds": 20.1,
+   "output_tokens": 1934
+  }
+ },
+ {
+  "page": "kale-1913-page-248",
+  "regions_call": {
+   "cost": 0.008192999999999999,
+   "seconds": 4.7,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "83",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 21"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 24"
+  ],
+  "transcription_call": {
+   "cost": 0.043456,
+   "seconds": 17.8,
+   "output_tokens": 1703
+  }
+ },
+ {
+  "page": "kale-1913-page-249",
+  "regions_call": {
+   "cost": 0.00822675,
+   "seconds": 5.1,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "84",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 24"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note"
+  ],
+  "transcription_call": {
+   "cost": 0.051264000000000004,
+   "seconds": 23.1,
+   "output_tokens": 2488
+  }
+ },
+ {
+  "page": "kale-1913-page-250",
+  "regions_call": {
+   "cost": 0.008928,
+   "seconds": 7.5,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 8
+   }
+  },
+  "label": "85",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 34"
+  ],
+  "transcription_call": {
+   "cost": 0.062098,
+   "seconds": 26.4,
+   "output_tokens": 2946
+  }
+ },
+ {
+  "page": "kale-1913-page-251",
+  "regions_call": {
+   "cost": 0.008618,
+   "seconds": 6.8,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "86",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 34"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.057796,
+   "seconds": 24.8,
+   "output_tokens": 2702
+  }
+ },
+ {
+  "page": "kale-1913-page-252",
+  "regions_call": {
+   "cost": 0.00760175,
+   "seconds": 3.9,
+   "types": {
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "87",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 19,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.034902,
+   "seconds": 16.2,
+   "output_tokens": 1503
+  }
+ }
+]

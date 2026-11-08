@@ -1,0 +1,440 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "052-gemini-4-argon-low-region-transcription-neighbor-context-region-list",
+  "name": "Gemini 4 Argon with low thinking: method 047's transcription request (method 043's regions, neighbor context), with no fixed line counts and a region list in the response schema",
+  "settings": {
+   "name": "Gemini 4 Argon with low thinking: method 047's transcription request (method 043's regions, neighbor context), with no fixed line counts and a region list in the response schema",
+   "provider": "gemini",
+   "model": "gemini-4-argon",
+   "thinking_level": "low",
+   "image_resolution": "high",
+   "max_output_tokens": 32768,
+   "prompt_variant": "region-transcription-neighbor-context-v1",
+   "store": false,
+   "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+   "cutout_padding_char": 0.5,
+   "gutter_width_char": 1.6,
+   "gutter_min_px": 36,
+   "gutter_font_char": 0.55,
+   "gutter_font_min_px": 14,
+   "overview_label_char": 0.8,
+   "overview_label_min_px": 18,
+   "overview_outline_px": 3,
+   "context_lines": 2,
+   "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+   "image_detail": "original",
+   "image_detail_note": "The OpenAI detail setting, used only when building the content list; the Gemini request uses image_resolution.",
+   "schema_fixed_line_counts": false,
+   "schema_region_list": true
+  },
+  "files_sha256": {
+   "run.py": "44278aba0be5e4688e624429280065c2be8d153d41d39010bebda756551ac25b",
+   "prompt.py": "305a84eb1a607a707c15dfb888ba141187e7f6330a604166e5b773241f53bdf4",
+   "prompt-template.txt": "1d451cee4378c77e02bea16e6692603485b2235793e968c2cb905b2c1c220986",
+   "cutouts.py": "7d5f320391cde8c336c234a68d37ce5d973f697a13d30a4ebfa74aa42c84cb54",
+   "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+   "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+   "config.json": "d24357625c6dbde31fe8bdd494c9b4add474131f90ce9a5c799b3255a3d15707",
+   "pricing.json": "c952aa34dfd3bfc4c4ba995261db51a1172fc43ab713a6df3ae20dee1a467bd6",
+   "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+ },
+ "input": {
+  "id": "telang-dli-book-page-135",
+  "path": "inputs/telang-dli-book-page-135.png",
+  "sha256": "e909ba11a95e045f60f287ee739b6eb7d45fb78ed58cd4422b9cf23833b1b4a9"
+ },
+ "type_list": {
+  "path": "schema/types/telang-dli.json",
+  "sha256": "bffdb2fa1a8ee3d8ee8529206829d597a7959cf9540247b6e98085b850ce956a",
+  "book_id": "telang-dli"
+ },
+ "source_regions": {
+  "path": "outputs/telang-dli-book-page-135/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-001/regions.json",
+  "sha256": "08cbecc55f5b21df00e11dd6df1ab835635df35fda1c2d009948781bc0577f49"
+ },
+ "api": {
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "returned_model": "gemini-4-argon",
+  "response_id": null,
+  "request_id": null,
+  "api_wall_seconds": 22.07795558311045,
+  "usage": {
+   "total_tokens": 17374,
+   "total_input_tokens": 15553,
+   "input_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 3605
+    },
+    {
+     "modality": "image",
+     "tokens": 11948
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 1821,
+   "output_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 1821
+    }
+   ],
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 0,
+   "initial_input_tokens": 15553
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 15553,
+   "cached_input_tokens": 0,
+   "text_output_tokens": 1821,
+   "thinking_tokens": 0,
+   "billable_output_tokens_including_thinking": 1821,
+   "total_token_count_matches": true,
+   "estimated_paid_tier_input_cost_usd": 0.031106,
+   "estimated_paid_tier_output_cost_usd": 0.01821,
+   "estimated_paid_tier_total_cost_usd": 0.049316,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published paid-tier standard rates; estimate from usage, not an invoice",
+    "input_per_million_usd": 2.0,
+    "output_per_million_usd": 10.0,
+    "cached_input_per_million_usd": 0.1,
+    "valid_through": "2026-11-30",
+    "source": "https://aistudio.google.com/docs/pricing"
+   }
+  },
+  "request_sha256": "d7d558d98eb03f2bac5e0e3ec14ed4e5346de8109e487a75243b85fdbd8899e1",
+  "response_sha256": "f2c17ac4736e10fd48d91188deff8f57f8fa4cc642a5c7bc37e7726c54284ef6"
+ },
+ "regions_sent": [
+  {
+   "id": "r3",
+   "region_id": 3,
+   "type": "stanza_note",
+   "line_ids": [
+    1,
+    2,
+    3
+   ],
+   "cutout": {
+    "crop_box": [
+     173,
+     291,
+     1308,
+     536
+    ],
+    "gutter_px": 46,
+    "line_ids": [
+     1,
+     2,
+     3
+    ],
+    "sha256": "878460219a69d81c04f89fc81400a7c0ea1271e0bc916ce7adaf18a43a88af0d",
+    "size": [
+     1181,
+     245
+    ]
+   }
+  },
+  {
+   "id": "r4",
+   "region_id": 4,
+   "type": "stanza_note",
+   "line_ids": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "cutout": {
+    "crop_box": [
+     172,
+     517,
+     1313,
+     872
+    ],
+    "gutter_px": 46,
+    "line_ids": [
+     4,
+     5,
+     6,
+     7,
+     8,
+     9
+    ],
+    "sha256": "34e15b7511ec46f3356b82c92c49af674424d4740568cd86149f23a93a790ffa",
+    "size": [
+     1187,
+     355
+    ]
+   }
+  },
+  {
+   "id": "r5",
+   "region_id": 5,
+   "type": "stanza_note",
+   "line_ids": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "cutout": {
+    "crop_box": [
+     172,
+     844,
+     1318,
+     1242
+    ],
+    "gutter_px": 46,
+    "line_ids": [
+     10,
+     11,
+     12,
+     13,
+     14,
+     15
+    ],
+    "sha256": "98ba32299158226a7c9527d3db5558fd04bd0cd383f65a4e8a6c9e2ef54c9fda",
+    "size": [
+     1192,
+     398
+    ]
+   }
+  },
+  {
+   "id": "r6",
+   "region_id": 6,
+   "type": "stanza_note",
+   "line_ids": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ],
+   "cutout": {
+    "crop_box": [
+     168,
+     1225,
+     1352,
+     1682
+    ],
+    "gutter_px": 46,
+    "line_ids": [
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22
+    ],
+    "sha256": "fffd5c2d5dd20371821363c42766d620d3f6d1529e706c3e43f5ff39562bc947",
+    "size": [
+     1230,
+     457
+    ]
+   }
+  },
+  {
+   "id": "r7",
+   "region_id": 7,
+   "type": "stanza_note",
+   "line_ids": [
+    23,
+    24
+   ],
+   "cutout": {
+    "crop_box": [
+     169,
+     1665,
+     1316,
+     1813
+    ],
+    "gutter_px": 46,
+    "line_ids": [
+     23,
+     24
+    ],
+    "sha256": "f8fc80924f12011ac24d736667c73c1b6d8b8c18b849492936f74ba1d6def4d0",
+    "size": [
+     1193,
+     148
+    ]
+   }
+  },
+  {
+   "id": "r8",
+   "region_id": 8,
+   "type": "stanza_note",
+   "line_ids": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+   ],
+   "cutout": {
+    "crop_box": [
+     164,
+     1761,
+     1344,
+     2250
+    ],
+    "gutter_px": 46,
+    "line_ids": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30,
+     31
+    ],
+    "sha256": "db898212773612337cd7b469f3696951b58c462fb3256e6094e654334b10ef1b",
+    "size": [
+     1226,
+     489
+    ]
+   }
+  },
+  {
+   "id": "r1",
+   "region_id": 1,
+   "type": "running_header",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     632,
+     195,
+     805,
+     312
+    ],
+    "gutter_px": 46,
+    "line_ids": [
+     0
+    ],
+    "sha256": "f59126b6238edae96f45606833a65d9577fe37ae58eabcc044c7376abd7458d3",
+    "size": [
+     219,
+     117
+    ]
+   }
+  },
+  {
+   "id": "r2",
+   "region_id": 2,
+   "type": "page_number",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     1238,
+     225,
+     1300,
+     300
+    ],
+    "gutter_px": 46,
+    "line_ids": [
+     0
+    ],
+    "sha256": "288fe413454b799d66444d2d92c42f15a119f27835517f6d7088484fd7b57a36",
+    "size": [
+     108,
+     75
+    ]
+   }
+  }
+ ],
+ "regions_skipped": [],
+ "context": [
+  {
+   "side": "previous",
+   "page": "telang-dli-book-page-134",
+   "stream": "main",
+   "region_id": 7,
+   "type": "stanza_note",
+   "regions": "outputs/telang-dli-book-page-134/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-001/regions.json",
+   "regions_sha256": "11920755aa8c3112dc2d56103e1b77ded33e4f44d9ebe0a6c5821cfa4e2fb21e",
+   "sha256": "b3a34d04af508f7cbced0d68b38d29b6b9382f3edaab2bd21f5b1988e68755e9",
+   "crop_box": [
+    169,
+    2123,
+    1354,
+    2276
+   ],
+   "line_ids": [
+    34,
+    35
+   ]
+  },
+  {
+   "side": "next",
+   "page": "telang-dli-book-page-136",
+   "stream": "main",
+   "region_id": 3,
+   "type": "stanza_note",
+   "regions": "outputs/telang-dli-book-page-136/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-001/regions.json",
+   "regions_sha256": "59cbeb85b1983afe56431070d0c4953a0154f870bf643aa3f25bc6fdbd631802",
+   "sha256": "c62f9afad9da205757197300b53ac1bc93266cb042fecc12f205506c92e98d86",
+   "crop_box": [
+    147,
+    343,
+    1313,
+    497
+   ],
+   "line_ids": [
+    1,
+    2
+   ]
+  }
+ ],
+ "problems": [],
+ "check": {
+  "errors": [],
+  "warnings": [],
+  "valid": true
+ },
+ "counts": {
+  "regions": 8,
+  "units": 7,
+  "relations": 0,
+  "line_pieces": 33,
+  "retyped": [],
+  "uncertain": []
+ },
+ "artifacts": {
+  "request": "request.json",
+  "raw_response": "response.json",
+  "prompt": "prompt.txt",
+  "schema": "response-schema.json",
+  "overview": "overview.png",
+  "cutouts": "cutouts/",
+  "context": "context/",
+  "page_document": "page.json",
+  "transcript": "transcript.txt"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0"
+  }
+ }
+}

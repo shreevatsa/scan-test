@@ -1,0 +1,22 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "kale-1913",
+ "title": "Kale (1913): Bhartṛhari's śatakas with a Sanskrit commentary",
+ "description": "Each verse is followed by its Sanskrit commentary in smaller type. Some verses are introduced by a short lead-in. Numbered footnotes, mostly variant readings, sit below a rule at the foot of the page and restart at 1 on each page.",
+ "languages": ["sa-Deva"],
+ "flows": {"main": "The verses and commentary in reading order.", "notes": "The footnotes, in page order."},
+ "types": {
+  "section": {"description": "One śataka, such as वैराग्यशतकम्, the top level of the main text.", "contains": ["heading", "group"], "flow": "main"},
+  "heading": {"description": "A section title or other heading.", "region": "heading"},
+  "group": {"description": "One verse with its lead-in, if any, and its commentary. The app can show each group on its own.", "contains": ["lead_in", "verse", "commentary"]},
+  "lead_in": {"description": "A short line of its own that introduces the verse.", "region": "lead_in"},
+  "verse": {"description": "One verse in large type, with its number, such as ॥ २६ ॥.", "region": "verse", "numbered": true},
+  "commentary": {"description": "The Sanskrit commentary on the verse, in smaller type. It usually ends with the name of the metre, such as शिखरिणी ॥.", "region": "paragraph"},
+  "footnote": {"description": "One numbered footnote below the rule, usually a variant reading.", "region": "note", "flow": "notes", "numbered": true},
+  "running_header": {"description": "The running title, such as वैराग्यशतकम् ।", "role": "furniture", "region": "running_header"},
+  "page_number": {"description": "The printed page number, in Devanagari digits.", "role": "furniture", "region": "page_number"}
+ },
+ "relations": {"note": "A footnote marker in the text points to its footnote."},
+ "conventions": ["Transcribe Devanagari as printed, in Unicode NFC, with the printed digits and dandas."]
+}

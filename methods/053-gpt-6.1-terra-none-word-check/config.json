@@ -1,0 +1,11 @@
+{
+  "name": "GPT-6.1 Terra without reasoning: a check of the words that Tesseract reads differently from a transcription",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "none",
+  "image_detail": "original",
+  "max_output_tokens": 32768,
+  "store": false,
+  "source_method_id": "046-gpt-6.1-terra-none-region-transcription-neighbor-context",
+  "tesseract_lang": "script/Devanagari",
+  "tesseract": "5.5.1, --psm 7, tsv"
+}

@@ -1,0 +1,394 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "045-gpt-6.1-terra-none-single-call-regions-text-units",
+  "note": "method 042-style boxes from the single call"
+ },
+ "input": {
+  "id": "kale-1913-page-106",
+  "path": "inputs/kale-1913-page-106.png",
+  "sha256": "9c3e44d95356adce4cae37d1262ee93e5cf074197d8b1ccab1b94916a1fad0e7",
+  "width": 1374,
+  "height": 2118
+ },
+ "regions": [
+  {
+   "type": "running_header",
+   "box_1000": [
+    380,
+    66,
+    577,
+    97
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 1,
+   "label": "running_header",
+   "region_class": "running_header",
+   "box": [
+    522.12,
+    139.788,
+    792.798,
+    205.446
+   ],
+   "box_xyxy_1000": [
+    380.0,
+    66.0,
+    577.0,
+    97.0
+   ]
+  },
+  {
+   "type": "page_number",
+   "box_1000": [
+    831,
+    68,
+    888,
+    93
+   ],
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 2,
+   "label": "page_number",
+   "region_class": "page_number",
+   "box": [
+    1141.794,
+    144.024,
+    1220.112,
+    196.974
+   ],
+   "box_xyxy_1000": [
+    831.0,
+    68.0,
+    888.0,
+    93.0
+   ]
+  },
+  {
+   "type": "commentary",
+   "box_1000": [
+    72,
+    125,
+    887,
+    231
+   ],
+   "keep": true,
+   "reading_order": 1,
+   "uncertain": true,
+   "continues_from_earlier": true,
+   "continues_later": false,
+   "region_id": 3,
+   "label": "commentary",
+   "region_class": "paragraph",
+   "box": [
+    98.928,
+    264.75,
+    1218.738,
+    489.258
+   ],
+   "box_xyxy_1000": [
+    72.0,
+    125.0,
+    887.0,
+    231.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    110,
+    236,
+    886,
+    350
+   ],
+   "keep": true,
+   "reading_order": 2,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 4,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    151.14,
+    499.848,
+    1217.364,
+    741.3
+   ],
+   "box_xyxy_1000": [
+    110.0,
+    236.0,
+    886.0,
+    350.0
+   ]
+  },
+  {
+   "type": "commentary",
+   "box_1000": [
+    70,
+    350,
+    887,
+    536
+   ],
+   "keep": true,
+   "reading_order": 3,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 5,
+   "label": "commentary",
+   "region_class": "paragraph",
+   "box": [
+    96.18,
+    741.3,
+    1218.738,
+    1135.248
+   ],
+   "box_xyxy_1000": [
+    70.0,
+    350.0,
+    887.0,
+    536.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    143,
+    539,
+    829,
+    649
+   ],
+   "keep": true,
+   "reading_order": 4,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 6,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    196.482,
+    1141.602,
+    1139.046,
+    1374.582
+   ],
+   "box_xyxy_1000": [
+    143.0,
+    539.0,
+    829.0,
+    649.0
+   ]
+  },
+  {
+   "type": "commentary",
+   "box_1000": [
+    70,
+    650,
+    887,
+    756
+   ],
+   "keep": true,
+   "reading_order": 5,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 7,
+   "label": "commentary",
+   "region_class": "paragraph",
+   "box": [
+    96.18,
+    1376.7,
+    1218.738,
+    1601.208
+   ],
+   "box_xyxy_1000": [
+    70.0,
+    650.0,
+    887.0,
+    756.0
+   ]
+  },
+  {
+   "type": "verse",
+   "box_1000": [
+    142,
+    757,
+    741,
+    868
+   ],
+   "keep": true,
+   "reading_order": 6,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 8,
+   "label": "verse",
+   "region_class": "verse",
+   "box": [
+    195.108,
+    1603.326,
+    1018.134,
+    1838.424
+   ],
+   "box_xyxy_1000": [
+    142.0,
+    757.0,
+    741.0,
+    868.0
+   ]
+  },
+  {
+   "type": "commentary",
+   "box_1000": [
+    104,
+    870,
+    886,
+    895
+   ],
+   "keep": true,
+   "reading_order": 7,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": true,
+   "region_id": 9,
+   "label": "commentary",
+   "region_class": "paragraph",
+   "box": [
+    142.896,
+    1842.66,
+    1217.364,
+    1895.61
+   ],
+   "box_xyxy_1000": [
+    104.0,
+    870.0,
+    886.0,
+    895.0
+   ]
+  },
+  {
+   "type": "footnote",
+   "box_1000": [
+    97,
+    906,
+    194,
+    929
+   ],
+   "keep": true,
+   "reading_order": 8,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 10,
+   "label": "footnote",
+   "region_class": "note",
+   "box": [
+    133.278,
+    1918.908,
+    266.556,
+    1967.622
+   ],
+   "box_xyxy_1000": [
+    97.0,
+    906.0,
+    194.0,
+    929.0
+   ]
+  },
+  {
+   "type": "footnote",
+   "box_1000": [
+    207,
+    906,
+    341,
+    929
+   ],
+   "keep": true,
+   "reading_order": 9,
+   "uncertain": true,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 11,
+   "label": "footnote",
+   "region_class": "note",
+   "box": [
+    284.418,
+    1918.908,
+    468.534,
+    1967.622
+   ],
+   "box_xyxy_1000": [
+    207.0,
+    906.0,
+    341.0,
+    929.0
+   ]
+  },
+  {
+   "type": "footnote",
+   "box_1000": [
+    355,
+    906,
+    486,
+    929
+   ],
+   "keep": true,
+   "reading_order": 10,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 12,
+   "label": "footnote",
+   "region_class": "note",
+   "box": [
+    487.77,
+    1918.908,
+    667.764,
+    1967.622
+   ],
+   "box_xyxy_1000": [
+    355.0,
+    906.0,
+    486.0,
+    929.0
+   ]
+  },
+  {
+   "type": "footnote",
+   "box_1000": [
+    506,
+    906,
+    586,
+    929
+   ],
+   "keep": true,
+   "reading_order": 11,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_id": 13,
+   "label": "footnote",
+   "region_class": "note",
+   "box": [
+    695.244,
+    1918.908,
+    805.164,
+    1967.622
+   ],
+   "box_xyxy_1000": [
+    506.0,
+    906.0,
+    586.0,
+    929.0
+   ]
+  }
+ ],
+ "validation_warnings": []
+}

@@ -1,4 +1,4 @@
-# Draft schema for a digitized book (version 0.1)
+# Draft schema for a digitized book (version 0.2)
 
 This is a draft data model for a scanned book turned into text, where every unit of text links back to its regions and polygons on the page images. Claude wrote it on 2026-11-05, after the user's decisions in the continuation review:
 - continuation depends on what a unit is;
@@ -6,7 +6,7 @@ This is a draft data model for a scanned book turned into text, where every unit
 - units should be book-specific, with groups the app can show on their own;
 - transcription is a second call, which may also assign regions to larger units, and a single call is worth trying too.
 
-No method produces this format yet. The examples are built from method 041's regions with unit trees Claude wrote by hand. The user hasn't reviewed them.
+Methods 044–054 produce version 0.1 page documents (transcription and unit tree on method 043's regions, or in a single call), and method 055 version 0.2 documents with inline formatting. The examples are built from method 041's regions with unit trees Claude wrote by hand. The user hasn't reviewed them.
 
 ## In brief
 
@@ -23,10 +23,12 @@ No method produces this format yet. The examples are built from method 041's reg
 |---|---|
 | `schema.json` | JSON Schema (2020-12) for the three document kinds: a type list, a page document and a book document |
 | `book.py` | Checks documents against the schema and the rules below, assembles page documents into a book, and prints a book's tree |
+| `inline.py` | 0.2: turns tagged model text into plain text and spans, and upgrades 0.1 page documents |
 | `test_book.py` | Tests for `book.py`, including rule violations that must be caught |
-| `types/<book_id>.json` | Type lists for Hertel's Pañcatantra, Kale 1913, Dutt's Mahābhārata Telang and Cole, all reviewed by the user (Telang's and Cole's drafted by Claude) |
+| `types/<book_id>.json` | Type lists for all ten books, all reviewed by the user: Hertel's Pañcatantra, Kale 1913 and Dutt's Mahābhārata, and Claude's drafts for Telang, Cole, Ten Princes, the two Nītiśataka editions, Vavilla and the Gita |
 | `examples/<name>/tree.txt` | Hand-written unit trees over method 041 regions, for three page runs |
 | `examples/build.py` | Builds `pages/*.json`, `book.json` and `tree-printed.txt` from each `tree.txt` |
+| `viewer/build.py` | Renders a run's page documents as a static, read-only HTML viewer: each page image with its region and line outlines next to its units and text, with note markers linked to their notes |
 
 ```sh
 uv run --offline python schema/test_book.py
@@ -54,10 +56,14 @@ The lists written so far:
 | Book | Containers | Printed types | Flows |
 |---|---|---|---|
 | Hertel | story (frame story or inner tale) | paragraph (may contain verses and lead-ins), verse, lead_in, heading | main |
-| Kale 1913 | section (one śataka), group (lead-in + verse + commentary) | lead_in, verse, commentary, heading, footnote | main, notes |
+| Kale 1913 (extended by Claude for the full-book walk, revised after its first run) | contents, section (one śataka), group (lead-in + verse + commentary), translation, notes | heading, paragraph, contents_entry, commentator_verse, introduction, lead_in, verse, commentary, translated_stanza, stanza_note, footnote | main, notes |
 | Dutt | chapter, group (verse set + translation), verse_set | verse, translation, speaker, heading | main |
-| Telang (Claude's draft, reviewed) | introduction, index, shataka, section, notes | heading, paragraph, table, lead_in, verse, apparatus_entry, stanza_note, footnote | main, apparatus, notes |
+| Telang (Claude's draft, reviewed; extended for the full-book walk, not yet reviewed) | introduction, critical_notice, corrigenda, index, shataka, section, notes | heading, paragraph, corrigendum, table, lead_in, verse, apparatus_entry, stanza_note, footnote; furniture includes scan_matter | main, apparatus, notes |
 | Cole (Claude's draft, reviewed) | article, section (numbered) | heading, byline, read_before, paragraph (may contain formulas), formula, signoff, footnote | main, notes |
+| Ten Princes (Claude's draft, reviewed) | introduction, contents, chapter | heading, paragraph (may contain verse), verse, contents_entry, signoff | main |
+| Nītiśataka 1896 and 1914 (Claude's drafts, reviewed) | preface, shataka, group (stanza + translations), variants, notes, stanza_note, back_lists | heading, paragraph, table, verse, hindi_translation, bhavartha, hindi_gloss, english_translation, english_comment, note, variant_entry, note_paragraph (may contain quotation), quotation, list_entry | main, notes |
+| Vavilla (Claude's draft, reviewed) | shataka, section, group (verse + commentary + metre) | heading, verse, commentary (may contain quotation), quotation, metre, colophon | main |
+| Gita (Claude's draft, reviewed) | introduction, contents, canto | heading, argument, speaker, topic, verse, paragraph, contents_entry, signoff | main |
 
 The region prompt for a book is generated from its list by [method 042](../methods/042-gpt-6.1-terra-none-book-types-continuations/README.md). The prompt offers the types that have a region class, and furniture, each with the book's description followed by the rule for its neutral class. It lists the containers for context only. Each region the model returns also records its neutral class.
 
@@ -80,6 +86,37 @@ When local processing fails (the mask-failure fallback), the polygon is the mode
 
 A unit's text is its pieces' text, joined in reading order. Every character can therefore be traced to a line piece and its polygon. A word hyphenated across a page break is just the last piece of one page joining the first piece of the next, inside the same unit.
 
+## Inline spans and note markers (0.2)
+
+Version 0.2 (2026-11-06; 0.1 documents remain valid) adds formatting and makes note markers first-class.
+
+**Spans.** A line piece may have `spans`, each a stretch of its plain text with a `kind`. A span has `start` and `end` offsets (in code points), and optionally an `id`. The kinds:
+- generic formatting: `bold`, `italic`, `small_caps`, `superscript`, `subscript`, `underline`, `spaced`;
+- the book's own inline kinds, named in the type list's `inline`, each with a description and the formatting it is printed in, such as a pratīka printed in bold;
+- `note_marker`, below.
+
+Formatting that runs across a line break has a span on each piece, and a viewer joins them. The plain text stays as printed and searchable; spans map one to one onto ProseMirror marks.
+
+**What counts as formatting:** words that the printer sets apart from the text around them in the same script. A script printed throughout in a heavier face, such as the Devanagari of Kale's English notes, is not bold. Headings in capitals, letter-spaced headings and type sizes are structure (unit types), not spans.
+
+**Note markers** are zero-width spans of kind `note_marker`, at the position where the marker is printed, with an `id` and the printed `marker` (such as १ or *). The marker characters are not in the running text, so "च वदने" is found whether or not a marker stands after च. A relation of type `note` names its marker by `from.anchor` (`<page id>#<span id>`). That survives edits to the text, where character offsets would not.
+
+**Writing them:** a model writes formatting as simple tags (`<b>`, `<i>`, `<sc>`, `<sup>`, `<sub>`, `<u>`) and markers in square brackets (`[१]`). `inline.py` turns them into plain text and spans, carrying a tag left open at a line's end on to the next line. `inline.py upgrade` turns a 0.1 page document, with `[x]` markers in its text, into 0.2.
+
+## Editing (0.2)
+
+The model's page documents are never changed: the user's corrected version is saved beside each one (decided on 2026-11-05). Every element has a stable id, and each kind of element has one natural edit:
+- **text and formatting:** edit the line pieces' text and toggle spans, as in any rich-text editor;
+- **units:** join, split, change type, move to another parent, change number or label;
+- **regions:**
+  - a region may carry `box`, the editable rectangle its outline is computed from;
+  - moving or resizing the box, moving a line piece to another region, or claiming ink with a new box re-runs the local outline step;
+  - polygons and line pieces are derived from the box and the page's ink, and are not edited point by point;
+- **relations:** pick a marker and the note it refers to, or remove the link;
+- **continuations:** set or clear a unit's open ends at a page edge.
+
+An edited document must pass the same checks (`book.py check`) before it is saved.
+
 ## Units
 
 A unit has an id, a type, optional `number`, `label` and `lang`, and its `children` in reading order. Each child is one of:
@@ -90,6 +127,16 @@ A unit has an id, a type, optional `number`, `label` and `lang`, and its `childr
 - every text region is owned by exactly one unit, and furniture by none;
 - every unit is either one unit's child or at the top level of one flow, in a flow its type allows;
 - the units form a tree.
+
+**Figures.** A figure (a picture, emblem, symbol printed as an image, or ornament) is a unit of a type whose region class is `figure`. Its region has a box and an outline but usually no line pieces. The unit's `label` says what it shows, if known, and serves as its text in plain-text exports.
+
+**Styles (draft 0.3, 2026-11-06).** How the book is printed is kept apart from what it says, so that an export can be semantic while still able to look like the book:
+- **the style sheet:** a book may have a style sheet (format `style`). It holds the base style of its text and, for each type, how units of that type are usually printed. It also names the page's size and text box, and font roles (`body`, `display`, `latin`) with font families in order of preference;
+- **own styles:** a unit (`style`) or a line piece (`style`) records only where it differs from its type, such as a centered heading line at 29 pt or a right-aligned signature;
+- **properties:** font role, size, leading, weight, italic, alignment (left, center, right, justify), left margin, first-line indent (negative for a hanging number), and space before and after. All lengths are points of the printed page;
+- **rows:** `row` puts consecutive sibling units side by side (the two columns of an address), each with its `width` as a share of the text width.
+
+Renderings that resemble the book use styles: the app's "as printed" view, its HTML export, and later a LaTeX or Typst export. The structure, the reading order and the text never depend on them, and a semantic export may ignore them. Documents of 0.1 and 0.2 have no styles and remain valid; the style sheet and `style` properties are 0.3.
 
 **Nesting and interruption are different.** A verse quoted in a Hertel speech is a child of the paragraph, and the prose after it is the same paragraph's next region. A figure that the printer set between two pieces of a paragraph is not part of the paragraph. It is a sibling in the flow, and the paragraph simply has two pieces. On the page the two cases look alike; the tree tells them apart.
 
@@ -175,5 +222,13 @@ Each example directory has the hand-written `tree.txt` and the generated `tree-p
 - **Who writes a type list:** in the app, a model proposes one from sample pages and the user reviews it.
 - **Editing:** kept simple. The model's page document is never changed; the user's corrected version of the page is saved beside it and used when there is one. No edit history is kept. Details wait for the app.
 - **Telang (the user's review of Claude's draft):** the apparatus is its own flow, apart from the stanzas; the stanza number can link an entry to its stanza later. "साहंकारं पुरुषमुद्दिश्याह ।" (page 93) is a lead-in. The books have title and contents pages, which the type lists do not cover yet; Claude is to go over one full book later (Kale and Telang first) to see what a whole book looks like.
-- **Cole (the user's review of Claude's draft):** "your recommendations seem fine overall", without going into the journal case further: articles as the top level, numbered sections as containers, and mathematics in LaTeX as proposed.
+- **Cole (the user's review of Claude's draft):** "your recommendations seem fine overall", without going into the journal case further: articles as the top level, numbered sections as containers, and mathematics in LaTeX as proposed. The user then asked Claude to go ahead with the other books; Claude drafted and tested all five the same day, for the user's review.
+- **Kale, extended for the full-book walk (Claude, 2026-11-05/06, not yet reviewed):** the accepted list covered only the Sanskrit text. For the whole scan Claude added contents, translation and notes as top-level containers, with paragraph, contents_entry, translated_stanza and stanza_note. It also added commentator_verse, allowed commentary directly in a section (for the commentator's introduction), widened the footnote and page number descriptions to the English parts, and added an English convention. The accepted version is saved as `type-list.json` with every earlier Kale result. Allowing commentary in a section has one side effect: on page 4, a commentary continued from page 3 was put directly in the section instead of in its group.
+- **Kale, revised after the first full-book run (2026-11-06):** Claude proposed three fixes for gaps the run exposed, and the user agreed ("I agree with your recommendation. Go ahead."):
+  - a type `introduction` for the commentator's introduction, with commentary only in groups;
+  - `paragraph` also for editor's notes in the translation and the notes, such as "N. B. Read the slokas on p. 16 in this order—…";
+  - the translation and the notes each described as one unit across both śatakas, with their headings inside.
+
+  The list used by the first run (`book-001`) is saved as `type-list.json` with each of its results.
+- **Ten Princes, Nītiśataka 1896 and 1914, Vavilla and the Gita (the user's review of Claude's drafts):** accepted as drafted ("Yes all this sounds good. Go ahead"), after Claude's summary of each list and its test. That includes a Ten Princes chapter's number and title as one heading, the Nītiśataka below-rule notes as their own flow with one region per note or parallel, and the Gita's speaker lines as plain units rather than containers.
 

@@ -1,0 +1,486 @@
+{
+ "schema_version": 1,
+ "created_at_utc": "2026-11-06T07:00:36.054220+00:00",
+ "method": {
+  "id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "name": "GPT-6.1 Terra without reasoning, book types from the type list with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions"
+ },
+ "input": {
+  "path": "inputs/telang-dli-book-page-199.png",
+  "sha256": "2bbb1294b1ef4cfc42ae0138f1763cdbc7eb349c68ecad0519930e18088c2977",
+  "width": 1500,
+  "height": 2500
+ },
+ "source": {
+  "method_id": "042-gpt-6.1-terra-none-book-types-continuations",
+  "regions_path": "outputs/telang-dli-book-page-199/042-gpt-6.1-terra-none-book-types-continuations/book-001/regions.json",
+  "regions_sha256": "54f143eda9a30ff911c6a3349b5bce3828afed5ae5ce1d52aa1ec0b6f5617b46",
+  "note": "The source model call is not repeated; its cost and timing are in the source output."
+ },
+ "api_calls": 0,
+ "coordinates": "Polygon rings are in input-image pixel indices, outer boundary only, largest piece first. Vertex (x, y) is the center of pixel column x and row y, and a region is its closed polygon including boundary pixels. In a corner-based system such as SVG with the image at (0, 0), add 0.5 to both coordinates. model_box is the source result's derived box, unchanged.",
+ "line_analysis": {
+  "char_h": 28.0,
+  "page_angle_deg": -2.120525977034049e-14,
+  "lines": 3,
+  "columns": 1,
+  "ink_thresholds": {
+   "strong": 200,
+   "weak": 227.5,
+   "speck_area": 7
+  }
+ },
+ "settings": {
+  "name": "GPT-6.1 Terra without reasoning, book types from the type list with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions",
+  "base_method_id": "042-gpt-6.1-terra-none-book-types-continuations",
+  "component_in_box_fraction": 0.5,
+  "minimum_line_share": 0.25,
+  "local_box_maximum_line_coverage": 0.9,
+  "local_box_minimum_ink_share": 0.5,
+  "remainder_minimum_line_share": 0.25,
+  "side_by_side_maximum_overlap_fraction": 0.1,
+  "maximum_outside_gap_char": 1.0,
+  "isolation_gap_char": 2.0,
+  "unlined_attach_gap_char": 2.0,
+  "rule_piece_max_height_char": 0.25,
+  "rule_piece_band_tolerance_char": 0.1,
+  "rule_piece_gap_char": 3.0,
+  "envelope_padding_char": 0.25,
+  "polygon_epsilon_px": 1.0,
+  "distance_mask_size": 5
+ },
+ "line_settings": {
+  "name": "Text-line skew, curvature and boundary separability",
+  "maximum_strong_threshold": 200,
+  "speck_area_page_fraction": 5e-07,
+  "speck_size_char_fraction": 0.1,
+  "rule_minimum_aspect": 10,
+  "rule_maximum_height_char": 0.4,
+  "rule_minimum_width_char": 3,
+  "large_component_height_char": 3.0,
+  "large_component_width_page": 0.6,
+  "minimum_text_pixels_char2": 20,
+  "angle_sample_limit": 400000,
+  "angle_search_deg": 6,
+  "angle_coarse_step_deg": 0.1,
+  "angle_fine_step_deg": 0.01,
+  "gutter_minimum_width_char": 1.5,
+  "gutter_minimum_side_fraction": 0.1,
+  "main_minimum_height_char": 0.55,
+  "main_maximum_height_char": 2.2,
+  "line_split_gap_char": 0.35,
+  "assign_horizontal_pad_char": 1.0,
+  "assign_maximum_distance_char": 1.2,
+  "band_chain_gap_char": 1.0,
+  "long_line_column_fraction": 0.6,
+  "long_line_minimum_char": 10,
+  "segment_width_char": 5,
+  "maximum_segments": 10,
+  "maximum_segment_offset_char": 0.6,
+  "minimum_segment_pixels_char2": 0.3,
+  "pair_minimum_overlap_char": 2,
+  "pair_minimum_pixels_char2": 1.0,
+  "straight_search_deg": 6,
+  "straight_step_deg": 0.01,
+  "separable_margin_px": 1.0,
+  "conflict_pixel_tolerance": 0
+ },
+ "regions": [
+  {
+   "region_id": 1,
+   "type": "scan_matter",
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "other",
+   "model_box": [
+    271.5,
+    2292.5,
+    1225.5,
+    2485.0
+   ],
+   "status": "ok",
+   "polygons": [
+    [
+     [
+      276,
+      2297
+     ],
+     [
+      276,
+      2483
+     ],
+     [
+      1222,
+      2483
+     ],
+     [
+      1222,
+      2297
+     ]
+    ]
+   ],
+   "bounds": [
+    276,
+    2297,
+    1223,
+    2484
+   ],
+   "ink_pixels": 21454,
+   "components": 82,
+   "line_ids": [
+    0,
+    1,
+    2
+   ],
+   "lines": [
+    {
+     "line_id": 0,
+     "shared_with_other_regions": false,
+     "ink_pixels": 10706,
+     "polygons": [
+      [
+       [
+        276,
+        2297
+       ],
+       [
+        276,
+        2358
+       ],
+       [
+        432,
+        2358
+       ],
+       [
+        442,
+        2353
+       ],
+       [
+        465,
+        2353
+       ],
+       [
+        480,
+        2355
+       ],
+       [
+        482,
+        2357
+       ],
+       [
+        487,
+        2358
+       ],
+       [
+        689,
+        2358
+       ],
+       [
+        695,
+        2355
+       ],
+       [
+        713,
+        2356
+       ],
+       [
+        718,
+        2358
+       ],
+       [
+        745,
+        2358
+       ],
+       [
+        756,
+        2354
+       ],
+       [
+        777,
+        2352
+       ],
+       [
+        797,
+        2354
+       ],
+       [
+        802,
+        2356
+       ],
+       [
+        807,
+        2354
+       ],
+       [
+        818,
+        2353
+       ],
+       [
+        825,
+        2354
+       ],
+       [
+        835,
+        2358
+       ],
+       [
+        855,
+        2353
+       ],
+       [
+        863,
+        2353
+       ],
+       [
+        874,
+        2358
+       ],
+       [
+        963,
+        2358
+       ],
+       [
+        971,
+        2354
+       ],
+       [
+        992,
+        2354
+       ],
+       [
+        997,
+        2357
+       ],
+       [
+        1005,
+        2355
+       ],
+       [
+        1020,
+        2355
+       ],
+       [
+        1033,
+        2358
+       ],
+       [
+        1222,
+        2358
+       ],
+       [
+        1222,
+        2297
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 1,
+     "shared_with_other_regions": false,
+     "ink_pixels": 7095,
+     "polygons": [
+      [
+       [
+        432,
+        2360
+       ],
+       [
+        432,
+        2411
+       ],
+       [
+        1067,
+        2411
+       ],
+       [
+        1067,
+        2362
+       ],
+       [
+        1064,
+        2360
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 2,
+     "shared_with_other_regions": false,
+     "ink_pixels": 3653,
+     "polygons": [
+      [
+       [
+        561,
+        2424
+       ],
+       [
+        561,
+        2483
+       ],
+       [
+        937,
+        2483
+       ],
+       [
+        937,
+        2422
+       ],
+       [
+        811,
+        2422
+       ],
+       [
+        807,
+        2425
+       ],
+       [
+        798,
+        2422
+       ],
+       [
+        705,
+        2422
+       ],
+       [
+        703,
+        2424
+       ],
+       [
+        699,
+        2422
+       ],
+       [
+        566,
+        2422
+       ]
+      ]
+     ]
+    }
+   ],
+   "vertices": 4,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  }
+ ],
+ "line_decisions": [
+  {
+   "line_id": 0,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    0
+   ],
+   "ink_pixels": 10706,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "0": 1.0
+   },
+   "region_ids": [
+    1
+   ]
+  },
+  {
+   "line_id": 1,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    0
+   ],
+   "ink_pixels": 7095,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "0": 1.0
+   },
+   "region_ids": [
+    1
+   ]
+  },
+  {
+   "line_id": 2,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    0
+   ],
+   "ink_pixels": 3653,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "0": 1.0
+   },
+   "region_ids": [
+    1
+   ]
+  }
+ ],
+ "diagnostics": {
+  "lines": 3,
+  "whole_lines": 3,
+  "split_lines": 0,
+  "uncovered_lines": 0,
+  "empty_lines": 0,
+  "uncovered_line_ids": [],
+  "dropped_components": [],
+  "band_chained_components": [],
+  "rule_pieces": [],
+  "attached_components": [],
+  "unassigned_text_pixels": 0,
+  "unassigned_text_components_not_on_lines": 0,
+  "regions_without_ink": [],
+  "regions_with_several_pieces": [],
+  "polygon_overlap_pixels": 0,
+  "ink_in_polygon_overlaps": 0,
+  "own_ink_outside_polygons": 0,
+  "other_regions_ink_inside_polygons": 0,
+  "separator_pixels_inside_polygons": 0,
+  "line_polygon_pixels_outside_region_polygons": 0,
+  "line_polygon_pixels": 114199,
+  "polygon_vertices": 4
+ },
+ "ownership_png": {
+  "path": "ownership.png",
+  "values": "0 unassigned or background, 1..N region index + 1 in source order, 255 rules and large non-text",
+  "sha256": "05b93b19b55f9235e1c80a5f15a1ad524b3b4ce2af43c1cf07ce1b2eadbf25f3"
+ },
+ "local_seconds": {
+  "line_analysis": 0.153,
+  "ownership": 0.002,
+  "outlines": 0.153,
+  "total_including_audit_and_drawing": 0.54
+ },
+ "code_sha256": {
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+  "book_types.py": "0565177fbe77676a4bb19c82404220a37de75148e5e1e322ad85e16be957fad8",
+  "config.json": "1074dace61dc55103d9b7e4fd6bee63bedae8661bbd37766ae5c228f0ddc96e2",
+  "crossbook.py": "b19064edf5fa57e5b87bae81c492dbb1aa171857b27d050c826e5aed8b3ea815",
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "geometry.py": "0ad52d9a91bf0cee2e8721f8e671fc5f412c50d0e3fea5d23d37e56064fdeacd",
+  "line-config.json": "f6b515c719b5be95e01514a354a6d9a3f85b1efae9037a9d32d7390a4bee30d5",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "run.py": "0bd7629e75b60f1d528e6df8f0f4be9c3f8bf2c5c5741314f601e47d1ba119d3",
+  "stability.py": "b0c87685dbc262b4da0dfd2b6c041d012895b35ea028f32c93eab818df4d6841",
+  "sweep.py": "4db8c8b9335965eea28305aa95dbc81193da0691327b2bda84f9750a44c9153e"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0",
+   "opencv-python-headless": "5.0.0.93"
+  }
+ }
+}

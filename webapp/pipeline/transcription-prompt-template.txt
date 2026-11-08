@@ -1,0 +1,32 @@
+You are given one scanned page of a book, already divided into regions, one per printed unit of text. Transcribe each region line by line, and build the page's tree of units.
+
+The book: <<BOOK>>
+
+The first image is the whole page, with each region outlined in color and labeled with its id (r1, r2, …). After it, each region follows on its own: a line with its id, its type and its number of lines, then an image of the region cut out of the page, with everything outside the region blanked. In the gray strip at the left of each cut-out, the numbers 1, 2, … mark the lines found in the region, from the top. The strip is not part of the page. Last come small context images from the neighboring pages, described under 2.
+
+1. Transcription
+- For each region, return its lines in order, one entry per numbered line, with its number n and its text. Transcribe what is printed on that line inside the cut-out; use the whole page only for context.
+- If a numbered line holds only a stray piece of a neighboring line, such as a detached vowel sign or a dot, transcribe that piece with the line it belongs to and give an empty text for the numbered line.
+- Transcribe exactly as printed. Do not correct, modernize, complete or translate the text, and do not expand abbreviations. Keep the printed punctuation, digits and spelling.
+- A note marker printed in the text, such as a superscript number, an asterisk or a dagger that refers to a footnote or note, is written in square brackets at the position where it is printed, even inside a word, as in word[1] or wo[*]rd, with the marker as printed. A footnote's own number at its start is written as printed, without brackets.
+- Formatting: mark words printed in bold with <b>…</b>, in italics with <i>…</i>, in small capitals with <sc>…</sc>, and superscript or subscript characters that are not note markers with <sup>…</sup> or <sub>…</sub>. Mark only what the printer sets apart from the text around it in the same script; where all the text of one script is printed in one heavy face, as the Devanagari in some English notes, it is not bold. Do not mark headings set in capitals, letter spacing, or the size of type. Write small capitals in lower case, with a full-size capital as a capital: STANZA with a larger S is <sc>Stanza</sc>. If formatting goes on to the next line, close the tag at the end of the line and open it again on the next.
+- end says how a line joins the next line of the same unit: "hyphen" if it ends with a hyphen that divides a word (keep the hyphen in the text), "join" if a word runs on to the next line without a hyphen, "line" if the line break is part of the text, as between the lines of a verse, and "space" otherwise. For a region's last line, say how it joins the unit's next text, wherever that is (on the next page, or after an interruption); use "space" if the unit ends there.
+- type: the region's type. Keep the type it was given unless it is clearly wrong.
+- Set uncertain=true for a region whose reading you are unsure of, and say why in note; otherwise note is null.
+- Conventions for this book:
+<<CONVENTIONS>>
+
+2. Units
+The book's unit types:
+<<TYPES>>
+
+- Every region that is not furniture is a child of exactly one unit of its own type. A unit printed as several regions, such as a paragraph interrupted by something it contains, lists all of them.
+- Larger units contain smaller ones, as their types allow. List each unit's children in reading order, as region ids and unit ids.
+- Furniture regions (<<FURNITURE>>) and regions of type other belong to no unit.
+- Give each unit an id (u1, u2, …), its printed number in ASCII digits if it has one (a verse numbered ॥२१॥ is "21"), and a short label or null.
+- Set open_start=true for a unit that began on an earlier page, and open_end=true for a unit that goes on on a later page. A unit open at its end is the last child of its parent, and the parent is open at its end too; likewise, a unit open at its start is the first child of a parent open at its start. A unit around the whole page, such as a chapter whose beginning and end are not on this page, is open at both ends.
+- Context: after the regions come up to four images that are not part of this page: the last lines of the previous page's main text and of its notes, and the first lines of the next page's main text and of its notes. Do not transcribe them. Use them only for the open ends. A unit of this page is open at its start only if the previous page breaks off inside it (mid-sentence, mid-verse, or with a divided word), and open at its end only if the next page's first lines go on with it rather than begin a new unit (a heading, a new numbered verse, an indented paragraph, a new note). A larger unit can be open while all its children are complete: if the previous page ends with a verse and this page begins with that verse's commentary, their group is open at its start and the commentary is not. Where no image is given for a side, judge from this page alone.
+- flows: the top-level units of each flow, in reading order. The book's flows:
+<<FLOWS>>
+<<RELATIONS>>
+Return JSON only, in the given schema.

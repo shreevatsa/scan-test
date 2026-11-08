@@ -1,0 +1,2020 @@
+{
+  "id": "resp_0c0bd8aa0fb0e950016aecba903c2087d1a5eb85e09d18a8cc",
+  "object": "response",
+  "created_at": 1793899152,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793899184,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32768,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_0c0bd8aa0fb0e950016aecba949b8087d1b9a4cbf092cf819e",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":{\"r5\":{\"type\":\"paragraph\",\"lines\":[{\"n\":1,\"text\":\"\u0924\u0926\u094d \u0906\u0917\u091a\u094d\u091b ' \u092f\u0947\u0928 \u0938\u092e\u0941\u0926\u094d\u0930\u093e\u0926\u094d \u0905\u0923\u094d\u0921\u093e\u0928\u094d\u092f\u094d \u0906\u0926\u093e\u092f \u091f\u093f\u091f\u094d\u091f\u093f\u092d\u0902 \u091a \u0938\u0902\u0924\u094b\u0937\u094d\u092f\",\"end\":\"space\"},{\"n\":2,\"text\":\"\u0938\u0941\u0930\u0915\u093e\u0930\u094d\u092f\u093e\u2038\u092e\u0930\u093e\u0935\u0924\u0940\u0902 \u0917\u091a\u094d\u091b\u093e\u0935\u0903 \u0964 \u0924\u0925\u0947\u2038\u0924\u093f \u092a\u094d\u0930\u0924\u093f\u092a\u0928\u094d\u0928\u0947 \u0938\u092e\u0941\u0926\u094d\u0930\u0902 \u0928\u093f\u0930\u094d\u092d\u0930\u094d\u0924\u094d\u0938\u094d\u092f\",\"end\":\"space\"},{\"n\":3,\"text\":\"\u092d\u0917\u0935\u0924\u093e \u0927\u0928\u0941\u0937\u094d\u092f\u094d \u0906\u0917\u094d\u0928\u0947\u092f\u0902 \u0936\u0930\u0902 \u0938\u0902\u0927\u093e\u092f\u093e\u2038\u092d\u093f\u0939\u093f\u0924\u092e\u094d \u0964 \u092d\u094b \u0926\u0941\u0930\u093e\u0924\u094d\u092e\u0928\u094d '\",\"end\":\"space\"},{\"n\":4,\"text\":\"\u0926\u0940\u092f\u0924\u093e\u092e\u094d \u0905\u0938\u094d\u092f \u091f\u093f\u091f\u094d\u091f\u093f\u092d\u0938\u094d\u092f\u093e\u2038\u0923\u094d\u0921\u093e\u0928\u093f \u0964 \u0928\u094b \u091a\u0947\u0924\u094d ' \u0924\u094d\u0935\u093e\u0902 \u0938\u094d\u0925\u0932\u0924\u093e\u0902\",\"end\":\"space\"},{\"n\":5,\"text\":\"\u0928\u0947\u0937\u094d\u092f\u093e\u092e\u093f \u0964 \u0907\u0924\u093f \u0936\u094d\u0930\u0941\u0924\u094d\u0935\u093e \u0938\u092e\u0941\u0926\u094d\u0930\u094b \u093d\u092a\u093f \u092d\u092f\u091a\u0915\u093f\u0924\u0938\u0915\u0932\u092a\u0930\u093f\u0935\u093e\u0930\u094b\",\"end\":\"space\"},{\"n\":6,\"text\":\"\u0935\u0947\u092a\u092e\u093e\u0928\u0938\u094d \u0924\u093e\u0928\u094d\u092f\u094d \u0905\u0923\u094d\u0921\u093e\u0928\u093f \u0917\u0943\u0939\u0940\u0924\u094d\u0935\u093e \u092d\u0917\u0935\u0926\u094d\u0935\u093f\u0926\u093f\u0924\u0902 \u091f\u093f\u091f\u094d\u091f\u093f\u092d\u0938\u094d\u092f\",\"end\":\"space\"},{\"n\":7,\"text\":\"\u0938\u092e\u0930\u094d\u092a\u092f\u093e\u092e\u094d \u0906\u0938 \u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r6\":{\"type\":\"paragraph\",\"lines\":[{\"n\":1,\"text\":\"\u0905\u0924\u094b \u093d\u0939\u0902 \u092c\u094d\u0930\u0935\u0940\u092e\u093f \u0964 \u0936\u0924\u094d\u0930\u094b\u0930\u094d \u092c\u0932\u092e\u094d \u0905\u0935\u093f\u091c\u094d\u091e\u093e\u092f \u0964 \u0907\u0924\u093f \u0964 \u0905\u0935\u0917\u0924\u0924\u0924\u094d\u0924\u094d\u0935\u093e\u0930\u094d\u0925\u0936\u094d \u091a \u0938\u0902\u091c\u0940\u0935\u0915\u0938\u094d \u0924\u092e\u094d\",\"end\":\"space\"},{\"n\":2,\"text\":\"\u0905\u092a\u0943\u091a\u094d\u091b\u0924\u094d \u0964 \u0935\u092f\u0938\u094d\u092f \u0964 \u0915\u0925\u092f \u0964 \u0915\u0938\u094d \u0924\u0938\u094d\u092f \u092f\u0941\u0926\u094d\u0927\u092e\u093e\u0930\u094d\u0917\u0903 \u0964 \u0907\u0924\u093f \u0964 \u0938\u094b \u093d\u092c\u094d\u0930\u0935\u0940\u0924\u094d \u0964 \u0905\u0928\u094d\u092f\u0926\u093e\u2038\u0938\u094c\",\"end\":\"space\"},{\"n\":3,\"text\":\"*\u0938\u094d\u0935\u0938\u094d\u0925\u093e\u0919\u094d\u0917\u0903 \u0936\u093f\u0932\u093e\u0924\u0932\u0938\u094d\u0925\u093f\u0924\u094b \u092f\u0925\u093e \u0924\u0925\u0947\u2038\u0935\u093e\u0938\u094d\u0924\u0947 \u0964 \u0905\u0925 \u092f\u0926\u093f \u092a\u094d\u0930\u0925\u092e\u092e\u094d \u090f\u0935 \u0938\u0902\u0917\u0943\u0939\u0940\u0924\u0932\u093e\u0919\u094d\u0917\u0942\u0932\u0903\",\"end\":\"space\"},{\"n\":4,\"text\":\"\u0938\u0902\u0939\u0924\u091a\u0924\u0941\u0937\u094d\u091a\u0930\u0923\u0938\u094d\u0924\u092c\u094d\u0927\u0915\u0930\u094d\u0923\u094b \u0926\u0942\u0930\u093e\u0926\u094d \u090f\u0935 \u0924\u094d\u0935\u0924\u094d\u0938\u0902\u092e\u0941\u0916\u092e\u094d \u0908\u0915\u094d\u0937\u092e\u093e\u0923\u0938\u094d \u0924\u093f\u0937\u094d\u0920\u0924\u093f \u0964 \u0924\u0924\u0938\u094d \u0924\u094d\u0935\u092f\u093e\u2038\u0935\u0917-\",\"end\":\"hyphen\"},{\"n\":5,\"text\":\"\u0928\u094d\u0924\u0935\u094d\u092f\u0903 \u0964 \u092e\u092e\u094b\u2038\u092a\u0930\u093f \u0926\u094d\u0930\u094b\u0939\u092c\u0941\u0926\u094d\u0927\u093f\u0903 \u0964 \u0907\u0924\u093f \u0964\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"The starred word and some compounds are difficult to read.\"},\"r7\":{\"type\":\"paragraph\",\"lines\":[{\"n\":1,\"text\":\"\u090f\u0935\u092e\u094d \u0909\u0915\u094d\u0924\u094d\u0935\u093e \u0926\u092e\u0928\u0915\u0903 \u0915\u0930\u091f\u0915\u0938\u0915\u093e\u0936\u0902 \u0917\u0924\u0903 \u0964 \u0924\u0947\u0928 \u091a\u093e\u2038\u092d\u093f\u0939\u093f\u0924\u092e\u094d \u0964 \u0915\u093f\u092e\u094d \u0905\u0928\u0941\u0937\u094d\u0920\u093f\u0924\u0902 \u092d\u0935\u0924\u093e \u0964\",\"end\":\"space\"},{\"n\":2,\"text\":\"\u0938\u094b \u093d\u092c\u094d\u0930\u0935\u0940\u0924\u094d \u0964 *\u092d\u0947\u0926\u093f\u0924\u094c \u0924\u094c \u0924\u093e\u0935\u0924\u094d \u092a\u0930\u0938\u094d\u092a\u0930\u0902 \u092e\u092f\u093e \u0964 \u0915\u0930\u091f\u0915 \u0906\u0939 \u0964 \u0915\u093f\u0902 \u0938\u0924\u094d\u092f\u092e\u094d \u0964 \u0926\u092e\u0928\u0915\u094b\",\"end\":\"space\"},{\"n\":3,\"text\":\"\u093d\u092c\u094d\u0930\u0935\u0940\u0924\u094d \u0964 \u092b\u0932\u0947\u0928 \u091c\u094d\u091e\u093e\u0938\u094d\u092f\u0924\u093f \u092d\u0935\u093e\u0928\u094d \u0964 \u0915\u0930\u091f\u0915 \u0906\u0939 \u0964 \u0915\u094b \u093d\u0924\u094d\u0930 \u0935\u093f\u0938\u094d\u092e\u092f\u0903 \u0964 \u0909\u0915\u094d\u0924\u0902 \u091a \u0964\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r8\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u092d\u093f\u0928\u0924\u094d\u0924\u093f \u0938\u092e\u094d\u092f\u0915\u094d \u092a\u094d\u0930\u0939\u093f\u0924\u094b \u0964 \u092d\u0947\u0926\u0903 \u0938\u094d\u0925\u093f\u0930\u092e\u0924\u0940\u0928\u094d \u0905\u092a\u093f \u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u092d\u0942\u0927\u0930\u093e\u0928\u094d \u0938\u0902\u0939\u0924\u0936\u093f\u0932\u093e\u0928\u094d \u0964 \u092e\u0939\u093e\u092a\u0942\u0930 \u0907\u0935\u093e\u2038\u092e\u094d\u092d\u0938\u093e\u092e\u094d \u0965\u0969\u096a\u096f\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r9\":{\"type\":\"paragraph\",\"lines\":[{\"n\":1,\"text\":\"\u0926\u092e\u0928\u0915 \u0906\u0939 \u0964 \u092d\u0947\u0926\u092e\u094d \u0909\u0924\u094d\u092a\u093e\u0926\u094d\u092f \u0938\u0930\u094d\u0935\u0925\u093e \u092a\u0941\u0930\u0941\u0937\u0947\u0923\u093e\u2038\u0924\u094d\u092e\u0939\u093f\u0924\u0902 \u0915\u093e\u0930\u094d\u092f\u092e\u094d \u0964 \u0909\u0915\u094d\u0924\u0902 \u091a \u0964\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r10\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u092f\u094b \u093d\u0927\u0940\u0924\u094d\u092f \u0936\u093e\u0938\u094d\u0924\u094d\u0930\u092e\u094d \u0905\u0916\u093f\u0932\u0902 \u0964 \u0936\u093e\u0938\u094d\u0924\u094d\u0930\u093e\u0930\u094d\u0925\u0902 \u0924\u0924\u094d\u0924\u094d\u0935\u0924\u0936\u094d \u091a \u0935\u093f\u091c\u094d\u091e\u093e\u092f \u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0906\u0924\u094d\u092e\u0939\u093f\u0924\u0902 \u0928 \u0939\u093f \u0915\u0941\u0930\u0941\u0924\u0947 \u0964 \u0936\u094d\u0930\u092e\u093e\u0935\u0939\u0948\u0938\u094d \u0924\u0938\u094d\u092f \u0915\u093f\u0902 \u0936\u093e\u0938\u094d\u0924\u094d\u0930\u0948\u0903 \u0965\u0969\u096b\u0966\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r11\":{\"type\":\"paragraph\",\"lines\":[{\"n\":1,\"text\":\"\u0915\u0930\u091f\u0915 \u0906\u0939 \u0964 \u0924\u0924\u094d\u0924\u094d\u0935\u0924\u094b \u0928 \u0915\u093f\u0902\u091a\u093f\u0926\u094d \u0906\u0924\u094d\u092e\u0939\u093f\u0924\u092e\u094d \u0964 \u092f\u0924\u0903 \u0964\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r12\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0915\u0943\u092e\u092f\u094b \u092d\u0938\u094d\u092e \u0935\u093f\u0937\u094d\u0920\u093e \u0935\u093e \u0964 \u0928\u093f\u0937\u094d\u0920\u093e \u092f\u0938\u094d\u092f\u0947\u2038\u092f\u092e\u094d \u0908\u0926\u0943\u0936\u0940 \u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0938 \u0915\u093e\u092f\u0903 \u092a\u0930\u092a\u0940\u0921\u093e\u092d\u093f\u0903 \u0964 \u092a\u094b\u0937\u094d\u092f\u0924\u0947 \u092f\u0924\u094d \u0938 \u0915\u094b \u0928\u092f\u0903 \u0965\u0969\u096b\u0967\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r13\":{\"type\":\"paragraph\",\"lines\":[{\"n\":1,\"text\":\"\u0926\u092e\u0928\u0915 \u0906\u0939 \u0964 \u0905\u0928\u092d\u093f\u091c\u094d\u091e\u094b \u093d\u0938\u093f \u092e\u0928\u094d\u0924\u094d\u0930\u093f\u0915\u0941\u0932\u092e\u0942\u0932\u0935\u093f\u0924\u0928\u0938\u094d\u092f \u092a\u094d\u0930\u0915\u0943\u0924\u093f\u0915\u0941\u091f\u093f\u0932\u0938\u094d\u092f \u0928\u0940\u0924\u093f\u092e\u093e\u0930\u094d\u0917\u0938\u094d\u092f \u0964\",\"end\":\"space\"},{\"n\":2,\"text\":\"\u0924\u0924\u094d\u0930\u0947\u2038\u0926\u092e\u094d \u0909\u0915\u094d\u0924\u092e\u094d \u0964\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"The compound \u092e\u0928\u094d\u0924\u094d\u0930\u093f\u0915\u0941\u0932\u092e\u0942\u0932\u0935\u093f\u0924\u0928\u0938\u094d\u092f is not fully clear.\"},\"r14\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u0928\u093f\u0938\u094d\u0924\u094d\u0930\u093f\u0902\u0936\u0902 \u0939\u0943\u0926\u092f\u0902 \u0915\u0943\u0924\u094d\u0935\u093e \u0964 \u0935\u093e\u0923\u0940\u0902 \u091a\u0947\u2038\u0915\u094d\u0937\u0941\u0930\u0938\u094b\u092a\u092e\u093e\u092e\u094d \u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0935\u093f\u0915\u0932\u094d\u092a\u094b \u093d\u0924\u094d\u0930 \u0928 \u0915\u0930\u094d\u0924\u0935\u094d\u092f\u094b \u0964 \u0939\u0928\u094d\u092f\u093e\u0924\u094d \u092a\u0942\u0930\u094d\u0935\u093e\u092a\u0915\u093e\u0930\u093f\u0923\u092e\u094d \u0965\u0969\u096b\u0968\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r15\":{\"type\":\"paragraph\",\"lines\":[{\"n\":1,\"text\":\"\u0905\u0928\u094d\u092f\u091a\u094d \u091a \u0964 \u0928\u093f\u0939\u0924\u094b \u093d\u092f\u092e\u094d \u090f\u0937 \u0938\u0902\u091c\u0940\u0935\u0915\u094b \u093d\u0938\u094d\u092e\u093e\u0915\u092e\u094d \u0909\u092a\u092d\u094b\u0917\u094d\u092f\u094b \u092d\u0935\u093f\u0937\u094d\u092f\u0924\u093f \u0964 \u092f\u0924\u0903 \u0964\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r16\":{\"type\":\"verse\",\"lines\":[{\"n\":1,\"text\":\"\u092a\u0930\u0938\u094d\u092f \u092a\u0940\u0921\u0928\u0902 \u0915\u0941\u0930\u094d\u0935\u0928\u094d \u0964 \u0938\u094d\u0935\u093e\u0930\u094d\u0925\u0938\u093f\u0926\u094d\u0927\u093f\u0902 \u091a \u092a\u0923\u094d\u0921\u093f\u0924\u0903 \u0964\",\"end\":\"line\"},{\"n\":2,\"text\":\"\u0917\u0942\u0922\u092c\u0941\u0926\u094d\u0927\u093f\u0930\u094d \u0928 \u0932\u0915\u094d\u0937\u094d\u092f\u0947\u0924 \u0964 \u0935\u0928\u0947 \u091a\u0924\u0941\u0930\u0915\u094b \u092f\u0925\u093e \u0965\u0969\u096b\u0969\u0965\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r17\":{\"type\":\"paragraph\",\"lines\":[{\"n\":1,\"text\":\"\u0915\u0930\u091f\u0915 \u0906\u0939 \u0964 \u0915\u0925\u092e\u094d \u090f\u0924\u0924\u094d \u0964 \u0938\u094b \u093d\u092c\u094d\u0930\u0935\u0940\u0924\u094d \u0964\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r1\":{\"type\":\"running_header\",\"lines\":[{\"n\":1,\"text\":\"Book I. THE ESTRANGING OF FRIENDS;\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r2\":{\"type\":\"running_header\",\"lines\":[{\"n\":1,\"text\":\"Tale xv: Strand-bird and sea.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r3\":{\"type\":\"running_header\",\"lines\":[{\"n\":1,\"text\":\"Frame-story.\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r4\":{\"type\":\"page_number\",\"lines\":[{\"n\":1,\"text\":\"96\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r18\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"3\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r19\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"6\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r20\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"9\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r21\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"12\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r22\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"15\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r23\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"18\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r24\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"21\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r25\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"24\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r26\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"27\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r27\":{\"type\":\"line_number\",\"lines\":[{\"n\":1,\"text\":\"30\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null},\"r28\":{\"type\":\"margin_mark\",\"lines\":[{\"n\":1,\"text\":\"\u0101r\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null}},\"units\":[{\"id\":\"u1\",\"type\":\"story\",\"number\":null,\"label\":\"Frame story\",\"open_start\":true,\"open_end\":true,\"children\":[\"u2\",\"u4\"]},{\"id\":\"u2\",\"type\":\"story\",\"number\":\"15\",\"label\":\"Strand-bird and sea\",\"open_start\":true,\"open_end\":false,\"children\":[\"u3\"]},{\"id\":\"u3\",\"type\":\"paragraph\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":false,\"children\":[\"r5\"]},{\"id\":\"u4\",\"type\":\"paragraph\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":true,\"children\":[\"r6\"]},{\"id\":\"u5\",\"type\":\"paragraph\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":true,\"children\":[\"r7\",\"u6\",\"r9\",\"u7\",\"r11\",\"u8\",\"r13\",\"u9\",\"r15\",\"u10\",\"r17\"]},{\"id\":\"u6\",\"type\":\"verse\",\"number\":\"349\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r8\"]},{\"id\":\"u7\",\"type\":\"verse\",\"number\":\"350\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r10\"]},{\"id\":\"u8\",\"type\":\"verse\",\"number\":\"351\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r12\"]},{\"id\":\"u9\",\"type\":\"verse\",\"number\":\"352\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r14\"]},{\"id\":\"u10\",\"type\":\"verse\",\"number\":\"353\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r16\"]}],\"flows\":[{\"flow\":\"main\",\"units\":[\"u1\"]}]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_transcription",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions",
+          "units",
+          "flows"
+        ],
+        "properties": {
+          "regions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r5",
+              "r6",
+              "r7",
+              "r8",
+              "r9",
+              "r10",
+              "r11",
+              "r12",
+              "r13",
+              "r14",
+              "r15",
+              "r16",
+              "r17",
+              "r1",
+              "r2",
+              "r3",
+              "r4",
+              "r18",
+              "r19",
+              "r20",
+              "r21",
+              "r22",
+              "r23",
+              "r24",
+              "r25",
+              "r26",
+              "r27",
+              "r28"
+            ],
+            "properties": {
+              "r5": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 7,
+                    "maxItems": 7,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r6": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r7": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r8": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r9": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r10": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r11": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r12": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r13": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r14": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r15": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r16": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r17": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r1": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r2": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r3": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r4": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r18": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r19": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r20": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r21": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r22": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r23": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r24": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r25": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r26": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r27": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r28": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "lead_in",
+                      "verse",
+                      "running_header",
+                      "page_number",
+                      "line_number",
+                      "margin_mark",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "type",
+                "number",
+                "label",
+                "open_start",
+                "open_end",
+                "children"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "story",
+                    "heading",
+                    "paragraph",
+                    "lead_in",
+                    "verse"
+                  ]
+                },
+                "number": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "open_start": {
+                  "type": "boolean"
+                },
+                "open_end": {
+                  "type": "boolean"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "flows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "flow",
+                "units"
+              ],
+              "properties": {
+                "flow": {
+                  "enum": [
+                    "main"
+                  ]
+                },
+                "units": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 19139,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 19136
+    },
+    "output_tokens": 2416,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 21555
+  },
+  "user": null,
+  "metadata": {}
+}

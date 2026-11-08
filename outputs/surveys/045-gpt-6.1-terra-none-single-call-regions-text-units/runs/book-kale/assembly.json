@@ -1,0 +1,20 @@
+{
+ "pages": [
+  "../../outputs/kale-1913-page-106/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json",
+  "../../outputs/kale-1913-page-107/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json",
+  "../../outputs/kale-1913-page-108/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json",
+  "../../outputs/kale-1913-page-109/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json"
+ ],
+ "left_out_invalid_pages": {},
+ "warnings": [
+  "kale-1913-page-107#u13 + kale-1913-page-108#u2: inner open ends do not match (kale-1913-page-107#u14, kale-1913-page-108#u3)",
+  "kale-1913-page-108#u10 + kale-1913-page-109#u2: inner open ends do not match (kale-1913-page-108#u11, kale-1913-page-109#u3)"
+ ],
+ "errors": [
+  "unit kale-1913-page-108#u3: open at the start but not the first child of kale-1913-page-107#u13",
+  "unit kale-1913-page-108#u3: open at the start but its parent kale-1913-page-107#u13 is not",
+  "unit kale-1913-page-109#u3: open at the start but not the first child of kale-1913-page-108#u10",
+  "unit kale-1913-page-109#u3: open at the start but its parent kale-1913-page-108#u10 is not"
+ ],
+ "units": 58
+}

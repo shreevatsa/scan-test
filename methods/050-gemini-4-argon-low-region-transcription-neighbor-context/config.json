@@ -1,0 +1,23 @@
+{
+  "name": "Gemini 4 Argon with low thinking: method 047's transcription request (method 043's regions, neighbor context)",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking_level": "low",
+  "image_resolution": "high",
+  "max_output_tokens": 32768,
+  "prompt_variant": "region-transcription-neighbor-context-v1",
+  "store": false,
+  "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "cutout_padding_char": 0.5,
+  "gutter_width_char": 1.6,
+  "gutter_min_px": 36,
+  "gutter_font_char": 0.55,
+  "gutter_font_min_px": 14,
+  "overview_label_char": 0.8,
+  "overview_label_min_px": 18,
+  "overview_outline_px": 3,
+  "context_lines": 2,
+  "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+  "image_detail": "original",
+  "image_detail_note": "The OpenAI detail setting, used only when building the content list; the Gemini request uses image_resolution."
+}

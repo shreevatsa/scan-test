@@ -1,0 +1,167 @@
+{
+ "format": "types",
+ "schema_version": "0.1",
+ "book_id": "gopinath-1914",
+ "title": "Purohit Gopinath (1914): The Nītiśataka, Śṛṅgāraśataka and Vairāgyaśataka of Bhartṛhari, with Hindi and English translations",
+ "description": "An English preface with footnotes and tables printed sideways; then the three śatakas, one stanza to a page or so, each page inside an ornamental border: the Sanskrit stanza in large type, its Hindi translation, sometimes the label भावार्थ । with a Hindi gist and lettered Hindi glosses of words with two meanings, its English translation and sometimes an English purport or comment, then below a rule notes on where the stanza is quoted, comments and parallel passages. After the text come the variant readings, English notes on the stanzas, a list of works consulted and an index of stanzas.",
+ "languages": [
+  "sa-Deva",
+  "hi-Deva",
+  "en"
+ ],
+ "flows": {
+  "main": "The preface, the śatakas, the variants, the notes and the lists, in reading order.",
+  "notes": "The notes below the rule of the text pages, and the footnotes of the preface, in page order."
+ },
+ "types": {
+  "preface": {
+   "description": "The English preface, with its headings, tables printed sideways and footnotes.",
+   "contains": [
+    "heading",
+    "paragraph",
+    "table"
+   ],
+   "flow": "main"
+  },
+  "shataka": {
+   "description": "One of the three śatakas (नीतिशतकम्, शृङ्गारशतकम्, वैराग्यशतकम्): its title and its stanzas with their translations.",
+   "contains": [
+    "heading",
+    "group"
+   ],
+   "flow": "main"
+  },
+  "group": {
+   "description": "One stanza with what follows it above the rule: its Hindi translation, the label भावार्थ । and the Hindi gist where printed, lettered Hindi glosses, its English translation, and any English comment. The app can show each group on its own.",
+   "contains": [
+    "verse",
+    "hindi_translation",
+    "heading",
+    "bhavartha",
+    "hindi_gloss",
+    "english_translation",
+    "english_comment"
+   ],
+   "numbered": true
+  },
+  "variants": {
+   "description": "The variant readings after the text, under the title VARIANTS. and a heading for each śataka, such as VAIRAGYASATAKA.",
+   "contains": [
+    "heading",
+    "variant_entry"
+   ],
+   "flow": "main"
+  },
+  "notes": {
+   "description": "The English notes after the variants, under the title NOTES.",
+   "contains": [
+    "heading",
+    "stanza_note"
+   ],
+   "flow": "main"
+  },
+  "stanza_note": {
+   "description": "The English notes on one stanza, beginning with its Roman numeral, such as XCV. A stanza's notes can have several paragraphs, each on one quarter of the stanza, such as (c) or (d).",
+   "contains": [
+    "note_paragraph",
+    "quotation"
+   ],
+   "numbered": true
+  },
+  "back_lists": {
+   "description": "The lists at the end of the book: the works consulted, with their abbreviations, and the index of stanzas by their first words.",
+   "contains": [
+    "heading",
+    "list_entry"
+   ],
+   "flow": "main"
+  },
+  "heading": {
+   "description": "A title or heading: of a part (PREFACE., VARIANTS., NOTES.), of a śataka, or of a śataka within the variants, or a heading inside the preface; also the label भावार्थ । above the Hindi gist.",
+   "region": "heading"
+  },
+  "paragraph": {
+   "description": "A paragraph of the English preface.",
+   "region": "paragraph",
+   "lang": "en"
+  },
+  "table": {
+   "description": "One table of the preface, often printed sideways, with its column heads.",
+   "region": "table"
+  },
+  "verse": {
+   "description": "One Sanskrit stanza in the largest type at the top of the text, with its number in Devanagari digits, such as ॥ ५४ ॥.",
+   "region": "verse",
+   "lang": "sa-Deva",
+   "numbered": true
+  },
+  "hindi_translation": {
+   "description": "The Hindi translation of the stanza, in Devanagari prose below it, ending with the stanza's number, such as ॥ ५४ ॥.",
+   "region": "paragraph",
+   "lang": "hi-Deva"
+  },
+  "bhavartha": {
+   "description": "The Hindi gist of the stanza below the label भावार्थ ।, usually one or two lines.",
+   "region": "paragraph",
+   "lang": "hi-Deva"
+  },
+  "hindi_gloss": {
+   "description": "One lettered Hindi gloss of a word of the stanza that has two meanings, such as (ग) \"द्विजानां\" = १ दांतोंके और २ ब्राह्मणोंके ।",
+   "region": "list_item",
+   "lang": "hi-Deva"
+  },
+  "english_translation": {
+   "description": "The English translation of the stanza, a paragraph in roman type below the Hindi.",
+   "region": "paragraph",
+   "lang": "en"
+  },
+  "english_comment": {
+   "description": "An English paragraph after the translation, above the rule: the purport, beginning PURPORT., or a comment on the stanza.",
+   "region": "paragraph",
+   "lang": "en"
+  },
+  "note": {
+   "description": "One note below the rule on a text page, about the stanza above: where the stanza is quoted, such as Quoted under Bhartrihari in the Subhâshitâvali at No. 464.; a comment on the stanza; or one parallel passage, with the words that introduce it, such as Cf.—(a) or For the point of the stanza, cf.—, the quotation, even of two verse lines, and its source in parentheses. Also a footnote of the preface, marked * or †.",
+   "region": "note",
+   "flow": "notes"
+  },
+  "variant_entry": {
+   "description": "The variant readings of one stanza: its Roman numeral, such as XCII., then readings for its quarters (a) to (d) with the sigla of the sources, such as Sp. Sb. T.",
+   "region": "list_item",
+   "numbered": true
+  },
+  "note_paragraph": {
+   "description": "One paragraph of the English notes, beginning with a stanza's Roman numeral or a quarter's letter, such as XCVII. (a) or (b).",
+   "region": "paragraph",
+   "lang": "en",
+   "contains": [
+    "quotation"
+   ]
+  },
+  "quotation": {
+   "description": "Lines of verse quoted in the notes and set apart, such as the lines of Milton in a note; the note's text before and after them belongs to its paragraph.",
+   "region": "verse"
+  },
+  "list_entry": {
+   "description": "One entry of a list at the end of the book: a work consulted, or a stanza's first words with its number.",
+   "region": "list_item"
+  },
+  "running_header": {
+   "description": "The running title at the center of the head: on text pages the śataka's name, such as वैराग्यशतकम् ।, or भाषाटीकासमेतम् ।; elsewhere PREFACE., VARIANTS. or NOTES.",
+   "role": "furniture",
+   "region": "running_header"
+  },
+  "page_number": {
+   "description": "The page number at the outer corner of the head: Devanagari digits on text pages, Arabic digits in the preface, variants and notes.",
+   "role": "furniture",
+   "region": "page_number"
+  }
+ },
+ "relations": {
+  "note": "A footnote marker in the preface points to its footnote.",
+  "comments_on": "A note below the rule is about the stanza on its page; a variant entry or a stanza note is about the stanza with the same number in the same śataka."
+ },
+ "conventions": [
+  "Transcribe Devanagari (Sanskrit and Hindi) and English as printed, in Unicode NFC, with the printed digits and dandas. Keep the edition's romanization in the English, such as Subhâshitâvali and Bhartrihari."
+ ]
+}

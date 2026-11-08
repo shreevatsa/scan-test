@@ -1,0 +1,322 @@
+{
+ "first": {
+  "units": [
+   {
+    "example": "frame",
+    "type": "story",
+    "number": null,
+    "regions": [
+     "r10",
+     "r11",
+     "r14",
+     "r16",
+     "r17",
+     "r3",
+     "r7",
+     "r8"
+    ],
+    "example_open": {
+     "start": true,
+     "end": true
+    },
+    "matched": [
+     "u1"
+    ],
+    "open": {
+     "start": true,
+     "end": true
+    },
+    "open_agrees": {
+     "start": true,
+     "end": true
+    },
+    "number_agrees": false
+   },
+   {
+    "example": "tale15",
+    "type": "story",
+    "number": null,
+    "regions": [
+     "r10",
+     "r11",
+     "r14",
+     "r16",
+     "r17",
+     "r3",
+     "r7",
+     "r8"
+    ],
+    "example_open": {
+     "start": true,
+     "end": true
+    },
+    "matched": [
+     "u1"
+    ],
+    "open": {
+     "start": true,
+     "end": true
+    },
+    "open_agrees": {
+     "start": true,
+     "end": true
+    },
+    "number_agrees": false
+   },
+   {
+    "example": "p1",
+    "type": "paragraph",
+    "number": null,
+    "regions": [
+     "r10",
+     "r11",
+     "r14",
+     "r16",
+     "r17",
+     "r3",
+     "r7",
+     "r8"
+    ],
+    "example_open": {
+     "start": true,
+     "end": true
+    },
+    "matched": [
+     "u2"
+    ],
+    "open": {
+     "start": true,
+     "end": true
+    },
+    "open_agrees": {
+     "start": true,
+     "end": true
+    },
+    "number_agrees": true
+   },
+   {
+    "example": "verse-345",
+    "type": "verse",
+    "number": "345",
+    "regions": [
+     "r7"
+    ],
+    "example_open": {},
+    "matched": [
+     "u3"
+    ],
+    "open": {},
+    "open_agrees": {
+     "start": true,
+     "end": true
+    },
+    "number_agrees": true
+   },
+   {
+    "example": "lead_in-1",
+    "type": "lead_in",
+    "number": null,
+    "regions": [
+     "r8"
+    ],
+    "example_open": {},
+    "matched": [
+     "u4"
+    ],
+    "open": {},
+    "open_agrees": {
+     "start": true,
+     "end": true
+    },
+    "number_agrees": true
+   },
+   {
+    "example": "verse-346",
+    "type": "verse",
+    "number": "346",
+    "regions": [
+     "r10"
+    ],
+    "example_open": {},
+    "matched": [
+     "u5"
+    ],
+    "open": {},
+    "open_agrees": {
+     "start": true,
+     "end": true
+    },
+    "number_agrees": true
+   },
+   {
+    "example": "verse-347",
+    "type": "verse",
+    "number": "347",
+    "regions": [
+     "r14"
+    ],
+    "example_open": {},
+    "matched": [
+     "u6"
+    ],
+    "open": {},
+    "open_agrees": {
+     "start": true,
+     "end": true
+    },
+    "number_agrees": true
+   },
+   {
+    "example": "verse-348",
+    "type": "verse",
+    "number": "348",
+    "regions": [
+     "r17"
+    ],
+    "example_open": {},
+    "matched": [
+     "u7"
+    ],
+    "open": {},
+    "open_agrees": {
+     "start": true,
+     "end": true
+    },
+    "number_agrees": true
+   }
+  ],
+  "regions": [
+   {
+    "example": "r1",
+    "example_type": "running_header",
+    "matched": "r1",
+    "type": "running_header",
+    "share": 1.0
+   },
+   {
+    "example": "r2",
+    "example_type": "running_header",
+    "matched": "r1",
+    "type": "running_header",
+    "share": 1.0
+   },
+   {
+    "example": "r3",
+    "example_type": "page_number",
+    "matched": "r2",
+    "type": "page_number",
+    "share": 1.0
+   },
+   {
+    "example": "r4",
+    "example_type": "paragraph",
+    "matched": "r3",
+    "type": "paragraph",
+    "share": 1.0
+   },
+   {
+    "example": "r5",
+    "example_type": "verse",
+    "matched": "r7",
+    "type": "verse",
+    "share": 1.0
+   },
+   {
+    "example": "r6",
+    "example_type": "lead_in",
+    "matched": "r8",
+    "type": "lead_in",
+    "share": 1.0
+   },
+   {
+    "example": "r7",
+    "example_type": "verse",
+    "matched": "r10",
+    "type": "verse",
+    "share": 1.0
+   },
+   {
+    "example": "r8",
+    "example_type": "paragraph",
+    "matched": "r11",
+    "type": "paragraph",
+    "share": 1.0
+   },
+   {
+    "example": "r9",
+    "example_type": "verse",
+    "matched": "r14",
+    "type": "verse",
+    "share": 1.0
+   },
+   {
+    "example": "r10",
+    "example_type": "paragraph",
+    "matched": "r16",
+    "type": "paragraph",
+    "share": 1.0
+   },
+   {
+    "example": "r11",
+    "example_type": "verse",
+    "matched": "r17",
+    "type": "verse",
+    "share": 1.0
+   },
+   {
+    "example": "r12",
+    "example_type": "line_number",
+    "matched": "r4",
+    "type": "line_number",
+    "share": 1.0
+   },
+   {
+    "example": "r13",
+    "example_type": "line_number",
+    "matched": "r5",
+    "type": "line_number",
+    "share": 1.0
+   },
+   {
+    "example": "r14",
+    "example_type": "line_number",
+    "matched": "r6",
+    "type": "line_number",
+    "share": 1.0
+   },
+   {
+    "example": "r15",
+    "example_type": "line_number",
+    "matched": "r9",
+    "type": "line_number",
+    "share": 1.0
+   },
+   {
+    "example": "r16",
+    "example_type": "line_number",
+    "matched": "r12",
+    "type": "line_number",
+    "share": 1.0
+   },
+   {
+    "example": "r17",
+    "example_type": "line_number",
+    "matched": "r13",
+    "type": "line_number",
+    "share": 1.0
+   }
+  ],
+  "extra_units": [],
+  "summary": {
+   "example_units": 8,
+   "matched": 8,
+   "open_agrees": 8,
+   "number_agrees": 6,
+   "region_types_agree": 17,
+   "example_regions": 17,
+   "method_units": 7
+  },
+  "page": "../../outputs/hertel-panchatantra-page-152/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json",
+  "example": "schema/examples/hertel-152-153/pages/hertel-panchatantra-page-152.json"
+ }
+}

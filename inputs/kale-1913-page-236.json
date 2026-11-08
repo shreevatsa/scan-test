@@ -1,0 +1,33 @@
+{
+  "input_id": "kale-1913-page-236",
+  "image": "kale-1913-page-236.png",
+  "image_sha256": "e5ddba2aaff82418b1e6244bf424a62e4c7b512446c70b843df82f01ffb95adb",
+  "width": 1357,
+  "height": 2119,
+  "book_id": "kale-1913",
+  "source_pdf": "Kale-1913-pp21-272.pdf",
+  "source_pdf_sha256": "ccabe9850493a8e5d6ecd61660407933f757481cb892985b007e6ff222d9f3b0",
+  "pdf_page": 236,
+  "pdf_page_index": 235,
+  "pdf_page_count": 252,
+  "pdf_page_size_points": [
+    325.6800231933594,
+    508.55999755859375
+  ],
+  "selection": "Full-book walk (2026-11-05): every page of the Kale scan, at the user's request to go over one full book page by page.",
+  "render": {
+    "library": "PyMuPDF",
+    "version": "1.26.6",
+    "dpi": 300,
+    "zoom": 4.166666666666667,
+    "effective_dpi": 300.0,
+    "native_image_size": [
+      2714,
+      4238
+    ],
+    "colorspace": "RGB",
+    "alpha": false,
+    "script": "inputs/render_pages.py",
+    "page_list": "inputs/pages-kale-full.json"
+  }
+}

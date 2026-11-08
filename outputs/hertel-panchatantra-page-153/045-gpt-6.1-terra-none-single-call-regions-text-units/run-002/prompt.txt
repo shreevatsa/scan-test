@@ -1,0 +1,57 @@
+Inspect this scanned book page. Divide it into regions, one per text unit; transcribe each region line by line; and build the page's tree of units.
+
+The book: Pañcatantra, Hertel's edition (Book I: The Estranging of Friends). Sanskrit prose stories with numbered verses quoted by the speakers. Tales are told inside other tales. Prose is set in long paragraphs; a verse is displayed and indented, and the prose after it resumes flush left.
+
+1. Regions
+Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000, with the origin at the top-left. Give each region a type, a keep flag, and reading_order among content regions. Furniture regions may have null order. The regions are numbered r1, r2, … in the order you list them, and the units below refer to them by these ids.
+
+Make each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:
+- heading: A tale heading such as ॥ कथा २१ ॥, or a book title.
+- paragraph: A printed prose paragraph, from an indented line or the start of a tale to the next indented line, heading or tale. A verse quoted by a speaker is inside the paragraph, and the prose after it continues the same paragraph. One region per paragraph, including one continued from the previous page or onto the next.
+- lead_in: A short line of its own that introduces a quoted verse, such as किं च । It often ends in a dash or colon.
+- verse: One quoted verse with its number, such as ॥३४८॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- running_header: The running title and the tale title above the rule. Page furniture, keep=false.
+- page_number: The printed page number. Page furniture, keep=false.
+- line_number: The editor's line numbers in the outer margin (3, 6, 9, …). Page furniture, keep=false.
+- margin_mark: Any other short mark in the outer margin beside a line. Page furniture, keep=false.
+- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.
+
+Larger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:
+- story: A story: the frame story of a book, or a tale told inside another story. An inner tale begins with its heading, such as ॥ कथा २१ ॥, and ends with a double danda.
+
+- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.
+- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.
+- A region holds the text of one unit only. Where one unit contains another, as with a verse inside a paragraph (or a lead_in inside a paragraph), the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.
+- Continuation: give each region two flags.
+  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.
+  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.
+  Both are false for a unit that is complete in its region, and for page furniture.
+- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.
+- Flag uncertain grouping or reading with uncertain=true instead of silently dropping or merging material, and say why in note; otherwise note is null.
+
+2. Transcription
+- lines: the region's printed lines from the top, one entry per printed line, each with its text and end.
+- Transcribe exactly as printed. Do not correct, modernize, complete or translate the text, and do not expand abbreviations. Keep the printed punctuation, digits and spelling.
+- A note marker printed in the text, such as a superscript number, an asterisk or a dagger that refers to a footnote or note, is written in square brackets right after the word that carries it, as in word[1] or word[*], with the marker as printed. A footnote's own number at its start is written as printed, without brackets.
+- end says how a line joins the next line of the same unit: "hyphen" if it ends with a hyphen that divides a word (keep the hyphen in the text), "join" if a word runs on to the next line without a hyphen, "line" if the line break is part of the text, as between the lines of a verse, and "space" otherwise. For a region's last line, say how it joins the unit's next text, wherever that is (on the next page, or after an interruption); use "space" if the unit ends there.
+- Conventions for this book:
+  - Transcribe Devanagari as printed, in Unicode NFC, keeping the edition's word separation, apostrophes and dandas.
+  - The raised comma-like mark between phrases is written as an ASCII apostrophe ', with a space on each side, as in भो दूत ' किं.
+  - The small caret printed below the line where two words have merged by vowel sandhi is written as ‸ (U+2038) right after the merged vowel, as in प्रणम्यो‸वाच.
+
+3. Units
+The book's unit types:
+- story (a larger unit, made of other units; contains heading, paragraph, verse, story; may stand at the top of flow main): A story: the frame story of a book, or a tale told inside another story. An inner tale begins with its heading, such as ॥ कथा २१ ॥, and ends with a double danda.
+- heading (printed as regions): A tale heading such as ॥ कथा २१ ॥, or a book title.
+- paragraph (printed as regions; contains verse, lead_in): A printed prose paragraph, from an indented line or the start of a tale to the next indented line, heading or tale. A verse quoted by a speaker is inside the paragraph, and the prose after it continues the same paragraph.
+- lead_in (printed as regions): A short line of its own that introduces a quoted verse, such as किं च ।
+- verse (printed as regions): One quoted verse with its number, such as ॥३४८॥.
+
+- Every region that is not furniture is a child of exactly one unit of its own type. A unit printed as several regions, such as a paragraph interrupted by something it contains, lists all of them.
+- Larger units contain smaller ones, as their types allow. List each unit's children in reading order, as region ids (r1, r2, …) and unit ids.
+- Furniture regions (running_header, page_number, line_number, margin_mark) and regions of type other belong to no unit.
+- Give each unit an id (u1, u2, …), its printed number in ASCII digits if it has one (a verse numbered ॥२१॥ is "21"), and a short label or null.
+- The page is processed on its own. Set open_start=true for a unit that began on an earlier page, and open_end=true for a unit that goes on on a later page. A unit open at its end is the last child of its parent, and the parent is open at its end too; likewise, a unit open at its start is the first child of a parent open at its start. A unit around the whole page, such as a chapter whose beginning and end are not on this page, is open at both ends.
+- flows: the top-level units of each flow, in reading order. The book's flows:
+  - main: The stories in reading order.
+Return JSON only, in the given schema.

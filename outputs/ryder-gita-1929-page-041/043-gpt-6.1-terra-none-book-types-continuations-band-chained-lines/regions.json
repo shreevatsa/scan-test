@@ -1,0 +1,3842 @@
+{
+ "schema_version": 1,
+ "created_at_utc": "2026-11-05T14:55:11.973198+00:00",
+ "method": {
+  "id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "name": "GPT-6.1 Terra without reasoning, book types from the type list with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions"
+ },
+ "input": {
+  "path": "inputs/ryder-gita-1929-page-041.png",
+  "sha256": "573764cabd140d0c43972973d1a3d3927740bf836c4609ec5815a182073b2eca",
+  "width": 1670,
+  "height": 1214
+ },
+ "source": {
+  "method_id": "042-gpt-6.1-terra-none-book-types-continuations",
+  "regions_path": "outputs/ryder-gita-1929-page-041/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+  "regions_sha256": "aaca285b8a4a4cdc93c5ebfa5d30b1f805f870b837a005172294fd685490e95f",
+  "note": "The source model call is not repeated; its cost and timing are in the source output."
+ },
+ "api_calls": 0,
+ "coordinates": "Polygon rings are in input-image pixel indices, outer boundary only, largest piece first. Vertex (x, y) is the center of pixel column x and row y, and a region is its closed polygon including boundary pixels. In a corner-based system such as SVG with the image at (0, 0), add 0.5 to both coordinates. model_box is the source result's derived box, unchanged.",
+ "line_analysis": {
+  "char_h": 25.0,
+  "page_angle_deg": 0.009999999999978318,
+  "lines": 14,
+  "columns": 1,
+  "ink_thresholds": {
+   "strong": 139.0,
+   "weak": 197.0,
+   "speck_area": 6
+  }
+ },
+ "settings": {
+  "name": "GPT-6.1 Terra without reasoning, book types from the type list with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions",
+  "base_method_id": "042-gpt-6.1-terra-none-book-types-continuations",
+  "component_in_box_fraction": 0.5,
+  "minimum_line_share": 0.25,
+  "local_box_maximum_line_coverage": 0.9,
+  "local_box_minimum_ink_share": 0.5,
+  "remainder_minimum_line_share": 0.25,
+  "side_by_side_maximum_overlap_fraction": 0.1,
+  "maximum_outside_gap_char": 1.0,
+  "isolation_gap_char": 2.0,
+  "unlined_attach_gap_char": 2.0,
+  "rule_piece_max_height_char": 0.25,
+  "rule_piece_band_tolerance_char": 0.1,
+  "rule_piece_gap_char": 3.0,
+  "envelope_padding_char": 0.25,
+  "polygon_epsilon_px": 1.0,
+  "distance_mask_size": 5
+ },
+ "line_settings": {
+  "name": "Text-line skew, curvature and boundary separability",
+  "maximum_strong_threshold": 200,
+  "speck_area_page_fraction": 5e-07,
+  "speck_size_char_fraction": 0.1,
+  "rule_minimum_aspect": 10,
+  "rule_maximum_height_char": 0.4,
+  "rule_minimum_width_char": 3,
+  "large_component_height_char": 3.0,
+  "large_component_width_page": 0.6,
+  "minimum_text_pixels_char2": 20,
+  "angle_sample_limit": 400000,
+  "angle_search_deg": 6,
+  "angle_coarse_step_deg": 0.1,
+  "angle_fine_step_deg": 0.01,
+  "gutter_minimum_width_char": 1.5,
+  "gutter_minimum_side_fraction": 0.1,
+  "main_minimum_height_char": 0.55,
+  "main_maximum_height_char": 2.2,
+  "line_split_gap_char": 0.35,
+  "assign_horizontal_pad_char": 1.0,
+  "assign_maximum_distance_char": 1.2,
+  "band_chain_gap_char": 1.0,
+  "long_line_column_fraction": 0.6,
+  "long_line_minimum_char": 10,
+  "segment_width_char": 5,
+  "maximum_segments": 10,
+  "maximum_segment_offset_char": 0.6,
+  "minimum_segment_pixels_char2": 0.3,
+  "pair_minimum_overlap_char": 2,
+  "pair_minimum_pixels_char2": 1.0,
+  "straight_search_deg": 6,
+  "straight_step_deg": 0.01,
+  "separable_margin_px": 1.0,
+  "conflict_pixel_tolerance": 0
+ },
+ "regions": [
+  {
+   "region_id": 1,
+   "type": "running_header",
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "running_header",
+   "model_box": [
+    390.78,
+    108.046,
+    606.21,
+    137.182
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 5120,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 2,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 1,
+   "uncertain": false,
+   "continues_from_earlier": true,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    278.89,
+    174.816,
+    773.21,
+    240.372
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 17668,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 3,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 2,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    277.22,
+    247.656,
+    624.58,
+    427.328
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 47889,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 4,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 3,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    275.55,
+    440.682,
+    637.94,
+    560.868
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 40023,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 5,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 4,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    273.88,
+    571.794,
+    642.95,
+    695.622
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 44063,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 6,
+   "type": "topic",
+   "keep": true,
+   "reading_order": 5,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "heading",
+   "model_box": [
+    512.69,
+    717.474,
+    768.2,
+    751.466
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 8749,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 7,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 6,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    272.21,
+    756.322,
+    612.89,
+    877.722
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 41580,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 8,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 7,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    272.21,
+    887.434,
+    763.19,
+    1020.974
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 65667,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 9,
+   "type": "page_number",
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "page_number",
+   "model_box": [
+    452.57,
+    1031.9,
+    519.37,
+    1062.25
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 2175,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 10,
+   "type": "running_header",
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "running_header",
+   "model_box": [
+    1098.86,
+    108.046,
+    1287.57,
+    139.61
+   ],
+   "status": "ok",
+   "polygons": [
+    [
+     [
+      1099,
+      106
+     ],
+     [
+      1099,
+      147
+     ],
+     [
+      1292,
+      147
+     ],
+     [
+      1291,
+      109
+     ],
+     [
+      1276,
+      111
+     ],
+     [
+      1255,
+      105
+     ]
+    ]
+   ],
+   "bounds": [
+    1099,
+    105,
+    1293,
+    148
+   ],
+   "ink_pixels": 2583,
+   "components": 3,
+   "line_ids": [
+    0
+   ],
+   "lines": [
+    {
+     "line_id": 0,
+     "shared_with_other_regions": false,
+     "ink_pixels": 2583,
+     "polygons": [
+      [
+       [
+        1099,
+        106
+       ],
+       [
+        1099,
+        147
+       ],
+       [
+        1292,
+        147
+       ],
+       [
+        1291,
+        109
+       ],
+       [
+        1276,
+        111
+       ],
+       [
+        1255,
+        105
+       ]
+      ]
+     ]
+    }
+   ],
+   "vertices": 6,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 454
+    },
+    "model_box": {
+     "own_ink_outside": 2,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 11,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 8,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    973.61,
+    178.458,
+    1367.73,
+    296.216
+   ],
+   "status": "ok",
+   "polygons": [
+    [
+     [
+      973,
+      168
+     ],
+     [
+      973,
+      192
+     ],
+     [
+      966,
+      197
+     ],
+     [
+      966,
+      201
+     ],
+     [
+      971,
+      209
+     ],
+     [
+      972,
+      219
+     ],
+     [
+      976,
+      227
+     ],
+     [
+      963,
+      241
+     ],
+     [
+      963,
+      263
+     ],
+     [
+      979,
+      282
+     ],
+     [
+      980,
+      291
+     ],
+     [
+      995,
+      301
+     ],
+     [
+      1297,
+      301
+     ],
+     [
+      1309,
+      294
+     ],
+     [
+      1335,
+      295
+     ],
+     [
+      1348,
+      301
+     ],
+     [
+      1374,
+      301
+     ],
+     [
+      1374,
+      178
+     ],
+     [
+      1349,
+      170
+     ],
+     [
+      1335,
+      161
+     ],
+     [
+      1003,
+      161
+     ],
+     [
+      999,
+      165
+     ],
+     [
+      988,
+      163
+     ]
+    ]
+   ],
+   "bounds": [
+    963,
+    161,
+    1375,
+    302
+   ],
+   "ink_pixels": 17413,
+   "components": 21,
+   "line_ids": [
+    2,
+    3,
+    4,
+    5
+   ],
+   "lines": [
+    {
+     "line_id": 2,
+     "shared_with_other_regions": false,
+     "ink_pixels": 5634,
+     "polygons": [
+      [
+       [
+        966,
+        197
+       ],
+       [
+        966,
+        201
+       ],
+       [
+        971,
+        209
+       ],
+       [
+        972,
+        219
+       ],
+       [
+        975,
+        226
+       ],
+       [
+        995,
+        230
+       ],
+       [
+        1004,
+        236
+       ],
+       [
+        1013,
+        236
+       ],
+       [
+        1019,
+        239
+       ],
+       [
+        1027,
+        239
+       ],
+       [
+        1031,
+        237
+       ],
+       [
+        1041,
+        237
+       ],
+       [
+        1044,
+        239
+       ],
+       [
+        1073,
+        239
+       ],
+       [
+        1072,
+        212
+       ],
+       [
+        1075,
+        210
+       ],
+       [
+        1079,
+        210
+       ],
+       [
+        1084,
+        206
+       ],
+       [
+        1095,
+        207
+       ],
+       [
+        1100,
+        210
+       ],
+       [
+        1127,
+        211
+       ],
+       [
+        1132,
+        207
+       ],
+       [
+        1145,
+        207
+       ],
+       [
+        1149,
+        210
+       ],
+       [
+        1193,
+        210
+       ],
+       [
+        1198,
+        212
+       ],
+       [
+        1204,
+        209
+       ],
+       [
+        1210,
+        209
+       ],
+       [
+        1213,
+        206
+       ],
+       [
+        1223,
+        207
+       ],
+       [
+        1237,
+        212
+       ],
+       [
+        1244,
+        212
+       ],
+       [
+        1250,
+        209
+       ],
+       [
+        1276,
+        212
+       ],
+       [
+        1279,
+        210
+       ],
+       [
+        1299,
+        210
+       ],
+       [
+        1304,
+        205
+       ],
+       [
+        1304,
+        161
+       ],
+       [
+        1003,
+        161
+       ],
+       [
+        999,
+        165
+       ],
+       [
+        988,
+        163
+       ],
+       [
+        985,
+        165
+       ],
+       [
+        974,
+        167
+       ],
+       [
+        972,
+        185
+       ],
+       [
+        973,
+        192
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 3,
+     "shared_with_other_regions": false,
+     "ink_pixels": 3136,
+     "polygons": [
+      [
+       [
+        1331,
+        206
+       ],
+       [
+        1304,
+        206
+       ],
+       [
+        1299,
+        211
+       ],
+       [
+        1279,
+        211
+       ],
+       [
+        1276,
+        213
+       ],
+       [
+        1250,
+        210
+       ],
+       [
+        1244,
+        213
+       ],
+       [
+        1237,
+        213
+       ],
+       [
+        1234,
+        211
+       ],
+       [
+        1229,
+        211
+       ],
+       [
+        1218,
+        207
+       ],
+       [
+        1213,
+        207
+       ],
+       [
+        1210,
+        210
+       ],
+       [
+        1204,
+        210
+       ],
+       [
+        1198,
+        213
+       ],
+       [
+        1193,
+        211
+       ],
+       [
+        1149,
+        211
+       ],
+       [
+        1145,
+        208
+       ],
+       [
+        1132,
+        208
+       ],
+       [
+        1127,
+        212
+       ],
+       [
+        1100,
+        211
+       ],
+       [
+        1095,
+        208
+       ],
+       [
+        1084,
+        207
+       ],
+       [
+        1079,
+        211
+       ],
+       [
+        1073,
+        212
+       ],
+       [
+        1074,
+        239
+       ],
+       [
+        1081,
+        241
+       ],
+       [
+        1101,
+        241
+       ],
+       [
+        1105,
+        238
+       ],
+       [
+        1118,
+        237
+       ],
+       [
+        1126,
+        244
+       ],
+       [
+        1132,
+        243
+       ],
+       [
+        1141,
+        237
+       ],
+       [
+        1145,
+        237
+       ],
+       [
+        1154,
+        241
+       ],
+       [
+        1165,
+        242
+       ],
+       [
+        1171,
+        240
+       ],
+       [
+        1194,
+        241
+       ],
+       [
+        1196,
+        239
+       ],
+       [
+        1206,
+        237
+       ],
+       [
+        1212,
+        237
+       ],
+       [
+        1216,
+        240
+       ],
+       [
+        1226,
+        241
+       ],
+       [
+        1239,
+        239
+       ],
+       [
+        1256,
+        241
+       ],
+       [
+        1263,
+        237
+       ],
+       [
+        1273,
+        237
+       ],
+       [
+        1278,
+        240
+       ],
+       [
+        1285,
+        237
+       ],
+       [
+        1291,
+        237
+       ],
+       [
+        1303,
+        241
+       ],
+       [
+        1312,
+        237
+       ],
+       [
+        1320,
+        241
+       ],
+       [
+        1331,
+        236
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 4,
+     "shared_with_other_regions": false,
+     "ink_pixels": 4935,
+     "polygons": [
+      [
+       [
+        971,
+        234
+       ],
+       [
+        972,
+        273
+       ],
+       [
+        989,
+        273
+       ],
+       [
+        997,
+        267
+       ],
+       [
+        1010,
+        268
+       ],
+       [
+        1032,
+        266
+       ],
+       [
+        1045,
+        271
+       ],
+       [
+        1082,
+        271
+       ],
+       [
+        1087,
+        268
+       ],
+       [
+        1100,
+        267
+       ],
+       [
+        1107,
+        271
+       ],
+       [
+        1159,
+        271
+       ],
+       [
+        1165,
+        267
+       ],
+       [
+        1176,
+        268
+       ],
+       [
+        1183,
+        271
+       ],
+       [
+        1189,
+        267
+       ],
+       [
+        1197,
+        267
+       ],
+       [
+        1201,
+        269
+       ],
+       [
+        1217,
+        268
+       ],
+       [
+        1220,
+        271
+       ],
+       [
+        1251,
+        271
+       ],
+       [
+        1267,
+        267
+       ],
+       [
+        1279,
+        273
+       ],
+       [
+        1374,
+        273
+       ],
+       [
+        1374,
+        234
+       ],
+       [
+        1339,
+        234
+       ],
+       [
+        1329,
+        237
+       ],
+       [
+        1320,
+        242
+       ],
+       [
+        1312,
+        238
+       ],
+       [
+        1303,
+        242
+       ],
+       [
+        1291,
+        238
+       ],
+       [
+        1285,
+        238
+       ],
+       [
+        1279,
+        241
+       ],
+       [
+        1273,
+        238
+       ],
+       [
+        1263,
+        238
+       ],
+       [
+        1256,
+        242
+       ],
+       [
+        1241,
+        240
+       ],
+       [
+        1226,
+        242
+       ],
+       [
+        1216,
+        241
+       ],
+       [
+        1212,
+        238
+       ],
+       [
+        1206,
+        238
+       ],
+       [
+        1196,
+        240
+       ],
+       [
+        1194,
+        242
+       ],
+       [
+        1171,
+        241
+       ],
+       [
+        1165,
+        243
+       ],
+       [
+        1154,
+        242
+       ],
+       [
+        1145,
+        238
+       ],
+       [
+        1141,
+        238
+       ],
+       [
+        1129,
+        245
+       ],
+       [
+        1124,
+        244
+       ],
+       [
+        1118,
+        238
+       ],
+       [
+        1105,
+        239
+       ],
+       [
+        1101,
+        242
+       ],
+       [
+        1081,
+        242
+       ],
+       [
+        1077,
+        240
+       ],
+       [
+        1046,
+        241
+       ],
+       [
+        1041,
+        238
+       ],
+       [
+        1019,
+        240
+       ],
+       [
+        1013,
+        237
+       ],
+       [
+        1004,
+        237
+       ],
+       [
+        999,
+        234
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 5,
+     "shared_with_other_regions": false,
+     "ink_pixels": 3708,
+     "polygons": [
+      [
+       [
+        994,
+        270
+       ],
+       [
+        995,
+        301
+       ],
+       [
+        1282,
+        301
+       ],
+       [
+        1282,
+        276
+       ],
+       [
+        1277,
+        272
+       ],
+       [
+        1267,
+        268
+       ],
+       [
+        1251,
+        272
+       ],
+       [
+        1220,
+        272
+       ],
+       [
+        1217,
+        269
+       ],
+       [
+        1201,
+        270
+       ],
+       [
+        1197,
+        268
+       ],
+       [
+        1189,
+        268
+       ],
+       [
+        1183,
+        272
+       ],
+       [
+        1171,
+        268
+       ],
+       [
+        1165,
+        268
+       ],
+       [
+        1159,
+        272
+       ],
+       [
+        1107,
+        272
+       ],
+       [
+        1100,
+        268
+       ],
+       [
+        1087,
+        269
+       ],
+       [
+        1082,
+        272
+       ],
+       [
+        1045,
+        272
+       ],
+       [
+        1032,
+        267
+       ],
+       [
+        1010,
+        269
+       ],
+       [
+        997,
+        268
+       ]
+      ]
+     ]
+    }
+   ],
+   "vertices": 23,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 56,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 12,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 9,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    973.61,
+    313.212,
+    1387.77,
+    434.612
+   ],
+   "status": "ok",
+   "polygons": [
+    [
+     [
+      959,
+      316
+     ],
+     [
+      959,
+      339
+     ],
+     [
+      966,
+      347
+     ],
+     [
+      968,
+      352
+     ],
+     [
+      975,
+      358
+     ],
+     [
+      976,
+      364
+     ],
+     [
+      975,
+      378
+     ],
+     [
+      973,
+      380
+     ],
+     [
+      966,
+      382
+     ],
+     [
+      963,
+      395
+     ],
+     [
+      967,
+      402
+     ],
+     [
+      975,
+      402
+     ],
+     [
+      978,
+      400
+     ],
+     [
+      987,
+      400
+     ],
+     [
+      994,
+      402
+     ],
+     [
+      997,
+      405
+     ],
+     [
+      999,
+      411
+     ],
+     [
+      998,
+      416
+     ],
+     [
+      991,
+      420
+     ],
+     [
+      982,
+      435
+     ],
+     [
+      987,
+      439
+     ],
+     [
+      1265,
+      439
+     ],
+     [
+      1277,
+      431
+     ],
+     [
+      1284,
+      431
+     ],
+     [
+      1293,
+      434
+     ],
+     [
+      1301,
+      439
+     ],
+     [
+      1389,
+      439
+     ],
+     [
+      1389,
+      319
+     ],
+     [
+      1376,
+      319
+     ],
+     [
+      1360,
+      309
+     ],
+     [
+      1188,
+      309
+     ],
+     [
+      1181,
+      311
+     ],
+     [
+      1163,
+      309
+     ],
+     [
+      1141,
+      309
+     ],
+     [
+      1135,
+      311
+     ],
+     [
+      1124,
+      309
+     ],
+     [
+      963,
+      309
+     ],
+     [
+      962,
+      313
+     ]
+    ]
+   ],
+   "bounds": [
+    959,
+    309,
+    1390,
+    440
+   ],
+   "ink_pixels": 16611,
+   "components": 19,
+   "line_ids": [
+    6,
+    7,
+    8,
+    9
+   ],
+   "lines": [
+    {
+     "line_id": 6,
+     "shared_with_other_regions": false,
+     "ink_pixels": 4427,
+     "polygons": [
+      [
+       [
+        959,
+        316
+       ],
+       [
+        959,
+        339
+       ],
+       [
+        967,
+        350
+       ],
+       [
+        988,
+        350
+       ],
+       [
+        995,
+        344
+       ],
+       [
+        1000,
+        342
+       ],
+       [
+        1006,
+        342
+       ],
+       [
+        1008,
+        344
+       ],
+       [
+        1027,
+        342
+       ],
+       [
+        1032,
+        346
+       ],
+       [
+        1044,
+        346
+       ],
+       [
+        1061,
+        342
+       ],
+       [
+        1067,
+        346
+       ],
+       [
+        1075,
+        343
+       ],
+       [
+        1083,
+        346
+       ],
+       [
+        1109,
+        346
+       ],
+       [
+        1115,
+        344
+       ],
+       [
+        1133,
+        347
+       ],
+       [
+        1170,
+        347
+       ],
+       [
+        1177,
+        342
+       ],
+       [
+        1185,
+        347
+       ],
+       [
+        1247,
+        346
+       ],
+       [
+        1253,
+        350
+       ],
+       [
+        1331,
+        350
+       ],
+       [
+        1331,
+        309
+       ],
+       [
+        1188,
+        309
+       ],
+       [
+        1181,
+        311
+       ],
+       [
+        1163,
+        309
+       ],
+       [
+        1141,
+        309
+       ],
+       [
+        1135,
+        311
+       ],
+       [
+        1124,
+        309
+       ],
+       [
+        963,
+        309
+       ],
+       [
+        962,
+        313
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 7,
+     "shared_with_other_regions": false,
+     "ink_pixels": 3290,
+     "polygons": [
+      [
+       [
+        985,
+        352
+       ],
+       [
+        985,
+        364
+       ],
+       [
+        992,
+        371
+       ],
+       [
+        1010,
+        371
+       ],
+       [
+        1014,
+        375
+       ],
+       [
+        1020,
+        371
+       ],
+       [
+        1031,
+        371
+       ],
+       [
+        1037,
+        377
+       ],
+       [
+        1040,
+        377
+       ],
+       [
+        1042,
+        379
+       ],
+       [
+        1055,
+        379
+       ],
+       [
+        1061,
+        377
+       ],
+       [
+        1064,
+        374
+       ],
+       [
+        1077,
+        376
+       ],
+       [
+        1080,
+        378
+       ],
+       [
+        1088,
+        378
+       ],
+       [
+        1100,
+        372
+       ],
+       [
+        1109,
+        375
+       ],
+       [
+        1121,
+        372
+       ],
+       [
+        1128,
+        377
+       ],
+       [
+        1159,
+        376
+       ],
+       [
+        1161,
+        373
+       ],
+       [
+        1179,
+        373
+       ],
+       [
+        1184,
+        376
+       ],
+       [
+        1212,
+        377
+       ],
+       [
+        1218,
+        373
+       ],
+       [
+        1223,
+        375
+       ],
+       [
+        1232,
+        374
+       ],
+       [
+        1236,
+        376
+       ],
+       [
+        1249,
+        376
+       ],
+       [
+        1254,
+        373
+       ],
+       [
+        1254,
+        352
+       ],
+       [
+        1247,
+        347
+       ],
+       [
+        1185,
+        348
+       ],
+       [
+        1177,
+        343
+       ],
+       [
+        1170,
+        348
+       ],
+       [
+        1133,
+        348
+       ],
+       [
+        1115,
+        345
+       ],
+       [
+        1109,
+        347
+       ],
+       [
+        1083,
+        347
+       ],
+       [
+        1075,
+        344
+       ],
+       [
+        1067,
+        347
+       ],
+       [
+        1061,
+        343
+       ],
+       [
+        1044,
+        347
+       ],
+       [
+        1032,
+        347
+       ],
+       [
+        1027,
+        343
+       ],
+       [
+        1008,
+        345
+       ],
+       [
+        1006,
+        343
+       ],
+       [
+        1000,
+        343
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 8,
+     "shared_with_other_regions": false,
+     "ink_pixels": 5669,
+     "polygons": [
+      [
+       [
+        963,
+        393
+       ],
+       [
+        967,
+        402
+       ],
+       [
+        975,
+        402
+       ],
+       [
+        978,
+        400
+       ],
+       [
+        987,
+        400
+       ],
+       [
+        994,
+        402
+       ],
+       [
+        996,
+        404
+       ],
+       [
+        999,
+        402
+       ],
+       [
+        1010,
+        402
+       ],
+       [
+        1014,
+        404
+       ],
+       [
+        1018,
+        402
+       ],
+       [
+        1021,
+        405
+       ],
+       [
+        1025,
+        405
+       ],
+       [
+        1028,
+        407
+       ],
+       [
+        1039,
+        405
+       ],
+       [
+        1050,
+        407
+       ],
+       [
+        1071,
+        402
+       ],
+       [
+        1078,
+        406
+       ],
+       [
+        1082,
+        406
+       ],
+       [
+        1086,
+        403
+       ],
+       [
+        1103,
+        404
+       ],
+       [
+        1108,
+        407
+       ],
+       [
+        1159,
+        406
+       ],
+       [
+        1178,
+        408
+       ],
+       [
+        1188,
+        406
+       ],
+       [
+        1221,
+        408
+       ],
+       [
+        1233,
+        403
+       ],
+       [
+        1248,
+        408
+       ],
+       [
+        1389,
+        408
+       ],
+       [
+        1389,
+        364
+       ],
+       [
+        1269,
+        364
+       ],
+       [
+        1259,
+        372
+       ],
+       [
+        1249,
+        377
+       ],
+       [
+        1236,
+        377
+       ],
+       [
+        1232,
+        375
+       ],
+       [
+        1223,
+        376
+       ],
+       [
+        1218,
+        374
+       ],
+       [
+        1212,
+        378
+       ],
+       [
+        1184,
+        377
+       ],
+       [
+        1179,
+        374
+       ],
+       [
+        1161,
+        374
+       ],
+       [
+        1159,
+        377
+       ],
+       [
+        1128,
+        378
+       ],
+       [
+        1121,
+        373
+       ],
+       [
+        1112,
+        376
+       ],
+       [
+        1100,
+        373
+       ],
+       [
+        1088,
+        379
+       ],
+       [
+        1080,
+        379
+       ],
+       [
+        1077,
+        377
+       ],
+       [
+        1064,
+        375
+       ],
+       [
+        1061,
+        378
+       ],
+       [
+        1055,
+        380
+       ],
+       [
+        1042,
+        380
+       ],
+       [
+        1040,
+        378
+       ],
+       [
+        1037,
+        378
+       ],
+       [
+        1031,
+        372
+       ],
+       [
+        1020,
+        372
+       ],
+       [
+        1015,
+        376
+       ],
+       [
+        1010,
+        372
+       ],
+       [
+        992,
+        372
+       ],
+       [
+        984,
+        364
+       ],
+       [
+        976,
+        364
+       ],
+       [
+        975,
+        378
+       ],
+       [
+        973,
+        380
+       ],
+       [
+        966,
+        382
+       ],
+       [
+        965,
+        390
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 9,
+     "shared_with_other_regions": false,
+     "ink_pixels": 3225,
+     "polygons": [
+      [
+       [
+        990,
+        422
+       ],
+       [
+        990,
+        439
+       ],
+       [
+        1254,
+        439
+       ],
+       [
+        1254,
+        411
+       ],
+       [
+        1233,
+        404
+       ],
+       [
+        1221,
+        409
+       ],
+       [
+        1188,
+        407
+       ],
+       [
+        1175,
+        409
+       ],
+       [
+        1159,
+        407
+       ],
+       [
+        1108,
+        408
+       ],
+       [
+        1103,
+        405
+       ],
+       [
+        1086,
+        404
+       ],
+       [
+        1082,
+        407
+       ],
+       [
+        1078,
+        407
+       ],
+       [
+        1071,
+        403
+       ],
+       [
+        1050,
+        408
+       ],
+       [
+        1040,
+        406
+       ],
+       [
+        1028,
+        408
+       ],
+       [
+        1025,
+        406
+       ],
+       [
+        1021,
+        406
+       ],
+       [
+        1018,
+        403
+       ],
+       [
+        1014,
+        405
+       ],
+       [
+        1010,
+        403
+       ],
+       [
+        999,
+        403
+       ],
+       [
+        997,
+        404
+       ],
+       [
+        999,
+        414
+       ]
+      ]
+     ]
+    }
+   ],
+   "vertices": 38,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 78,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 194,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 13,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 10,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    973.61,
+    451.608,
+    1314.29,
+    571.794
+   ],
+   "status": "ok",
+   "polygons": [
+    [
+     [
+      953,
+      460
+     ],
+     [
+      952,
+      495
+     ],
+     [
+      954,
+      497
+     ],
+     [
+      952,
+      500
+     ],
+     [
+      952,
+      545
+     ],
+     [
+      959,
+      554
+     ],
+     [
+      965,
+      556
+     ],
+     [
+      975,
+      564
+     ],
+     [
+      978,
+      572
+     ],
+     [
+      998,
+      577
+     ],
+     [
+      1004,
+      580
+     ],
+     [
+      1010,
+      580
+     ],
+     [
+      1019,
+      584
+     ],
+     [
+      1025,
+      584
+     ],
+     [
+      1042,
+      579
+     ],
+     [
+      1047,
+      582
+     ],
+     [
+      1084,
+      580
+     ],
+     [
+      1090,
+      584
+     ],
+     [
+      1103,
+      584
+     ],
+     [
+      1108,
+      582
+     ],
+     [
+      1117,
+      584
+     ],
+     [
+      1151,
+      584
+     ],
+     [
+      1162,
+      580
+     ],
+     [
+      1172,
+      580
+     ],
+     [
+      1177,
+      578
+     ],
+     [
+      1188,
+      581
+     ],
+     [
+      1196,
+      575
+     ],
+     [
+      1205,
+      575
+     ],
+     [
+      1212,
+      580
+     ],
+     [
+      1213,
+      584
+     ],
+     [
+      1226,
+      584
+     ],
+     [
+      1232,
+      579
+     ],
+     [
+      1241,
+      582
+     ],
+     [
+      1261,
+      582
+     ],
+     [
+      1270,
+      577
+     ],
+     [
+      1293,
+      580
+     ],
+     [
+      1301,
+      584
+     ],
+     [
+      1327,
+      584
+     ],
+     [
+      1327,
+      455
+     ],
+     [
+      1318,
+      452
+     ],
+     [
+      1308,
+      444
+     ],
+     [
+      1258,
+      444
+     ],
+     [
+      1254,
+      447
+     ],
+     [
+      1234,
+      448
+     ],
+     [
+      1228,
+      447
+     ],
+     [
+      1224,
+      444
+     ],
+     [
+      1081,
+      444
+     ],
+     [
+      1075,
+      446
+     ],
+     [
+      1068,
+      444
+     ],
+     [
+      1060,
+      446
+     ],
+     [
+      1054,
+      444
+     ],
+     [
+      1038,
+      444
+     ],
+     [
+      1034,
+      446
+     ],
+     [
+      1029,
+      446
+     ],
+     [
+      1026,
+      444
+     ],
+     [
+      971,
+      444
+     ]
+    ]
+   ],
+   "bounds": [
+    952,
+    444,
+    1328,
+    585
+   ],
+   "ink_pixels": 19486,
+   "components": 9,
+   "line_ids": [
+    10,
+    11,
+    12
+   ],
+   "lines": [
+    {
+     "line_id": 10,
+     "shared_with_other_regions": false,
+     "ink_pixels": 8204,
+     "polygons": [
+      [
+       [
+        952,
+        545
+       ],
+       [
+        956,
+        550
+       ],
+       [
+        990,
+        550
+       ],
+       [
+        999,
+        542
+       ],
+       [
+        1016,
+        539
+       ],
+       [
+        1023,
+        546
+       ],
+       [
+        1062,
+        546
+       ],
+       [
+        1065,
+        544
+       ],
+       [
+        1071,
+        544
+       ],
+       [
+        1076,
+        541
+       ],
+       [
+        1079,
+        543
+       ],
+       [
+        1083,
+        543
+       ],
+       [
+        1087,
+        546
+       ],
+       [
+        1092,
+        546
+       ],
+       [
+        1094,
+        544
+       ],
+       [
+        1092,
+        525
+       ],
+       [
+        1087,
+        521
+       ],
+       [
+        1086,
+        518
+       ],
+       [
+        1079,
+        516
+       ],
+       [
+        1077,
+        514
+       ],
+       [
+        1077,
+        504
+       ],
+       [
+        1072,
+        489
+       ],
+       [
+        1078,
+        480
+       ],
+       [
+        1094,
+        482
+       ],
+       [
+        1098,
+        486
+       ],
+       [
+        1103,
+        483
+       ],
+       [
+        1110,
+        483
+       ],
+       [
+        1115,
+        485
+       ],
+       [
+        1130,
+        484
+       ],
+       [
+        1133,
+        486
+       ],
+       [
+        1160,
+        485
+       ],
+       [
+        1163,
+        487
+       ],
+       [
+        1170,
+        486
+       ],
+       [
+        1174,
+        488
+       ],
+       [
+        1181,
+        488
+       ],
+       [
+        1185,
+        486
+       ],
+       [
+        1195,
+        488
+       ],
+       [
+        1198,
+        485
+       ],
+       [
+        1204,
+        484
+       ],
+       [
+        1208,
+        481
+       ],
+       [
+        1211,
+        483
+       ],
+       [
+        1215,
+        483
+       ],
+       [
+        1221,
+        487
+       ],
+       [
+        1256,
+        487
+       ],
+       [
+        1259,
+        490
+       ],
+       [
+        1273,
+        486
+       ],
+       [
+        1273,
+        444
+       ],
+       [
+        1258,
+        444
+       ],
+       [
+        1254,
+        447
+       ],
+       [
+        1234,
+        448
+       ],
+       [
+        1228,
+        447
+       ],
+       [
+        1224,
+        444
+       ],
+       [
+        1081,
+        444
+       ],
+       [
+        1075,
+        446
+       ],
+       [
+        1068,
+        444
+       ],
+       [
+        1060,
+        446
+       ],
+       [
+        1054,
+        444
+       ],
+       [
+        1038,
+        444
+       ],
+       [
+        1034,
+        446
+       ],
+       [
+        1029,
+        446
+       ],
+       [
+        1026,
+        444
+       ],
+       [
+        971,
+        444
+       ],
+       [
+        953,
+        460
+       ],
+       [
+        952,
+        495
+       ],
+       [
+        954,
+        497
+       ],
+       [
+        952,
+        500
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 11,
+     "shared_with_other_regions": false,
+     "ink_pixels": 9433,
+     "polygons": [
+      [
+       [
+        1327,
+        584
+       ],
+       [
+        1327,
+        478
+       ],
+       [
+        1283,
+        478
+       ],
+       [
+        1273,
+        487
+       ],
+       [
+        1259,
+        491
+       ],
+       [
+        1256,
+        488
+       ],
+       [
+        1221,
+        488
+       ],
+       [
+        1215,
+        484
+       ],
+       [
+        1211,
+        484
+       ],
+       [
+        1208,
+        482
+       ],
+       [
+        1204,
+        485
+       ],
+       [
+        1198,
+        486
+       ],
+       [
+        1195,
+        489
+       ],
+       [
+        1191,
+        489
+       ],
+       [
+        1188,
+        487
+       ],
+       [
+        1174,
+        489
+       ],
+       [
+        1170,
+        487
+       ],
+       [
+        1163,
+        488
+       ],
+       [
+        1160,
+        486
+       ],
+       [
+        1115,
+        486
+       ],
+       [
+        1110,
+        484
+       ],
+       [
+        1103,
+        484
+       ],
+       [
+        1098,
+        487
+       ],
+       [
+        1094,
+        483
+       ],
+       [
+        1087,
+        483
+       ],
+       [
+        1086,
+        481
+       ],
+       [
+        1078,
+        481
+       ],
+       [
+        1075,
+        486
+       ],
+       [
+        1075,
+        497
+       ],
+       [
+        1078,
+        504
+       ],
+       [
+        1078,
+        514
+       ],
+       [
+        1086,
+        517
+       ],
+       [
+        1088,
+        521
+       ],
+       [
+        1093,
+        525
+       ],
+       [
+        1095,
+        544
+       ],
+       [
+        1111,
+        542
+       ],
+       [
+        1119,
+        543
+       ],
+       [
+        1129,
+        548
+       ],
+       [
+        1129,
+        556
+       ],
+       [
+        1134,
+        563
+       ],
+       [
+        1129,
+        584
+       ],
+       [
+        1151,
+        584
+       ],
+       [
+        1162,
+        580
+       ],
+       [
+        1172,
+        580
+       ],
+       [
+        1177,
+        578
+       ],
+       [
+        1188,
+        581
+       ],
+       [
+        1196,
+        575
+       ],
+       [
+        1205,
+        575
+       ],
+       [
+        1212,
+        580
+       ],
+       [
+        1213,
+        584
+       ],
+       [
+        1226,
+        584
+       ],
+       [
+        1232,
+        579
+       ],
+       [
+        1241,
+        582
+       ],
+       [
+        1261,
+        582
+       ],
+       [
+        1270,
+        577
+       ],
+       [
+        1293,
+        580
+       ],
+       [
+        1301,
+        584
+       ]
+      ]
+     ]
+    },
+    {
+     "line_id": 12,
+     "shared_with_other_regions": false,
+     "ink_pixels": 1849,
+     "polygons": [
+      [
+       [
+        989,
+        551
+       ],
+       [
+        989,
+        575
+       ],
+       [
+        999,
+        578
+       ],
+       [
+        1129,
+        578
+       ],
+       [
+        1133,
+        565
+       ],
+       [
+        1132,
+        560
+       ],
+       [
+        1128,
+        556
+       ],
+       [
+        1128,
+        548
+       ],
+       [
+        1123,
+        547
+       ],
+       [
+        1119,
+        544
+       ],
+       [
+        1111,
+        543
+       ],
+       [
+        1087,
+        547
+       ],
+       [
+        1083,
+        544
+       ],
+       [
+        1079,
+        544
+       ],
+       [
+        1076,
+        542
+       ],
+       [
+        1071,
+        545
+       ],
+       [
+        1065,
+        545
+       ],
+       [
+        1062,
+        547
+       ],
+       [
+        1049,
+        546
+       ],
+       [
+        1044,
+        548
+       ],
+       [
+        1038,
+        548
+       ],
+       [
+        1030,
+        546
+       ],
+       [
+        1023,
+        547
+       ],
+       [
+        1018,
+        541
+       ],
+       [
+        1013,
+        540
+       ],
+       [
+        1010,
+        542
+       ],
+       [
+        999,
+        543
+       ]
+      ]
+     ]
+    }
+   ],
+   "vertices": 56,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 452,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 14,
+   "type": "verse",
+   "keep": true,
+   "reading_order": 11,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "verse",
+   "model_box": [
+    971.94,
+    590.004,
+    1336.0,
+    772.104
+   ],
+   "status": "ok",
+   "polygons": [
+    [
+     [
+      1026,
+      586
+     ],
+     [
+      1026,
+      590
+     ],
+     [
+      1031,
+      597
+     ],
+     [
+      1033,
+      603
+     ],
+     [
+      1030,
+      607
+     ],
+     [
+      1030,
+      617
+     ],
+     [
+      1032,
+      617
+     ],
+     [
+      1037,
+      624
+     ],
+     [
+      1042,
+      627
+     ],
+     [
+      1046,
+      627
+     ],
+     [
+      1051,
+      619
+     ],
+     [
+      1071,
+      618
+     ],
+     [
+      1072,
+      610
+     ],
+     [
+      1075,
+      603
+     ],
+     [
+      1072,
+      597
+     ],
+     [
+      1070,
+      586
+     ]
+    ]
+   ],
+   "bounds": [
+    1026,
+    586,
+    1076,
+    628
+   ],
+   "ink_pixels": 648,
+   "components": 1,
+   "line_ids": [
+    13
+   ],
+   "lines": [
+    {
+     "line_id": 13,
+     "shared_with_other_regions": false,
+     "ink_pixels": 648,
+     "polygons": [
+      [
+       [
+        1026,
+        586
+       ],
+       [
+        1026,
+        590
+       ],
+       [
+        1031,
+        597
+       ],
+       [
+        1033,
+        603
+       ],
+       [
+        1030,
+        607
+       ],
+       [
+        1030,
+        617
+       ],
+       [
+        1032,
+        617
+       ],
+       [
+        1037,
+        624
+       ],
+       [
+        1042,
+        627
+       ],
+       [
+        1046,
+        627
+       ],
+       [
+        1051,
+        619
+       ],
+       [
+        1071,
+        618
+       ],
+       [
+        1072,
+        610
+       ],
+       [
+        1075,
+        603
+       ],
+       [
+        1072,
+        597
+       ],
+       [
+        1070,
+        586
+       ]
+      ]
+     ]
+    }
+   ],
+   "vertices": 16,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 45702,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  },
+  {
+   "region_id": 15,
+   "type": "page_number",
+   "keep": false,
+   "reading_order": null,
+   "uncertain": false,
+   "continues_from_earlier": false,
+   "continues_later": false,
+   "region_class": "page_number",
+   "model_box": [
+    1155.64,
+    1045.254,
+    1224.11,
+    1079.246
+   ],
+   "status": "no_ink",
+   "polygons": [],
+   "bounds": null,
+   "ink_pixels": 0,
+   "components": 0,
+   "line_ids": [],
+   "lines": [],
+   "vertices": 0,
+   "audit": {
+    "polygons": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 0,
+     "unassigned_text_pixels_inside": 0
+    },
+    "model_box": {
+     "own_ink_outside": 0,
+     "other_regions_ink_inside": {},
+     "separator_pixels_inside": 2250,
+     "unassigned_text_pixels_inside": 0
+    }
+   }
+  }
+ ],
+ "line_decisions": [
+  {
+   "line_id": 0,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    9
+   ],
+   "ink_pixels": 2583,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "9": 0.9992
+   },
+   "region_ids": [
+    10
+   ]
+  },
+  {
+   "line_id": 1,
+   "mode": "uncovered",
+   "components_moved_beside": 0,
+   "region_indices": [],
+   "ink_pixels": 1384,
+   "line_local_box_indices": [],
+   "box_ink_shares": {},
+   "region_ids": []
+  },
+  {
+   "line_id": 2,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    10
+   ],
+   "ink_pixels": 5634,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "10": 0.9895
+   },
+   "region_ids": [
+    11
+   ]
+  },
+  {
+   "line_id": 3,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    10
+   ],
+   "ink_pixels": 3136,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "10": 1.0
+   },
+   "region_ids": [
+    11
+   ]
+  },
+  {
+   "line_id": 4,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    10
+   ],
+   "ink_pixels": 4935,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "10": 0.9998
+   },
+   "region_ids": [
+    11
+   ]
+  },
+  {
+   "line_id": 5,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    10
+   ],
+   "ink_pixels": 3708,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "10": 1.0
+   },
+   "region_ids": [
+    11
+   ]
+  },
+  {
+   "line_id": 6,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    11
+   ],
+   "ink_pixels": 4427,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "11": 0.9889
+   },
+   "region_ids": [
+    12
+   ]
+  },
+  {
+   "line_id": 7,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    11
+   ],
+   "ink_pixels": 3290,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "11": 1.0
+   },
+   "region_ids": [
+    12
+   ]
+  },
+  {
+   "line_id": 8,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    11
+   ],
+   "ink_pixels": 5669,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "11": 0.9907
+   },
+   "region_ids": [
+    12
+   ]
+  },
+  {
+   "line_id": 9,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    11
+   ],
+   "ink_pixels": 3225,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "11": 1.0
+   },
+   "region_ids": [
+    12
+   ]
+  },
+  {
+   "line_id": 10,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    12
+   ],
+   "ink_pixels": 8204,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "12": 0.9583
+   },
+   "region_ids": [
+    13
+   ]
+  },
+  {
+   "line_id": 11,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    12
+   ],
+   "ink_pixels": 5535,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "12": 0.9787
+   },
+   "region_ids": [
+    13
+   ]
+  },
+  {
+   "line_id": 12,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    12
+   ],
+   "ink_pixels": 1849,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "12": 0.9995
+   },
+   "region_ids": [
+    13
+   ]
+  },
+  {
+   "line_id": 13,
+   "mode": "whole",
+   "components_moved_beside": 0,
+   "region_indices": [
+    13
+   ],
+   "ink_pixels": 648,
+   "line_local_box_indices": [],
+   "box_ink_shares": {
+    "13": 1.0
+   },
+   "region_ids": [
+    14
+   ]
+  }
+ ],
+ "diagnostics": {
+  "lines": 14,
+  "whole_lines": 13,
+  "split_lines": 0,
+  "uncovered_lines": 1,
+  "empty_lines": 0,
+  "uncovered_line_ids": [
+   1
+  ],
+  "dropped_components": [],
+  "band_chained_components": [
+   {
+    "component_id": 240,
+    "from_line": -1,
+    "to_line": 1
+   },
+   {
+    "component_id": 255,
+    "from_line": -1,
+    "to_line": 1
+   },
+   {
+    "component_id": 294,
+    "from_line": -1,
+    "to_line": 1
+   },
+   {
+    "component_id": 295,
+    "from_line": -1,
+    "to_line": 1
+   }
+  ],
+  "rule_pieces": [],
+  "attached_components": [
+   {
+    "component_id": 2595,
+    "region_index": 12,
+    "line_id": 11,
+    "nearest_component_id": 2445,
+    "gap_px": 0.0,
+    "round": 1,
+    "box": [
+     1095,
+     516,
+     1313,
+     579
+    ],
+    "area": 3898
+   }
+  ],
+  "unassigned_text_pixels": 1746,
+  "unassigned_text_components_not_on_lines": 7,
+  "regions_without_ink": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   15
+  ],
+  "regions_with_several_pieces": [],
+  "polygon_overlap_pixels": 0,
+  "ink_in_polygon_overlaps": 0,
+  "own_ink_outside_polygons": 0,
+  "other_regions_ink_inside_polygons": 0,
+  "separator_pixels_inside_polygons": 0,
+  "line_polygon_pixels_outside_region_polygons": 25,
+  "line_polygon_pixels": 152614,
+  "polygon_vertices": 139
+ },
+ "ownership_png": {
+  "path": "ownership.png",
+  "values": "0 unassigned or background, 1..N region index + 1 in source order, 255 rules and large non-text",
+  "sha256": "200c273777d8f5ab9b1ff959c76307a57a138d9f47d34b5c42fc3f47a803bc08"
+ },
+ "local_seconds": {
+  "line_analysis": 0.263,
+  "ownership": 0.008,
+  "outlines": 0.502,
+  "total_including_audit_and_drawing": 1.608
+ },
+ "code_sha256": {
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a",
+  "book_types.py": "0565177fbe77676a4bb19c82404220a37de75148e5e1e322ad85e16be957fad8",
+  "config.json": "1074dace61dc55103d9b7e4fd6bee63bedae8661bbd37766ae5c228f0ddc96e2",
+  "crossbook.py": "b19064edf5fa57e5b87bae81c492dbb1aa171857b27d050c826e5aed8b3ea815",
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "geometry.py": "0ad52d9a91bf0cee2e8721f8e671fc5f412c50d0e3fea5d23d37e56064fdeacd",
+  "line-config.json": "f6b515c719b5be95e01514a354a6d9a3f85b1efae9037a9d32d7390a4bee30d5",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "run.py": "0bd7629e75b60f1d528e6df8f0f4be9c3f8bf2c5c5741314f601e47d1ba119d3",
+  "stability.py": "b0c87685dbc262b4da0dfd2b6c041d012895b35ea028f32c93eab818df4d6841",
+  "sweep.py": "4db8c8b9335965eea28305aa95dbc81193da0691327b2bda84f9750a44c9153e"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0",
+   "opencv-python-headless": "5.0.0.93"
+  }
+ }
+}

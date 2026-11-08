@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Telang (DLI scan), run book-001: Terra regions, Gemini 4 Argon transcription — telang-dli-book-page-196</title><style>
+body{margin:0;font:15px/1.5 -apple-system,Helvetica,Arial,sans-serif;color:#222}
+header{position:sticky;top:0;z-index:5;background:#f6f6f2;border-bottom:1px solid #ccc;padding:6px 12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+header a{color:#1f4e9e;text-decoration:none} header .bad{color:#b00;font-weight:600} header .ok{color:#2a7a2a}
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;height:calc(100vh - 44px)}
+#img{overflow:auto;background:#ddd;position:relative}
+#img .wrap{position:relative;width:100%} #img img{width:100%;display:block}
+#img svg{position:absolute;left:0;top:0;width:100%;height:100%}
+svg .reg{fill-opacity:.06;stroke-width:3;cursor:pointer} svg .reg.furn{stroke-dasharray:8 6;stroke-opacity:.6}
+svg .ln{fill:none;stroke:none} svg .ln.hl{fill:#ffd400;fill-opacity:.35;stroke:#e6a800;stroke-width:2}
+svg .reg.hl{fill-opacity:.22;stroke-width:5}
+#text{overflow:auto;padding:10px 18px 60px}
+.unit{margin:4px 0 4px 14px;border-left:3px solid #ddd;padding-left:8px}
+.uhead{font-size:12px;color:#555;font-family:Menlo,monospace}
+.uhead .open{color:#b05a00;font-weight:600}
+.reg-text{margin:3px 0 8px;padding:3px 6px;border-radius:4px;font-size:17px}
+.reg-text .rid{font:11px Menlo,monospace;color:#888;margin-right:6px}
+.reg-text.hl{background:#fff6cc}
+.l{border-radius:2px} .l:hover,.l.hl{background:#ffe680}
+.furn{color:#666;font-size:14px}
+sup.mk{color:#1f4e9e;cursor:pointer;font-weight:600;padding:0 1px;border-radius:3px} sup.mk.hl{background:#ffd400}
+sup.mk.none{color:#b00} .backrefs{font:11px Menlo,monospace;color:#1f4e9e;margin-left:8px;cursor:pointer}
+.reg-text.note-hl{background:#fff1a8} svg .reg.note-hl{fill-opacity:.35;stroke-width:6}
+.problems{background:#fff0f0;border:1px solid #f3c0c0;padding:6px 10px;border-radius:4px;font-size:13px;margin-bottom:10px}
+.legend span{display:inline-block;margin-right:10px;font-size:12px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:3px;vertical-align:middle}
+table{border-collapse:collapse} td,th{padding:2px 8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+pre{background:#f7f7f7;padding:8px;overflow:auto;font-size:12px}
+</style></head>
+<body><header><a href="index.html">↑ Telang (DLI scan), run book-001: Terra regions, Gemini 4 Argon transcription</a>
+<a href="telang-dli-book-page-195.html">← previous</a> <b>telang-dli-book-page-196</b> (printed page –)
+<a href="telang-dli-book-page-199.html">next →</a> <span class="ok">valid</span> <span class="legend"><span><i style="background:#637939"></i>scan_matter</span></span></header>
+<main><div id="img"><div class="wrap"><img src="../../../../../inputs/telang-dli-book-page-196.png" alt="page image">
+<svg viewBox="0 0 1500 2500" preserveAspectRatio="none"><path class="reg furn" data-reg="r1" d="M564.5,1085.5 L564.5,1294.5 L1053.5,1294.5 L1053.5,1085.5 Z" stroke="#637939" fill="#637939"><title>r1 scan_matter</title></path><path class="ln" data-line="r1:0" d="M564.5,1085.5 L564.5,1294.5 L1053.5,1294.5 L1053.5,1085.5 Z"/></svg></div></div>
+<div id="text"><h4 style="margin:14px 0 2px">furniture</h4><div class="furn reg-text" data-reg="r1"><span class="rid">r1 scan_matter</span>00044486</div></div></main>
+<script type="application/json" id="data">{"prev": "telang-dli-book-page-195.html", "next": "telang-dli-book-page-199.html"}</script><script>
+const D = JSON.parse(document.getElementById('data').textContent);
+function hl(sel, on){document.querySelectorAll(sel).forEach(e=>e.classList.toggle('hl', on));}
+document.querySelectorAll('[data-line]').forEach(e=>{
+  const k=e.dataset.line;
+  e.addEventListener('mouseenter',()=>hl('[data-line="'+k+'"]',true));
+  e.addEventListener('mouseleave',()=>hl('[data-line="'+k+'"]',false));
+});
+document.querySelectorAll('[data-reg]').forEach(e=>{
+  const k=e.dataset.reg;
+  e.addEventListener('mouseenter',()=>hl('[data-reg="'+k+'"]',true));
+  e.addEventListener('mouseleave',()=>hl('[data-reg="'+k+'"]',false));
+  if(e.tagName==='polygon'||e.tagName==='path') e.addEventListener('click',()=>{
+    const t=document.querySelector('.reg-text[data-reg="'+k+'"]'); if(t) t.scrollIntoView({behavior:'smooth',block:'center'});});
+});
+function nhl(k,on){document.querySelectorAll('[data-noteunit="'+k+'"]').forEach(e=>e.classList.toggle('note-hl',on));hl('sup[data-note="'+k+'"]',on);}
+document.querySelectorAll('[data-note]').forEach(e=>{
+  const k=e.dataset.note;
+  e.addEventListener('mouseenter',()=>nhl(k,true)); e.addEventListener('mouseleave',()=>nhl(k,false));
+  e.addEventListener('click',ev=>{ev.stopPropagation();const t=document.querySelector('.reg-text[data-noteunit="'+k+'"]'); if(t) t.scrollIntoView({behavior:'smooth',block:'center'});});
+});
+document.querySelectorAll('.reg-text[data-noteunit]').forEach(e=>{
+  const k=e.dataset.noteunit;
+  e.addEventListener('mouseenter',()=>nhl(k,true)); e.addEventListener('mouseleave',()=>nhl(k,false));
+});
+document.querySelectorAll('.backrefs [data-goto]').forEach(e=>e.addEventListener('click',()=>{
+  const t=document.querySelector('sup[data-mk="'+e.dataset.goto+'"]'); if(t) t.scrollIntoView({behavior:'smooth',block:'center'});}));
+document.addEventListener('keydown',ev=>{
+  if(ev.key==='ArrowLeft'&&D.prev) location.href=D.prev;
+  if(ev.key==='ArrowRight'&&D.next) location.href=D.next;
+});
+</script></body></html>

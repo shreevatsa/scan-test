@@ -1,0 +1,728 @@
+{
+  "id": "resp_0c5c9c537d0bec6d016aed43ab4e2487d08db99b6ed9eb6d44",
+  "object": "response",
+  "created_at": 1793934251,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793934269,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32768,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_0c5c9c537d0bec6d016aed43ac728887d0b003722048879f7b",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":{\"r2\":{\"type\":\"stanza_note\",\"lines\":[{\"n\":1,\"text\":\"to simple words, and not to compounds. V\u00e2mana remarks-\u092d\u0935\u093e\u0930\u094d\u0925\u0947\",\"end\":\"space\"},{\"n\":2,\"text\":\"\u092a\u0941\u0928\u0930\u094d\u0926\u093f\u0917\u093e\u0926\u093f\u092a\u093e\u0920\u0947\u093d\u092a\u093f \u0935\u0902\u0936\u0936\u092c\u094d\u0926\u0938\u094d\u092f \u0935\u0902\u0936\u0936\u092c\u094d\u0926\u093e\u0926\u0947\u0935 \u0924\u0924\u094d\u0930 \u092a\u094d\u0930\u0924\u094d\u092f\u092f\u0903 \u0964 \u0917\u094d\u0930\u0939\u0923\u0935\u0924\u093e \u092a\u094d\u0930\u093e\u0924\u093f\u092a\u0926\u093f\u0915\u0947\u0928\",\"end\":\"space\"},{\"n\":3,\"text\":\"\u0924\u0926\u0928\u094d\u0924\u0935\u093f\u0927\u0947\u0903 \u092a\u094d\u0930\u0924\u093f\u0937\u0947\u0927\u093e\u0924\u094d \u0964 The form may be defended by explaining\",\"end\":\"space\"},{\"n\":4,\"text\":\"it as \u0924\u0941\u0932\u094d\u092f\u0915\u0941\u0932\u0947 \u0938\u093e\u0927\u0935\u0903, \u092f\u0924\u094d being affixed by \u2018\u0924\u0924\u094d\u0930 \u0938\u093e\u0927\u0941\u0903.\u2019 P\u00e2n. IV. 4. 98.\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"The Sanskrit quotation is difficult to read in places.\"},\"r3\":{\"type\":\"stanza_note\",\"lines\":[{\"n\":1,\"text\":\"Sl. 25. \u0939\u093f\u092e\u0970\u2014\u0915\u0923\u0936\u0940\u0915\u0930 v. l.; here \u0915\u0923 means a drop and\",\"end\":\"space\"},{\"n\":2,\"text\":\"\u0936\u0940\u0915\u0930 spray. \u0939\u093f\u092e\u0935\u0924\u0903 \u0938\u094d\u0925\u093e\u0928\u093e\u0928\u093f\u2014retreats in the Him\u00e2layas, the\",\"end\":\"space\"},{\"n\":3,\"text\":\"favourite haunts of ascetics. \u0938\u093e\u0935\u092e\u093e\u0928 &c.\u2014see com.; given with,\",\"end\":\"space\"},{\"n\":4,\"text\":\"accompanied by, indignities; or \u0938\u093e\u0935\u092e\u093e\u0928\u0902 \u092f\u0925\u093e \u0938\u094d\u092f\u093e\u0924\u094d\u0924\u0925\u093e with humi-\",\"end\":\"hyphen\"},{\"n\":5,\"text\":\"liation. \u0930\u0924\u093e\u0903\u2014take pleasure in.\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"The Sanskrit in line 4 is not fully clear.\"},\"r4\":{\"type\":\"stanza_note\",\"lines\":[{\"n\":1,\"text\":\"Sl. 26. \u0915\u0928\u094d\u0926\u0930\u2014the slopes between two hills; see sl. 79.\",\"end\":\"space\"},{\"n\":2,\"text\":\"\u092a\u094d\u0930\u0938\u092d\u0902\u2014\u092a\u094d\u0930\u0917\u0924\u093e \u0938\u092d\u093e \u0935\u093f\u091a\u093e\u0930\u094b\u093d\u0938\u094d\u092e\u093e\u0924\u094d \u0924\u0925\u093e\u092d\u0942 \u0924\u0925\u093e \u0964 forcibly i. e. against\",\"end\":\"space\"},{\"n\":3,\"text\":\"one\u2019s thoughts, or wishes. This may also be taken with \u0905\u092a\u0917\u0924\u0970.\",\"end\":\"space\"},{\"n\":4,\"text\":\"\u092a\u094d\u0930\u0936\u094d\u0930\u092f\u2014courtesy, courteous behaviour. \u2018\u092a\u094d\u0930\u0936\u094d\u0930\u092f\u092a\u094d\u0930\u0923\u092f\u094c \u0938\u092e\u094c\u2019 Amara.\",\"end\":\"space\"},{\"n\":5,\"text\":\"The last line is adj. to \u092e\u0941\u0916\u093e\u0928\u093f.\u2014 \u0932\u0924\u093e\u0928\u093f\u2014This refers to the eye-\",\"end\":\"hyphen\"},{\"n\":6,\"text\":\"brows of men proud of their wealth which are sometimes raised,\",\"end\":\"space\"},{\"n\":7,\"text\":\"at others wrinkled. Cf. Bh\u00e2g. II. 2-5. quoted in the com.,\",\"end\":\"space\"},{\"n\":8,\"text\":\"reading the 3rd and 4th lines as \u0930\u0941\u0926\u094d\u0927\u093e \u0917\u0941\u0939\u093e\u0903 \u0915\u093f\u092e\u091c\u093f\u0924\u094b\u093d\u0935\u0924\u093f \u0928\u094b\u092a\u0938\u0928\u094d\u0928\u093e\u0928\u094d\",\"end\":\"space\"},{\"n\":9,\"text\":\"\u0915\u0938\u094d\u092e\u093e\u0926\u094d\u092d\u091c\u0928\u094d\u0924\u093f &c.\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"Several Sanskrit words, especially in lines 2 and 8\u20139, are unclear.\"},\"r5\":{\"type\":\"stanza_note\",\"lines\":[{\"n\":1,\"text\":\"Sl 27. The reading \u092a\u094d\u0930\u093f\u092f has been adopted in this ed.\",\"end\":\"space\"},{\"n\":2,\"text\":\"instead of \u092a\u094d\u0930\u093f\u092f\u0947, as mas. vocatives often occur, while a female is\",\"end\":\"space\"},{\"n\":3,\"text\":\"rarely addressed in this S'ataka. \u092a\u094d\u0930\u0923\u092f\u093f\u0928\u093f violates the metre.\",\"end\":\"space\"},{\"n\":4,\"text\":\"\u092a\u094d\u0930\u0923\u092f\u093f\u0928\u0940\u2014must be taken with \u0907\u0924\u093f some how. Another reading\",\"end\":\"space\"},{\"n\":5,\"text\":\"is \u092a\u094d\u0930\u093f\u092f\u0947\u093d\u0924\u094d\u0930 \u0938\u0932\u093f\u0932\u0948\u0903; but this, too, is not satisfactory, as there is no\",\"end\":\"space\"},{\"n\":6,\"text\":\"propriety of \u092a\u094d\u0930\u093f\u092f\u0947\u0903. \u0905\u0915\u0930\u094d\u0915\u0936 v. l.\u2014not pleasing, harsh to the\",\"end\":\"space\"},{\"n\":7,\"text\":\"touch; rough. \u092f\u093e\u092e\u0903 is replaced by \u092f\u093e\u0935\u0903 which is found in\",\"end\":\"space\"},{\"n\":8,\"text\":\"one ed. \u0908\u0936\u094d\u0935\u0930\u093e\u0923\u093e\u0902\u2014goes with \u0917\u094d\u0930\u093e\u092e\u093e\u0923\u093f, and means \u2018of rich people\u2019;\",\"end\":\"space\"},{\"n\":9,\"text\":\"cf. ( Mis. sl. 11.) \u0935\u093f\u0924\u094d\u0924 &c.\u2014\u0935\u093f\u0915\u093e\u0930\u093e\u0903 such as rudeness, vanity &c.\",\"end\":\"space\"},{\"n\":10,\"text\":\"Mr. Telang\u2019s reading is \u0935\u093f\u0924\u094d\u0924\u0935\u094d\u092f\u093e\u0927\u093f which is redundant as we\",\"end\":\"space\"},{\"n\":11,\"text\":\"have already got \u0935\u093f\u0935\u0947\u0915\u092e\u0941\u0937\u094d. For the idea cf. Mis. sl. 32.\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"Some Sanskrit readings, particularly in lines 5\u20138 and 10\u201311, are unclear.\"},\"r6\":{\"type\":\"stanza_note\",\"lines\":[{\"n\":1,\"text\":\"Sl. 28. \u092a\u094d\u0930\u0924\u093f\u0935\u0928\u092e\u094d\u2014in every forest. \u0905\u0916\u0947\u0926\u092e\u094d\u2014an adj. ( Bah com. )\",\"end\":\"space\"},{\"n\":2,\"text\":\"or adv. For the idea expressed here comp. infra Sl. 55.\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"The second Sanskrit word is not entirely clear.\"},\"r7\":{\"type\":\"stanza_note\",\"lines\":[{\"n\":1,\"text\":\"Sl. 29. \u0935\u0930\u094d\u0927\u0928\u094d\u0924\u0947\u2014appear long. The man who has the misery to\",\"end\":\"space\"},{\"n\":2,\"text\":\"supplicate the rich, often in vain, finds the days very long. \u0906\u0935\u0947\u0917\",\"end\":\"space\"}],\"uncertain\":true,\"note\":\"The final Sanskrit word is blurred.\"},\"r1\":{\"type\":\"page_number\",\"lines\":[{\"n\":1,\"text\":\"( 58 )\",\"end\":\"space\"}],\"uncertain\":false,\"note\":null}},\"units\":[{\"id\":\"u1\",\"type\":\"notes\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":true,\"children\":[\"u2\",\"u3\",\"u4\",\"u5\",\"u6\",\"u7\"]},{\"id\":\"u2\",\"type\":\"stanza_note\",\"number\":\"24\",\"label\":null,\"open_start\":true,\"open_end\":false,\"children\":[\"r2\"]},{\"id\":\"u3\",\"type\":\"stanza_note\",\"number\":\"25\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r3\"]},{\"id\":\"u4\",\"type\":\"stanza_note\",\"number\":\"26\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r4\"]},{\"id\":\"u5\",\"type\":\"stanza_note\",\"number\":\"27\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r5\"]},{\"id\":\"u6\",\"type\":\"stanza_note\",\"number\":\"28\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r6\"]},{\"id\":\"u7\",\"type\":\"stanza_note\",\"number\":\"29\",\"label\":null,\"open_start\":false,\"open_end\":true,\"children\":[\"r7\"]}],\"flows\":[{\"flow\":\"main\",\"units\":[\"u1\"]}],\"relations\":[]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_transcription",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions",
+          "units",
+          "flows",
+          "relations"
+        ],
+        "properties": {
+          "regions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r2",
+              "r3",
+              "r4",
+              "r5",
+              "r6",
+              "r7",
+              "r1"
+            ],
+            "properties": {
+              "r2": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "contents_entry",
+                      "commentator_verse",
+                      "lead_in",
+                      "verse",
+                      "commentary",
+                      "translated_stanza",
+                      "stanza_note",
+                      "footnote",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r3": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "contents_entry",
+                      "commentator_verse",
+                      "lead_in",
+                      "verse",
+                      "commentary",
+                      "translated_stanza",
+                      "stanza_note",
+                      "footnote",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r4": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "contents_entry",
+                      "commentator_verse",
+                      "lead_in",
+                      "verse",
+                      "commentary",
+                      "translated_stanza",
+                      "stanza_note",
+                      "footnote",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 9,
+                    "maxItems": 9,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r5": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "contents_entry",
+                      "commentator_verse",
+                      "lead_in",
+                      "verse",
+                      "commentary",
+                      "translated_stanza",
+                      "stanza_note",
+                      "footnote",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 11,
+                    "maxItems": 11,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r6": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "contents_entry",
+                      "commentator_verse",
+                      "lead_in",
+                      "verse",
+                      "commentary",
+                      "translated_stanza",
+                      "stanza_note",
+                      "footnote",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r7": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "contents_entry",
+                      "commentator_verse",
+                      "lead_in",
+                      "verse",
+                      "commentary",
+                      "translated_stanza",
+                      "stanza_note",
+                      "footnote",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "r1": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "type",
+                  "lines",
+                  "uncertain",
+                  "note"
+                ],
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "heading",
+                      "paragraph",
+                      "contents_entry",
+                      "commentator_verse",
+                      "lead_in",
+                      "verse",
+                      "commentary",
+                      "translated_stanza",
+                      "stanza_note",
+                      "footnote",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "lines": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "n",
+                        "text",
+                        "end"
+                      ],
+                      "properties": {
+                        "n": {
+                          "type": "integer"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "end": {
+                          "enum": [
+                            "space",
+                            "hyphen",
+                            "join",
+                            "line"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "type",
+                "number",
+                "label",
+                "open_start",
+                "open_end",
+                "children"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "contents",
+                    "section",
+                    "translation",
+                    "notes",
+                    "heading",
+                    "paragraph",
+                    "contents_entry",
+                    "commentator_verse",
+                    "group",
+                    "lead_in",
+                    "verse",
+                    "commentary",
+                    "translated_stanza",
+                    "stanza_note",
+                    "footnote"
+                  ]
+                },
+                "number": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "open_start": {
+                  "type": "boolean"
+                },
+                "open_end": {
+                  "type": "boolean"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "flows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "flow",
+                "units"
+              ],
+              "properties": {
+                "flow": {
+                  "enum": [
+                    "main",
+                    "notes"
+                  ]
+                },
+                "units": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "region",
+                "line",
+                "marker",
+                "to"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "note"
+                  ]
+                },
+                "region": {
+                  "type": "string"
+                },
+                "line": {
+                  "type": "integer"
+                },
+                "marker": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 10148,
+    "input_tokens_details": {
+      "cache_write_tokens": 9114,
+      "cached_tokens": 1031
+    },
+    "output_tokens": 1570,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 11718
+  },
+  "user": null,
+  "metadata": {}
+}

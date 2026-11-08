@@ -1,12 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "scan-book-0.1",
- "title": "A digitized book linked to its page regions (draft 0.1, 2026-11-05)",
- "description": "Three kinds of document share these definitions: a book's type list (format 'types'), one page's regions and units (format 'page'), and a whole book assembled from its pages (format 'book'). See schema/README.md. Rules that JSON Schema cannot express (references resolve, the units form a tree, types match) are checked by schema/book.py.",
+ "title": "A digitized book linked to its page regions (draft 0.3, 2026-11-06; 0.1 and 0.2 documents remain valid)",
+ "description": "Four kinds of document share these definitions: a book's type list (format 'types'), one page's regions and units (format 'page'), a whole book assembled from its pages (format 'book'), and 0.3: a book's style sheet (format 'style'), how its types are printed. See schema/README.md. Rules that JSON Schema cannot express (references resolve, the units form a tree, types match) are checked by schema/book.py.",
  "oneOf": [
   {"$ref": "#/$defs/type_list"},
   {"$ref": "#/$defs/page_document"},
-  {"$ref": "#/$defs/book_document"}
+  {"$ref": "#/$defs/book_document"},
+  {"$ref": "#/$defs/style_sheet"}
  ],
  "$defs": {
   "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$", "description": "A type, flow or relation name."},
@@ -20,6 +21,24 @@
    "description": "Outer rings in page-image pixel indices, largest piece first. Vertex (x, y) is the center of pixel column x and row y; in a corner-based system such as SVG, add 0.5 to both."
   },
   "source": {"type": "object", "description": "Provenance: which method, run, model or person produced this, and its raw evidence. Free-form."},
+  "style": {
+   "type": "object", "additionalProperties": false,
+   "description": "0.3: how something is printed, for renderings that resemble the book (a reader's 'as printed' view, HTML or typesetting exports). Presentation only: the units, their order and their text do not depend on it, and a semantic export may ignore it. Lengths are in points of the printed page. A unit's style overrides its type's in the book's style sheet; a line piece's overrides its unit's (on a line piece only font, size_pt, weight, italic and align apply; align sets the line apart, as a chapter's number and title).",
+   "properties": {
+    "font": {"$ref": "#/$defs/name", "description": "A font role named in the style sheet's fonts, such as body, display or latin."},
+    "size_pt": {"type": "number", "minimum": 0},
+    "leading_pt": {"type": "number", "minimum": 0, "description": "Baseline to baseline."},
+    "weight": {"enum": ["normal", "bold"]},
+    "italic": {"type": "boolean"},
+    "align": {"enum": ["left", "center", "right", "justify"]},
+    "margin_left_pt": {"type": "number", "minimum": 0, "description": "Left margin of every line, from the text block's (or the column's) left edge."},
+    "indent_pt": {"type": "number", "description": "First line's indent from the others; negative where the first line hangs out (a numbered saying)."},
+    "space_before_pt": {"type": "number", "minimum": 0, "description": "Extra space above, beyond the normal line spacing."},
+    "space_after_pt": {"type": "number", "minimum": 0},
+    "row": {"$ref": "#/$defs/local_id", "description": "Consecutive sibling units with the same row (on one page) are printed side by side, left to right in reading order, as the two columns of an address."},
+    "width": {"type": "number", "minimum": 0, "description": "For a unit in a row: its share of the text width, from 0 to 1."}
+   }
+  },
 
   "type_def": {
    "type": "object", "additionalProperties": false, "required": ["description"],
@@ -36,12 +55,30 @@
     "numbered": {"type": "boolean", "description": "Units of this type usually carry a printed number."}
    }
   },
+  "inline_def": {
+   "type": "object", "additionalProperties": false, "required": ["description"],
+   "properties": {
+    "description": {"type": "string"},
+    "formatting": {"enum": ["bold", "italic", "small_caps", "superscript", "subscript", "underline", "spaced"], "description": "How such spans are printed, if in one way."}
+   }
+  },
+  "span": {
+   "type": "object", "additionalProperties": false, "required": ["start", "end", "kind"],
+   "properties": {
+    "start": {"type": "integer", "minimum": 0, "description": "Offset of the span's first character in the line piece's text (Unicode code points)."},
+    "end": {"type": "integer", "minimum": 0, "description": "Offset just after its last character. A note marker is zero-width: start = end, at the position where the marker is printed."},
+    "kind": {"$ref": "#/$defs/name", "description": "Generic formatting (bold, italic, small_caps, superscript, subscript, underline, spaced), note_marker, or one of the book's inline kinds."},
+    "id": {"$ref": "#/$defs/local_id", "description": "Required for a note marker, which relations name; optional otherwise. Unique on the page."},
+    "marker": {"type": "string", "description": "For a note marker, the marker as printed, such as १, 3 or *."},
+    "source": {"$ref": "#/$defs/source"}
+   }
+  },
   "type_list": {
    "type": "object", "additionalProperties": false,
    "required": ["format", "schema_version", "book_id", "title", "flows", "types"],
    "properties": {
     "format": {"const": "types"},
-    "schema_version": {"const": "0.1"},
+    "schema_version": {"enum": ["0.1", "0.2", "0.3"]},
     "book_id": {"$ref": "#/$defs/local_id"},
     "title": {"type": "string"},
     "description": {"type": "string"},
@@ -49,6 +86,8 @@
     "flows": {"type": "object", "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {"type": "string"}, "description": "Flow name to description. 'main' is the running text; others are, for example, 'notes'."},
     "types": {"type": "object", "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {"$ref": "#/$defs/type_def"}},
     "relations": {"type": "object", "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {"type": "string"}, "description": "Relation name to description."},
+    "inline": {"type": "object", "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {"$ref": "#/$defs/inline_def"},
+               "description": "0.2: the book's own kinds of inline span, such as a pratīka, each with the generic formatting it is printed in."},
     "conventions": {"type": "array", "items": {"type": "string"}, "description": "Transcription conventions for this book."},
     "source": {"$ref": "#/$defs/source"}
    }
@@ -60,7 +99,9 @@
     "line": {"type": "integer", "minimum": 0, "description": "The page-level line id from the line finder. Two regions sharing a printed line have pieces with the same id."},
     "polygons": {"$ref": "#/$defs/polygons"},
     "text": {"type": "string", "description": "The transcription of this line piece, as printed (see the book's conventions)."},
-    "end": {"enum": ["space", "hyphen", "join", "line"], "default": "space", "description": "How this piece joins the next piece of the same unit: a space; a printed hyphen to drop (the word continues); no space (the word continues without a hyphen); or a line break to keep, as between verse lines."}
+    "end": {"enum": ["space", "hyphen", "join", "line"], "default": "space", "description": "How this piece joins the next piece of the same unit: a space; a printed hyphen to drop (the word continues); no space (the word continues without a hyphen); or a line break to keep, as between verse lines."},
+    "spans": {"type": "array", "items": {"$ref": "#/$defs/span"}, "description": "0.2: inline formatting and note markers over this piece's text, in order of start. Text formatted across a line break has a span on each piece."},
+    "style": {"$ref": "#/$defs/style", "description": "0.3: where this printed line differs from its unit (as a title page's lines in several sizes)."}
    }
   },
   "region": {
@@ -69,6 +110,7 @@
     "id": {"$ref": "#/$defs/local_id"},
     "type": {"$ref": "#/$defs/name", "description": "A type from the book's type list: the type of the unit that owns this region, or a furniture type."},
     "polygons": {"$ref": "#/$defs/polygons", "description": "Where local processing fails, the model's box as a rectangle, recorded in source."},
+    "box": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4, "description": "0.2: [x1, y1, x2, y2] in page pixels, the editable rectangle the outline is computed from (the region step's box, or the user's). The polygons and line pieces are derived from it and the page's ink."},
     "lines": {"type": "array", "items": {"$ref": "#/$defs/line"}, "description": "Line pieces in reading order."},
     "order": {"type": ["integer", "null"], "minimum": 1, "description": "Reading order on the page, as given by the region step. Evidence only: the book's order is the order of the units."},
     "source": {"$ref": "#/$defs/source"}
@@ -103,6 +145,7 @@
     "number": {"type": "string", "description": "The printed number or marker, such as 25 for a verse or 3 for a footnote."},
     "label": {"type": "string"},
     "lang": {"type": "string"},
+    "style": {"$ref": "#/$defs/style", "description": "0.3: where this unit is printed differently from its type (centered, right-aligned, in a row with its neighbor)."},
     "open": {
      "type": "object", "additionalProperties": false,
      "properties": {"start": {"type": "boolean"}, "end": {"type": "boolean"}},
@@ -119,6 +162,7 @@
      "type": "object", "additionalProperties": false,
      "properties": {
       "unit": {"$ref": "#/$defs/unit_id"},
+      "anchor": {"$ref": "#/$defs/region_ref", "description": "0.2: '<page id>#<span id>', the note-marker span the relation starts from. Preferred: it survives edits to the text."},
       "region": {"$ref": "#/$defs/region_ref"},
       "line": {"type": "integer", "minimum": 0},
       "start": {"type": "integer", "minimum": 0, "description": "Character offset in the line piece's text."},
@@ -136,7 +180,7 @@
    "type": "object", "additionalProperties": false, "required": ["format", "schema_version", "book_id", "page", "units", "flows"],
    "properties": {
     "format": {"const": "page"},
-    "schema_version": {"const": "0.1"},
+    "schema_version": {"enum": ["0.1", "0.2", "0.3"]},
     "book_id": {"$ref": "#/$defs/local_id"},
     "page": {"$ref": "#/$defs/page"},
     "units": {"type": "array", "items": {"$ref": "#/$defs/unit"}},
@@ -145,11 +189,39 @@
     "source": {"$ref": "#/$defs/source"}
    }
   },
+  "style_sheet": {
+   "type": "object", "additionalProperties": false, "required": ["format", "schema_version", "book_id", "types"],
+   "description": "0.3: how a book's types are printed: the defaults that units' and line pieces' own styles override.",
+   "properties": {
+    "format": {"const": "style"},
+    "schema_version": {"enum": ["0.3"]},
+    "book_id": {"$ref": "#/$defs/local_id"},
+    "description": {"type": "string"},
+    "page": {
+     "type": "object", "additionalProperties": false,
+     "properties": {
+      "width_pt": {"type": "number", "minimum": 0},
+      "height_pt": {"type": "number", "minimum": 0},
+      "text_box_pt": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4, "description": "[x1, y1, x2, y2] of the text block on the page."}
+     }
+    },
+    "fonts": {"type": "object", "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {
+     "type": "object", "additionalProperties": false, "required": ["family"],
+     "properties": {
+      "family": {"type": "array", "items": {"type": "string"}, "minItems": 1, "description": "Font families in order of preference, as in CSS, ending with a generic family (serif, sans-serif)."},
+      "description": {"type": "string", "description": "What the book uses, such as the PDF's font names."}
+     }}},
+    "base": {"$ref": "#/$defs/style", "description": "Defaults for all text."},
+    "types": {"type": "object", "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {"$ref": "#/$defs/style"}},
+    "inline": {"type": "object", "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {"$ref": "#/$defs/style"}},
+    "source": {"$ref": "#/$defs/source"}
+   }
+  },
   "book_document": {
    "type": "object", "additionalProperties": false, "required": ["format", "schema_version", "types", "pages", "units", "flows"],
    "properties": {
     "format": {"const": "book"},
-    "schema_version": {"const": "0.1"},
+    "schema_version": {"enum": ["0.1", "0.2", "0.3"]},
     "types": {"$ref": "#/$defs/type_list"},
     "pages": {"type": "array", "items": {"$ref": "#/$defs/page"}},
     "units": {"type": "array", "items": {"$ref": "#/$defs/unit"}},

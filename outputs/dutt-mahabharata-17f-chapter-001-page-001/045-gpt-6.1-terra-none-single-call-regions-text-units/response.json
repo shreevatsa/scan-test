@@ -1,0 +1,285 @@
+{
+  "id": "resp_08a3b70b48b03251016aecbc260e2487d1aebea75e2c38e23f",
+  "object": "response",
+  "created_at": 1793899558,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793899631,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32768,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_08a3b70b48b03251016aecbc2776d087d1a7b2686f5c549997",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\n  \"regions\": [\n    {\n      \"type\": \"other\",\n      \"box_1000\": [227, 83, 773, 119],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [{\"text\": \"THE MAH\u0100BH\u0100RATA\", \"end\": \"space\"}],\n      \"note\": \"Display title of the book.\"\n    },\n    {\n      \"type\": \"other\",\n      \"box_1000\": [379, 145, 619, 166],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [{\"text\": \"DRONA PARVA\", \"end\": \"space\"}],\n      \"note\": \"Display title of the parva.\"\n    },\n    {\n      \"type\": \"heading\",\n      \"box_1000\": [142, 183, 431, 247],\n      \"keep\": true,\n      \"reading_order\": 1,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"CHAPTER 1\", \"end\": \"line\"},\n        {\"text\": \"(DRONABHISHEKA PARVA)\", \"end\": \"line\"},\n        {\"text\": \"The questions of Dhritarashtra\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [100, 255, 385, 299],\n      \"keep\": true,\n      \"reading_order\": 2,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0928\u093e\u0930\u093e\u092f\u0923\u0902 \u0928\u092e\u0938\u094d\u0915\u0943\u0924\u094d\u092f \u0928\u0930\u0902 \u091a\u0948\u0935 \u0928\u0930\u094b\u0924\u094d\u0924\u092e\u092e\u094d\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u0926\u0947\u0935\u0940\u0902 \u0938\u0930\u0938\u094d\u0935\u0924\u0940\u0902 \u0935\u094d\u092f\u093e\u0938\u0902 \u0924\u0924\u094b \u091c\u092f\u092e\u0941\u0926\u0940\u0930\u092f\u0947\u0924\u094d\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [86, 303, 488, 373],\n      \"keep\": true,\n      \"reading_order\": 3,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"Having saluted the Supreme Deity\", \"end\": \"space\"},\n        {\"text\": \"(Narayana) and the highest of all male beings\", \"end\": \"space\"},\n        {\"text\": \"Nara and also the Goddess of Learning\", \"end\": \"space\"},\n        {\"text\": \"(Sarasvati), let us cry \u201cSuccess\u201d!\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [100, 377, 430, 422],\n      \"keep\": true,\n      \"reading_order\": 4,\n      \"uncertain\": true,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0924\u092e\u092a\u094d\u0930\u0924\u093f\u092e\u0938\u0924\u094d\u0924\u094d\u0935\u094c\u091c\u094b\u092c\u0932\u0935\u0940\u0930\u094d\u092f\u0938\u092e\u0928\u094d\u0935\u093f\u0924\u092e\u094d\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u0939\u0924\u0902 \u0926\u0947\u0935\u0935\u094d\u0930\u0924\u0902 \u0936\u094d\u0930\u0941\u0924\u094d\u0935\u093e \u092a\u093e\u091e\u094d\u091a\u093e\u0932\u094d\u092f\u0947\u0928 \u0936\u093f\u0916\u0923\u094d\u0921\u093f\u0928\u093e\u0965\u0967\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": \"Some conjuncts in the first line are difficult to distinguish.\"\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [100, 424, 402, 469],\n      \"keep\": true,\n      \"reading_order\": 5,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0927\u0943\u0924\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u0938\u094d\u0924\u0924\u094b \u0930\u093e\u091c\u093e \u0936\u094b\u0915\u0935\u094d\u092f\u093e\u0915\u0941\u0932\u0932\u094b\u091a\u0928\u0903\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u0915\u093f\u092e\u091a\u0947\u0937\u094d\u091f\u0924 \u0935\u093f\u092a\u094d\u0930\u0930\u094d\u0937\u0947 \u0939\u0924\u0947 \u092a\u093f\u0924\u0930\u093f \u0935\u0940\u0930\u094d\u092f\u0935\u093e\u0928\u094d\u0965\u0968\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"speaker\",\n      \"box_1000\": [87, 476, 233, 491],\n      \"keep\": true,\n      \"reading_order\": 6,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [{\"text\": \"Janamejaya said\", \"end\": \"space\"}],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [86, 496, 489, 600],\n      \"keep\": true,\n      \"reading_order\": 7,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"Hearing that his sire Devavrata of\", \"end\": \"space\"},\n        {\"text\": \"unequaled might, energy, sturdiness, prowess\", \"end\": \"space\"},\n        {\"text\": \"and vigour, had been slain by Sikhandin the\", \"end\": \"space\"},\n        {\"text\": \"son of Panchala. O Brahmanical sage, what did\", \"end\": \"space\"},\n        {\"text\": \"the very powerful monarch Dhritarashtra with\", \"end\": \"space\"},\n        {\"text\": \"eyes blinded with fast-falling tears, do?\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [100, 603, 454, 650],\n      \"keep\": true,\n      \"reading_order\": 8,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0924\u0938\u094d\u092f \u092a\u0941\u0924\u094d\u0930\u094b \u0939\u093f \u092d\u0917\u0935\u0928\u094d \u092d\u0940\u0937\u094d\u092e\u0926\u094d\u0930\u094b\u0923\u092e\u0941\u0916\u0948 \u0930\u0925\u0948\u0903\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u092a\u0930\u093e\u091c\u093f\u0924\u094d\u092f \u092e\u0939\u0947\u0937\u094d\u0935\u093e\u0938\u093e\u0928\u094d \u092a\u093e\u0923\u094d\u0921\u0935\u093e\u0928\u094d \u0930\u093e\u091c\u094d\u092f\u092e\u093f\u091a\u094d\u091b\u0924\u093f\u0965\u0969\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [87, 652, 489, 736],\n      \"keep\": true,\n      \"reading_order\": 9,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"His son, O worshipful one, desired to obtain\", \"end\": \"space\"},\n        {\"text\": \"monarchy after having defeated the mighty\", \"end\": \"space\"},\n        {\"text\": \"warriors, the sons of Pandu, through the\", \"end\": \"space\"},\n        {\"text\": \"assistance of Bhima, Drona and other such\", \"end\": \"space\"},\n        {\"text\": \"heroes.\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [101, 741, 399, 789],\n      \"keep\": true,\n      \"reading_order\": 10,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0924\u0938\u094d\u092e\u093f\u0928\u094d \u0939\u0924\u0947 \u0924\u0941 \u092d\u0917\u0935\u0928\u094d \u0915\u0947\u0924\u094c \u0938\u0930\u094d\u0935\u0927\u0928\u0941\u0937\u094d\u092e\u0924\u093e\u092e\u094d\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u092f\u0926\u091a\u0947\u0937\u094d\u091f\u0924 \u0915\u094c\u0930\u0935\u094d\u092f\u0938\u094d\u0924\u0928\u094d\u092e\u0947 \u092c\u094d\u0930\u0942\u0939\u093f \u0924\u092a\u094b\u0927\u0928\u0965\u096a\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [87, 791, 489, 842],\n      \"keep\": true,\n      \"reading_order\": 11,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"O illustrious ascetic, tell me all that the\", \"end\": \"space\"},\n        {\"text\": \"foremost of the Kuru dynasty did, when that\", \"end\": \"space\"},\n        {\"text\": \"chief of all bowmen (Bhima) had been killed.\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"speaker\",\n      \"box_1000\": [231, 845, 349, 864],\n      \"keep\": true,\n      \"reading_order\": 12,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [{\"text\": \"\u0935\u0948\u0936\u092e\u094d\u092a\u093e\u092f\u0928 \u0909\u0935\u093e\u091a\", \"end\": \"space\"}],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [101, 868, 433, 914],\n      \"keep\": true,\n      \"reading_order\": 13,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0928\u093f\u0939\u0924\u0902 \u092a\u093f\u0924\u0930\u0902 \u0936\u094d\u0930\u0941\u0924\u094d\u0935\u093e \u0927\u0943\u0924\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u094b \u091c\u0928\u093e\u0927\u093f\u092a\u0903\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u0932\u0947\u092d\u0947 \u0928 \u0936\u093e\u0928\u094d\u0924\u093f\u0902 \u0915\u094c\u0930\u0935\u094d\u092f\u0936\u094d\u091a\u093f\u0928\u094d\u0924\u093e\u0936\u094b\u0915\u092a\u0930\u093e\u092f\u0923\u0903\u0965\u096b\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"speaker\",\n      \"box_1000\": [511, 182, 692, 198],\n      \"keep\": true,\n      \"reading_order\": 14,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [{\"text\": \"Vaishampayana said\", \"end\": \"space\"}],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [510, 203, 914, 296],\n      \"keep\": true,\n      \"reading_order\": 15,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"Having heard that his sire (Bhishma) had\", \"end\": \"space\"},\n        {\"text\": \"been slain in battle, that ruler of men,\", \"end\": \"space\"},\n        {\"text\": \"Dhritarashtra of the Kuru dynasty knew no rest\", \"end\": \"space\"},\n        {\"text\": \"of mind, being worn out with anxiety and\", \"end\": \"space\"},\n        {\"text\": \"sorrow.\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [524, 303, 851, 348],\n      \"keep\": true,\n      \"reading_order\": 16,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0924\u0938\u094d\u092f \u091a\u093f\u0928\u094d\u0924\u092f\u0924\u094b \u0926\u0941\u0903\u0916\u092e\u0928\u093f\u0936\u0902 \u092a\u093e\u0930\u094d\u0925\u093f\u0935\u0938\u094d\u092f \u0924\u0924\u094d\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u0906\u091c\u0917\u093e\u092e \u0935\u093f\u0936\u0941\u0926\u094d\u0927\u093e\u0924\u094d\u092e\u093e \u092a\u0941\u0928\u0930\u094d\u0917\u0935\u0932\u094d\u0917\u0923\u093f\u0938\u094d\u0924\u0926\u093e\u0965\u096c\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [511, 353, 914, 409],\n      \"keep\": true,\n      \"reading_order\": 17,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"When that foremost of the Kurus had been\", \"end\": \"space\"},\n        {\"text\": \"thus brooding over his grief, there came again\", \"end\": \"space\"},\n        {\"text\": \"to him the pure-souled son of Gavalgani.\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [524, 414, 839, 460],\n      \"keep\": true,\n      \"reading_order\": 18,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0936\u093f\u092c\u093f\u0930\u093e\u0924\u094d \u0938\u0902\u091c\u092f\u0902 \u092a\u094d\u0930\u093e\u092a\u094d\u0924\u0902 \u0928\u093f\u0936\u093f \u0928\u093e\u0917\u093e\u0939\u094d\u0935\u092f\u0902 \u092a\u0941\u0930\u092e\u094d\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u0906\u092e\u094d\u092c\u093f\u0915\u0947\u092f\u094b \u092e\u0939\u093e\u0930\u093e\u091c \u0927\u0943\u0924\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u094b\u093d\u0928\u094d\u0935\u092a\u0943\u091a\u094d\u091b\u0924\u0965\u096d\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [510, 462, 915, 531],\n      \"keep\": true,\n      \"reading_order\": 19,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"O great king, Dhritarashtra, the son of\", \"end\": \"space\"},\n        {\"text\": \"Ambika, then thus questioned Sanjaya who had\", \"end\": \"space\"},\n        {\"text\": \"that night returned from the camp of the city\", \"end\": \"space\"},\n        {\"text\": \"named after the elephant.\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [524, 536, 861, 581],\n      \"keep\": true,\n      \"reading_order\": 20,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0936\u094d\u0930\u0941\u0924\u094d\u0935\u093e \u092d\u0940\u0937\u094d\u092e\u0938\u094d\u092f \u0928\u093f\u0927\u0928\u092e\u092a\u094d\u0930\u0939\u0943\u0937\u094d\u091f\u092e\u0928\u093e \u092d\u0943\u0936\u092e\u094d\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u092a\u0941\u0924\u094d\u0930\u093e\u0923\u093e\u0902 \u091c\u092f\u092e\u093e\u0915\u093e\u0919\u094d\u0915\u094d\u0937\u0928\u094d \u0935\u093f\u0932\u0932\u093e\u092a\u093e\u0924\u0941\u0930\u094b \u092f\u0925\u093e\u0965\u096e\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [510, 583, 914, 653],\n      \"keep\": true,\n      \"reading_order\": 21,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"Hearing of the death of Bhishma, he\", \"end\": \"space\"},\n        {\"text\": \"became exceedingly cheerless and longing for\", \"end\": \"space\"},\n        {\"text\": \"the victory of his sons, he broke out into\", \"end\": \"space\"},\n        {\"text\": \"lamentations like one sorely distressed.\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"speaker\",\n      \"box_1000\": [665, 661, 759, 679],\n      \"keep\": true,\n      \"reading_order\": 22,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [{\"text\": \"\u0927\u0943\u0924\u0930\u093e\u0937\u094d\u091f\u094d\u0930 \u0909\u0935\u093e\u091a\", \"end\": \"space\"}],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [525, 684, 851, 729],\n      \"keep\": true,\n      \"reading_order\": 23,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0938\u0902\u0936\u094b\u091a\u094d\u092f \u0924\u0941 \u092e\u0939\u093e\u0924\u094d\u092e\u093e\u0928\u0902 \u092d\u0940\u0937\u094d\u092e\u0902 \u092d\u0940\u092e\u092a\u0930\u093e\u0915\u094d\u0930\u092e\u092e\u094d\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u0915\u093f\u092e\u0915\u093e\u0930\u094d\u0937\u0941\u0903 \u092a\u0930\u0902 \u0924\u093e\u0924 \u0915\u0941\u0930\u0935\u0903 \u0915\u093e\u0932\u091a\u094b\u0926\u093f\u0924\u093e\u0903\u0965\u096f\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"speaker\",\n      \"box_1000\": [511, 736, 676, 752],\n      \"keep\": true,\n      \"reading_order\": 24,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [{\"text\": \"Dhritarashtra said\", \"end\": \"space\"}],\n      \"note\": null\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [511, 756, 914, 810],\n      \"keep\": true,\n      \"reading_order\": 25,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"O son, having bewailed the high-souled\", \"end\": \"space\"},\n        {\"text\": \"Bhima of terrific might, what did the Kurus,\", \"end\": \"space\"},\n        {\"text\": \"goaded by Destiny, do?\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [525, 812, 887, 858],\n      \"keep\": true,\n      \"reading_order\": 26,\n      \"uncertain\": true,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"\u0924\u0938\u094d\u092e\u093f\u0928\u094d \u0935\u093f\u0928\u093f\u0939\u0924\u0947 \u0936\u0942\u0930\u0947 \u0926\u0941\u0930\u093e\u0927\u0930\u094d\u0937\u0947 \u092e\u0939\u093e\u0924\u094d\u092e\u0928\u093f\u0964\", \"end\": \"line\"},\n        {\"text\": \"\u0915\u093f\u0902 \u0928\u0941 \u0938\u094d\u0935\u093f\u0924\u094d \u0915\u0941\u0930\u0935\u094b\u093d\u0915\u093e\u0930\u094d\u0937\u0941\u0930\u094d\u0928\u093f\u092e\u0917\u094d\u0928\u093e\u0903 \u0936\u094b\u0915\u0938\u093e\u0917\u0930\u0947\u0965\u0967\u0966\u0965\", \"end\": \"space\"}\n      ],\n      \"note\": \"Some conjuncts in the second line are difficult to distinguish.\"\n    },\n    {\n      \"type\": \"translation\",\n      \"box_1000\": [512, 859, 914, 914],\n      \"keep\": true,\n      \"reading_order\": 27,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false,\n      \"lines\": [\n        {\"text\": \"When that unconquerable and high-souled\", \"end\": \"space\"},\n        {\"text\": \"hero was slain, what, for sooth, did the Kurus,\", \"end\": \"space\"},\n        {\"text\": \"deep down into the sea of sorrow, do?\", \"end\": \"space\"}\n      ],\n      \"note\": null\n    }\n  ],\n  \"units\": [\n    {\"id\": \"u1\", \"type\": \"chapter\", \"number\": \"1\", \"label\": \"The questions of Dhritarashtra\", \"open_start\": false, \"open_end\": true, \"children\": [\"u2\", \"u3\", \"u7\", \"u13\", \"u17\", \"u21\", \"u26\", \"u30\", \"u34\", \"u38\", \"u43\"]},\n    {\"id\": \"u2\", \"type\": \"heading\", \"number\": \"1\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r3\"]},\n    {\"id\": \"u3\", \"type\": \"group\", \"number\": null, \"label\": \"Invocation\", \"open_start\": false, \"open_end\": false, \"children\": [\"u4\", \"u6\"]},\n    {\"id\": \"u4\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u5\"]},\n    {\"id\": \"u5\", \"type\": \"verse\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r4\"]},\n    {\"id\": \"u6\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r5\"]},\n    {\"id\": \"u7\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u8\", \"u11\", \"u12\"]},\n    {\"id\": \"u8\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u9\", \"u10\"]},\n    {\"id\": \"u9\", \"type\": \"verse\", \"number\": \"1\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r6\"]},\n    {\"id\": \"u10\", \"type\": \"verse\", \"number\": \"2\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r7\"]},\n    {\"id\": \"u11\", \"type\": \"speaker\", \"number\": null, \"label\": \"Janamejaya\", \"open_start\": false, \"open_end\": false, \"children\": [\"r8\"]},\n    {\"id\": \"u12\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r9\"]},\n    {\"id\": \"u13\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u14\", \"u16\"]},\n    {\"id\": \"u14\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u15\"]},\n    {\"id\": \"u15\", \"type\": \"verse\", \"number\": \"3\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r10\"]},\n    {\"id\": \"u16\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r11\"]},\n    {\"id\": \"u17\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u18\", \"u20\"]},\n    {\"id\": \"u18\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u19\"]},\n    {\"id\": \"u19\", \"type\": \"verse\", \"number\": \"4\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r12\"]},\n    {\"id\": \"u20\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r13\"]},\n    {\"id\": \"u21\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u22\", \"u23\", \"u25\", \"u27\"]},\n    {\"id\": \"u22\", \"type\": \"speaker\", \"number\": null, \"label\": \"\u0935\u0948\u0936\u092e\u094d\u092a\u093e\u092f\u0928\", \"open_start\": false, \"open_end\": false, \"children\": [\"r14\"]},\n    {\"id\": \"u23\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u24\"]},\n    {\"id\": \"u24\", \"type\": \"verse\", \"number\": \"5\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r15\"]},\n    {\"id\": \"u25\", \"type\": \"speaker\", \"number\": null, \"label\": \"Vaishampayana\", \"open_start\": false, \"open_end\": false, \"children\": [\"r16\"]},\n    {\"id\": \"u27\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r17\"]},\n    {\"id\": \"u26\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u28\", \"u29\"]},\n    {\"id\": \"u28\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u31\"]},\n    {\"id\": \"u31\", \"type\": \"verse\", \"number\": \"6\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r18\"]},\n    {\"id\": \"u29\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r19\"]},\n    {\"id\": \"u30\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u32\", \"u33\"]},\n    {\"id\": \"u32\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u35\"]},\n    {\"id\": \"u35\", \"type\": \"verse\", \"number\": \"7\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r20\"]},\n    {\"id\": \"u33\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r21\"]},\n    {\"id\": \"u34\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u36\", \"u37\"]},\n    {\"id\": \"u36\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u39\"]},\n    {\"id\": \"u39\", \"type\": \"verse\", \"number\": \"8\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r22\"]},\n    {\"id\": \"u37\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r23\"]},\n    {\"id\": \"u38\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u40\", \"u41\", \"u42\", \"u44\"]},\n    {\"id\": \"u40\", \"type\": \"speaker\", \"number\": null, \"label\": \"\u0927\u0943\u0924\u0930\u093e\u0937\u094d\u091f\u094d\u0930\", \"open_start\": false, \"open_end\": false, \"children\": [\"r24\"]},\n    {\"id\": \"u41\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u45\"]},\n    {\"id\": \"u45\", \"type\": \"verse\", \"number\": \"9\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r25\"]},\n    {\"id\": \"u42\", \"type\": \"speaker\", \"number\": null, \"label\": \"Dhritarashtra\", \"open_start\": false, \"open_end\": false, \"children\": [\"r26\"]},\n    {\"id\": \"u44\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r27\"]},\n    {\"id\": \"u43\", \"type\": \"group\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u46\", \"u48\"]},\n    {\"id\": \"u46\", \"type\": \"verse_set\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"u47\"]},\n    {\"id\": \"u47\", \"type\": \"verse\", \"number\": \"10\", \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r28\"]},\n    {\"id\": \"u48\", \"type\": \"translation\", \"number\": null, \"label\": null, \"open_start\": false, \"open_end\": false, \"children\": [\"r29\"]}\n  ],\n  \"flows\": [{\"flow\": \"main\", \"units\": [\"u1\"]}]\n}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions_text_units",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions",
+          "units",
+          "flows"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain",
+                "continues_from_earlier",
+                "continues_later",
+                "lines",
+                "note"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "heading",
+                    "speaker",
+                    "verse",
+                    "translation",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                },
+                "continues_from_earlier": {
+                  "type": "boolean"
+                },
+                "continues_later": {
+                  "type": "boolean"
+                },
+                "lines": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "text",
+                      "end"
+                    ],
+                    "properties": {
+                      "text": {
+                        "type": "string"
+                      },
+                      "end": {
+                        "enum": [
+                          "space",
+                          "hyphen",
+                          "join",
+                          "line"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "type",
+                "number",
+                "label",
+                "open_start",
+                "open_end",
+                "children"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "chapter",
+                    "heading",
+                    "group",
+                    "speaker",
+                    "verse_set",
+                    "verse",
+                    "translation"
+                  ]
+                },
+                "number": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "open_start": {
+                  "type": "boolean"
+                },
+                "open_end": {
+                  "type": "boolean"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "flows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "flow",
+                "units"
+              ],
+              "properties": {
+                "flow": {
+                  "enum": [
+                    "main"
+                  ]
+                },
+                "units": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 9027,
+    "input_tokens_details": {
+      "cache_write_tokens": 9024,
+      "cached_tokens": 0
+    },
+    "output_tokens": 6523,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 15550
+  },
+  "user": null,
+  "metadata": {}
+}

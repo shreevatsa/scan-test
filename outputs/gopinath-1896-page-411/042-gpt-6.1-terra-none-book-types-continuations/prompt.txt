@@ -1,0 +1,50 @@
+Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.
+
+The book: Purohit Gopinath (1896): The Nītiśataka, Śṛṅgāraśataka and Vairāgyaśataka of Bhartṛhari, with Hindi and English translations. An English preface; then the three śatakas, one stanza to a page or so, each page inside a ruled border: the Sanskrit stanza in large type, its Hindi translation, sometimes the label भावार्थ । with a Hindi gist, its English translation and sometimes an English purport, then below a rule notes on where the stanza is quoted and on parallel passages. After the text come the variant readings, English notes on the stanzas, a list of works consulted and an index of stanzas.
+
+Return JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,
+with the origin at the top-left. Give each region a type, a keep flag, and
+reading_order among content regions. Furniture regions may have null order.
+
+Make each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:
+- heading: A title or heading: of a part (PREFACE., VARIANTS., NOTES.), of a śataka, or of a śataka within the variants, or a heading inside the preface; also the label भावार्थ । above the Hindi gist.
+- paragraph: A paragraph of the English preface. One region per paragraph, including one continued from the previous page or onto the next.
+- table: One table of the preface, often printed sideways, with its column heads. One region per table, including any rotated text in it.
+- verse: One Sanskrit stanza in the largest type at the top of the text, with its number in Devanagari digits, such as ॥ ५४ ॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- hindi_translation: The Hindi translation of the stanza, in Devanagari prose below it, ending with the stanza's number, such as ॥ ५४ ॥. One region per paragraph, including one continued from the previous page or onto the next.
+- bhavartha: The Hindi gist of the stanza below the label भावार्थ ।, usually one or two lines. One region per paragraph, including one continued from the previous page or onto the next.
+- english_translation: The English translation of the stanza, a paragraph in roman type below the Hindi. One region per paragraph, including one continued from the previous page or onto the next.
+- english_comment: An English paragraph after the translation, above the rule: the purport, beginning PURPORT., or a comment on the stanza. One region per paragraph, including one continued from the previous page or onto the next.
+- note: One note below the rule on a text page, about the stanza above: where the stanza is quoted, such as Quoted under Bhartrihari in the Subhâshitâvali at No. 464.; a comment on the stanza; or one parallel passage, with the words that introduce it, such as Cf.—(a) or For the point of the stanza, cf.—, the quotation, even of two verse lines, and its source in parentheses. Also a footnote of the preface, marked * or †. Include its marker. Separate neighboring notes even when they share a printed line.
+- variant_entry: The variant readings of one stanza: its Roman numeral, such as XCII., then readings for its quarters (a) to (d) with the sigla of the sources, such as Sp. Sb. T. One region per entry.
+- note_paragraph: One paragraph of the English notes, beginning with a stanza's Roman numeral or a quarter's letter, such as XCVII. (a) or (b). One region per paragraph, including one continued from the previous page or onto the next.
+- quotation: Lines of verse quoted in the notes and set apart, such as the lines of Milton in a note; the note's text before and after them belongs to its paragraph. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- list_entry: One entry of a list at the end of the book: a work consulted, or a stanza's first words with its number. One region per entry.
+- running_header: The running title at the center of the head: on text pages the śataka's name, such as नीतिशतकम् ।, or भाषान्तरादिसमेतम् ।; elsewhere PREFACE., VARIANTS. or NOTES. Page furniture, keep=false.
+- page_number: The page number at the outer corner of the head: Devanagari digits on text pages, Arabic digits in the preface, variants and notes. Page furniture, keep=false.
+- head_stanza_number: On text pages, the number of the page's stanza at the inner corner of the head, opposite the page number, such as ५२. Not the page number. Page furniture, keep=false.
+- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.
+
+Larger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:
+- preface: The English preface, with its headings, tables printed sideways and footnotes.
+- shataka: One of the three śatakas (नीतिशतकम्, शृङ्गारशतकम्, वैराग्यशतकम्): its title and its stanzas with their translations.
+- group: One stanza with what follows it above the rule: its Hindi translation, the label भावार्थ । and the Hindi gist where printed, its English translation, and any English comment. The app can show each group on its own.
+- variants: The variant readings after the text, under the title VARIANTS. and a heading for each śataka, such as VAIRAGYASATAKA.
+- notes: The English notes after the variants, under the title NOTES.
+- stanza_note: The English notes on one stanza, beginning with its Roman numeral, such as XCV. A stanza's notes can have several paragraphs, each on one quarter of the stanza, such as (c) or (d).
+- back_lists: The lists at the end of the book: the works consulted, with their abbreviations, and the index of stanzas by their first words.
+
+- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.
+- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.
+- A region holds the text of one unit only. Where one unit contains another, as with a quotation inside a note_paragraph, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.
+- Continuation: give each region two flags.
+  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.
+  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.
+  Both are false for a unit that is complete in its region, and for page furniture.
+- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.
+- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.
+- Do not transcribe, translate, or regenerate the text. Only propose regions.
+
+Schema:
+{"regions":[{"type":"heading|paragraph|table|verse|hindi_translation|bhavartha|english_translation|english_comment|note|variant_entry|note_paragraph|quotation|list_entry|running_header|page_number|head_stanza_number|other",
+"box_1000":[0,0,1000,1000],"keep":true,"reading_order":1,"uncertain":false,"continues_from_earlier":false,"continues_later":false}]}

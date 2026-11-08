@@ -1,0 +1,818 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "052-gemini-4-argon-low-region-transcription-neighbor-context-region-list",
+  "name": "Gemini 4 Argon with low thinking: method 047's transcription request (method 043's regions, neighbor context), with no fixed line counts and a region list in the response schema",
+  "settings": {
+   "name": "Gemini 4 Argon with low thinking: method 047's transcription request (method 043's regions, neighbor context), with no fixed line counts and a region list in the response schema",
+   "provider": "gemini",
+   "model": "gemini-4-argon",
+   "thinking_level": "low",
+   "image_resolution": "high",
+   "max_output_tokens": 32768,
+   "prompt_variant": "region-transcription-neighbor-context-v1",
+   "store": false,
+   "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+   "cutout_padding_char": 0.5,
+   "gutter_width_char": 1.6,
+   "gutter_min_px": 36,
+   "gutter_font_char": 0.55,
+   "gutter_font_min_px": 14,
+   "overview_label_char": 0.8,
+   "overview_label_min_px": 18,
+   "overview_outline_px": 3,
+   "context_lines": 2,
+   "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+   "image_detail": "original",
+   "image_detail_note": "The OpenAI detail setting, used only when building the content list; the Gemini request uses image_resolution.",
+   "schema_fixed_line_counts": false,
+   "schema_region_list": true
+  },
+  "files_sha256": {
+   "run.py": "44278aba0be5e4688e624429280065c2be8d153d41d39010bebda756551ac25b",
+   "prompt.py": "305a84eb1a607a707c15dfb888ba141187e7f6330a604166e5b773241f53bdf4",
+   "prompt-template.txt": "1d451cee4378c77e02bea16e6692603485b2235793e968c2cb905b2c1c220986",
+   "cutouts.py": "7d5f320391cde8c336c234a68d37ce5d973f697a13d30a4ebfa74aa42c84cb54",
+   "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+   "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+   "config.json": "d24357625c6dbde31fe8bdd494c9b4add474131f90ce9a5c799b3255a3d15707",
+   "pricing.json": "c952aa34dfd3bfc4c4ba995261db51a1172fc43ab713a6df3ae20dee1a467bd6",
+   "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+ },
+ "input": {
+  "id": "kale-1913-page-037",
+  "path": "inputs/kale-1913-page-037.png",
+  "sha256": "98254dc1589852048fe34a30ce88152c33f97cf5e683530b20f1f84fe5c08646"
+ },
+ "type_list": {
+  "path": "schema/types/kale-1913.json",
+  "sha256": "70c6fa538245165dad5d928f07673772ae3fbc09b859b1d7f8d7d23ea5499218",
+  "book_id": "kale-1913"
+ },
+ "source_regions": {
+  "path": "outputs/kale-1913-page-037/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-002/regions.json",
+  "sha256": "fa1fe203f2d13df57db45d038e4da25f8ed0bcfeac93a0b443f9f07ab840e21c"
+ },
+ "api": {
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "returned_model": "gemini-4-argon",
+  "response_id": null,
+  "request_id": null,
+  "api_wall_seconds": 35.08608854236081,
+  "usage": {
+   "total_tokens": 36760,
+   "total_input_tokens": 33001,
+   "input_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 3792
+    },
+    {
+     "modality": "image",
+     "tokens": 29209
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 3759,
+   "output_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 3759
+    }
+   ],
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 0,
+   "initial_input_tokens": 33001
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 33001,
+   "cached_input_tokens": 0,
+   "text_output_tokens": 3759,
+   "thinking_tokens": 0,
+   "billable_output_tokens_including_thinking": 3759,
+   "total_token_count_matches": true,
+   "estimated_paid_tier_input_cost_usd": 0.066002,
+   "estimated_paid_tier_output_cost_usd": 0.03759,
+   "estimated_paid_tier_total_cost_usd": 0.103592,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published paid-tier standard rates; estimate from usage, not an invoice",
+    "input_per_million_usd": 2.0,
+    "output_per_million_usd": 10.0,
+    "cached_input_per_million_usd": 0.1,
+    "valid_through": "2026-11-30",
+    "source": "https://aistudio.google.com/docs/pricing"
+   }
+  },
+  "request_sha256": "e702c8b780f34d3a5336bf8366c047d829bfc5d608d63be3eedddca3f1912a28",
+  "response_sha256": "91344d13b1508f6114f5574d3e3863d88fe2a1838e49acadbcd7259dea9ea455"
+ },
+ "regions_sent": [
+  {
+   "id": "r3",
+   "region_id": 3,
+   "type": "lead_in",
+   "line_ids": [
+    2
+   ],
+   "cutout": {
+    "crop_box": [
+     118,
+     213,
+     920,
+     316
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     2
+    ],
+    "sha256": "8ab2ecebcdf73f7cc9b707b8a5c12a29124c359aec5ede0a6a1eead77953d961",
+    "size": [
+     863,
+     103
+    ]
+   }
+  },
+  {
+   "id": "r4",
+   "region_id": 4,
+   "type": "verse",
+   "line_ids": [
+    3,
+    4
+   ],
+   "cutout": {
+    "crop_box": [
+     118,
+     266,
+     1190,
+     452
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     3,
+     4
+    ],
+    "sha256": "d77633e54c5adb71c81f5a4d34921dfc078fd842bc9a8a372e2d0e4ebd8023d2",
+    "size": [
+     1133,
+     186
+    ]
+   }
+  },
+  {
+   "id": "r5",
+   "region_id": 5,
+   "type": "commentary",
+   "line_ids": [
+    5,
+    6
+   ],
+   "cutout": {
+    "crop_box": [
+     71,
+     393,
+     1243,
+     557
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     5,
+     6
+    ],
+    "sha256": "6107d36cef938737566a3ec6abead0c7450b9823cefb5001e06324a579a8b0a1",
+    "size": [
+     1233,
+     164
+    ]
+   }
+  },
+  {
+   "id": "r6",
+   "region_id": 6,
+   "type": "heading",
+   "line_ids": [
+    7
+   ],
+   "cutout": {
+    "crop_box": [
+     110,
+     501,
+     413,
+     607
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     7
+    ],
+    "sha256": "1757b84badd2902a0d0eb0f4a502750cf23fa8096ee2f817167d0291941cf59e",
+    "size": [
+     364,
+     106
+    ]
+   }
+  },
+  {
+   "id": "r7",
+   "region_id": 7,
+   "type": "verse",
+   "line_ids": [
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "cutout": {
+    "crop_box": [
+     121,
+     549,
+     1214,
+     847
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "sha256": "857db045e700424265ce9753c3667d4e08bbaa0e9c4aaf2cbfaf53393aceeff0",
+    "size": [
+     1154,
+     298
+    ]
+   }
+  },
+  {
+   "id": "r8",
+   "region_id": 8,
+   "type": "commentary",
+   "line_ids": [
+    13,
+    14,
+    15,
+    16
+   ],
+   "cutout": {
+    "crop_box": [
+     73,
+     790,
+     1242,
+     1048
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     13,
+     14,
+     15,
+     16
+    ],
+    "sha256": "b995915ebd81fbc580e923f92d6fb136cdff58b319e0cc5294de820fbb117fe5",
+    "size": [
+     1230,
+     258
+    ]
+   }
+  },
+  {
+   "id": "r9",
+   "region_id": 9,
+   "type": "lead_in",
+   "line_ids": [
+    17
+   ],
+   "cutout": {
+    "crop_box": [
+     122,
+     998,
+     890,
+     1114
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     17
+    ],
+    "sha256": "18fd60ce1d441db27e8466dc81d6ab3b797bc202d005d9247e5f3b2772944bd2",
+    "size": [
+     829,
+     116
+    ]
+   }
+  },
+  {
+   "id": "r10",
+   "region_id": 10,
+   "type": "verse",
+   "line_ids": [
+    18,
+    19,
+    20,
+    21
+   ],
+   "cutout": {
+    "crop_box": [
+     118,
+     1056,
+     1237,
+     1351
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     18,
+     19,
+     20,
+     21
+    ],
+    "sha256": "15b329ab0f4a6a3d6fd6ba6e02bf5465112ff5140af2243a694a34d1d5fff630",
+    "size": [
+     1180,
+     295
+    ]
+   }
+  },
+  {
+   "id": "r11",
+   "region_id": 11,
+   "type": "commentary",
+   "line_ids": [
+    22,
+    23,
+    24,
+    25,
+    26
+   ],
+   "cutout": {
+    "crop_box": [
+     72,
+     1295,
+     1241,
+     1618
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     22,
+     23,
+     24,
+     25,
+     26
+    ],
+    "sha256": "c7218093ba542588f01ccd6aeb4703388cc2978c9438cbecff2d038a6983c95d",
+    "size": [
+     1230,
+     323
+    ]
+   }
+  },
+  {
+   "id": "r12",
+   "region_id": 12,
+   "type": "lead_in",
+   "line_ids": [
+    27
+   ],
+   "cutout": {
+    "crop_box": [
+     123,
+     1557,
+     815,
+     1665
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     27
+    ],
+    "sha256": "dcb1ce5b51bdba9f63ec9c28ff76cf30dd79de7a18a951f99f85ed6357631640",
+    "size": [
+     753,
+     108
+    ]
+   }
+  },
+  {
+   "id": "r13",
+   "region_id": 13,
+   "type": "verse",
+   "line_ids": [
+    28,
+    29
+   ],
+   "cutout": {
+    "crop_box": [
+     174,
+     1613,
+     1102,
+     1781
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     28,
+     29
+    ],
+    "sha256": "fa90c7ed141612327b4eb23c3900467db796f2eb4933fe837f32dd4d5d7388a7",
+    "size": [
+     989,
+     168
+    ]
+   }
+  },
+  {
+   "id": "r14",
+   "region_id": 14,
+   "type": "footnote",
+   "line_ids": [
+    30
+   ],
+   "cutout": {
+    "crop_box": [
+     114,
+     1753,
+     524,
+     1850
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     30
+    ],
+    "sha256": "d0501fad06375422e58c10b266f084592e374f33f6181a3410ba915bfae50a78",
+    "size": [
+     471,
+     97
+    ]
+   }
+  },
+  {
+   "id": "r15",
+   "region_id": 15,
+   "type": "footnote",
+   "line_ids": [
+    30
+   ],
+   "cutout": {
+    "crop_box": [
+     504,
+     1754,
+     715,
+     1847
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     30
+    ],
+    "sha256": "08021388854dfc77ef27d00b421c4696f54432f9de9bc5e4b6fcbac9b5e2b8e5",
+    "size": [
+     272,
+     93
+    ]
+   }
+  },
+  {
+   "id": "r16",
+   "region_id": 16,
+   "type": "footnote",
+   "line_ids": [
+    30
+   ],
+   "cutout": {
+    "crop_box": [
+     700,
+     1756,
+     851,
+     1845
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     30
+    ],
+    "sha256": "8237b0637ab346cd30998b57dafac8885116e6d70b1633b5b45102aa3d4d8088",
+    "size": [
+     212,
+     89
+    ]
+   }
+  },
+  {
+   "id": "r17",
+   "region_id": 17,
+   "type": "footnote",
+   "line_ids": [
+    30
+   ],
+   "cutout": {
+    "crop_box": [
+     810,
+     1762,
+     985,
+     1847
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     30
+    ],
+    "sha256": "fbd557f5c267a3eb574b6b20e66967cdbd1d47e3e3933beb2450d20ad54b73cf",
+    "size": [
+     236,
+     85
+    ]
+   }
+  },
+  {
+   "id": "r18",
+   "region_id": 18,
+   "type": "footnote",
+   "line_ids": [
+    30
+   ],
+   "cutout": {
+    "crop_box": [
+     968,
+     1756,
+     1240,
+     1849
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     30
+    ],
+    "sha256": "27f3e67bd26611c016fc94ec3a7c6c135ab93d86c061b6c1cb6cb5f8dcb1ddfa",
+    "size": [
+     333,
+     93
+    ]
+   }
+  },
+  {
+   "id": "r19",
+   "region_id": 19,
+   "type": "footnote",
+   "line_ids": [
+    31
+   ],
+   "cutout": {
+    "crop_box": [
+     72,
+     1804,
+     278,
+     1900
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     31
+    ],
+    "sha256": "b45e962257ff71fa78acfaebf9fbd439d5c21087dbc8d8761e1802b57a31fde5",
+    "size": [
+     267,
+     96
+    ]
+   }
+  },
+  {
+   "id": "r20",
+   "region_id": 20,
+   "type": "footnote",
+   "line_ids": [
+    31
+   ],
+   "cutout": {
+    "crop_box": [
+     251,
+     1800,
+     533,
+     1893
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     31
+    ],
+    "sha256": "83f7ae4306a564b1fe5ebbd9301e7d6686cec8058b9833b28f7b9f53d02d4fda",
+    "size": [
+     343,
+     93
+    ]
+   }
+  },
+  {
+   "id": "r21",
+   "region_id": 21,
+   "type": "footnote",
+   "line_ids": [
+    31
+   ],
+   "cutout": {
+    "crop_box": [
+     508,
+     1803,
+     649,
+     1894
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     31
+    ],
+    "sha256": "c19e1957bb8387e453e077cf8727b5a7769d86a447afe0e6b846225c728566a2",
+    "size": [
+     202,
+     91
+    ]
+   }
+  },
+  {
+   "id": "r22",
+   "region_id": 22,
+   "type": "footnote",
+   "line_ids": [
+    31,
+    32
+   ],
+   "cutout": {
+    "crop_box": [
+     79,
+     1800,
+     1243,
+     1955
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     31,
+     32
+    ],
+    "sha256": "0a4b59f5cc441d14d7d67e04e9031f2b0de53c294277d836897cd2c6a0386db6",
+    "size": [
+     1225,
+     155
+    ]
+   }
+  },
+  {
+   "id": "r1",
+   "region_id": 1,
+   "type": "page_number",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     69,
+     103,
+     188,
+     206
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     0
+    ],
+    "sha256": "55d65104f4f69f72042d95ae5a9cb6c5c32bf255f81dc1a21840f5c7eac23ef7",
+    "size": [
+     180,
+     103
+    ]
+   }
+  },
+  {
+   "id": "r2",
+   "region_id": 2,
+   "type": "running_header",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     504,
+     91,
+     799,
+     206
+    ],
+    "gutter_px": 61,
+    "line_ids": [
+     0
+    ],
+    "sha256": "a49512a1f2ae6feccc21abf1ce9963b52d98779715c4065c347331890a49db24",
+    "size": [
+     356,
+     115
+    ]
+   }
+  }
+ ],
+ "regions_skipped": [],
+ "context": [
+  {
+   "side": "previous",
+   "page": "kale-1913-page-036",
+   "stream": "main",
+   "region_id": 10,
+   "type": "commentary",
+   "regions": "outputs/kale-1913-page-036/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-002/regions.json",
+   "regions_sha256": "524e9d773ff9dc506c20b311317ffd0b9ac851e8c7bcf6b95ae83ba7ba0ea927",
+   "sha256": "5fbcdf439757d7f81e082fb4e71ddc34e34a6afea6aba57c2d5aa5f9c490c577",
+   "crop_box": [
+    114,
+    1731,
+    1301,
+    1904
+   ],
+   "line_ids": [
+    25,
+    26
+   ]
+  },
+  {
+   "side": "previous",
+   "page": "kale-1913-page-036",
+   "stream": "notes",
+   "region_id": 16,
+   "type": "footnote",
+   "regions": "outputs/kale-1913-page-036/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-002/regions.json",
+   "regions_sha256": "524e9d773ff9dc506c20b311317ffd0b9ac851e8c7bcf6b95ae83ba7ba0ea927",
+   "sha256": "b1528d9f5cda3095be31be8a08c8a099187c7dd66e7fe49bbb5d535a9cc3ecc9",
+   "crop_box": [
+    937,
+    1873,
+    1130,
+    1977
+   ],
+   "line_ids": [
+    28
+   ]
+  },
+  {
+   "side": "next",
+   "page": "kale-1913-page-038",
+   "stream": "main",
+   "region_id": 3,
+   "type": "commentary",
+   "regions": "outputs/kale-1913-page-038/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-002/regions.json",
+   "regions_sha256": "d1647eab80eb9f2f935540e4c81131c438798ce5f0321539cedbec613cfab6ee",
+   "sha256": "4ab7a9ab823a40bb9939080ae61a048c3783709fa35902263b1e6e3c144c0783",
+   "crop_box": [
+    149,
+    207,
+    1323,
+    386
+   ],
+   "line_ids": [
+    1,
+    2
+   ]
+  },
+  {
+   "side": "next",
+   "page": "kale-1913-page-038",
+   "stream": "notes",
+   "region_id": 15,
+   "type": "footnote",
+   "regions": "outputs/kale-1913-page-038/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-002/regions.json",
+   "regions_sha256": "d1647eab80eb9f2f935540e4c81131c438798ce5f0321539cedbec613cfab6ee",
+   "sha256": "edc502f77bee979231df55c894d0d7f655ff69159dda19bc156f091a950a88f0",
+   "crop_box": [
+    183,
+    1831,
+    449,
+    1921
+   ],
+   "line_ids": [
+    28
+   ]
+  }
+ ],
+ "problems": [
+  "relation to u25: marker [०] not in r4 line 2"
+ ],
+ "check": {
+  "errors": [],
+  "warnings": [],
+  "valid": true
+ },
+ "counts": {
+  "regions": 22,
+  "units": 25,
+  "relations": 9,
+  "line_pieces": 40,
+  "retyped": [],
+  "uncertain": [
+   "r10"
+  ]
+ },
+ "artifacts": {
+  "request": "request.json",
+  "raw_response": "response.json",
+  "prompt": "prompt.txt",
+  "schema": "response-schema.json",
+  "overview": "overview.png",
+  "cutouts": "cutouts/",
+  "context": "context/",
+  "page_document": "page.json",
+  "transcript": "transcript.txt"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0"
+  }
+ }
+}

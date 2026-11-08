@@ -1,0 +1,68 @@
+{
+ "status": "completed",
+ "started_at_utc": "2026-11-05T17:13:55.173415+00:00",
+ "endpoint": "https://api.openai.com/v1/responses",
+ "credential_source": "llm stored key: openai",
+ "client_request_id": "363a021d-ff42-49bc-b9a8-d8b109b4ffec",
+ "request_sha256": "6f07c395491e1842466b3988e831261aa614827f839d0815af5829c46830ca22",
+ "method_id": "044-gpt-6.1-terra-none-region-transcription",
+ "settings": {
+  "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions (page overview plus one cut-out per region with numbered lines)",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "none",
+  "image_detail": "original",
+  "max_output_tokens": 32768,
+  "store": false,
+  "prompt_variant": "region-transcription-v1",
+  "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "cutout_padding_char": 0.5,
+  "gutter_width_char": 1.6,
+  "gutter_min_px": 36,
+  "gutter_font_char": 0.55,
+  "gutter_font_min_px": 14,
+  "overview_label_char": 0.8,
+  "overview_label_min_px": 18,
+  "overview_outline_px": 3,
+  "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+ },
+ "files_sha256": {
+  "run.py": "ae723c6c72a30eb091c65659c8760ad53af1872227e9dfefdcc24503ab65dd9b",
+  "prompt.py": "a142af6d66d6dee521f569b34c48b86e833a2576bc721b41a19fa6d7f00bc7cf",
+  "prompt-template.txt": "52982a38b18ee798074bd53601deb0955d742f3e12377c5155befd20b4d8c34f",
+  "cutouts.py": "60ef4c4d08eabdbba3b530350c41c47f2ec5805a5a0f21f932c9e87767c3e7ac",
+  "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+  "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+  "config.json": "e0f673200599760064db18c3ccc4950f605731b1d046ebd617ed6272dcb1e82d",
+  "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+  "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+ },
+ "type_list": {
+  "path": "schema/types/dutt-mahabharata.json",
+  "sha256": "6f09fc648de94f8f5f418d160c97a30da28769c9389973d6860ea20c487eaf56",
+  "book_id": "dutt-mahabharata"
+ },
+ "source_regions": {
+  "path": "outputs/dutt-mahabharata-17f-chapter-001-page-002/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+  "sha256": "daf0eccb6ec7d8668172f523ef0c246f6af4d38862775569ee1c82812a3a3031"
+ },
+ "prompt_sha256": "fd657740c2616a8db14f0ecdd7f8d848c0f0c44e770b9bb2b1a738ca85a88d1c",
+ "response_headers_seconds": 52.6754831247963,
+ "http_status": 200,
+ "request_id": "req_7cbfa8bfe81e4da08f4bd36c953e584f",
+ "api_wall_seconds": 52.89337495807558,
+ "response_id": "resp_0527c4c33794ecab016aecb954228087d1b6ca52f14c336931",
+ "returned_model": "gpt-6.1-terra",
+ "response_status": "completed",
+ "usage": {
+  "input_tokens": 17542,
+  "input_tokens_details": {
+   "cache_write_tokens": 17539,
+   "cached_tokens": 0
+  },
+  "output_tokens": 4451,
+  "output_tokens_details": {
+   "reasoning_tokens": 0
+  },
+  "total_tokens": 21993
+ }
+}

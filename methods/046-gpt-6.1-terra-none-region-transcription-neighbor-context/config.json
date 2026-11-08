@@ -1,0 +1,20 @@
+{
+  "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions, with the neighboring pages' edge lines as context for open ends",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "none",
+  "image_detail": "original",
+  "max_output_tokens": 32768,
+  "store": false,
+  "prompt_variant": "region-transcription-neighbor-context-v1",
+  "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "cutout_padding_char": 0.5,
+  "gutter_width_char": 1.6,
+  "gutter_min_px": 36,
+  "gutter_font_char": 0.55,
+  "gutter_font_min_px": 14,
+  "overview_label_char": 0.8,
+  "overview_label_min_px": 18,
+  "overview_outline_px": 3,
+  "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+  "context_lines": 2
+}

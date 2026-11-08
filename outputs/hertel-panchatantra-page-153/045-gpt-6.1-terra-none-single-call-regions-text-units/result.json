@@ -1,0 +1,450 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "045-gpt-6.1-terra-none-single-call-regions-text-units",
+  "name": "GPT-6.1 Terra without reasoning, one call for regions (book types, continuation flags), per-line text and the unit tree; method 043's local step; page document",
+  "settings": {
+   "name": "GPT-6.1 Terra without reasoning, one call for regions (book types, continuation flags), per-line text and the unit tree; method 043's local step; page document",
+   "model": "gpt-6.1-terra",
+   "reasoning_effort": "none",
+   "image_detail": "original",
+   "max_output_tokens": 32768,
+   "store": false,
+   "coordinate_format": "xyxy_1000",
+   "prompt_variant": "single-call-regions-text-units-v1",
+   "local_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+   "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+  },
+  "files_sha256": {
+   "run.py": "83d0397dc4021ed1be0e27d52ba3f6796075583b6464540474a7bb22e829b4a6",
+   "prompt.py": "97c12c20cf85034946632c951d7f5a852d83fe67ddc9d9e6ddd0751e6d668a15",
+   "prompt-template.txt": "37317cf25251332c294181df620b82b0ae831708e4239e9fa4ff209b5524dba6",
+   "region_prompt.py": "eff510f80417505ec27a9585846893660b5b9c6c3b5527f1c212747070c507cf",
+   "transcription_prompt.py": "a142af6d66d6dee521f569b34c48b86e833a2576bc721b41a19fa6d7f00bc7cf",
+   "regions.py": "1beb4c729a2d8bca063dea767c00889b5819d2f2ca307d74c431e0c526fb382d",
+   "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+   "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+   "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+   "config.json": "ed3cc12981fd4082620e4890e942b7c893354bf62e4738ae6984bd07a7dbe663",
+   "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+   "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+ },
+ "input": {
+  "id": "hertel-panchatantra-page-153",
+  "path": "inputs/hertel-panchatantra-page-153.png",
+  "sha256": "43c4ff9f2a5d8f677e6682526659eefce418eb50df38ee046ef6b17db3b97705"
+ },
+ "type_list": {
+  "path": "schema/types/hertel-panchatantra.json",
+  "sha256": "cdb0d5be39ef1dd52033101d8201bf417cd42a92676008cbc2c77b2089b22101",
+  "book_id": "hertel-panchatantra"
+ },
+ "api": {
+  "endpoint": "https://api.openai.com/v1/responses",
+  "returned_model": "gpt-6.1-terra",
+  "response_id": "resp_063401992537f4cb016aecbc29c24087d19155c0238372d006",
+  "request_id": "req_6e5a101cb1fb434393e0290c24943720",
+  "api_wall_seconds": 42.58607029123232,
+  "usage": {
+   "input_tokens": 9909,
+   "input_tokens_details": {
+    "cache_write_tokens": 9906,
+    "cached_tokens": 0
+   },
+   "output_tokens": 3236,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 13145
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 9909,
+   "ordinary_input_tokens": 3,
+   "cached_input_tokens": 0,
+   "cache_write_input_tokens": 9906,
+   "output_tokens_including_reasoning": 3236,
+   "reasoning_tokens": 0,
+   "non_reasoning_output_tokens": 3236,
+   "total_token_count_matches": true,
+   "cache_write_lifetime": "30m (provider default)",
+   "estimated_paid_tier_input_cost_usd": 0.0123855,
+   "estimated_paid_tier_output_cost_usd": 0.01618,
+   "estimated_paid_tier_total_cost_usd": 0.0285655,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+    "input_per_million_usd": 1.0,
+    "output_per_million_usd": 5.0,
+    "cached_input_per_million_usd": 0.05,
+    "cache_write_30m_per_million_usd": 1.25,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+   }
+  },
+  "request_sha256": "6f51802af687f204b521711c6d7cbbb541c532600faea41c3fc3ecb8f21cee84",
+  "response_sha256": "9602c227addade8f9a1fc99ec5c884027ddba8e1e6e85af40ec34ce0ba808942"
+ },
+ "box_validation_warnings": [],
+ "local_step": {
+  "method": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "seconds": 5.29,
+  "diagnostics": {
+   "lines": 32,
+   "whole_lines": 21,
+   "split_lines": 11,
+   "uncovered_lines": 0,
+   "empty_lines": 0,
+   "uncovered_line_ids": [],
+   "dropped_components": [],
+   "band_chained_components": [],
+   "rule_pieces": [],
+   "attached_components": [
+    {
+     "component_id": 40,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 54,
+     "gap_px": 52.0,
+     "round": 1,
+     "box": [
+      404,
+      341,
+      425,
+      366
+     ],
+     "area": 372
+    },
+    {
+     "component_id": 42,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 54,
+     "gap_px": 21.0,
+     "round": 1,
+     "box": [
+      426,
+      342,
+      456,
+      366
+     ],
+     "area": 341
+    },
+    {
+     "component_id": 52,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 54,
+     "gap_px": 89.0,
+     "round": 1,
+     "box": [
+      380,
+      348,
+      388,
+      357
+     ],
+     "area": 53
+    },
+    {
+     "component_id": 53,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 54,
+     "gap_px": 0.0,
+     "round": 1,
+     "box": [
+      457,
+      348,
+      477,
+      366
+     ],
+     "area": 248
+    },
+    {
+     "component_id": 67,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 54,
+     "gap_px": 90.0,
+     "round": 1,
+     "box": [
+      380,
+      360,
+      387,
+      367
+     ],
+     "area": 40
+    },
+    {
+     "component_id": 68,
+     "region_index": 2,
+     "line_id": 0,
+     "nearest_component_id": 64,
+     "gap_px": 0.0,
+     "round": 1,
+     "box": [
+      1886,
+      361,
+      1896,
+      370
+     ],
+     "area": 70
+    },
+    {
+     "component_id": 39,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 52,
+     "gap_px": 78.0,
+     "round": 2,
+     "box": [
+      272,
+      341,
+      302,
+      366
+     ],
+     "area": 407
+    },
+    {
+     "component_id": 49,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 52,
+     "gap_px": 60.0,
+     "round": 2,
+     "box": [
+      304,
+      347,
+      320,
+      366
+     ],
+     "area": 221
+    },
+    {
+     "component_id": 50,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 52,
+     "gap_px": 29.0,
+     "round": 2,
+     "box": [
+      330,
+      348,
+      351,
+      366
+     ],
+     "area": 250
+    },
+    {
+     "component_id": 51,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 52,
+     "gap_px": 6.0,
+     "round": 2,
+     "box": [
+      352,
+      348,
+      374,
+      366
+     ],
+     "area": 204
+    },
+    {
+     "component_id": 38,
+     "region_index": 1,
+     "line_id": 0,
+     "nearest_component_id": 39,
+     "gap_px": 2.0,
+     "round": 3,
+     "box": [
+      244,
+      340,
+      270,
+      364
+     ],
+     "area": 301
+    }
+   ],
+   "unassigned_text_pixels": 0,
+   "unassigned_text_components_not_on_lines": 0,
+   "regions_without_ink": [],
+   "regions_with_several_pieces": [],
+   "polygon_overlap_pixels": 323,
+   "ink_in_polygon_overlaps": 0,
+   "own_ink_outside_polygons": 0,
+   "other_regions_ink_inside_polygons": 0,
+   "separator_pixels_inside_polygons": 0,
+   "line_polygon_pixels_outside_region_polygons": 153,
+   "line_polygon_pixels": 3323189,
+   "polygon_vertices": 1846
+  }
+ },
+ "alignment": {
+  "r1": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r2": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r3": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r4": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r5": {
+   "model_lines": 7,
+   "pieces": 7,
+   "result": "equal"
+  },
+  "r6": {
+   "model_lines": 5,
+   "pieces": 5,
+   "result": "equal"
+  },
+  "r7": {
+   "model_lines": 3,
+   "pieces": 3,
+   "result": "equal"
+  },
+  "r8": {
+   "model_lines": 2,
+   "pieces": 2,
+   "result": "equal"
+  },
+  "r9": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r10": {
+   "model_lines": 2,
+   "pieces": 2,
+   "result": "equal"
+  },
+  "r11": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r12": {
+   "model_lines": 2,
+   "pieces": 2,
+   "result": "equal"
+  },
+  "r13": {
+   "model_lines": 2,
+   "pieces": 2,
+   "result": "equal"
+  },
+  "r14": {
+   "model_lines": 2,
+   "pieces": 2,
+   "result": "equal"
+  },
+  "r15": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r16": {
+   "model_lines": 2,
+   "pieces": 2,
+   "result": "equal"
+  },
+  "r17": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r18": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r19": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r20": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r21": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r22": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r23": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r24": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r25": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r26": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r27": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  },
+  "r28": {
+   "model_lines": 1,
+   "pieces": 1,
+   "result": "equal"
+  }
+ },
+ "regions_aligned": 28,
+ "regions_with_pieces": 28,
+ "regions_skipped": [],
+ "problems": [],
+ "check": {
+  "errors": [
+   "unit u4: open at the start but not the first child of u1"
+  ],
+  "warnings": [],
+  "valid": false
+ },
+ "counts": {
+  "regions": 28,
+  "units": 10,
+  "relations": 0,
+  "line_pieces": 46
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0"
+  }
+ }
+}

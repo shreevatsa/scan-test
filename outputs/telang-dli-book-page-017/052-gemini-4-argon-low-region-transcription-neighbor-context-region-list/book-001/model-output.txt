@@ -1,0 +1,133 @@
+{
+  "regions": [
+    {
+      "id": "r2",
+      "type": "paragraph",
+      "lines": [
+        {"n": 1, "text": "I may say so, justly disapproves, of this course.[*] And without", "end": "space"},
+        {"n": 2, "text": "going now into any elaborate examination of all the Stanzas of", "end": "space"},
+        {"n": 3, "text": "the three S'atakas to which this principle of biography-making", "end": "space"},
+        {"n": 4, "text": "may apply—an examination which every one may, if he pleases,", "end": "space"},
+        {"n": 5, "text": "make for himself—we may state, that it will be difficult, without", "end": "space"},
+        {"n": 6, "text": "resorting to improbable suppositions, to piece together by this", "end": "space"},
+        {"n": 7, "text": "means such an autobiography as will be self-consistent in all its", "end": "space"},
+        {"n": 8, "text": "parts. Thus to take one or two out of many instances. In Stanza", "end": "space"},
+        {"n": 9, "text": "40 of the Vairâgyas'ataka, applying to it the principle which", "end": "space"},
+        {"n": 10, "text": "underlies Dr. Bhâu's contention, Bhartṛihari is in doubt as to", "end": "space"},
+        {"n": 11, "text": "how to make his “choice of life.” In Stanzas 41 and 42 which", "end": "space"},
+        {"n": 12, "text": "immediately succeed it, and in Stanzas 32 and 33 which precede", "end": "space"},
+        {"n": 13, "text": "it, the choice however seems to have been already made. And in", "end": "space"},
+        {"n": 14, "text": "Stanza 87, not only has the choice been made, but Bhartṛihari's", "end": "space"},
+        {"n": 15, "text": "enjoyment of the fruit of his endeavours seems to have all but", "end": "space"},
+        {"n": 16, "text": "commenced. But now let us go one or two steps further; and we", "end": "space"},
+        {"n": 17, "text": "hear a complaint that he (for I take it that the subject must be first", "end": "space"},
+        {"n": 18, "text": "personal in Stanza 89) has wasted his youth in vain. Once more at", "end": "space"},
+        {"n": 19, "text": "the opening of Stanza 91, we come to doubt and misgiving, which", "end": "space"},
+        {"n": 20, "text": "is again dispelled in the fourth line of the Stanza; and again in St.", "end": "space"},
+        {"n": 21, "text": "93 there is the old yearning and hankering after liberation from", "end": "space"},
+        {"n": 22, "text": "the griefs of this world. Again—but it is unnecessary to proceed,", "end": "space"},
+        {"n": 23, "text": "and we shall therefore stop here.[†]", "end": "space"}
+      ],
+      "uncertain": false,
+      "note": null
+    },
+    {
+      "id": "r3",
+      "type": "footnote",
+      "lines": [
+        {"n": 1, "text": "* See Anc. Classics for Eng. Readers “Horace.” p. 115 et seq. “It", "end": "space"},
+        {"n": 2, "text": "may be” says Mr. Martin “that among Horace's odes, some were direct-", "end": "hyphen"},
+        {"n": 3, "text": "ly inspired by the ladies to whom they are addressed; but it is time", "end": "space"},
+        {"n": 4, "text": "that modern criticism should brush away all the elaborate nonsense", "end": "space"},
+        {"n": 5, "text": "which has been written to demonstrate that Pyrrha, Chloe, Lalage,", "end": "space"},
+        {"n": 6, "text": "Lydia, Lyde, Leuconoë , Tyndaris, Glycera, and Barine, not to mention", "end": "space"},
+        {"n": 7, "text": "others, were real personages to whom the poet was attached.”", "end": "space"}
+      ],
+      "uncertain": false,
+      "note": null
+    },
+    {
+      "id": "r4",
+      "type": "footnote",
+      "lines": [
+        {"n": 1, "text": "† Since the remarks in the text were originally written, I have found", "end": "space"},
+        {"n": 2, "text": "the following confirmation for them in a remark of Professor Weber's", "end": "space"}
+      ],
+      "uncertain": false,
+      "note": null
+    },
+    {
+      "id": "r1",
+      "type": "page_number",
+      "lines": [
+        {"n": 1, "text": "XV", "end": "space"}
+      ],
+      "uncertain": false,
+      "note": null
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "type": "introduction",
+      "number": null,
+      "label": "Introduction",
+      "open_start": true,
+      "open_end": true,
+      "children": ["u2"]
+    },
+    {
+      "id": "u2",
+      "type": "paragraph",
+      "number": null,
+      "label": null,
+      "open_start": true,
+      "open_end": false,
+      "children": ["r2"]
+    },
+    {
+      "id": "u3",
+      "type": "footnote",
+      "number": null,
+      "label": "Footnote *",
+      "open_start": false,
+      "open_end": false,
+      "children": ["r3"]
+    },
+    {
+      "id": "u4",
+      "type": "footnote",
+      "number": null,
+      "label": "Footnote †",
+      "open_start": false,
+      "open_end": true,
+      "children": ["r4"]
+    }
+  ],
+  "flows": [
+    {
+      "flow": "main",
+      "units": ["u1"]
+    },
+    {
+      "flow": "notes",
+      "units": ["u3", "u4"]
+    }
+  ],
+  "relations": [
+    {
+      "type": "note",
+      "region": "r2",
+      "line": 1,
+      "marker": "8",
+      "to": "u3"
+    },
+    {
+      "type": "note",
+      "region": "r2",
+      "line": 23,
+      "marker": "†",
+      "to": "u4"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+ "status": "completed",
+ "started_at_utc": "2026-11-05T17:29:05.599497+00:00",
+ "endpoint": "https://api.openai.com/v1/responses",
+ "credential_source": "llm stored key: openai",
+ "client_request_id": "b8cff9a8-3123-412b-b5ed-ea43e375ec74",
+ "request_sha256": "510474e6f82e0d6df88a33ecd25c8c124ac3e6b15ac9a8a572774fe92a49ef63",
+ "method_id": "046-gpt-6.1-terra-none-region-transcription-neighbor-context",
+ "settings": {
+  "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions, with the neighboring pages' edge lines as context for open ends",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "none",
+  "image_detail": "original",
+  "max_output_tokens": 32768,
+  "store": false,
+  "prompt_variant": "region-transcription-neighbor-context-v1",
+  "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "cutout_padding_char": 0.5,
+  "gutter_width_char": 1.6,
+  "gutter_min_px": 36,
+  "gutter_font_char": 0.55,
+  "gutter_font_min_px": 14,
+  "overview_label_char": 0.8,
+  "overview_label_min_px": 18,
+  "overview_outline_px": 3,
+  "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+  "context_lines": 2
+ },
+ "files_sha256": {
+  "run.py": "ecb469b42c20a87c21c1d3362648a18f4b3aedf6aa377cd692b8dd643c5729b1",
+  "prompt.py": "a142af6d66d6dee521f569b34c48b86e833a2576bc721b41a19fa6d7f00bc7cf",
+  "prompt-template.txt": "1d451cee4378c77e02bea16e6692603485b2235793e968c2cb905b2c1c220986",
+  "cutouts.py": "7d5f320391cde8c336c234a68d37ce5d973f697a13d30a4ebfa74aa42c84cb54",
+  "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+  "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+  "config.json": "881bf11f03c5c73067487f36414637c6c3e81265447045aa053af67230a0495e",
+  "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+  "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+ },
+ "type_list": {
+  "path": "schema/types/hertel-panchatantra.json",
+  "sha256": "cdb0d5be39ef1dd52033101d8201bf417cd42a92676008cbc2c77b2089b22101",
+  "book_id": "hertel-panchatantra"
+ },
+ "source_regions": {
+  "path": "outputs/hertel-panchatantra-page-153/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+  "sha256": "0876b2c7b6602446479afc03de8be2ab484c44aee0f34fb3856976ada3273060"
+ },
+ "prompt_sha256": "d08349d7141800e73bded17f0688cc111d98cbc21e932b15921c5d9a74e55881",
+ "response_headers_seconds": 36.75134558323771,
+ "http_status": 200,
+ "request_id": "req_3bbf713177c64dbf96506087ec602f37",
+ "api_wall_seconds": 36.833841250278056,
+ "response_id": "resp_0d346740e29568af016aecbce7d4e887d1b40dc3f88b8984ea",
+ "returned_model": "gpt-6.1-terra",
+ "response_status": "completed",
+ "usage": {
+  "input_tokens": 19967,
+  "input_tokens_details": {
+   "cache_write_tokens": 17047,
+   "cached_tokens": 2917
+  },
+  "output_tokens": 2432,
+  "output_tokens_details": {
+   "reasoning_tokens": 0
+  },
+  "total_tokens": 22399
+ }
+}

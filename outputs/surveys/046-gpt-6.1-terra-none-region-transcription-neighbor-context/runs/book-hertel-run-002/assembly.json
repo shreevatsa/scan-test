@@ -1,0 +1,20 @@
+{
+ "pages": [
+  "../../outputs/hertel-panchatantra-page-152/046-gpt-6.1-terra-none-region-transcription-neighbor-context/run-002/page.json",
+  "../../outputs/hertel-panchatantra-page-153/046-gpt-6.1-terra-none-region-transcription-neighbor-context/run-002/page.json",
+  "../../outputs/hertel-panchatantra-page-154/046-gpt-6.1-terra-none-region-transcription-neighbor-context/run-002/page.json",
+  "../../outputs/hertel-panchatantra-page-155/046-gpt-6.1-terra-none-region-transcription-neighbor-context/run-002/page.json"
+ ],
+ "left_out_invalid_pages": {
+  "hertel-panchatantra-page-153": [
+   "$.units[10].children: fewer than 1 items"
+  ]
+ },
+ "warnings": [
+  "hertel-panchatantra-page-152#u1 + hertel-panchatantra-page-154#u1: inner open ends do not match (hertel-panchatantra-page-152#u2, hertel-panchatantra-page-154#u2)"
+ ],
+ "errors": [
+  "unit hertel-panchatantra-page-152#u2: open at the end but not the last child of hertel-panchatantra-page-152#u1"
+ ],
+ "units": 13
+}

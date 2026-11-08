@@ -59,10 +59,15 @@ Two requests on each of the 12 run pages of the three books with type lists: Kal
 - **Flags:** 14 of 15 truth edges in each request (method 040: 12 and 11); 3 of the 4 truth links under rule "both", including the apparatus link from page 109 to 110, which method 040 never found (method 040: 2). There are no wrong links. The entry at the foot of page 108 is still not flagged as continuing.
 - **Cost:** $0.0384 for the first pass and $0.0174 for the repeat (method 040: $0.0423 and $0.0159).
 
-**Cole run, with Claude's draft type list** (not yet reviewed by the user; two requests on Cole 1–4):
+**Cole run, with Claude's draft type list** (two requests on Cole 1–4; the user accepted the list afterwards):
 - **Regions:** the same regions, types and flags in both requests on every page. The running header is one region (method 040: two on every page); article heads are typed heading, byline and read_before, and signoffs signoff, where method 040's types for those lines varied between requests. The "and" between two formulas on page 4 is a paragraph region.
 - **Flags:** 16 of 16 truth edges and both truth links in each request, with none wrong, as under method 040.
 - **Cost:** $0.0515 for the first pass and $0.0153 for the repeat (method 040: $0.0502 and $0.0161).
+
+**The other five books, with Claude's draft type lists** (two requests each, 2026-11-05; the user accepted all five lists afterwards; see the NOTEBOOK entries for each):
+- **Ten Princes** (9 spreads), **Nītiśataka 1896** (12 pages), **Nītiśataka 1914** (15 pages), **Vavilla** (12 pages) and **the Gita** (6 spreads): all 110 requests (two on each of 54 pages, and two more on 1896 page 195 with the revised 1896 list) completed with no validation warnings, at an estimated $0.64 in total.
+- **Same regions, types and flags in both requests** on 9 of 9, 11 of 12, 12 of 15, 12 of 12 and 6 of 6 pages; the differences are flags only.
+- **Flags:** Ten Princes 16 of 16 truth edges and all 4 truth links, as under method 040; Nītiśataka 1914, a control run, 16 and 15 of 16 (method 040: 15 and 15).
 
 ## Limitations
 

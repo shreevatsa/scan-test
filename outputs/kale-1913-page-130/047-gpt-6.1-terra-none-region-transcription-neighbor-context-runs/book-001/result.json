@@ -1,0 +1,479 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "047-gpt-6.1-terra-none-region-transcription-neighbor-context-runs",
+  "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions, with the neighboring pages' edge lines as context for open ends; regions read from a named run of method 043 (whole books)",
+  "settings": {
+   "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions, with the neighboring pages' edge lines as context for open ends; regions read from a named run of method 043 (whole books)",
+   "model": "gpt-6.1-terra",
+   "reasoning_effort": "none",
+   "image_detail": "original",
+   "max_output_tokens": 32768,
+   "store": false,
+   "prompt_variant": "region-transcription-neighbor-context-v1",
+   "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+   "cutout_padding_char": 0.5,
+   "gutter_width_char": 1.6,
+   "gutter_min_px": 36,
+   "gutter_font_char": 0.55,
+   "gutter_font_min_px": 14,
+   "overview_label_char": 0.8,
+   "overview_label_min_px": 18,
+   "overview_outline_px": 3,
+   "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+   "context_lines": 2
+  },
+  "files_sha256": {
+   "run.py": "b660642f6713e442b9d029fe3e666969bee64df48f4dd7281cf15f32b9cefd21",
+   "prompt.py": "a142af6d66d6dee521f569b34c48b86e833a2576bc721b41a19fa6d7f00bc7cf",
+   "prompt-template.txt": "1d451cee4378c77e02bea16e6692603485b2235793e968c2cb905b2c1c220986",
+   "cutouts.py": "7d5f320391cde8c336c234a68d37ce5d973f697a13d30a4ebfa74aa42c84cb54",
+   "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+   "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+   "config.json": "557cbfd6449fcbedac41374f10e4e09392c5fff60988ee1914c91f565a84afb9",
+   "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+   "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+ },
+ "input": {
+  "id": "kale-1913-page-130",
+  "path": "inputs/kale-1913-page-130.png",
+  "sha256": "0dc2cf4e481ec9effb036be1457f8b57d5548f17e6a7f302f1f438a04b10e7f6"
+ },
+ "type_list": {
+  "path": "schema/types/kale-1913.json",
+  "sha256": "4737e5e691053a12df24f552d4c2d59bbdc7dd062a2c20233170fec3316c1eb7",
+  "book_id": "kale-1913"
+ },
+ "source_regions": {
+  "path": "outputs/kale-1913-page-130/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-001/regions.json",
+  "sha256": "4b5924f4dbeec24f0be9d1bc0ad7fb04d501e74a92b4911093559576c025c92e"
+ },
+ "api": {
+  "endpoint": "https://api.openai.com/v1/responses",
+  "returned_model": "gpt-6.1-terra",
+  "response_id": "resp_089aa1fd930fb67b016aed430c2cac87d0bd94305584110b59",
+  "request_id": "req_b4935f08d571489bb74b44358fa8450f",
+  "api_wall_seconds": 19.952984333969653,
+  "usage": {
+   "input_tokens": 10399,
+   "input_tokens_details": {
+    "cache_write_tokens": 10396,
+    "cached_tokens": 0
+   },
+   "output_tokens": 1364,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 11763
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 10399,
+   "ordinary_input_tokens": 3,
+   "cached_input_tokens": 0,
+   "cache_write_input_tokens": 10396,
+   "output_tokens_including_reasoning": 1364,
+   "reasoning_tokens": 0,
+   "non_reasoning_output_tokens": 1364,
+   "total_token_count_matches": true,
+   "cache_write_lifetime": "30m (provider default)",
+   "estimated_paid_tier_input_cost_usd": 0.012998,
+   "estimated_paid_tier_output_cost_usd": 0.00682,
+   "estimated_paid_tier_total_cost_usd": 0.019818,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+    "input_per_million_usd": 1.0,
+    "output_per_million_usd": 5.0,
+    "cached_input_per_million_usd": 0.05,
+    "cache_write_30m_per_million_usd": 1.25,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+   }
+  },
+  "request_sha256": "2b78beb12749c8df5947912cffb06e3617cba9223fd3de84b41a3078f285459e",
+  "response_sha256": "808226bcc90d9eaac004c24dcc7d886d67a62720e59dbab76049f7bd0e0cfbac"
+ },
+ "regions_sent": [
+  {
+   "id": "r2",
+   "region_id": 2,
+   "type": "paragraph",
+   "line_ids": [
+    1,
+    2
+   ],
+   "cutout": {
+    "crop_box": [
+     57,
+     179,
+     1196,
+     319
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     1,
+     2
+    ],
+    "sha256": "c3016bbe574ffc8c64066c55bf32dac4df75e0c58dc14ccda9edca8902747047",
+    "size": [
+     1176,
+     140
+    ]
+   }
+  },
+  {
+   "id": "r3",
+   "region_id": 3,
+   "type": "translated_stanza",
+   "line_ids": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "cutout": {
+    "crop_box": [
+     58,
+     275,
+     1198,
+     490
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     3,
+     4,
+     5,
+     6
+    ],
+    "sha256": "094f04bbcf041ee702c79d0bba496d3300c985bc8b3757ccc669e68885c01ccd",
+    "size": [
+     1177,
+     215
+    ]
+   }
+  },
+  {
+   "id": "r4",
+   "region_id": 4,
+   "type": "translated_stanza",
+   "line_ids": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+   ],
+   "cutout": {
+    "crop_box": [
+     59,
+     480,
+     1202,
+     768
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "sha256": "19141c1df0ee7f6f501580f02dfd27fca131af40c8cef374bf4322fb6f3e4c57",
+    "size": [
+     1180,
+     288
+    ]
+   }
+  },
+  {
+   "id": "r5",
+   "region_id": 5,
+   "type": "translated_stanza",
+   "line_ids": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+   ],
+   "cutout": {
+    "crop_box": [
+     60,
+     746,
+     1208,
+     1080
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     13,
+     14,
+     15,
+     16,
+     17,
+     18
+    ],
+    "sha256": "9c890e5e62a857dd59008781542f1b66ddc01ea1b31f13c67322357c19105e7c",
+    "size": [
+     1185,
+     334
+    ]
+   }
+  },
+  {
+   "id": "r6",
+   "region_id": 6,
+   "type": "translated_stanza",
+   "line_ids": [
+    19,
+    20,
+    21,
+    22,
+    23
+   ],
+   "cutout": {
+    "crop_box": [
+     60,
+     1065,
+     1207,
+     1359
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     19,
+     20,
+     21,
+     22,
+     23
+    ],
+    "sha256": "c95b23dd96ff2364f2a42dca145f00d3361ffe57e82ddc84e554c78ebcd3757b",
+    "size": [
+     1184,
+     294
+    ]
+   }
+  },
+  {
+   "id": "r7",
+   "region_id": 7,
+   "type": "translated_stanza",
+   "line_ids": [
+    24,
+    25,
+    26,
+    27
+   ],
+   "cutout": {
+    "crop_box": [
+     59,
+     1343,
+     1206,
+     1583
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     24,
+     25,
+     26,
+     27
+    ],
+    "sha256": "304bb4d9fb3a888389ede9d23e60ada5bc3ddaa78e9542ded203811cd90a8b42",
+    "size": [
+     1184,
+     240
+    ]
+   }
+  },
+  {
+   "id": "r8",
+   "region_id": 8,
+   "type": "translated_stanza",
+   "line_ids": [
+    28,
+    29,
+    30,
+    31
+   ],
+   "cutout": {
+    "crop_box": [
+     61,
+     1571,
+     1205,
+     1804
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     28,
+     29,
+     30,
+     31
+    ],
+    "sha256": "d11d14f9b06ccb914f5160d109ff33b83ba070bac0400e4b88a369580bcd6ae4",
+    "size": [
+     1181,
+     233
+    ]
+   }
+  },
+  {
+   "id": "r9",
+   "region_id": 9,
+   "type": "translated_stanza",
+   "line_ids": [
+    32,
+    33,
+    34
+   ],
+   "cutout": {
+    "crop_box": [
+     60,
+     1802,
+     1204,
+     1943
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     32,
+     33,
+     34
+    ],
+    "sha256": "05609b307dd0b7b1421d7a3335dfe59c876b55fded64397e155fee7e3ffecbbf",
+    "size": [
+     1181,
+     141
+    ]
+   }
+  },
+  {
+   "id": "r1",
+   "region_id": 1,
+   "type": "page_number",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     552,
+     84,
+     693,
+     160
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     0
+    ],
+    "sha256": "f176017817b0105aacc57c9131b4113c37d465d0212be88dcd1e4b9fcc05757d",
+    "size": [
+     178,
+     76
+    ]
+   }
+  },
+  {
+   "id": "r10",
+   "region_id": 10,
+   "type": "other",
+   "line_ids": [
+    35
+   ],
+   "cutout": {
+    "crop_box": [
+     164,
+     1912,
+     225,
+     1985
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     35
+    ],
+    "sha256": "82b865d72e35946bc822dba87bebbecb491795b6808607640a6d8094d13242d9",
+    "size": [
+     98,
+     73
+    ]
+   }
+  }
+ ],
+ "regions_skipped": [],
+ "context": [
+  {
+   "side": "previous",
+   "page": "kale-1913-page-129",
+   "stream": "main",
+   "region_id": 8,
+   "type": "translated_stanza",
+   "regions": "outputs/kale-1913-page-129/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-001/regions.json",
+   "regions_sha256": "8f5f3323e8290d015051e2dfb6971c18586d30fbeeeaf3e39e41ca3278c48e82",
+   "sha256": "d38aec257ded0b2ba3d06f26bf1ab6fe7907165e42da3737ac6e730c6a34a7cd",
+   "crop_box": [
+    195,
+    1823,
+    1327,
+    1958
+   ],
+   "line_ids": [
+    39,
+    40
+   ]
+  },
+  {
+   "side": "next",
+   "page": "kale-1913-page-131",
+   "stream": "main",
+   "region_id": 2,
+   "type": "translated_stanza",
+   "regions": "outputs/kale-1913-page-131/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-001/regions.json",
+   "regions_sha256": "3df4ebc6d8155932491e5d192f7c235fe759e525ad83805ccc86e717e97384cc",
+   "sha256": "f7206e3cfc3f07e7541506d66d493664a73699ec1d90153730fb0b8e5d7c70c4",
+   "crop_box": [
+    143,
+    178,
+    1320,
+    312
+   ],
+   "line_ids": [
+    1,
+    2
+   ]
+  }
+ ],
+ "problems": [],
+ "check": {
+  "errors": [
+   "unit u1: type translation may not contain paragraph"
+  ],
+  "warnings": [],
+  "valid": false
+ },
+ "counts": {
+  "regions": 9,
+  "units": 9,
+  "relations": 0,
+  "line_pieces": 35,
+  "retyped": [],
+  "uncertain": []
+ },
+ "artifacts": {
+  "request": "request.json",
+  "raw_response": "response.json",
+  "prompt": "prompt.txt",
+  "schema": "response-schema.json",
+  "overview": "overview.png",
+  "cutouts": "cutouts/",
+  "context": "context/",
+  "page_document": "page.json",
+  "transcript": "transcript.txt"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0"
+  }
+ }
+}

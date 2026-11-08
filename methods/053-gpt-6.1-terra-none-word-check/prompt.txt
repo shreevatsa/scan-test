@@ -1,0 +1,10 @@
+You are checking a transcription of a printed book page in Sanskrit, in Devanagari. Two readers transcribed it and disagree about the items below.
+
+Each item gives two readings of a short stretch of one printed line: A, from a careful reader who sometimes writes a familiar word in place of the printed one, and B, from a letter-by-letter reader who often misreads letters or splits words. Then come two images: the stretch, enlarged, and the whole line with the stretch boxed in red.
+
+For each item:
+- spelling: spell what is printed in the enlarged image, akshara by akshara, separated by spaces, with every vowel sign, virama, anusvara, visarga and avagraha you see;
+- text: the exact printed text of the stretch, with its word spacing. Do not correct it: unusual spellings and forms are printed on purpose, and the printed text may differ from the version of a verse that you know;
+- verdict: "A" or "B" if text equals that reading, "neither" if it equals neither, and "unclear" if the print is too damaged or faint to decide.
+
+Return JSON only, in the given schema, with one entry for every item.

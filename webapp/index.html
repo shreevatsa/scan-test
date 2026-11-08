@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scanned books</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+<script>
+  // If the app's code cannot be loaded (a file blocked by a content blocker, or missing), say so instead of
+  // staying at "Loading…". The module script's error event fires when any of the files it imports fails to load.
+  function appFailed() {
+    if (!document.getElementById("app")) { document.addEventListener("DOMContentLoaded", appFailed); return; }
+    document.getElementById("app").innerHTML =
+      '<div style="max-width:640px;margin:40px auto;padding:0 20px;font:15px/1.5 sans-serif">' +
+      "<h2>The app could not start</h2><p>One of its files could not be loaded. If an ad or content blocker is on, " +
+      "it may have blocked a file: allow this page in the blocker and reload. The browser's console names the file.</p></div>";
+  }
+</script>
+<script type="module" src="js/main.js" onerror="appFailed()"></script>
+</head>
+<body>
+<div id="app"><p style="padding:2em">Loading…</p></div>
+<noscript>This app needs JavaScript.</noscript>
+</body>
+</html>

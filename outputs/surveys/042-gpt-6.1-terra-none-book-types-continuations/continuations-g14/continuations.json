@@ -1,0 +1,740 @@
+{
+ "created_at_utc": "2026-11-05T14:47:35.567250+00:00",
+ "api_calls": 0,
+ "method": "042-gpt-6.1-terra-none-book-types-continuations",
+ "truth": {
+  "path": "references/continuations/truth.json",
+  "sha256": "4454443fbaeab21cdf5c57ba9f069fc7104ad43883efdfe6c5672af8bebfd769"
+ },
+ "script": {
+  "path": "methods/042-gpt-6.1-terra-none-book-types-continuations/link.py",
+  "sha256": "2def0e70288046c595f8f16ae8b470eb4fcc6115acac12dd8f5ba11e66873b41"
+ },
+ "runs": [
+  "gopinath-1914-258"
+ ],
+ "tolerance_px": 15,
+ "primary_rule": "both",
+ "summary": {
+  "run-001": {
+   "edges": 16,
+   "correct": 16,
+   "no_region": 0,
+   "true_positive": 0,
+   "false_negative": 0,
+   "false_positive": 0,
+   "true_negative": 16,
+   "stream_mismatch": 0,
+   "per_run": {
+    "gopinath-1914-258": {
+     "correct": 16,
+     "edges": 16
+    }
+   },
+   "links": {
+    "both": {
+     "found": 0,
+     "truth": 0,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 0,
+     "truth": 0,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "earlier": {
+     "found": 0,
+     "truth": 0,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "either": {
+     "found": 0,
+     "truth": 0,
+     "wrong": 0,
+     "unscored": 0
+    }
+   }
+  },
+  "run-002": {
+   "edges": 16,
+   "correct": 15,
+   "no_region": 0,
+   "true_positive": 0,
+   "false_negative": 0,
+   "false_positive": 1,
+   "true_negative": 15,
+   "stream_mismatch": 0,
+   "per_run": {
+    "gopinath-1914-258": {
+     "correct": 15,
+     "edges": 16
+    }
+   },
+   "links": {
+    "both": {
+     "found": 0,
+     "truth": 0,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "later": {
+     "found": 0,
+     "truth": 0,
+     "wrong": 0,
+     "unscored": 0
+    },
+    "earlier": {
+     "found": 0,
+     "truth": 0,
+     "wrong": 1,
+     "unscored": 0
+    },
+    "either": {
+     "found": 0,
+     "truth": 0,
+     "wrong": 1,
+     "unscored": 0
+    }
+   }
+  }
+ },
+ "results": [
+  {
+   "run": "gopinath-1914-258",
+   "request": "run-001",
+   "edges": [
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "body",
+     "edge": "start",
+     "line": 3,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-258",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "body",
+     "edge": "end",
+     "line": 15,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-258",
+      5
+     ],
+     "region_type": "english_translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "notes",
+     "edge": "start",
+     "line": 17,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-258",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "notes",
+     "edge": "end",
+     "line": 27,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-258",
+      7
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "body",
+     "edge": "start",
+     "line": 3,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-259",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "body",
+     "edge": "end",
+     "line": 32,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-259",
+      5
+     ],
+     "region_type": "english_translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "notes",
+     "edge": "start",
+     "line": 35,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-259",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "notes",
+     "edge": "end",
+     "line": 39,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-259",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-260",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "body",
+     "edge": "end",
+     "line": 22,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-260",
+      5
+     ],
+     "region_type": "english_translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "notes",
+     "edge": "start",
+     "line": 26,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-260",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "notes",
+     "edge": "end",
+     "line": 34,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-260",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "body",
+     "edge": "start",
+     "line": 4,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-261",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "body",
+     "edge": "end",
+     "line": 20,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-261",
+      5
+     ],
+     "region_type": "english_translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "notes",
+     "edge": "start",
+     "line": 22,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-261",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "notes",
+     "edge": "end",
+     "line": 40,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-261",
+      8
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [],
+   "links": {
+    "both": {
+     "predicted": [],
+     "found": 0,
+     "truth": 0,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [],
+     "found": 0,
+     "truth": 0,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [],
+     "found": 0,
+     "truth": 0,
+     "wrong": [],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [],
+     "found": 0,
+     "truth": 0,
+     "wrong": [],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "gopinath-1914-page-258": {
+     "path": "outputs/gopinath-1914-page-258/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "2f70890d868d099cfd6cae75a53eaf88db8eec81151760a9d0b5ea8eb3dda222"
+    },
+    "gopinath-1914-page-259": {
+     "path": "outputs/gopinath-1914-page-259/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "6638b087ee61b1ec2ad52245fd62194264662d921c346ef9d1284e196cfdad3e"
+    },
+    "gopinath-1914-page-260": {
+     "path": "outputs/gopinath-1914-page-260/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "adc14e203fab16bb9538dcd9907d5a3cf9b24c2bd0dd219e29230a30798c2892"
+    },
+    "gopinath-1914-page-261": {
+     "path": "outputs/gopinath-1914-page-261/042-gpt-6.1-terra-none-book-types-continuations/regions.json",
+     "sha256": "41ebdf562d7597ce6efb873912b46ca3aa134f0c52f59626f3f0c4d0f1c6fd02"
+    }
+   }
+  },
+  {
+   "run": "gopinath-1914-258",
+   "request": "run-002",
+   "edges": [
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "body",
+     "edge": "start",
+     "line": 3,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-258",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "body",
+     "edge": "end",
+     "line": 15,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-258",
+      5
+     ],
+     "region_type": "english_translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "notes",
+     "edge": "start",
+     "line": 17,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-258",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-258",
+     "stream": "notes",
+     "edge": "end",
+     "line": 27,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-258",
+      7
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "body",
+     "edge": "start",
+     "line": 3,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-259",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "body",
+     "edge": "end",
+     "line": 32,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-259",
+      5
+     ],
+     "region_type": "english_translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "notes",
+     "edge": "start",
+     "line": 35,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-259",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-259",
+     "stream": "notes",
+     "edge": "end",
+     "line": 39,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-259",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "body",
+     "edge": "start",
+     "line": 2,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-260",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "body",
+     "edge": "end",
+     "line": 22,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-260",
+      5
+     ],
+     "region_type": "english_translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "notes",
+     "edge": "start",
+     "line": 26,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-260",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-260",
+     "stream": "notes",
+     "edge": "end",
+     "line": 34,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-260",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "body",
+     "edge": "start",
+     "line": 4,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-261",
+      3
+     ],
+     "region_type": "verse",
+     "region_stream": "body",
+     "flag": true,
+     "correct": false
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "body",
+     "edge": "end",
+     "line": 20,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-261",
+      5
+     ],
+     "region_type": "english_translation",
+     "region_stream": "body",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "notes",
+     "edge": "start",
+     "line": 22,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-261",
+      6
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    },
+    {
+     "page": "gopinath-1914-page-261",
+     "stream": "notes",
+     "edge": "end",
+     "line": 40,
+     "truth": false,
+     "region": [
+      "gopinath-1914-page-261",
+      8
+     ],
+     "region_type": "note",
+     "region_stream": "notes",
+     "flag": false,
+     "correct": true
+    }
+   ],
+   "truth_links": [],
+   "links": {
+    "both": {
+     "predicted": [],
+     "found": 0,
+     "truth": 0,
+     "wrong": [],
+     "unscored": []
+    },
+    "later": {
+     "predicted": [],
+     "found": 0,
+     "truth": 0,
+     "wrong": [],
+     "unscored": []
+    },
+    "earlier": {
+     "predicted": [
+      [
+       [
+        "gopinath-1914-page-260",
+        5
+       ],
+       [
+        "gopinath-1914-page-261",
+        3
+       ]
+      ]
+     ],
+     "found": 0,
+     "truth": 0,
+     "wrong": [
+      [
+       [
+        "gopinath-1914-page-260",
+        5
+       ],
+       [
+        "gopinath-1914-page-261",
+        3
+       ]
+      ]
+     ],
+     "unscored": []
+    },
+    "either": {
+     "predicted": [
+      [
+       [
+        "gopinath-1914-page-260",
+        5
+       ],
+       [
+        "gopinath-1914-page-261",
+        3
+       ]
+      ]
+     ],
+     "found": 0,
+     "truth": 0,
+     "wrong": [
+      [
+       [
+        "gopinath-1914-page-260",
+        5
+       ],
+       [
+        "gopinath-1914-page-261",
+        3
+       ]
+      ]
+     ],
+     "unscored": []
+    }
+   },
+   "sources": {
+    "gopinath-1914-page-258": {
+     "path": "outputs/gopinath-1914-page-258/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "f0d6e670d1a90e68b306f7152894a1eab0e4bb1e92cd59f31218d15ab78c1ae6"
+    },
+    "gopinath-1914-page-259": {
+     "path": "outputs/gopinath-1914-page-259/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "1f985f10494b37779b76965401d98eb4437b4001ce07587e963c94593543126d"
+    },
+    "gopinath-1914-page-260": {
+     "path": "outputs/gopinath-1914-page-260/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "9e5acaf2ea697df7c0e199c3607a94e182d2e1eb654864daf8e33ea71fe86f87"
+    },
+    "gopinath-1914-page-261": {
+     "path": "outputs/gopinath-1914-page-261/042-gpt-6.1-terra-none-book-types-continuations/run-002/regions.json",
+     "sha256": "9de58dc6fa0dbf2e4ac96fa6e5b5d1e8def9158a1e589796ae7d8a7f670e602d"
+    }
+   }
+  }
+ ]
+}

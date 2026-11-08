@@ -1,0 +1,78 @@
+{
+ "method": {
+  "id": "053-gpt-6.1-terra-none-word-check",
+  "settings": {
+   "name": "GPT-6.1 Terra without reasoning: a check of the words that Tesseract reads differently from a transcription",
+   "model": "gpt-6.1-terra",
+   "reasoning_effort": "none",
+   "image_detail": "original",
+   "max_output_tokens": 32768,
+   "store": false,
+   "source_method_id": "046-gpt-6.1-terra-none-region-transcription-neighbor-context",
+   "tesseract_lang": "script/Devanagari",
+   "tesseract": "5.5.1, --psm 7, tsv"
+  }
+ },
+ "input": "kale-1913-page-106",
+ "source_page": {
+  "path": "outputs/kale-1913-page-106/046-gpt-6.1-terra-none-region-transcription-neighbor-context/page.json",
+  "sha256": "36904a37b8386a6b323d07930c4f7d86cdb8120fc7d771659c4ab7e8252474da"
+ },
+ "summary": {
+  "input_id": "kale-1913-page-106",
+  "page": "outputs/kale-1913-page-106/046-gpt-6.1-terra-none-region-transcription-neighbor-context/page.json",
+  "lines": 34,
+  "words": 245,
+  "items": 69,
+  "words_in_items": 98,
+  "request_bytes": 2414977
+ },
+ "verdicts": {
+  "A": 53,
+  "B": 3,
+  "neither": 13,
+  "unclear": 0
+ },
+ "unanswered": [],
+ "unclear": [],
+ "api": {
+  "usage": {
+   "input_tokens": 12187,
+   "input_tokens_details": {
+    "cache_write_tokens": 12184,
+    "cached_tokens": 0
+   },
+   "output_tokens": 2313,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 14500
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 12187,
+   "ordinary_input_tokens": 3,
+   "cached_input_tokens": 0,
+   "cache_write_input_tokens": 12184,
+   "output_tokens_including_reasoning": 2313,
+   "reasoning_tokens": 0,
+   "non_reasoning_output_tokens": 2313,
+   "total_token_count_matches": true,
+   "cache_write_lifetime": "30m (provider default)",
+   "estimated_paid_tier_input_cost_usd": 0.015233,
+   "estimated_paid_tier_output_cost_usd": 0.011565,
+   "estimated_paid_tier_total_cost_usd": 0.026798000000000002,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+    "input_per_million_usd": 1.0,
+    "output_per_million_usd": 5.0,
+    "cached_input_per_million_usd": 0.05,
+    "cache_write_30m_per_million_usd": 1.25,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+   }
+  },
+  "api_wall_seconds": 29.31820729235187
+ }
+}

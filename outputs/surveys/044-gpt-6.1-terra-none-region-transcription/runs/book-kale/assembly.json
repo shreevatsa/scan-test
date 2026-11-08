@@ -1,0 +1,21 @@
+{
+ "pages": [
+  "../../outputs/kale-1913-page-106/044-gpt-6.1-terra-none-region-transcription/page.json",
+  "../../outputs/kale-1913-page-107/044-gpt-6.1-terra-none-region-transcription/page.json",
+  "../../outputs/kale-1913-page-108/044-gpt-6.1-terra-none-region-transcription/page.json",
+  "../../outputs/kale-1913-page-109/044-gpt-6.1-terra-none-region-transcription/page.json"
+ ],
+ "left_out_invalid_pages": {
+  "kale-1913-page-109": [
+   "unit u4: open at the start but not the first child of u1"
+  ]
+ },
+ "warnings": [
+  "kale-1913-page-107#u13 + kale-1913-page-108#u2: inner open ends do not match (kale-1913-page-107#u14, kale-1913-page-108#u3)"
+ ],
+ "errors": [
+  "unit kale-1913-page-108#u3: open at the start but not the first child of kale-1913-page-107#u13",
+  "unit kale-1913-page-108#u3: open at the start but its parent kale-1913-page-107#u13 is not"
+ ],
+ "units": 45
+}

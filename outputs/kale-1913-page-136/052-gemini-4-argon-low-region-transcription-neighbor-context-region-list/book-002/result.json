@@ -1,0 +1,463 @@
+{
+ "schema_version": 1,
+ "method": {
+  "id": "052-gemini-4-argon-low-region-transcription-neighbor-context-region-list",
+  "name": "Gemini 4 Argon with low thinking: method 047's transcription request (method 043's regions, neighbor context), with no fixed line counts and a region list in the response schema",
+  "settings": {
+   "name": "Gemini 4 Argon with low thinking: method 047's transcription request (method 043's regions, neighbor context), with no fixed line counts and a region list in the response schema",
+   "provider": "gemini",
+   "model": "gemini-4-argon",
+   "thinking_level": "low",
+   "image_resolution": "high",
+   "max_output_tokens": 32768,
+   "prompt_variant": "region-transcription-neighbor-context-v1",
+   "store": false,
+   "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+   "cutout_padding_char": 0.5,
+   "gutter_width_char": 1.6,
+   "gutter_min_px": 36,
+   "gutter_font_char": 0.55,
+   "gutter_font_min_px": 14,
+   "overview_label_char": 0.8,
+   "overview_label_min_px": 18,
+   "overview_outline_px": 3,
+   "context_lines": 2,
+   "type_lists": "schema/types/<book_id>.json, book_id from the input record",
+   "image_detail": "original",
+   "image_detail_note": "The OpenAI detail setting, used only when building the content list; the Gemini request uses image_resolution.",
+   "schema_fixed_line_counts": false,
+   "schema_region_list": true
+  },
+  "files_sha256": {
+   "run.py": "44278aba0be5e4688e624429280065c2be8d153d41d39010bebda756551ac25b",
+   "prompt.py": "305a84eb1a607a707c15dfb888ba141187e7f6330a604166e5b773241f53bdf4",
+   "prompt-template.txt": "1d451cee4378c77e02bea16e6692603485b2235793e968c2cb905b2c1c220986",
+   "cutouts.py": "7d5f320391cde8c336c234a68d37ce5d973f697a13d30a4ebfa74aa42c84cb54",
+   "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+   "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+   "config.json": "d24357625c6dbde31fe8bdd494c9b4add474131f90ce9a5c799b3255a3d15707",
+   "pricing.json": "c952aa34dfd3bfc4c4ba995261db51a1172fc43ab713a6df3ae20dee1a467bd6",
+   "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+  }
+ },
+ "input": {
+  "id": "kale-1913-page-136",
+  "path": "inputs/kale-1913-page-136.png",
+  "sha256": "b330ad6302aac7e812f35f1c44a681863ead0aa99f3cfc5c0074baa6b9dce2ba"
+ },
+ "type_list": {
+  "path": "schema/types/kale-1913.json",
+  "sha256": "70c6fa538245165dad5d928f07673772ae3fbc09b859b1d7f8d7d23ea5499218",
+  "book_id": "kale-1913"
+ },
+ "source_regions": {
+  "path": "outputs/kale-1913-page-136/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-002/regions.json",
+  "sha256": "16c69de91d47c71c81f6df2164363318a8a3218ea061c4ceee3e53c144f0b32b"
+ },
+ "api": {
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+  "returned_model": "gemini-4-argon",
+  "response_id": null,
+  "request_id": null,
+  "api_wall_seconds": 24.049143750220537,
+  "usage": {
+   "total_tokens": 19131,
+   "total_input_tokens": 16550,
+   "input_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 3572
+    },
+    {
+     "modality": "image",
+     "tokens": 12978
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 2581,
+   "output_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 2581
+    }
+   ],
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 0,
+   "initial_input_tokens": 16550
+  },
+  "tokens_and_cost": {
+   "available": true,
+   "input_tokens": 16550,
+   "cached_input_tokens": 0,
+   "text_output_tokens": 2581,
+   "thinking_tokens": 0,
+   "billable_output_tokens_including_thinking": 2581,
+   "total_token_count_matches": true,
+   "estimated_paid_tier_input_cost_usd": 0.0331,
+   "estimated_paid_tier_output_cost_usd": 0.02581,
+   "estimated_paid_tier_total_cost_usd": 0.05891,
+   "pricing": {
+    "checked_on": "2026-11-03",
+    "currency": "USD",
+    "basis": "Published paid-tier standard rates; estimate from usage, not an invoice",
+    "input_per_million_usd": 2.0,
+    "output_per_million_usd": 10.0,
+    "cached_input_per_million_usd": 0.1,
+    "valid_through": "2026-11-30",
+    "source": "https://aistudio.google.com/docs/pricing"
+   }
+  },
+  "request_sha256": "6f9148e8e0dbd59e695d8a95070bd0c16974d76eb8a80b895cb616a5e10deffe",
+  "response_sha256": "23101a4315ecee1b79f060a33d2899fd46b79e6acceed898f64b70d5d3479a11"
+ },
+ "regions_sent": [
+  {
+   "id": "r2",
+   "region_id": 2,
+   "type": "translated_stanza",
+   "line_ids": [
+    1,
+    2
+   ],
+   "cutout": {
+    "crop_box": [
+     82,
+     191,
+     1222,
+     326
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     1,
+     2
+    ],
+    "sha256": "6091792985171f4776a970a893949fcaf41952240fc10f4c7a575fce94bdc0bc",
+    "size": [
+     1177,
+     135
+    ]
+   }
+  },
+  {
+   "id": "r3",
+   "region_id": 3,
+   "type": "translated_stanza",
+   "line_ids": [
+    3,
+    4,
+    5
+   ],
+   "cutout": {
+    "crop_box": [
+     82,
+     305,
+     1224,
+     491
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     3,
+     4,
+     5
+    ],
+    "sha256": "d9fd5b1c664560510a42eb169f823f979ff62304cfff3a66c0e0e2a697155c51",
+    "size": [
+     1179,
+     186
+    ]
+   }
+  },
+  {
+   "id": "r4",
+   "region_id": 4,
+   "type": "translated_stanza",
+   "line_ids": [
+    6,
+    7,
+    8
+   ],
+   "cutout": {
+    "crop_box": [
+     86,
+     473,
+     1228,
+     663
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     6,
+     7,
+     8
+    ],
+    "sha256": "c08920b291f4b17df1ee3e2de99d50267d46e8c9c91667f357db67f998afd7d1",
+    "size": [
+     1179,
+     190
+    ]
+   }
+  },
+  {
+   "id": "r5",
+   "region_id": 5,
+   "type": "translated_stanza",
+   "line_ids": [
+    9,
+    10
+   ],
+   "cutout": {
+    "crop_box": [
+     87,
+     637,
+     1235,
+     774
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     9,
+     10
+    ],
+    "sha256": "09ad2ab7cd6daf37428d1be3a91616c2423b5ba4269ceb15b919882b2e3d2bea",
+    "size": [
+     1185,
+     137
+    ]
+   }
+  },
+  {
+   "id": "r6",
+   "region_id": 6,
+   "type": "translated_stanza",
+   "line_ids": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+   ],
+   "cutout": {
+    "crop_box": [
+     87,
+     762,
+     1237,
+     1155
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17
+    ],
+    "sha256": "e05905ae57a1dbf4fd270186f4316a77aa241abd989332b81c1aef735fbb8670",
+    "size": [
+     1187,
+     393
+    ]
+   }
+  },
+  {
+   "id": "r7",
+   "region_id": 7,
+   "type": "translated_stanza",
+   "line_ids": [
+    18,
+    19,
+    20
+   ],
+   "cutout": {
+    "crop_box": [
+     95,
+     1133,
+     1240,
+     1318
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     18,
+     19,
+     20
+    ],
+    "sha256": "f2fe67e3e9054f871706430cc496cd03346f34a390c1e70792927dcd77ac6086",
+    "size": [
+     1182,
+     185
+    ]
+   }
+  },
+  {
+   "id": "r8",
+   "region_id": 8,
+   "type": "translated_stanza",
+   "line_ids": [
+    21,
+    22,
+    23,
+    24,
+    25
+   ],
+   "cutout": {
+    "crop_box": [
+     99,
+     1313,
+     1245,
+     1601
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     21,
+     22,
+     23,
+     24,
+     25
+    ],
+    "sha256": "27f181b322d3788d95224e6717c5bc9d3e6e117fd79b219470f60c7cc3d05d69",
+    "size": [
+     1183,
+     288
+    ]
+   }
+  },
+  {
+   "id": "r9",
+   "region_id": 9,
+   "type": "translated_stanza",
+   "line_ids": [
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+   ],
+   "cutout": {
+    "crop_box": [
+     104,
+     1586,
+     1254,
+     1944
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     26,
+     27,
+     28,
+     29,
+     30,
+     31
+    ],
+    "sha256": "250189076230f077e7c669fe0a82149155e3f3f667e33504c47b7d80238c490d",
+    "size": [
+     1187,
+     358
+    ]
+   }
+  },
+  {
+   "id": "r1",
+   "region_id": 1,
+   "type": "page_number",
+   "line_ids": [
+    0
+   ],
+   "cutout": {
+    "crop_box": [
+     584,
+     89,
+     722,
+     172
+    ],
+    "gutter_px": 37,
+    "line_ids": [
+     0
+    ],
+    "sha256": "8ffe8de0a59a78efe5c3a796c356d89be36fed5c2952ea8f26dd56a1450c279b",
+    "size": [
+     175,
+     83
+    ]
+   }
+  }
+ ],
+ "regions_skipped": [],
+ "context": [
+  {
+   "side": "previous",
+   "page": "kale-1913-page-135",
+   "stream": "main",
+   "region_id": 7,
+   "type": "translated_stanza",
+   "regions": "outputs/kale-1913-page-135/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-002/regions.json",
+   "regions_sha256": "d8ab8d5b4ed34161620349f1a50ab8d2b1c4044cc85f2529a8ef01e54836c06d",
+   "sha256": "6148986615680cf2d7434f06f99a52b3af3e98e62712848ee712832589369651",
+   "crop_box": [
+    141,
+    1820,
+    1284,
+    1981
+   ],
+   "line_ids": [
+    32,
+    33
+   ]
+  },
+  {
+   "side": "next",
+   "page": "kale-1913-page-137",
+   "stream": "main",
+   "region_id": 2,
+   "type": "translated_stanza",
+   "regions": "outputs/kale-1913-page-137/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/book-002/regions.json",
+   "regions_sha256": "e8fdbfe52bb9807e0360c7a5350002c6f04d7e61c707907ae96a3d53098c0ab7",
+   "sha256": "da7ea2292822bb50b35bb9b44e85af9d6ce001889d3885345bf2a02990d32edc",
+   "crop_box": [
+    148,
+    179,
+    1295,
+    315
+   ],
+   "line_ids": [
+    1,
+    2
+   ]
+  }
+ ],
+ "problems": [],
+ "check": {
+  "errors": [],
+  "warnings": [],
+  "valid": true
+ },
+ "counts": {
+  "regions": 9,
+  "units": 9,
+  "relations": 0,
+  "line_pieces": 32,
+  "retyped": [],
+  "uncertain": [
+   "r9"
+  ]
+ },
+ "artifacts": {
+  "request": "request.json",
+  "raw_response": "response.json",
+  "prompt": "prompt.txt",
+  "schema": "response-schema.json",
+  "overview": "overview.png",
+  "cutouts": "cutouts/",
+  "context": "context/",
+  "page_document": "page.json",
+  "transcript": "transcript.txt"
+ },
+ "environment": {
+  "python": "3.12.8",
+  "packages": {
+   "numpy": "2.3.5",
+   "Pillow": "12.3.0"
+  }
+ }
+}

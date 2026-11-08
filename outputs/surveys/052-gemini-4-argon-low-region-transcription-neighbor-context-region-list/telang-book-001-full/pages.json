@@ -1,0 +1,7307 @@
+[
+ {
+  "page": "telang-dli-book-page-001",
+  "regions_call": {
+   "cost": 0.00777425,
+   "seconds": 5.4,
+   "types": {
+    "scan_matter": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 0,
+   "relations": 0,
+   "line_pieces": 3,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.015044,
+   "seconds": 7.7,
+   "output_tokens": 156
+  }
+ },
+ {
+  "page": "telang-dli-book-page-002",
+  "regions_call": {
+   "cost": 0.008268000000000001,
+   "seconds": 4.6,
+   "types": {
+    "scan_matter": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 1,
+   "units": 0,
+   "relations": 0,
+   "line_pieces": 3,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.012386000000000001,
+   "seconds": 4.5,
+   "output_tokens": 122
+  }
+ },
+ {
+  "page": "telang-dli-book-page-005",
+  "regions_call": {
+   "cost": 0.008013000000000001,
+   "seconds": 4.3,
+   "types": {
+    "other": 1
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 0,
+   "units": 0,
+   "relations": 0,
+   "line_pieces": 0,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.020678,
+   "seconds": 11.8,
+   "output_tokens": 495
+  }
+ },
+ {
+  "page": "telang-dli-book-page-006",
+  "regions_call": {
+   "cost": 0.008968,
+   "seconds": 6.6,
+   "types": {
+    "paragraph": 2,
+    "footnote": 3
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u4: marker [†] not in r1 line 1"
+  ],
+  "counts": {
+   "regions": 5,
+   "units": 6,
+   "relations": 3,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": [
+    "r1",
+    "r2",
+    "r3",
+    "r4",
+    "r5"
+   ]
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.048552,
+   "seconds": 29.9,
+   "output_tokens": 2427
+  }
+ },
+ {
+  "page": "telang-dli-book-page-007",
+  "regions_call": {
+   "cost": 0.008978,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "scan_matter": 1,
+    "paragraph": 1,
+    "footnote": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "r5: 9 lines returned for 8 line pieces; no line text kept"
+  ],
+  "counts": {
+   "regions": 3,
+   "units": 4,
+   "relations": 2,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": [
+    "r3",
+    "r4",
+    "r5"
+   ]
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph",
+   "footnote"
+  ],
+  "transcription_call": {
+   "cost": 0.039834,
+   "seconds": 26.5,
+   "output_tokens": 1519
+  }
+ },
+ {
+  "page": "telang-dli-book-page-008",
+  "regions_call": {
+   "cost": 0.009448,
+   "seconds": 7.6,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2,
+    "footnote": 4
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 7,
+   "relations": 3,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": [
+    "r2",
+    "r3",
+    "r4",
+    "r6",
+    "r7"
+   ]
+  },
+  "open_start": [
+   "introduction",
+   "paragraph",
+   "footnote"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph",
+   "footnote"
+  ],
+  "transcription_call": {
+   "cost": 0.056476,
+   "seconds": 37.7,
+   "output_tokens": 2542
+  }
+ },
+ {
+  "page": "telang-dli-book-page-009",
+  "regions_call": {
+   "cost": 0.008728,
+   "seconds": 5.9,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2,
+    "footnote": 1
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": [
+    "r2",
+    "r3",
+    "r4"
+   ]
+  },
+  "open_start": [
+   "introduction",
+   "paragraph",
+   "footnote"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.037989999999999996,
+   "seconds": 15.6,
+   "output_tokens": 1363
+  }
+ },
+ {
+  "page": "telang-dli-book-page-010",
+  "regions_call": {
+   "cost": 0.008973,
+   "seconds": 7.5,
+   "types": {
+    "page_number": 1,
+    "paragraph": 1,
+    "footnote": 3
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u3: marker [,] not in r2 line 11"
+  ],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 3,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": [
+    "r2",
+    "r3",
+    "r4",
+    "r5"
+   ]
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.045648,
+   "seconds": 20.3,
+   "output_tokens": 1709
+  }
+ },
+ {
+  "page": "telang-dli-book-page-011",
+  "regions_call": {
+   "cost": 0.008733000000000001,
+   "seconds": 6.5,
+   "types": {
+    "page_number": 1,
+    "paragraph": 1,
+    "footnote": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u3: marker [**] not in r2 line 4"
+  ],
+  "counts": {
+   "regions": 3,
+   "units": 4,
+   "relations": 2,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": [
+    "r2",
+    "r3",
+    "r4"
+   ]
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.040258,
+   "seconds": 18.0,
+   "output_tokens": 1602
+  }
+ },
+ {
+  "page": "telang-dli-book-page-012",
+  "regions_call": {
+   "cost": 0.008968,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2,
+    "footnote": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "r5: 4 lines returned for 3 line pieces; no line text kept",
+   "relation to u4: marker [∗] not in r3 line 10"
+  ],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 2,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": [
+    "r2",
+    "r3",
+    "r4",
+    "r5"
+   ]
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.054877999999999996,
+   "seconds": 42.7,
+   "output_tokens": 2621
+  }
+ },
+ {
+  "page": "telang-dli-book-page-013",
+  "regions_call": {
+   "cost": 0.009448,
+   "seconds": 6.8,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2,
+    "footnote": 4
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u4: marker [ * ] not in r2 line 1"
+  ],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.059656,
+   "seconds": 26.6,
+   "output_tokens": 2664
+  }
+ },
+ {
+  "page": "telang-dli-book-page-014",
+  "regions_call": {
+   "cost": 0.008968,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2,
+    "footnote": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u4: marker [*. ] not in r2 line 8"
+  ],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 2,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.042018,
+   "seconds": 19.6,
+   "output_tokens": 1556
+  }
+ },
+ {
+  "page": "telang-dli-book-page-015",
+  "regions_call": {
+   "cost": 0.008488,
+   "seconds": 3.9,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.043384000000000006,
+   "seconds": 21.0,
+   "output_tokens": 1912
+  }
+ },
+ {
+  "page": "telang-dli-book-page-016",
+  "regions_call": {
+   "cost": 0.008968,
+   "seconds": 4.9,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2,
+    "footnote": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u4: marker [ *] not in r2 line 5"
+  ],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 2,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.049606,
+   "seconds": 24.1,
+   "output_tokens": 2329
+  }
+ },
+ {
+  "page": "telang-dli-book-page-017",
+  "regions_call": {
+   "cost": 0.008733000000000001,
+   "seconds": 4.2,
+   "types": {
+    "page_number": 1,
+    "paragraph": 1,
+    "footnote": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u3: marker [8] not in r2 line 1"
+  ],
+  "counts": {
+   "regions": 4,
+   "units": 4,
+   "relations": 2,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "footnote"
+  ],
+  "transcription_call": {
+   "cost": 0.044222,
+   "seconds": 30.5,
+   "output_tokens": 1794
+  }
+ },
+ {
+  "page": "telang-dli-book-page-018",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 6.5,
+   "types": {
+    "page_number": 1,
+    "paragraph": 1,
+    "footnote": 6
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 5,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "footnote"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.054356,
+   "seconds": 23.4,
+   "output_tokens": 1921
+  }
+ },
+ {
+  "page": "telang-dli-book-page-019",
+  "regions_call": {
+   "cost": 0.009698,
+   "seconds": 6.1,
+   "types": {
+    "scan_matter": 1,
+    "page_number": 1,
+    "paragraph": 1,
+    "footnote": 5
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u3: marker [4] not in r3 line 4"
+  ],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 5,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph",
+   "footnote"
+  ],
+  "transcription_call": {
+   "cost": 0.057176,
+   "seconds": 21.7,
+   "output_tokens": 2427
+  }
+ },
+ {
+  "page": "telang-dli-book-page-020",
+  "regions_call": {
+   "cost": 0.009688,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2,
+    "footnote": 5
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u5: marker [1] not in r3 line 3",
+   "relation to u6: marker [2] not in r3 line 7",
+   "relation to u7: marker [3] not in r3 line 10",
+   "relation to u8: marker [4] not in r3 line 11"
+  ],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 4,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph",
+   "footnote"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.054922,
+   "seconds": 20.1,
+   "output_tokens": 1962
+  }
+ },
+ {
+  "page": "telang-dli-book-page-021",
+  "regions_call": {
+   "cost": 0.010163,
+   "seconds": 7.3,
+   "types": {
+    "page_number": 1,
+    "paragraph": 3,
+    "footnote": 6
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u5: marker [5] not in r2 line 3"
+  ],
+  "counts": {
+   "regions": 10,
+   "units": 10,
+   "relations": 6,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.070716,
+   "seconds": 28.5,
+   "output_tokens": 3160
+  }
+ },
+ {
+  "page": "telang-dli-book-page-022",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 6.4,
+   "types": {
+    "page_number": 1,
+    "paragraph": 1,
+    "footnote": 6
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u3: marker [8] not in r2 line 7"
+  ],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 6,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [
+   "introduction"
+  ],
+  "transcription_call": {
+   "cost": 0.063874,
+   "seconds": 39.2,
+   "output_tokens": 2905
+  }
+ },
+ {
+  "page": "telang-dli-book-page-023",
+  "regions_call": {
+   "cost": 0.009208000000000001,
+   "seconds": 5.4,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2,
+    "footnote": 3
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u4: marker [∗] not in r2 line 5"
+  ],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 3,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction"
+  ],
+  "open_end": [
+   "introduction",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.044051999999999994,
+   "seconds": 16.4,
+   "output_tokens": 1588
+  }
+ },
+ {
+  "page": "telang-dli-book-page-024",
+  "regions_call": {
+   "cost": 0.008488,
+   "seconds": 3.8,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 21,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "introduction",
+   "paragraph"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.031674,
+   "seconds": 12.3,
+   "output_tokens": 946
+  }
+ },
+ {
+  "page": "telang-dli-book-page-025",
+  "regions_call": {
+   "cost": 0.009658,
+   "seconds": 7.7,
+   "types": {
+    "heading": 1,
+    "paragraph": 7
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "critical_notice"
+  ],
+  "transcription_call": {
+   "cost": 0.053812,
+   "seconds": 29.3,
+   "output_tokens": 2296
+  }
+ },
+ {
+  "page": "telang-dli-book-page-026",
+  "regions_call": {
+   "cost": 0.010133,
+   "seconds": 7.6,
+   "types": {
+    "page_number": 1,
+    "paragraph": 9
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 10,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "critical_notice"
+  ],
+  "open_end": [
+   "critical_notice"
+  ],
+  "transcription_call": {
+   "cost": 0.061794,
+   "seconds": 40.2,
+   "output_tokens": 2669
+  }
+ },
+ {
+  "page": "telang-dli-book-page-027",
+  "regions_call": {
+   "cost": 0.009193,
+   "seconds": 5.2,
+   "types": {
+    "page_number": 1,
+    "paragraph": 5
+   }
+  },
+  "label": "3",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "critical_notice"
+  ],
+  "open_end": [
+   "critical_notice"
+  ],
+  "transcription_call": {
+   "cost": 0.040074,
+   "seconds": 13.3,
+   "output_tokens": 1142
+  }
+ },
+ {
+  "page": "telang-dli-book-page-028",
+  "regions_call": {
+   "cost": 0.008493,
+   "seconds": 3.6,
+   "types": {
+    "page_number": 1,
+    "paragraph": 1,
+    "footnote": 1
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u3: marker [9] not in r2 line 31"
+  ],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 1,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "critical_notice"
+  ],
+  "open_end": [
+   "critical_notice",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.038886000000000004,
+   "seconds": 19.7,
+   "output_tokens": 1927
+  }
+ },
+ {
+  "page": "telang-dli-book-page-029",
+  "regions_call": {
+   "cost": 0.008958,
+   "seconds": 5.0,
+   "types": {
+    "page_number": 1,
+    "paragraph": 4
+   }
+  },
+  "label": "5",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "critical_notice",
+   "paragraph"
+  ],
+  "open_end": [
+   "critical_notice",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.048088,
+   "seconds": 21.4,
+   "output_tokens": 2164
+  }
+ },
+ {
+  "page": "telang-dli-book-page-030",
+  "regions_call": {
+   "cost": 0.009898,
+   "seconds": 7.2,
+   "types": {
+    "page_number": 1,
+    "paragraph": 8
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "critical_notice"
+  ],
+  "open_end": [
+   "critical_notice",
+   "paragraph"
+  ],
+  "transcription_call": {
+   "cost": 0.059266,
+   "seconds": 25.6,
+   "output_tokens": 2641
+  }
+ },
+ {
+  "page": "telang-dli-book-page-031",
+  "regions_call": {
+   "cost": 0.008488,
+   "seconds": 3.2,
+   "types": {
+    "page_number": 1,
+    "paragraph": 2
+   }
+  },
+  "label": "7",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 13,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "critical_notice",
+   "paragraph"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.022553999999999998,
+   "seconds": 9.7,
+   "output_tokens": 487
+  }
+ },
+ {
+  "page": "telang-dli-book-page-033",
+  "regions_call": {
+   "cost": 0.012178000000000001,
+   "seconds": 11.6,
+   "types": {
+    "heading": 1,
+    "corrigendum": 17
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 18,
+   "units": 19,
+   "relations": 0,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "corrigenda"
+  ],
+  "transcription_call": {
+   "cost": 0.076238,
+   "seconds": 27.9,
+   "output_tokens": 2638
+  }
+ },
+ {
+  "page": "telang-dli-book-page-034",
+  "regions_call": {
+   "cost": 0.013153000000000001,
+   "seconds": 16.3,
+   "types": {
+    "page_number": 1,
+    "corrigendum": 20,
+    "paragraph": 1
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 22,
+   "units": 22,
+   "relations": 0,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": [
+    "r4",
+    "r17"
+   ]
+  },
+  "open_start": [
+   "corrigenda"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.09104,
+   "seconds": 35.3,
+   "output_tokens": 3016
+  }
+ },
+ {
+  "page": "telang-dli-book-page-035",
+  "regions_call": {
+   "cost": 0.008488,
+   "seconds": 5.0,
+   "types": {
+    "heading": 1,
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "1",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 24,
+   "retyped": [],
+   "uncertain": [
+    "r2",
+    "r3"
+   ]
+  },
+  "open_start": [],
+  "open_end": [
+   "index"
+  ],
+  "transcription_call": {
+   "cost": 0.036365999999999996,
+   "seconds": 25.1,
+   "output_tokens": 1654
+  }
+ },
+ {
+  "page": "telang-dli-book-page-036",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.3,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": [
+    "r1"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.037696,
+   "seconds": 20.8,
+   "output_tokens": 2014
+  }
+ },
+ {
+  "page": "telang-dli-book-page-037",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.2,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "3",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": [
+    "r1"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.045054,
+   "seconds": 26.5,
+   "output_tokens": 2722
+  }
+ },
+ {
+  "page": "telang-dli-book-page-038",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.5,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 59,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.045208,
+   "seconds": 34.3,
+   "output_tokens": 2759
+  }
+ },
+ {
+  "page": "telang-dli-book-page-039",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.3,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 46,
+   "retyped": [],
+   "uncertain": [
+    "r1"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.039152000000000006,
+   "seconds": 23.1,
+   "output_tokens": 2143
+  }
+ },
+ {
+  "page": "telang-dli-book-page-040",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.2,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "35",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 41,
+   "retyped": [],
+   "uncertain": [
+    "r2"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.04376,
+   "seconds": 25.6,
+   "output_tokens": 2608
+  }
+ },
+ {
+  "page": "telang-dli-book-page-041",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.3,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.03862,
+   "seconds": 28.7,
+   "output_tokens": 1888
+  }
+ },
+ {
+  "page": "telang-dli-book-page-042",
+  "regions_call": {
+   "cost": 0.009453,
+   "seconds": 5.9,
+   "types": {
+    "table": 1,
+    "page_number": 1,
+    "footnote": 5
+   }
+  },
+  "label": "7",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u3: marker [ *] not in r1 line 12"
+  ],
+  "counts": {
+   "regions": 7,
+   "units": 7,
+   "relations": 2,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index"
+  ],
+  "transcription_call": {
+   "cost": 0.046836,
+   "seconds": 20.0,
+   "output_tokens": 1850
+  }
+ },
+ {
+  "page": "telang-dli-book-page-043",
+  "regions_call": {
+   "cost": 0.008488,
+   "seconds": 3.5,
+   "types": {
+    "heading": 1,
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "9",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 25,
+   "retyped": [],
+   "uncertain": [
+    "r2"
+   ]
+  },
+  "open_start": [],
+  "open_end": [
+   "index 2"
+  ],
+  "transcription_call": {
+   "cost": 0.042614,
+   "seconds": 35.2,
+   "output_tokens": 2035
+  }
+ },
+ {
+  "page": "telang-dli-book-page-044",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.4,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "20",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.033048,
+   "seconds": 16.2,
+   "output_tokens": 1543
+  }
+ },
+ {
+  "page": "telang-dli-book-page-045",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.7,
+   "types": {
+    "page_number": 1,
+    "table": 1
+   }
+  },
+  "label": "22",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": [
+    "r2"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.039529999999999996,
+   "seconds": 22.2,
+   "output_tokens": 2172
+  }
+ },
+ {
+  "page": "telang-dli-book-page-046",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.4,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "22",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 70,
+   "retyped": [],
+   "uncertain": [
+    "r1"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.041402,
+   "seconds": 24.0,
+   "output_tokens": 2364
+  }
+ },
+ {
+  "page": "telang-dli-book-page-047",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.3,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "12",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "r1: 51 lines returned for 53 line pieces; no line text kept"
+  ],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 57,
+   "retyped": [],
+   "uncertain": [
+    "r2"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.038900000000000004,
+   "seconds": 21.6,
+   "output_tokens": 2117
+  }
+ },
+ {
+  "page": "telang-dli-book-page-048",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.2,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "19",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "r1: line numbers [22, 23, 1, 24, 2, 25, 3, 26, 4, 27, 5, 28, 6, 29, 7, 30, 31, 8, 32, 9, 33, 34, 10, 11, 35, 12, 36, 13, 37, 14, 38, 39, 15, 16, 40, 17, 41, 18, 42, 19, 43, 20, 44, 45, 21, 46]; text kept by position"
+  ],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 48,
+   "retyped": [],
+   "uncertain": [
+    "r1"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.039798,
+   "seconds": 32.0,
+   "output_tokens": 2205
+  }
+ },
+ {
+  "page": "telang-dli-book-page-049",
+  "regions_call": {
+   "cost": 0.008253,
+   "seconds": 3.1,
+   "types": {
+    "table": 1,
+    "page_number": 1
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 2,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 61,
+   "retyped": [],
+   "uncertain": [
+    "r1",
+    "r2"
+   ]
+  },
+  "open_start": [
+   "index",
+   "table"
+  ],
+  "open_end": [
+   "index",
+   "table"
+  ],
+  "transcription_call": {
+   "cost": 0.043692,
+   "seconds": 26.1,
+   "output_tokens": 2392
+  }
+ },
+ {
+  "page": "telang-dli-book-page-050",
+  "regions_call": {
+   "cost": 0.010653,
+   "seconds": 8.7,
+   "types": {
+    "table": 1,
+    "page_number": 1,
+    "footnote": 10
+   }
+  },
+  "label": "82",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 10,
+   "relations": 1,
+   "line_pieces": 47,
+   "retyped": [],
+   "uncertain": [
+    "r1",
+    "r12",
+    "r2"
+   ]
+  },
+  "open_start": [
+   "index 2",
+   "table"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.068868,
+   "seconds": 28.1,
+   "output_tokens": 2704
+  }
+ },
+ {
+  "page": "telang-dli-book-page-051",
+  "regions_call": {
+   "cost": 0.010168,
+   "seconds": 7.0,
+   "types": {
+    "other": 1,
+    "heading": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 25,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06856,
+   "seconds": 28.0,
+   "output_tokens": 2918
+  }
+ },
+ {
+  "page": "telang-dli-book-page-052",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.1,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.067964,
+   "seconds": 29.4,
+   "output_tokens": 3082
+  }
+ },
+ {
+  "page": "telang-dli-book-page-053",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 6.5,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "3",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 3,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 12"
+  ],
+  "transcription_call": {
+   "cost": 0.055138000000000006,
+   "seconds": 20.9,
+   "output_tokens": 1989
+  }
+ },
+ {
+  "page": "telang-dli-book-page-054",
+  "regions_call": {
+   "cost": 0.010408,
+   "seconds": 7.7,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "heading": 2,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 4,
+   "line_pieces": 26,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 12"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06332,
+   "seconds": 23.6,
+   "output_tokens": 2157
+  }
+ },
+ {
+  "page": "telang-dli-book-page-055",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "5",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 19",
+   "apparatus_entry 19"
+  ],
+  "transcription_call": {
+   "cost": 0.057553999999999994,
+   "seconds": 37.5,
+   "output_tokens": 2029
+  }
+ },
+ {
+  "page": "telang-dli-book-page-056",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.1,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 19",
+   "apparatus_entry 19"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.059662,
+   "seconds": 26.9,
+   "output_tokens": 2244
+  }
+ },
+ {
+  "page": "telang-dli-book-page-057",
+  "regions_call": {
+   "cost": 0.010418,
+   "seconds": 8.0,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 5
+   }
+  },
+  "label": "7",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 5,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 27",
+   "apparatus_entry 27"
+  ],
+  "transcription_call": {
+   "cost": 0.06357,
+   "seconds": 24.5,
+   "output_tokens": 2176
+  }
+ },
+ {
+  "page": "telang-dli-book-page-058",
+  "regions_call": {
+   "cost": 0.009928,
+   "seconds": 6.7,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "heading": 2,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "8",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 11,
+   "relations": 3,
+   "line_pieces": 24,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 27",
+   "apparatus_entry 27"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06561,
+   "seconds": 28.3,
+   "output_tokens": 2806
+  }
+ },
+ {
+  "page": "telang-dli-book-page-059",
+  "regions_call": {
+   "cost": 0.010418,
+   "seconds": 8.2,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 5
+   }
+  },
+  "label": "9",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 5,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 34",
+   "apparatus_entry 34"
+  ],
+  "transcription_call": {
+   "cost": 0.064834,
+   "seconds": 26.5,
+   "output_tokens": 2314
+  }
+ },
+ {
+  "page": "telang-dli-book-page-060",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.2,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "10",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u4: marker [XXXV.] not in r8 line 1",
+   "relation to u5: marker [XXXVI.] not in r9 line 1",
+   "relation to u6: marker [XXXVII.] not in r10 line 1"
+  ],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 26,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 34",
+   "apparatus_entry 34"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 38"
+  ],
+  "transcription_call": {
+   "cost": 0.07014,
+   "seconds": 30.1,
+   "output_tokens": 3026
+  }
+ },
+ {
+  "page": "telang-dli-book-page-061",
+  "regions_call": {
+   "cost": 0.010653,
+   "seconds": 8.2,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "heading": 1,
+    "apparatus_entry": 5
+   }
+  },
+  "label": "11",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 14,
+   "relations": 5,
+   "line_pieces": 26,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 38"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 42",
+   "apparatus_entry 42"
+  ],
+  "transcription_call": {
+   "cost": 0.066242,
+   "seconds": 29.0,
+   "output_tokens": 2246
+  }
+ },
+ {
+  "page": "telang-dli-book-page-062",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.7,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "12",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 42",
+   "apparatus_entry 42"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.068704,
+   "seconds": 32.6,
+   "output_tokens": 3137
+  }
+ },
+ {
+  "page": "telang-dli-book-page-063",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.6,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "13",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 26,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 49",
+   "apparatus_entry 49"
+  ],
+  "transcription_call": {
+   "cost": 0.056332,
+   "seconds": 45.5,
+   "output_tokens": 1910
+  }
+ },
+ {
+  "page": "telang-dli-book-page-064",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.2,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "heading": 1,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "14",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 26,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 49",
+   "apparatus_entry 49"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.069718,
+   "seconds": 28.2,
+   "output_tokens": 3020
+  }
+ },
+ {
+  "page": "telang-dli-book-page-065",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.7,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "15",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.0593,
+   "seconds": 22.7,
+   "output_tokens": 2189
+  }
+ },
+ {
+  "page": "telang-dli-book-page-066",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.5,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "16",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": [
+    "r7",
+    "r8"
+   ]
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.069,
+   "seconds": 31.3,
+   "output_tokens": 3159
+  }
+ },
+ {
+  "page": "telang-dli-book-page-067",
+  "regions_call": {
+   "cost": 0.010408,
+   "seconds": 7.8,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "heading": 2,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "17",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 4,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06421,
+   "seconds": 24.8,
+   "output_tokens": 2246
+  }
+ },
+ {
+  "page": "telang-dli-book-page-068",
+  "regions_call": {
+   "cost": 0.009458000000000001,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "18",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 8,
+   "relations": 3,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.059904,
+   "seconds": 27.9,
+   "output_tokens": 2695
+  }
+ },
+ {
+  "page": "telang-dli-book-page-069",
+  "regions_call": {
+   "cost": 0.009928,
+   "seconds": 7.2,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "heading": 2,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "19",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 11,
+   "relations": 3,
+   "line_pieces": 26,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 70"
+  ],
+  "transcription_call": {
+   "cost": 0.06650600000000001,
+   "seconds": 31.7,
+   "output_tokens": 2914
+  }
+ },
+ {
+  "page": "telang-dli-book-page-070",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "20",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 3,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 70"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.061544,
+   "seconds": 27.6,
+   "output_tokens": 2633
+  }
+ },
+ {
+  "page": "telang-dli-book-page-071",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "21",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 77",
+   "apparatus_entry 77"
+  ],
+  "transcription_call": {
+   "cost": 0.058644,
+   "seconds": 21.0,
+   "output_tokens": 2129
+  }
+ },
+ {
+  "page": "telang-dli-book-page-072",
+  "regions_call": {
+   "cost": 0.010408,
+   "seconds": 8.3,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "heading": 2,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "29",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 4,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 77",
+   "apparatus_entry 77"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.073124,
+   "seconds": 30.5,
+   "output_tokens": 3127
+  }
+ },
+ {
+  "page": "telang-dli-book-page-073",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.4,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "23",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 84",
+   "apparatus_entry 84"
+  ],
+  "transcription_call": {
+   "cost": 0.057686,
+   "seconds": 43.0,
+   "output_tokens": 2041
+  }
+ },
+ {
+  "page": "telang-dli-book-page-074",
+  "regions_call": {
+   "cost": 0.010888,
+   "seconds": 8.9,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "heading": 2,
+    "apparatus_entry": 5
+   }
+  },
+  "label": "24",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 13,
+   "units": 15,
+   "relations": 5,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 84",
+   "apparatus_entry 84"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 88",
+   "apparatus_entry 88"
+  ],
+  "transcription_call": {
+   "cost": 0.07172600000000001,
+   "seconds": 26.6,
+   "output_tokens": 2559
+  }
+ },
+ {
+  "page": "telang-dli-book-page-075",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.4,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "25",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 88",
+   "apparatus_entry 88"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 92",
+   "apparatus_entry 92"
+  ],
+  "transcription_call": {
+   "cost": 0.069528,
+   "seconds": 31.1,
+   "output_tokens": 3015
+  }
+ },
+ {
+  "page": "telang-dli-book-page-076",
+  "regions_call": {
+   "cost": 0.010408,
+   "seconds": 8.0,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "heading": 2,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "26",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 13,
+   "relations": 4,
+   "line_pieces": 25,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 92",
+   "apparatus_entry 92"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.062832,
+   "seconds": 26.9,
+   "output_tokens": 2083
+  }
+ },
+ {
+  "page": "telang-dli-book-page-077",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 8.0,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "27",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.067326,
+   "seconds": 29.8,
+   "output_tokens": 2996
+  }
+ },
+ {
+  "page": "telang-dli-book-page-078",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 7.3,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "heading": 1,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "28",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 3,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": [
+    "r8"
+   ]
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka"
+  ],
+  "transcription_call": {
+   "cost": 0.06423200000000001,
+   "seconds": 42.6,
+   "output_tokens": 2908
+  }
+ },
+ {
+  "page": "telang-dli-book-page-079",
+  "regions_call": {
+   "cost": 0.010653,
+   "seconds": 8.5,
+   "types": {
+    "page_number": 1,
+    "heading": 1,
+    "verse": 5,
+    "apparatus_entry": 5
+   }
+  },
+  "label": "29",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 13,
+   "relations": 5,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": [
+    "r12"
+   ]
+  },
+  "open_start": [
+   "shataka"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.067358,
+   "seconds": 23.8,
+   "output_tokens": 2316
+  }
+ },
+ {
+  "page": "telang-dli-book-page-080",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.3,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "heading": 1,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "30",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.070716,
+   "seconds": 33.4,
+   "output_tokens": 3101
+  }
+ },
+ {
+  "page": "telang-dli-book-page-081",
+  "regions_call": {
+   "cost": 0.010408,
+   "seconds": 8.7,
+   "types": {
+    "page_number": 1,
+    "verse": 6,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "31",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 7",
+   "apparatus_entry 7"
+  ],
+  "transcription_call": {
+   "cost": 0.062728,
+   "seconds": 23.8,
+   "output_tokens": 2114
+  }
+ },
+ {
+  "page": "telang-dli-book-page-082",
+  "regions_call": {
+   "cost": 0.010408,
+   "seconds": 7.7,
+   "types": {
+    "page_number": 1,
+    "verse": 6,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "32",
+  "valid": true,
+  "errors": [],
+  "problems": [
+   "relation to u6: marker [X.] not in r9 line 1",
+   "relation to u7: marker [XI.] not in r10 line 1",
+   "relation to u8: marker [XII.] not in r11 line 1"
+  ],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 7",
+   "apparatus_entry 7"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.074184,
+   "seconds": 34.0,
+   "output_tokens": 3227
+  }
+ },
+ {
+  "page": "telang-dli-book-page-083",
+  "regions_call": {
+   "cost": 0.010408,
+   "seconds": 8.2,
+   "types": {
+    "page_number": 1,
+    "verse": 6,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "33",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 4,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": [
+    "r2"
+   ]
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.063754,
+   "seconds": 24.2,
+   "output_tokens": 2175
+  }
+ },
+ {
+  "page": "telang-dli-book-page-084",
+  "regions_call": {
+   "cost": 0.009928,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "34",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 3,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.057305999999999996,
+   "seconds": 22.7,
+   "output_tokens": 1998
+  }
+ },
+ {
+  "page": "telang-dli-book-page-085",
+  "regions_call": {
+   "cost": 0.010403,
+   "seconds": 7.8,
+   "types": {
+    "heading": 3,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 14,
+   "relations": 4,
+   "line_pieces": 21,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.071216,
+   "seconds": 29.4,
+   "output_tokens": 2972
+  }
+ },
+ {
+  "page": "telang-dli-book-page-086",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.8,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "36",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": [
+    "r9"
+   ]
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 8",
+   "apparatus_entry 8"
+  ],
+  "transcription_call": {
+   "cost": 0.060158,
+   "seconds": 24.3,
+   "output_tokens": 2260
+  }
+ },
+ {
+  "page": "telang-dli-book-page-087",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.5,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "37",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 8",
+   "apparatus_entry 8"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.067082,
+   "seconds": 29.1,
+   "output_tokens": 2974
+  }
+ },
+ {
+  "page": "telang-dli-book-page-088",
+  "regions_call": {
+   "cost": 0.010418,
+   "seconds": 7.9,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 5
+   }
+  },
+  "label": "38",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 5,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.074154,
+   "seconds": 30.5,
+   "output_tokens": 3205
+  }
+ },
+ {
+  "page": "telang-dli-book-page-089",
+  "regions_call": {
+   "cost": 0.010178,
+   "seconds": 7.3,
+   "types": {
+    "page_number": 1,
+    "lead_in": 3,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "39",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 3,
+   "line_pieces": 24,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06736,
+   "seconds": 28.5,
+   "output_tokens": 2809
+  }
+ },
+ {
+  "page": "telang-dli-book-page-090",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.7,
+   "types": {
+    "page_number": 1,
+    "lead_in": 2,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "40",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 3,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.067428,
+   "seconds": 29.5,
+   "output_tokens": 2998
+  }
+ },
+ {
+  "page": "telang-dli-book-page-091",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.8,
+   "types": {
+    "page_number": 1,
+    "lead_in": 2,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "41",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 3,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.066604,
+   "seconds": 27.6,
+   "output_tokens": 2911
+  }
+ },
+ {
+  "page": "telang-dli-book-page-092",
+  "regions_call": {
+   "cost": 0.009218,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "verse": 2,
+    "lead_in": 1,
+    "apparatus_entry": 2
+   }
+  },
+  "label": "42",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 7,
+   "relations": 2,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.050353999999999996,
+   "seconds": 28.3,
+   "output_tokens": 1944
+  }
+ },
+ {
+  "page": "telang-dli-book-page-093",
+  "regions_call": {
+   "cost": 0.009933,
+   "seconds": 7.5,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "lead_in": 1,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "43",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 3,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": [
+    "r9"
+   ]
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 31"
+  ],
+  "transcription_call": {
+   "cost": 0.059792,
+   "seconds": 25.4,
+   "output_tokens": 2239
+  }
+ },
+ {
+  "page": "telang-dli-book-page-094",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.9,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "heading": 1,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "44",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 32,
+   "retyped": [
+    "r3"
+   ],
+   "uncertain": [
+    "r9",
+    "r10"
+   ]
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 31"
+  ],
+  "open_end": [
+   "shataka"
+  ],
+  "transcription_call": {
+   "cost": 0.07283,
+   "seconds": 31.7,
+   "output_tokens": 3355
+  }
+ },
+ {
+  "page": "telang-dli-book-page-095",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "heading": 1,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "45",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 3,
+   "line_pieces": 26,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.053788,
+   "seconds": 26.8,
+   "output_tokens": 1868
+  }
+ },
+ {
+  "page": "telang-dli-book-page-096",
+  "regions_call": {
+   "cost": 0.009698,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "lead_in": 1,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "46",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 3,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.063522,
+   "seconds": 31.9,
+   "output_tokens": 2841
+  }
+ },
+ {
+  "page": "telang-dli-book-page-097",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 6.3,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "47",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 3,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 44"
+  ],
+  "transcription_call": {
+   "cost": 0.064162,
+   "seconds": 29.3,
+   "output_tokens": 2901
+  }
+ },
+ {
+  "page": "telang-dli-book-page-098",
+  "regions_call": {
+   "cost": 0.010178,
+   "seconds": 7.4,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "lead_in": 1,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "48",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 44"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06129,
+   "seconds": 42.5,
+   "output_tokens": 2182
+  }
+ },
+ {
+  "page": "telang-dli-book-page-099",
+  "regions_call": {
+   "cost": 0.009458000000000001,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "49",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 8,
+   "relations": 3,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.052944000000000005,
+   "seconds": 23.4,
+   "output_tokens": 1979
+  }
+ },
+ {
+  "page": "telang-dli-book-page-100",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "50",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 54",
+   "apparatus_entry 54"
+  ],
+  "transcription_call": {
+   "cost": 0.05930200000000001,
+   "seconds": 27.7,
+   "output_tokens": 2193
+  }
+ },
+ {
+  "page": "telang-dli-book-page-101",
+  "regions_call": {
+   "cost": 0.009703,
+   "seconds": 6.3,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "apparatus_entry": 3,
+    "scan_matter": 1
+   }
+  },
+  "label": "59",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 8,
+   "relations": 3,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 54",
+   "apparatus_entry 54"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06542200000000001,
+   "seconds": 85.7,
+   "output_tokens": 3037
+  }
+ },
+ {
+  "page": "telang-dli-book-page-102",
+  "regions_call": {
+   "cost": 0.009458000000000001,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "52",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 8,
+   "relations": 3,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.054134,
+   "seconds": 26.9,
+   "output_tokens": 2120
+  }
+ },
+ {
+  "page": "telang-dli-book-page-103",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.1,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "53",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.059579999999999994,
+   "seconds": 25.2,
+   "output_tokens": 2186
+  }
+ },
+ {
+  "page": "telang-dli-book-page-104",
+  "regions_call": {
+   "cost": 0.010418,
+   "seconds": 8.1,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 5
+   }
+  },
+  "label": "54",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 5,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 68",
+   "apparatus_entry 68"
+  ],
+  "transcription_call": {
+   "cost": 0.07325999999999999,
+   "seconds": 30.1,
+   "output_tokens": 3155
+  }
+ },
+ {
+  "page": "telang-dli-book-page-105",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.7,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "55",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 68",
+   "apparatus_entry 68"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.0688,
+   "seconds": 30.1,
+   "output_tokens": 3115
+  }
+ },
+ {
+  "page": "telang-dli-book-page-106",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 6.3,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "56",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 3,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.066174,
+   "seconds": 31.5,
+   "output_tokens": 3108
+  }
+ },
+ {
+  "page": "telang-dli-book-page-107",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.9,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "57",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 79",
+   "apparatus_entry 79"
+  ],
+  "transcription_call": {
+   "cost": 0.068028,
+   "seconds": 38.4,
+   "output_tokens": 3060
+  }
+ },
+ {
+  "page": "telang-dli-book-page-108",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 8.3,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "58",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": [
+    "r4"
+   ]
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 79",
+   "apparatus_entry 79"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 82",
+   "apparatus_entry 82"
+  ],
+  "transcription_call": {
+   "cost": 0.06964999999999999,
+   "seconds": 33.3,
+   "output_tokens": 3238
+  }
+ },
+ {
+  "page": "telang-dli-book-page-109",
+  "regions_call": {
+   "cost": 0.010418,
+   "seconds": 8.0,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 5
+   }
+  },
+  "label": "59",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 5,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 82",
+   "apparatus_entry 82"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 86",
+   "apparatus_entry 86"
+  ],
+  "transcription_call": {
+   "cost": 0.066638,
+   "seconds": 28.8,
+   "output_tokens": 2482
+  }
+ },
+ {
+  "page": "telang-dli-book-page-110",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.2,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "60",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 86",
+   "apparatus_entry 86"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.060318,
+   "seconds": 21.3,
+   "output_tokens": 2322
+  }
+ },
+ {
+  "page": "telang-dli-book-page-111",
+  "regions_call": {
+   "cost": 0.009693,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "61",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 9,
+   "relations": 3,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 93",
+   "apparatus_entry 93"
+  ],
+  "transcription_call": {
+   "cost": 0.05597200000000001,
+   "seconds": 24.8,
+   "output_tokens": 2091
+  }
+ },
+ {
+  "page": "telang-dli-book-page-112",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.5,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "62",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 93",
+   "apparatus_entry 93"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 97"
+  ],
+  "transcription_call": {
+   "cost": 0.072046,
+   "seconds": 33.0,
+   "output_tokens": 3238
+  }
+ },
+ {
+  "page": "telang-dli-book-page-113",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "63",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 97"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.067788,
+   "seconds": 31.7,
+   "output_tokens": 3039
+  }
+ },
+ {
+  "page": "telang-dli-book-page-114",
+  "regions_call": {
+   "cost": 0.009458000000000001,
+   "seconds": 5.6,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "64",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 8,
+   "relations": 3,
+   "line_pieces": 28,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 103",
+   "apparatus_entry 103"
+  ],
+  "transcription_call": {
+   "cost": 0.052492,
+   "seconds": 22.3,
+   "output_tokens": 1953
+  }
+ },
+ {
+  "page": "telang-dli-book-page-115",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "65",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 103",
+   "apparatus_entry 103"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 106",
+   "apparatus_entry 106"
+  ],
+  "transcription_call": {
+   "cost": 0.07050400000000001,
+   "seconds": 32.6,
+   "output_tokens": 3334
+  }
+ },
+ {
+  "page": "telang-dli-book-page-116",
+  "regions_call": {
+   "cost": 0.009938,
+   "seconds": 6.5,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "66",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 4,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 106",
+   "apparatus_entry 106"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06931,
+   "seconds": 31.5,
+   "output_tokens": 3181
+  }
+ },
+ {
+  "page": "telang-dli-book-page-117",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "verse": 4,
+    "heading": 1,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "67",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 25,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka"
+  ],
+  "transcription_call": {
+   "cost": 0.059123999999999996,
+   "seconds": 36.7,
+   "output_tokens": 1945
+  }
+ },
+ {
+  "page": "telang-dli-book-page-118",
+  "regions_call": {
+   "cost": 0.010163,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "heading": 1,
+    "verse": 5,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "68",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 3,
+   "line_pieces": 25,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.058660000000000004,
+   "seconds": 18.7,
+   "output_tokens": 1900
+  }
+ },
+ {
+  "page": "telang-dli-book-page-119",
+  "regions_call": {
+   "cost": 0.010163,
+   "seconds": 7.4,
+   "types": {
+    "page_number": 1,
+    "verse": 6,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "69",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 3,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 11"
+  ],
+  "transcription_call": {
+   "cost": 0.067788,
+   "seconds": 42.7,
+   "output_tokens": 2806
+  }
+ },
+ {
+  "page": "telang-dli-book-page-120",
+  "regions_call": {
+   "cost": 0.010398000000000001,
+   "seconds": 7.9,
+   "types": {
+    "page_number": 1,
+    "verse": 7,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "70",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 12,
+   "relations": 3,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 11"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.061966,
+   "seconds": 25.2,
+   "output_tokens": 2051
+  }
+ },
+ {
+  "page": "telang-dli-book-page-121",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.2,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "71",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 29,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 22",
+   "apparatus_entry 22"
+  ],
+  "transcription_call": {
+   "cost": 0.07000400000000001,
+   "seconds": 32.5,
+   "output_tokens": 3039
+  }
+ },
+ {
+  "page": "telang-dli-book-page-122",
+  "regions_call": {
+   "cost": 0.009928,
+   "seconds": 7.2,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "72",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 3,
+   "line_pieces": 27,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 22",
+   "apparatus_entry 22"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.056735999999999995,
+   "seconds": 21.5,
+   "output_tokens": 1957
+  }
+ },
+ {
+  "page": "telang-dli-book-page-123",
+  "regions_call": {
+   "cost": 0.009928,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "73",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 3,
+   "line_pieces": 25,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.06433,
+   "seconds": 29.9,
+   "output_tokens": 2676
+  }
+ },
+ {
+  "page": "telang-dli-book-page-124",
+  "regions_call": {
+   "cost": 0.009928,
+   "seconds": 6.5,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 3
+   }
+  },
+  "label": "74",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 10,
+   "relations": 3,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [
+   "shataka",
+   "section",
+   "verse 36"
+  ],
+  "transcription_call": {
+   "cost": 0.057782,
+   "seconds": 27.6,
+   "output_tokens": 2047
+  }
+ },
+ {
+  "page": "telang-dli-book-page-125",
+  "regions_call": {
+   "cost": 0.010173,
+   "seconds": 7.5,
+   "types": {
+    "page_number": 1,
+    "verse": 5,
+    "apparatus_entry": 4
+   }
+  },
+  "label": "75",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 11,
+   "relations": 4,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section",
+   "verse 36"
+  ],
+  "open_end": [
+   "shataka",
+   "section"
+  ],
+  "transcription_call": {
+   "cost": 0.059858,
+   "seconds": 21.5,
+   "output_tokens": 2026
+  }
+ },
+ {
+  "page": "telang-dli-book-page-126",
+  "regions_call": {
+   "cost": 0.009213,
+   "seconds": 5.1,
+   "types": {
+    "page_number": 1,
+    "verse": 3,
+    "apparatus_entry": 2
+   }
+  },
+  "label": "76",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 7,
+   "relations": 2,
+   "line_pieces": 18,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "shataka",
+   "section"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.044132000000000005,
+   "seconds": 23.2,
+   "output_tokens": 1311
+  }
+ },
+ {
+  "page": "telang-dli-book-page-127",
+  "regions_call": {
+   "cost": 0.008498,
+   "seconds": 5.3,
+   "types": {
+    "heading": 1,
+    "stanza_note": 1,
+    "footnote": 1
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 4,
+   "relations": 1,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [
+   "notes",
+   "stanza_note 1"
+  ],
+  "transcription_call": {
+   "cost": 0.041634000000000004,
+   "seconds": 21.1,
+   "output_tokens": 1950
+  }
+ },
+ {
+  "page": "telang-dli-book-page-128",
+  "regions_call": {
+   "cost": 0.008748,
+   "seconds": 4.2,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 2
+   }
+  },
+  "label": "2",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 1"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 2"
+  ],
+  "transcription_call": {
+   "cost": 0.03883,
+   "seconds": 15.8,
+   "output_tokens": 1458
+  }
+ },
+ {
+  "page": "telang-dli-book-page-129",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 4.9,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "3",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 2"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 4"
+  ],
+  "transcription_call": {
+   "cost": 0.046818,
+   "seconds": 23.7,
+   "output_tokens": 2243
+  }
+ },
+ {
+  "page": "telang-dli-book-page-130",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "4",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 4"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.042864,
+   "seconds": 27.0,
+   "output_tokens": 1619
+  }
+ },
+ {
+  "page": "telang-dli-book-page-131",
+  "regions_call": {
+   "cost": 0.009478,
+   "seconds": 5.8,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 4,
+    "footnote": 1
+   }
+  },
+  "label": "5",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 1,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "transcription_call": {
+   "cost": 0.05418,
+   "seconds": 22.7,
+   "output_tokens": 2530
+  }
+ },
+ {
+  "page": "telang-dli-book-page-132",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "6",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.044964000000000004,
+   "seconds": 34.8,
+   "output_tokens": 1617
+  }
+ },
+ {
+  "page": "telang-dli-book-page-133",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.4,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "7",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.043539999999999995,
+   "seconds": 23.9,
+   "output_tokens": 1704
+  }
+ },
+ {
+  "page": "telang-dli-book-page-134",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "8",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.054708,
+   "seconds": 32.8,
+   "output_tokens": 2611
+  }
+ },
+ {
+  "page": "telang-dli-book-page-135",
+  "regions_call": {
+   "cost": 0.009728,
+   "seconds": 7.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "9",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 28"
+  ],
+  "transcription_call": {
+   "cost": 0.049316,
+   "seconds": 22.1,
+   "output_tokens": 1821
+  }
+ },
+ {
+  "page": "telang-dli-book-page-136",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "10",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 28"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 32"
+  ],
+  "transcription_call": {
+   "cost": 0.053708,
+   "seconds": 30.0,
+   "output_tokens": 2489
+  }
+ },
+ {
+  "page": "telang-dli-book-page-137",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "11",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 32"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 34"
+  ],
+  "transcription_call": {
+   "cost": 0.045664,
+   "seconds": 27.6,
+   "output_tokens": 2116
+  }
+ },
+ {
+  "page": "telang-dli-book-page-138",
+  "regions_call": {
+   "cost": 0.008748,
+   "seconds": 4.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 2
+   }
+  },
+  "label": "12",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 34"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 35"
+  ],
+  "transcription_call": {
+   "cost": 0.037183999999999995,
+   "seconds": 17.7,
+   "output_tokens": 1508
+  }
+ },
+ {
+  "page": "telang-dli-book-page-139",
+  "regions_call": {
+   "cost": 0.008748,
+   "seconds": 4.6,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 2
+   }
+  },
+  "label": "13",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 3,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 35"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 36"
+  ],
+  "transcription_call": {
+   "cost": 0.044612,
+   "seconds": 22.0,
+   "output_tokens": 2239
+  }
+ },
+ {
+  "page": "telang-dli-book-page-140",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.9,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "14",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 36"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 40"
+  ],
+  "transcription_call": {
+   "cost": 0.05436,
+   "seconds": 39.3,
+   "output_tokens": 2547
+  }
+ },
+ {
+  "page": "telang-dli-book-page-141",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "15",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 40"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.052944,
+   "seconds": 34.8,
+   "output_tokens": 2437
+  }
+ },
+ {
+  "page": "telang-dli-book-page-142",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "16",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": [
+    "r3"
+   ]
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 49"
+  ],
+  "transcription_call": {
+   "cost": 0.047628,
+   "seconds": 21.0,
+   "output_tokens": 1886
+  }
+ },
+ {
+  "page": "telang-dli-book-page-143",
+  "regions_call": {
+   "cost": 0.010218,
+   "seconds": 8.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 8
+   }
+  },
+  "label": "17",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 49"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 56"
+  ],
+  "transcription_call": {
+   "cost": 0.05506,
+   "seconds": 28.1,
+   "output_tokens": 1974
+  }
+ },
+ {
+  "page": "telang-dli-book-page-144",
+  "regions_call": {
+   "cost": 0.009728,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "18",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 56"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.056742,
+   "seconds": 33.4,
+   "output_tokens": 2590
+  }
+ },
+ {
+  "page": "telang-dli-book-page-145",
+  "regions_call": {
+   "cost": 0.009973,
+   "seconds": 7.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "19",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.05921800000000001,
+   "seconds": 33.3,
+   "output_tokens": 2621
+  }
+ },
+ {
+  "page": "telang-dli-book-page-146",
+  "regions_call": {
+   "cost": 0.010218,
+   "seconds": 7.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 8
+   }
+  },
+  "label": "20",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 76"
+  ],
+  "transcription_call": {
+   "cost": 0.05118,
+   "seconds": 20.7,
+   "output_tokens": 1594
+  }
+ },
+ {
+  "page": "telang-dli-book-page-147",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "21",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 76"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.047088000000000005,
+   "seconds": 23.5,
+   "output_tokens": 2264
+  }
+ },
+ {
+  "page": "telang-dli-book-page-148",
+  "regions_call": {
+   "cost": 0.009973,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "22",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.051379999999999995,
+   "seconds": 30.1,
+   "output_tokens": 1834
+  }
+ },
+ {
+  "page": "telang-dli-book-page-149",
+  "regions_call": {
+   "cost": 0.010218,
+   "seconds": 7.8,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 8
+   }
+  },
+  "label": "23",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 93"
+  ],
+  "transcription_call": {
+   "cost": 0.063946,
+   "seconds": 27.0,
+   "output_tokens": 2890
+  }
+ },
+ {
+  "page": "telang-dli-book-page-150",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "24",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 93"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 95"
+  ],
+  "transcription_call": {
+   "cost": 0.041042,
+   "seconds": 18.5,
+   "output_tokens": 1658
+  }
+ },
+ {
+  "page": "telang-dli-book-page-151",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "25",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 97"
+  ],
+  "transcription_call": {
+   "cost": 0.046814,
+   "seconds": 22.2,
+   "output_tokens": 2274
+  }
+ },
+ {
+  "page": "telang-dli-book-page-152",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "26",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 97"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 100"
+  ],
+  "transcription_call": {
+   "cost": 0.042626,
+   "seconds": 17.4,
+   "output_tokens": 1604
+  }
+ },
+ {
+  "page": "telang-dli-book-page-153",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "27",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 100"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.047425999999999996,
+   "seconds": 19.9,
+   "output_tokens": 2058
+  }
+ },
+ {
+  "page": "telang-dli-book-page-154",
+  "regions_call": {
+   "cost": 0.009973,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "28",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 110"
+  ],
+  "transcription_call": {
+   "cost": 0.052138000000000004,
+   "seconds": 19.4,
+   "output_tokens": 1873
+  }
+ },
+ {
+  "page": "telang-dli-book-page-155",
+  "regions_call": {
+   "cost": 0.009228,
+   "seconds": 5.2,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 3,
+    "heading": 1
+   }
+  },
+  "label": "29",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 2"
+  ],
+  "transcription_call": {
+   "cost": 0.048532,
+   "seconds": 21.6,
+   "output_tokens": 2198
+  }
+ },
+ {
+  "page": "telang-dli-book-page-156",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "30",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 2"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 6"
+  ],
+  "transcription_call": {
+   "cost": 0.045686,
+   "seconds": 18.8,
+   "output_tokens": 1706
+  }
+ },
+ {
+  "page": "telang-dli-book-page-157",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.2,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "31",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "transcription_call": {
+   "cost": 0.046446,
+   "seconds": 21.6,
+   "output_tokens": 1773
+  }
+ },
+ {
+  "page": "telang-dli-book-page-158",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.8,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "32",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": [
+    "r4"
+   ]
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.050052,
+   "seconds": 46.9,
+   "output_tokens": 2348
+  }
+ },
+ {
+  "page": "telang-dli-book-page-159",
+  "regions_call": {
+   "cost": 0.009973,
+   "seconds": 7.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "33",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 20"
+  ],
+  "transcription_call": {
+   "cost": 0.052636,
+   "seconds": 28.2,
+   "output_tokens": 1954
+  }
+ },
+ {
+  "page": "telang-dli-book-page-160",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "34",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 18,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.037924,
+   "seconds": 16.6,
+   "output_tokens": 1118
+  }
+ },
+ {
+  "page": "telang-dli-book-page-161",
+  "regions_call": {
+   "cost": 0.008748,
+   "seconds": 4.6,
+   "types": {
+    "heading": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 4,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 30,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 3"
+  ],
+  "transcription_call": {
+   "cost": 0.043114,
+   "seconds": 21.6,
+   "output_tokens": 2088
+  }
+ },
+ {
+  "page": "telang-dli-book-page-162",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.8,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "36",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 3"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 5"
+  ],
+  "transcription_call": {
+   "cost": 0.041066,
+   "seconds": 18.5,
+   "output_tokens": 1687
+  }
+ },
+ {
+  "page": "telang-dli-book-page-163",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "37",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 5"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 8"
+  ],
+  "transcription_call": {
+   "cost": 0.043415999999999996,
+   "seconds": 34.9,
+   "output_tokens": 1677
+  }
+ },
+ {
+  "page": "telang-dli-book-page-164",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "38",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "transcription_call": {
+   "cost": 0.046198,
+   "seconds": 22.4,
+   "output_tokens": 2193
+  }
+ },
+ {
+  "page": "telang-dli-book-page-165",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.8,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "39",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 38,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 10"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 13"
+  ],
+  "transcription_call": {
+   "cost": 0.051764000000000004,
+   "seconds": 24.8,
+   "output_tokens": 2511
+  }
+ },
+ {
+  "page": "telang-dli-book-page-166",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 5.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "40",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.045558,
+   "seconds": 19.3,
+   "output_tokens": 1702
+  }
+ },
+ {
+  "page": "telang-dli-book-page-167",
+  "regions_call": {
+   "cost": 0.010463,
+   "seconds": 8.4,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 9
+   }
+  },
+  "label": "41",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 10,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 26"
+  ],
+  "transcription_call": {
+   "cost": 0.06808600000000001,
+   "seconds": 29.4,
+   "output_tokens": 3062
+  }
+ },
+ {
+  "page": "telang-dli-book-page-168",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "42",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 26"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 30"
+  ],
+  "transcription_call": {
+   "cost": 0.052588,
+   "seconds": 26.4,
+   "output_tokens": 2397
+  }
+ },
+ {
+  "page": "telang-dli-book-page-169",
+  "regions_call": {
+   "cost": 0.009728,
+   "seconds": 6.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "43",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 30"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 35"
+  ],
+  "transcription_call": {
+   "cost": 0.056153999999999996,
+   "seconds": 24.6,
+   "output_tokens": 2528
+  }
+ },
+ {
+  "page": "telang-dli-book-page-170",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "44",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 35"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 39"
+  ],
+  "transcription_call": {
+   "cost": 0.053812,
+   "seconds": 23.5,
+   "output_tokens": 2495
+  }
+ },
+ {
+  "page": "telang-dli-book-page-171",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.6,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "45",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 39"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 41"
+  ],
+  "transcription_call": {
+   "cost": 0.048374,
+   "seconds": 22.3,
+   "output_tokens": 2381
+  }
+ },
+ {
+  "page": "telang-dli-book-page-172",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.3,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "46",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 37,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 41"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 45"
+  ],
+  "transcription_call": {
+   "cost": 0.047119999999999995,
+   "seconds": 30.6,
+   "output_tokens": 1851
+  }
+ },
+ {
+  "page": "telang-dli-book-page-173",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 4.9,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "47",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 41,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 45"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 47"
+  ],
+  "transcription_call": {
+   "cost": 0.040650000000000006,
+   "seconds": 19.2,
+   "output_tokens": 1614
+  }
+ },
+ {
+  "page": "telang-dli-book-page-174",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.3,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "46",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 47"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.043006,
+   "seconds": 19.6,
+   "output_tokens": 1651
+  }
+ },
+ {
+  "page": "telang-dli-book-page-175",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 5.7,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "49",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 55"
+  ],
+  "transcription_call": {
+   "cost": 0.054613999999999996,
+   "seconds": 26.8,
+   "output_tokens": 2580
+  }
+ },
+ {
+  "page": "telang-dli-book-page-176",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "50",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 55"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 58"
+  ],
+  "transcription_call": {
+   "cost": 0.050038,
+   "seconds": 25.7,
+   "output_tokens": 2346
+  }
+ },
+ {
+  "page": "telang-dli-book-page-177",
+  "regions_call": {
+   "cost": 0.008993000000000001,
+   "seconds": 5.2,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 3
+   }
+  },
+  "label": "51",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 5,
+   "units": 4,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 58"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 60"
+  ],
+  "transcription_call": {
+   "cost": 0.046672,
+   "seconds": 22.4,
+   "output_tokens": 2233
+  }
+ },
+ {
+  "page": "telang-dli-book-page-178",
+  "regions_call": {
+   "cost": 0.009728,
+   "seconds": 6.7,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "52",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 60"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.057616,
+   "seconds": 30.6,
+   "output_tokens": 2662
+  }
+ },
+ {
+  "page": "telang-dli-book-page-179",
+  "regions_call": {
+   "cost": 0.009728,
+   "seconds": 6.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "53",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.056457999999999994,
+   "seconds": 24.4,
+   "output_tokens": 2540
+  }
+ },
+ {
+  "page": "telang-dli-book-page-180",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.2,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "54",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 76"
+  ],
+  "transcription_call": {
+   "cost": 0.053674,
+   "seconds": 23.6,
+   "output_tokens": 2487
+  }
+ },
+ {
+  "page": "telang-dli-book-page-181",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "55",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 76"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 80"
+  ],
+  "transcription_call": {
+   "cost": 0.055144,
+   "seconds": 25.4,
+   "output_tokens": 2623
+  }
+ },
+ {
+  "page": "telang-dli-book-page-182",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 5.8,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "56",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 33,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 80"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.053514000000000006,
+   "seconds": 30.1,
+   "output_tokens": 2458
+  }
+ },
+ {
+  "page": "telang-dli-book-page-183",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.2,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "57",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.042238,
+   "seconds": 18.4,
+   "output_tokens": 1578
+  }
+ },
+ {
+  "page": "telang-dli-book-page-184",
+  "regions_call": {
+   "cost": 0.009728,
+   "seconds": 8.4,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 6
+   }
+  },
+  "label": "58",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 8,
+   "units": 7,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 94"
+  ],
+  "transcription_call": {
+   "cost": 0.048864000000000005,
+   "seconds": 26.1,
+   "output_tokens": 1785
+  }
+ },
+ {
+  "page": "telang-dli-book-page-185",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.1,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "59",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 94"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 98"
+  ],
+  "transcription_call": {
+   "cost": 0.054624000000000006,
+   "seconds": 25.9,
+   "output_tokens": 2586
+  }
+ },
+ {
+  "page": "telang-dli-book-page-186",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.1,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "60",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 98"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.053384,
+   "seconds": 23.7,
+   "output_tokens": 2461
+  }
+ },
+ {
+  "page": "telang-dli-book-page-187",
+  "regions_call": {
+   "cost": 0.009238,
+   "seconds": 5.5,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 4
+   }
+  },
+  "label": "61",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 6,
+   "units": 5,
+   "relations": 0,
+   "line_pieces": 32,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 106"
+  ],
+  "transcription_call": {
+   "cost": 0.049038,
+   "seconds": 23.9,
+   "output_tokens": 2262
+  }
+ },
+ {
+  "page": "telang-dli-book-page-188",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.6,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "62",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 106"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.053658,
+   "seconds": 24.5,
+   "output_tokens": 2496
+  }
+ },
+ {
+  "page": "telang-dli-book-page-189",
+  "regions_call": {
+   "cost": 0.010208,
+   "seconds": 7.2,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 7,
+    "heading": 1
+   }
+  },
+  "label": "63",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.06283,
+   "seconds": 35.9,
+   "output_tokens": 2797
+  }
+ },
+ {
+  "page": "telang-dli-book-page-190",
+  "regions_call": {
+   "cost": 0.009973,
+   "seconds": 7.0,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 7
+   }
+  },
+  "label": "64",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 9,
+   "units": 8,
+   "relations": 0,
+   "line_pieces": 34,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.059854000000000004,
+   "seconds": 25.5,
+   "output_tokens": 2680
+  }
+ },
+ {
+  "page": "telang-dli-book-page-191",
+  "regions_call": {
+   "cost": 0.009483,
+   "seconds": 6.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 5
+   }
+  },
+  "label": "65",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 7,
+   "units": 6,
+   "relations": 0,
+   "line_pieces": 36,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 18"
+  ],
+  "transcription_call": {
+   "cost": 0.054900000000000004,
+   "seconds": 24.9,
+   "output_tokens": 2621
+  }
+ },
+ {
+  "page": "telang-dli-book-page-192",
+  "regions_call": {
+   "cost": 0.010218,
+   "seconds": 7.9,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 8
+   }
+  },
+  "label": "66",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 10,
+   "units": 9,
+   "relations": 0,
+   "line_pieces": 35,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 18"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 25"
+  ],
+  "transcription_call": {
+   "cost": 0.0552,
+   "seconds": 23.0,
+   "output_tokens": 2005
+  }
+ },
+ {
+  "page": "telang-dli-book-page-193",
+  "regions_call": {
+   "cost": 0.010463,
+   "seconds": 8.0,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 9
+   }
+  },
+  "label": "67",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 11,
+   "units": 10,
+   "relations": 0,
+   "line_pieces": 39,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 25"
+  ],
+  "open_end": [
+   "notes",
+   "stanza_note 33"
+  ],
+  "transcription_call": {
+   "cost": 0.068894,
+   "seconds": 32.7,
+   "output_tokens": 3140
+  }
+ },
+ {
+  "page": "telang-dli-book-page-194",
+  "regions_call": {
+   "cost": 0.010708,
+   "seconds": 8.9,
+   "types": {
+    "page_number": 1,
+    "running_header": 1,
+    "stanza_note": 10
+   }
+  },
+  "label": "68",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 12,
+   "units": 11,
+   "relations": 0,
+   "line_pieces": 31,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [
+   "notes",
+   "stanza_note 33"
+  ],
+  "open_end": [
+   "notes"
+  ],
+  "transcription_call": {
+   "cost": 0.069368,
+   "seconds": 34.3,
+   "output_tokens": 3024
+  }
+ },
+ {
+  "page": "telang-dli-book-page-195",
+  "regions_call": {
+   "cost": 0.008503,
+   "seconds": 3.3,
+   "types": {
+    "running_header": 1,
+    "page_number": 1,
+    "stanza_note": 1
+   }
+  },
+  "label": "69",
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 3,
+   "units": 2,
+   "relations": 0,
+   "line_pieces": 18,
+   "retyped": [],
+   "uncertain": [
+    "r3"
+   ]
+  },
+  "open_start": [
+   "notes"
+  ],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.026678,
+   "seconds": 13.9,
+   "output_tokens": 879
+  }
+ },
+ {
+  "page": "telang-dli-book-page-196",
+  "regions_call": {
+   "cost": 0.008023,
+   "seconds": 2.0,
+   "types": {
+    "scan_matter": 1
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 1,
+   "units": 0,
+   "relations": 0,
+   "line_pieces": 1,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.014188,
+   "seconds": 5.2,
+   "output_tokens": 85
+  }
+ },
+ {
+  "page": "telang-dli-book-page-199",
+  "regions_call": {
+   "cost": 0.008023,
+   "seconds": 2.1,
+   "types": {
+    "scan_matter": 1
+   }
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 1,
+   "units": 0,
+   "relations": 0,
+   "line_pieces": 3,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.012564,
+   "seconds": 8.6,
+   "output_tokens": 132
+  }
+ },
+ {
+  "page": "telang-dli-book-page-200",
+  "regions_call": {
+   "cost": 0.00756175,
+   "seconds": 3.4,
+   "types": {}
+  },
+  "label": null,
+  "valid": true,
+  "errors": [],
+  "problems": [],
+  "counts": {
+   "regions": 0,
+   "units": 0,
+   "relations": 0,
+   "line_pieces": 0,
+   "retyped": [],
+   "uncertain": []
+  },
+  "open_start": [],
+  "open_end": [],
+  "transcription_call": {
+   "cost": 0.009416,
+   "seconds": 5.0,
+   "output_tokens": 34
+  }
+ }
+]

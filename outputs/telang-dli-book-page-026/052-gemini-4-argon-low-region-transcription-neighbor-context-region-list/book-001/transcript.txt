@@ -1,0 +1,22 @@
+flow main
+  critical_notice 'Critical Notice' (open start+end) [u1]
+    paragraph [u2]
+      r2: The Manuscripts collated are the following .—
+    paragraph 'S' [u3]
+      r3: S. A very neatly and beautifully written copy with a commentary, in the collection of MSS. deposited in Elphinstone College, and belonging to the Government of Bombay. It is fairly correct, and the slips it contains are on the whole easy of detection as well as rectification.
+    paragraph 'W' [u4]
+      r4: W. A second Manuscript, also with a commentary, in the same collection, written in very big letters. It is much less carefully written and contains numerous slips.
+    paragraph 'L' [u5]
+      r5: L. A third, also in the same collection, also accompanied by a commentary. It is far inferior to both of the preceding ones in caligraphy. It is only less full of errors than W.
+    paragraph 'X' [u6]
+      r6: X. A copy from Nassick with a commentary clearly written out. This was lent me by my friend Mr. Bhagvant Mangesh Wâgle. It is tolerably correct though there are some slips.
+    paragraph 'D' [u7]
+      r7: D. A copy belonging to a Guzerâthi friend who lent it me. This contains only the text, and is ill written. It abounds in erroneous copying.
+    paragraph 'F' [u8]
+      r8: F. A fragment of a MS. of the text only, lent me by my friend Mr. Abâji V. Kâthavaṭe, B. A. It contains only about ten Stanzas. It comes immediately from Puna.
+    paragraph 'G' [u9]
+      r9: G. An incomplete MS. of text and commentary from Ahmedabad procured for me by my friend Mr. Ambâlâl Sâkarlâl Desai, M.A., LL.B. It contains a good many slips, and the structure of the letters is not correct in some places.
+    paragraph 'M' [u10]
+      r10: M. A neatly written MS. with a commentary. This was lent me by my friend Mr. Râmchandra Bhikâjî Gunjikar. The Manuscript is from Belgaum. The writing is bold and clear, but there are little slips now and then about double letters, visargas, etc. Barring these it is a correct MS. 
+furniture
+  r1 page_number: 2

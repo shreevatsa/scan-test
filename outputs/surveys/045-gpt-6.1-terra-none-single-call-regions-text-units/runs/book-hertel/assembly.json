@@ -1,0 +1,24 @@
+{
+ "pages": [
+  "../../outputs/hertel-panchatantra-page-152/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json",
+  "../../outputs/hertel-panchatantra-page-153/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json",
+  "../../outputs/hertel-panchatantra-page-154/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json",
+  "../../outputs/hertel-panchatantra-page-155/045-gpt-6.1-terra-none-single-call-regions-text-units/page.json"
+ ],
+ "left_out_invalid_pages": {
+  "hertel-panchatantra-page-153": [
+   "unit u4: open at the start but not the first child of u1"
+  ]
+ },
+ "warnings": [
+  "page hertel-panchatantra-page-154, flow main: open ends do not match (hertel-panchatantra-page-152#u1, [])",
+  "hertel-panchatantra-page-154#u1 + hertel-panchatantra-page-155#u1: inner open ends do not match (hertel-panchatantra-page-154#u3, hertel-panchatantra-page-155#u2)"
+ ],
+ "errors": [
+  "unit hertel-panchatantra-page-152#u1: open at the end but not the last unit of flow main",
+  "unit hertel-panchatantra-page-154#u3: open at the end but not the last child of hertel-panchatantra-page-154#u1",
+  "unit hertel-panchatantra-page-155#u2: open at the start but not the first child of hertel-panchatantra-page-154#u1",
+  "unit hertel-panchatantra-page-155#u2: open at the start but its parent hertel-panchatantra-page-154#u1 is not"
+ ],
+ "units": 14
+}

@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "regions"
+  ],
+  "properties": {
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "box_1000",
+          "keep",
+          "reading_order",
+          "uncertain",
+          "continues_from_earlier",
+          "continues_later"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "heading",
+              "paragraph",
+              "table",
+              "verse",
+              "hindi_translation",
+              "bhavartha",
+              "hindi_gloss",
+              "english_translation",
+              "english_comment",
+              "note",
+              "variant_entry",
+              "note_paragraph",
+              "quotation",
+              "list_entry",
+              "running_header",
+              "page_number",
+              "head_stanza_number",
+              "other"
+            ]
+          },
+          "box_1000": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "keep": {
+            "type": "boolean"
+          },
+          "reading_order": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "uncertain": {
+            "type": "boolean"
+          },
+          "continues_from_earlier": {
+            "type": "boolean"
+          },
+          "continues_later": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

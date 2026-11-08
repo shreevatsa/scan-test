@@ -1,0 +1,976 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-11-05T17:38:34.478529+00:00",
+  "method": {
+    "id": "042-gpt-6.1-terra-none-book-types-continuations",
+    "name": "GPT-6.1 Terra without reasoning, explicit units, book types from the type list and continuation flags",
+    "settings": {
+      "model": "gpt-6.1-terra",
+      "reasoning_effort": "none",
+      "image_detail": "original",
+      "max_output_tokens": 16384,
+      "store": false,
+      "coordinate_format": "xyxy_1000",
+      "prompt_variant": "book-types-continuations-v1",
+      "cache_lifetime": "30m (provider default)",
+      "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+    },
+    "files_sha256": {
+      "run.py": "9db6615121323cc6f247ae49002a9679631cd9188b3b8adfafe941ff674afff2",
+      "regions.py": "1beb4c729a2d8bca063dea767c00889b5819d2f2ca307d74c431e0c526fb382d",
+      "diagnostics.py": "cb643634e814c8d95384f5b53b5e4c149448250ef9b9cf0914a58c74e821e4a2",
+      "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+      "prompt.py": "eff510f80417505ec27a9585846893660b5b9c6c3b5527f1c212747070c507cf",
+      "prompt-template.txt": "35d2fda7ce837fedb3a0f982e81d54ac0af3ccfc73c6b384d641e7db70ed4c9e",
+      "response-schema-template.json": "79e5fdbbc0134fd5a7534d0ea0975bdb7730f9e59e630793758a6ef30cd591d4",
+      "config.json": "87fa1a906d09706dd2ed77f0fd2e924511836da413a76e1d9a23de6d3bcf3b0b",
+      "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+      "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+    },
+    "type_list": {
+      "path": "schema/types/kale-1913.json",
+      "sha256": "4737e5e691053a12df24f552d4c2d59bbdc7dd062a2c20233170fec3316c1eb7",
+      "book_id": "kale-1913"
+    },
+    "prompt_sha256": "fe5ce0f98ff038b139e088a403ee8e905381e0eb29894208e026ac692e41bab4",
+    "response_schema_sha256": "f261408e5a1fea74c2c16da780d70af012117f377244eabd19d028fcfb1bdcff",
+    "region_classes": {
+      "heading": "heading",
+      "paragraph": "paragraph",
+      "contents_entry": "list_item",
+      "commentator_verse": "verse",
+      "lead_in": "lead_in",
+      "verse": "verse",
+      "commentary": "paragraph",
+      "translated_stanza": "paragraph",
+      "stanza_note": "paragraph",
+      "footnote": "note",
+      "running_header": "running_header",
+      "page_number": "page_number",
+      "other": "other"
+    }
+  },
+  "input": {
+    "id": "kale-1913-page-001",
+    "path": "inputs/kale-1913-page-001.png",
+    "sha256": "a4290564c28fd316ca03ea25c4a0be4e47d12d3d4b7fffd2ce9cd4f472494c25",
+    "width": 1379,
+    "height": 2117
+  },
+  "api": {
+    "endpoint": "https://api.openai.com/v1/responses",
+    "requested_model": "gpt-6.1-terra",
+    "returned_model": "gpt-6.1-terra",
+    "response_id": "resp_0dda3f9d13623c48016aecbf1b615887d1953382d8f6d22f70",
+    "request_id": "req_5c3ac13739c8469dba97c4816fc6ef4e",
+    "client_request_id": "c1b9789d-8340-48d9-8af6-6a54d67d03f5",
+    "api_wall_seconds": 17.324976665899158,
+    "usage": {
+      "input_tokens": 5264,
+      "input_tokens_details": {
+        "cache_write_tokens": 5261,
+        "cached_tokens": 0
+      },
+      "output_tokens": 1353,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 6617
+    },
+    "response_headers_seconds": 17.324539207853377,
+    "response_first_body_byte_seconds": 17.32457916624844,
+    "service_tier": "default",
+    "tokens_and_cost": {
+      "available": true,
+      "input_tokens": 5264,
+      "ordinary_input_tokens": 3,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 5261,
+      "output_tokens_including_reasoning": 1353,
+      "reasoning_tokens": 0,
+      "non_reasoning_output_tokens": 1353,
+      "total_token_count_matches": true,
+      "cache_write_lifetime": "30m (provider default)",
+      "estimated_paid_tier_input_cost_usd": 0.00657925,
+      "estimated_paid_tier_output_cost_usd": 0.006765,
+      "estimated_paid_tier_total_cost_usd": 0.01334425,
+      "pricing": {
+        "checked_on": "2026-11-03",
+        "currency": "USD",
+        "basis": "Published OpenAI standard short-context rates with default 30-minute cache writes; estimate from returned usage, not an invoice",
+        "input_per_million_usd": 1.0,
+        "output_per_million_usd": 5.0,
+        "cached_input_per_million_usd": 0.05,
+        "cache_write_30m_per_million_usd": 1.25,
+        "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra"
+      }
+    },
+    "response_sha256": "6cd9bcd94ee8bb77b0e2201a4143a9dc0be4afb0b63b4f82db5a4b6dad2882bc",
+    "request_sha256": "79c9bfead730f46236f5f1b79b141d617bbec1718cd48f3beb14d6c8336c9615"
+  },
+  "coordinates": {
+    "raw": "[x1,y1,x2,y2] normalized to 0..1000",
+    "derived": "[x1,y1,x2,y2] in input-image pixels; origin top-left",
+    "conversion": "x*width/1000, y*height/1000; no boundary adjustment"
+  },
+  "regions": [
+    {
+      "type": "heading",
+      "box_1000": [
+        402,
+        94,
+        631,
+        117
+      ],
+      "keep": true,
+      "reading_order": 1,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 1,
+      "label": "heading",
+      "region_class": "heading",
+      "box": [
+        554.358,
+        198.998,
+        870.149,
+        247.689
+      ],
+      "box_xyxy_1000": [
+        402.0,
+        94.0,
+        631.0,
+        117.0
+      ]
+    },
+    {
+      "type": "paragraph",
+      "box_1000": [
+        165,
+        175,
+        723,
+        199
+      ],
+      "keep": true,
+      "reading_order": 2,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 2,
+      "label": "paragraph",
+      "region_class": "paragraph",
+      "box": [
+        227.535,
+        370.475,
+        997.017,
+        421.283
+      ],
+      "box_xyxy_1000": [
+        165.0,
+        175.0,
+        723.0,
+        199.0
+      ]
+    },
+    {
+      "type": "heading",
+      "box_1000": [
+        395,
+        207,
+        636,
+        227
+      ],
+      "keep": true,
+      "reading_order": 3,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 3,
+      "label": "heading",
+      "region_class": "heading",
+      "box": [
+        544.705,
+        438.219,
+        877.044,
+        480.559
+      ],
+      "box_xyxy_1000": [
+        395.0,
+        207.0,
+        636.0,
+        227.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        106,
+        235,
+        616,
+        260
+      ],
+      "keep": true,
+      "reading_order": 4,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 4,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        146.174,
+        497.495,
+        849.464,
+        550.42
+      ],
+      "box_xyxy_1000": [
+        106.0,
+        235.0,
+        616.0,
+        260.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        108,
+        259,
+        615,
+        282
+      ],
+      "keep": true,
+      "reading_order": 5,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 5,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        148.932,
+        548.303,
+        848.085,
+        596.994
+      ],
+      "box_xyxy_1000": [
+        108.0,
+        259.0,
+        615.0,
+        282.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        108,
+        282,
+        601,
+        306
+      ],
+      "keep": true,
+      "reading_order": 6,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 6,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        148.932,
+        596.994,
+        828.779,
+        647.802
+      ],
+      "box_xyxy_1000": [
+        108.0,
+        282.0,
+        601.0,
+        306.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        108,
+        303,
+        793,
+        329
+      ],
+      "keep": true,
+      "reading_order": 7,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 7,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        148.932,
+        641.451,
+        1093.547,
+        696.493
+      ],
+      "box_xyxy_1000": [
+        108.0,
+        303.0,
+        793.0,
+        329.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        110,
+        327,
+        704,
+        352
+      ],
+      "keep": true,
+      "reading_order": 8,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 8,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        151.69,
+        692.259,
+        970.816,
+        745.184
+      ],
+      "box_xyxy_1000": [
+        110.0,
+        327.0,
+        704.0,
+        352.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        111,
+        351,
+        600,
+        376
+      ],
+      "keep": true,
+      "reading_order": 9,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 9,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        153.069,
+        743.067,
+        827.4,
+        795.992
+      ],
+      "box_xyxy_1000": [
+        111.0,
+        351.0,
+        600.0,
+        376.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        111,
+        375,
+        769,
+        399
+      ],
+      "keep": true,
+      "reading_order": 10,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 10,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        153.069,
+        793.875,
+        1060.451,
+        844.683
+      ],
+      "box_xyxy_1000": [
+        111.0,
+        375.0,
+        769.0,
+        399.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        112,
+        395,
+        771,
+        420
+      ],
+      "keep": true,
+      "reading_order": 11,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 11,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        154.448,
+        836.215,
+        1063.209,
+        889.14
+      ],
+      "box_xyxy_1000": [
+        112.0,
+        395.0,
+        771.0,
+        420.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        114,
+        419,
+        572,
+        444
+      ],
+      "keep": true,
+      "reading_order": 12,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 12,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        157.206,
+        887.023,
+        788.788,
+        939.948
+      ],
+      "box_xyxy_1000": [
+        114.0,
+        419.0,
+        572.0,
+        444.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        113,
+        442,
+        722,
+        469
+      ],
+      "keep": true,
+      "reading_order": 13,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 13,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        155.827,
+        935.714,
+        995.638,
+        992.873
+      ],
+      "box_xyxy_1000": [
+        113.0,
+        442.0,
+        722.0,
+        469.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        112,
+        465,
+        766,
+        490
+      ],
+      "keep": true,
+      "reading_order": 14,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 14,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        154.448,
+        984.405,
+        1056.314,
+        1037.33
+      ],
+      "box_xyxy_1000": [
+        112.0,
+        465.0,
+        766.0,
+        489.99999999999994
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        143,
+        491,
+        404,
+        514
+      ],
+      "keep": true,
+      "reading_order": 15,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 15,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        197.197,
+        1039.447,
+        557.116,
+        1088.138
+      ],
+      "box_xyxy_1000": [
+        143.0,
+        490.99999999999994,
+        404.0,
+        514.0
+      ]
+    },
+    {
+      "type": "heading",
+      "box_1000": [
+        351,
+        515,
+        686,
+        536
+      ],
+      "keep": true,
+      "reading_order": 16,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 16,
+      "label": "heading",
+      "region_class": "heading",
+      "box": [
+        484.029,
+        1090.255,
+        945.994,
+        1134.712
+      ],
+      "box_xyxy_1000": [
+        351.0,
+        515.0,
+        686.0,
+        536.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        146,
+        549,
+        429,
+        571
+      ],
+      "keep": true,
+      "reading_order": 17,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 17,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        201.334,
+        1162.233,
+        591.591,
+        1208.807
+      ],
+      "box_xyxy_1000": [
+        146.0,
+        549.0,
+        429.0,
+        571.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        114,
+        571,
+        605,
+        597
+      ],
+      "keep": true,
+      "reading_order": 18,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 18,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        157.206,
+        1208.807,
+        834.295,
+        1263.849
+      ],
+      "box_xyxy_1000": [
+        114.0,
+        571.0,
+        605.0,
+        597.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        115,
+        592,
+        930,
+        638
+      ],
+      "keep": true,
+      "reading_order": 19,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 19,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        158.585,
+        1253.264,
+        1282.47,
+        1350.646
+      ],
+      "box_xyxy_1000": [
+        115.0,
+        592.0,
+        930.0,
+        638.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        115,
+        638,
+        626,
+        665
+      ],
+      "keep": true,
+      "reading_order": 20,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 20,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        158.585,
+        1350.646,
+        863.254,
+        1407.805
+      ],
+      "box_xyxy_1000": [
+        115.0,
+        638.0,
+        626.0,
+        665.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        116,
+        663,
+        869,
+        688
+      ],
+      "keep": true,
+      "reading_order": 21,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 21,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        159.964,
+        1403.571,
+        1198.351,
+        1456.496
+      ],
+      "box_xyxy_1000": [
+        116.0,
+        663.0,
+        869.0,
+        688.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        118,
+        686,
+        725,
+        709
+      ],
+      "keep": true,
+      "reading_order": 22,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 22,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        162.722,
+        1452.262,
+        999.775,
+        1500.953
+      ],
+      "box_xyxy_1000": [
+        118.0,
+        686.0,
+        725.0,
+        709.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        117,
+        708,
+        932,
+        754
+      ],
+      "keep": true,
+      "reading_order": 23,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 23,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        161.343,
+        1498.836,
+        1285.228,
+        1596.218
+      ],
+      "box_xyxy_1000": [
+        117.0,
+        708.0,
+        932.0,
+        754.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        117,
+        755,
+        719,
+        778
+      ],
+      "keep": true,
+      "reading_order": 24,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 24,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        161.343,
+        1598.335,
+        991.501,
+        1647.026
+      ],
+      "box_xyxy_1000": [
+        117.0,
+        755.0,
+        719.0,
+        778.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        117,
+        777,
+        930,
+        802
+      ],
+      "keep": true,
+      "reading_order": 25,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 25,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        161.343,
+        1644.909,
+        1282.47,
+        1697.834
+      ],
+      "box_xyxy_1000": [
+        117.0,
+        777.0,
+        930.0,
+        802.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        118,
+        801,
+        816,
+        826
+      ],
+      "keep": true,
+      "reading_order": 26,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 26,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        162.722,
+        1695.717,
+        1125.264,
+        1748.642
+      ],
+      "box_xyxy_1000": [
+        118.0,
+        801.0,
+        816.0,
+        826.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        118,
+        823,
+        934,
+        850
+      ],
+      "keep": true,
+      "reading_order": 27,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 27,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        162.722,
+        1742.291,
+        1287.986,
+        1799.45
+      ],
+      "box_xyxy_1000": [
+        118.0,
+        823.0,
+        934.0,
+        850.0
+      ]
+    },
+    {
+      "type": "contents_entry",
+      "box_1000": [
+        149,
+        855,
+        426,
+        878
+      ],
+      "keep": true,
+      "reading_order": 28,
+      "uncertain": false,
+      "continues_from_earlier": false,
+      "continues_later": false,
+      "region_id": 28,
+      "label": "contents_entry",
+      "region_class": "list_item",
+      "box": [
+        205.471,
+        1810.035,
+        587.454,
+        1858.726
+      ],
+      "box_xyxy_1000": [
+        149.0,
+        855.0,
+        426.0,
+        878.0
+      ]
+    }
+  ],
+  "region_types": {
+    "heading": 3,
+    "paragraph": 1,
+    "contents_entry": 24
+  },
+  "region_class_counts": {
+    "heading": 3,
+    "paragraph": 1,
+    "list_item": 24
+  },
+  "uncertain_region_count": 0,
+  "metrics": {
+    "regions": 28,
+    "ink_pixels": 296176,
+    "uncovered_ink_pixels": 5047,
+    "ink_coverage": 0.982959456539355,
+    "partially_covered_components": 3
+  },
+  "kept_regions_metrics": {
+    "regions": 28,
+    "ink_pixels": 296176,
+    "uncovered_ink_pixels": 5047,
+    "ink_coverage": 0.982959456539355,
+    "partially_covered_components": 3
+  },
+  "validation_warnings": [],
+  "environment": {
+    "python": "3.12.8",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "packages": {
+      "numpy": "2.3.5",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "artifacts": {
+    "request": "request.json",
+    "raw_response": "response.json",
+    "prompt": "prompt.txt",
+    "response_schema": "response-schema.json",
+    "type_list": "type-list.json",
+    "response_headers": "response-headers.json",
+    "parsed_response": "parsed-regions.json",
+    "overlay": "overlay.png",
+    "measurement_mask": "ink-mask.png"
+  }
+}

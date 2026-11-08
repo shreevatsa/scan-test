@@ -17,5 +17,7 @@
   "line_number": {"description": "The editor's line numbers in the outer margin (3, 6, 9, …).", "role": "furniture", "region": "other"},
   "margin_mark": {"description": "Any other short mark in the outer margin beside a line.", "role": "furniture", "region": "other"}
  },
- "conventions": ["Transcribe Devanagari as printed, in Unicode NFC, keeping the edition's word separation, apostrophes and dandas."]
+ "conventions": ["Transcribe Devanagari as printed, in Unicode NFC, keeping the edition's word separation, apostrophes and dandas.",
+  "The raised comma-like mark between phrases is written as an ASCII apostrophe ', with a space on each side, as in भो दूत ' किं.",
+  "The small caret printed below the line where two words have merged by vowel sandhi is written as ‸ (U+2038) right after the merged vowel, as in प्रणम्यो‸वाच."]
 }

@@ -1,0 +1,68 @@
+{
+ "status": "completed",
+ "started_at_utc": "2026-11-05T17:16:04.442091+00:00",
+ "endpoint": "https://api.openai.com/v1/responses",
+ "credential_source": "llm stored key: openai",
+ "client_request_id": "43025c56-5486-491d-a9e6-695fd0004bc4",
+ "request_sha256": "e9a0c5c9d510c3e01aa8d08f2c871b6f314d28b4b99b5a02870bf8ebed33f0a2",
+ "method_id": "044-gpt-6.1-terra-none-region-transcription",
+ "settings": {
+  "name": "GPT-6.1 Terra without reasoning: transcription and unit tree on method 043's regions (page overview plus one cut-out per region with numbered lines)",
+  "model": "gpt-6.1-terra",
+  "reasoning_effort": "none",
+  "image_detail": "original",
+  "max_output_tokens": 32768,
+  "store": false,
+  "prompt_variant": "region-transcription-v1",
+  "base_method_id": "043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines",
+  "cutout_padding_char": 0.5,
+  "gutter_width_char": 1.6,
+  "gutter_min_px": 36,
+  "gutter_font_char": 0.55,
+  "gutter_font_min_px": 14,
+  "overview_label_char": 0.8,
+  "overview_label_min_px": 18,
+  "overview_outline_px": 3,
+  "type_lists": "schema/types/<book_id>.json, book_id from the input record"
+ },
+ "files_sha256": {
+  "run.py": "ae723c6c72a30eb091c65659c8760ad53af1872227e9dfefdcc24503ab65dd9b",
+  "prompt.py": "a142af6d66d6dee521f569b34c48b86e833a2576bc721b41a19fa6d7f00bc7cf",
+  "prompt-template.txt": "52982a38b18ee798074bd53601deb0955d742f3e12377c5155befd20b4d8c34f",
+  "cutouts.py": "60ef4c4d08eabdbba3b530350c41c47f2ec5805a5a0f21f932c9e87767c3e7ac",
+  "pagedoc.py": "017b9c4010c6fbcccabb150dca0e3fd3af4e976c87290e2d73fce2cc9ba09383",
+  "costs.py": "b4d60f6947d09833377db8438870130956d1d39e4ae46df722de479dc9e5755d",
+  "config.json": "e0f673200599760064db18c3ccc4950f605731b1d046ebd617ed6272dcb1e82d",
+  "pricing.json": "d44739d788118c9311d98f8fd75f3097e96ede6561c035a164d01d766c98bcaf",
+  "requirements.txt": "81be63463edfec6b6921b966cf7970f4be85244b27e8df3db6ddeef3e8c6795e"
+ },
+ "type_list": {
+  "path": "schema/types/hertel-panchatantra.json",
+  "sha256": "cdb0d5be39ef1dd52033101d8201bf417cd42a92676008cbc2c77b2089b22101",
+  "book_id": "hertel-panchatantra"
+ },
+ "source_regions": {
+  "path": "outputs/hertel-panchatantra-page-155/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/regions.json",
+  "sha256": "fb9dc651e4b8c750a1617d9c4ce12679358db16e4a0501058568151b2621162c"
+ },
+ "prompt_sha256": "aa4b02b9ee7155ef1d51a2ccb44d5878a12c7418337e8897b018527738684204",
+ "response_headers_seconds": 23.112362875137478,
+ "http_status": 200,
+ "request_id": "req_410f26bf78cb4daeabba0e81597307c4",
+ "api_wall_seconds": 23.11278854170814,
+ "response_id": "resp_07b4a67815b04be7016aecb9d888cc87d1be9838782c7afbf6",
+ "returned_model": "gpt-6.1-terra",
+ "response_status": "completed",
+ "usage": {
+  "input_tokens": 16973,
+  "input_tokens_details": {
+   "cache_write_tokens": 16970,
+   "cached_tokens": 0
+  },
+  "output_tokens": 1507,
+  "output_tokens_details": {
+   "reasoning_tokens": 0
+  },
+  "total_tokens": 18480
+ }
+}

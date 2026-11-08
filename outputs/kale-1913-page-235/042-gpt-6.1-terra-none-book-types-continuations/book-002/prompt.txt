@@ -1,0 +1,44 @@
+Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.
+
+The book: Kale (1913): Bhartṛhari's śatakas with a Sanskrit commentary. The scan begins with an English table of contents. Then comes the Sanskrit text of two śatakas, the Nītiśataka and the Vairāgyaśataka, each followed by its miscellaneous stanzas: each verse, in large type, is followed by its Sanskrit commentary in smaller type, some verses are introduced by a short lead-in, and numbered footnotes, mostly variant readings, sit below a rule at the foot of the page and restart at 1 on each page. After the Sanskrit text come an English translation, one numbered paragraph per stanza, and English notes on the stanzas, which quote Sanskrit words in Devanagari.
+
+Return JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,
+with the origin at the top-left. Give each region a type, a keep flag, and
+reading_order among content regions. Furniture regions may have null order.
+
+Make each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:
+- heading: A title or heading: a part's title, such as CONTENTS., TRANSLATION or NOTES.; a śataka's title, such as अथ श्रीमद्भर्तृहरिविरचितं above नीतिशतकम् ।; an invocation above it, such as ॥ श्रीः ॥ or ॥ श्रीगणेशाय नमः ॥; a topic heading inside a śataka, such as अथ तृष्णादूषणम् ।; or a heading for the miscellaneous stanzas.
+- paragraph: A paragraph of English prose that is neither a stanza's translation nor its note: a line of the contents, such as The S'atakas treat of the following themes:—, or an editor's note, such as N. B. Read the slokas on p. 16 in this order—91, 86, …. One region per paragraph, including one continued from the previous page or onto the next.
+- contents_entry: One line of the table of contents: a range of stanza numbers and its theme, such as 2—14 अज्ञनिन्दा or Ignorance censured. One region per entry.
+- commentator_verse: One of the commentator's own opening verses at the start of the Nītiśataka, in the commentary's type, before his introduction; each ends with ॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- introduction: The commentator's introduction at the start of a śataka, in the commentary's type, after his opening verses and before the first verse of Bhartṛhari. One region per paragraph, including one continued from the previous page or onto the next.
+- lead_in: A short line of its own that introduces the verse. It often ends in a dash or colon.
+- verse: One verse in large type, with its number, such as ॥ २६ ॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.
+- commentary: The Sanskrit commentary on the verse, in smaller type. It usually ends with the name of the metre, such as शिखरिणी ॥. One region per paragraph, including one continued from the previous page or onto the next.
+- translated_stanza: The English translation of one stanza: a paragraph beginning with the stanza's number, such as 4. or I.; some are only a cross-reference, such as 1 See p. 16. One region per paragraph, including one continued from the previous page or onto the next.
+- stanza_note: The English note on one stanza, from its number, such as Sl. 5., to the next note. A note can have several paragraphs, each its own region, and can run across pages. One region per paragraph, including one continued from the previous page or onto the next.
+- footnote: One footnote below the rule: in the Sanskrit text, a numbered variant reading; in the English parts, a note marked * or †. Include its marker. Separate neighboring notes even when they share a printed line.
+- running_header: The running title of the Sanskrit text, such as वैराग्यशतकम् । Page furniture, keep=false.
+- page_number: The printed page number: in Devanagari digits in the Sanskrit text, and in the English parts in brackets, such as [ 20 ], or parentheses, such as ( 43 ), at the head of the page. Page furniture, keep=false.
+- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.
+
+Larger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:
+- contents: The table of contents at the start of the scan.
+- section: One śataka of the Sanskrit text, such as वैराग्यशतकम्, with its opening, its stanzas and its miscellaneous stanzas.
+- translation: The English translation, after the Sanskrit text: one unit for the translation of both śatakas and their miscellaneous stanzas. Its headings, such as TRANSLATION, NĪTIS'ATAK., MISCELLANEOUS. and VAIRĀGYAS'ATAKA., are inside it, and it goes on across them.
+- notes: The English notes on the stanzas, after the translation: one unit for the notes on both śatakas and their miscellaneous stanzas. Its headings, such as NOTES, MISCELLANEOUS. and VAIRĀGYAS'ATAKA., are inside it, and it goes on across them.
+- group: One verse with its lead-in, if any, and its commentary. The app can show each group on its own.
+
+- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.
+- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.
+- Continuation: give each region two flags.
+  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.
+  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.
+  Both are false for a unit that is complete in its region, and for page furniture.
+- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.
+- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.
+- Do not transcribe, translate, or regenerate the text. Only propose regions.
+
+Schema:
+{"regions":[{"type":"heading|paragraph|contents_entry|commentator_verse|introduction|lead_in|verse|commentary|translated_stanza|stanza_note|footnote|running_header|page_number|other",
+"box_1000":[0,0,1000,1000],"keep":true,"reading_order":1,"uncertain":false,"continues_from_earlier":false,"continues_later":false}]}

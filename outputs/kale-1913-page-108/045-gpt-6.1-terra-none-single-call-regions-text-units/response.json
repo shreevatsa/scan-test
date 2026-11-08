@@ -1,0 +1,321 @@
+{
+  "id": "resp_09e74c81192001ec016aecbc2603e087d182a9846ba617c023",
+  "object": "response",
+  "created_at": 1793899558,
+  "status": "completed",
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793899587,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32768,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+    {
+      "id": "msg_09e74c81192001ec016aecbc277ab887d1809d0354b25acdd0",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"regions\":[{\"type\":\"running_header\",\"box_1000\":[353,62,562,94],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0935\u0948\u0930\u093e\u0917\u094d\u092f\u0936\u0924\u0915\u092e\u094d \u0964\",\"end\":\"space\"}],\"note\":null},{\"type\":\"page_number\",\"box_1000\":[805,69,864,94],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u096b\u096f\",\"end\":\"space\"}],\"note\":null},{\"type\":\"commentary\",\"box_1000\":[48,114,861,232],\"keep\":true,\"reading_order\":1,\"uncertain\":true,\"continues_from_earlier\":true,\"continues_later\":false,\"lines\":[{\"text\":\"\u092e\u0939\u093e\u0930\u093e\u092e\u0948\u0903 \u0909\u0926\u094d\u092f\u093e\u0928\u0948\u0903 \u0938\u094d\u0935\u093e\u0928\u0928\u094d\u0926\u0947\u0928 \u0935\u093e \u0930\u091a\u093f\u0924\u0947 \u092a\u0925\u093f \u092d\u093f\u0915\u094d\u0937\u093e \u0928 \u092e\u092e \u0926\u0941\u0937\u094d\u092a\u094d\u0930\u093e\u092a\u093e \u0964 \u092f\u0924\u094b\",\"end\":\"space\"},{\"text\":\"\u092d\u0942\u0903 \u092d\u0942\u092e\u093f\u0903 \u092b\u0932\u0948\u0903 \u0938\u0902\u092a\u0942\u0930\u094d\u0923\u093e \u0964 \u0935\u093f\u091f\u092a\u093f\u091a\u0930\u094d\u092e \u0935\u0943\u0915\u094d\u0937\u0924\u094d\u0935\u0915\u094d \u092e\u0943\u0917\u091a\u0930\u094d\u092e \u0915\u0943\u0937\u094d\u0923\u093e\u091c\u093f\u0928\u092e\u092a\u093f \u0935\u0938\u0928\u0902\",\"end\":\"space\"},{\"text\":\"\u0915\u094d\u0937\u092e\u092e\u094d \u0964 \u092f\u0926\u093e \u0964 \u0916\u0932\u0941 \u0928\u093f\u0936\u094d\u091a\u092f\u0947 \u0964 \u0938\u0941\u0916\u0948\u0903 \u0926\u0941\u0903\u0916\u0948\u0930\u094d\u0935\u093e \u0938\u0926\u0943\u0936\u092a\u0930\u093f\u092a\u093e\u0915\u0903 \u0938\u092e\u092a\u0930\u093f\u0923\u093e\u092e\u0903 \u0924\u0926\u093e\",\"end\":\"space\"},{\"text\":\"\u0924\u094d\u0930\u093f\u0928\u0947\u0924\u094d\u0930\u0902 \u0936\u0902\u0915\u0930\u0902 \u0924\u094d\u092f\u0915\u094d\u0924\u094d\u0935\u093e \u0935\u093f\u0939\u093e\u092f \u0915\u0903 \u0938\u0941\u0927\u0940\u0903 \u0927\u0928\u0932\u0935\u0947\u0928 \u092e\u0926\u0903 \u0924\u0947\u0928 \u0905\u0928\u094d\u0927\u0938\u094d\u0924\u0902 \u091c\u0928\u0902 \u092a\u094d\u0930\u0923-\",\"end\":\"hyphen\"},{\"text\":\"\u092e\u0924\u093f \u0964 \u0928 \u0915\u094b\u093d\u092a\u0940\u0924\u094d\u092f\u0930\u094d\u0925\u0903 \u0964 \u0936\u093f\u0916\u0930\u093f\u0923\u0940 \u0965\",\"end\":\"space\"}],\"note\":\"Some readings in the opening continuation are uncertain.\"},{\"type\":\"verse\",\"box_1000\":[112,238,863,348],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0928\u094b \u0916\u0921\u094d\u0917\u092a\u094d\u0930\u0935\u093f\u0926\u093e\u0930\u093f\u0924\u093e\u0903 \u0915\u0930\u091f\u093f\u0928\u094b \u0928\u094b\u0926\u094d\u0935\u0947\u091c\u093f\u0924\u093e \u0935\u0948\u0930\u093f\u0923-\",\"end\":\"hyphen\"},{\"text\":\"\u0938\u094d\u0924\u0928\u094d\u0935\u0919\u094d\u0917\u094d\u092f\u093e \u0935\u093f\u092a\u0941\u0932\u0947 \u0928\u093f\u0924\u092e\u094d\u092c\u092b\u0932\u0915\u0947 \u0928 \u0915\u094d\u0930\u0940\u0921\u093f\u0924\u0902 \u0932\u0940\u0932\u092f\u093e \u0964\",\"end\":\"line\"},{\"text\":\"\u0928\u094b \u091c\u0941\u0937\u094d\u091f\u0902 \u0917\u093f\u0930\u093f\u0930\u093e\u091c\u0928\u093f\u0930\u094d\u091d\u0930\u091d\u0923\u091d\u093e\u0902\u0915\u093e\u0930\u0915\u093e\u0930\u0902 \u092a\u092f\u0903\",\"end\":\"line\"},{\"text\":\"\u0915\u093e\u0932\u094b\u093d\u092f\u0902 \u092a\u0930\u092a\u093f\u0923\u094d\u0921\u0932\u094b\u0932\u0941\u092a\u0924\u092f\u093e \u0915\u093e\u0915\u0948\u0930\u093f\u0935 \u092a\u094d\u0930\u0947\u0930\u093f\u0924\u0948\u0903 \u0965 \u0968\u096d \u0965\",\"end\":\"space\"}],\"note\":null},{\"type\":\"commentary\",\"box_1000\":[43,350,863,469],\"keep\":true,\"reading_order\":3,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0916\u0921\u094d\u0917\u0947\u0928 \u0915\u0930\u091f\u093f\u0928\u0903 \u0905\u0930\u093f\u0939\u0938\u094d\u0924\u093f\u0928\u0903 \u0928 \u092a\u094d\u0930\u0935\u093f\u0926\u093e\u0930\u093f\u0924\u093e\u0903 \u0964 \u0935\u0948\u0930\u093f\u0923\u0903 \u0928\u094b\u0926\u094d\u0935\u0947\u091c\u093f\u0924\u093e\u0903 \u0964 \u0928 \u0909\u0926\u094d\u0935\u0947\u0917\u0902\",\"end\":\"space\"},{\"text\":\"\u092a\u094d\u0930\u093e\u092a\u093f\u0924\u093e\u0903 \u0964 \u0932\u0940\u0932\u092f\u093e \u0924\u0928\u094d\u0935\u0919\u094d\u0917\u094d\u092f\u093e\u0903 \u0938\u0941\u0915\u0941\u092e\u093e\u0930\u093e\u0919\u094d\u0917\u094d\u092f\u093e\u0903 \u0935\u093f\u092a\u0941\u0932\u0947 \u0935\u093f\u0938\u094d\u0924\u0940\u0930\u094d\u0923\u0947 \u0928\u093f\u0924\u092e\u094d\u092c\u092b\u0932\u0915\u0947\",\"end\":\"space\"},{\"text\":\"\u0915\u091f\u093f\u092a\u0941\u0930\u094b\u092d\u093e\u0917 \u090f\u0935 \u092b\u0932\u0915\u0902 \u0924\u0938\u094d\u092e\u093f\u0928\u094d \u0928 \u0915\u094d\u0930\u0940\u0921\u093f\u0924\u092e\u094d \u0964 \u0917\u093f\u0930\u0940\u0923\u093e\u0902 \u0930\u093e\u091c\u093e \u0924\u0938\u094d\u092e\u093e\u0924\u094d \u092f\u0903\",\"end\":\"space\"},{\"text\":\"\u0928\u093f\u0930\u094d\u091d\u0930\u0903 \u091d\u0930\u0903 \u0924\u0938\u094d\u092f \u091d\u0923\u091c\u094d\u091d\u093e\u0902\u0915\u093e\u0930\u0902 \u0915\u0930\u094b\u0924\u0940\u0924\u093f \u0924\u0924\u094d\u092a\u092f\u0903 \u0928\u094b \u091c\u0941\u0937\u094d\u091f\u0902 \u0928 \u0938\u0947\u0935\u093f\u0924\u092e\u094d \u0964\",\"end\":\"space\"},{\"text\":\"\u092a\u0930\u092a\u093f\u0923\u094d\u0921\u0947 \u0932\u094b\u0932\u0941\u092a\u0924\u093e \u0924\u092f\u093e \u0964 \u0936\u093e\u0930\u094d\u0926\u0942\u0932\u0935\u093f\u0966 \u0965\",\"end\":\"space\"}],\"note\":\"Some small-type readings are uncertain.\"},{\"type\":\"verse\",\"box_1000\":[150,475,666,585],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u092a\u094d\u0930\u0936\u093e\u0928\u094d\u0924\u0936\u093e\u0938\u094d\u0924\u094d\u0930\u093e\u0930\u094d\u0925\u0935\u093f\u091a\u093e\u0930\u091a\u093e\u092a\u0932\u0902\",\"end\":\"line\"},{\"text\":\"\u0928\u093f\u0935\u0943\u0924\u094d\u0924\u0928\u093e\u0928\u093e\u0930\u0938\u0915\u093e\u0935\u094d\u092f\u0915\u094c\u0924\u0941\u0915\u092e\u094d \u0964\",\"end\":\"line\"},{\"text\":\"\u0928\u093f\u0930\u0938\u094d\u0924\u0928\u093f\u0903\u0936\u0947\u0937\u0935\u093f\u0915\u0932\u094d\u092a\u0935\u093f\u0938\u094d\u0924\u0930\u0902\",\"end\":\"line\"},{\"text\":\"\u092a\u094d\u0930\u092a\u0924\u094d\u0924\u0941\u092e\u0928\u094d\u0935\u093f\u091a\u094d\u091b\u0924\u093f \u0936\u0902\u0915\u0930\u0902 \u092e\u0928\u0903 \u0965 \u0968\u096e \u0965\",\"end\":\"space\"}],\"note\":null},{\"type\":\"commentary\",\"box_1000\":[42,588,864,681],\"keep\":true,\"reading_order\":5,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u092a\u094d\u0930\u0936\u093e\u0928\u094d\u0924\u0902 \u0936\u093e\u0938\u094d\u0924\u094d\u0930\u093e\u0930\u094d\u0925\u0938\u094d\u092f \u0935\u093f\u091a\u093e\u0930\u0947 \u091a\u093e\u092a\u0932\u0902 \u092f\u0938\u094d\u092f \u0924\u0924\u094d \u0964 \u0928\u093f\u0935\u0943\u0924\u094d\u0924\u0902 \u0928\u093e\u0928\u093e\u0930\u0938\u093e \u092f\u0938\u094d\u092e\u093f\u0928\u094d\",\"end\":\"space\"},{\"text\":\"\u0924\u093e\u0926\u0943\u0936\u0947 \u0915\u093e\u0935\u094d\u092f\u0947 \u0915\u094c\u0924\u0941\u0915\u0902 \u092f\u0938\u094d\u092f \u0924\u0924\u094d \u0964 \u0928\u093f\u0930\u0938\u094d\u0924\u0903 \u0928\u093f\u0903\u0936\u0947\u0937\u0902 \u092f\u0925\u093e \u0938\u094d\u092f\u093e\u0924\u094d\u0924\u0925\u093e \u0935\u093f\u0915\u0932\u094d\u092a\u093e\u0928\u093e\u0902\",\"end\":\"space\"},{\"text\":\"\u0935\u093f\u0938\u094d\u0924\u0930\u0903 \u092f\u0938\u094d\u092f \u0924\u0924\u094d \u0964 \u092e\u0928\u0903 \u0936\u0902\u0915\u0930\u0902 \u092a\u094d\u0930\u092a\u0924\u094d\u0924\u0941\u0902 \u092a\u094d\u0930\u0915\u0930\u094d\u0937\u0947\u0923 \u092a\u094d\u0930\u093e\u092a\u094d\u0924\u0941\u092e\u0928\u094d\u0935\u093f\u091a\u094d\u091b\u0924\u093f \u0928\u093f\u0924\u0930\u093e\u0902\",\"end\":\"space\"},{\"text\":\"\u0907\u091a\u094d\u091b\u0924\u093f \u0964 \u0935\u0902\u0936\u0938\u094d\u0925\u092e\u094d \u0965\",\"end\":\"space\"}],\"note\":\"Some small-type readings are uncertain.\"},{\"type\":\"verse\",\"box_1000\":[40,686,863,797],\"keep\":true,\"reading_order\":6,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u092d\u0915\u094d\u0937\u094d\u092f\u0902 \u092d\u0948\u0915\u094d\u0937\u0902 \u0924\u0924\u0903 \u0915\u093f\u0902 \u0915\u0926\u0936\u0928\u092e\u0925\u0935\u093e \u0935\u093e\u0938\u0930\u093e\u0928\u094d\u0924\u0947 \u0924\u0924\u0903 \u0915\u093f\u0902\",\"end\":\"line\"},{\"text\":\"\u0915\u094c\u092a\u0940\u0928\u0902 \u0935\u093e \u0924\u0924\u0903 \u0915\u093f\u0902 \u0915\u093f\u092e\u0925 \u0938\u093f\u0924\u092e\u0939\u091a\u094d\u091b\u093e\u092e\u094d\u092c\u0930\u0902 \u0935\u093e \u0924\u0924\u0903 \u0915\u093f\u092e\u094d \u0964\",\"end\":\"line\"},{\"text\":\"\u090f\u0915\u093e \u092d\u093e\u0930\u094d\u092f\u093e \u0924\u0924\u0903 \u0915\u093f\u0902 \u0936\u0924\u0917\u0941\u0923\u0917\u0941\u0923\u093f\u0924\u093e \u0915\u094b\u091f\u093f\u0930\u0947\u0915\u093e \u0924\u0924\u0903 \u0915\u093f\u0902\",\"end\":\"line\"},{\"text\":\"\u0924\u094d\u0935\u0947\u0915\u094b \u092d\u094d\u0930\u093e\u0928\u094d\u0924\u0938\u094d\u0924\u0924\u0903 \u0915\u093f\u0902 \u0915\u0930\u093f\u0924\u0941\u0930\u0917\u0936\u0924\u0948\u0930\u094d\u0935\u0947\u0937\u094d\u091f\u093f\u0924\u094b \u0935\u093e \u0924\u0924\u0903 \u0915\u093f\u092e\u094d \u0968\u096f\",\"end\":\"space\"}],\"note\":\"The verse number and final punctuation are close to the footnote rule; some readings are uncertain.\"},{\"type\":\"footnote\",\"box_1000\":[70,805,165,828],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0967 \u0928\u093f\u0935\u0939.\",\"end\":\"space\"}],\"note\":null},{\"type\":\"footnote\",\"box_1000\":[169,805,233,828],\"keep\":true,\"reading_order\":8,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0968 \u0935\u092f\",\"end\":\"space\"}],\"note\":\"The variant reading is unclear.\"},{\"type\":\"footnote\",\"box_1000\":[44,805,863,922],\"keep\":true,\"reading_order\":9,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u0969 \u0905\u0928\u094d\u092f\u0924\u094d\u0930\u093e\u092a\u094d\u092f\u093f\u0926\u0902 \u092a\u0926\u094d\u092f\u0902 \u0915\u093f\u0902\u091a\u0924\u094d \u2013 \u092a\u093e\u0924\u093e\u0932\u093e\u0928\u094d\u0928\u093f\u0930\u094d\u0917\u0924\u094b \u092c\u0924 \u092c\u0932\u0940\",\"end\":\"space\"},{\"text\":\"\u0928\u0940\u0924\u094b \u0928 \u092e\u0943\u0924\u094d\u092f\u0941\u0903 \u0938\u094d\u0935\u092f\u0902 \u0928\u094b \u092e\u0942\u0930\u094d\u0927\u094d\u0928\u093f \u0936\u0936\u093f\u0932\u093e\u091e\u094d\u091b\u0928\u0902 \u091a \u092e\u0932\u093f\u0928\u0902 \u0928\u094b\u0928\u094d\u092e\u0942\u0932\u093f\u0924\u093e \u0935\u094d\u092f\u093e\u0927\u092f\u0903 \u0964 \u0936\u0947\u0937-\",\"end\":\"hyphen\"},{\"text\":\"\u0938\u094d\u092f\u093e\u092a\u093f \u0927\u0930\u093e \u0935\u093f\u0927\u0943\u0924\u094d\u092f \u0928 \u0915\u0943\u0924\u094b \u092d\u093e\u0930\u093e\u0935\u0924\u093e\u0930\u0903 \u0915\u094d\u0937\u0923\u0902 \u091a\u0947\u0924\u0903 \u0938\u0924\u094d\u092a\u0941\u0930\u0941\u0937\u093e\u092d\u093f\u092e\u093e\u0928\u092e\u0928\u093f\u0936\u0902 \u092e\u093f\u0925\u094d\u092f\u093e\",\"end\":\"space\"},{\"text\":\"\u092c\u0939\u093f\u0903 \u0915\u0941\u0930\u0941\u0937\u0947 \u0965 \u092c\u0932\u0940 \u0926\u0948\u0924\u094d\u092f\u0935\u093f\u0936\u0947\u0937\u0903 \u0964 \u092e\u0943\u0924\u094d\u092f\u0941\u0903 \u091c\u0928\u094d\u092e\u092e\u0930\u0923\u092e\u093f\u0924\u093f \u092f\u093e\u0935\u0924\u094d \u0964 \u0938\u094d\u0935\u092f\u0902 \u0928\u0940\u0924\u0903 \u092c\u094d\u0930\u0939\u094d\u092e\u091a\u093f\u0928\u094d\u0924\u0928\u0947-\",\"end\":\"hyphen\"},{\"text\":\"\u0928\u0947\u0924\u093f \u0936\u0947\u0937\u0903 \u0964 \u092e\u0943\u0937\u093e\u092a\u094d\u0930\u0932\u093e\u092a\u0903 \u0964\",\"end\":\"space\"}],\"note\":\"Several words in this long note are difficult to read; its bounding box overlaps adjacent notes on the first and final lines.\"},{\"type\":\"footnote\",\"box_1000\":[318,898,409,922],\"keep\":true,\"reading_order\":10,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u096a \u092e\u0941\u0915\u094d\u0924\u094c.\",\"end\":\"space\"}],\"note\":\"Reading uncertain.\"},{\"type\":\"footnote\",\"box_1000\":[415,898,527,922],\"keep\":true,\"reading_order\":11,\"uncertain\":true,\"continues_from_earlier\":false,\"continues_later\":false,\"lines\":[{\"text\":\"\u096b \u0915\u0926\u0930\u094d\u0925\u093f\u0924.\",\"end\":\"space\"}],\"note\":\"Reading uncertain.\"}],\"units\":[{\"id\":\"u1\",\"type\":\"section\",\"number\":null,\"label\":\"\u0935\u0948\u0930\u093e\u0917\u094d\u092f\u0936\u0924\u0915\u092e\u094d\",\"open_start\":true,\"open_end\":true,\"children\":[\"u2\",\"u4\",\"u7\",\"u10\"]},{\"id\":\"u2\",\"type\":\"group\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":false,\"children\":[\"u3\"]},{\"id\":\"u3\",\"type\":\"commentary\",\"number\":null,\"label\":null,\"open_start\":true,\"open_end\":false,\"children\":[\"r3\"]},{\"id\":\"u4\",\"type\":\"group\",\"number\":\"27\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u5\",\"u6\"]},{\"id\":\"u5\",\"type\":\"verse\",\"number\":\"27\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r4\"]},{\"id\":\"u6\",\"type\":\"commentary\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r5\"]},{\"id\":\"u7\",\"type\":\"group\",\"number\":\"28\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"u8\",\"u9\"]},{\"id\":\"u8\",\"type\":\"verse\",\"number\":\"28\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r6\"]},{\"id\":\"u9\",\"type\":\"commentary\",\"number\":null,\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r7\"]},{\"id\":\"u10\",\"type\":\"group\",\"number\":\"29\",\"label\":null,\"open_start\":false,\"open_end\":true,\"children\":[\"u11\"]},{\"id\":\"u11\",\"type\":\"verse\",\"number\":\"29\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r8\"]},{\"id\":\"u12\",\"type\":\"footnote\",\"number\":\"1\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r9\"]},{\"id\":\"u13\",\"type\":\"footnote\",\"number\":\"2\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r10\"]},{\"id\":\"u14\",\"type\":\"footnote\",\"number\":\"3\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r11\"]},{\"id\":\"u15\",\"type\":\"footnote\",\"number\":\"4\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r12\"]},{\"id\":\"u16\",\"type\":\"footnote\",\"number\":\"5\",\"label\":null,\"open_start\":false,\"open_end\":false,\"children\":[\"r13\"]}],\"flows\":[{\"flow\":\"main\",\"units\":[\"u1\"]},{\"flow\":\"notes\",\"units\":[\"u12\",\"u13\",\"u14\",\"u15\",\"u16\"]}],\"relations\":[]}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "none",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "page_regions_text_units",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regions",
+          "units",
+          "flows",
+          "relations"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "box_1000",
+                "keep",
+                "reading_order",
+                "uncertain",
+                "continues_from_earlier",
+                "continues_later",
+                "lines",
+                "note"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "heading",
+                    "lead_in",
+                    "verse",
+                    "commentary",
+                    "footnote",
+                    "running_header",
+                    "page_number",
+                    "other"
+                  ]
+                },
+                "box_1000": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "keep": {
+                  "type": "boolean"
+                },
+                "reading_order": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1
+                },
+                "uncertain": {
+                  "type": "boolean"
+                },
+                "continues_from_earlier": {
+                  "type": "boolean"
+                },
+                "continues_later": {
+                  "type": "boolean"
+                },
+                "lines": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "text",
+                      "end"
+                    ],
+                    "properties": {
+                      "text": {
+                        "type": "string"
+                      },
+                      "end": {
+                        "enum": [
+                          "space",
+                          "hyphen",
+                          "join",
+                          "line"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "units": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "type",
+                "number",
+                "label",
+                "open_start",
+                "open_end",
+                "children"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "section",
+                    "heading",
+                    "group",
+                    "lead_in",
+                    "verse",
+                    "commentary",
+                    "footnote"
+                  ]
+                },
+                "number": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "open_start": {
+                  "type": "boolean"
+                },
+                "open_end": {
+                  "type": "boolean"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "flows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "flow",
+                "units"
+              ],
+              "properties": {
+                "flow": {
+                  "enum": [
+                    "main",
+                    "notes"
+                  ]
+                },
+                "units": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "region",
+                "line",
+                "marker",
+                "to"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "note"
+                  ]
+                },
+                "region": {
+                  "type": "string"
+                },
+                "line": {
+                  "type": "integer"
+                },
+                "marker": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 5604,
+    "input_tokens_details": {
+      "cache_write_tokens": 5601,
+      "cached_tokens": 0
+    },
+    "output_tokens": 2531,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 8135
+  },
+  "user": null,
+  "metadata": {}
+}

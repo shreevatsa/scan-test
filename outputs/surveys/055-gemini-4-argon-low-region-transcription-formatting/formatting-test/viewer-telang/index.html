@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Method 055 formatting test: Telang</title><style>
+body{margin:0;font:15px/1.5 -apple-system,Helvetica,Arial,sans-serif;color:#222}
+header{position:sticky;top:0;z-index:5;background:#f6f6f2;border-bottom:1px solid #ccc;padding:6px 12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+header a{color:#1f4e9e;text-decoration:none} header .bad{color:#b00;font-weight:600} header .ok{color:#2a7a2a}
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;height:calc(100vh - 44px)}
+#img{overflow:auto;background:#ddd;position:relative}
+#img .wrap{position:relative;width:100%} #img img{width:100%;display:block}
+#img svg{position:absolute;left:0;top:0;width:100%;height:100%}
+svg .reg{fill-opacity:.06;stroke-width:3;cursor:pointer} svg .reg.furn{stroke-dasharray:8 6;stroke-opacity:.6}
+svg .ln{fill:none;stroke:none} svg .ln.hl{fill:#ffd400;fill-opacity:.35;stroke:#e6a800;stroke-width:2}
+svg .reg.hl{fill-opacity:.22;stroke-width:5}
+#text{overflow:auto;padding:10px 18px 60px}
+.unit{margin:4px 0 4px 14px;border-left:3px solid #ddd;padding-left:8px}
+.uhead{font-size:12px;color:#555;font-family:Menlo,monospace}
+.uhead .open{color:#b05a00;font-weight:600}
+.reg-text{margin:3px 0 8px;padding:3px 6px;border-radius:4px;font-size:17px}
+.reg-text .rid{font:11px Menlo,monospace;color:#888;margin-right:6px}
+.reg-text.hl{background:#fff6cc}
+.l{border-radius:2px} .l:hover,.l.hl{background:#ffe680}
+.furn{color:#666;font-size:14px}
+sup.mk{color:#1f4e9e;cursor:pointer;font-weight:600;padding:0 1px;border-radius:3px} sup.mk.hl{background:#ffd400}
+sup.mk.none{color:#b00} sup.mk.guess{text-decoration:underline dashed} .sc{font-variant:small-caps} .spc{letter-spacing:.15em} .ifm{background:#eef3ff} .backrefs{font:11px Menlo,monospace;color:#1f4e9e;margin-left:8px;cursor:pointer}
+.reg-text.note-hl{background:#fff1a8} svg .reg.note-hl{fill-opacity:.35;stroke-width:6}
+.problems{background:#fff0f0;border:1px solid #f3c0c0;padding:6px 10px;border-radius:4px;font-size:13px;margin-bottom:10px}
+.legend span{display:inline-block;margin-right:10px;font-size:12px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:3px;vertical-align:middle}
+table{border-collapse:collapse} td,th{padding:2px 8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+pre{background:#f7f7f7;padding:8px;overflow:auto;font-size:12px}
+
+body{padding:12px 20px}</style></head><body><h2>Method 055 formatting test: Telang</h2>
+<p>3 pages. Open a page to see the image with its regions next to its units and text; hover a line to see it on the page,
+click a region to find its text; ← and → move between pages. ↑ marks a unit begun on an earlier page, ↓ one that goes on on a later page.</p>
+<p class="legend"><span><i style="background:#d62728"></i>heading</span><span><i style="background:#1f77b4"></i>paragraph</span><span><i style="background:#2ca02c"></i>corrigendum</span><span><i style="background:#9467bd"></i>table</span><span><i style="background:#ff7f0e"></i>lead_in</span><span><i style="background:#17becf"></i>verse</span><span><i style="background:#8c564b"></i>apparatus_entry</span><span><i style="background:#e377c2"></i>stanza_note</span><span><i style="background:#bcbd22"></i>footnote</span><span><i style="background:#7f7f7f"></i>page_number</span><span><i style="background:#393b79"></i>running_header</span><span><i style="background:#637939"></i>scan_matter</span></p>
+<h3>Pages</h3><table><tr><th>page</th><th>printed</th><th>top-level units</th><th>regions</th><th>units</th><th>check</th><th>problems</th></tr><tr><td><a href="telang-dli-book-page-013.html">telang-dli-book-page-013</a></td><td></td><td>introduction, footnote</td><td>7</td><td>7</td><td>valid</td><td>relation to u4: marker [8] not in r2 line 1</td></tr><tr><td><a href="telang-dli-book-page-025.html">telang-dli-book-page-025</a></td><td></td><td>critical_notice</td><td>8</td><td>9</td><td>valid</td><td></td></tr><tr><td><a href="telang-dli-book-page-127.html">telang-dli-book-page-127</a></td><td></td><td>notes, footnote</td><td>3</td><td>4</td><td>valid</td><td></td></tr></table>
+</body></html>

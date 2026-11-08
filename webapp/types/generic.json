@@ -1,0 +1,33 @@
+{
+ "format": "types",
+ "schema_version": "0.2",
+ "book_id": "generic",
+ "title": "A printed book",
+ "description": "A starting point for a book with no type list of its own: prose, headings, verse, lists, tables, figures and footnotes, in sections. Replace this description with one of the book in hand: its parts, its languages and scripts, and how its pages are laid out.",
+ "flows": {
+  "main": "The book's running text, in reading order.",
+  "notes": "Footnotes and endnotes."
+ },
+ "types": {
+  "section": {"description": "A part, chapter or section of the book, from its heading to the next heading of the same level. It goes on across pages and holds everything in it, including smaller sections.", "contains": ["section", "heading", "paragraph", "verse", "list_item", "table", "figure", "caption"], "flow": "main"},
+  "heading": {"description": "A title or heading: of the book, a part, a chapter or a section.", "region": "heading", "flow": "main"},
+  "paragraph": {"description": "A paragraph of prose, or a block quotation. A paragraph continued from the previous page or onto the next is one unit.", "region": "paragraph", "flow": "main"},
+  "verse": {"description": "A verse or stanza, with its number or end mark if it has one.", "region": "verse", "flow": "main", "numbered": true},
+  "list_item": {"description": "An entry of a list, a table of contents or an index.", "region": "list_item", "flow": "main"},
+  "table": {"description": "A table, with its headings.", "region": "table", "flow": "main"},
+  "figure": {"description": "An illustration, without its caption.", "region": "figure", "flow": "main"},
+  "caption": {"description": "The caption of an illustration or table.", "region": "caption", "flow": "main"},
+  "footnote": {"description": "A footnote or endnote, with its number or sign.", "region": "note", "flow": "notes", "numbered": true},
+  "running_header": {"description": "A running header or footer: the book's or chapter's title repeated at the top or bottom of the page.", "role": "furniture", "region": "running_header"},
+  "page_number": {"description": "The printed page number.", "role": "furniture", "region": "page_number"}
+ },
+ "relations": {
+  "note": "A note marker in the text points to its note."
+ },
+ "conventions": [
+  "Unicode NFC.",
+  "Lines as printed; a hyphen at a line end is kept.",
+  "A table row is one line, with its cells separated by \" | \"."
+ ],
+ "source": {"written_by": "Claude, 2026-11-06, as the web app's default type list for a new book; not yet reviewed by the user"}
+}
