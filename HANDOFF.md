@@ -65,7 +65,7 @@ Updated 2026-11-07 UTC. "Current state" below is the summary to start from. The 
    - the source and the irreplaceable results are committed. Regenerable binaries are left out by `.gitignore`: page images and crops, requests that embed images, book folders and `.chaya.pdf` files;
    - the private book ("vachana", methods 056–062) is kept out completely: rules in `.git/info/exclude`, where its files are in `PRIVATE.md` (both local only);
    - **open:** the public books' `.chaya.pdf` files (Kale, Telang) could go on a GitHub Release; the private one never;
-   - the first commit went on a new branch, for the user to merge.
+   - committed to `main` (e810f45, 18,813 files) and pushed; later work also goes straight to `main`, as the user prefers.
 2. **The text-layer path in the app:**
    - port `nudi.py` and method 062's rules to JavaScript;
    - recognize legacy-encoded fonts;
