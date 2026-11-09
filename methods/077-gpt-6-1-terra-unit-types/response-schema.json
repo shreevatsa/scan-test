@@ -1,0 +1,186 @@
+{
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "languages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string",
+            "enum": [
+              "container",
+              "verse",
+              "paragraph",
+              "heading",
+              "lead_in",
+              "list_item",
+              "formula",
+              "note",
+              "table",
+              "figure",
+              "caption",
+              "running_header",
+              "page_number",
+              "other"
+            ]
+          },
+          "contains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "flow": {
+            "type": "string"
+          },
+          "lang": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "text",
+              "furniture"
+            ]
+          },
+          "numbered": {
+            "type": "boolean"
+          },
+          "sample_pages": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "region",
+          "contains",
+          "flow",
+          "lang",
+          "role",
+          "numbered",
+          "sample_pages",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "inline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "formatting": {
+            "type": "string",
+            "enum": [
+              "",
+              "bold",
+              "italic",
+              "small_caps",
+              "superscript",
+              "subscript",
+              "underline",
+              "spaced"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "formatting"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "conventions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "description",
+    "languages",
+    "flows",
+    "types",
+    "relations",
+    "inline",
+    "conventions",
+    "questions"
+  ],
+  "additionalProperties": false
+}

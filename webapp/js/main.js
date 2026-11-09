@@ -1,7 +1,7 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
-// Everything runs in the browser; nothing is sent anywhere.
+// Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage } from "./schema.js";
+import { makeValidator, checkPage, checkTypes } from "./schema.js";
 import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya } from "./store.js";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js";
@@ -9,11 +9,15 @@ import { TextPanel, renderInspector, markerForm } from "./editor.js";
 import { renderReader, prepare, bookText, bookDocument } from "./reader.js";
 import { renderStyle } from "./styleview.js";
 import { renderTypes } from "./typesview.js";
+import { typeSetup } from "./type-setup.js?v=20261109-page-browser";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js";
 import { EditError } from "./ops.js";
 import { Maker } from "./pipeline/run.js";
 import { settings } from "./store.js";
+import { renderReaders } from "./readersview.js?v=20261109-progress";
+import { renderStructures } from "./structuresview.js?v=20261109-progress";
+import { readerControls, keyControls, money } from "./reader-controls.js?v=20261109-model-flow";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -42,7 +46,10 @@ class App {
     if (params.get("book")) {
       try {
         const got = await Book.openUrl(params.get("book"));
-        if (got.plainPdf) { history.replaceState(null, "", location.pathname); this.openPdfFile(got.plainPdf); }
+        if (got.plainPdf) {
+          if (!params.has("proposal")) history.replaceState(null, "", location.pathname);
+          this.openPdfFile(got.plainPdf, params.get("proposal"));
+        }
         else await this.openBook(got);
       } catch (e) { this.library(`Could not open ${params.get("book")}: ${e.message}`); }
     } else if (params.get("local")) {
@@ -121,7 +128,7 @@ class App {
 
   // A PDF chosen in the library: a .chaya.pdf goes into this browser (or opens the copy already there); a plain PDF
   // opens its book in this browser if there is one, else starts a new book.
-  async openPdfFile(file) {
+  async openPdfFile(file, proposalUrl = null) {
     const bytes = new Uint8Array(await file.arrayBuffer());
     let read;
     try { read = await readChaya(bytes); } catch (e) { return this.library(`${file.name} could not be read as a PDF: ${e.message}`); }
@@ -148,9 +155,9 @@ class App {
     if (same.length) {
       return choose(file.name, `This browser already has a book made from this PDF: ${same.map(b => `“${b.manifest.title}”`).join(", ")}.`, [
         h("button", { class: "primary", onclick: () => this.openBrowserBook(same[0]) }, `Open “${same[0].manifest.title}”`), " ",
-        h("button", { onclick: () => this.newBookForm(file) }, "Make another book from it"), " "]);
+        h("button", { onclick: () => this.newBookForm(file, null, proposalUrl) }, "Make another book from it"), " "]);
     }
-    this.newBookForm(file);
+    this.newBookForm(file, null, proposalUrl);
   }
 
   // Save the book as a .chaya.pdf: into a file chosen once (Chrome and Edge, which then save to it again), or as a
@@ -176,53 +183,63 @@ class App {
     } catch (e) { if (e.name !== "AbortError") this.toast(`Could not save the .chaya.pdf: ${e.message}`, "bad"); }
   }
 
-  async newBookForm(pdfGiven = null) {
+  async newBookForm(pdfGiven = null, template = null, proposalUrl = null) {
     const index = await (await fetch(new URL("../types/index.json", import.meta.url))).json();
     const title = h("input", { size: 60, placeholder: "the book's title" });
     const bookId = h("input", { size: 24, placeholder: "a short id, such as kale-1913" });
     const description = h("textarea", { rows: 4, cols: 80, placeholder: "what the book is: its parts, languages and scripts, and how its pages are laid out" });
-    const typeSel = h("select", {}, ...index.map(t => h("option", { value: t.file }, `${t.book_id}: ${t.title}`)), h("option", { value: "" }, "a type list from a file…"));
-    const typeFile = h("input", { type: "file", accept: ".json" });
-    const loadTypes = async () => typeSel.value ? (await fetch(new URL(`../types/${typeSel.value}`, import.meta.url))).json()
-      : typeFile.files[0] ? JSON.parse(await typeFile.files[0].text()) : null;
-    const fillDescription = async () => { const t = await loadTypes(); if (t && !description.dataset.edited) description.value = t.description || ""; };
-    description.addEventListener("input", () => { description.dataset.edited = "1"; });
-    typeSel.addEventListener("change", fillDescription);
-    typeFile.addEventListener("change", fillDescription);
+    for (const field of [title, bookId, description]) field.addEventListener("input", () => { field.dataset.edited = "1"; });
     const files = h("input", { type: "file", accept: "application/pdf,.pdf" });
     const range = h("input", { size: 20, placeholder: "all, or such as 1-20, 25" });
     const info = h("span", { class: "meta" });
     const progress = h("div", { class: "meta" });
-    let pdfDoc = null, pdfFile = null;
+    let pdfDoc = null, pdfFile = null, pdfSha = null, opening = null, creating = false;
+    const setup = typeSetup({ app: this, title, bookId, description, index, template, proposalUrl, onBusy: busy => {
+      bookFields.querySelectorAll("input,textarea").forEach(control => { control.disabled = busy; });
+      makeButton.disabled = busy;
+    } });
     const usePdf = async file => {
+      const token = opening = Symbol();
       pdfDoc = null; pdfFile = file && (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) ? file : null;
+      pdfSha = null;
+      await setup.usePdf(null);
+      if (opening !== token) return;
       info.textContent = "";
       if (file && !pdfFile) { info.textContent = "Choose a PDF. (Page images can be made into one first, for example with img2pdf.)"; return; }
       if (!pdfFile) return;
       info.textContent = "Opening the PDF…";
       try {
         const { openPdf } = await import("./pipeline/pdf.js");
-        pdfDoc = await openPdf(pdfFile);
+        const selected = pdfFile;
+        const doc = await openPdf(selected);
+        const sha = await sha256hex(new Uint8Array(await selected.arrayBuffer()));
+        if (opening !== token) { await doc.destroy(); return; }
+        pdfDoc = doc; pdfSha = sha;
         info.textContent = `${pdfFile.name}: ${pdfDoc.numPages} pages.`;
         if (!title.value) title.value = pdfFile.name.replace(/\.pdf$/i, "");
         if (!bookId.value) bookId.value = pdfFile.name.replace(/\.pdf$/i, "").toLowerCase().replace(/[^a-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
-      } catch (e) { info.textContent = `The PDF could not be opened: ${e.message}`; }
+        await setup.usePdf({ doc, file: selected, sha });
+      } catch (e) { if (opening === token) info.textContent = `The PDF setup could not finish. ${e.message}`; }
     };
     files.addEventListener("change", () => usePdf(files.files[0]));
     const go = async () => {
+      if (creating) return;
+      creating = true;
+      formFields.disabled = makeButton.disabled = true;
       try {
         const id = bookId.value.trim();
         if (!/^[A-Za-z0-9._-]+$/.test(id)) throw new Error("give a book id of letters, digits, dots, dashes and underscores");
-        let types = await loadTypes();
-        if (!types) throw new Error("choose a type list");
-        types = { ...types, book_id: id, title: title.value.trim() || types.title, description: description.value.trim() || types.description };
-        const errs = [...this.validate(types)];
+        let types = await setup.loadTypes();
+        if (!types) throw new Error("load a unit type list");
+        types = { ...types, book_id: id, title: title.value.trim() || types.title };
+        if (description.dataset.edited && description.value.trim()) types.description = description.value.trim();
+        const errs = this.validate(types);
+        if (!errs.length) errs.push(...checkTypes(types));
         if (errs.length) throw new Error(`the type list: ${errs[0]}`);
         if (!pdfFile) throw new Error("choose the book's PDF");
         if (!pdfDoc) throw new Error("the PDF is not open yet");
         const { pageInfo, drawnSize, pageRange } = await import("./pipeline/pdf.js");
         const numbers = pageRange(range.value, pdfDoc.numPages);
-        const pdfSha = await sha256hex(new Uint8Array(await pdfFile.arrayBuffer()));
         // Each page's make-up and the size it is drawn at (its regions are measured in that size's pixels).
         const pages = [];
         for (const [i, n] of numbers.entries()) {
@@ -238,26 +255,28 @@ class App {
         const dir = await newBrowserBookDir(id);
         const book = await Book.create(dir, { title: types.title, bookId: id, types, pages, browser: true,
           pdf: { file: pdfFile, sha256: pdfSha, pageCount: pdfDoc.numPages } });
+        await setup.saveToBook(book);
+        if (template) await book.saveReaderOptions(await template.getReaderOptions());
         progress.textContent = "Done.";
         await this.openBook(book);
         location.hash = "#make";
       } catch (e) { this.toast(e.message, "bad"); progress.textContent = ""; }
+      finally { creating = false; formFields.disabled = makeButton.disabled = false; }
     };
+    const bookFields = h("div", { class: "fields col" },
+      pdfGiven ? h("label", {}, "PDF ", h("b", {}, pdfGiven.name), " ", info) : h("label", {}, "PDF ", files, " ", info),
+      h("label", {}, "PDF pages to include ", range),
+      h("label", {}, "Title ", title), h("label", {}, "Book id ", bookId),
+      h("label", { class: "stack" }, "Description of the book, for the models ", description));
+    const formFields = h("fieldset", { class: "new-book-fields" }, bookFields, setup.element);
+    const makeButton = h("button", { class: "primary", onclick: go }, "Make the book");
     this.root.replaceChildren(h("div", { class: "lib" }, h("h1", {}, "A new book"),
       h("p", {}, "From the book's PDF (a scan or a digital PDF; page images can be made into a PDF first, for example with img2pdf), its unit types and a description. ",
         "The book is kept in this browser; its pages are drawn from the PDF (a scanned page at 300 dpi, or at the scan's own resolution when lower; a digital page at 300 dpi). ",
         "Then, in Edit book → Make pages, the app finds each page's regions and transcribes them with your API keys."),
-      h("div", { class: "fields col" },
-        pdfGiven ? h("label", {}, "PDF ", h("b", {}, pdfGiven.name), " ", info) : h("label", {}, "PDF ", files, " ", info),
-        h("label", {}, "PDF pages ", range),
-        h("label", {}, "Title ", title), h("label", {}, "Book id ", bookId),
-        h("label", {}, "Unit types ", typeSel, " ", typeFile),
-        h("label", { class: "stack" }, "Description of the book, for the models ", description)),
-      h("p", { class: "meta" }, "The generic type list suits most books as a start. A book-specific list, like those of the test books, names its own units ",
-        "(a verse with its commentary, an apparatus entry, a stanza note) and gives better structure. The description is part of both prompts."),
-      h("div", { class: "actions" }, h("button", { class: "primary", onclick: go }, "Make the book"), " ",
+      formFields,
+      h("div", { class: "actions" }, makeButton, " ",
         h("button", { onclick: () => this.library() }, "Cancel")), progress));
-    fillDescription();
     if (pdfGiven) usePdf(pdfGiven);
   }
 
@@ -295,7 +314,7 @@ class App {
     this.root.className = "book";
     // Four top-level modes: Read, Edit book (its type list, style sheet, problems, and making its pages), Edit pages
     // (one page at a time, with the navigator, undo and redo) and Export.
-    const bookViews = [["types", "Types"], ["style", "Style sheet"], ["check", "Problems"], ...(book.writable ? [["make", "Make pages"]] : [])];
+    const bookViews = [["types", "Types"], ["style", "Style sheet"], ["check", "Problems"], ["readers", "Transcription models"], ["structures", "Schema assignment"], ...(book.writable ? [["make", "Make pages"]] : [])];
     this.bookViews = bookViews.map(v => v[0]);
     const pageSel = h("select", { class: "pagesel", onchange: e => this.openPage(e.target.value) },
       ...book.pages.map(p => h("option", { value: p.id }, `${p.id.replace(/^.*-page-/, "")}${p.label ? ` (p. ${p.label})` : ""}${book.edits.has(p.id) ? " ✎" : ""}`)));
@@ -318,7 +337,7 @@ class App {
   route() {
     if (!this.book) return;
     const hash = new URLSearchParams(location.hash.slice(1));
-    let mode = ["read", "types", "style", "check", "export", "make"].find(m => hash.has(m)) || "page";
+    let mode = ["read", "types", "style", "check", "readers", "structures", "export", "make"].find(m => hash.has(m)) || "page";
     if (mode === "make" && !this.book.writable) mode = "page";
     this.mode = mode;
     const top = mode === "read" || mode === "export" ? mode : mode === "page" ? "pages" : "book";
@@ -342,6 +361,8 @@ class App {
       if (mode === "check") this.renderCheck();
       if (mode === "export") this.renderExport();
       if (mode === "make") this.renderMake();
+      if (mode === "readers") renderReaders(this.main, this).catch(error => this.toast(error.message, "bad"));
+      if (mode === "structures") renderStructures(this.main, this).catch(error => this.toast(error.message, "bad"));
     }
   }
 
@@ -585,7 +606,7 @@ class App {
     this.toast("Back to the model's version (undo brings your version back).");
   }
 
-  // Method 043's local step in a worker: the outlines and line pieces of every region for the current boxes.
+  // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
       this.worker = new Worker(new URL("./local/worker.js", import.meta.url), { type: "module" });
@@ -682,62 +703,134 @@ class App {
 
   // ---------------------------------------------------------------- making a book
 
+  async continueBook() {
+    try {
+      await this.flush();
+      if (!this.book.writable) {
+        if (!canKeepBooks()) throw new Error("Open the app over HTTPS or localhost to keep an editable copy in this browser.");
+        this.toast("Creating an editable copy in this browser…");
+        const copy = await importChaya(await this.book.chayaBytes());
+        await this.openBook(copy);
+      }
+      this.setMode("make");
+    } catch (error) { this.toast(error.message, "bad"); }
+  }
+
+  async getMaker() {
+    if (this.maker?.book === this.book) return this.maker;
+    const book = this.book;
+    const keys = Object.fromEntries(await Promise.all(["openai", "gemini", "vision", "vision_auth", "vision_project"].map(async provider => [provider, await settings.get(`key:${provider}`) || ""])));
+    const maker = new Maker(book, { outlines: (pid, url, boxes) => this.outlines(pid, url, boxes), keys, check: d => checkPage(this.validate, d, book.types) });
+    if (this.book === book) this.maker = maker;
+    return maker;
+  }
+
   async renderMake() {
     const el = this.main, book = this.book;
-    const keys = { openai: (await settings.get("key:openai")) || "", gemini: (await settings.get("key:gemini")) || "" };
-    const maker = new Maker(book, { outlines: (pid, url, boxes) => this.outlines(pid, url, boxes), keys, check: d => this.check(d) });
-    this.maker = maker;
-    const keyInput = (name, label) => h("label", {}, label, " ", h("input", { type: "password", size: 40, value: keys[name], autocomplete: "off",
-      onchange: async e => { keys[name] = e.target.value.trim(); await settings.set(`key:${name}`, keys[name]); this.toast(`${label} saved in this browser.`); } }));
+    const maker = await this.getMaker(), controls = await readerControls(book);
+    if (this.mode !== "make" || this.book !== book) return;
     const rows = {}, state = {};
-    let total = 0;
+    let total = 0, unknown = 0, busy = false, stop = false, loaded = false;
     const totalEl = h("span", { class: "meta" });
-    const showTotal = () => totalEl.replaceChildren(`Estimated cost of the calls made here so far: $${total.toFixed(3)}`);
-    const table = h("table", { class: "pages" }, h("tr", {}, ...["page", "regions", "transcription", ""].map(t => h("th", {}, t))));
+    const range = h("input", { value: "all", size: 20, "aria-label": "Pages to process" });
+    const existing = h("input", { type: "checkbox" });
+    const threshold = h("input", { type: "number", min: 0.1, step: 0.5, value: 5, "aria-label": "Processing spend threshold" });
+    const progress = h("p", { role: "status" });
+    const stopButton = h("button", { onclick: () => { stop = true; } }, "Stop after the active call");
+    const showTotal = () => totalEl.textContent = `New API spend here ${money(total)}${unknown ? ` · ${unknown} costs unavailable` : ""}`;
+    const table = h("table", { class: "pages" }, h("tr", {}, ...["page", "regions", "document", ""].map(t => h("th", {}, t))));
     const refresh = async pid => {
-      const rec = await maker.regions(pid), doc = await book.model(pid);
+      const rec = await maker.sourceRegions(pid).catch(() => null), doc = await book.model(pid);
       state[pid] = { regions: !!rec, doc: !!doc };
       const r = rows[pid];
       r.regions.replaceChildren(rec ? `${rec.regions.length} regions` + (rec.region_call?.cost_usd != null ? ` · $${rec.region_call.cost_usd.toFixed(4)}` : "") : "—");
       const p = book.page(pid);
       r.doc.replaceChildren(doc ? h("span", { class: p.valid === false ? "bad" : "ok" }, p.valid === false ? "made, not passing the checks" : "made") : "—");
     };
-    const run = async (pid, what) => {
+    const run = async (pid, what, options) => {
       const r = rows[pid];
-      r.status.replaceChildren(h("span", { class: "pending" }, what === "regions" ? "finding the regions…" : "transcribing…"));
+      let completed = false;
+      r.status.replaceChildren(h("span", { class: "pending" }, what === "regions" ? "finding the regions…" : what === "read" ? "transcribing…" : "building units…"));
       try {
-        if (what === "regions") { const out = await maker.findRegions(pid); total += out.region_call.cost_usd || 0; }
-        else { const out = await maker.transcribe(pid); total += out.cost || 0; if (out.errors.length) r.status.replaceChildren(h("span", { class: "bad" }, out.errors[0])); }
+        if (what === "regions") await maker.findRegions(pid);
+        else if (what === "read") await maker.read(pid, options);
+        else {
+          const out = await maker.transcribe(pid, { options });
+          if (out.errors.length) r.status.replaceChildren(h("span", { class: "bad" }, out.errors[0]));
+        }
         showTotal();
+        completed = true;
         if (what === "regions" || !r.status.querySelector(".bad")) r.status.replaceChildren();
       } catch (e) { r.status.replaceChildren(h("span", { class: "bad" }, e.message)); }
       await refresh(pid);
+      return completed;
     };
-    let stop = false;
-    const all = async what => {
-      stop = false;
-      const queue = book.pages.map(p => p.id).filter(pid => (what === "regions" ? !state[pid]?.regions : state[pid]?.regions && !state[pid]?.doc));
-      const work = async () => { while (queue.length && !stop) await run(queue.shift(), what); };
-      await Promise.all([work(), work(), work()]);
+    const start = async (what, pid = null) => {
+      if (!loaded) return this.toast("Wait for the page status to finish loading.");
+      if (busy || maker.processing || maker.jobs.size) return this.toast("Wait for the active processing to finish.");
+      let selected;
+      const limit = Number(threshold.value), startedAt = total;
+      try {
+        const { pageRange } = await import("./pipeline/pdf.js");
+        selected = pid ? [pid] : pageRange(range.value, book.pages.length).map(n => book.pages[n - 1].id);
+        if (!Number.isFinite(limit) || limit <= 0) throw new Error("Enter a positive processing spend threshold.");
+      } catch (error) { return this.toast(error.message, "bad"); }
+      busy = true; maker.processing = true; stop = false;
+      const fields = [...el.querySelectorAll("button, input, select")].filter(field => field !== stopButton);
+      fields.forEach(field => { field.disabled = true; });
+      maker.onCost = cost => { if (cost === null) unknown++; else total += cost; showTotal(); };
+      const paused = () => stop || unknown || total - startedAt >= limit;
+      let completed = 0;
+      try {
+        const options = await maker.options();
+        const ids = pid ? selected : selected.filter(id => what === "regions" ? !state[id]?.regions : existing.checked || !state[id]?.doc);
+        if (!ids.length) { progress.textContent = "All selected pages already have documents. Enable reprocessing to use the selected models on them."; return; }
+        for (const id of ids) {
+          if (paused()) break;
+          if (what === "regions" || !state[id]?.regions) {
+            progress.textContent = `Finding regions on ${id}…`;
+            if (await run(id, "regions", options) && what === "regions") completed++;
+          }
+        }
+        const ready = [];
+        if (what !== "regions") for (const id of ids) {
+          if (paused()) break;
+          if (!state[id]?.regions) continue;
+          progress.textContent = `Transcribing ${id}…`;
+          if (await run(id, "read", options)) ready.push(id);
+        }
+        for (const id of ready) {
+          if (paused()) break;
+          progress.textContent = `Building units and links on ${id}…`;
+          if (await run(id, "process", options)) completed++;
+        }
+        progress.textContent = `${completed} ${what === "regions" ? "pages with regions saved" : "page documents saved"}.${paused() ? " Stopped after the active call. Run again to continue from cached stages." : " Review Problems and Edit pages, then save the book from Export."}`;
+      } finally {
+        busy = false; maker.processing = false;
+        fields.forEach(field => { field.disabled = false; });
+      }
     };
     for (const p of book.pages) {
       const r = rows[p.id] = { regions: h("td"), doc: h("td"), status: h("span") };
       table.append(h("tr", {}, h("td", {}, h("button", { class: "link", onclick: () => this.openPage(p.id) }, p.id)), r.regions, r.doc,
-        h("td", {}, h("button", { class: "mini", onclick: () => run(p.id, "regions") }, "find regions"), " ",
-          h("button", { class: "mini", onclick: () => run(p.id, "transcription") }, "transcribe"), " ", r.status)));
+        h("td", {}, h("button", { class: "mini", onclick: () => start("regions", p.id) }, "find regions"), " ",
+          h("button", { class: "mini", onclick: () => start("process", p.id) }, "Process this page"), " ", r.status)));
     }
     el.replaceChildren(h("div", { class: "checkview" }, h("h2", {}, "Make the page documents"),
-      h("p", {}, "Each page goes through two calls with your API keys: the region call (OpenAI, GPT-6.1 Terra) finds the page's units, ",
-        "then the outlines are computed here from the page's ink, and the transcription call (Gemini 4 Argon) reads each region and builds the page's units. ",
-        "Find the regions on a page's neighbors before transcribing it: the transcription looks at their edge lines to see whether units go on across the page break. ",
-        "The keys are kept in this browser only and sent only to OpenAI and Google."),
-      h("div", { class: "fields col" }, keyInput("openai", "OpenAI API key"), keyInput("gemini", "Gemini API key")),
-      h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => all("regions") }, "Find the regions on every page without them"), " ",
-        h("button", { class: "primary", onclick: () => all("transcription") }, "Transcribe every page that has regions and no document"), " ",
-        h("button", { onclick: () => { stop = true; } }, "Stop after the pages in progress"), " ", totalEl),
-      table));
+      h("p", {}, "Process a page range with the selected models. The app finds missing regions with GPT-6.1 Terra, transcribes the pages, then assigns their units and links using neighboring text. Compatible completed stages are reused. Saved corrections take priority over generated model documents when reading and editing."),
+      controls, h("p", {}, h("button", { onclick: () => this.setMode("readers") }, "Compare transcription models on sample pages")),
+      keyControls(maker.keys, (id, value) => settings.set(`key:${id}`, value)),
+      h("div", { class: "fields col" }, h("label", {}, "Pages in this book, numbered 1 to ", book.pages.length, " ", range),
+        h("label", {}, existing, " Reprocess pages that already have model documents"),
+        h("label", {}, "Stop after an API call once new processing spend reaches $", threshold)),
+      h("p", { class: "hint" }, "Enter all or a range such as 1-20, 25. The spend threshold applies to this run and can be exceeded by the final call."),
+      h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => start("regions") }, "Find missing regions in selected pages"), " ",
+        h("button", { class: "primary", onclick: () => start("process") }, "Process selected pages"), " ", stopButton, " ", totalEl), progress,
+      h("div", { class: "actions" }, h("button", { onclick: () => this.setMode("check") }, "Review Problems"), " ", h("button", { onclick: () => this.setMode("pages") }, "Edit pages"), " ",
+        h("button", { onclick: () => this.setMode("export") }, "Export and save book")), table));
     showTotal();
     await Promise.all(book.pages.map(p => refresh(p.id)));
+    loaded = true;
   }
 
   // ---------------------------------------------------------------- exports

@@ -1,0 +1,135 @@
+{
+  "format": "types",
+  "schema_version": "0.3",
+  "book_id": "cole-unit-types-live",
+  "title": "Cole (1903) · live unit-type trial",
+  "description": "A mathematical journal excerpt in a single-column layout. Page 1 finishes a preceding article and begins F. N. Cole's article; page 4 finishes Cole's article and begins an article by Arnold Emch. The articles combine prose, displayed mathematics and page-bottom footnotes.",
+  "languages": [
+    "en-Latn",
+    "fr-Latn",
+    "de-Latn",
+    "la-Latn"
+  ],
+  "flows": {
+    "main": "Article titles, authorship and meeting information, prose, displayed mathematics and closing affiliations.",
+    "notes": "Footnotes printed below a rule at the foot of the page."
+  },
+  "types": {
+    "article": {
+      "description": "A journal article grouping its title, byline, meeting statement, numbered sections or body text, displayed mathematics and closing affiliation. Contains article_title, byline, meeting_statement, numbered_section, paragraph, display_formula, numerical_series and closing_affiliation.",
+      "contains": [
+        "article_title",
+        "byline",
+        "meeting_statement",
+        "numbered_section",
+        "paragraph",
+        "display_formula",
+        "numerical_series",
+        "closing_affiliation"
+      ],
+      "flow": "main"
+    },
+    "numbered_section": {
+      "description": "A numbered division of an article, introduced by an inline Arabic numeral rather than a separate heading. Contains paragraph, display_formula and numerical_series.",
+      "contains": [
+        "paragraph",
+        "display_formula",
+        "numerical_series"
+      ],
+      "numbered": true
+    },
+    "article_title": {
+      "description": "The displayed title of an article.",
+      "region": "heading",
+      "lang": "en-Latn"
+    },
+    "byline": {
+      "description": "The displayed author credit following an article title.",
+      "region": "lead_in",
+      "lang": "en-Latn"
+    },
+    "meeting_statement": {
+      "description": "A parenthetical statement identifying the meeting and date at which an article was read.",
+      "region": "lead_in",
+      "lang": "en-Latn"
+    },
+    "paragraph": {
+      "description": "Running mathematical prose, including continuations interrupted by displayed mathematics or page breaks.",
+      "region": "paragraph",
+      "lang": "en-Latn"
+    },
+    "display_formula": {
+      "description": "A separately displayed equation or group of equations, including equation numbers where printed.",
+      "region": "formula"
+    },
+    "numerical_series": {
+      "description": "A displayed sequence of numerical values or products presented as mathematical data rather than prose.",
+      "region": "formula"
+    },
+    "closing_affiliation": {
+      "description": "An institutional affiliation and date printed at the end of an article.",
+      "region": "paragraph",
+      "lang": "en-Latn"
+    },
+    "footnote": {
+      "description": "A page-bottom note keyed to a symbol in the article; notes include bibliographic references and substantive remarks.",
+      "region": "note",
+      "flow": "notes",
+      "lang": "en-Latn"
+    },
+    "running_header": {
+      "description": "The running article title and date fragments at the top of the page.",
+      "region": "running_header",
+      "lang": "en-Latn",
+      "role": "furniture"
+    },
+    "page_number": {
+      "description": "The printed journal page number in the top margin.",
+      "region": "page_number",
+      "numbered": true,
+      "role": "furniture"
+    },
+    "ornament": {
+      "description": "An unlabelled decorative divider between articles.",
+      "region": "other",
+      "role": "furniture"
+    }
+  },
+  "relations": {
+    "footnote_reference": "Links a printed symbol in article text to the corresponding page-bottom footnote; distinguish repeated symbols by page and context.",
+    "equation_reference": "Links a prose reference such as equations (1) and (2) to the corresponding numbered displayed equations."
+  },
+  "inline": {
+    "footnote_marker": {
+      "description": "A symbol such as * or † marking a footnote reference or the start of its note."
+    },
+    "equation_label": {
+      "description": "A parenthesized identifier attached to a displayed equation, such as (1)."
+    }
+  },
+  "conventions": [
+    "Transcribe in Unicode NFC, preserving printed spelling, capitalization, punctuation, diacritics and digits; do not silently modernize.",
+    "Preserve mathematical symbols, superscripts, subscripts, equation labels and meaningful arrangement as faithfully as the transcription format permits.",
+    "Keep the printed section numerals with their sections and retain footnote symbols at both references and notes.",
+    "Join prose split by page breaks according to its textual continuity, without treating running headers or page numbers as article text.",
+    "English is the principal language; French, German and Latin occur in cited titles. Preserve those titles in their printed languages.",
+    "The displayed-equation type covers both numbered and unnumbered equations; retain any printed labels individually."
+  ],
+  "source": {
+    "discovery": {
+      "method": "077-gpt-6-1-terra-unit-types",
+      "model": "GPT-6.1 Terra · reasoning off",
+      "pdf_sha256": "492cae4531fce36dd0acca0730c2f64bdbb1ae7a62f4476cd77bba43b47fc596",
+      "sample_pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "rendering": "PNG at 150 dpi, capped at the scan's own resolution",
+      "reviewed": false,
+      "call": "work/reader-calls/setup/unit-types-e79b5ccb-e665-4d10-9375-7b85c7829ccc.json",
+      "response_id": "resp_028ad99286b95367016af15140363887d0b6eae0e947c97748"
+    }
+  }
+}

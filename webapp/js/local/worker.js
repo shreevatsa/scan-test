@@ -1,4 +1,4 @@
-// A Web Worker running method 043's local step for the page editor, so the page stays responsive: it reads the page
+// A Web Worker running method 063's local step for the page editor, so the page stays responsive: it reads the page
 // image itself (as PIL's grayscale conversion does), analyzes it once per page, and returns the outlines and line
 // pieces for a list of boxes.
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
@@ -34,7 +34,7 @@ onmessage = async e => {
     const a = cache.get(pid);
     if (a.status !== "ok") throw new Error(`the page's line analysis failed (${a.status})`);
     const { geometry } = regionsFromBoxes(a, boxes, OWNERSHIP);
-    postMessage({ id, geometry, charH: a.charH, angle: a.angle, lines: a.seg.lines.length, seconds: (performance.now() - t0) / 1000 });
+    postMessage({ id, geometry, method: "063-fragment-band-lines", charH: a.charH, angle: a.angle, lines: a.seg.lines.length, seconds: (performance.now() - t0) / 1000 });
   } catch (err) {
     postMessage({ id, error: err.message });
   }

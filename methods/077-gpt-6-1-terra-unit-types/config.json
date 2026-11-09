@@ -1,0 +1,19 @@
+{
+  "method": "077-gpt-6-1-terra-unit-types",
+  "stage": "unit-types",
+  "profile": {
+    "id": "terra-types",
+    "label": "GPT-6.1 Terra · reasoning off",
+    "provider": "openai",
+    "model": "gpt-6.1-terra",
+    "reasoning": "none",
+    "method": "077-gpt-6-1-terra-unit-types"
+  },
+  "source_snapshot": "077-gpt-6-1-terra-unit-types/snapshot",
+  "sample_limit": 12,
+  "rendering_dpi": 150,
+  "rendering_cap": "scan resolution",
+  "image_detail": "original",
+  "max_output_tokens": 16384,
+  "store": false
+}

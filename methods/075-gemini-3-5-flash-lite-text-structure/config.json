@@ -1,0 +1,25 @@
+{
+ "method": "075-gemini-3-5-flash-lite-text-structure",
+ "stage": "structure",
+ "contract": "reading-and-structure-v1",
+ "profile": {
+  "id": "flash-lite-structure",
+  "label": "Gemini 3.5 Flash-Lite · minimal thinking",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "thinking": "minimal",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 0.3,
+    "output": 2.5,
+    "cached": 0.03
+   }
+  ],
+  "formatting": true
+ },
+ "geometry": "042 regions + 063 fragment-band lines",
+ "source_snapshot": "071-cloud-vision-text-reading/snapshot",
+ "max_output_tokens": 16384,
+ "store": false
+}

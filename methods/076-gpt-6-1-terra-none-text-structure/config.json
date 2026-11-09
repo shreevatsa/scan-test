@@ -1,0 +1,16 @@
+{
+ "method": "076-gpt-6-1-terra-none-text-structure",
+ "stage": "structure",
+ "contract": "reading-and-structure-v1",
+ "profile": {
+  "id": "terra-structure",
+  "label": "GPT-6.1 Terra · reasoning off",
+  "provider": "openai",
+  "model": "gpt-6.1-terra",
+  "reasoning": "none"
+ },
+ "geometry": "042 regions + 063 fragment-band lines",
+ "source_snapshot": "071-cloud-vision-text-reading/snapshot",
+ "max_output_tokens": 16384,
+ "store": false
+}

@@ -1,0 +1,132 @@
+{
+  "format": "types",
+  "schema_version": "0.3",
+  "book_id": "cole-unit-types-live",
+  "title": "Cole (1903) · live unit-type trial",
+  "description": "Four pages (pp. 134–137) from the December 1903 issue of the Bulletin of the American Mathematical Society, containing the conclusion of an earlier mathematical paper (p. 134), the entirety of F. N. Cole's paper 'On the Factoring of Large Numbers' (pp. 134–137), and the opening of Arnold Emch's 'Note on the p-Discriminant of Ordinary Linear Differential Equations' (p. 137). The text is printed in single-column English prose with inline and displayed mathematical notation, numbered sections, institutional datelines at the end of articles, symbolic footnotes below a horizontal rule at the foot of each page, and running headers with outer page numbers and split issue dates.",
+  "languages": [
+    "en"
+  ],
+  "flows": {
+    "main": "The primary running text of the journal, containing articles with their headings, bylines, presentation notes, numbered sections, prose paragraphs, displayed mathematical formulas, and closing datelines.",
+    "notes": "Footnotes printed at the bottom of each page beneath a horizontal separator rule, keyed to the main text by symbolic markers (*, †)."
+  },
+  "types": {
+    "article": {
+      "description": "A complete or partial mathematical journal article, grouping its title heading, author byline, presentation note, body sections or paragraphs, displayed formulas, and closing institutional dateline.",
+      "contains": [
+        "article_heading",
+        "byline",
+        "presentation_note",
+        "section",
+        "paragraph",
+        "formula",
+        "dateline"
+      ],
+      "flow": "main"
+    },
+    "section": {
+      "description": "A numbered thematic division within an article, introduced by an Arabic numeral at the start of its first paragraph and containing paragraphs and displayed formulas.",
+      "contains": [
+        "paragraph",
+        "formula"
+      ],
+      "numbered": true
+    },
+    "article_heading": {
+      "description": "The centered all-capitals title at the beginning of a journal article.",
+      "region": "heading",
+      "lang": "en"
+    },
+    "byline": {
+      "description": "The centered small-capitals author attribution line beneath an article heading.",
+      "region": "other",
+      "lang": "en"
+    },
+    "presentation_note": {
+      "description": "The centered parenthetical statement beneath the byline recording the date the paper was read before the society.",
+      "region": "other",
+      "lang": "en"
+    },
+    "paragraph": {
+      "description": "A block of mathematical prose in an article, either starting with a first-line indent or continuing a sentence after a displayed formula.",
+      "region": "paragraph",
+      "lang": "en"
+    },
+    "formula": {
+      "description": "A centered displayed mathematical equation, multi-line congruence system, or sequence of quadratic remainders, optionally bearing parenthesized equation numbers.",
+      "region": "formula",
+      "lang": "en",
+      "numbered": true
+    },
+    "dateline": {
+      "description": "The closing institutional affiliation (in small capitals) and date (month in italics, year in roman) printed at the end of an article.",
+      "region": "other",
+      "lang": "en"
+    },
+    "footnote": {
+      "description": "A footnote at the bottom of the page below a short rule, introduced by a symbolic marker (*, †) and providing bibliographic citations or mathematical remarks.",
+      "region": "note",
+      "flow": "notes",
+      "lang": "en",
+      "numbered": true
+    },
+    "running_header": {
+      "description": "The top running header comprising the centered short title in small capitals and the bracketed issue month/year at the inner/outer margin.",
+      "region": "running_header",
+      "lang": "en",
+      "role": "furniture"
+    },
+    "page_number": {
+      "description": "The page number printed at the outer end of the top header line.",
+      "region": "page_number",
+      "role": "furniture"
+    }
+  },
+  "relations": {
+    "footnote_ref": "Links an inline symbolic footnote marker (*, †) in the main text to its corresponding footnote unit in the notes flow.",
+    "equation_ref": "Links an inline parenthesized equation citation in prose (such as 'equations (1) and (2)' on page 4) to the corresponding displayed formula."
+  },
+  "inline": {
+    "math_expr": {
+      "description": "Inline mathematical notation, including italic variables, subscripts, superscripts, fractions, and operators (e.g., 'N = x^2 ± a', '2^{67} - 1', 'p = dy/dx')."
+    },
+    "footnote_marker": {
+      "description": "Symbolic callout (* or †) marking a footnote reference in the running text or introducing the footnote itself."
+    },
+    "section_number": {
+      "description": "Arabic numeral followed by a period ('1.', '2.', '3.') printed inline at the beginning of a section's opening paragraph."
+    },
+    "equation_number": {
+      "description": "Parenthesized Arabic numeral ('(1)', '(2)', '(3)', '(4)') identifying a displayed equation within a formula line."
+    },
+    "lead_in_word": {
+      "description": "The opening word of an article's first paragraph set in small capitals ('IN resolving', 'IN a fundamental memoir').",
+      "formatting": "small_caps"
+    },
+    "work_title": {
+      "description": "Cited journal, book, or article title in prose or footnotes, printed in italics, quotation marks, or roman type."
+    }
+  },
+  "conventions": [
+    "Transcribe all text in Unicode NFC, preserving original spelling, capitalization, punctuation, and French/German diacritics in cited titles (e.g., 'Théorie des fonctions numériques simplement périodiques', 'Zeitschrift für Mathematik und Physik').",
+    "Preserve exact mathematical symbols and notation, including minus-or-plus ('∓'), plus-or-minus ('±'), congruence ('≡'), partial derivative ('∂'), integral ('∫'), multiplication cross ('×'), raised dot used for prime factorization products (e.g., '23.53', '287.1323536760'), and superscripts ('2^{2^n} + 1', '2^{67} - 1', '4^+').",
+    "Preserve symbolic footnote markers ('*', '†') both inline in the main text and at the start of each footnote."
+  ],
+  "source": {
+    "discovery": {
+      "method": "078-gemini-4-argon-high-unit-types",
+      "model": "Gemini 4 Argon · high thinking",
+      "pdf_sha256": "492cae4531fce36dd0acca0730c2f64bdbb1ae7a62f4476cd77bba43b47fc596",
+      "sample_pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "rendering": "PNG at 150 dpi, capped at the scan's own resolution",
+      "reviewed": false,
+      "call": "work/reader-calls/setup/unit-types-8f2156f3-ab12-4b03-9faf-df4a7842c74e.json"
+    }
+  }
+}

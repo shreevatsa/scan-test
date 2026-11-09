@@ -1,0 +1,134 @@
+Review this book’s unit types
+
+GPT-6.1 Terra · reasoning off inspected PDF pages 1, 2, 3, 4. Estimated call cost $0.0200.
+
+A mathematical journal excerpt in a single-column layout. Page 1 finishes a preceding article and begins F. N. Cole's article; page 4 finishes Cole's article and begins an article by Arnold Emch. The articles combine prose, displayed mathematics and page-bottom footnotes.
+
+Languages en-Latn, fr-Latn, de-Latn, la-Latn
+
+Check the descriptions and grouping rules against the sample pages. Edit descriptions directly. Each type’s grouping rules can also be changed.
+
+article container
+
+May contain article_title, byline, meeting_statement, numbered_section, paragraph, display_formula, numerical_series, closing_affiliation. Can stand in main.
+
+PDF pages 1, 2, 3, 4 · Cole's article begins on page 1 and ends on page 4; portions of neighboring articles are also visible.
+
+Edit grouping rules
+numbered_section container
+
+May contain paragraph, display_formula, numerical_series. Appears inside another unit.
+
+PDF pages 1, 2, 3 · Cole's article begins with 1.; 2. begins on page 2 and 3. on page 3.
+
+Edit grouping rules
+article_title heading
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 4 · ON THE FACTORING OF LARGE NUMBERS.; NOTE ON THE p-DISCRIMINANT OF ORDINARY LINEAR DIFFERENTIAL EQUATIONS.
+
+Edit grouping rules
+byline lead_in
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 4 · BY PROFESSOR F. N. COLE.; BY PROFESSOR ARNOLD EMCH.
+
+Edit grouping rules
+meeting_statement lead_in
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 4 · (Read before the American Mathematical Society, October 31, 1903.)
+
+Edit grouping rules
+paragraph paragraph
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 2, 3, 4 · In resolving a large number N into its prime factors, a table of quadratic remainders of N can be made to render efficient service...
+
+Edit grouping rules
+display_formula formula
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 2, 3, 4 · Page 3 displays 2⁶⁷ − 1 = 147573952589676412927; page 4 also displays equations labelled (1)–(4).
+
+Edit grouping rules
+numerical_series formula
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 3 · The quadratic remainders beginning 2, −3, −7, 13, −23.53 are printed over several lines.
+
+Edit grouping rules
+closing_affiliation paragraph
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 4 · TRINITY COLLEGE, CAMBRIDGE, July, 1903.; COLUMBIA UNIVERSITY, October, 1903.
+
+Edit grouping rules
+footnote note
+
+May contain no child units. Can stand in notes.
+
+PDF pages 1, 2, 3, 4 · Page 2 has * Cf. Lucas, Théorie des nombres, p. 376. and a separate dagger-marked note.
+
+Edit grouping rules
+running_header page furniture
+
+Belongs to the page.
+
+PDF pages 1, 2, 3, 4 · THE FACTORING OF LARGE NUMBERS. with [Dec., or 1903.]; page 4 has ON THE p-DISCRIMINANT.
+
+Edit grouping rules
+page_number page furniture
+
+Belongs to the page.
+
+PDF pages 1, 2, 3, 4 · Printed page numbers 134, 135, 136 and 137.
+
+Edit grouping rules
+ornament page furniture
+
+Belongs to the page.
+
+PDF pages 1, 4 · A short horizontal ornament separates each closing affiliation from the next article title.
+
+Edit grouping rules
+Add a unit type
+Reading flows
+
+main · Article titles, authorship and meeting information, prose, displayed mathematics and closing affiliations.
+
+notes · Footnotes printed below a rule at the foot of the page.
+
+Links
+
+footnote_reference · Links a printed symbol in article text to the corresponding page-bottom footnote; distinguish repeated symbols by page and context.
+
+equation_reference · Links a prose reference such as equations (1) and (2) to the corresponding numbered displayed equations.
+
+Inline kinds
+
+footnote_marker · A symbol such as * or † marking a footnote reference or the start of its note.
+
+equation_label · A parenthesized identifier attached to a displayed equation, such as (1).
+
+Transcription conventions
+Transcribe in Unicode NFC, preserving printed spelling, capitalization, punctuation, diacritics and digits; do not silently modernize.
+Preserve mathematical symbols, superscripts, subscripts, equation labels and meaningful arrangement as faithfully as the transcription format permits.
+Keep the printed section numerals with their sections and retain footnote symbols at both references and notes.
+Join prose split by page breaks according to its textual continuity, without treating running headers or page numbers as article text.
+English is the principal language; French, German and Latin occur in cited titles. Preserve those titles in their printed languages.
+The displayed-equation type covers both numbered and unnumbered equations; retain any printed labels individually.
+Questions to review
+Should the preceding and following articles visible at the edges of this excerpt be transcribed, or only Cole's article?
+Are the numbered divisions 1–3 intended to be treated as sections, or as numbered paragraphs?
+Should the displayed list of quadratic remainders be a distinct numerical_series type, or grouped with other displayed mathematics?
+Do other pages contain additional article structures, such as tables, illustrations, references or further note styles?
+Edit the complete type list as JSON
+Apply type list changes

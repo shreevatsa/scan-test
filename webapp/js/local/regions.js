@@ -448,5 +448,13 @@ export function regionsFromBoxes(analysis, boxes, cfg) {
   const pboxes = boxes.map(b => pixelBox(b, comp.W, comp.H));
   const { owner, decisions, dropped, attached, lineOf } = assign(comp, prep, seg.lines.length, pboxes, cfg);
   const geometry = outlineRegions(comp, prep, owner, lineOf, angle, boxes.length, cfg);
+  // Keep the parent's original ID so existing text follows the enlarged line.
+  for (const region of geometry) for (const line of region.lines) {
+    const band = seg.lines[line.line_id];
+    if (band?.previous_line_ids) {
+      line.previous_line_ids = band.previous_line_ids;
+      line.line_id = band.anchor_line_id;
+    }
+  }
   return { geometry, owner, decisions, dropped, attached };
 }

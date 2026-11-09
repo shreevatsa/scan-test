@@ -1,0 +1,32 @@
+{
+ "method": "065-gemini-4-argon-low-reading",
+ "stage": "reading",
+ "contract": "reading-and-structure-v1",
+ "profile": {
+  "id": "argon-low",
+  "label": "Gemini 4 Argon · low thinking",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking": "low",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 2,
+    "output": 10,
+    "cached": 0.1
+   },
+   {
+    "from": "2026-12-01",
+    "input": 4,
+    "output": 20,
+    "cached": 0.2
+   }
+  ],
+  "formatting": true
+ },
+ "geometry": "042 regions + 063 fragment-band lines",
+ "source_snapshot": "065-gemini-4-argon-low-reading/snapshot",
+ "max_output_tokens": 32768,
+ "store": false,
+ "service_tier": "standard"
+}

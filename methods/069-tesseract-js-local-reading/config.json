@@ -1,0 +1,18 @@
+{
+ "method": "069-tesseract-js-local-reading",
+ "stage": "reading",
+ "contract": "reading-and-structure-v1",
+ "profile": {
+  "id": "tesseract",
+  "label": "Tesseract · local OCR",
+  "provider": "local",
+  "model": "tesseract.js-6.0.1",
+  "formatting": false
+ },
+ "geometry": "042 regions + 063 fragment-band lines",
+ "source_snapshot": "065-gemini-4-argon-low-reading/snapshot",
+ "engine_core": "6.1.2",
+ "oem": 1,
+ "psm": 6,
+ "assets": "webapp/vendor/tesseract-6.0.1/sources.json"
+}

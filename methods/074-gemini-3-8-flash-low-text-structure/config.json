@@ -1,0 +1,31 @@
+{
+ "method": "074-gemini-3-8-flash-low-text-structure",
+ "stage": "structure",
+ "contract": "reading-and-structure-v1",
+ "profile": {
+  "id": "flash-structure",
+  "label": "Gemini 3.8 Flash · low thinking",
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "thinking": "low",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 0.75,
+    "output": 3.75,
+    "cached": 0.075
+   },
+   {
+    "from": "2027-01-01",
+    "input": 1.5,
+    "output": 7.5,
+    "cached": 0.15
+   }
+  ],
+  "formatting": true
+ },
+ "geometry": "042 regions + 063 fragment-band lines",
+ "source_snapshot": "071-cloud-vision-text-reading/snapshot",
+ "max_output_tokens": 16384,
+ "store": false
+}

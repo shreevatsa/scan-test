@@ -1,0 +1,33 @@
+{
+  "method": "078-gemini-4-argon-high-unit-types",
+  "stage": "unit-types",
+  "profile": {
+    "id": "argon-types",
+    "label": "Gemini 4 Argon · high thinking",
+    "provider": "gemini",
+    "model": "gemini-4-argon",
+    "thinking": "high",
+    "rates": [
+      {
+        "from": "2026-01-01",
+        "input": 2,
+        "output": 10,
+        "cached": 0.1
+      },
+      {
+        "from": "2026-12-01",
+        "input": 4,
+        "output": 20,
+        "cached": 0.2
+      }
+    ],
+    "method": "078-gemini-4-argon-high-unit-types"
+  },
+  "source_snapshot": "077-gpt-6-1-terra-unit-types/snapshot",
+  "sample_limit": 12,
+  "rendering_dpi": 150,
+  "rendering_cap": "scan resolution",
+  "image_detail": "high",
+  "max_output_tokens": 16384,
+  "store": false
+}

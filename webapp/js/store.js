@@ -43,6 +43,21 @@ export const idb = {
 export const settings = {
   get: key => idb.get("settings", key),
   set: (key, value) => idb.put("settings", key, value),
+  async update(key, change) {
+    const database = await db();
+    return new Promise((resolve, reject) => {
+      const transaction = database.transaction("settings", "readwrite");
+      const store = transaction.objectStore("settings");
+      const request = store.get(key);
+      request.onsuccess = () => {
+        try { store.put(change(request.result), key); }
+        catch (error) { transaction.abort(); reject(error); }
+      };
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error || new Error("The settings update was interrupted."));
+    });
+  },
 };
 
 // ---------------------------------------------------------------- books
@@ -95,6 +110,9 @@ export class Book {
     this.models = new Map();     // page id -> the model's page document
     this.edits = new Map();      // page id -> the user's saved page document
     this.imageUrls = new Map();
+    this.work = new Map();
+    this.writeQueue = new Map();
+    this.workUpdates = new Map();
     this.style = null;           // the book's style sheet (schema 0.3), if book.json names one
     this.key = browser ? `browser:${where.name}` : kind === "folder" ? `folder:${manifest.book_id}:${where.name}` : `${kind}:${where}`;
   }
@@ -172,14 +190,76 @@ export class Book {
 
   // Files of a folder book, for making it (folder books only).
   async writeFile(path, data) {
-    const parts = path.split("/");
-    let d = this.where;
-    for (const p of parts.slice(0, -1)) d = await d.getDirectoryHandle(p, { create: true });
-    await writeHandle(await d.getFileHandle(parts[parts.length - 1], { create: true }), data);
+    if (!this.writable) throw new Error("This book's source files are read only.");
+    const prior = this.writeQueue.get(path) || Promise.resolve();
+    const job = prior.catch(() => {}).then(async () => {
+      const parts = path.split("/");
+      let d = this.where;
+      for (const p of parts.slice(0, -1)) d = await d.getDirectoryHandle(p, { create: true });
+      await writeHandle(await d.getFileHandle(parts[parts.length - 1], { create: true }), data);
+    });
+    this.writeQueue.set(path, job);
+    try { await job; }
+    finally { if (this.writeQueue.get(path) === job) this.writeQueue.delete(path); }
   }
 
   async readJson(path) {
     try { return await readJsonFile(this.where, path); } catch (e) { if (e.name === "NotFoundError" || e.name === "TypeMismatchError") return null; throw e; }
+  }
+
+  // Processing records also work for books opened by URL. Their local overlay is exported with the book.
+  async readWork(path) {
+    if (!path.startsWith("work/")) throw new Error("Expected a work-file path.");
+    if (this.work.has(path)) return this.work.get(path);
+    const value = this.writable ? await this.readJson(path)
+      : (await idb.get("settings", ["work", this.key, path]).catch(() => null)) ?? this.files?.[path] ?? null;
+    this.work.set(path, value);
+    return value;
+  }
+
+  async writeWork(path, value) {
+    if (!path.startsWith("work/")) throw new Error("Expected a work-file path.");
+    if (this.writable) await this.writeFile(path, pretty(value));
+    else await idb.put("settings", ["work", this.key, path], value);
+    this.work.set(path, value);
+  }
+
+  async updateWork(path, update) {
+    const prior = this.workUpdates.get(path) || Promise.resolve();
+    const job = prior.catch(() => {}).then(async () => {
+      const value = await update(await this.readWork(path));
+      await this.writeWork(path, value);
+      return value;
+    });
+    this.workUpdates.set(path, job);
+    try { return await job; }
+    finally { if (this.workUpdates.get(path) === job) this.workUpdates.delete(path); }
+  }
+
+  async getReaderOptions() {
+    if (!this.writable && !this.readerOptionsLoaded) {
+      const saved = await idb.get("settings", ["reader-options", this.key]).catch(() => null);
+      if (saved) this.manifest.reader_options = saved;
+      this.readerOptionsLoaded = true;
+    }
+    return this.manifest.reader_options || {};
+  }
+
+  async saveReaderOptions(options) {
+    const next = JSON.parse(JSON.stringify(options));
+    if (this.writable) {
+      const previous = this.manifest.reader_options;
+      this.manifest.reader_options = next;
+      try { await this.writeFile("book.json", pretty(this.manifest)); }
+      catch (error) {
+        if (this.manifest.reader_options === next) this.manifest.reader_options = previous;
+        throw error;
+      }
+    } else {
+      await idb.put("settings", ["reader-options", this.key], next);
+      this.manifest.reader_options = next;
+      this.readerOptionsLoaded = true;
+    }
   }
 
   async file(path) { return fileFrom(this.where, path); }
@@ -225,6 +305,7 @@ export class Book {
   // The book's files for a .chaya.pdf (all but the PDF and the page images), as they stand: the model's pages, the
   // user's corrections, the style sheet in use and the work files.
   async chayaFiles(progress = () => {}) {
+    await this.getReaderOptions();
     const manifest = JSON.parse(JSON.stringify(this.manifest));
     const files = {};
     files[manifest.types] = this.types;
@@ -238,6 +319,10 @@ export class Book {
     }
     for (const [pid, doc] of this.edits) files[`edits/${pid}.json`] = doc;
     if (this.kind === "chaya") for (const [path, v] of Object.entries(this.files)) if (path.startsWith("work/")) files[path] = v;
+    if (this.kind === "chaya") for (const key of await idb.keys("settings").catch(() => [])) {
+      if (Array.isArray(key) && key[0] === "work" && key[1] === this.key) files[key[2]] = await idb.get("settings", key);
+    }
+    for (const [path, value] of this.work) if (value !== null) files[path] = value;
     if (this.kind === "folder") {
       try {
         const walk = async (dir, prefix) => {
@@ -290,6 +375,17 @@ export class Book {
 
   // A new model page document: saved in pages/, and the manifest updated.
   async saveModel(pid, doc, valid) {
+    const previous = await this.model(pid);
+    const sample = doc.source?.sample || previous?.source?.sample;
+    if (sample) {
+      const original = Object.fromEntries(doc.units.filter(unit => unit.open).map(unit => [unit.id, { ...unit.open }]));
+      for (const unit of doc.units.filter(unit => unit.open)) {
+        if (sample.consecutive_previous === false) delete unit.open.start;
+        if (sample.consecutive_next === false) delete unit.open.end;
+        if (!Object.keys(unit.open).length) delete unit.open;
+      }
+      doc.source = { ...doc.source, sample: { ...JSON.parse(JSON.stringify(sample)), original_open_ends: original } };
+    }
     await this.writeFile(this.page(pid).document, JSON.stringify(doc) + "\n");
     this.models.set(pid, doc);
     Object.assign(this.page(pid), { label: doc.page.label ?? null, valid });

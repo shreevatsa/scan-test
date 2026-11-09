@@ -1,4 +1,4 @@
-// Page analysis of method 043's local step, ported from methods/043-…/geometry.py (ink_components, estimate_angle,
+// Page analysis of method 043 with method 063's fragment-band grouping (ink_components, estimate_angle,
 // segment_lines): the ink mask and its connected components with roles, the page's text angle, and the text lines.
 // Images are grayscale Uint8Arrays in row-major order. Coordinates are pixel indices (x right, y down); the
 // "rotated" frame is the page rotated by the negative text angle, so lines are about horizontal in it.
@@ -236,7 +236,7 @@ export function segmentLines(comp, angle, cfg) {
     let group = [ids[0]];
     const flush = g => {
       for (const k of g) lineOf[k] = lines.length;
-      lines.push({ line_id: lines.length, column: ci, rx0: Math.min(...g.map(k => rxLo[k])), rx1: Math.max(...g.map(k => rxHi[k])),
+      lines.push({ line_id: lines.length, column: ci, main_components: g.length, rx0: Math.min(...g.map(k => rxLo[k])), rx1: Math.max(...g.map(k => rxHi[k])),
                    core_top: Math.min(...g.map(k => ryLo[k])), core_bottom: Math.max(...g.map(k => ryHi[k])), center: median(g.map(k => cy[k])) });
     };
     for (let j = 1; j < ids.length; j++) {
@@ -244,6 +244,46 @@ export function segmentLines(comp, angle, cfg) {
       group.push(ids[j]);
     }
     flush(group);
+  }
+  // Detached glyph parts can themselves pass the main-component height threshold.
+  // Join smaller, sparser bands near a parent band's core before assigning marks.
+  if (cfg.fragment_maximum_height_ratio !== undefined) {
+    const parents = lines.map((_, i) => i);
+    const bandPad = cfg.fragment_band_padding_char * charH;
+    const horizontalPad = cfg.assign_horizontal_pad_char * charH;
+    lines.forEach((fragment, i) => {
+      const height = fragment.core_bottom - fragment.core_top + 1;
+      let best = i, bestDistance = Infinity;
+      lines.forEach((host, j) => {
+        const hostHeight = host.core_bottom - host.core_top + 1;
+        if (host.column !== fragment.column) return;
+        if (height > cfg.fragment_maximum_height_ratio * hostHeight) return;
+        if (fragment.main_components > cfg.fragment_maximum_component_ratio * host.main_components) return;
+        if (fragment.center < host.core_top - bandPad || fragment.center > host.core_bottom + bandPad) return;
+        if (fragment.rx1 < host.rx0 - horizontalPad || fragment.rx0 > host.rx1 + horizontalPad) return;
+        const distance = Math.abs(fragment.center - host.center);
+        if (distance < bestDistance) { best = j; bestDistance = distance; }
+      });
+      parents[i] = best;
+    });
+    const groups = new Map();
+    lines.forEach((_, i) => {
+      let root = i;
+      while (parents[root] !== root) root = parents[root];
+      if (!groups.has(root)) groups.set(root, []);
+      groups.get(root).push(i);
+    });
+    const originalLineOf = new Int32Array(lineOf), merged = [];
+    for (const [root, aliases] of groups) {
+      const members = [];
+      for (let k = 1; k < count; k++) if (isMain(k) && aliases.includes(originalLineOf[k])) members.push(k);
+      for (const k of members) lineOf[k] = merged.length;
+      merged.push({ line_id: merged.length, column: lines[root].column, main_components: members.length,
+        rx0: Math.min(...members.map(k => rxLo[k])), rx1: Math.max(...members.map(k => rxHi[k])),
+        core_top: Math.min(...members.map(k => ryLo[k])), core_bottom: Math.max(...members.map(k => ryHi[k])),
+        center: median(members.map(k => cy[k])), anchor_line_id: root, previous_line_ids: aliases });
+    }
+    lines = merged;
   }
   // Detached marks and other non-main text components go to the nearest line band.
   const pad = cfg.assign_horizontal_pad_char * charH, limit = cfg.assign_maximum_distance_char * charH;

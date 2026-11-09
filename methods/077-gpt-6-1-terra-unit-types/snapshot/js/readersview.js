@@ -1,0 +1,316 @@
+import { h, bbox, cropInto } from "./render.js";
+import { readerControls, keyControls, money, continueControls } from "./reader-controls.js";
+import { READERS, readerOptions, projectBookCost, structurePath } from "./pipeline/readers.js";
+import { transcriptionHtml } from "./transcription-diff.js";
+import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
+import { compareReadings, compareRegions } from "./pipeline/compare.js";
+import { jsonHash } from "./pipeline/run.js";
+import { settings } from "./store.js";
+
+export async function renderReaders(el, app) {
+  const token = Symbol();
+  app.readerViewToken = token;
+  el.replaceChildren(h("p", {}, "Loading transcription model settings…"));
+  const book = app.book, maker = await app.getMaker();
+  const defaults = readerOptions(await book.getReaderOptions(), book.types);
+  const selection = await book.readWork("work/reader-lab/selection.json") || {};
+  const controls = await readerControls(book, () => renderReaders(el, app));
+  if (app.readerViewToken !== token || app.mode !== "readers") return;
+  const candidates = new Set((selection.readers || READERS.map(r => r.id)).filter(id => READERS.some(r => r.id === id)));
+  const chosenPages = new Set((selection.pages || []).filter(id => id in book.index));
+  const count = Math.min(6, book.pages.length);
+  if (!selection.pages) for (let i = 0; i < count; i++) chosenPages.add(book.pages[Math.round(i * (book.pages.length - 1) / Math.max(1, count - 1))].id);
+  let focus = selection.focus in book.index ? selection.focus : app.pid || [...chosenPages][0] || book.pages[0].id;
+  let busy = false, stop = false, sessionCost = 0, unknownCosts = 0;
+  let selectedReader = READERS.some(r => r.id === selection.reader) ? selection.reader : defaults.reader;
+  const trialStatus = h("p", { class: "hint", role: "status" });
+  const summary = h("div", { class: "reader-summary" });
+  const ledgerSummary = h("div", { class: "reader-ledger hint" });
+  const detail = h("div", { class: "reader-detail" });
+  const referenceId = selection.reference || "argon-high";
+  const referenceSelect = h("select", { "aria-label": "Reference transcription source" }, h("option", { value: "current", selected: referenceId === "current" }, "Current page text"),
+    ...READERS.map(r => h("option", { value: r.id, selected: r.id === referenceId }, r.label)));
+  const pageSelect = h("select", { "aria-label": "Inspect trial page" }, ...book.pages.map(p => h("option", { value: p.id, selected: p.id === focus }, p.label ? `${p.id} · ${p.label}` : p.id)));
+  const readerSelect = h("select", { "aria-label": "Transcription model for structural inspection" }, ...READERS.map(r => h("option", { value: r.id, selected: r.id === selectedReader }, r.label)));
+  const onlyDifferences = h("input", { type: "checkbox", checked: selection.only_differences ?? true });
+  const includeStructure = h("input", { type: "checkbox", checked: selection.include_structure ?? true });
+  const budget = h("input", { type: "number", min: "0.1", step: "0.5", value: selection.budget || "5", "aria-label": "Trial spend threshold" });
+  const projectionPages = h("input", { type: "number", min: "1", step: "1", "aria-label": "Book pages for cost estimate",
+    value: selection.projection_pages ?? book.manifest.cost_projection?.page_count ?? book.manifest.pdf?.page_count ?? book.pages.length });
+  const buttons = [];
+  const pageBoxes = book.pages.map(p => {
+    const input = h("input", { type: "checkbox", checked: chosenPages.has(p.id), onchange: () => input.checked ? chosenPages.add(p.id) : chosenPages.delete(p.id) });
+    return h("label", {}, input, " ", p.label ? `${p.id} · ${p.label}` : p.id);
+  });
+  const readerBoxes = READERS.map(r => {
+    const input = h("input", { type: "checkbox", checked: candidates.has(r.id), onchange: () => input.checked ? candidates.add(r.id) : candidates.delete(r.id) });
+    return h("label", {}, input, " ", r.label);
+  });
+  const active = () => app.mode === "readers" && app.readerViewToken === token;
+  const results = new Map(), geometry = new Map(), checks = new Map();
+
+  async function saveSelection() {
+    await book.writeWork("work/reader-lab/selection.json", { pages: [...chosenPages], readers: [...candidates], focus: pageSelect.value,
+      reader: readerSelect.value, reference: referenceSelect.value, only_differences: onlyDifferences.checked,
+      include_structure: includeStructure.checked, budget: budget.value, projection_pages: projectionPages.value });
+  }
+
+  async function loadPage(pid) {
+    let rec;
+    try { rec = await maker.sourceRegions(pid); } catch { return null; }
+    const { sent } = selectPageRegions(rec.regions);
+    const signature = await jsonHash(rec.regions);
+    geometry.set(pid, { rec, sent, signature });
+    checks.set(pid, (await book.readWork(`work/reader-lab/checked/${pid}/${signature}.json`))?.lines || {});
+    const runs = new Map();
+    for (const reader of READERS) {
+      const reading = await book.readWork(`work/readings/${pid}/${reader.id}.json`);
+      let structure = await book.readWork(structurePath(pid, reader.id, defaults.structurer));
+      if (!reading || await jsonHash(reading.regions_record.regions) !== signature) continue;
+      if (structure?.reading_fingerprint !== reading.fingerprint) structure = null;
+      if (structure) {
+        const [errors, warnings] = app.check(structure.doc);
+        structure = { ...structure, errors, warnings };
+      }
+      runs.set(reader.id, { reading, structure });
+    }
+    results.set(pid, runs);
+    return { rec, sent, signature };
+  }
+
+  async function reference(pid, source = referenceSelect.value) {
+    if (source !== "current") return results.get(pid)?.get(source)?.reading.parsed || null;
+    const doc = await book.current(pid);
+    return doc && geometry.has(pid) ? readingFromDocument(doc, geometry.get(pid).sent) : null;
+  }
+
+  async function showSummary() {
+    const rows = [];
+    for (const reader of READERS) {
+      const runs = [...chosenPages].map(pid => ({ pid, value: results.get(pid)?.get(reader.id) })).filter(x => x.value);
+      if (!runs.length) continue;
+      let chars = 0, edits = 0, checkedChars = 0, checkedEdits = 0, valid = 0, structured = 0, compared = 0;
+      for (const { pid, value } of runs) {
+        const ref = await reference(pid);
+        if (ref) {
+          const score = compareReadings(value.reading.parsed, ref, geometry.get(pid).sent, book.types, checks.get(pid));
+          chars += score.characters; edits += score.edits;
+          checkedChars += score.checked_characters; checkedEdits += score.checked_edits; compared++;
+        }
+        valid += Number(value.structure && !value.structure.errors.length);
+        structured += Number(Boolean(value.structure));
+      }
+      const totalCost = projectBookCost(runs.map(({ pid, value }) => ({
+        regions: geometry.get(pid)?.rec.region_call, reading: value.reading, structure: value.structure,
+      })), Number(projectionPages.value));
+      const seconds = runs.reduce((sum, x) => sum + x.value.reading.seconds + (x.value.structure?.seconds || 0), 0) / runs.length;
+      const use = h("button", { class: "mini", disabled: busy, onclick: async () => {
+        try {
+          await book.saveReaderOptions({ ...(await book.getReaderOptions()), reader: reader.id });
+          await renderReaders(el, app);
+        } catch (error) { trialStatus.textContent = error.message; }
+      } }, "Use for this book");
+      rows.push(h("tr", {}, h("td", {}, reader.label, h("div", {}, `${runs.length}/${chosenPages.size} pages`), use),
+        h("td", {}, money(totalCost, 2), totalCost === null ? h("div", { class: "meta" }, "Needs all stage costs and a valid page count") : null),
+        h("td", {}, chars ? (edits / chars * 1000).toFixed(2) : "—", compared ? h("div", { class: "meta" }, `${chars.toLocaleString()} characters`) : null),
+        h("td", {}, checkedChars ? (checkedEdits / checkedChars * 1000).toFixed(2) : "—", checkedChars ? h("div", { class: "meta" }, `${checkedChars} checked characters`) : null),
+        h("td", {}, structured ? `${valid}/${structured} valid` : "Pending"), h("td", {}, `${seconds.toFixed(1)} s`)));
+    }
+    if (!active()) return;
+    summary.replaceChildren(rows.length ? h("div", { class: "table-scroll" }, h("table", { class: "pages" },
+      h("thead", {}, h("tr", {}, ...["Transcription model", `Estimated total / ${Number(projectionPages.value).toLocaleString()} pages`, "Differences / 1,000 characters", "Checked errors / 1,000 characters", "Schema checks", "Transcription + schema time / page"].map(label => h("th", {}, label)))), h("tbody", {}, ...rows)))
+      : h("p", { class: "hint" }, "Choose sample pages and transcription models, then run a trial. Saved trial results appear here."));
+  }
+
+  async function showLedger() {
+    const ledger = await book.readWork("work/reader-lab/ledger.json");
+    if (!active() || !ledger?.calls.length) return;
+    const known = ledger.calls.filter(call => Number.isFinite(call.cost_usd));
+    const failed = ledger.calls.filter(call => call.status === "failed");
+    const messages = [];
+    for (const call of failed) {
+      const record = await book.readWork(call.path);
+      messages.push(`${call.page} · ${call.profile} · ${call.stage} · ${record?.error || "Failed call"}`);
+    }
+    if (!active()) return;
+    ledgerSummary.replaceChildren(h("p", {}, `Saved API attempts total ${money(known.reduce((sum, call) => sum + call.cost_usd, 0))} in known estimated charges. ${ledger.calls.length - known.length} charges are unresolved.`),
+      ...messages.length ? [h("details", {}, h("summary", {}, `${messages.length} failed API attempts`), ...messages.map(message => h("div", {}, message)))] : []);
+  }
+
+  async function showDetail() {
+    focus = pageSelect.value;
+    selectedReader = readerSelect.value;
+    const pid = focus, readerId = selectedReader;
+    const referenceId = referenceSelect.value;
+    const referenceLabel = referenceSelect.selectedOptions[0].textContent;
+    const structureOpen = detail.querySelector(".trial-structure")?.open || false;
+    await loadPage(pid);
+    const runs = results.get(pid), value = runs?.get(readerId), geo = geometry.get(pid);
+    const ref = await reference(pid, referenceId);
+    if (!active() || focus !== pid || selectedReader !== readerId || referenceSelect.value !== referenceId) return;
+    if (!geo || !ref) {
+      detail.replaceChildren(h("p", { class: "hint" }, "Run the reference transcription model on this page, or choose its current text as the reference."));
+      return;
+    }
+    const models = READERS.map(model => ({ id: model.id, label: model.label, transcription: runs?.get(model.id)?.reading.parsed || null }));
+    models.sort((a, b) => Number(b.id === referenceId) - Number(a.id === referenceId));
+    const regions = compareRegions(ref, models, geo.sent, book.types);
+    const shown = onlyDifferences.checked ? regions.filter(region => region.differs) : regions;
+    const image = await book.imageUrl(pid);
+    if (!active() || focus !== pid || selectedReader !== readerId || referenceSelect.value !== referenceId) return;
+    const width = Math.min(1080, detail.clientWidth || el.clientWidth);
+    const blocks = shown.map(region => {
+      const crop = h("div", { class: "source-region", title: "Printed source region" });
+      const [x0, y0, x1, y1] = bbox(region.source.polygons);
+      cropInto(crop, image, geo.rec, [Math.max(0, x0 - 4), Math.max(0, y0 - 4), Math.min(geo.rec.width, x1 + 5), Math.min(geo.rec.height, y1 + 5)], width, 720);
+      const referenceLines = region.lines.map(line => line.raw);
+      const transcriptions = region.models.map(model => {
+        const reference = model.id === referenceId;
+        const note = model.transcription?.regions.find(source => source.id === region.id);
+        return h("section", { class: `trial-transcription${reference ? " reference" : ""}`, "aria-label": `${region.id} · ${model.label}` },
+          h("h4", {}, model.label), h("div", { class: "meta" }, reference ? "Reference transcription"
+            : model.lines ? `${model.edits} character differences · ${model.formatting_differences} lines differ in formatting or markers` : "Awaiting transcription"),
+          model.lines ? h("pre", { html: transcriptionHtml(referenceLines, model.lines.map(line => line.candidate)) })
+            : h("p", { class: "hint" }, "Run this transcription model on this page to add its result."),
+          note?.uncertain || note?.note ? h("p", { class: "hint" }, `${note.uncertain ? "Uncertain transcription. " : ""}${note.note || ""}`) : null);
+      });
+      const referenceReview = region.lines.map(row => {
+        const lineCrop = h("div", { class: "source-line", title: "Printed source line" });
+        if (row.polygons.length) {
+          const [x0, y0, x1, y1] = bbox(row.polygons);
+          cropInto(lineCrop, image, geo.rec, [Math.max(0, x0 - 4), Math.max(0, y0 - 4), Math.min(geo.rec.width, x1 + 5), Math.min(geo.rec.height, y1 + 5)], width, 190);
+        }
+        const saved = checks.get(pid)[row.key];
+        const corrected = h("textarea", { rows: "2", "aria-label": `Checked text ${row.key}` });
+        corrected.value = saved?.text ?? plainReading(row.raw);
+        const checked = h("input", { type: "checkbox", checked: Boolean(saved?.checked) });
+        const status = h("span", { class: "meta", role: "status" });
+        corrected.addEventListener("input", () => { checked.checked = false; });
+        const save = h("button", { class: "mini", onclick: async () => {
+          try {
+            const path = `work/reader-lab/checked/${pid}/${geo.signature}.json`;
+            const next = await book.updateWork(path, old => ({ format: "checked-reading", version: 1,
+              lines: { ...(old?.lines || {}), [row.key]: { text: corrected.value, checked: checked.checked } } }));
+            checks.set(pid, next.lines);
+            status.textContent = "Saved.";
+            await showSummary();
+          } catch (error) { status.textContent = error.message; }
+        } }, "Save reference line");
+        return h("section", { class: "trial-line" }, h("div", { class: "meta" }, `${row.region}, line ${row.n}`), h("div", { class: "source-line-scroll" }, lineCrop),
+          h("label", { class: "stack" }, "Correct text after checking the scan", corrected),
+          h("label", {}, checked, " I checked this line against the scan"), " ", save, " ", status);
+      });
+      return h("section", { class: "trial-region", "aria-label": `Region ${region.id}` }, h("h3", {}, `${region.id} · ${region.source.type}`),
+        h("div", { class: "source-line-scroll" }, crop),
+        ...(referenceId === "current" ? [h("section", { class: "trial-transcription reference" }, h("h4", {}, referenceLabel), h("div", { class: "meta" }, "Reference transcription"), h("pre", { html: transcriptionHtml(referenceLines, referenceLines) }))] : []),
+        ...transcriptions, h("details", {}, h("summary", {}, "Review reference lines against the scan"), ...referenceReview));
+    });
+    const unitTree = value?.structure ? h("details", {}, h("summary", {}, "Units and links from schema assignment"),
+      h("pre", {}, JSON.stringify({ units: value.structure.doc.units, flows: value.structure.doc.flows, relations: value.structure.doc.relations,
+        errors: value.structure.errors, warnings: value.structure.warnings, problems: value.structure.problems }, null, 2))) : h("p", { class: "hint" }, "Run the structural check for the selected transcription to inspect its units and links.");
+    detail.replaceChildren(h("p", { class: "hint" }, `${regions.filter(region => region.differs).length} of ${regions.length} text regions differ from the reference across the available model transcriptions. Each region shows the scan and every model’s result.`),
+      h("details", { class: "trial-structure", open: structureOpen }, h("summary", {}, "Inspect a transcription’s structure"), h("label", {}, "Transcription model ", readerSelect), unitTree,
+        value ? h("button", { class: "mini", disabled: busy, onclick: () => trial(true) }, "Retry this structural check with a new API call") : null),
+      ...(blocks.length ? blocks : [h("p", {}, models.some(model => model.transcription && model.id !== referenceId)
+        ? "These transcriptions agree on the displayed comparison. Turn off the difference filter to inspect agreeing regions."
+        : "Run a sample comparison with additional transcription models to inspect their differences.")]));
+  }
+
+  async function refresh() {
+    for (const pid of new Set([...chosenPages, focus])) await loadPage(pid);
+    await showSummary();
+    await showLedger();
+    await showDetail();
+  }
+
+  async function trial(retryStructure = false) {
+    if (busy) return;
+    if (maker.processing || maker.jobs.size) { trialStatus.textContent = "Wait for the active processing to finish."; return; }
+    const limit = Number(budget.value);
+    if (!chosenPages.size || !candidates.size || !Number.isFinite(limit) || limit <= 0) {
+      trialStatus.textContent = "Select pages and transcription models, and enter a positive spend threshold.";
+      return;
+    }
+    const samplePages = retryStructure ? [pageSelect.value] : [...chosenPages];
+    const ids = retryStructure ? [readerSelect.value] : [...candidates];
+    if (!retryStructure && referenceSelect.value !== "current" && !ids.includes(referenceSelect.value)) ids.push(referenceSelect.value);
+    busy = true; maker.processing = true; stop = false; sessionCost = 0; unknownCosts = 0;
+    const failures = [];
+    const inputs = [referenceSelect, includeStructure, budget, ...pageBoxes.flatMap(x => [...x.querySelectorAll("input")]), ...readerBoxes.flatMap(x => [...x.querySelectorAll("input")])];
+    for (const input of inputs) input.disabled = true;
+    buttons.forEach(button => { button.disabled = true; });
+    maker.onCost = cost => { if (cost === null) unknownCosts++; else sessionCost += cost; };
+    try {
+      const options = readerOptions(await book.getReaderOptions(), book.types);
+      for (const pid of samplePages) {
+        if (stop || sessionCost >= limit || unknownCosts) break;
+        try {
+          if (!await maker.regions(pid) && !await book.current(pid)) {
+            trialStatus.textContent = `Finding shared regions on ${pid}…`;
+            await maker.findRegions(pid);
+          }
+        } catch (error) { failures.push(`${pid} · ${error.message}`); }
+      }
+      // Read all sample pages first so schema assignment can use their neighboring text.
+      for (const reader of ids) {
+        for (const pid of samplePages) {
+          if (stop || sessionCost >= limit || unknownCosts) break;
+          if (!candidates.has(reader) && results.get(pid)?.has(reader)) continue;
+          trialStatus.textContent = `Transcribing ${pid} with ${READERS.find(model => model.id === reader).label}…`;
+          try { await maker.read(pid, { ...options, reader }); }
+          catch (error) { failures.push(`${pid} · ${reader} · ${error.message}`); }
+          await loadPage(pid);
+          await showSummary();
+        }
+      }
+      if (includeStructure.checked || retryStructure) for (const reader of ids) for (const pid of samplePages) {
+        if (stop || sessionCost >= limit || unknownCosts) break;
+        const reading = results.get(pid)?.get(reader)?.reading;
+        if (!reading) continue;
+        trialStatus.textContent = `Building units for ${pid} from the ${READERS.find(model => model.id === reader).label} transcription…`;
+        try { await maker.structure(pid, reading, { force: retryStructure, structurer: options.structurer }); }
+        catch (error) { failures.push(`${pid} · ${reader} · ${error.message}`); }
+        await loadPage(pid);
+        await showSummary();
+      }
+      trialStatus.replaceChildren(`Saved ${[...results.values()].reduce((n, runs) => n + runs.size, 0)} transcriptions. New API spend was ${money(sessionCost)}${unknownCosts ? `, with ${unknownCosts} costs unavailable` : ""}.${stop ? " Stopped after the active call." : sessionCost >= limit ? " Reached the spend threshold." : ""}`,
+        ...failures.length ? [h("details", { open: true }, h("summary", {}, `${failures.length} failed stages`), ...failures.map(message => h("div", { class: "bad" }, message)))] : []);
+    } finally {
+      busy = false; maker.processing = false;
+      for (const input of inputs) input.disabled = false;
+      buttons.forEach(button => { button.disabled = false; });
+      await refresh();
+    }
+  }
+
+  const run = h("button", { class: "primary", onclick: () => trial() }, "Run sample comparison");
+  buttons.push(run);
+  const stopButton = h("button", { onclick: () => { stop = true; } }, "Stop after the active call");
+  const refreshButton = h("button", { onclick: refresh }, "Refresh saved results");
+  buttons.push(refreshButton);
+  for (const input of [referenceSelect, pageSelect, readerSelect, onlyDifferences, includeStructure, budget, projectionPages,
+    ...pageBoxes.flatMap(x => [...x.querySelectorAll("input")]), ...readerBoxes.flatMap(x => [...x.querySelectorAll("input")])]) input.addEventListener("change", async () => {
+    try { await saveSelection(); await showSummary(); await showDetail(); }
+    catch (error) { trialStatus.textContent = error.message; }
+  });
+  const content = h("div", { class: "checkview reader-lab" }, h("h2", {}, "Transcription models"), controls,
+    h("p", {}, "Try transcription models on a few pages, inspect the source, and choose one for the book. Schema assignment uses the book’s selected model for every transcription. The estimate includes all three stages for every page of the target book."),
+    continueControls(app), h("button", { onclick: () => app.setMode("structures") }, "Compare schema assignment models"),
+    keyControls(maker.keys, (id, value) => settings.set(`key:${id}`, value)),
+    h("details", { open: true }, h("summary", {}, "Sample pages and transcription models"), h("div", { class: "trial-selection" },
+      h("fieldset", {}, h("legend", {}, "Sample pages"), ...pageBoxes), h("fieldset", {}, h("legend", {}, "Transcription models"), ...readerBoxes))),
+    h("div", { class: "fields col" }, h("label", {}, "Reference transcription from ", referenceSelect),
+      h("label", {}, includeStructure, " Include schema assignment"),
+      h("label", {}, "Stop after an API call once new trial spend reaches $", budget)),
+    h("p", { class: "hint" }, "The reference transcription comes from the selected source above. Argon high is the default reference. Error scores use only the reference lines you mark checked against the scan. Missing regions are detected once and shared across transcription models. A spend threshold can be exceeded by the final call."),
+    h("div", { class: "actions" }, run, " ", stopButton, " ", refreshButton), trialStatus,
+    h("h3", {}, "Whole-book cost estimate"), h("label", {}, "Book pages ", projectionPages),
+    h("p", { class: "hint" }, `${book.manifest.cost_projection?.label ? `Default target is ${book.manifest.cost_projection.label}. ` : ""}Change the page count to estimate another book size, including 1,000 pages. Each total scales the completed sample calls to one pass at their recorded prices, including region detection once per page. All three stage costs must be available. Retry charges appear in the saved-attempt ledger.`),
+    summary, ledgerSummary,
+    h("h3", {}, "Inspect the transcriptions"), h("div", { class: "fields" }, h("label", {}, "Page ", pageSelect), " ",
+      h("label", {}, onlyDifferences, " Show differing regions only")),
+    h("p", { class: "diff-legend hint" }, h("span", { class: "diff-text" }, "Text difference"), " · ", h("span", { class: "diff-format" }, "Formatting difference"), " · ",
+      h("span", { class: "diff-omitted", "data-missing": "Omitted reference text", "aria-label": "Omitted reference text" }), " · Highlights keep grapheme clusters and Indic conjuncts together."), detail);
+  el.replaceChildren(content);
+  await refresh();
+}

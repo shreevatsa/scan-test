@@ -1,4 +1,4 @@
-// Settings of method 043's local step: copies of its config.json and line-config.json (a test checks them).
+// Method 043's ownership and legacy line settings, with method 063's fragment-band grouping.
 export const OWNERSHIP = {
  "name": "GPT-6.1 Terra without reasoning, book types from the type list with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions",
  "base_method_id": "042-gpt-6.1-terra-none-book-types-continuations",
@@ -19,7 +19,7 @@ export const OWNERSHIP = {
  "distance_mask_size": 5
 };
 
-export const LINES = {
+export const LEGACY_LINES = {
  "name": "Text-line skew, curvature and boundary separability",
  "maximum_strong_threshold": 200,
  "speck_area_page_fraction": 5e-07,
@@ -54,4 +54,11 @@ export const LINES = {
  "straight_step_deg": 0.01,
  "separable_margin_px": 1.0,
  "conflict_pixel_tolerance": 0
+};
+
+export const LINES = {
+ ...LEGACY_LINES,
+ "fragment_maximum_height_ratio": 0.9,
+ "fragment_maximum_component_ratio": 0.5,
+ "fragment_band_padding_char": 0.3
 };

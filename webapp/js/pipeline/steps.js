@@ -12,7 +12,8 @@ export const SETTINGS = {
                    overview_label_char: 0.8, overview_label_min_px: 18, overview_outline_px: 3, context_lines: 2 },
 };
 
-export const ENDPOINTS = { openai: "https://api.openai.com/v1/responses", gemini: "https://generativelanguage.googleapis.com/v1beta/interactions" };
+export const ENDPOINTS = { openai: "https://api.openai.com/v1/responses", gemini: "https://generativelanguage.googleapis.com/v1beta/interactions",
+  vision: "https://vision.googleapis.com/v1/images:annotate" };
 
 // ---------------------------------------------------------------- method 042: the region call
 
@@ -75,7 +76,8 @@ export function regionRecords(regions, geometry) {
       region_id: src.region_id, type: src.type, keep: src.keep, reading_order: src.reading_order, uncertain: src.uncertain,
       continues_from_earlier: src.continues_from_earlier, continues_later: src.continues_later, region_class: src.region_class,
       model_box: src.box, status: g.rings.length ? "ok" : "no_ink", polygons: g.rings, bounds,
-      lines: g.lines.map(L => ({ line_id: L.line_id, ink_pixels: L.ink_pixels, polygons: L.rings })),
+      lines: g.lines.map(L => ({ line_id: L.line_id, ink_pixels: L.ink_pixels, polygons: L.rings,
+        ...(L.previous_line_ids ? { previous_line_ids: L.previous_line_ids } : {}) })),
     };
   });
 }
@@ -241,10 +243,20 @@ export function buildPageDocument(pid, page, tl, sent, parsed, source) {
 }
 
 // Cost estimates from the returned usage, at the methods' prices (pricing.json files).
-export function openaiCost(usage, pricing) {
+export function openaiCost(usage, pricing, serviceTier = null) {
   if (!usage) return null;
-  const cached = usage.input_tokens_details?.cached_tokens || 0;
-  return ((usage.input_tokens - cached) * pricing.input_per_million_usd + cached * pricing.cached_input_per_million_usd + usage.output_tokens * pricing.output_per_million_usd) / 1e6;
+  const incoming = usage.input_tokens, outgoing = usage.output_tokens;
+  const cached = usage.input_tokens_details?.cached_tokens ?? 0;
+  const written = usage.input_tokens_details?.cache_write_tokens ?? 0;
+  const reasoning = usage.output_tokens_details?.reasoning_tokens;
+  if (![incoming, outgoing, cached, written].every(value => Number.isSafeInteger(value) && value >= 0) ||
+      cached + written > incoming || usage.total_tokens !== incoming + outgoing || incoming > 272000 ||
+      ![null, "default", "standard"].includes(serviceTier) ||
+      reasoning != null && (!Number.isSafeInteger(reasoning) || reasoning < 0 || reasoning > outgoing)) return null;
+  const input = (incoming - cached - written) * pricing.input_per_million_usd + cached * pricing.cached_input_per_million_usd;
+  const write = written ? written * pricing.cache_write_30m_per_million_usd : 0;
+  const total = (input + write + outgoing * pricing.output_per_million_usd) / 1e6;
+  return Number.isFinite(total) && total >= 0 ? total : null;
 }
 
 export function geminiCost(usage, pricing) {

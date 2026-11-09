@@ -1,8 +1,52 @@
 # Scanned books, source-aware: session handoff
 
-Updated 2026-11-07 UTC. "Current state" below is the summary to start from. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every test, in order.
+Updated 2026-11-09. Start with the workflow proposal below, then read "Current state" for the implemented app. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every public test, in order; private tests are recorded only in private/.
 
-## Current state (2026-11-07)
+## Next session workflow proposal (2026-11-09)
+
+The user wants to reconsider the app around the phases a scanned book goes through. They asked to record this proposal, commit and push the current work, and take up the major workflow change in another session. Implementation of this proposal belongs to that next session. The current code and completed UI changes are described under "Current state".
+
+### The user's intended workflow
+
+| Phase | User activity |
+| --- | --- |
+| Browse pages | Open a PDF, render and inspect its pages, and notice different layouts. |
+| Schema and regions | Decide which types exist, how they may nest and which page regions have those types. Start with a draft and extend it as new kinds of pages appear. |
+| Transcribe | OCR the book using the chosen transcription model. |
+| Read and correct | Read the rich transcription with its structure and links to the original pages. |
+
+Schema discovery and region assignment should be iterative. Pages and batches can move through these phases at different times while the book's schema develops. The user specifically wants structure to be established from the scans before transcription, with the design also informed by what the model calls can produce reliably.
+
+### Current processing and terminology
+
+The implementation already defines types and permitted containment before OCR. Method 042 finds regions in page images and assigns initial book-specific types, then method 063 computes their line geometry. The selectable transcription stage reads those fixed regions. A later text-only call applies the book's type definitions to the actual units, builds their hierarchy, reading flows, line joins, continuations and note links, and can revise the initial region types.
+
+Defining that a paragraph may contain a quoted verse is a schema decision. Grouping particular printed regions into a paragraph, including its continuation across pages or around an inserted verse, applies that schema. Physical regions belong to pages, while logical units can span multiple regions and pages. The existing "Schema assignment" comparison concerns this later application of an already defined schema.
+
+Relevant code is [region detection](webapp/js/pipeline/run.js), [transcription and unit assignment contracts](webapp/js/pipeline/split.js) and [Make pages orchestration](webapp/js/main.js). Current unit assignment can revise semantic region types. The existing "Types" view, initial proposal review and "Make pages" controls provide parts of the intended workflow.
+
+### Proposed design to develop
+
+Give **Schema and regions** a first-class workspace between browsing and transcription. It should combine the editable book type definitions, sample-page proposal/review, page region overlays and assignments, and a route for handling new page forms. Users should be able to inspect and correct regions before running OCR on those pages. Initial larger-unit groupings can be provisional.
+
+Keep room for text-assisted completion after OCR, especially for actual containment, interrupted paragraphs, cross-page continuations, reading order and note links. Present this as completing units and links within the transcription workflow. Human-approved region boundaries, types and groupings should be protected, with later model suggestions exposed for review. The exact approval and proposal representation needs design work.
+
+Make schema revision explicit. Record which schema revision produced each assignment and identify affected pages when definitions change. Reuse saved transcriptions when their text regions still match. Changes to containment rules can require rebuilding unit trees, while changes to region boundaries or line geometry can require remapping text. Preserve provenance and user corrections through those operations. Decide stable identifiers, rename handling and the scope of invalidation before building the revision UI.
+
+Keep transcription and schema-model comparison as independent decisions within this workflow. The interface phases can encompass several backend calls. Earlier experiments also combine transcription and unit assignment, and method 045 combines region detection as well. Use recorded quality and cost evidence to decide where combined calls help. The two-page private combined-versus-split cost comparison used different prompts and geometry, so a controlled comparison on current geometry is still an open experiment.
+
+The initial proposal's "Questions to review" currently displays model uncertainties. The redesign should give these questions a clear route into reviewing pages and revising the draft. Choosing how to capture answers and propose resulting edits is part of the next-session design.
+
+### Starting work next session
+
+1. Read this proposal, the implemented state below, PRIVATE.md on this machine, webapp/README.md and schema/README.md. PRIVATE.md holds the source PDF locations, active browser origin/book, unfinished comparisons and cost accounting.
+2. Walk through opening a plain PDF and working on its schema and regions before OCR. Specify the phase navigation, page/batch status and persistence of provisional and approved assignments.
+3. Design schema revision and the preservation of human decisions, then implement a complete path from browsing through region review, transcription and reading. Save intermediate work with the book so the user can resume at each phase.
+4. Verify older books and cached results, source links, edits and the exact recovery of the original PDF from a .chaya.pdf. Keep immutable model records and their costs. A changed model prompt or processing recipe needs a new method ID, currently 079.
+
+Private content and browser-only work follow the existing privacy and storage rules. Public source and handoff changes are committed to main as the user previously requested. Moving work to another browser or device uses a .chaya.pdf export/import, with local details in PRIVATE.md.
+
+## Current state (2026-11-09)
 
 **Goal (unchanged):**
 - turn a book's PDF into a digital book whose every unit (paragraph, verse, saying, footnote…) links to its page regions;
@@ -11,8 +55,9 @@ Updated 2026-11-07 UTC. "Current state" below is the summary to start from. The 
 **Two pipelines into page documents:**
 - **scans** (model calls), as the app's Make pages runs them:
   1. method 042: page regions, with GPT-6.1 Terra;
-  2. method 043: the local step (ink lines, outlines);
-  3. method 055: transcription with formatting, with Gemini 4 Argon, writing schema 0.2;
+  2. method 063: the local step (ink lines and outlines, with fragment bands joined to their parent lines);
+  3. selectable reading profiles 065–069 and 071–072, with Argon low/high, Flash low, Flash-Lite minimal, local Tesseract or Cloud Vision Text Detection and Document Text Detection;
+  4. selectable text-only schema assignment with Argon high (070, the default), Argon low, Flash low, Flash-Lite minimal or Terra without reasoning (073–076), preserving the transcription’s printed text. Each model and stage is cached separately. Method 064 preserves the earlier combined transcription recipe on method 063 geometry;
 
   Earlier book runs: Kale (method 052) and Telang (methods 052 and 054);
 - **digital PDFs** (no model calls):
@@ -25,20 +70,20 @@ Updated 2026-11-07 UTC. "Current state" below is the summary to start from. The 
 - 0.2's line pieces, spans, note markers and relations;
 - optional styles (a per-book style sheet, and `style` on units and line pieces, presentation only), with rows for side-by-side units;
 - figures: a region class with no line pieces;
-- type lists: one per book in `schema/types/`, written by hand so far. 0.1 and 0.2 documents stay valid.
+- type lists are per book. The new-book form now proposes them from selected sample page images through methods 077–078, with editing and approval before book creation. Existing type lists can also be reused. 0.1 and 0.2 documents stay valid.
 
 **The web app (`webapp/`, README there):**
-- **modes:** Read (as printed, with rows side by side) · Edit book (Types, Style sheet, Problems, Make pages) · Edit pages · Export (book JSON, text, a web page as printed, a .chaya.pdf, the source PDF);
+- **modes:** Read (as printed, with rows side by side) · Edit book (Types, Style sheet, Problems, Transcription models, Schema assignment, Make pages) · Edit pages · Export (book JSON, text, a web page as printed, a .chaya.pdf, the source PDF);
 - **input:** PDFs only;
 - **storage:** books are kept in the browser's private file system, with autosave, and saved as one file, a `.chaya.pdf`. That is the original PDF's bytes, unchanged, plus one update attaching `chaya.json` with the book's data; the original is recoverable exactly. Pages are drawn from the PDF;
 - **published books** open by URL, read only;
 - **editing:** split at the caret, move text to a column, make a unit page furniture, unit styles, the style sheet editor;
-- **tests:** `node --test webapp/test/*.test.mjs` (57) and `uv run --offline python schema/test_book.py`.
+- **tests:** `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache node --test webapp/test/*.test.mjs` (106) and `uv run --offline python schema/test_book.py` (11).
 
 **Running:**
 - `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/;
 - in this session the same server was also bound to the Tailscale address (100.115.7.63:8765) for the user's other machine. Over plain http to a non-local name the browser gives no secure context, so the app only opens `.chaya.pdf` files read only there;
-- `tailscale serve --bg 8765` (HTTPS within the tailnet) would give the full app. It changes the user's Tailscale settings, so it is not done without the user's go-ahead.
+- The user authorized Tailscale access on 2026-11-08. Tailscale Serve now proxies HTTPS on this machine's full MagicDNS name to `http://127.0.0.1:8765`, in background mode and within the tailnet. On this Mac the CLI is `/Applications/Tailscale.app/Contents/MacOS/Tailscale`. The app is at `/webapp/`; the exact personal URL is in PRIVATE.md. Verified the TLS certificate and HTTP 200 responses for the app, main script, stylesheet and existing comparison PDF. The Mac and local server must remain running. Browser books and API keys belong to each origin and device, so use a `.chaya.pdf` export/import to transfer a desktop book to the HTTPS origin or phone.
 
 **Books ready to open** (`outputs/books/`):
 - `vachana.chaya.pdf` (1.6 MB), `kale-1913.chaya.pdf` (15.6 MB) and `telang-dli.chaya.pdf` (67 MB), made with `webapp/tools/make_chaya_pdf.mjs`;
@@ -61,6 +106,10 @@ Updated 2026-11-07 UTC. "Current state" below is the summary to start from. The 
   - the book is kept inside its PDF (`.chaya.pdf`): append-only saving is not required, but the original PDF must be recoverable.
 
 **Open, roughly in order:**
+0. **Private scan series and model comparisons**. The corrected twelve-page sample uses method 063 geometry. Both transcription and schema assignment models can be selected and compared per book. The schema comparison fixes the input transcription and shows canonical structural choices by region. Its two-page private trial adds eight saved results, six schema-valid and two invalid, to the existing Argon-high reference. Cloud Vision’s two OCR modes are implemented and tested with fixtures, but the configured Gemini key was rejected by Vision and the local Google Cloud CLI could not supply an OAuth token. The UI supports separate Cloud Vision API-key or session-only OAuth credentials and a quota project. “Continue” creates an editable browser copy for a URL book and opens Make pages. Excerpts can start from the full PDF with their types and model settings. Make pages processes a chosen range with missing-region discovery, cached stages, a spend threshold, and explicit reprocessing of existing model documents. Known cumulative token-based estimates are $1.6463775, with two unresolved timeout charges and a $1.50 reserve. The user has requested the full-volume browser workflow, and its 267-page browser book is prepared as described below. All collection contents remain outside git. Stop before $40 cumulative spending under the user’s $50 authorization.
+   - **The collection's digital PDFs in legacy fonts** (two books, in Nudi and Baraha encodings and in renamed CID fonts) are free tests for the text-layer path (item 2).
+   - **A PDF's text layer is not to be trusted as it comes** (the user, 2026-11-07): the scanned PDFs in that collection carry OCR text layers that are nonsense, which the user had tried removing. The app's text-layer path must tell a real digital text layer (fonts that draw the visible text) from invisible OCR text (render mode 3), and leave the latter aside.
+   - **An idea for later:** a `.chaya.pdf` could replace such a layer with the book's corrected text, drawn invisibly, so that the PDF becomes searchable in any viewer. The pages' content would be replaced in the update, so the original would stay recoverable.
 1. **Committing** (done 2026-11-07, the user's option (a); NOTEBOOK, "Committing: what goes into git"):
    - the source and the irreplaceable results are committed. Regenerable binaries are left out by `.gitignore`: page images and crops, requests that embed images, book folders and `.chaya.pdf` files;
    - the private book ("vachana", methods 056–062) is kept out completely: rules in `.git/info/exclude`, where its files are in `PRIVATE.md` (both local only);
@@ -71,7 +120,7 @@ Updated 2026-11-07 UTC. "Current state" below is the summary to start from. The 
    - recognize legacy-encoded fonts;
    - infer the font roles and the typography profile, which are written per book now;
    - use scanned PDFs' hidden OCR text layers (Kale's has one) as a free first reading or check.
-3. **Type lists:** draft one from a few sample pages with one model call; edit them in the app (with care: removing or renaming a type invalidates page documents); the user's review of the vachana list.
+3. **Type lists:** the initial sample-page proposal and review are implemented in the new-book form, with Terra reasoning off as the default and Argon high as an option. The proposal is schema-checked, cites sample pages and includes review questions. Each attempt is retained in IndexedDB before book creation and copied into the book's work records, including when the user ultimately chooses an existing type list. At the user's suggestion, OpenAI and Gemini keys were retrieved through llm and saved in the localhost app's browser. Live checks on the same four Cole pages produced thirteen Terra types and eleven Argon-high types, both valid, with displayed estimated costs of $0.0200 and $0.0990. The normalized results and screenshots are under outputs/surveys/077-*/cole-live-001 and 078-*/cole-live-001. The complete response and usage records are in the browser, with call paths in the saved types' provenance. The latest proposal is pending human approval. The key fields now load saved values and save edited values on blur. The local browser contains a four-page Cole setup-test book created through the earlier existing-list check. Revising types of already processed books and the user's review of the vachana list remain open.
 4. **vachana:** line joins are about 87% right; a cheap text-only pass could fix the rest. The ornaments have no labels.
 5. **Output:** a LaTeX or Typst export from the styles; bundled web fonts (Noto Serif and Sans Kannada); contents entries' page numbers flush right.
 6. **Smaller items:**
@@ -85,7 +134,23 @@ Updated 2026-11-07 UTC. "Current state" below is the summary to start from. The 
 - `outputs/surveys/<method>/<run>/`;
 - `outputs/<page id>/<method>/<run>/`.
 
+The user’s terminology correction on 2026-11-08 calls the options “transcription models”. Region comparison shows every model whenever any transcription differs from the selected reference, with the scan and full region text. Argon high is the default reference. Checked reference lines supply accuracy scores. The stages are now explicitly called page-region detection (Terra), transcription (selected model) and text-only schema assignment (selected model, default Argon high). The single total-cost column includes all three stages and scales completed sample pages to an editable target book page count. Enter 1,000 for normalization. The earlier projection omitted region detection and has been corrected. Terra cost accounting includes default 30-minute cache writes. Older records missing any stage cost show an unavailable estimate. Difference colors cover complete grapheme clusters and virama-linked Indic conjuncts, with formatting rendered and omissions shown as generated strike-through text.
+
 The conventions at the end of this file still hold: method ids, immutable runs, NOTEBOOK entries, `uv run --offline`, and keys never printed.
+
+The schema comparison now uses side-by-side unit trees and a selected-region inspector. Color-matched region labels and text snippets connect models’ groupings. Labels explain changed grouping, unit labels and continuation flags. The inspector shows ancestry, unit members, reading order and links, with a collapsible scan and fixed transcription. Line-join previews highlight complete grapheme clusters at the boundary. Raw responses and validation errors are under diagnostics. Comparison metrics now use each region’s own ancestry and membership, so sibling flags and target-unit metadata do not create unrelated region, order or link differences. The visual views read the saved model responses. API spending for this UI revision is $0.
+
+The user has now requested the full-volume browser workflow. Its 267-page book is prepared in browser storage at ?local=series1-v01#make, inheriting the sample’s types and the user’s selected Argon-low transcription and Terra schema assignment. The first visible processing range is 1-10, with a $5 per-run threshold. Details are in PRIVATE.md. Importing the book costs $0 in model API charges. During setup, the shared page-range parser was fixed to accept the documented “all” value. An added regression covers that value and the older blank and numeric range forms.
+
+On 2026-11-09 UTC the user still saw the old unit-type dropdown. Their Chrome tab at http://localhost:8765 had an older app loaded, with only the original book tabs. Earlier browser checks had used the separate in-app browser at http://127.0.0.1:8765. Refreshing Chrome loaded the current app. The full-volume PDF is now open in Chrome's new-book AI setup, with “Propose types from sample pages” selected and both llm-sourced keys saved in that browser. This is a setup form awaiting the user's proposal and review. Chrome's localhost storage, the in-app browser's 127.0.0.1 storage and the Tailscale HTTPS origin are separate. Details and a screenshot are in PRIVATE.md.
+
+On 2026-11-09 UTC the user's private full-volume PDF received a saved, schema-valid Terra unit-type proposal from twelve selected pages. Its API record and cost are retained privately, with adjustments for the user's established paragraph/verse and ornament rules. The plain-PDF entry now accepts an optional `proposal` URL, validates it against the source PDF hash and opens it for review without API keys. Local review edits take priority. User approval is still required before book creation. The exact links, call cost and adjustments are in PRIVATE.md.
+
+The initial sample controls now offer a lazy thumbnail browser for every PDF page before the sample field. A thumbnail opens a larger preview with previous/next controls and an inclusion checkbox. Samples accept `all`, ranges such as `1-50` and mixed lists, with no twelve-page UI cap. Selection, thumbnail checkboxes and the selected-only view stay synchronized. Browser checks cover the full 267-page PDF, range/all selection, page 267 and larger previews. App tests pass 106/106 and schema tests 11/11. This interface verification adds no model charges.
+
+On 2026-11-09 the comparison pages were separated into sample run, review and a final model choice. Transcription models has a single explicit transcription choice at the end, followed by navigation to schema comparison. Schema assignment has a fixed input from the book's saved transcription model and ends with a separate schema-model choice and Continue to Make pages. The combined two-model settings remain in Make pages. Whole-book estimates on the transcription page retain an optional fixed-model schema pass under collapsed estimate settings. Browser checks verified independent saving, the fixed input, persistence and restoration of the user's existing choices. The original combined methods were reviewed for the user's cost question, with historical private measurements recorded in PRIVATE.md. No paid model calls were made for this UI revision.
+
+Both comparison pages now show a determinate progress bar, processed-step count, percentage and elapsed time beside the current operation. Counts cover region checks, transcription and optional schema work, with reused, failed and skipped work distinguished. Stopped runs and spending limits retain partial progress. The user's existing run was already executing the older app when this change was made. It saved eleven transcriptions and stopped on an Argon-high timeout on its final sample page. Once it finished, the actual Chrome tab was refreshed to load the update. The new progress display appears on subsequent runs. Validation uses the production comparison views with simulated operations and zero model calls, plus all 106 app tests.
 
 ## Earlier notes (2026-11-04 to 2026-11-06)
 
@@ -586,7 +651,7 @@ The total is about $2.76.
 ## Conventions to preserve
 
 - Keep code and README under `methods/<method_id>/`, shared inputs under `inputs/`, human or proposed references under `references/<input_id>/`, the draft book schema and its type lists under `schema/`, and outputs indexed by input and method. Cross-page surveys go under `outputs/surveys/<method_id>/`.
-- A frozen method keeps its ID on new data. Changing the prompt, model, settings or processing recipe gets a new ID; the next unused ID is 044. Repeated requests use a fresh output subdirectory such as `run-002`, not a new method ID.
+- A frozen method keeps its ID on new data. Changing the prompt, model, settings or processing recipe gets a new ID; the next unused ID is 079. Repeated requests use a fresh output subdirectory such as `run-002`, not a new method ID.
 - Keep prior runtime code and saved requests/responses immutable: hashes tie them to results. Save new derived coordinates separately with their source result and every adjustment.
 - Keep NOTEBOOK.md limited to actual tests, settings, observations and images. Use self-contained entries, full method names, stable method IDs, and one physical line per prose paragraph. Method README links and image references are expected. Keep planning and cross-experiment conclusions in this handoff or another separate document.
 - Add results within the appropriate test-page section while preserving previous entries. Do not label tests on a new page as newly numbered methods.
@@ -597,4 +662,4 @@ The total is about $2.76.
 
 This handoff is kept up to date during the session rather than written only at the end.
 
-A useful next-session opening instruction is: “Read HANDOFF.md and schema/README.md. Both full-book walks (Kale, Telang) are done; write the brief for the web app session, then pick up the improvements listed under experiment 1.”
+A useful next-session opening instruction is “Read HANDOFF.md's Next session workflow proposal and Current state, PRIVATE.md on this machine, webapp/README.md and schema/README.md, then develop the proposed Browse pages → Schema and regions → Transcribe → Read workflow.”

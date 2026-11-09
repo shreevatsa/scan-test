@@ -372,18 +372,30 @@ export function applyGeometry(doc, geometry) {
   const used = regions.map(r => new Set());
   const take = (ri, k) => { used[ri].add(k); return old[ri][k]; };
   const newLines = geometry.map((g, ri) => g.lines.map(G => {
-    let src = null;
-    const k = old[ri].findIndex((L, j) => L.line === G.line_id && !used[ri].has(j));
+    let src = null, sourceRegion = ri;
+    const ids = G.previous_line_ids || [G.line_id];
+    // Prefer text on the parent, then text on one of its former fragments.
+    const available = old[ri].map((L, j) => j).filter(j => ids.includes(old[ri][j].line) && !used[ri].has(j));
+    const hasContent = L => L.text || (L.spans || []).length;
+    const k = available.find(j => old[ri][j].line === G.line_id && hasContent(old[ri][j]))
+      ?? available.find(j => hasContent(old[ri][j])) ?? available[0] ?? -1;
     if (k >= 0) src = take(ri, k);
     else {
       for (let rj = 0; rj < regions.length && !src; rj++) {
         if (rj === ri || geometry[rj].lines.some(x => x.line_id === G.line_id)) continue;
-        const j = old[rj].findIndex((L, q) => L.line === G.line_id && !used[rj].has(q));
-        if (j >= 0) src = take(rj, j);
+        const j = old[rj].findIndex((L, q) => ids.includes(L.line) && !used[rj].has(q));
+        if (j >= 0) { src = take(rj, j); sourceRegion = rj; }
       }
     }
     const piece = { line: G.line_id, polygons: G.rings, text: "" };
-    if (src) for (const key of ["text", "end", "spans"]) if (src[key] !== undefined) piece[key] = src[key];
+    if (src) for (const key of ["text", "end", "spans", "style"]) if (src[key] !== undefined) piece[key] = src[key];
+    if (src) for (const relation of doc.relations || []) for (const side of ["from", "to"]) {
+      const endpoint = relation[side];
+      if (endpoint?.region === regionRef(doc, regions[sourceRegion].id) && endpoint.line === src.line) {
+        endpoint.region = regionRef(doc, regions[ri].id);
+        endpoint.line = G.line_id;
+      }
+    }
     return piece;
   }));
   regions.forEach((r, ri) => {
@@ -401,7 +413,7 @@ export function applyGeometry(doc, geometry) {
     const lines = [...newLines[ri], ...left];
     lines.sort((a, b) => (a.line ?? Infinity) - (b.line ?? Infinity));
     r.lines = lines;
-    r.source = { ...(r.source || {}), outline: "recomputed in the browser (method 043's local step) from the boxes" };
+    r.source = { ...(r.source || {}), outline: "recomputed in the browser from the boxes" };
   });
   return doc;
 }

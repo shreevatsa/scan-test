@@ -1,0 +1,20 @@
+{
+ "method": "072-cloud-vision-document-reading",
+ "stage": "reading",
+ "contract": "reading-and-structure-v1",
+ "profile": {
+  "id": "vision-document",
+  "label": "Cloud Vision · Document Text Detection",
+  "provider": "vision",
+  "model": "DOCUMENT_TEXT_DETECTION",
+  "formatting": false,
+  "usd_per_page": 0.0015
+ },
+ "geometry": "042 regions + 063 fragment-band lines",
+ "source_snapshot": "071-cloud-vision-text-reading/snapshot",
+ "language_hints": "automatic",
+ "image": "one original page image",
+ "pricing_basis": "Standard paid rate before monthly free usage and volume discounts",
+ "pricing_checked_on": "2026-11-08",
+ "pricing_source": "https://cloud.google.com/vision/pricing"
+}

@@ -1,0 +1,26 @@
+{
+ "method": "068-gemini-3-5-flash-lite-reading",
+ "stage": "reading",
+ "contract": "reading-and-structure-v1",
+ "profile": {
+  "id": "flash-lite",
+  "label": "Gemini 3.5 Flash-Lite · minimal thinking",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "thinking": "minimal",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 0.3,
+    "output": 2.5,
+    "cached": 0.03
+   }
+  ],
+  "formatting": true
+ },
+ "geometry": "042 regions + 063 fragment-band lines",
+ "source_snapshot": "065-gemini-4-argon-low-reading/snapshot",
+ "max_output_tokens": 32768,
+ "store": false,
+ "service_tier": "standard"
+}

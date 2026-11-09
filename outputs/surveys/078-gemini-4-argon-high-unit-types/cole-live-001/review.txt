@@ -1,0 +1,124 @@
+Review this book’s unit types
+
+Gemini 4 Argon · high thinking inspected PDF pages 1, 2, 3, 4. Estimated call cost $0.0990.
+
+Four pages (pp. 134–137) from the December 1903 issue of the Bulletin of the American Mathematical Society, containing the conclusion of an earlier mathematical paper (p. 134), the entirety of F. N. Cole's paper 'On the Factoring of Large Numbers' (pp. 134–137), and the opening of Arnold Emch's 'Note on the p-Discriminant of Ordinary Linear Differential Equations' (p. 137). The text is printed in single-column English prose with inline and displayed mathematical notation, numbered sections, institutional datelines at the end of articles, symbolic footnotes below a horizontal rule at the foot of each page, and running headers with outer page numbers and split issue dates.
+
+Languages en
+
+Check the descriptions and grouping rules against the sample pages. Edit descriptions directly. Each type’s grouping rules can also be changed.
+
+article container
+
+May contain article_heading, byline, presentation_note, section, paragraph, formula, dateline. Can stand in main.
+
+PDF pages 1, 2, 3, 4 · Three articles appear across pages 1–4: the conclusion of a preceding paper at the top of page 1, F. N. Cole's 'ON THE FACTORING OF LARGE NUMBERS.' spanning pages 1–4, and the beginning of Arnold Emch's 'NOTE ON THE p-DISCRIMINANT OF ORDINARY LINEAR DIFFERENTIAL EQUATIONS.' on page 4.
+
+Edit grouping rules
+section container
+
+May contain paragraph, formula. Appears inside another unit.
+
+PDF pages 1, 2, 3, 4 · Cole's article is divided into three numbered sections beginning '1. IN resolving a large number N...' (page 1), '2. Next to the Fermat numbers...' (page 2), and '3. For the number...' (page 3, continuing to page 4).
+
+Edit grouping rules
+article_heading heading
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 4 · 'ON THE FACTORING OF LARGE NUMBERS.' (page 1) and 'NOTE ON THE p-DISCRIMINANT OF ORDINARY LINEAR DIFFERENTIAL EQUATIONS.' (page 4).
+
+Edit grouping rules
+byline other
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 4 · 'BY PROFESSOR F. N. COLE.' (page 1) and 'BY PROFESSOR ARNOLD EMCH.' (page 4).
+
+Edit grouping rules
+presentation_note other
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 4 · '(Read before the American Mathematical Society, October 31, 1903.)' (page 1) and '(Read before the American Mathematical Society, August 31, 1903.)' (page 4).
+
+Edit grouping rules
+paragraph paragraph
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 2, 3, 4 · Prose blocks such as '1. IN resolving a large number N into its prime factors...' (page 1), 'By the aid of the quadratic remainders of the table it is now theoretically possible...' (page 2), and unindented post-formula continuations like 'then the coefficients are given by the relation' (page 1).
+
+Edit grouping rules
+formula formula
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 2, 3, 4 · Displayed equations on page 1 ('f(z) = a_0 W_{1/2,0}(z) + ...'), page 2 ('x^2 - y^2 = [1/2(u + v)]^2 - [1/2(u - v)]^2 = uv,'), the displayed sequence of quadratic remainders and multi-line congruence system on page 3, and numbered equations '(1)', '(2)', '(3)', '(4)' on page 4.
+
+Edit grouping rules
+dateline other
+
+May contain no child units. Appears inside another unit.
+
+PDF pages 1, 4 · 'TRINITY COLLEGE, CAMBRIDGE, / July, 1903.' at the end of the first article on page 1, and 'COLUMBIA UNIVERSITY, / October, 1903.' at the end of Cole's article on page 4.
+
+Edit grouping rules
+footnote note
+
+May contain no child units. Can stand in notes.
+
+PDF pages 1, 2, 3, 4 · '* For an interesting discussion of the use of the table of remainders see P. Seelhoff, Zeitschrift für Mathematik und Physik, vol. 31 (1886), pp. 166, 174, 306.' (page 1), plus one or two footnotes on each of pages 2, 3, and 4.
+
+Edit grouping rules
+running_header page furniture
+
+Belongs to the page.
+
+PDF pages 1, 2, 3, 4 · 'THE FACTORING OF LARGE NUMBERS. [Dec.,' (pages 1, 3), '1903.] THE FACTORING OF LARGE NUMBERS.' (page 2), and '1903.] ON THE p-DISCRIMINANT.' (page 4).
+
+Edit grouping rules
+page_number page furniture
+
+Belongs to the page.
+
+PDF pages 1, 2, 3, 4 · '134' (page 1), '135' (page 2), '136' (page 3), and '137' (page 4).
+
+Edit grouping rules
+Add a unit type
+Reading flows
+
+main · The primary running text of the journal, containing articles with their headings, bylines, presentation notes, numbered sections, prose paragraphs, displayed mathematical formulas, and closing datelines.
+
+notes · Footnotes printed at the bottom of each page beneath a horizontal separator rule, keyed to the main text by symbolic markers (*, †).
+
+Links
+
+footnote_ref · Links an inline symbolic footnote marker (*, †) in the main text to its corresponding footnote unit in the notes flow.
+
+equation_ref · Links an inline parenthesized equation citation in prose (such as 'equations (1) and (2)' on page 4) to the corresponding displayed formula.
+
+Inline kinds
+
+math_expr · Inline mathematical notation, including italic variables, subscripts, superscripts, fractions, and operators (e.g., 'N = x^2 ± a', '2^{67} - 1', 'p = dy/dx').
+
+footnote_marker · Symbolic callout (* or †) marking a footnote reference in the running text or introducing the footnote itself.
+
+section_number · Arabic numeral followed by a period ('1.', '2.', '3.') printed inline at the beginning of a section's opening paragraph.
+
+equation_number · Parenthesized Arabic numeral ('(1)', '(2)', '(3)', '(4)') identifying a displayed equation within a formula line.
+
+lead_in_word · The opening word of an article's first paragraph set in small capitals ('IN resolving', 'IN a fundamental memoir'). (small_caps)
+
+work_title · Cited journal, book, or article title in prose or footnotes, printed in italics, quotation marks, or roman type.
+
+Transcription conventions
+Transcribe all text in Unicode NFC, preserving original spelling, capitalization, punctuation, and French/German diacritics in cited titles (e.g., 'Théorie des fonctions numériques simplement périodiques', 'Zeitschrift für Mathematik und Physik').
+Preserve exact mathematical symbols and notation, including minus-or-plus ('∓'), plus-or-minus ('±'), congruence ('≡'), partial derivative ('∂'), integral ('∫'), multiplication cross ('×'), raised dot used for prime factorization products (e.g., '23.53', '287.1323536760'), and superscripts ('2^{2^n} + 1', '2^{67} - 1', '4^+').
+Preserve symbolic footnote markers ('*', '†') both inline in the main text and at the start of each footnote.
+Questions to review
+When a prose sentence is interrupted by one or more displayed formulas (as on pages 1, 2, 3, and 4), should the text before and after the formula be segmented as separate 'paragraph' units, or linked via a continuation relation?
+Should the bracketed date fragments in the top margin ('[Dec.,' on verso pages and '1903.]' on recto pages) be grouped with the centered short title into a single 'running_header' unit per page, or segmented as a separate furniture unit?
+On page 4, two numbered equations appear on a single displayed line separated by the word 'and' ('φ(x, y, p) = 0 (1), and ∂φ/∂p (2),'); should each line be treated as one 'formula' unit or split into two separate 'formula' units?
+Edit the complete type list as JSON
+Apply type list changes

@@ -4800,3 +4800,124 @@ The structure, order and text never depend on styles. 0.1 and 0.2 documents rema
 **Check before the commit:** every file to be committed (18,872) was searched for the book's name, title, editors, publisher, places, address, emblem and chapter titles, in both scripts. Only the files scrubbed above had them, and after the scrub none do.
 
 **Cost:** $0.
+
+
+## Detached glyph bands joined to their parent lines — method 063, 2026-11-08
+
+[Method 063 — fragment bands joined to their parent text lines](methods/063-fragment-band-lines/README.md) adds a step to method 043's line finder before detached-mark assignment. A smaller band can itself pass the main-component height threshold. It joins a host in its column when its core height is at most 0.9 times the host's, its main-component count at most half the host's, its center falls inside the host's core padded by 0.3 character heights, and their horizontal extents meet within the existing one-character padding. Choose the nearest eligible center, form parent trees from the original bands, recompute each combined core and median center, and run the existing mark assignment, ownership and outlines. Saved pieces retain the parent's original line ID and record their absorbed IDs. The experiment uses the saved method 042 regions and has zero API calls.
+
+The nine existing passage-reference pages were run as regression-001 — Kale 106, Hertel 152, Dutt 17F chapter 1 page 2, Telang 108, Cole 3, Ten Princes 30, Nītiśataka 1896 page 123, Nītiśataka 1914 page 258, and Vavilla 34. Method 043's evaluator scored both the original 043 and new 063 results on each reference. Every page scores 0 other-passage ink included, 0 own ink omitted and 0 separator ink included under both methods. There are zero missing passages, merged reference passages or reading-order splits. The per-page results are under outputs/<page>/063-fragment-band-lines/regression-001/reference-evaluation/. The [cross-page summary](outputs/surveys/063-fragment-band-lines/regression-001/summary.json) records the source paths, line counts and scores.
+
+The browser implements the same grouping and uses it in Make pages and editor recomputation. Parent line IDs let existing text follow the complete glyph shapes. A former fragment's edited text can supply the parent piece, and additional edited text stays recoverable without an outline. Text, inline spans, line-end settings and line styles are carried over. Region-and-line relation endpoints follow moved text. The five fragment-lines.test.mjs cases exercise those behaviors and separate short printed lines. The original six-page port check continues with LEGACY_LINES against method 043. The app suite passes 63 tests and schema/test_book.py passes 11.
+
+Cole's English prose, superscripts, formulas and notes after grouping are shown below. The per-line outlines were visually checked alongside the reference scores.
+
+![Cole page 3, complete line outlines after method 063](outputs/cole-1903-page-003/063-fragment-band-lines/regression-001/lines.png)
+
+
+## Reader controls and split-stage regression checks (2026-11-08)
+
+The static app’s reading and structuring contracts are separate. Reading presets are [065](methods/065-gemini-4-argon-low-reading/README.md), [066](methods/066-gemini-4-argon-high-reading/README.md), [067](methods/067-gemini-3-8-flash-low-reading/README.md), [068](methods/068-gemini-3-5-flash-lite-reading/README.md) and [069](methods/069-tesseract-js-local-reading/README.md). The fixed text-only structurer is [070](methods/070-gemini-4-argon-high-text-structure/README.md). Frozen contract implementations and hashes are archived under method 065. Existing methods and their outputs were retained.
+
+`node --test webapp/test/*.test.mjs` passes 78 tests. Fifteen reader tests cover legacy defaults and language subtags, token accounting including thinking and scheduled rates, exact line coverage, preserved reader text, empty figure lines, spans and markers, Unicode character differences, checked-reference scoring, OCR word-to-line assignment, cache reuse and invalidation, concurrent requests, paid failures and retries, neighboring text, composite-page gap metadata, storage failure after a paid response, and persisted URL-book work records in exports. API calls in these regression fixtures are mocked. `uv run --offline python schema/test_book.py` passes all 11 tests. Actual private scan trials are recorded privately.
+
+
+## Comparing all transcription models by region (2026-11-08)
+
+The comparison view now includes a printed region when any completed model transcription differs from its selected reference in text, formatting or note markers. It shows the full region’s scan and every model’s transcription, with the reference labeled first. Agreeing lines remain as context and pending models have placeholders. “Show differing regions only” can be disabled for agreement review. Reference checking remains available by line under each region.
+
+`node --test webapp/test/*.test.mjs` passes 79 tests. The new grouping regression checks a difference in a third model while two transcriptions agree, all-model coverage, retained agreeing lines, formatting-only differences, pending results and omitted page furniture. The browser check exercises reference selection, structural inspection and agreement filtering against saved results. This UI change makes no model calls.
+
+
+## Per-thousand-page cost and Indic difference highlighting (2026-11-08)
+
+The comparison table now has one total-cost column per 1,000 pages, combining the measured mean transcription cost and the fixed Argon-high structuring cost. The model used for structuring is stated explicitly. Text changes are amber, formatting differences blue, and omitted reference text red with a strike-through. Formatting tags render as formatting.
+
+The display aligns grapheme tokens after NFC matching and retains original code points for rendering. Virama-linked conjuncts are joined using Unicode 18.0 Indic_Syllabic_Category Virama and Invisible_Stacker values, supplementing Intl.Segmenter where it separates conjuncts. Missing text uses generated CSS content, so the candidate’s DOM text contains its transcription. Allocation is bounded for unusually long lines, and browsers without segmentation use whole-line highlights. These display changes use saved results and make no model calls.
+
+`node --test webapp/test/*.test.mjs` passes 87 tests. Eight new tests cover Indic vowel signs and conjuncts across several scripts, joiners, emoji, combining accents, substitutions, insertions, omissions, canonical equivalence, formatting across line ends, markers, long lines and HTML escaping. Browser checks confirm a single cost column, fixed structuring text, rendered formatting and complete Kannada conjuncts in colored spans.
+
+
+## Complete pipeline cost projection checks (2026-11-08)
+
+The total-cost calculation includes page-region detection, transcription and text-only schema assignment for each completed sample page, averages those complete page costs and scales to an editable target page count. Region detection counts once per page in each projected pipeline. A missing stage cost makes the total unavailable. Local OCR retains a zero transcription charge. The UI names Terra for page regions and Argon high for schema assignment. Projections use the sample calls’ recorded prices for one successful pass, with failed attempts and unresolved charges in the ledger.
+
+The OpenAI estimator separates ordinary input, cached input and default 30-minute cache writes, then adds output including reasoning. Its rates were checked against the official Terra model page and prompt-caching guide on 2026-11-08. Unsupported tiers, long-context usage and inconsistent counts return an unavailable estimate. Existing method outputs remain immutable. Three added regression tests cover cache-write arithmetic, malformed or unsupported usage, complete pipeline projection, missing legacy metadata, zero-cost local transcription, invalid page counts and region detection through Maker.findRegions with a mocked response. UV_CACHE_DIR=/private/tmp/scan-test-uv-cache node --test webapp/test/*.test.mjs passes 90 tests, and uv run --offline python schema/test_book.py passes 11. Browser checks exercise the target page count, persistence across reload, normalized estimates and the complete single-column total. These checks make no paid API calls.
+
+
+## OCR and schema assignment comparison regression checks (2026-11-08)
+
+Methods 071 and 072 add Cloud Vision Text Detection and Document Text Detection, using one full-page image and mapping word boxes to the shared line polygons. Methods 073–076 add Argon low, Flash low, Flash-Lite minimal and Terra without reasoning for text-only schema assignment. The original Argon-high profile remains method 070. New profiles and the common source snapshot are frozen under methods/071-cloud-vision-text-reading/. Earlier method snapshots remain immutable. Browser transport additionally accepts OAuth credentials and a quota project for Cloud Vision. Its OCR payload and word mapping follow the frozen recipe. Profile definitions are recorded in the READMEs for [Cloud Vision text](methods/071-cloud-vision-text-reading/README.md), [Cloud Vision document text](methods/072-cloud-vision-document-reading/README.md), [Argon low schema assignment](methods/073-gemini-4-argon-low-text-structure/README.md), [Flash schema assignment](methods/074-gemini-3-8-flash-low-text-structure/README.md), [Flash-Lite schema assignment](methods/075-gemini-3-5-flash-lite-text-structure/README.md) and [Terra schema assignment](methods/076-gpt-6-1-terra-none-text-structure/README.md).
+
+Five added regression tests cover independent schema-model caches through normal transcription, retained printed text, legacy cache paths, Cloud Vision word geometry with omitted zero coordinates, API errors, per-page cost, image-free call records, OAuth and API-key headers, and structural comparison after removing arbitrary unit IDs. Canonical comparison detects type, grouping, line-end, continuation, flow order, missing-region and link differences, and handles cyclic invalid proposals. The complete app suite passes 95 tests. Schema tests pass 11. Browser checks exercised the full-PDF form with inherited types and model settings, editable copying with saved choices and trials, range processing that skips existing documents, selected-schema cost propagation, and the schema comparison with every model’s decisions. Live private trials and credential checks are recorded privately.
+
+
+## Visual schema comparison and local disagreement checks (2026-11-08)
+
+The schema comparison now displays model columns containing unit trees, region labels and text snippets. Its selected-region inspector uses ancestry paths, grouped-region buttons, continuation flags, reading-order positions and link arrows. Changed assignments receive amber shading and labels describing the changed grouping, label, type or page-edge flag. Scans and fixed transcriptions are expandable. Line-join previews highlight grapheme clusters on both sides of the boundary and show the selected separator in the printed script. Raw responses and validation messages are under diagnostics. These views use existing results.
+
+The canonical comparison now records each region’s ancestor paths and each unit’s ordered member regions. It avoids propagating a sibling’s continuation flag to unrelated regions through their shared container. Flow comparisons use flow and position. Link targets use type and printed-region membership, preventing unrelated target metadata from changing source-link comparisons. Two regression tests verify local sibling changes, container flags affecting all members, retained ancestry, stable flow assignments and stable link targets after a destination unit’s continuation changes. UV_CACHE_DIR=/private/tmp/scan-test-uv-cache node --test webapp/test/*.test.mjs passes 97 tests. Browser checks cover region selection, a fourteen-region page, reference changes, pending models, horizontal model navigation, pinned reference columns and complete Kannada clusters in join previews. API spending for these display checks is $0.
+
+
+## Page range “all” regression (2026-11-08)
+
+The new-book and processing forms offered “all”, but their shared pageRange parser accepted only an empty input or explicit numeric ranges. The parser now accepts “all” with surrounding whitespace and any letter case. The added pdf.test.mjs regression exercises all 267 page numbers, empty input, explicit comma-separated ranges, open range ends and invalid input. UV_CACHE_DIR=/private/tmp/scan-test-uv-cache node --test webapp/test/*.test.mjs passes all 98 tests. A browser setup check creates a complete book, carries over its type and model settings, confirms its page count, reloads the persisted book and prepares an initial processing range. API spending for setup is $0.
+
+
+## Tailscale HTTPS access (2026-11-08)
+
+At the user's request, enabled background Tailscale Serve forwarding HTTPS on the host's full MagicDNS name to the existing localhost server on port 8765. No previous Serve configuration was present. Verified the certificate hostname and system trust, HTTP 200 responses for the app, main script, stylesheet and an existing book PDF, and the tailnet-only Serve configuration. The running instructions now describe phone access and transferring books between origins through `.chaya.pdf` export/import. Browser books and API keys remain local to each origin and device. No application code changed and no model calls were made.
+
+
+## Initial unit-type proposals and review (2026-11-09 UTC)
+
+The new-book form defaults to proposing book-specific unit types from sample page images. The available recipes are [077-gpt-6-1-terra-unit-types](methods/077-gpt-6-1-terra-unit-types/README.md) and [078-gemini-4-argon-high-unit-types](methods/078-gemini-4-argon-high-unit-types/README.md). The default sample spans the PDF and includes neighboring middle pages. Selection is editable with a twelve-page limit. Images are rendered as PNG at 150 dpi, capped at the scan's own resolution. The response describes types, containment, flows, relations, inline kinds and conventions, with sample-page evidence and questions. Duplicate names, invalid references and citations outside the selected pages are rejected before approval.
+
+Five regression tests cover short and long PDF sampling, both model request formats, schema conversion, invalid grouping, duplicate names, unsupported evidence, retained responses and costs, source-image redaction, failed attempts, and Terra cache pricing. UV_CACHE_DIR=/private/tmp/scan-test-uv-cache node --test webapp/test/*.test.mjs passes 103 tests. The schema suite passes 11 tests. Browser checks use Cole's four-page PDF for sample previews, missing-key messages, the proposal requirement and creating a book from an existing type list. A temporary saved-proposal fixture exercises editable descriptions, invalid containment, approval, renaming with updated parent references and the approved-list creation entry point. This exposed and fixed stale rule summaries, rename blur handling, and optional review content rendering. The local library retains a four-page Cole setup-test book.
+
+The browser has no saved OpenAI or Gemini API key, so these checks make no live model requests and incur $0 in API charges. Provider request and response tests use fixtures. Each actual proposal attempt will be stored by PDF hash before book creation through the existing call ledger, with atomic IndexedDB ledger updates. Creating a book copies its proposal and attempt records into its exportable work files. Existing-list and same-book-template setup are also supported.
+
+![New-book unit-type sampling and model choice](outputs/surveys/077-gpt-6-1-terra-unit-types/ui-check/setup-preview.jpg)
+
+
+## Live unit-type proposals using llm keys (2026-11-09 UTC)
+
+The user pointed to llm for the available API keys. The configured OpenAI and Gemini keys were retrieved without printing their values and entered into the localhost app's browser. The first browser attempt exposed that the new fields' change event did not save programmatically filled values. The fields now load saved keys, retain user input during asynchronous loading, and save edited values on blur. Focusing and leaving an untouched field preserves the stored value.
+
+Methods [077-gpt-6-1-terra-unit-types](methods/077-gpt-6-1-terra-unit-types/README.md) and [078-gemini-4-argon-high-unit-types](methods/078-gemini-4-argon-high-unit-types/README.md) each inspected the same four Cole PDF pages through the normal proposal button, with the same title and an empty input description. Terra returned thirteen types, including article and numbered-section containers, formula and numerical-series types, notes and page furniture. Argon high returned eleven types, including article and section containers, formulas, notes, bylines and datelines. Both lists pass JSON Schema and semantic type-list checks. Their questions cover article boundaries, section granularity, formulas interrupting prose and header grouping. The results are pending human review.
+
+Displayed estimated charges are $0.0200 for Terra and $0.0990 for Argon high, about $0.12 combined. These are the app's estimates displayed to four decimal places. Complete responses, usage and costs are retained in the browser's per-PDF call records. Saved normalized types, visible review text, screenshots and reports are in outputs/surveys/077-gpt-6-1-terra-unit-types/cole-live-001 and outputs/surveys/078-gemini-4-argon-high-unit-types/cole-live-001. The five unit-type regression tests pass after the UI saving fix, and both saved live type lists pass schema and semantic checks. The model prompts, settings and frozen method sources are reused.
+
+![Live Terra proposal](outputs/surveys/077-gpt-6-1-terra-unit-types/cole-live-001/review.jpg)
+
+![Live Argon-high proposal](outputs/surveys/078-gemini-4-argon-high-unit-types/cole-live-001/review.jpg)
+
+
+## Checking the user's older Chrome interface (2026-11-09 UTC)
+
+The user reported seeing the old unit-type dropdown. HTTP checks on localhost, the Tailscale IP and Tailscale HTTPS returned the current workspace's index, main script and stylesheet byte-for-byte. Both Python servers use the repository root. The user's existing Chrome tab had only the original Types, Style sheet, Problems and Make pages tabs. Refreshing it loaded the current model-comparison tabs and the new-book AI type setup. Earlier checks had used the separate in-app browser. The user's full PDF was opened in Chrome through the normal PDF-by-URL entry point, showing the AI proposal option selected by default. API keys were also configured in Chrome through the new setup fields. These browser checks made $0 in model calls. Private setup details and the screenshot are recorded in PRIVATE.md.
+
+
+## Saved type proposals and all-page sampling (2026-11-09 UTC)
+
+A plain PDF can preload a saved unit-type package through `?book=<pdf>&proposal=<json>`. Import validates the PDF hash, type schema and grouping rules, sample-page evidence, call path and optional saved API record. Imported approval is reset for human review. API call records, ledger entries and optional book model choices transfer to the new book. Repeated or interrupted imports retain a single ledger entry. The latest local review takes priority over the supplied package. The review offers a readonly package JSON field for transfer. The request URL remains available on reload.
+
+Before choosing samples, users can browse every PDF page as a contact sheet. Thumbnails render near the visible area, and opening one renders a larger preview with previous/next controls and a sample checkbox. The page field supports `all`, ranges such as `1-50` and mixed lists. Checkbox choices are compacted into ranges and synchronized with the field and selected-only view. PDF rendering is serialized across thumbnails, previews and proposal images. Previewing samples uses the contact sheet. The former twelve-page restriction is removed from setup and saved-package validation.
+
+Two saved-package regressions cover source binding, invalid rules/evidence/metadata, model choices and retry-safe record import. A selection regression covers all pages, ranges, duplicates and an empty checkbox selection. Both model request fixtures retain all 267 page images. All 106 app tests and 11 schema tests pass. Browser checks cover the full private PDF, `1-50`, `all`, selection changes, the final page and its enlarged preview. The HTTPS saved-proposal review also opens with both credential fields empty. Private proposal results, source material, accounting and screenshots are recorded in PRIVATE.md. UI and package-import verification make no new model calls.
+
+
+## Separate comparison conclusions (2026-11-09)
+
+Each comparison page now follows sample execution, source/cost review and an explicit final model choice. The transcription page saves only the transcription model and its OCR language pack, then links to schema comparison. Schema comparison takes the book's saved transcription model as its fixed input and saves only the schema model. Both saves merge the latest book settings so the other choice is retained. Result rows identify the model currently selected for the book. The earlier combined settings and the processing continuation have moved out of the comparison introduction. Make pages retains the combined settings for processing.
+
+The transcription page retains optional fixed-model schema execution for complete pipeline cost estimates, under collapsed estimate settings. Its saved structure diagnostics remain expandable after the transcription differences. Schema choice is followed by Continue to Make pages. Browser checks exercise independent model changes, the fixed transcription after navigation, restoration of the user's original choices, and reload persistence. All 106 app tests and 11 schema tests pass. This revision makes zero model calls. Private screenshots and state are recorded in PRIVATE.md.
+
+For the user's question about combining stages, existing methods were checked. Method 055 already produces transcription and schema assignments together after region detection and local line finding. Method 045 combined region detection, transcription and units in one Terra call. Its twelve-page first-run estimate was $0.3476 against $0.5520 for the older separate region and transcription/unit calls, and eleven of twelve generated page documents validated. Its line-count alignment and region omissions are documented in that method's README and earlier notebook entry. Private same-page combined/split accounting is recorded separately.
+
+
+## Comparison progress display (2026-11-09)
+
+Transcription and schema comparisons now show an accessible progress bar, processed-step fraction, percentage and elapsed time. The original current-page/model status stays alongside it. The total includes shared region checks, each model/page transcription and any schema assignments. Schema comparison includes its fixed transcription prerequisites and the reference schema model. Reused results advance the count. Failures and dependent skipped steps are counted separately. Stop requests, unavailable costs and spend thresholds leave the actual partial percentage visible. Unexpected interruptions also finish the display and release the controls.
+
+The display counts work steps, with cached checks included. Percentages are rounded down so an incomplete large run keeps a value below 100 percent. Browser validation uses the normal comparison entry points with a local simulated Maker, without provider requests. The fixture exercises completion, saved-result reuse, stopping, failed transcription with dependent skipped schema work, spending limits and unavailable costs on both comparison pages. All 106 app tests pass. The user's active run completed with a provider timeout using its previously loaded code. It was refreshed after stopping so the new display is available for the next run. Private session details and the preview screenshot are recorded in PRIVATE.md.

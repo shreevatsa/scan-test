@@ -9,7 +9,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { analyzePage } from "../js/local/ink.js";
 import { regionsFromBoxes } from "../js/local/regions.js";
-import { LINES, OWNERSHIP } from "../js/local/config.js";
+import { LEGACY_LINES as LINES, OWNERSHIP } from "../js/local/config.js";
 
 const ROOT = new URL("../..", import.meta.url).pathname;
 const M43 = join(ROOT, "methods/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines");

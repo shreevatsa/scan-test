@@ -119,7 +119,7 @@ export function drawnSize(info, maxDpi = 300) {
 // Page numbers from a range like "1-20, 25, 30-" (from 1, inclusive), within 1..count; empty means all.
 export function pageRange(text, count) {
   const t = (text || "").trim();
-  if (!t) return Array.from({ length: count }, (_, i) => i + 1);
+  if (!t || t.toLowerCase() === "all") return Array.from({ length: count }, (_, i) => i + 1);
   const out = new Set();
   for (const part of t.split(/[,\s]+/).filter(Boolean)) {
     const m = /^(\d*)\s*[-–]\s*(\d*)$/.exec(part) || /^(\d+)$/.exec(part);
