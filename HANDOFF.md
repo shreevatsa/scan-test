@@ -1,63 +1,476 @@
 # Scanned books, source-aware: session handoff
 
-Updated 2026-11-09. Start with the workflow proposal below, then read "Current state" for the implemented app. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every public test, in order; private tests are recorded only in private/.
+Updated 2026-11-09. Start with the design of the stage-based workflow below, which is the next thing to build, then read "Current state" for the app as it is. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every public test, in order; private tests are recorded only in private/.
 
-## Next session workflow proposal (2026-11-09)
+## Next: the stage-based workflow (design of 2026-11-09, not yet built)
 
-The user wants to reconsider the app around the phases a scanned book goes through. They asked to record this proposal, commit and push the current work, and take up the major workflow change in another session. Implementation of this proposal belongs to that next session. The current code and completed UI changes are described under "Current state".
+This section is the task for the next sessions. Nothing in it is built: "Current state" below describes the app as it is. The design starts from the user's four phases, a review of the code and the recorded evidence, and the user's answers of 2026-11-09. Build it in the order under "Build order"; every step leaves the app working and the tests passing.
 
-### The user's intended workflow
+### What the user asked for
 
-| Phase | User activity |
+| Phase | What the user does |
 | --- | --- |
-| Browse pages | Open a PDF, render and inspect its pages, and notice different layouts. |
-| Schema and regions | Decide which types exist, how they may nest and which page regions have those types. Start with a draft and extend it as new kinds of pages appear. |
-| Transcribe | OCR the book using the chosen transcription model. |
-| Read and correct | Read the rich transcription with its structure and links to the original pages. |
+| Browse pages | Open a PDF, look through its pages and notice the different layouts. |
+| Schema and regions | Decide which types exist, how they may nest, and which regions of each page have which type. Start from a draft and extend it as new kinds of page turn up. |
+| Transcribe | Read the text of the regions with the chosen transcription model. |
+| Read and correct | Read the book with its structure and its links to the scans, and correct it. |
 
-Schema discovery and region assignment should be iterative. Pages and batches can move through these phases at different times while the book's schema develops. The user specifically wants structure to be established from the scans before transcription, with the design also informed by what the model calls can produce reliably.
+- **Structure first:** structure is settled from the scans before transcription, as far as model calls do that reliably.
+- **A model choice at every AI step:** each AI-assisted operation has a comparison on sample pages and a saved choice for the book.
+- **The app is organized by stage** (2026-11-09): one tab per stage, in order, with the editing of single pages under the stage it belongs to. Few tabs.
+- **Later tabs are greyed out** until the stage before them is ready.
+- **No approval page by page.** The user moves the book, or a selection of its pages, on to the next stage.
+- **The type list belongs with the regions,** since new types are discovered while going through pages.
+- **Region finders:** several Gemini and OpenAI models, no-cost ones if they can be made, and a manual flow that is workable by itself.
+- **API keys are checked where they are entered,** with a cheap call, so that a bad key fails there and not later in a run.
 
-### Current processing and terminology
+### Terms used below
 
-The implementation already defines types and permitted containment before OCR. Method 042 finds regions in page images and assigns initial book-specific types, then method 063 computes their line geometry. The selectable transcription stage reads those fixed regions. A later text-only call applies the book's type definitions to the actual units, builds their hierarchy, reading flows, line joins, continuations and note links, and can revise the initial region types.
+- **Region:** an outlined part of one page (a paragraph, a verse, a heading, a page number…), with its line pieces. Regions belong to a page.
+- **Unit:** a logical part of the book (a paragraph, a chapter…). A unit owns regions or other units, and may run over several regions and pages. A paragraph that starts at the foot of one page and ends at the head of the next is one unit with two regions.
+- **Type list:** the book's own schema (`types.json`): its types, which may contain which, its flows, relations and conventions.
+- **Model step:** one automatic operation on a page. There are three:
+  - **finding regions:** method 042 (a model finds and types the regions), then method 063 (the local step computes outlines and line pieces);
+  - **transcription:** one of the reading profiles 065–069 and 071–072;
+  - **completion:** one of the text-only profiles 070 and 073–076, which builds the units and links. The current app calls this "schema assignment".
+- **Layer:** a part of a page document that belongs to one stage: `regions`, `text` or `units` (the table under "Layers" says which fields each holds).
+- **Accepted:** a layer of a page that the user has moved on to the next stage.
+- **Protected:** a layer that a person has edited, or that is accepted.
 
-Defining that a paragraph may contain a quoted verse is a schema decision. Grouping particular printed regions into a paragraph, including its continuation across pages or around an inserted verse, applies that schema. Physical regions belong to pages, while logical units can span multiple regions and pages. The existing "Schema assignment" comparison concerns this later application of an already defined schema.
+### Decisions, with the reasons
 
-Relevant code is [region detection](webapp/js/pipeline/run.js), [transcription and unit assignment contracts](webapp/js/pipeline/split.js) and [Make pages orchestration](webapp/js/main.js). Current unit assignment can revise semantic region types. The existing "Types" view, initial proposal review and "Make pages" controls provide parts of the intended workflow.
+1. **Transcription depends on the regions' shapes, never on the type list.**
+   - Today a saved transcription is reused only when a fingerprint matches, and the fingerprint covers every region's type and the book's conventions (`readPage` in `webapp/js/pipeline/run.js`). Retyping one region or editing one convention makes the page's transcription unusable, and processing pays for it again.
+   - New rule: a transcription is reused when the page image, the regions' and line pieces' shapes and the transcription model are the same. A changed type list only marks pages as made under an earlier revision; redoing them is the user's choice.
+   - This is what makes it cheap to keep changing the schema.
+2. **Regions, their types and the reading order are settled before transcription. The step after it adds only what needs the text.**
+   - Finding regions is the best-tested part: 0 / 0 / 0 on the nine reference pages (method 063's regression), and its continuation flags found 11 of 13 true links with none wrong (methods 040 and 041).
+   - It is also the cheapest: about $0.010 a page on the private series, against $0.038 for transcription (Argon low) and $0.032 for completion (Argon high). A mistake in a region costs most when found after transcription.
+   - Completion is the least tested: two private pages, where the other models differ from the Argon-high result on 9 to 18 regions and nobody has checked which is right. Today it may also change region types (`structureSchema` in `webapp/js/pipeline/split.js`).
+   - What needs the text: line-end joins, unit numbers and labels, and note links. Completion's grouping is used unless a person has edited the page's units, and it never changes a region type on a page whose regions are protected.
+3. **A model never overwrites a person's work.** A model step writes only into layers that are not protected. What it would have changed in a protected layer is kept as a suggestion to accept or dismiss.
+4. **Pages are reviewed by exception.** Nobody inspects 267 pages one by one. Each stage flags the pages that need a look (the lists are under "Flags"), and the rest are moved on together.
+5. **One way of settling differences.** Comparing models, and reviewing a suggestion against a person's work, are the same activity: two versions of a page side by side, and a person choosing. What the person chooses becomes the page's data and also scores the models. Disagreement with a reference model is not accuracy and is never shown as accuracy.
+6. **A change to the type list is one of a few named operations, each with a known reach** (the table under "Type list revisions"). There is no general invalidation scheme.
+7. **Where the text comes from is open.** A scanned page gets its text from a transcription model; a digital PDF's page will get it from the PDF (methods 058 and 062, not yet ported: item 2 under "Open"). New code reads a page's state from its document, never from the presence of a model's work record.
+8. **Steps 1 to 7 change no request that processes a page:** no prompt, response schema, image or setting. So they need no new method ID, and saved results stay reusable. (The key check of step 3 is a new request, but it reads no page and is not a method.) Step 8 adds region finders, and the experiments at the end change requests; each of those gets a new ID (the next unused is 079).
 
-### Proposed design to develop
+### Data model
 
-Give **Schema and regions** a first-class workspace between browsing and transcription. It should combine the editable book type definitions, sample-page proposal/review, page region overlays and assignments, and a route for handling new page forms. Users should be able to inspect and correct regions before running OCR on those pages. Initial larger-unit groupings can be provisional.
+No change to `schema/schema.json` is needed: everything new lives under the free-form `source` objects. Document it in `schema/README.md` when it is built.
 
-Keep room for text-assisted completion after OCR, especially for actual containment, interrupted paragraphs, cross-page continuations, reading order and note links. Present this as completing units and links within the transcription workflow. Human-approved region boundaries, types and groupings should be protected, with later model suggestions exposed for review. The exact approval and proposal representation needs design work.
+#### A page document exists from the Regions stage on
 
-Make schema revision explicit. Record which schema revision produced each assignment and identify affected pages when definitions change. Reuse saved transcriptions when their text regions still match. Changes to containment rules can require rebuilding unit trees, while changes to region boundaries or line geometry can require remapping text. Preserve provenance and user corrections through those operations. Decide stable identifiers, rename handling and the scope of invalidation before building the revision UI.
+Today a page has no document until completion has run, so the page editor has nothing to show before transcription (`showPage` in `webapp/js/main.js` says "has no page document yet"). Change: finding regions itself writes a page document, without text.
 
-Provide a model comparison and a saved model choice for each AI-assisted operation. The user clarified that model comparison belongs at each step. The interface phases can encompass several backend calls, with independent choices for the operations below.
+Build it with a new pure function in a new module `webapp/js/pipeline/provisional.js`:
 
-| AI-assisted operation | What to review in its comparison |
+`provisionalDocument(pid, page, types, record, { firstPage, lastPage })`
+- `page` is `{image, image_sha256, width, height}`, as `structure` (`run.js`) builds it for `buildPageDocument`;
+- `record` is the region record that `findRegions` (`run.js`) saves in `work/<pid>.regions.json`;
+- with `record.regions` empty it gives the empty document that work by hand starts from.
+
+What the document holds:
+- **The top level:** `format: "page"`, `schema_version: "0.2"`, `book_id`, `page`, `units`, `flows`, `relations: []` and `source`, as `buildPageDocument` (`webapp/js/pipeline/steps.js`) writes them.
+- **Regions:** one for each region that `selectPageRegions` (`webapp/js/pipeline/split.js`) would send, with the same fields `buildPageDocument` gives a region: `id` (`r` and the record's `region_id`), `type`, `polygons`, `box`, `order`, `source`, and `lines`. Each line piece has `line` and `polygons` and no `text` (the schema allows this).
+- **Left out:** regions with no ink are listed in `source.regions_skipped`. Regions whose type is not in the type list (the model's escape type `other`) are listed in `source.omitted_regions` with their boxes, so that the review can draw them.
+- **Units and flows:** from `provisionalUnits`, below, so that the document passes `checkPage` and the editor's operations work.
+- **Provenance:** `source` records `method: "provisional-regions-v1"`, `char_h` and `page_angle_deg` from the record (the cut-outs need `char_h`; today `sourceRegions` guesses it when it reads a document), `calls.regions` (the region call and its cost), the record's `warnings`, `problems`, and `layers` (below).
+
+#### Provisional units: the local rule
+
+`provisionalUnits(pid, regions, types, { firstPage, lastPage })`, a pure function in the same module, returns `{units, flows, problems}`. `regions` are a page document's regions. `flows` has an entry for every flow of the type list, an empty list where the page has nothing in that flow. It must give a tree that passes `checkPage` for any list of regions. Its accuracy matters little: completion replaces it unless a person has edited the units.
+
+Three things it needs first:
+- **The class of a type** is its `region` in the type list (`heading`, `paragraph`, `verse`, `note`…).
+- **The home path of a region type T** is the shortest chain `[C1, …, Ck, T]` in which C1 has a `flow`, and each next type is in the previous one's `contains`. A type with a `flow` of its own has the chain `[T]`. Search breadth-first, trying types in type-list order. The region's flow is C1's `flow`. If T has no chain, add a problem ("type T has no place in any flow") and leave the region without a unit: the document then fails `checkPage`, and the fix is in the type list.
+- **The order:** the regions that are not furniture, by `order` (those without one last), then by their place in the list.
+
+Then, with one stack of open containers for each flow (outermost first), and unit ids `u1`, `u2`, … in the order made:
+
+```
+for each region r, in order:
+    path = home path of r.type;  containers = path without its last entry;  stack = the stack of r's flow
+    # 1. the second part of an interrupted unit joins the first part
+    if r.source.continues_from_earlier:
+        e = the nearest earlier region on the page with the same type, with source.continues_later,
+            that no later region has joined yet
+        if there is such an e: add {region: pid#r.id} to the children of e's unit; go on to the next region
+    # 2. how many open containers can be kept
+    n = 0
+    while n < len(containers) and n < len(stack) and stack[n].type == containers[n]: n += 1
+    # 3. a heading directly inside the innermost container starts a new one, once that container has other content
+    if n == len(containers) and n > 0 and class(r.type) == "heading"
+       and stack[n-1] has a child that is a container or a leaf unit whose class is not "heading": n -= 1
+    # 4. close the others, open what is missing
+    drop stack[n:]
+    for each type C in containers[n:]:
+        make a unit of type C with no children; append it to stack[-1]'s children, or to the flow's top level
+        when the stack is empty; push it on the stack
+    # 5. the leaf
+    make a unit of type r.type with children [{region: pid#r.id}]; append it to stack[-1]'s children, or to the
+    flow's top level when the stack is empty
+```
+
+Open ends, for each flow that has units, kept consistent with the rules in `checkDocument` (`webapp/js/schema.js`):
+- **At the start:** walk from the flow's first top-level unit down through first children to a leaf. A container on this walk gets `open.start` unless this is the book's first page, or its first child is a leaf of class `heading`, or the unit above it on the walk did not get it. The leaf gets `open.start` if its first region has `continues_from_earlier`, and the unit above it got it (or it is at the top level).
+- **At the end:** walk from the flow's last top-level unit down through last children to a leaf. A container on this walk gets `open.end` unless this is the book's last page, or the unit above it did not get it. The leaf gets `open.end` if its last region has `continues_later`, and the unit above it got it (or it is at the top level).
+- A `continues_…` flag that these rules cannot honor is ignored and noted in `problems`.
+
+Assembly warnings between two pages are expected while either page's units are provisional. Label them so; do not treat them as errors.
+
+#### Layers and their states
+
+Each page document records `source.layers`, for example:
+
+```json
+"layers": {
+  "regions": {"state": "edited", "accepted_at_utc": "…", "types_revision": 3},
+  "text": {"state": "model", "made_by": "argon-low", "types_revision": 3},
+  "units": {"state": "provisional"}
+}
+```
+
+| Layer | Stage | Fields | States |
+| --- | --- | --- | --- |
+| `regions` | Regions | each region's `id`, `type`, `polygons`, `box`, `order`, and its line pieces' `line` and `polygons` | `model`, `edited` |
+| `text` | Text | each line piece's `text` and `spans`; the page's `label` | absent, `model`, `edited` |
+| `units` | Read | `units` (children, type, open ends, number, label), `flows`, `relations`, and each line piece's `end` | `provisional`, `model`, `edited` |
+
+- **Who writes the state:** finding regions writes `regions: {state: "model", made_by: "042+063"}` and `units: {state: "provisional"}`; transcription writes `text: {state: "model", made_by: <the reading profile's id>}`; completion writes `units: {state: "model", made_by: <the completion profile's id>}` when its grouping is taken. Each also writes `types_revision`.
+- **Accepted** is separate from the state: `accepted_at_utc` is set when the user moves the page on from that layer's stage, and removed when the user sends the page back. Nothing else sets it. It is written into the page's current document (`book.current(pid)`): the person's version if there is one (`saveEdit`), else the model document (`saveModel`). A book opened read only cannot move pages on.
+- **Protected** means the state is `edited`, or the layer is accepted.
+- **A document without `source.layers`** (every document made before this build): its layers are `edited` if it has `source.edited` (a person's saved version), else `model`; `text` is absent when no line piece has text. Every layer it has counts as accepted, because those books went through the old flow in one go. This keeps every existing correction protected and opens every tab for the existing books.
+- **Edited:** when the editor saves a person's version (`flush` in `main.js`), compare each layer's fields with the model document's. A layer that differs becomes `edited`; a layer that is the same keeps the model document's state. Each tab's editor only lets its own layer change (see "Screens"), with one exception: changing a unit's type in Read also changes its regions' type.
+- **Provisional units follow the regions.** While `units` is `provisional`, an edit that changes the regions layer rebuilds the units with `provisionalUnits`, and the state stays `provisional`. Without this rule, retyping one region before transcription would protect a crude tree against completion's better one. Do this in `App.edit` (`main.js`), so the editor shows the rebuilt units at once.
+
+Put the layer functions in a new pure module `webapp/js/layers.js`: `layerView(doc, layer)` (a canonical string of the layer's fields), `layerState(doc, layer)`, `isProtected(doc, layer)`, `noteEdit(modelDoc, doc)`, `accept(doc, layer)` and `sendBack(doc, layer)`.
+
+#### How each model step writes
+
+Each model step builds a candidate document exactly as today, and a new merge step decides what of it goes into the page's current document (`book.current(pid)`: the person's version if there is one, else the model document). Put the merge in a new pure module `webapp/js/pipeline/apply.js`, as three functions, one for each model step: `mergeRegions(current, candidate)`, `mergeText(current, reading, types)` and `mergeCompletion(current, candidate, types, check)`. Each returns `{doc, taken, suggestion}`: the document to save (the current one, unchanged, when nothing was taken), the names of the layers it took, and whether anything was held back.
+
+| Model step | Candidate | What goes into the current document |
+| --- | --- | --- |
+| finding regions | the text-less document above | The whole candidate, when no layer of the page is protected. Otherwise nothing, and the candidate is a suggestion. |
+| transcription | the current document with the reading's text and spans on its line pieces | The text and spans, when `text` is not protected. Matching is by region id and line id, which are the same on both sides because the step read the current document's regions. |
+| completion | the document `buildPageDocument` makes | Types and grouping as in the next table. Line ends (`end`) whenever `units` is not protected. |
+
+- **Regions found again on a transcribed page:** when the candidate replaces a document that had text, put the text back at once from the saved reading if its shapes still match (`geometry_key`, below). Otherwise the page needs transcription again; say so in the cost estimate before the step runs.
+- **Text into line pieces:** parse each line with `parseLine` (`webapp/js/inline.js`) and number the note markers across the page, as `buildPageDocument` does. Move that loop into one function used by both, and check that `buildPageDocument` still gives the same documents (`webapp/test/pagedoc.test.mjs`).
+
+Completion's types and grouping (the regions' `type`, and `units`, `flows`, `relations`):
+
+| `regions` | `units` | What is taken from completion |
+| --- | --- | --- |
+| not protected | not protected | Its region types and its grouping. `units` becomes `model`. |
+| protected | not protected | Its grouping, with each leaf unit given the type of the regions it owns in the current document. The regions keep their types. If the result does not pass `checkPage` (a unit owning regions of two types, or a type its parent may not contain), nothing is taken and the provisional units stay. The types completion would have changed are a suggestion. |
+| either | protected | Nothing of the grouping. Completion only fills what is empty: a unit's `number` and `label`, and relations whose ends can be matched. Match a completion unit to a current unit by type and first region. The rest is a suggestion. |
+
+The middle row is the usual path: the user moves a page on from Regions, and the page is then transcribed and completed.
+
+Other rules:
+- **Inputs come from the current document.** `sourceRegions` (`run.js`) prefers the saved region record today; change it to read the page's current document when there is one, so that a person's region edits are what gets transcribed. Completion takes its text from the current document (`readingFromDocument` in `split.js`), so that text corrections made before completion are respected.
+- **Unchanged requests.** For a page nobody has edited, the transcription and completion requests must be byte-for-byte what they are today, and saved results must still be found. Test this.
+- **The result must pass the checks.** If a merge would turn a passing document into a failing one, keep the document and make the candidate a suggestion.
+- **Saving.** The merged document is saved as the model document (`pages/<id>.json`) and the person's version (`edits/<id>.json`) is removed, because the merged document was made from it and holds everything in it; the layer states carry the protection on. "Revert page" then means "undo my changes since the last model step". Add `Book.saveStage(pid, doc, valid)` to `webapp/js/store.js` for this. Before it replaces a document with a protected layer, it writes the previous document to `work/history/<id>.json` (one level of undo), then the model document, then removes the person's version, in that order.
+- **Drafts.** A model step skips a page that has a draft which does not pass the checks, and says so.
+- **Read-only books** (opened from a URL) do not save model results into documents, as now.
+- **The editor's copy.** After a model step saves a page, drop the page editor's copy of it (`app.doc`, when `app.pid` is that page): `showPage` does not reload a page it already holds, and would save the old document over the new one.
+
+#### Reuse of transcriptions
+
+- Add `geometry_key` to a saved reading, computed in `readPage` (`run.js`) beside the present fingerprint. Leave types and prompt text out of it:
+
+  ```js
+  geometry_key = await jsonHash({ version: Split.SPLIT_VERSION, profile, chosen, imageHash,
+    regions: sent.map(s => ({ id: s.rid, polygons: s.region.polygons,
+      lines: s.region.lines.filter(L => L.polygons?.length).map(L => ({ id: L.line_id, polygons: L.polygons })) })) });
+  ```
+- Reuse a saved reading when its `geometry_key` matches. For readings saved before this build, compute the key from their saved `regions_record`.
+- Keep the full fingerprint too. When it differs, show the page as "transcribed under an earlier type list" and offer re-reading; never re-read by itself.
+- **Completion keeps its present fingerprint,** because types and reading order are real inputs to it. So that saved completion results are still found: when the document's text is the same as the saved reading's (compare the lines' text), pass the saved reading to `structure` as now. Only when a person has changed the text, build the input from the document with `readingFromDocument`, and use a hash of that text where the reading's fingerprint went.
+- **A region changed after transcription** (the user goes back to Regions and fixes a box): `applyGeometry` (`webapp/js/ops.js`) already keeps each line piece's text with its line. Line pieces left without text make the page show "text missing on N lines" in Text. Until step 9 the fix is to transcribe the page again, at the page's full cost; step 9 sends only the changed regions.
+
+#### Suggestions
+
+A model result that was not written is already saved as a work record. Record where it is in the document, one entry for each layer held back, and clear the entry when the person takes or dismisses it:
+
+```json
+"suggestions": {"units": "work/…/<the structure record>.json"}
+```
+
+| Layer | The work record | The candidate to show |
+| --- | --- | --- |
+| `regions` | the region record, `work/<pid>.regions.json` | `provisionalDocument` made from it |
+| `text` | the reading, `work/readings/<pid>/<profile>.json` | the current document with that reading's text |
+| `units` | the structure record (its path comes from `structurePath` in `webapp/js/pipeline/readers.js`) | its `doc` |
+
+The review shows the current page and the candidate side by side with the existing comparison views (named under "Read"). Taking a suggestion, for the page or for one region, writes it as a person's edit, so the layer becomes `edited`.
+
+#### Type list revisions
+
+- `types.source.revision` is a number (1 for every existing list). `types.source.revisions` is the log: `{n, at_utc, by, operations}`. `types.source.aliases` maps each old type name to its present name (`{"old": "new"}`).
+- Add `Book.saveTypes(types, operations)` for writable books (`book.writable`). The app holds the type list in `app.tl`, `app.colors` and `app.furniture` (`openBook` in `main.js`); refresh them after a save.
+- Each model step records the revision it ran under, in `source.layers.<layer>.types_revision`.
+- The types panel offers these operations and no free-form editing of the JSON. Each shows its reach before it is confirmed ("renames 412 regions on 96 pages").
+
+| Operation | What the app does | What has to be redone |
+| --- | --- | --- |
+| Edit a description, a convention, the title or the languages | saves the list | nothing. Pages keep their revision number. |
+| Add a type | saves the list | nothing. It applies where the user retypes regions or finds regions again. |
+| Rename a type | rewrites the type in every model document and person's version (each region's `type` and each unit's `type`), in the type list (its key, and other types' `contains`) and in the style sheet's `types`; records the old name as an alias | nothing |
+| Merge type A into B (same region class, or both containers) | as a rename of A's uses, then removes A | nothing |
+| Split a type (add a second type for some of its regions) | adds the type; lists the pages that have regions of the old type | the user retypes on those pages, or finds regions again on them |
+| Change what a type may contain, or its flow | saves the list; runs `checkPage` on every page; lists the pages that now fail | on those pages: provisional units are rebuilt; other unprotected units need completion again (its transcription is reused); protected ones are the user's to fix |
+| Change a type's region class | saves the list | if `figure` is involved, finding regions on pages with that type; otherwise nothing |
+| Remove a type | only when no document uses it; otherwise merge it first | nothing |
+| Replace the whole list (a new proposal) | only while no page has a protected layer; clears the page documents | finding regions on those pages (cheap); show the count and the estimated cost first |
+
+Work records are never rewritten. Where the app reads a type name from an old work record, it maps the name through the recorded aliases.
+
+#### A book before it has types
+
+- The new-book form (`newBookForm` in `main.js`) asks for the PDF, the pages to include, a title and an id. Types are optional there: the default is the starter list `webapp/types/generic.json`, with its `book_id` and `title` set to the book's and `source.draft = true`. An existing list can still be chosen. After making the book the form opens the Pages tab (today it opens Make pages).
+- The proposal from sample pages (`webapp/js/type-setup.js`, methods 077 and 078) moves into the book, into the types panel of Regions. It can use the book's work files as its store (`readWork` and `writeWork` have the names it calls). Taking a proposal is "Replace the whole list".
+- A proposal's "Questions to review" link to the sample pages they cite. Answering one is an operation on the type list; then mark the question resolved in `types.source.discovery`.
+
+### Screens
+
+Five tabs, in the order of the work: **Pages · Regions · Text · Read · Export**.
+
+| Tab | Model step run there | What a person corrects there | Moving on |
+| --- | --- | --- | --- |
+| Pages | none | nothing: browsing, and every page's state at a glance | — |
+| Regions | proposing types; finding regions | the type list; each page's boxes, types and reading order | "Move on to Text" accepts the pages' regions |
+| Text | transcription | each page's text, line by line beside the scan | "Move on to Read" accepts the pages' text |
+| Read | completion (units and links) | units, line joins, note links, types; the style sheet | — |
+| Export | none | nothing | — |
+
+#### Which tabs are available
+
+- **Pages, Regions and Export:** always, for an open book. Saving the book as a `.chaya.pdf` must work at every stage, since that is how a book moves between browsers; the exports of text are greyed out until some page has text.
+- **Text:** when at least one page's regions are accepted. Only those pages are listed there.
+- **Read:** when at least one page's text is accepted. Only those pages are in the reading view; a gap is marked ("pages 31–40 are not here yet").
+- A tab that is not available is greyed out, and its tooltip says what is missing ("Move pages on from Regions first").
+- **Moving on** acts on the selected pages, or on every page that has the stage's layer when none is selected. It only sets `accepted_at_utc`; if some of the pages have flags, say how many before doing it. Moving on to Read also offers to run completion on those pages, with its estimated cost.
+- **Sending back** ("Send back to Regions", "Send back to Text") removes the acceptance for the selected pages. Going back to an earlier tab to fix one page needs no sending back: the page stays accepted and the fix is an edit.
+
+#### The shape every stage tab shares
+
+Regions, Text and Read each have two levels:
+- **The overview:** the page grid (a new module `webapp/js/pagesview.js`, with the lazy thumbnails of `page-browser.js`), showing this stage's state and flags for each page. Above it: the model step ("Find regions", "Transcribe", "Complete units and links") with the model chosen for the book, the estimated cost for the selection (pages times the book's mean cost for that step so far, from `work/reader-lab/ledger.json`), the spend threshold that Make pages has, "Compare models", and the move-on button.
+- **One page:** the page editor, opened from the grid, with only this stage's layer editable. It has previous and next page, "next flagged page", and a jump to the same page in another stage's tab ("fix this region", "fix this text").
+
+Selection in the grid: click, shift-click for a range, or the range field ("all", "1-50, 62"). Filters: by state, flagged, made under an earlier type-list revision, has a suggestion.
+
+The run loop exists: `renderMake` in `main.js` processes a list of pages with a spend threshold, a stop button and saved stages, and `webapp/js/run-progress.js` shows progress. Move that loop into one function that every tab's model step uses.
+
+Addresses (the router, `route` in `main.js`, reads the hash as parameters, so these fit it):
+
+| Address | Shows |
 | --- | --- |
-| Propose the book schema | Coverage of the book's types, nesting rules and conventions, supported by representative pages. Show editable type definitions and grouping rules. |
-| Find and classify page regions | Region boundaries, text ownership and semantic types. Show overlays on the same source pages. |
-| Transcribe | Printed text, formatting and markers. Show source crops and differences that preserve complete grapheme clusters. |
-| Complete units and links | Actual nesting, line joins, reading order, continuations and note links. Show unit trees and source-linked assignments using the same input transcription. |
+| `#pages` | the Pages tab |
+| `#regions` | Regions: the overview |
+| `#regions&p=<page>` | Regions: one page in the editor (`&r=<region>` selects a region, as now) |
+| `#regions&view=types` | Regions: the types panel opened wide |
+| `#regions&view=compare` | Regions: comparing region finders (step 8) |
+| `#text`, `#text&p=<page>`, `#text&view=compare` | Text: the overview, one page, comparing transcription models |
+| `#read` | Read: the reading view |
+| `#read&view=pages`, `#read&view=compare`, `#read&view=problems`, `#read&view=style` | Read: the grid, comparing completion models, Problems, the style sheet |
+| `#read&p=<page>` | Read: one page in the editor (the fallback for units) |
+| `#export` | Export |
 
-Each comparison should use common sample pages and fixed inputs for the operation under comparison. Judge accuracy against source-reviewed examples where available, and label reference-model disagreement accordingly. Show elapsed time and the projected total cost of the book, including schema setup and page processing. End each comparison with choosing and saving that operation's model for the book. Page browsing and reading provide the human inspection and correction that inform these comparisons.
+The page editor (`buildPageMode` in `main.js`) gets a focus, set by the tab it is opened under:
 
-The implemented app has model selection for initial schema proposals and comparison pages for transcription and later unit assignment. Page-region detection currently uses fixed Terra. Extending comparison and selection to region detection and providing a fuller schema-proposal comparison are part of this proposed workflow.
+| Focus | Can be changed | Cannot be changed |
+| --- | --- | --- |
+| regions (under Regions) | boxes, region types, reading order; adding, deleting, splitting and merging regions | text (shown, if there is any); the formatting and marker buttons are hidden |
+| text (under Text) | each line piece's text, its formatting and note markers | boxes ("＋ Region" and dragging are off), units, line ends |
+| units (under Read) | units, line ends, note links, types | boxes, text |
 
-Earlier experiments also combine transcription and unit assignment, and method 045 combines region detection as well. Use recorded quality and cost evidence to decide where combined calls help. The two-page private combined-versus-split cost comparison used different prompts and geometry, so a controlled comparison on current geometry is still an open experiment.
+Where today's views go:
 
-The initial proposal's "Questions to review" currently displays model uncertainties. The redesign should give these questions a clear route into reviewing pages and revising the draft. Choosing how to capture answers and propose resulting edits is part of the next-session design.
+| Today | In the new layout |
+| --- | --- |
+| Edit book › Types | the types panel of Regions |
+| Edit book › Make pages | the model step at the top of Regions, Text and Read |
+| Edit book › Transcription models | Text › Compare models |
+| Edit book › Schema assignment | Read › Compare models |
+| Edit book › Problems, Style sheet | Read › Problems, Read › Style sheet |
+| Edit pages | the page editor under Regions, Text or Read, with that tab's focus |
+| Read, Export | Read, Export |
+
+The Pages tab is the same grid with all three layers' states on each page and no actions that cost money. A book opens there, unless every page's text is accepted, when it opens at Read. The grid needs every page's current document; `Book.all()` (`store.js`) loads them, eight at a time. If that is slow on a large book, keep each page's layer states and flag count in its entry in `book.json`, written whenever its document is saved.
+
+#### Regions
+
+- **The types panel** stays beside the grid and beside the page editor: each type with its color (`typeColors` in `webapp/js/render.js`, which the region boxes also use) and its count of regions. It holds "＋ Type" and the operations of "Type list revisions", and opens wide into the tree and table of `typesview.js` for the nesting rules. "Propose types from sample pages" works on the pages selected in the grid. The same panel can be opened from Read, where nesting rules are also changed.
+- **A new type while working:** the type menu of a region ends with "New type…", so that a new kind of thing met on a page is named, added and assigned without leaving the page.
+- **Finding regions:** the model step runs the chosen region finder on the selected pages. "Start by hand" gives a page an empty document to draw regions on.
+- **The page editor with the regions' focus:** the scan with its boxes, and the list of regions with type, reading order and flags. Text, where a page already has it, is shown and cannot be changed. The operations exist in `webapp/js/ops.js`: drag a box (`setBox`, then the outlines are recomputed), "＋ Region" (`addRegion`), retype (`setRegionType`), delete (`deleteRegion`), split (`splitRegionAt`). Add two: move a region earlier or later in the reading order (renumbering `order`), and merge two regions into one.
+- **Omitted `other` regions** are drawn hatched, with "Give it a type", which adds a region at that box.
+- **Region boxes on the thumbnails,** in the types' colors, so that a wrong page can be seen in the grid.
+- **Group by layout:** the grid can group pages by layout signature (see the flags), rarest first, so that the user looks at one or two pages of each kind.
+
+#### Text
+
+- **The page editor with the text's focus** is today's editor (`TextPanel` in `webapp/js/editor.js`): the line pieces beside the scan, the formatting buttons and the note markers. Boxes cannot be dragged or drawn here, and units are not shown as editable.
+- **Line ends are not changed here.** Today the text pane lets a line's end be cycled (`setLineEnd`). Line ends belong to the units layer, which completion fills; changing one here would mark the page's units as edited and keep completion's grouping out. Hide that control under Text.
+- **After transcription alone** a page is already readable: its text is in the document, and every line end counts as a space until completion has run.
+- **Compare models** is today's "Transcription models" page (`webapp/js/readersview.js`).
+
+#### Read
+
+- **The reading view** is today's reader (`renderReader` in `webapp/js/reader.js`). It already marks each region of the text with its page and region (`data-ref`), opens a page from its page mark, and shows the scan on hovering.
+- **Click a unit to select it.** The clicked text's `data-ref` gives its page and region; the unit is the region's owner in that page's document (`ownerOf` in `ops.js`). A side panel shows its scan, its place (chapter › paragraph, each of them clickable to select the container), and what can be changed, all through operations that exist in `ops.js` and that the page editor already offers in `unitInspector` (`editor.js`):
+  - its type, number and label (`retypeUnit`, `setUnitField`);
+  - split here, join with the next unit, put inside a new container, unwrap, make it page furniture (`splitUnit`, `joinWithNext`, `wrapUnit`, `unwrapUnit`, `unitToFurniture`);
+  - its lines with the join after each (a space, a dropped hyphen, nothing, a line break), changed by a click (`setLineEnd`);
+  - a note marker's note (`linkMarker`).
+- **Across a page break,** "join with the next unit" sets the open ends on both pages (`setOpen` on each page's document); this is new, and is the case the page editor handles badly today.
+- **After a change,** save the page documents that changed, assemble again and draw the view again, keeping the place. Drawing the whole view again is good enough to begin with.
+- **Problems in place:** check errors and assembly warnings (open ends that do not match across a page break) are marked where they are in the text, as well as listed.
+- **Views within Read:** Book (the reading view) · Pages (the grid, for running completion and "Compare models", today's `webapp/js/structuresview.js`) · Problems · Style sheet.
+- **A book opened read only** has the same panel with the scan and no buttons.
+- **The fallback** is "open this page": the page editor with the units' focus, which is today's editor with boxes and text locked, and works from the first day. Build it first and the side panel after it; if the panel proves hard, units can still be corrected.
+- **Comparison views to reuse** for suggestions: `transcriptionHtml` (`webapp/js/transcription-diff.js`) for text, and `renderStructureComparison` (`webapp/js/structure-visual.js`) for units.
+
+#### Old addresses
+
+Keep them working, by sending each to its new address: `#types` to `#regions&view=types`; `#make` to `#regions`; `#readers` to `#text&view=compare`; `#structures` to `#read&view=compare`; `#check` to `#read&view=problems`; `#style` to `#read&view=style`; `#read` and `#export` as they are; `#p=<page>` to that page under the tab of the latest stage it has reached (Read if its text is accepted, else Text if its regions are accepted, else Regions).
+
+#### API keys are checked where they are entered
+
+The user asked for this on 2026-11-09: a key that does not work should fail when it is typed in, not later in the middle of a run.
+
+- **Where keys are entered today:** `keyControls` in `webapp/js/reader-controls.js` (OpenAI, Gemini, and Cloud Vision with an API key or an OAuth token and a quota project), and a second set of fields in `webapp/js/type-setup.js`. Make them one component, shown wherever a tab has a model step. Keys are kept in this browser's settings as `key:<provider>` (`settings` in `store.js`).
+- **The check:** when a key is entered or changed, and from a "Check" button, send one tiny request through the same `post` function (`run.js`) and endpoints the app's real calls use:
+
+  | Provider | The request |
+  | --- | --- |
+  | OpenAI | the model `gpt-6-luna` with low reasoning (the settings of method 022's `config.json`), the text "Reply with OK.", a small output limit, `store: false` |
+  | Gemini | the model `gemini-3.5-flash-lite` with minimal thinking (the `flash-lite` profile in `webapp/js/pipeline/readers.js`), the same text, a small output limit |
+  | Cloud Vision | one Text Detection request on a small image the app draws itself (a canvas with a printed word), with the API key or the OAuth token and quota project as chosen |
+
+- **The result is shown beside the field:** "works", or the provider's own message (an invalid key, no access or no billing, a quota, a network failure), with the key removed from the message as `callJSON` (`run.js`) already does.
+- **The chosen models too:** a key can work while the account has no access to the model the book uses. Before a run on more than one page, if the chosen model has not answered in this session, send it the same tiny text request first and stop with its message if it fails.
+- **A model step's button is disabled,** with the reason, until the key it needs has passed.
+- **Keep it out of the books' records:** the check is not a method, reads no book content and costs a small fraction of a cent. Do not write it to a book's call ledger, do not keep its response, and never print or log a key. Remember the result with the key (works or not, and when), and forget it when the key changes.
+- **Tests** use a mocked request, as `webapp/test/readers.test.mjs` does: a key that works, a refused key, a network failure, and the key removed from the message.
+
+#### Flags
+
+Computed locally from the page documents, with no model call, in a new pure module `webapp/js/flags.js`.
+
+For Regions:
+1. a region the model marked `uncertain`;
+2. a region of type `other`, or any entry in `source.omitted_regions`;
+3. a warning from `scaleRegions` (a kept region with no reading order; furniture marked as kept);
+4. a region with no ink (`source.regions_skipped`);
+5. a printed line that no region took: the local step already decides this for each line (`mode: "uncovered"` in `assign`, `webapp/js/local/regions.js`). Have the worker return those lines with their boxes; read `assign` first to confirm what the mode covers;
+6. two regions whose boxes overlap by more than a fifth of the smaller one;
+7. an error from `checkPage`;
+8. continuation that does not match the neighbor: in some flow, this page's last region has `continues_later` and the next page's first region of that flow has no `continues_from_earlier`, or the reverse (only when both pages have regions);
+9. a rare layout: the page's layout signature (its region types in reading order, with repeats collapsed) is shared by fewer than three pages of the book.
+
+For Text: line pieces without text on a transcribed page; a region the transcription marked uncertain; a line-count mismatch recorded in `source.problems`; transcribed under an earlier type list.
+
+For Read: errors and warnings from `checkPage`; assembly warnings; a region completion marked uncertain; a waiting suggestion.
+
+Flags order the review; they never block moving on. Flag 9 and grouping by layout are how a new kind of page announces itself, which the sample for the type proposal cannot be relied on to do: the private series' twelve sample pages held no footnote. A shared layout says nothing about whether the boxes are right; the other flags are for that.
+
+#### Comparing models
+
+There is one comparison for each model step, reached from the tab the step belongs to. Each runs the candidates on the same sample pages with the same inputs, shows elapsed time and the projected cost for the whole book, and ends with saving the choice for the book. A comparison run never writes into a page document, as now; only settling does.
+
+| Model step | State now | To build |
+| --- | --- | --- |
+| Proposing the type list | two models (077, 078), one at a time | run both and show one merged draft: the types both found, and the types only one found, for the user to keep or drop. There is no model to "choose" for a one-time call. |
+| Finding regions | Terra only | the region finders below, and a comparison with overlays on the same pages. Compare two results as sets of line ids with a type, since line ids come from the local step and are the same whatever made the regions. |
+| Transcription | built (`readersview.js`) | settling, below |
+| Completion | built (`structuresview.js`) | settling, below |
+
+**Settling:** on each differing item (a line's text, a region's type or grouping, a page's regions) the user picks the right version or corrects it. The choice is written into the page's document as an edit. Scores come only from settled items; the transcription comparison's "checked reference lines" already work this way. Until something is settled, show counts of differences from the reference model, labelled as differences.
+
+#### Region finders, and work by hand
+
+The user wants several models, no-cost finders if they can be made, and a manual flow that works by itself. Each finder below is a new method (from 079) with its README, scored on the nine reference pages with method 043's evaluator (`methods/043-gpt-6.1-terra-none-book-types-continuations-band-chained-lines/evaluate.py`), as method 063 was (its README says how), before it is offered in the app.
+
+- **Models:** the present prompt (method 042's) with other models: the Gemini models already used for transcription (Argon low and high, Flash, Flash-Lite) and one or two further OpenAI models. One method ID each.
+- **No cost, from our own line finder:** run the local step on the whole page and group its lines into blocks by the gaps between lines, changes of indent and changes of letter size. Guess only coarse classes (a short line alone at the head or foot of the page as running header or page number; a block in smaller type at the foot as notes; the rest as paragraphs), and give a region a type of the book only where the book has exactly one type of that class; otherwise `other`. Untested.
+- **No cost, from Tesseract's layout analysis:** the bundled Tesseract (`webapp/vendor/tesseract-6.0.1`) reports blocks and paragraphs as well as words. Check what it returns on the reference pages before building on it. Untested.
+- **By hand:** the flow must work with no finder at all, from "Start by hand": draw each box, pick its type, set the order. With a no-cost finder it becomes retyping, merging and splitting blocks. Make it quick: a key for each type on the selected region, and Tab to the next region.
+
+Expect the no-cost finders to give usable boxes and poor types. Types that only this book has (a verse against its commentary) need a model or a person.
+
+### Build order
+
+Each step ends with the tests passing (106 app tests and 11 schema tests now; the two commands are under "Current state"), a browser check, a NOTEBOOK entry, and `webapp/README.md` and this file brought up to date.
+
+1. **The pure modules, with tests and no change to the app:** `layers.js`, `pipeline/provisional.js`, `pipeline/apply.js`.
+   - Provisional documents made from the `regions` lists of the nine committed region records (`outputs/<page>/063-fragment-band-lines/regression-001/regions.json`, written by the Python method; the page sizes are in the same files) with their books' type lists (`schema/types/`) pass `checkPage`. So does the empty document.
+   - Layer states: an old document with and without `source.edited`; each kind of edit; accepting and sending back.
+   - The merge: every row and case of "How each model step writes", including a merge that would fail the checks.
+2. **The pipeline** (`run.js`, `store.js`): finding regions writes the provisional document; `sourceRegions` reads the current document; transcription and completion merge; `saveStage`; `geometry_key`.
+   - A page nobody edited sends byte-identical transcription and completion requests, and finds its saved results (use the mocked `Maker` of `webapp/test/readers.test.mjs`).
+   - A page whose regions a person edited is transcribed with those regions, and keeps them.
+   - A protected layer is never changed by a model step; a suggestion is recorded instead.
+   - Changing the conventions or one region's type does not cause a new transcription call.
+   - Old books open unchanged (Kale, Telang and the private digital book as `.chaya.pdf`), and a `.chaya.pdf` still gives back the exact original PDF.
+3. **The tabs and the grid:** the five tabs with their availability and addresses; `pagesview.js`; the Pages tab; moving on and sending back; the one run loop; the keys panel with its check. The old views are placed under their new tabs as they are.
+   - Every view that works today is reachable, and every old address opens the right view.
+   - A new book has Text and Read greyed out; an existing book (Kale's `.chaya.pdf`) has every tab.
+   - Moving pages on and sending them back survives a reload and a save to `.chaya.pdf` and back.
+   - A wrong key shows the provider's message beside the field; a working key enables the model step.
+4. **Regions:** the overview with its model step; `flags.js` with tests; the page editor's regions focus on pages with and without text; the two new operations (with tests in `webapp/test/ops.test.mjs`); "Start by hand"; the types panel with "New type…"; a book made without a proposal; grouping by layout.
+   - A page can be taken from nothing to moved-on by hand, with no model call.
+   - Retyping a region before transcription leaves the units `provisional`.
+   - Each flag has a test with a small made-up document.
+5. **The type list's operations:** `saveTypes`, the revision log, each operation with its reach, and the proposal inside the book.
+   - Each operation has a test: the documents after it pass `checkPage`, and the reach it announced is what it changed.
+   - A rename changes no transcription and causes no model call.
+6. **Text and Read:** the Text overview and the editor's text focus; in Read, running completion, the editor's units focus (the fallback), then the side panel on the reading view, joining across a page break, and problems in place.
+   - A page moved on from Regions, transcribed and completed keeps the region types it was moved on with.
+   - A join across a page break gives one unit in the reading view and no assembly warning.
+7. **Suggestions and settling:** the suggestion panel; settling in the two existing comparisons; the merged type-list draft.
+   - A model step on a page with an edited layer leaves the layer alone, and the page shows a suggestion that can be taken or dismissed.
+8. **Region finders:** the further models, the two no-cost finders and the comparison (new method IDs; the first step that needs paid calls beyond checks). The keys that make work by hand quick.
+   - Each finder's scores on the nine reference pages are in NOTEBOOK.md before it appears in the app.
+9. **Re-reading single regions:** send only the regions whose shapes changed, with the same request builder, and merge the result into the saved reading. Treat it as the same method, with the call record marked as partial; the user was told this on 2026-11-09 and raised no objection.
+   - Moving one box on a transcribed page causes a request with that region only.
+
+Walk through the whole flow by hand after steps 4 and 6, on a public PDF (`Kale-1913-pp21-272.pdf` in the repository root; include a few of its pages only): open the plain PDF, browse, propose and edit types, find regions on a few pages, correct one, add a type from a page, move on, transcribe, move on, complete, read, fix a join across a page break, export, and open the exported `.chaya.pdf` again. Also do one page entirely by hand. Keep paid checks to a few pages and record their cost. Work on the private series follows the budget in PRIVATE.md.
+
+Things that will trip a new session:
+- **Stale modules:** `main.js` imports some modules with a `?v=…` tag. Change the tag when you change the module, or the user's browser keeps the old one (this happened on 2026-11-09).
+- **Storage is per origin:** `localhost`, `127.0.0.1` and the Tailscale HTTPS name each have their own books and API keys.
+- **Frozen methods:** nothing under `methods/` or `outputs/` is edited. Steps 1 to 7 must not change what is sent to a model for a page. A new method's README and frozen copy follow the pattern of methods 065 to 078.
+- **Privacy:** nothing from the private books goes into git, test fixtures included (PRIVATE.md, local).
+- **Keys:** never print, log or commit an API key. Tests use mocked requests.
+- **When the design is unclear or seems wrong,** ask the user; do not guess on anything that changes saved data or costs money.
+
+### Experiments after the build
+
+Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide how far decision 2 can go.
+
+1. **Container starts from finding regions:** add one field per region naming the container that begins there, and build the tree locally. Compare with trees a person has corrected. If it holds, units are settled before transcription on most pages.
+2. **A narrow completion call:** for fixed units, return only line ends, numbers and labels, and note links. It should cost less and fail the checks less often than 070 to 076.
+3. **Completion over a run of pages:** one text-only call for a chapter, for the joins and continuations at page breaks and for notes that cross pages.
+4. **Combined against split calls** on the current geometry (the earlier private comparison used different prompts and geometry).
+5. **Line joins by rule:** the digital book's rule got about 87% right; measure a rule on transcribed scans.
+6. **Layouts before any model call:** use the no-cost line-finder blocks of step 8 to group pages by layout as soon as a PDF is opened, to help choose sample pages.
+
+### Still open
+
+- **Units under Read:** the user accepted this if it can be made to work, to keep the tabs few. The fallback above keeps units correctable while the side panel is built. If the panel does not work out, units get a tab of their own between Text and Read.
+- **Which further OpenAI models** to try for regions (step 8): ask when that step starts.
 
 ### Starting work next session
 
-1. Read this proposal, the implemented state below, PRIVATE.md on this machine, webapp/README.md and schema/README.md. PRIVATE.md holds the source PDF locations, active browser origin/book, unfinished comparisons and cost accounting.
-2. Walk through opening a plain PDF and working on its schema and regions before OCR. Specify the phase navigation, page/batch status and persistence of provisional and approved assignments.
-3. Design schema revision and the preservation of human decisions, then implement a complete path from browsing through region review, transcription and reading. Save intermediate work with the book so the user can resume at each phase.
-4. Verify older books and cached results, source links, edits and the exact recovery of the original PDF from a .chaya.pdf. Keep immutable model records and their costs. A changed model prompt or processing recipe needs a new method ID, currently 079.
-
-Private content and browser-only work follow the existing privacy and storage rules. Public source and handoff changes are committed to main as the user previously requested. Moving work to another browser or device uses a .chaya.pdf export/import, with local details in PRIVATE.md.
+1. Read this section, "Current state" below, PRIVATE.md on this machine (local; it has the source PDF locations, the browser origin and book in use, the unfinished comparisons and the cost accounting), `webapp/README.md` and `schema/README.md`.
+2. Run both test suites, and open a book in the app to see the current modes.
+3. Start at step 1 of "Build order" and do the steps in order. Commit when the user asks; they have had finished work committed straight to `main`.
 
 ## Current state (2026-11-09)
 
@@ -117,6 +530,14 @@ Private content and browser-only work follow the existing privacy and storage ru
   - modes Read · Edit book · Edit pages · Export;
   - PDF is the only input (page images go through img2pdf first);
   - the book is kept inside its PDF (`.chaya.pdf`): append-only saving is not required, but the original PDF must be recoverable.
+- **2026-11-09** (for the design above; none of it is built):
+  - the app is organized by stage, with tabs Pages · Regions · Text · Read · Export, and the editing of single pages under its stage;
+  - later tabs are greyed out until the stage before them is ready;
+  - no approval page by page: the book, or a selection of pages, is moved on to the next stage;
+  - the type list is part of Regions;
+  - region finders: several Gemini and OpenAI models, no-cost ones if possible, and a manual flow that works by itself;
+  - units, joins and links are corrected in Read, if that can be made to work;
+  - API keys are checked with a cheap call where they are entered.
 
 **Open, roughly in order:**
 0. **Private scan series and model comparisons**. The corrected twelve-page sample uses method 063 geometry. Both transcription and schema assignment models can be selected and compared per book. The schema comparison fixes the input transcription and shows canonical structural choices by region. Its two-page private trial adds eight saved results, six schema-valid and two invalid, to the existing Argon-high reference. Cloud Vision’s two OCR modes are implemented and tested with fixtures, but the configured Gemini key was rejected by Vision and the local Google Cloud CLI could not supply an OAuth token. The UI supports separate Cloud Vision API-key or session-only OAuth credentials and a quota project. “Continue” creates an editable browser copy for a URL book and opens Make pages. Excerpts can start from the full PDF with their types and model settings. Make pages processes a chosen range with missing-region discovery, cached stages, a spend threshold, and explicit reprocessing of existing model documents. Known cumulative token-based estimates are $1.6463775, with two unresolved timeout charges and a $1.50 reserve. The user has requested the full-volume browser workflow, and its 267-page browser book is prepared as described below. All collection contents remain outside git. Stop before $40 cumulative spending under the user’s $50 authorization.
@@ -675,4 +1096,4 @@ The total is about $2.76.
 
 This handoff is kept up to date during the session rather than written only at the end.
 
-A useful next-session opening instruction is “Read HANDOFF.md's Next session workflow proposal and Current state, PRIVATE.md on this machine, webapp/README.md and schema/README.md, then develop the proposed Browse pages → Schema and regions → Transcribe → Read workflow.”
+A useful next-session opening instruction is “Read HANDOFF.md's section on the stage-based workflow and its Current state, PRIVATE.md on this machine, webapp/README.md and schema/README.md. Then start at step 1 of the Build order.”
