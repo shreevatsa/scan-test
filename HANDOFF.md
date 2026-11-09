@@ -33,7 +33,20 @@ Keep room for text-assisted completion after OCR, especially for actual containm
 
 Make schema revision explicit. Record which schema revision produced each assignment and identify affected pages when definitions change. Reuse saved transcriptions when their text regions still match. Changes to containment rules can require rebuilding unit trees, while changes to region boundaries or line geometry can require remapping text. Preserve provenance and user corrections through those operations. Decide stable identifiers, rename handling and the scope of invalidation before building the revision UI.
 
-Keep transcription and schema-model comparison as independent decisions within this workflow. The interface phases can encompass several backend calls. Earlier experiments also combine transcription and unit assignment, and method 045 combines region detection as well. Use recorded quality and cost evidence to decide where combined calls help. The two-page private combined-versus-split cost comparison used different prompts and geometry, so a controlled comparison on current geometry is still an open experiment.
+Provide a model comparison and a saved model choice for each AI-assisted operation. The user clarified that model comparison belongs at each step. The interface phases can encompass several backend calls, with independent choices for the operations below.
+
+| AI-assisted operation | What to review in its comparison |
+| --- | --- |
+| Propose the book schema | Coverage of the book's types, nesting rules and conventions, supported by representative pages. Show editable type definitions and grouping rules. |
+| Find and classify page regions | Region boundaries, text ownership and semantic types. Show overlays on the same source pages. |
+| Transcribe | Printed text, formatting and markers. Show source crops and differences that preserve complete grapheme clusters. |
+| Complete units and links | Actual nesting, line joins, reading order, continuations and note links. Show unit trees and source-linked assignments using the same input transcription. |
+
+Each comparison should use common sample pages and fixed inputs for the operation under comparison. Judge accuracy against source-reviewed examples where available, and label reference-model disagreement accordingly. Show elapsed time and the projected total cost of the book, including schema setup and page processing. End each comparison with choosing and saving that operation's model for the book. Page browsing and reading provide the human inspection and correction that inform these comparisons.
+
+The implemented app has model selection for initial schema proposals and comparison pages for transcription and later unit assignment. Page-region detection currently uses fixed Terra. Extending comparison and selection to region detection and providing a fuller schema-proposal comparison are part of this proposed workflow.
+
+Earlier experiments also combine transcription and unit assignment, and method 045 combines region detection as well. Use recorded quality and cost evidence to decide where combined calls help. The two-page private combined-versus-split cost comparison used different prompts and geometry, so a controlled comparison on current geometry is still an open experiment.
 
 The initial proposal's "Questions to review" currently displays model uncertainties. The redesign should give these questions a clear route into reviewing pages and revising the draft. Choosing how to capture answers and propose resulting edits is part of the next-session design.
 
