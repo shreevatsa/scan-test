@@ -4,7 +4,7 @@ Updated 2026-11-10. Start with the design of the stage-based workflow below, whi
 
 ## Next: the stage-based workflow (design of 2026-11-09)
 
-This section is the task for the next sessions. Steps 1 through 7 are complete, as recorded under "Build progress". Continue with additional region finders in step 8. "Current state" below describes the app's current screens. The design starts from the user's four phases, a review of the code and the recorded evidence, and the user's answers of 2026-11-09. Build it in the order under "Build order", with each step leaving the app working and the tests passing.
+This section is the task for the next sessions. Steps 1 through 8 are complete, as recorded under "Build progress". Continue with partial transcription of changed regions in step 9. "Current state" below describes the app's current screens. The design starts from the user's four phases, a review of the code and the recorded evidence, and the user's answers of 2026-11-09. Build it in the order under "Build order", with each step leaving the app working and the tests passing.
 
 ### What the user asked for
 
@@ -53,7 +53,7 @@ This section is the task for the next sessions. Steps 1 through 7 are complete, 
 5. **One way of settling differences.** Comparing models, and reviewing a suggestion against a person's work, are the same activity: two versions of a page side by side, and a person choosing. What the person chooses becomes the page's data and also scores the models. Disagreement with a reference model is not accuracy and is never shown as accuracy.
 6. **A change to the type list is one of a few named operations, each with a known reach** (the table under "Type list revisions"). There is no general invalidation scheme.
 7. **Where the text comes from is open.** A scanned page gets its text from a transcription model; a digital PDF's page will get it from the PDF (methods 058 and 062, not yet ported: item 2 under "Open"). New code reads a page's state from its document, never from the presence of a model's work record.
-8. **Steps 1 to 7 change no request that processes a page:** no prompt, response schema, image or setting. So they need no new method ID, and saved results stay reusable. (The key check of step 3 is a new request, but it reads no page and is not a method.) Step 8 adds region finders, and the experiments at the end change requests; each of those gets a new ID (the next unused is 079).
+8. **Steps 1 to 7 change no request that processes a page:** no prompt, response schema, image or setting. So they need no new method ID, and saved results stay reusable. (The key check of step 3 is a new request, but it reads no page and is not a method.) Step 8 adds region finders, and the experiments at the end change requests; each of those gets a new ID (the next unused is 087).
 
 ### Data model
 
@@ -464,9 +464,17 @@ Type discovery offers both existing models in one run. The merged draft groups m
 
 All 216 app tests and 11 schema tests pass. Sixteen new review tests cover protected text, Indic lines, stale scores, blank pages, marker identity and links, partial subtrees, widened scopes, structural scores, invalid inputs, replacement-stage states, immutable work, stale choices, journal recovery and merged drafts. An existing pipeline test now checks that preparing corrected completion input makes no call and changes no page. Chrome exercised kept and dismissed suggestions, a corrected line chosen from a model comparison, structural settlement and scores, and a two-model type draft whose dropped type remained dropped after application and reload. Provider replies were simulated throughout, with zero live API requests or charges. Continue with step 8. Ask the user which additional OpenAI region models to try, as required by the design, before starting paid finder experiments.
 
+Step 8 is complete on 2026-11-10. Regions has a saved finder choice and its own comparison view. The choices are the existing Terra baseline, local line blocks (079), Tesseract paragraphs (080), Astra low (081), GPT-6.1 Sol low (082), Argon low/high (083–084), Flash low (085) and Flash-Lite minimal (086). The user chose Astra and Sol. The implementation selected the current GPT-6.1 Sol and low reasoning for both additional OpenAI models. Their supported settings and standard rates were checked in official model documentation. The six model finders made 54 successful calls on the nine public references for an estimated $1.700885. Astra, Sol and Argon high had zero ink, grouping or missing-passage errors in this run. Lower Gemini settings had substantial errors on several pages. Semantic types and continuation flags were not separately scored. The two free methods have zero API cost and require manual grouping and type corrections. NOTEBOOK.md and each new method retain the scores, configurations, responses, derived geometry and evaluation records. The next unused method ID is 087.
+
+The comparison accepts all, ranges and lists of sample PDF positions, shows every saved candidate as a scan overlay with types and order, and offers the shared whole-page review dialog. Finder-local region IDs do not imply corresponding passages, so region-layout replacement is a whole-page choice. Decisions supply exact reviewed-layout matches separately from reference differences. The chosen finder is used by the normal stage grid. Native Tesseract layout uses mode 3 and the existing transcription path keeps mode 6. Both share a serialized worker. The local line finder groups by spacing, indentation, size and columns. Only a unique book type for a guessed coarse class is assigned. All local guesses are flagged uncertain.
+
+Finder work is saved separately under work/region-finders/<page>/<profile>.json. Compatible legacy Terra results remain usable. Comparison trials preserve the current page and active geometry. Normal stage processing makes the chosen result active, retains the preceding finder's cache and protects human work through suggestions. Cache compatibility covers the scan, finder method, type list and Tesseract language. The region choice is stored as reader_options.finder. The comparison groups credential checks by provider while checking each selected model, has progress and stop controls, and uses the existing spend and failure ledger. Its single whole-book cost estimate includes the selected transcription and completion sample costs, assuming those downstream costs stay at their sampled level. Missing stage samples leave the total unavailable.
+
+All 225 app tests and 11 schema tests pass. Added checks cover coarse typing, ambiguous types, block splitting, native paragraph extraction, legacy defaults, independent caches, language and type changes, protected suggestions, reviewed-layout evidence, frozen request parity and the new OpenAI credential settings. Chrome exercised all nine finder choices with simulated model responses and real local finders, cache reuse, a comparison using only the two free finders, grouped key checks, saved choice persistence, a held-back region suggestion, explicit layout replacement and pending downstream stages. The view was checked at 390-pixel width. A separate public Cole fixture loaded the actual recorded benchmark outputs for visual inspection. Browser validation added zero live API calls. Continue with step 9.
+
 ### Build order
 
-Each step ends with the tests passing (216 app tests and 11 schema tests now, with the two commands under "Current state"), a browser check, a NOTEBOOK entry, and `webapp/README.md` and this file brought up to date.
+Each step ends with the tests passing (225 app tests and 11 schema tests now, with the two commands under "Current state"), a browser check, a NOTEBOOK entry, and `webapp/README.md` and this file brought up to date.
 
 1. **Complete. The pure modules and their tests:** `layers.js`, `pipeline/provisional.js`, `pipeline/apply.js`.
    - Provisional documents made from the `regions` lists of the nine committed region records (`outputs/<page>/063-fragment-band-lines/regression-001/regions.json`, written by the Python method; the page sizes are in the same files) with their books' type lists (`schema/types/`) pass `checkPage`. So does the empty document.
@@ -495,7 +503,7 @@ Each step ends with the tests passing (216 app tests and 11 schema tests now, wi
    - A join across a page break gives one unit in the reading view and no assembly warning.
 7. **Complete. Suggestions and settling:** the suggestion panel; settling in the two existing comparisons; the merged type-list draft.
    - A model step on a page with an edited layer leaves the layer alone, and the page shows a suggestion that can be taken or dismissed.
-8. **Region finders:** the further models, the two no-cost finders and the comparison (new method IDs; the first step that needs paid calls beyond checks). The keys that make work by hand quick.
+8. **Complete. Region finders:** the further models, the two no-cost finders and the comparison (new method IDs; the first step that needs paid calls beyond checks). The keys that make work by hand quick.
    - Each finder's scores on the nine reference pages are in NOTEBOOK.md before it appears in the app.
 9. **Re-reading single regions:** send only the regions whose shapes changed, with the same request builder, and merge the result into the saved reading. Treat it as the same method, with the call record marked as partial; the user was told this on 2026-11-09 and raised no objection.
    - Moving one box on a transcribed page causes a request with that region only.
@@ -524,13 +532,12 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 ### Still open
 
 - **Units under Read:** the user accepted this if it can be made to work, to keep the tabs few. The fallback above keeps units correctable while the side panel is built. If the panel does not work out, units get a tab of their own between Text and Read.
-- **Which further OpenAI models** to try for regions (step 8): ask when that step starts.
 
 ### Starting work next session
 
 1. Read this section, "Current state" below, PRIVATE.md on this machine (local; it has the source PDF locations, the browser origin and book in use, the unfinished comparisons and the cost accounting), `webapp/README.md` and `schema/README.md`.
 2. Run both test suites, and open a book in the app to see the current modes.
-3. Continue at step 8 of "Build order", following the completed workflow and review controls under "Build progress". Ask which additional OpenAI region models to try before starting that step. Commit when the user asks. They have had finished work committed straight to `main`.
+3. Continue at step 9 of "Build order", following the completed finder comparison under "Build progress". Commit when the user asks. They have had finished work committed straight to `main`.
 
 ## Current state (2026-11-10)
 
@@ -540,7 +547,7 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 
 **Two pipelines into page documents:**
 - **scans** (model calls), as the app's Make pages runs them:
-  1. method 042: page regions, with GPT-6.1 Terra;
+  1. page regions with the chosen finder, using Terra (042), local blocks (079), Tesseract (080), Astra (081), Sol (082), or Gemini variants (083–086);
   2. method 063: the local step (ink lines and outlines, with fragment bands joined to their parent lines);
   3. selectable reading profiles 065–069 and 071–072, with Argon low/high, Flash low, Flash-Lite minimal, local Tesseract or Cloud Vision Text Detection and Document Text Detection;
   4. selectable text-only schema assignment with Argon high (070, the default), Argon low, Flash low, Flash-Lite minimal or Terra without reasoning (073–076), preserving the transcription’s printed text. Each model and stage is cached separately. Method 064 preserves the earlier combined transcription recipe on method 063 geometry;
@@ -564,7 +571,7 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 - **storage:** books are kept in the browser's private file system, with autosave, and saved as one file, a `.chaya.pdf`. That is the original PDF's bytes, unchanged, plus one update attaching `chaya.json` with the book's data; the original is recoverable exactly. Pages are drawn from the PDF;
 - **published books** open by URL, read only;
 - **editing** Regions edits page geometry. Text edits transcription and markers. Read edits units, line joins and note links through its page fallback or passage panel. Cross-page joins have coordinated saves and recovery. The style sheet editor remains under Read.
-- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (216) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
+- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (225) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
 
 **Running:**
 - `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/;
@@ -1145,7 +1152,7 @@ The total is about $2.76.
 ## Conventions to preserve
 
 - Keep code and README under `methods/<method_id>/`, shared inputs under `inputs/`, human or proposed references under `references/<input_id>/`, the draft book schema and its type lists under `schema/`, and outputs indexed by input and method. Cross-page surveys go under `outputs/surveys/<method_id>/`.
-- A frozen method keeps its ID on new data. Changing the prompt, model, settings or processing recipe gets a new ID; the next unused ID is 079. Repeated requests use a fresh output subdirectory such as `run-002`, not a new method ID.
+- A frozen method keeps its ID on new data. Changing the prompt, model, settings or processing recipe gets a new ID; the next unused ID is 087. Repeated requests use a fresh output subdirectory such as `run-002`, not a new method ID.
 - Keep prior runtime code and saved requests/responses immutable: hashes tie them to results. Save new derived coordinates separately with their source result and every adjustment.
 - Keep NOTEBOOK.md limited to actual tests, settings, observations and images. Use self-contained entries, full method names, stable method IDs, and one physical line per prose paragraph. Method README links and image references are expected. Keep planning and cross-experiment conclusions in this handoff or another separate document.
 - Add results within the appropriate test-page section while preserving previous entries. Do not label tests on a new page as newly numbered methods.
@@ -1156,4 +1163,4 @@ The total is about $2.76.
 
 This handoff is kept up to date during the session rather than written only at the end.
 
-A useful next-session opening instruction is “Read HANDOFF.md's section on the stage-based workflow and its Current state, PRIVATE.md on this machine, webapp/README.md and schema/README.md. Then continue at step 8 of the Build order, first asking which additional OpenAI region models to try.”
+A useful next-session opening instruction is “Read HANDOFF.md's section on the stage-based workflow and its Current state, PRIVATE.md on this machine, webapp/README.md and schema/README.md. Then continue at step 9 of the Build order.”

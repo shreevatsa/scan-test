@@ -1,0 +1,109 @@
+{
+ "created_at_utc": "2026-11-10T14:13:15.813996+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/ryder-ten-princes-1927-page-030.png",
+  "sha256": "4448cf7b04d700a8b0d2d9aed4b9c627f632dde1994b8cef2347559bdc865af1"
+ },
+ "reference": {
+  "path": "references/ryder-ten-princes-1927-page-030",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "labels_png_sha256": "e0ef10790a3dccc47c05beddc82ab41e2267b8fd54fae05a724ed346b013c272",
+  "spec_sha256": "8185daad166305e82ce98039ebeb32207395784973f099f781bc33df5c9895a9"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "080-tesseract-paragraph-regions",
+   "path": "outputs/ryder-ten-princes-1927-page-030/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "sha256": "acd4f76ff548846e37bee772c55f1c31ef7037915e5f852155588852ba2d6c6e",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 17052,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [
+     "paragraph-2"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "paragraph-1": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-2": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 17052,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [
+      5,
+      6
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-3": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "paragraph-4": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "paragraph-1",
+     "lower": "paragraph-2",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-2",
+     "lower": "paragraph-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "paragraph-3",
+     "lower": "paragraph-4",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

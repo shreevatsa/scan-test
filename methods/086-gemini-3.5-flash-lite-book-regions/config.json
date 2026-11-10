@@ -1,0 +1,22 @@
+{
+  "id": "flash-lite-regions",
+  "label": "Gemini 3.5 Flash-Lite \u00b7 minimal thinking",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "thinking": "minimal",
+  "method": "086-gemini-3.5-flash-lite-book-regions",
+  "rates": [
+    {
+      "from": "2026-01-01",
+      "input": 0.3,
+      "output": 2.5,
+      "cached": 0.03
+    }
+  ],
+  "prompt": "Method 042 book-types-continuations-v1",
+  "local_outlines": "063-fragment-band-lines",
+  "coordinate_format": "xyxy_1000",
+  "max_output_tokens": 16384,
+  "store": false,
+  "runtime_snapshot": "../081-gpt-6-astra-low-book-regions/snapshot/"
+}

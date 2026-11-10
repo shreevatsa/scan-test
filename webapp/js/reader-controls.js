@@ -1,6 +1,6 @@
 import { h } from "./render.js";
-import { READERS, STRUCTURERS, OCR_LANGUAGES, readerOptions, readerById, structurerById } from "./pipeline/readers.js";
-import { SETTINGS } from "./pipeline/steps.js?v=20261110-reading-2";
+import { READERS, STRUCTURERS, OCR_LANGUAGES, readerOptions, readerById, structurerById } from "./pipeline/readers.js?v=20261110-finders-4";
+import { finderById } from "./pipeline/finders.js?v=20261110-finders-4";
 
 export const money = (value, digits = 4) => Number.isFinite(value) ? `$${value.toFixed(digits)}` : "—";
 
@@ -15,7 +15,7 @@ export async function readerControls(book, changed = () => {}) {
   const languageLabel = h("label", {}, "OCR language pack ", languages);
   const refresh = () => {
     const reader = readerById(options.reader);
-    stages.textContent = `Page-region detection uses ${SETTINGS.regions.model} to identify and classify regions. Schema assignment uses ${structurerById(options.structurer).label} with text-only input to build the unit tree, continuations and note links.`;
+    stages.textContent = `Page-region detection uses ${finderById(options.finder).label} to identify and classify regions. Schema assignment uses ${structurerById(options.structurer).label} with text-only input to build the unit tree, continuations and note links.`;
     languageLabel.hidden = reader.provider !== "local";
     price.textContent = reader.provider === "local" ? "Local transcription has zero API cost. The total estimate includes page-region detection and schema assignment. Inline formatting and note markers need review."
       : "Compare sample pages to estimate the total cost of page-region detection, transcription and schema assignment.";

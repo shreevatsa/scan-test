@@ -1,5 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
 import { bbox } from "../render.js";
+import { tesseractBlocks } from "../local/blocks.js?v=20261110-finders-4";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 
@@ -65,15 +66,13 @@ export function wordsToReading(words, sent, note = "Local OCR supplies plain tex
   }) };
 }
 
-export function localReading(image, sent, languages, progress) {
+function recognizeQueued(image, languages, segmentation, progress, convert) {
   const job = queue.catch(() => {}).then(async () => {
     try {
       const worker = await workerFor(languages, progress);
-      await worker.setParameters({ tessedit_pageseg_mode: "6" });
+      await worker.setParameters({ tessedit_pageseg_mode: segmentation });
       const { data } = await worker.recognize(image, {}, { text: true, blocks: true });
-      const words = tesseractWords(data);
-      if (!words.length && sent.some(s => s.line_ids.length)) throw new Error("Tesseract returned no words for the page.");
-      return { reading: wordsToReading(words, sent), words: words.length, confidence: data.confidence };
+      return convert(data);
     } catch (error) {
       const failed = workerPromise;
       workerPromise = null;
@@ -83,4 +82,18 @@ export function localReading(image, sent, languages, progress) {
   });
   queue = job;
   return job;
+}
+
+export function localReading(image, sent, languages, progress) {
+  return recognizeQueued(image, languages, "6", progress, data => {
+    const words = tesseractWords(data);
+    if (!words.length && sent.some(s => s.line_ids.length)) throw new Error("Tesseract returned no words for the page.");
+    return { reading: wordsToReading(words, sent), words: words.length, confidence: data.confidence };
+  });
+}
+
+export function localLayout(image, languages, progress) {
+  return recognizeQueued(image, languages, "3", progress, data => ({ blocks: tesseractBlocks(data),
+    block_count: data.blocks?.length || 0, paragraph_count: (data.blocks || []).reduce((count, block) => count + (block.paragraphs?.length || 0), 0),
+    confidence: data.confidence }));
 }

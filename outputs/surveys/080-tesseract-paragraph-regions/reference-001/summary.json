@@ -1,0 +1,209 @@
+{
+ "method": "080-tesseract-paragraph-regions",
+ "api_calls": 0,
+ "pages": [
+  {
+   "page": "cole-1903-page-003",
+   "result": "outputs/cole-1903-page-003/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/cole-1903-page-003",
+   "regions": 12,
+   "untyped": 0,
+   "seconds": 17.2330851657139,
+   "totals": {
+    "other_passages_ink_included": 22924,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     10
+    ]
+   }
+  },
+  {
+   "page": "dutt-mahabharata-17f-chapter-001-page-002",
+   "result": "outputs/dutt-mahabharata-17f-chapter-001-page-002/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/dutt-mahabharata-17f-chapter-001-page-002",
+   "regions": 29,
+   "untyped": 0,
+   "seconds": 52.713550250190735,
+   "totals": {
+    "other_passages_ink_included": 105331,
+    "own_ink_left_out": 44203,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 13739,
+    "passages_split_in_reading_order": [
+     "verse-12",
+     "verse-15",
+     "verse-17",
+     "verse-23"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     6,
+     13,
+     26
+    ]
+   }
+  },
+  {
+   "page": "gopinath-1896-page-123",
+   "result": "outputs/gopinath-1896-page-123/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/gopinath-1896-page-123",
+   "regions": 14,
+   "untyped": 11,
+   "seconds": 18.923143166904634,
+   "totals": {
+    "other_passages_ink_included": 128953,
+    "own_ink_left_out": 115664,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 35013,
+    "passages_split_in_reading_order": [
+     "hindi-translation-54"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     7,
+     13
+    ]
+   }
+  },
+  {
+   "page": "gopinath-1914-page-258",
+   "result": "outputs/gopinath-1914-page-258/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/gopinath-1914-page-258",
+   "regions": 13,
+   "untyped": 11,
+   "seconds": 16.027293457904634,
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 44315,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 16435,
+    "passages_split_in_reading_order": [
+     "verse-81"
+    ],
+    "passages_split_out_of_order": [
+     "note-source"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   }
+  },
+  {
+   "page": "hertel-panchatantra-page-152",
+   "result": "outputs/hertel-panchatantra-page-152/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/hertel-panchatantra-page-152",
+   "regions": 11,
+   "untyped": 0,
+   "seconds": 25.118197042190737,
+   "totals": {
+    "other_passages_ink_included": 347834,
+    "own_ink_left_out": 118447,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [
+     "verse-345",
+     "verse-346",
+     "verse-347",
+     "verse-348"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     5,
+     7,
+     9
+    ]
+   }
+  },
+  {
+   "page": "kale-1913-page-106",
+   "result": "outputs/kale-1913-page-106/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/kale-1913-page-106",
+   "regions": 5,
+   "untyped": 5,
+   "seconds": 17.688299417,
+   "totals": {
+    "other_passages_ink_included": 1071596,
+    "own_ink_left_out": 28780,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 28780,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     2,
+     5
+    ]
+   }
+  },
+  {
+   "page": "ryder-ten-princes-1927-page-030",
+   "result": "outputs/ryder-ten-princes-1927-page-030/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/ryder-ten-princes-1927-page-030",
+   "regions": 9,
+   "untyped": 0,
+   "seconds": 15.644240832809265,
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 17052,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [
+     "paragraph-2"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   }
+  },
+  {
+   "page": "telang-dli-page-108",
+   "result": "outputs/telang-dli-page-108/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/telang-dli-page-108",
+   "regions": 8,
+   "untyped": 8,
+   "seconds": 18.463120457809264,
+   "totals": {
+    "other_passages_ink_included": 463890,
+    "own_ink_left_out": 15503,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [
+     "apparatus-81",
+     "apparatus-82"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     2
+    ]
+   }
+  },
+  {
+   "page": "vavilla-page-034",
+   "result": "outputs/vavilla-page-034/080-tesseract-paragraph-regions/reference-001/regions.json",
+   "reference": "references/vavilla-page-034",
+   "regions": 4,
+   "untyped": 0,
+   "seconds": 12.934957458095369,
+   "totals": {
+    "other_passages_ink_included": 451484,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3
+    ]
+   }
+  }
+ ]
+}

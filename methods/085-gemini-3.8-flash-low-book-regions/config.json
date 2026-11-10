@@ -1,0 +1,28 @@
+{
+  "id": "flash-regions",
+  "label": "Gemini 3.8 Flash \u00b7 low thinking",
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "thinking": "low",
+  "rates": [
+    {
+      "from": "2026-01-01",
+      "input": 0.75,
+      "output": 3.75,
+      "cached": 0.075
+    },
+    {
+      "from": "2027-01-01",
+      "input": 1.5,
+      "output": 7.5,
+      "cached": 0.15
+    }
+  ],
+  "method": "085-gemini-3.8-flash-low-book-regions",
+  "prompt": "Method 042 book-types-continuations-v1",
+  "local_outlines": "063-fragment-band-lines",
+  "coordinate_format": "xyxy_1000",
+  "max_output_tokens": 16384,
+  "store": false,
+  "runtime_snapshot": "../081-gpt-6-astra-low-book-regions/snapshot/"
+}

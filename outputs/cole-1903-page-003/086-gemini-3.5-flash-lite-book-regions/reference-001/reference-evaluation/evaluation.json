@@ -1,0 +1,361 @@
+{
+ "created_at_utc": "2026-11-10T17:59:16.048047+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/cole-1903-page-003.png",
+  "sha256": "d4ea9bd561c16f7feda5eafd23eeb0620771202182cf0c5bd7e966e2271a99a2"
+ },
+ "reference": {
+  "path": "references/cole-1903-page-003",
+  "status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+  "labels_png_sha256": "823e6cbf7d0b9937a1e40d0d357c77c77e6188122abf2ad06aa6f3e70151892f",
+  "spec_sha256": "6f9694fa4aa91fb85b2fc439abcddebaf079c969ee9dc97988754178441ae1cb"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "086-gemini-3.5-flash-lite-book-regions",
+   "path": "outputs/cole-1903-page-003/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json",
+   "sha256": "2d4073a176fcb492620e05778591b0e367b952e966cc7c6d857e197e62b19a5c",
+   "totals": {
+    "other_passages_ink_included": 796806,
+    "own_ink_left_out": 223789,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 223527,
+    "passages_split_in_reading_order": [
+     "display-1"
+    ],
+    "passages_split_out_of_order": [
+     "display-3",
+     "footnote"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     4,
+     10
+    ]
+   },
+   "passages": {
+    "text-1": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 73514,
+     "other_included": {
+      "text-2": 2213,
+      "text-3": 3023,
+      "display-2": 5616,
+      "text-4": 7286,
+      "text-5": 15015,
+      "text-6": 9,
+      "text-7": 2540,
+      "display-4": 524,
+      "footnote": 1270
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 73514
+    },
+    "text-2": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 759,
+     "other_included": {
+      "text-1": 1783,
+      "text-3": 3023,
+      "display-2": 5616,
+      "text-4": 7286,
+      "text-5": 15015,
+      "text-6": 9,
+      "text-7": 2540,
+      "display-4": 524,
+      "footnote": 1270
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 759
+    },
+    "display-1": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 2089,
+     "other_included": {
+      "text-3": 3724,
+      "display-2": 6091,
+      "text-4": 4531,
+      "text-5": 34288,
+      "text-6": 3627,
+      "display-3": 3364,
+      "text-7": 9794,
+      "display-4": 11555,
+      "footnote": 4625
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      11
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 1827
+    },
+    "text-3": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 8491,
+     "other_included": {
+      "display-1": 4116,
+      "display-2": 6091,
+      "text-4": 4531,
+      "text-5": 34288,
+      "text-6": 3627,
+      "display-3": 3364,
+      "text-7": 9794,
+      "display-4": 11555,
+      "footnote": 4625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 8491
+    },
+    "display-2": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 13696,
+     "other_included": {
+      "display-1": 4116,
+      "text-3": 3724,
+      "text-4": 4531,
+      "text-5": 34288,
+      "text-6": 3627,
+      "display-3": 3364,
+      "text-7": 9794,
+      "display-4": 11555,
+      "footnote": 4625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 13696
+    },
+    "text-4": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 14816,
+     "other_included": {
+      "text-1": 1783,
+      "text-2": 2213,
+      "text-3": 3023,
+      "display-2": 5616,
+      "text-5": 15015,
+      "text-6": 9,
+      "text-7": 2540,
+      "display-4": 524,
+      "footnote": 1270
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 14816
+    },
+    "text-5": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 51467,
+     "other_included": {
+      "display-1": 4116,
+      "text-3": 3724,
+      "display-2": 6091,
+      "text-4": 4531,
+      "text-6": 3627,
+      "display-3": 3364,
+      "text-7": 9794,
+      "display-4": 11555,
+      "footnote": 4625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 51467
+    },
+    "text-6": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 1575,
+     "other_included": {
+      "display-1": 4116,
+      "text-3": 3724,
+      "display-2": 6091,
+      "text-4": 4531,
+      "text-5": 34288,
+      "display-3": 3364,
+      "text-7": 9794,
+      "display-4": 11555,
+      "footnote": 4625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 1575
+    },
+    "display-3": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 1494,
+     "other_included": {
+      "display-1": 4116,
+      "text-3": 3724,
+      "display-2": 6091,
+      "text-4": 4531,
+      "text-5": 34288,
+      "text-6": 3627,
+      "text-7": 9794,
+      "display-4": 11555,
+      "footnote": 4625
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      6
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 1494
+    },
+    "text-7": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 8272,
+     "other_included": {
+      "display-1": 4116,
+      "text-3": 3724,
+      "display-2": 6091,
+      "text-4": 4531,
+      "text-5": 34288,
+      "text-6": 3627,
+      "display-3": 3364,
+      "display-4": 11555,
+      "footnote": 4625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 8272
+    },
+    "display-4": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 7240,
+     "other_included": {
+      "display-1": 4116,
+      "text-3": 3724,
+      "display-2": 6091,
+      "text-4": 4531,
+      "text-5": 34288,
+      "text-6": 3627,
+      "display-3": 3364,
+      "text-7": 9794,
+      "footnote": 4625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 7240
+    },
+    "footnote": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 40376,
+     "other_included": {
+      "display-1": 4116,
+      "text-3": 3724,
+      "display-2": 6091,
+      "text-4": 4531,
+      "text-5": 34288,
+      "text-6": 3627,
+      "display-3": 3364,
+      "text-7": 9794,
+      "display-4": 11555
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      14,
+      15
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 40376
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "text-1",
+     "lower": "text-2",
+     "upper_region_takes_lower_ink": 2213,
+     "lower_region_takes_upper_ink": 1783
+    },
+    {
+     "upper": "text-2",
+     "lower": "display-1",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "display-1",
+     "lower": "text-3",
+     "upper_region_takes_lower_ink": 3724,
+     "lower_region_takes_upper_ink": 4116
+    },
+    {
+     "upper": "text-3",
+     "lower": "display-2",
+     "upper_region_takes_lower_ink": 6091,
+     "lower_region_takes_upper_ink": 3724
+    },
+    {
+     "upper": "display-2",
+     "lower": "text-4",
+     "upper_region_takes_lower_ink": 4531,
+     "lower_region_takes_upper_ink": 5616
+    },
+    {
+     "upper": "text-4",
+     "lower": "text-5",
+     "upper_region_takes_lower_ink": 15015,
+     "lower_region_takes_upper_ink": 4531
+    },
+    {
+     "upper": "text-5",
+     "lower": "text-6",
+     "upper_region_takes_lower_ink": 3627,
+     "lower_region_takes_upper_ink": 34288
+    },
+    {
+     "upper": "text-6",
+     "lower": "display-3",
+     "upper_region_takes_lower_ink": 3364,
+     "lower_region_takes_upper_ink": 3627
+    },
+    {
+     "upper": "display-3",
+     "lower": "text-7",
+     "upper_region_takes_lower_ink": 9794,
+     "lower_region_takes_upper_ink": 3364
+    },
+    {
+     "upper": "text-7",
+     "lower": "display-4",
+     "upper_region_takes_lower_ink": 11555,
+     "lower_region_takes_upper_ink": 9794
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

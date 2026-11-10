@@ -1,0 +1,197 @@
+{
+ "created_at_utc": "2026-11-10T17:59:55.921993+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/telang-dli-page-108.png",
+  "sha256": "52fa687d0eb0fd992aea64cfbe6b875ccb8d6ecffe4f160149e0f46092889517"
+ },
+ "reference": {
+  "path": "references/telang-dli-page-108",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "labels_png_sha256": "fc0a75c959e2074b84dee658fc89b525ff43e3b6debdc587172126fda755b5c4",
+  "spec_sha256": "bf686ac5865e1e3d9c01d4039e24e023ceb7ad0ac127734fb389d390bd046615"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "086-gemini-3.5-flash-lite-book-regions",
+   "path": "outputs/telang-dli-page-108/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json",
+   "sha256": "0b2a2f8796f57f4960ccb8e360eadd2328e594d0e20a3402accd82cbb06347b0",
+   "totals": {
+    "other_passages_ink_included": 530447,
+    "own_ink_left_out": 36531,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 36531,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "verse-79-end",
+     "verse-81"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     7
+    ]
+   },
+   "passages": {
+    "verse-79-end": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 4247,
+     "other_included": {
+      "verse-80": 11978
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      6
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 4247
+    },
+    "verse-80": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 11978,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 11978
+    },
+    "verse-81": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 13396,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [
+      8
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 13396
+    },
+    "verse-82-start": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {
+      "verse-81": 13140
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "apparatus-79": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 213,
+     "other_included": {
+      "apparatus-80": 101593,
+      "apparatus-81": 42644,
+      "apparatus-82": 9625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 213
+    },
+    "apparatus-80": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 3538,
+     "other_included": {
+      "apparatus-79": 14581,
+      "apparatus-81": 42644,
+      "apparatus-82": 9625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 3538
+    },
+    "apparatus-81": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 1158,
+     "other_included": {
+      "apparatus-79": 14581,
+      "apparatus-80": 101593,
+      "apparatus-82": 9625
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 1158
+    },
+    "apparatus-82": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 2001,
+     "other_included": {
+      "apparatus-79": 14581,
+      "apparatus-80": 101593,
+      "apparatus-81": 42644
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 2001
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-79-end",
+     "lower": "verse-80",
+     "upper_region_takes_lower_ink": 11978,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-80",
+     "lower": "verse-81",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-81",
+     "lower": "verse-82-start",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 13140
+    },
+    {
+     "upper": "verse-82-start",
+     "lower": "apparatus-79",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-79",
+     "lower": "apparatus-80",
+     "upper_region_takes_lower_ink": 101593,
+     "lower_region_takes_upper_ink": 14581
+    },
+    {
+     "upper": "apparatus-80",
+     "lower": "apparatus-81",
+     "upper_region_takes_lower_ink": 42644,
+     "lower_region_takes_upper_ink": 101593
+    },
+    {
+     "upper": "apparatus-81",
+     "lower": "apparatus-82",
+     "upper_region_takes_lower_ink": 9625,
+     "lower_region_takes_upper_ink": 42644
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

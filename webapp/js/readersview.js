@@ -1,13 +1,13 @@
-import { reviewPage } from "./review-view.js?v=20261110-review-3";
-import { settledChecks } from "./review.js?v=20261110-review-3";
+import { reviewPage } from "./review-view.js?v=20261110-finders-4";
+import { settledChecks } from "./review.js?v=20261110-finders-4";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money } from "./reader-controls.js?v=20261110-reading-2";
-import { READERS, readerOptions, projectBookCost, structurePath, structurerById } from "./pipeline/readers.js";
+import { modelChoice, keyControls, money } from "./reader-controls.js?v=20261110-finders-4";
+import { READERS, readerOptions, projectBookCost, structurePath, structurerById } from "./pipeline/readers.js?v=20261110-finders-4";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, compareRegions } from "./pipeline/compare.js";
-import { jsonHash } from "./pipeline/run.js?v=20261110-review-3";
-import { settings } from "./store.js?v=20261110-review-3";
+import { jsonHash } from "./pipeline/run.js?v=20261110-finders-4";
+import { settings } from "./store.js?v=20261110-finders-4";
 import { runProgress } from "./run-progress.js";
 
 export async function renderReaders(el, app) {

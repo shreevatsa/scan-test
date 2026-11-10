@@ -1,0 +1,151 @@
+{
+ "created_at_utc": "2026-11-10T17:54:41.783258+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/vavilla-page-034.png",
+  "sha256": "d59d65ef83a10539b77e9a458160eb8b83cf7c3131f87018126a85151fe14767"
+ },
+ "reference": {
+  "path": "references/vavilla-page-034",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "labels_png_sha256": "dea626c0666d89b88d5b7ff510b0921972f9be66e374f251baf50b578a2844ca",
+  "spec_sha256": "38630da0be0f6050b291720c01da2780be1d7973c983a2128f3f728c374c63a2"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "083-gemini-4-argon-low-book-regions",
+   "path": "outputs/vavilla-page-034/083-gemini-4-argon-low-book-regions/reference-001/regions.json",
+   "sha256": "a0c238b08995d6fa5c02003145f2a7ae9a27efba03227ea33cc602f2fda4bdc2",
+   "totals": {
+    "other_passages_ink_included": 665928,
+    "own_ink_left_out": 116476,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 113256,
+    "passages_split_in_reading_order": [
+     "commentary-24"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     5
+    ]
+   },
+   "passages": {
+    "commentary-23-end": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 6991,
+     "other_included": {
+      "verse-24": 26109,
+      "commentary-24": 107572,
+      "metre-24": 6057,
+      "verse-25": 7245
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 6991
+    },
+    "verse-24": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 17052,
+     "other_included": {
+      "commentary-23-end": 19499,
+      "commentary-24": 107572,
+      "metre-24": 6057,
+      "verse-25": 7245
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 17052
+    },
+    "commentary-24": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 65314,
+     "other_included": {
+      "commentary-23-end": 19499,
+      "verse-24": 26109,
+      "metre-24": 6057,
+      "verse-25": 7245
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      6
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 62094
+    },
+    "metre-24": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 3638,
+     "other_included": {
+      "commentary-23-end": 19499,
+      "verse-24": 26109,
+      "commentary-24": 107572,
+      "verse-25": 7245
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 3638
+    },
+    "verse-25": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 23481,
+     "other_included": {
+      "commentary-23-end": 19499,
+      "verse-24": 26109,
+      "commentary-24": 107572,
+      "metre-24": 6057
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 23481
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "commentary-23-end",
+     "lower": "verse-24",
+     "upper_region_takes_lower_ink": 26109,
+     "lower_region_takes_upper_ink": 19499
+    },
+    {
+     "upper": "verse-24",
+     "lower": "commentary-24",
+     "upper_region_takes_lower_ink": 107572,
+     "lower_region_takes_upper_ink": 26109
+    },
+    {
+     "upper": "commentary-24",
+     "lower": "metre-24",
+     "upper_region_takes_lower_ink": 6057,
+     "lower_region_takes_upper_ink": 107572
+    },
+    {
+     "upper": "metre-24",
+     "lower": "verse-25",
+     "upper_region_takes_lower_ink": 7245,
+     "lower_region_takes_upper_ink": 6057
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

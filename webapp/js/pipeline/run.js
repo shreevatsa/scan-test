@@ -1,20 +1,23 @@
 import { typeRevision } from "../schema.js?v=20261110-reading-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261110-reading-2";
+import { mappedTypeNames } from "../type-revisions.js?v=20261110-finders-4";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
 import * as S from "./steps.js?v=20261110-reading-2";
 import * as I from "./images.js?v=20261110-reading-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261110-finders-4";
 import * as Split from "./split.js";
-import { localReading } from "./ocr.js";
-import { visionRequest, visionReading, visionCost } from "./vision.js";
+import { localReading, localLayout } from "./ocr.js?v=20261110-finders-4";
+import { classifyBlocks } from "../local/blocks.js?v=20261110-finders-4";
+import { finderById, finderPath } from "./finders.js?v=20261110-finders-4";
+import { finderRequest } from "./finder-requests.js?v=20261110-finders-4";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261110-finders-4";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261110-reading-2";
-import { layerState, noteEdit } from "../layers.js?v=20261110-reading-2";
-import { provisionalDocument } from "./provisional.js?v=20261110-reading-2";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261110-reading-2";
+import { canonical } from "../ops.js?v=20261110-finders-4";
+import { layerState, noteEdit } from "../layers.js?v=20261110-finders-4";
+import { provisionalDocument } from "./provisional.js?v=20261110-finders-4";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261110-finders-4";
 
 let TEMPLATES = null;
 export async function templates() {
@@ -58,7 +61,7 @@ export async function post(provider, payload, key, auth = {}) {
 
 export class Maker {
   // outlines(pid, url, boxes) runs the local step (the app's worker); check(doc) runs the schema checks.
-  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, onCost = () => {}, onSaved = () => {} }) {
+  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, layout = localLayout, onCost = () => {}, onSaved = () => {} }) {
     this.book = book;
     this.outlines = outlines;
     this.keys = keys;
@@ -66,6 +69,7 @@ export class Maker {
     this.request = request;
     this.images = images;
     this.recognize = recognize;
+    this.layout = layout;
     this.onCost = onCost;
     this.onSaved = onSaved;
     this.jobs = new Map();
@@ -118,43 +122,96 @@ export class Maker {
       { firstPage: this.book.index[pid] === 0, lastPage: this.book.index[pid] === this.book.pages.length - 1 });
   }
 
-  async findRegions(pid, { save = this.book.writable, force = true } = {}) {
+  regionFingerprint(profile, imageHash, options) {
+    return jsonHash({ image: imageHash, method: profile.method, types: this.book.types,
+      ...(profile.id === "tesseract-regions" ? { languages: options.ocr_languages } : {}) });
+  }
+
+  async finderResult(pid, id, { compatible = false } = {}) {
+    let saved = await this.book.readWork(finderPath(pid, id));
+    if (!saved) {
+      const legacy = await this.regions(pid);
+      if (legacy && (legacy.profile?.id || "terra-regions") === id) saved = legacy;
+    }
+    if (!saved || !compatible) return saved;
+    const imageHash = await sha256(await this.image(pid));
+    const fingerprint = await this.regionFingerprint(finderById(id), imageHash, await this.options());
+    const current = await this.book.current(pid, { refresh: true });
+    const reset = Math.max(this.book.types.source?.region_reset_revision || 1, current?.source?.type_review?.regions || 1);
+    return (!saved.image_sha256 || saved.image_sha256 === imageHash) && typeRevision(saved.types_revision) >= reset &&
+      (!saved.fingerprint || saved.fingerprint === fingerprint) ? saved : null;
+  }
+
+  async retainRegions(pid, record, { save, trial, imageHash }) {
+    const path = finderPath(pid, record.profile?.id || "terra-regions");
+    await this.book.writeWork(path, record);
+    if (trial) return;
+    const previous = await this.regions(pid);
+    if (previous) {
+      const previousPath = finderPath(pid, previous.profile?.id || "terra-regions");
+      if (previousPath !== path && !await this.book.readWork(previousPath)) await this.book.writeWork(previousPath, previous);
+    }
+    await this.book.writeWork(this.workPath(pid), record);
+    if (save) await this.saveMerged(pid, "regions", path, current => mergeRegions(current,
+      mappedTypeNames(this.provisional(pid, record, imageHash), this.book.types), this.check));
+  }
+
+  async findRegions(pid, { save = this.book.writable, force = true, finder, trial = false } = {}) {
     if (save) await this.stageCurrent(pid);
+    const options = await this.options(), profile = finderById(finder || options.finder), tl = this.book.types;
+    const file = await this.image(pid), imageHash = await sha256(file);
+    const fingerprint = await this.regionFingerprint(profile, imageHash, options);
     if (!force) {
-      const cached = await this.regions(pid);
-      if (cached) {
-        const imageHash = await sha256(await this.image(pid));
-        const current = await this.book.current(pid, { refresh: true });
-        const reset = Math.max(this.book.types.source?.region_reset_revision || 1, current?.source?.type_review?.regions || 1);
-        if ((!cached.image_sha256 || cached.image_sha256 === imageHash) && typeRevision(cached.types_revision) >= reset) {
-          if (save) await this.saveMerged(pid, "regions", this.workPath(pid), current =>
-            mergeRegions(current, this.provisional(pid, cached, imageHash), this.check));
-          return { ...cached, cached: true };
-        }
+      const cached = await this.finderResult(pid, profile.id);
+      const current = await this.book.current(pid, { refresh: true });
+      const reset = Math.max(tl.source?.region_reset_revision || 1, current?.source?.type_review?.regions || 1);
+      if (cached && (!cached.image_sha256 || cached.image_sha256 === imageHash) &&
+          typeRevision(cached.types_revision) >= reset && (!cached.fingerprint || cached.fingerprint === fingerprint)) {
+        await this.retainRegions(pid, cached, { save, trial, imageHash });
+        return { ...cached, cached: true };
       }
     }
-    const t = await templates(), tl = this.book.types;
-    const file = await this.image(pid);
     const bitmap = await createImageBitmap(file);
     const W = bitmap.width, H = bitmap.height;
     bitmap.close?.();
-    const payload = S.regionRequest(P.regionPrompt(tl, t.regionPrompt), P.regionSchema(tl, t.regionSchema), await dataUrlOf(file));
-    const call = await this.callJSON(pid, "regions", { id: "terra-regions", provider: "openai", model: payload.model }, payload,
-      parsed => S.scaleRegions(parsed, W, H, tl), (usage, body) => S.openaiCost(usage, t.regionPricing, body.service_tier));
-    const body = call.response, { regions, warnings } = call.parsed;
-    const empty = { geometry: [], charH: 0, angle: 0, method: "063-fragment-band-lines" };
-    let res = this.outlines ? await this.outlines(pid, await this.book.imageUrl(pid), regions.map(r => r.box)) : empty;
-    if (!regions.length && res.error) res = empty;
-    if (res.error) throw new Error(res.error);
-    const out = { format: "page-regions", page: pid, types_revision: typeRevision(tl.source?.revision), width: W, height: H, image_sha256: await sha256(file), char_h: res.charH, page_angle_deg: res.angle, local_method: res.method,
-      regions: S.regionRecords(regions, res.geometry), uncovered_lines: res.uncovered || [],
-      warnings, region_call: { model: body.model, response_id: body.id, usage: body.usage, cost_usd: call.cost_usd, seconds: call.seconds,
-      output: S.openaiText(body) }, made_at_utc: new Date().toISOString() };
-    await this.book.writeWork(this.workPath(pid), out);
-    if (save) {
-      const candidate = this.provisional(pid, out, await sha256(file));
-      await this.saveMerged(pid, "regions", this.workPath(pid), current => mergeRegions(current, mappedTypeNames(candidate, this.book.types), this.check));
+    const started = performance.now();
+    let regions, warnings, res, regionCall;
+    if (profile.provider === "local") {
+      if (!this.outlines) throw new Error("Local region finding needs the page's line analysis.");
+      let blocks;
+      if (profile.id === "tesseract-regions") {
+        const recognized = await this.layout(await this.book.imageUrl(pid), options.ocr_languages);
+        blocks = recognized.blocks;
+        res = await this.outlines(pid, await this.book.imageUrl(pid), blocks.map(block => block.box));
+      } else {
+        res = await this.outlines(pid, await this.book.imageUrl(pid), null);
+        blocks = res.blocks;
+      }
+      if (res.error) throw new Error(res.error);
+      regions = classifyBlocks(blocks, W, H, tl);
+      warnings = ["Coarse local blocks need review of their grouping, types and reading order.", ...(res.warnings || [])];
+      regionCall = { model: profile.model, cost_usd: 0, seconds: (performance.now() - started) / 1000,
+        ...(profile.id === "tesseract-regions" ? { languages: options.ocr_languages } : {}) };
+      this.onCost(0);
+    } else {
+      const t = await templates();
+      const payload = finderRequest(profile, P.regionPrompt(tl, t.regionPrompt), P.regionSchema(tl, t.regionSchema), await dataUrlOf(file));
+      const call = await this.callJSON(pid, "regions", profile, payload,
+        parsed => S.scaleRegions(parsed, W, H, tl), profile.provider === "openai"
+          ? (usage, body) => S.openaiCost(usage, profile.pricing || t.regionPricing, body.service_tier) : null);
+      ({ regions, warnings } = call.parsed);
+      const empty = { geometry: [], charH: 0, angle: 0, method: "063-fragment-band-lines" };
+      res = this.outlines ? await this.outlines(pid, await this.book.imageUrl(pid), regions.map(region => region.box)) : empty;
+      if (!regions.length && res.error) res = empty;
+      if (res.error) throw new Error(res.error);
+      regionCall = { model: call.response.model, response_id: call.response.id, usage: call.response.usage,
+        cost_usd: call.cost_usd, seconds: call.seconds, output: profile.provider === "openai" ? S.openaiText(call.response) : S.geminiText(call.response), path: call.path };
     }
+    const out = { format: "page-regions", page: pid, profile, fingerprint, types_revision: typeRevision(tl.source?.revision),
+      width: W, height: H, image_sha256: imageHash, char_h: res.charH, page_angle_deg: res.angle, local_method: res.method,
+      regions: S.regionRecords(regions, res.geometry), uncovered_lines: res.uncovered || [], warnings,
+      region_call: regionCall, made_at_utc: new Date().toISOString() };
+    await this.retainRegions(pid, out, { save, trial, imageHash });
     return out;
   }
 

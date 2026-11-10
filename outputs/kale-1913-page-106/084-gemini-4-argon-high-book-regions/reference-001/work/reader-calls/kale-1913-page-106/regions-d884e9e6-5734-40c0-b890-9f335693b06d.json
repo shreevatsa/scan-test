@@ -1,0 +1,499 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "d884e9e6-5734-40c0-b890-9f335693b06d",
+ "page": "kale-1913-page-106",
+ "stage": "regions",
+ "profile": {
+  "id": "argon-high-regions",
+  "label": "Gemini 4 Argon · high thinking",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking": "high",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 2,
+    "output": 10,
+    "cached": 0.1
+   },
+   {
+    "from": "2026-12-01",
+    "input": 4,
+    "output": 20,
+    "cached": 0.2
+   }
+  ],
+  "method": "084-gemini-4-argon-high-book-regions"
+ },
+ "started_at_utc": "2026-11-10T17:56:58.331Z",
+ "request_sha256": "edf6d1932ffbfdcb5bb37921640a5c21a5e28def6540200a9afa91e89c70cc0e",
+ "request": {
+  "model": "gemini-4-argon",
+  "input": [
+   {
+    "type": "text",
+    "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Kale (1913): Bhartṛhari's śatakas with a Sanskrit commentary. The scan begins with an English table of contents. Then comes the Sanskrit text of two śatakas, the Nītiśataka and the Vairāgyaśataka, each followed by its miscellaneous stanzas: each verse, in large type, is followed by its Sanskrit commentary in smaller type, some verses are introduced by a short lead-in, and numbered footnotes, mostly variant readings, sit below a rule at the foot of the page and restart at 1 on each page. After the Sanskrit text come an English translation, one numbered paragraph per stanza, and English notes on the stanzas, which quote Sanskrit words in Devanagari.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A title or heading: a part's title, such as CONTENTS., TRANSLATION or NOTES.; a śataka's title, such as अथ श्रीमद्भर्तृहरिविरचितं above नीतिशतकम् ।; an invocation above it, such as ॥ श्रीः ॥ or ॥ श्रीगणेशाय नमः ॥; a topic heading inside a śataka, such as अथ तृष्णादूषणम् ।; or a heading for the miscellaneous stanzas.\n- paragraph: A paragraph of English prose that is neither a stanza's translation nor its note: a line of the contents, such as The S'atakas treat of the following themes:—, or an editor's note, such as N. B. Read the slokas on p. 16 in this order—91, 86, …. One region per paragraph, including one continued from the previous page or onto the next.\n- contents_entry: One line of the table of contents: a range of stanza numbers and its theme, such as 2—14 अज्ञनिन्दा or Ignorance censured. One region per entry.\n- commentator_verse: One of the commentator's own opening verses at the start of the Nītiśataka, in the commentary's type, before his introduction; each ends with ॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- introduction: The commentator's introduction at the start of a śataka, in the commentary's type, after his opening verses and before the first verse of Bhartṛhari. One region per paragraph, including one continued from the previous page or onto the next.\n- lead_in: A short line of its own that introduces the verse. It often ends in a dash or colon.\n- verse: One verse in large type, with its number, such as ॥ २६ ॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- commentary: The Sanskrit commentary on the verse, in smaller type. It usually ends with the name of the metre, such as शिखरिणी ॥. One region per paragraph, including one continued from the previous page or onto the next.\n- translated_stanza: The English translation of one stanza: a paragraph beginning with the stanza's number, such as 4. or I.; some are only a cross-reference, such as 1 See p. 16. One region per paragraph, including one continued from the previous page or onto the next.\n- stanza_note: The English note on one stanza, from its number, such as Sl. 5., to the next note. A note can have several paragraphs, each its own region, and can run across pages. One region per paragraph, including one continued from the previous page or onto the next.\n- footnote: One footnote below the rule: in the Sanskrit text, a numbered variant reading; in the English parts, a note marked * or †. Include its marker. Separate neighboring notes even when they share a printed line.\n- running_header: The running title of the Sanskrit text, such as वैराग्यशतकम् । Page furniture, keep=false.\n- page_number: The printed page number: in Devanagari digits in the Sanskrit text, and in the English parts in brackets, such as [ 20 ], or parentheses, such as ( 43 ), at the head of the page. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- contents: The table of contents at the start of the scan.\n- section: One śataka of the Sanskrit text, such as वैराग्यशतकम्, with its opening, its stanzas and its miscellaneous stanzas.\n- translation: The English translation, after the Sanskrit text: one unit for the translation of both śatakas and their miscellaneous stanzas. Its headings, such as TRANSLATION, NĪTIS'ATAK., MISCELLANEOUS. and VAIRĀGYAS'ATAKA., are inside it, and it goes on across them.\n- notes: The English notes on the stanzas, after the translation: one unit for the notes on both śatakas and their miscellaneous stanzas. Its headings, such as NOTES, MISCELLANEOUS. and VAIRĀGYAS'ATAKA., are inside it, and it goes on across them.\n- group: One verse with its lead-in, if any, and its commentary. The app can show each group on its own.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|paragraph|contents_entry|commentator_verse|introduction|lead_in|verse|commentary|translated_stanza|stanza_note|footnote|running_header|page_number|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+   },
+   {
+    "type": "image",
+    "data": "<image rebuilt from the book's source>",
+    "mime_type": "image/png",
+    "resolution": "high"
+   }
+  ],
+  "generation_config": {
+   "thinking_level": "high",
+   "thinking_summaries": "none",
+   "max_output_tokens": 16384
+  },
+  "response_format": {
+   "type": "text",
+   "mime_type": "application/json",
+   "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "regions"
+    ],
+    "properties": {
+     "regions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "box_1000",
+        "keep",
+        "reading_order",
+        "uncertain",
+        "continues_from_earlier",
+        "continues_later"
+       ],
+       "properties": {
+        "type": {
+         "type": "string",
+         "enum": [
+          "heading",
+          "paragraph",
+          "contents_entry",
+          "commentator_verse",
+          "introduction",
+          "lead_in",
+          "verse",
+          "commentary",
+          "translated_stanza",
+          "stanza_note",
+          "footnote",
+          "running_header",
+          "page_number",
+          "other"
+         ]
+        },
+        "box_1000": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "minItems": 4,
+         "maxItems": 4
+        },
+        "keep": {
+         "type": "boolean"
+        },
+        "reading_order": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "minimum": 1
+        },
+        "uncertain": {
+         "type": "boolean"
+        },
+        "continues_from_earlier": {
+         "type": "boolean"
+        },
+        "continues_later": {
+         "type": "boolean"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "service_tier": "standard",
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "status": "completed",
+  "usage": {
+   "total_tokens": 5518,
+   "total_input_tokens": 3344,
+   "input_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 2278
+    },
+    {
+     "modality": "image",
+     "tokens": 1066
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 750,
+   "output_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 750
+    }
+   ],
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 1424,
+   "initial_input_tokens": 3344
+  },
+  "created": "2026-11-10T17:57:22Z",
+  "updated": "2026-11-10T17:57:22Z",
+  "service_tier": "standard",
+  "steps": [
+   {
+    "signature": "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",
+    "type": "thought"
+   },
+   {
+    "content": [
+     {
+      "text": "{\"regions\":[{\"type\":\"running_header\",\"box_1000\":[379,68,570,99],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"page_number\",\"box_1000\":[832,69,888,95],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"commentary\",\"box_1000\":[75,118,885,229],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[110,232,883,353],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"commentary\",\"box_1000\":[72,354,884,526],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[144,528,824,650],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"commentary\",\"box_1000\":[71,652,883,750],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[143,751,736,875],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"commentary\",\"box_1000\":[106,875,882,902],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"footnote\",\"box_1000\":[97,913,189,938],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"footnote\",\"box_1000\":[200,911,336,939],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"footnote\",\"box_1000\":[356,913,483,939],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"footnote\",\"box_1000\":[505,913,584,938],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}",
+      "type": "text"
+     }
+    ],
+    "type": "model_output"
+   }
+  ],
+  "object": "interaction",
+  "model": "gemini-4-argon"
+ },
+ "seconds": 23.900767625,
+ "usage": {
+  "total_tokens": 5518,
+  "total_input_tokens": 3344,
+  "input_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 2278
+   },
+   {
+    "modality": "image",
+    "tokens": 1066
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 750,
+  "output_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 750
+   }
+  ],
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 1424,
+  "initial_input_tokens": 3344
+ },
+ "cost_usd": 0.028428,
+ "parsed": {
+  "regions": [
+   {
+    "type": "running_header",
+    "box_1000": [
+     379,
+     68,
+     570,
+     99
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "running_header",
+    "box": [
+     520.746,
+     144.024,
+     783.18,
+     209.682
+    ]
+   },
+   {
+    "type": "page_number",
+    "box_1000": [
+     832,
+     69,
+     888,
+     95
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "page_number",
+    "box": [
+     1143.168,
+     146.142,
+     1220.112,
+     201.21
+    ]
+   },
+   {
+    "type": "commentary",
+    "box_1000": [
+     75,
+     118,
+     885,
+     229
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "paragraph",
+    "box": [
+     103.05,
+     249.924,
+     1215.99,
+     485.022
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     110,
+     232,
+     883,
+     353
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "verse",
+    "box": [
+     151.14,
+     491.376,
+     1213.242,
+     747.654
+    ]
+   },
+   {
+    "type": "commentary",
+    "box_1000": [
+     72,
+     354,
+     884,
+     526
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "paragraph",
+    "box": [
+     98.928,
+     749.772,
+     1214.616,
+     1114.068
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     144,
+     528,
+     824,
+     650
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "verse",
+    "box": [
+     197.856,
+     1118.304,
+     1132.176,
+     1376.7
+    ]
+   },
+   {
+    "type": "commentary",
+    "box_1000": [
+     71,
+     652,
+     883,
+     750
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "paragraph",
+    "box": [
+     97.554,
+     1380.936,
+     1213.242,
+     1588.5
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     143,
+     751,
+     736,
+     875
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "verse",
+    "box": [
+     196.482,
+     1590.618,
+     1011.264,
+     1853.25
+    ]
+   },
+   {
+    "type": "commentary",
+    "box_1000": [
+     106,
+     875,
+     882,
+     902
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": true,
+    "region_id": 9,
+    "region_class": "paragraph",
+    "box": [
+     145.644,
+     1853.25,
+     1211.868,
+     1910.436
+    ]
+   },
+   {
+    "type": "footnote",
+    "box_1000": [
+     97,
+     913,
+     189,
+     938
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 10,
+    "region_class": "note",
+    "box": [
+     133.278,
+     1933.734,
+     259.686,
+     1986.684
+    ]
+   },
+   {
+    "type": "footnote",
+    "box_1000": [
+     200,
+     911,
+     336,
+     939
+    ],
+    "keep": true,
+    "reading_order": 9,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 11,
+    "region_class": "note",
+    "box": [
+     274.8,
+     1929.498,
+     461.664,
+     1988.802
+    ]
+   },
+   {
+    "type": "footnote",
+    "box_1000": [
+     356,
+     913,
+     483,
+     939
+    ],
+    "keep": true,
+    "reading_order": 10,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 12,
+    "region_class": "note",
+    "box": [
+     489.144,
+     1933.734,
+     663.642,
+     1988.802
+    ]
+   },
+   {
+    "type": "footnote",
+    "box_1000": [
+     505,
+     913,
+     584,
+     938
+    ],
+    "keep": true,
+    "reading_order": 11,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 13,
+    "region_class": "note",
+    "box": [
+     693.87,
+     1933.734,
+     802.416,
+     1986.684
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

@@ -1,5 +1,5 @@
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261110-reading-2";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261110-finders-4";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))

@@ -1,4 +1,4 @@
-import { post } from "./pipeline/run.js?v=20261110-review-3";
+import { post } from "./pipeline/run.js?v=20261110-finders-4";
 import { openaiText, geminiText } from "./pipeline/steps.js?v=20261110-reading-2";
 import { h } from "./render.js";
 
@@ -17,8 +17,8 @@ export class CredentialChecks {
     const id = this.identity(profile), keys = { ...this.keys }, provider = profile.provider;
     let result;
     try {
-      const payload = provider === "openai" ? { model: profile.model, store: false, reasoning: { effort: "none" },
-        max_output_tokens: 64, input: "Reply OK." }
+      const payload = provider === "openai" ? { model: profile.model, store: false, reasoning: { effort: profile.reasoning || "none" },
+        max_output_tokens: profile.reasoning === "low" ? 256 : 64, input: "Reply OK." }
         : provider === "gemini" ? { model: profile.model, store: false, service_tier: "standard",
           input: [{ type: "text", text: "Reply OK." }], generation_config: {
             thinking_level: profile.thinking === "minimal" ? "minimal" : "low", thinking_summaries: "none", max_output_tokens: 64 } }
@@ -40,7 +40,7 @@ export class CredentialChecks {
 }
 
 export function stageKeyControls(checks, profile, save, changed = () => {}) {
-  if (profile.provider === "local") return h("p", { class: "hint" }, "Local OCR is ready on this device.");
+  if (profile.provider === "local") return h("p", { class: "hint" }, "Runs on this device with zero API cost.");
   const keys = checks.keys, provider = profile.provider;
   const status = h("p", { class: "hint", role: "status" });
   const refresh = () => {

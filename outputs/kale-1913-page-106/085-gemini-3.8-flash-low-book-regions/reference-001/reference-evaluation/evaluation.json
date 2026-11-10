@@ -1,0 +1,245 @@
+{
+ "created_at_utc": "2026-11-10T17:58:51.335925+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/kale-1913-page-106.png",
+  "sha256": "9c3e44d95356adce4cae37d1262ee93e5cf074197d8b1ccab1b94916a1fad0e7"
+ },
+ "reference": {
+  "path": "references/kale-1913-page-106",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "labels_png_sha256": "80bc98dfec009f0e4ecf865d0ff621fbf4203988a8888b6a0be2d3b298238a6c",
+  "spec_sha256": "ea18409ea80c06f8dc1746a364399e36d2ea3aeb0ca4fb633a5b68bd973422f6"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "085-gemini-3.8-flash-low-book-regions",
+   "path": "outputs/kale-1913-page-106/085-gemini-3.8-flash-low-book-regions/reference-001/regions.json",
+   "sha256": "5a66eefc40a3c23c8f8d2f77da1738b4671dbdfc7e778bcdeb0b5e00367fb349",
+   "totals": {
+    "other_passages_ink_included": 1138463,
+    "own_ink_left_out": 258040,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 258040,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "verse-20",
+     "commentary-20"
+    ],
+    "kept_passages_without_region": [
+     "footnote-1",
+     "footnote-2",
+     "footnote-3",
+     "footnote-4"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     5
+    ]
+   },
+   "passages": {
+    "commentary-19": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 24663,
+     "other_included": {
+      "running-header": 5672,
+      "page-number": 1407,
+      "verse-20": 26189,
+      "commentary-20": 29019,
+      "verse-21": 32579,
+      "commentary-21": 22652,
+      "verse-22": 33547,
+      "commentary-22": 110
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 24663
+    },
+    "verse-20": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 43059,
+     "other_included": {
+      "running-header": 5672,
+      "page-number": 1407,
+      "commentary-19": 37389,
+      "commentary-20": 29019,
+      "verse-21": 32579,
+      "commentary-21": 22652,
+      "verse-22": 33547,
+      "commentary-22": 110
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      9
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 43059
+    },
+    "commentary-20": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 79382,
+     "other_included": {
+      "running-header": 5672,
+      "page-number": 1407,
+      "commentary-19": 37389,
+      "verse-20": 26189,
+      "verse-21": 32579,
+      "commentary-21": 22652,
+      "verse-22": 33547,
+      "commentary-22": 110
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      1
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 79382
+    },
+    "verse-21": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 29645,
+     "other_included": {
+      "running-header": 5672,
+      "page-number": 1407,
+      "commentary-19": 37389,
+      "verse-20": 26189,
+      "commentary-20": 29019,
+      "commentary-21": 22652,
+      "verse-22": 33547,
+      "commentary-22": 110
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 29645
+    },
+    "commentary-21": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 39680,
+     "other_included": {
+      "running-header": 5672,
+      "page-number": 1407,
+      "commentary-19": 37389,
+      "verse-20": 26189,
+      "commentary-20": 29019,
+      "verse-21": 32579,
+      "verse-22": 33547,
+      "commentary-22": 110
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 39680
+    },
+    "verse-22": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 19190,
+     "other_included": {
+      "running-header": 5672,
+      "page-number": 1407,
+      "commentary-19": 37389,
+      "verse-20": 26189,
+      "commentary-20": 29019,
+      "verse-21": 32579,
+      "commentary-21": 22652,
+      "commentary-22": 110
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 19190
+    },
+    "commentary-22": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 15106,
+     "other_included": {
+      "running-header": 5672,
+      "page-number": 1407,
+      "commentary-19": 37389,
+      "verse-20": 26189,
+      "commentary-20": 29019,
+      "verse-21": 32579,
+      "commentary-21": 22652,
+      "verse-22": 33547
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 15106
+    },
+    "footnote-1": {
+     "matched_region_id": null,
+     "own_left_out": 1690
+    },
+    "footnote-2": {
+     "matched_region_id": null,
+     "own_left_out": 2136
+    },
+    "footnote-3": {
+     "matched_region_id": null,
+     "own_left_out": 2297
+    },
+    "footnote-4": {
+     "matched_region_id": null,
+     "own_left_out": 1192
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "commentary-19",
+     "lower": "verse-20",
+     "upper_region_takes_lower_ink": 26189,
+     "lower_region_takes_upper_ink": 37389
+    },
+    {
+     "upper": "verse-20",
+     "lower": "commentary-20",
+     "upper_region_takes_lower_ink": 29019,
+     "lower_region_takes_upper_ink": 26189
+    },
+    {
+     "upper": "commentary-20",
+     "lower": "verse-21",
+     "upper_region_takes_lower_ink": 32579,
+     "lower_region_takes_upper_ink": 29019
+    },
+    {
+     "upper": "verse-21",
+     "lower": "commentary-21",
+     "upper_region_takes_lower_ink": 22652,
+     "lower_region_takes_upper_ink": 32579
+    },
+    {
+     "upper": "commentary-21",
+     "lower": "verse-22",
+     "upper_region_takes_lower_ink": 33547,
+     "lower_region_takes_upper_ink": 22652
+    },
+    {
+     "upper": "verse-22",
+     "lower": "commentary-22",
+     "upper_region_takes_lower_ink": 110,
+     "lower_region_takes_upper_ink": 33547
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

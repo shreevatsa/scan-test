@@ -1,0 +1,224 @@
+{
+ "method": "086-gemini-3.5-flash-lite-book-regions",
+ "api_calls": 9,
+ "estimated_cost_usd": 0.0330156,
+ "pages": [
+  {
+   "page": "cole-1903-page-003",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.004068,
+   "seconds": 3.8184006249999998,
+   "totals": {
+    "other_passages_ink_included": 796806,
+    "own_ink_left_out": 223789,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 223527,
+    "passages_split_in_reading_order": [
+     "display-1"
+    ],
+    "passages_split_out_of_order": [
+     "display-3",
+     "footnote"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     4,
+     10
+    ]
+   },
+   "result": "outputs/cole-1903-page-003/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  },
+  {
+   "page": "gopinath-1896-page-123",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.0033939,
+   "seconds": 3.0726607090000004,
+   "totals": {
+    "other_passages_ink_included": 729339,
+    "own_ink_left_out": 283076,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 283076,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "hindi-translation-54"
+    ],
+    "kept_passages_without_region": [
+     "note-cf-c"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     2,
+     3
+    ]
+   },
+   "result": "outputs/gopinath-1896-page-123/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  },
+  {
+   "page": "dutt-mahabharata-17f-chapter-001-page-002",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.0070286,
+   "seconds": 5.914279082999999,
+   "totals": {
+    "other_passages_ink_included": 1529445,
+    "own_ink_left_out": 275124,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 275124,
+    "passages_split_in_reading_order": [
+     "translation-1"
+    ],
+    "passages_split_out_of_order": [
+     "translation-10"
+    ],
+    "kept_passages_without_region": [
+     "verse-18",
+     "verse-25"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     5,
+     15,
+     18,
+     24
+    ]
+   },
+   "result": "outputs/dutt-mahabharata-17f-chapter-001-page-002/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  },
+  {
+   "page": "gopinath-1914-page-258",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.0027076,
+   "seconds": 2.8429139579999996,
+   "totals": {
+    "other_passages_ink_included": 107581,
+    "own_ink_left_out": 251332,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 251332,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "english-translation-81"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     4
+    ]
+   },
+   "result": "outputs/gopinath-1914-page-258/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  },
+  {
+   "page": "hertel-panchatantra-page-152",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.0046424,
+   "seconds": 6.171190334,
+   "totals": {
+    "other_passages_ink_included": 3138109,
+    "own_ink_left_out": 316698,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 316698,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "verse-348"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     4
+    ]
+   },
+   "result": "outputs/hertel-panchatantra-page-152/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  },
+  {
+   "page": "ryder-ten-princes-1927-page-030",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.0026149000000000003,
+   "seconds": 3.03355475,
+   "totals": {
+    "other_passages_ink_included": 44588,
+    "own_ink_left_out": 69994,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 69994,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "result": "outputs/ryder-ten-princes-1927-page-030/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  },
+  {
+   "page": "kale-1913-page-106",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.0030769,
+   "seconds": 2.8266338330000003,
+   "totals": {
+    "other_passages_ink_included": 1238442,
+    "own_ink_left_out": 233118,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 233118,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "footnote-1",
+     "footnote-2",
+     "footnote-3",
+     "footnote-4"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     5
+    ]
+   },
+   "result": "outputs/kale-1913-page-106/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  },
+  {
+   "page": "vavilla-page-034",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.0024300999999999997,
+   "seconds": 2.441353125,
+   "totals": {
+    "other_passages_ink_included": 680888,
+    "own_ink_left_out": 112736,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 109768,
+    "passages_split_in_reading_order": [
+     "commentary-24"
+    ],
+    "passages_split_out_of_order": [
+     "commentary-23-end"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     5
+    ]
+   },
+   "result": "outputs/vavilla-page-034/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  },
+  {
+   "page": "telang-dli-page-108",
+   "finder": "flash-lite-regions",
+   "status": "completed",
+   "cost_usd": 0.0030532,
+   "seconds": 3.0568411660000003,
+   "totals": {
+    "other_passages_ink_included": 530447,
+    "own_ink_left_out": 36531,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 36531,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "verse-79-end",
+     "verse-81"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     7
+    ]
+   },
+   "result": "outputs/telang-dli-page-108/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json"
+  }
+ ],
+ "shared_survey": "outputs/surveys/081-gpt-6-astra-low-book-regions/reference-001/summary.json"
+}

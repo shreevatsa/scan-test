@@ -1,4 +1,4 @@
-import { canonical } from "./ops.js?v=20261110-reading-2";
+import { canonical } from "./ops.js?v=20261110-finders-4";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 
 export const LAYERS = ["regions", "text", "units"];

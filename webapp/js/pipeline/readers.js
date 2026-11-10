@@ -1,13 +1,7 @@
 // Transcription and schema-assignment profiles. Token prices are paid-tier USD per million.
+import { finderById } from "./finders.js?v=20261110-finders-4";
 // Source fetched 2026-11-08: https://ai.google.dev/gemini-api/docs/pricing
-const argonRates = [
-  { from: "2026-01-01", input: 2, output: 10, cached: 0.1 },
-  { from: "2026-12-01", input: 4, output: 20, cached: 0.2 },
-];
-const flashRates = [
-  { from: "2026-01-01", input: 0.75, output: 3.75, cached: 0.075 },
-  { from: "2027-01-01", input: 1.5, output: 7.5, cached: 0.15 },
-];
+import { argonRates, flashRates } from "./model-prices.js?v=20261110-finders-4";
 
 export const READERS = [
   { id: "argon-low", label: "Gemini 4 Argon · low thinking", provider: "gemini", model: "gemini-4-argon", thinking: "low", rates: argonRates, formatting: true },
@@ -55,7 +49,8 @@ export function readerOptions(value = {}, types = {}) {
   const languages = (types.languages || []).map(language => language.split("-")[0]);
   const ocrLanguages = value.ocr_languages || (languages.includes("kn") ? "kan+eng" : languages.includes("sa") ? "san+eng" : "eng");
   if (!OCR_LANGUAGES.some(([id]) => id === ocrLanguages)) throw new Error("Choose one of the included OCR language packs.");
-  return { reader, ocr_languages: ocrLanguages, structurer };
+  if (value.finder) finderById(value.finder);
+  return { reader, ocr_languages: ocrLanguages, structurer, ...(value.finder ? { finder: value.finder } : {}) };
 }
 
 export function readerPrice(profile, at = new Date().toISOString()) {

@@ -1,0 +1,383 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "ba21c032-f461-4c31-8581-6041a00b6592",
+ "page": "ryder-ten-princes-1927-page-030",
+ "stage": "regions",
+ "profile": {
+  "id": "argon-high-regions",
+  "label": "Gemini 4 Argon · high thinking",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking": "high",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 2,
+    "output": 10,
+    "cached": 0.1
+   },
+   {
+    "from": "2026-12-01",
+    "input": 4,
+    "output": 20,
+    "cached": 0.2
+   }
+  ],
+  "method": "084-gemini-4-argon-high-book-regions"
+ },
+ "started_at_utc": "2026-11-10T17:56:58.373Z",
+ "request_sha256": "78d11d79ab987c7449d6fa10c85ce1cea563447d77ade538b377c990fa80cef1",
+ "request": {
+  "model": "gemini-4-argon",
+  "input": [
+   {
+    "type": "text",
+    "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Ryder (1927), The Ten Princes: Dandin's Dasha-kumara-charita, translated from the Sanskrit. An English prose translation, scanned as two-page spreads: each image holds a left and a right page, each with its own running header and page number. A translator's introduction, signed and dated, and a table of contents come first, then the chapters, each opening with its number and title. The prose is in paragraphs full of quoted speech. Short rhymed poems are set into it, indented and in smaller type or italics.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A heading: a chapter's number and title, such as CHAPTER I above THE PRINCES ARE BORN, which together are one heading; or the title of the introduction or of the table of contents.\n- paragraph: A prose paragraph, beginning with an indented line. Quoted speech, even several speakers' turns, is part of the paragraph. A paragraph can contain a poem, as in The prince took the letter and read: [poem]. Text after the poem that begins with an indented line is a new paragraph. One region per paragraph, including one continued from the previous page or onto the next.\n- verse: A short rhymed poem set apart from the prose, indented and in smaller type or italics. A poem of several couplets separated by space, such as the benediction facing Chapter I, is one verse. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- contents_entry: One line of the table of contents: a chapter's Roman numeral, its title and its page number. One region per entry.\n- signoff: The translator's name, place and date at the end of the introduction, such as ARTHUR W. RYDER, Berkeley, California, April, 1927. One region for all its lines.\n- running_header: The running title of one page of the spread: THE TEN PRINCES on the left page, and the chapter's title or TRANSLATOR'S INTRODUCTION on the right page. Page furniture, keep=false.\n- page_number: The page number of one page of the spread, beside its running header or centered at the foot of a chapter's first page; Roman numerals in the introduction and contents. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- introduction: The translator's introduction, ending with the translator's name, place and date.\n- contents: The table of contents.\n- chapter: One chapter, such as CHAPTER I, THE PRINCES ARE BORN.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- A region holds the text of one unit only. Where one unit contains another, as with a verse inside a paragraph, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|paragraph|verse|contents_entry|signoff|running_header|page_number|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+   },
+   {
+    "type": "image",
+    "data": "<image rebuilt from the book's source>",
+    "mime_type": "image/png",
+    "resolution": "high"
+   }
+  ],
+  "generation_config": {
+   "thinking_level": "high",
+   "thinking_summaries": "none",
+   "max_output_tokens": 16384
+  },
+  "response_format": {
+   "type": "text",
+   "mime_type": "application/json",
+   "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "regions"
+    ],
+    "properties": {
+     "regions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "box_1000",
+        "keep",
+        "reading_order",
+        "uncertain",
+        "continues_from_earlier",
+        "continues_later"
+       ],
+       "properties": {
+        "type": {
+         "type": "string",
+         "enum": [
+          "heading",
+          "paragraph",
+          "verse",
+          "contents_entry",
+          "signoff",
+          "running_header",
+          "page_number",
+          "other"
+         ]
+        },
+        "box_1000": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "minItems": 4,
+         "maxItems": 4
+        },
+        "keep": {
+         "type": "boolean"
+        },
+        "reading_order": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "minimum": 1
+        },
+        "uncertain": {
+         "type": "boolean"
+        },
+        "continues_from_earlier": {
+         "type": "boolean"
+        },
+        "continues_later": {
+         "type": "boolean"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "service_tier": "standard",
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "status": "completed",
+  "usage": {
+   "total_tokens": 4411,
+   "total_input_tokens": 2781,
+   "input_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 1689
+    },
+    {
+     "modality": "image",
+     "tokens": 1092
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 470,
+   "output_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 470
+    }
+   ],
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 1160,
+   "initial_input_tokens": 2781
+  },
+  "created": "2026-11-10T17:57:24Z",
+  "updated": "2026-11-10T17:57:24Z",
+  "service_tier": "standard",
+  "steps": [
+   {
+    "signature": "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",
+    "type": "thought"
+   },
+   {
+    "content": [
+     {
+      "text": "{\"regions\":[{\"type\":\"page_number\",\"box_1000\":[93,102,111,123],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"running_header\",\"box_1000\":[181,95,329,118],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[95,136,427,443],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[101,443,434,868],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"running_header\",\"box_1000\":[575,76,822,103],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"page_number\",\"box_1000\":[847,79,865,98],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[531,118,875,683],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[541,680,879,859],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}",
+      "type": "text"
+     }
+    ],
+    "type": "model_output"
+   }
+  ],
+  "object": "interaction",
+  "model": "gemini-4-argon"
+ },
+ "seconds": 26.665679041,
+ "usage": {
+  "total_tokens": 4411,
+  "total_input_tokens": 2781,
+  "input_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 1689
+   },
+   {
+    "modality": "image",
+    "tokens": 1092
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 470,
+  "output_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 470
+   }
+  ],
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 1160,
+  "initial_input_tokens": 2781
+ },
+ "cost_usd": 0.021862,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     93,
+     102,
+     111,
+     123
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     152.613,
+     121.89,
+     182.151,
+     146.985
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     181,
+     95,
+     329,
+     118
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "running_header",
+    "box": [
+     297.021,
+     113.525,
+     539.889,
+     141.01
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     95,
+     136,
+     427,
+     443
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "paragraph",
+    "box": [
+     155.895,
+     162.52,
+     700.707,
+     529.385
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     101,
+     443,
+     434,
+     868
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "paragraph",
+    "box": [
+     165.741,
+     529.385,
+     712.194,
+     1037.26
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     575,
+     76,
+     822,
+     103
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "running_header",
+    "box": [
+     943.575,
+     90.82,
+     1348.902,
+     123.085
+    ]
+   },
+   {
+    "type": "page_number",
+    "box_1000": [
+     847,
+     79,
+     865,
+     98
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "page_number",
+    "box": [
+     1389.927,
+     94.405,
+     1419.465,
+     117.11
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     531,
+     118,
+     875,
+     683
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "paragraph",
+    "box": [
+     871.371,
+     141.01,
+     1435.875,
+     816.185
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     541,
+     680,
+     879,
+     859
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "paragraph",
+    "box": [
+     887.781,
+     812.6,
+     1442.439,
+     1026.505
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

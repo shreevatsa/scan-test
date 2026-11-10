@@ -1,0 +1,224 @@
+{
+ "created_at_utc": "2026-11-10T17:59:49.184413+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/kale-1913-page-106.png",
+  "sha256": "9c3e44d95356adce4cae37d1262ee93e5cf074197d8b1ccab1b94916a1fad0e7"
+ },
+ "reference": {
+  "path": "references/kale-1913-page-106",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "labels_png_sha256": "80bc98dfec009f0e4ecf865d0ff621fbf4203988a8888b6a0be2d3b298238a6c",
+  "spec_sha256": "ea18409ea80c06f8dc1746a364399e36d2ea3aeb0ca4fb633a5b68bd973422f6"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "086-gemini-3.5-flash-lite-book-regions",
+   "path": "outputs/kale-1913-page-106/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json",
+   "sha256": "24eaa49cab8d4897c5a2f9ff907647302cfc83a175f415cb6623835add28b243",
+   "totals": {
+    "other_passages_ink_included": 1238442,
+    "own_ink_left_out": 233118,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 233118,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "footnote-1",
+     "footnote-2",
+     "footnote-3",
+     "footnote-4"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     5
+    ]
+   },
+   "passages": {
+    "commentary-19": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 41676,
+     "other_included": {
+      "verse-20": 32786,
+      "commentary-20": 45665,
+      "verse-21": 38652,
+      "commentary-21": 26192,
+      "verse-22": 42457,
+      "commentary-22": 279
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 41676
+    },
+    "verse-20": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 36462,
+     "other_included": {
+      "commentary-19": 20376,
+      "commentary-20": 45665,
+      "verse-21": 38652,
+      "commentary-21": 26192,
+      "verse-22": 42457,
+      "commentary-22": 279
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 36462
+    },
+    "commentary-20": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 62736,
+     "other_included": {
+      "commentary-19": 20376,
+      "verse-20": 32786,
+      "verse-21": 38652,
+      "commentary-21": 26192,
+      "verse-22": 42457,
+      "commentary-22": 279
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 62736
+    },
+    "verse-21": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 23572,
+     "other_included": {
+      "commentary-19": 20376,
+      "verse-20": 32786,
+      "commentary-20": 45665,
+      "commentary-21": 26192,
+      "verse-22": 42457,
+      "commentary-22": 279
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 23572
+    },
+    "commentary-21": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 36140,
+     "other_included": {
+      "commentary-19": 20376,
+      "verse-20": 32786,
+      "commentary-20": 45665,
+      "verse-21": 38652,
+      "verse-22": 42457,
+      "commentary-22": 279
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 36140
+    },
+    "verse-22": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 10280,
+     "other_included": {
+      "commentary-19": 20376,
+      "verse-20": 32786,
+      "commentary-20": 45665,
+      "verse-21": 38652,
+      "commentary-21": 26192,
+      "commentary-22": 279
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 10280
+    },
+    "commentary-22": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 14937,
+     "other_included": {
+      "commentary-19": 20376,
+      "verse-20": 32786,
+      "commentary-20": 45665,
+      "verse-21": 38652,
+      "commentary-21": 26192,
+      "verse-22": 42457
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 14937
+    },
+    "footnote-1": {
+     "matched_region_id": null,
+     "own_left_out": 1690
+    },
+    "footnote-2": {
+     "matched_region_id": null,
+     "own_left_out": 2136
+    },
+    "footnote-3": {
+     "matched_region_id": null,
+     "own_left_out": 2297
+    },
+    "footnote-4": {
+     "matched_region_id": null,
+     "own_left_out": 1192
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "commentary-19",
+     "lower": "verse-20",
+     "upper_region_takes_lower_ink": 32786,
+     "lower_region_takes_upper_ink": 20376
+    },
+    {
+     "upper": "verse-20",
+     "lower": "commentary-20",
+     "upper_region_takes_lower_ink": 45665,
+     "lower_region_takes_upper_ink": 32786
+    },
+    {
+     "upper": "commentary-20",
+     "lower": "verse-21",
+     "upper_region_takes_lower_ink": 38652,
+     "lower_region_takes_upper_ink": 45665
+    },
+    {
+     "upper": "verse-21",
+     "lower": "commentary-21",
+     "upper_region_takes_lower_ink": 26192,
+     "lower_region_takes_upper_ink": 38652
+    },
+    {
+     "upper": "commentary-21",
+     "lower": "verse-22",
+     "upper_region_takes_lower_ink": 42457,
+     "lower_region_takes_upper_ink": 26192
+    },
+    {
+     "upper": "verse-22",
+     "lower": "commentary-22",
+     "upper_region_takes_lower_ink": 279,
+     "lower_region_takes_upper_ink": 42457
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

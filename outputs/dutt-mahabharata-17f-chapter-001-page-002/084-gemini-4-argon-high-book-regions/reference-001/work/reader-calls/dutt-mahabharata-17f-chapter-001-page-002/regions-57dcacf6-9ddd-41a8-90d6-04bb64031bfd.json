@@ -1,0 +1,844 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "57dcacf6-9ddd-41a8-90d6-04bb64031bfd",
+ "page": "dutt-mahabharata-17f-chapter-001-page-002",
+ "stage": "regions",
+ "profile": {
+  "id": "argon-high-regions",
+  "label": "Gemini 4 Argon · high thinking",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking": "high",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 2,
+    "output": 10,
+    "cached": 0.1
+   },
+   {
+    "from": "2026-12-01",
+    "input": 4,
+    "output": 20,
+    "cached": 0.2
+   }
+  ],
+  "method": "084-gemini-4-argon-high-book-regions"
+ },
+ "started_at_utc": "2026-11-10T17:55:21.347Z",
+ "request_sha256": "cf1a4d91757cf17546797f77b1766d3a7ffa145586135b72cb42777c2339aa39",
+ "request": {
+  "model": "gemini-4-argon",
+  "input": [
+   {
+    "type": "text",
+    "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Mahābhārata, Sanskrit text with M. N. Dutt's English translation. Two columns. A set of one or more Sanskrit verses is followed by one English paragraph translating the whole set. A set can run across a column or page break. Speaker lines, such as संजय उवाच and Sanjaya said, are printed with the verses and with the translation.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A chapter heading.\n- speaker: A speaker line: centered Sanskrit, such as संजय उवाच, or bold English, such as Sanjaya said.\n- verse: One Sanskrit verse, usually two lines, with its number, such as ॥२५॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- translation: The English translation of a verse set, one paragraph. One region per paragraph, including one continued from the previous page or onto the next.\n- running_header: The running title, such as DRONA PARVA or MAHĀBHĀRATA. Page furniture, keep=false.\n- page_number: The printed page number. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- chapter: One chapter, with its heading.\n- group: A set of verses with the translation of the set, and any speaker lines printed with them.\n- verse_set: One or more consecutive verses translated together.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|speaker|verse|translation|running_header|page_number|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+   },
+   {
+    "type": "image",
+    "data": "<image rebuilt from the book's source>",
+    "mime_type": "image/png",
+    "resolution": "high"
+   }
+  ],
+  "generation_config": {
+   "thinking_level": "high",
+   "thinking_summaries": "none",
+   "max_output_tokens": 16384
+  },
+  "response_format": {
+   "type": "text",
+   "mime_type": "application/json",
+   "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "regions"
+    ],
+    "properties": {
+     "regions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "box_1000",
+        "keep",
+        "reading_order",
+        "uncertain",
+        "continues_from_earlier",
+        "continues_later"
+       ],
+       "properties": {
+        "type": {
+         "type": "string",
+         "enum": [
+          "heading",
+          "speaker",
+          "verse",
+          "translation",
+          "running_header",
+          "page_number",
+          "other"
+         ]
+        },
+        "box_1000": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "minItems": 4,
+         "maxItems": 4
+        },
+        "keep": {
+         "type": "boolean"
+        },
+        "reading_order": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "minimum": 1
+        },
+        "uncertain": {
+         "type": "boolean"
+        },
+        "continues_from_earlier": {
+         "type": "boolean"
+        },
+        "continues_later": {
+         "type": "boolean"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "service_tier": "standard",
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "status": "completed",
+  "usage": {
+   "total_tokens": 6610,
+   "total_input_tokens": 2431,
+   "input_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 1367
+    },
+    {
+     "modality": "image",
+     "tokens": 1064
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 1644,
+   "output_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 1644
+    }
+   ],
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 2535,
+   "initial_input_tokens": 2431
+  },
+  "created": "2026-11-10T17:56:05Z",
+  "updated": "2026-11-10T17:56:05Z",
+  "service_tier": "standard",
+  "steps": [
+   {
+    "signature": "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",
+    "type": "thought"
+   },
+   {
+    "content": [
+     {
+      "text": "{\"regions\":[{\"type\":\"page_number\",\"box_1000\":[84,49,99,63],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"running_header\",\"box_1000\":[763,49,912,63],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[99,84,434,130],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[99,133,427,179],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[85,184,486,290],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"speaker\",\"box_1000\":[245,300,329,317],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[99,326,391,371],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"speaker\",\"box_1000\":[85,377,196,395],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[85,398,487,450],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[99,455,409,500],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[85,503,486,557],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[99,560,459,606],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[85,608,486,678],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[99,682,415,726],\"keep\":true,\"reading_order\":12,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[99,731,404,775],\"keep\":true,\"reading_order\":13,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[85,779,486,901],\"keep\":true,\"reading_order\":14,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[99,905,454,951],\"keep\":true,\"reading_order\":15,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[525,85,876,131],\"keep\":true,\"reading_order\":16,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[511,134,912,256],\"keep\":true,\"reading_order\":17,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[525,260,845,306],\"keep\":true,\"reading_order\":18,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[511,309,912,363],\"keep\":true,\"reading_order\":19,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[525,366,821,412],\"keep\":true,\"reading_order\":20,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[525,416,850,461],\"keep\":true,\"reading_order\":21,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[511,465,912,628],\"keep\":true,\"reading_order\":22,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[525,632,876,678],\"keep\":true,\"reading_order\":23,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[511,681,912,771],\"keep\":true,\"reading_order\":24,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[525,774,814,821],\"keep\":true,\"reading_order\":25,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"translation\",\"box_1000\":[511,825,912,897],\"keep\":true,\"reading_order\":26,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[525,901,832,949],\"keep\":true,\"reading_order\":27,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}",
+      "type": "text"
+     }
+    ],
+    "type": "model_output"
+   }
+  ],
+  "object": "interaction",
+  "model": "gemini-4-argon"
+ },
+ "seconds": 44.314074,
+ "usage": {
+  "total_tokens": 6610,
+  "total_input_tokens": 2431,
+  "input_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 1367
+   },
+   {
+    "modality": "image",
+    "tokens": 1064
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 1644,
+  "output_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 1644
+   }
+  ],
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 2535,
+  "initial_input_tokens": 2431
+ },
+ "cost_usd": 0.046652,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     84,
+     49,
+     99,
+     63
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     176.904,
+     139.748,
+     208.494,
+     179.676
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     763,
+     49,
+     912,
+     63
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "running_header",
+    "box": [
+     1606.878,
+     139.748,
+     1920.672,
+     179.676
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     99,
+     84,
+     434,
+     130
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "verse",
+    "box": [
+     208.494,
+     239.568,
+     914.004,
+     370.76
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     99,
+     133,
+     427,
+     179
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "verse",
+    "box": [
+     208.494,
+     379.316,
+     899.262,
+     510.508
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     85,
+     184,
+     486,
+     290
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "paragraph",
+    "box": [
+     179.01,
+     524.768,
+     1023.516,
+     827.08
+    ]
+   },
+   {
+    "type": "speaker",
+    "box_1000": [
+     245,
+     300,
+     329,
+     317
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "heading",
+    "box": [
+     515.97,
+     855.6,
+     692.874,
+     904.084
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     99,
+     326,
+     391,
+     371
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "verse",
+    "box": [
+     208.494,
+     929.752,
+     823.446,
+     1058.092
+    ]
+   },
+   {
+    "type": "speaker",
+    "box_1000": [
+     85,
+     377,
+     196,
+     395
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "heading",
+    "box": [
+     179.01,
+     1075.204,
+     412.776,
+     1126.54
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     85,
+     398,
+     487,
+     450
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 9,
+    "region_class": "paragraph",
+    "box": [
+     179.01,
+     1135.096,
+     1025.622,
+     1283.4
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     99,
+     455,
+     409,
+     500
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 10,
+    "region_class": "verse",
+    "box": [
+     208.494,
+     1297.66,
+     861.354,
+     1426
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     85,
+     503,
+     486,
+     557
+    ],
+    "keep": true,
+    "reading_order": 9,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 11,
+    "region_class": "paragraph",
+    "box": [
+     179.01,
+     1434.556,
+     1023.516,
+     1588.564
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     99,
+     560,
+     459,
+     606
+    ],
+    "keep": true,
+    "reading_order": 10,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 12,
+    "region_class": "verse",
+    "box": [
+     208.494,
+     1597.12,
+     966.654,
+     1728.312
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     85,
+     608,
+     486,
+     678
+    ],
+    "keep": true,
+    "reading_order": 11,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 13,
+    "region_class": "paragraph",
+    "box": [
+     179.01,
+     1734.016,
+     1023.516,
+     1933.656
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     99,
+     682,
+     415,
+     726
+    ],
+    "keep": true,
+    "reading_order": 12,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 14,
+    "region_class": "verse",
+    "box": [
+     208.494,
+     1945.064,
+     873.99,
+     2070.552
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     99,
+     731,
+     404,
+     775
+    ],
+    "keep": true,
+    "reading_order": 13,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 15,
+    "region_class": "verse",
+    "box": [
+     208.494,
+     2084.812,
+     850.824,
+     2210.3
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     85,
+     779,
+     486,
+     901
+    ],
+    "keep": true,
+    "reading_order": 14,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 16,
+    "region_class": "paragraph",
+    "box": [
+     179.01,
+     2221.708,
+     1023.516,
+     2569.652
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     99,
+     905,
+     454,
+     951
+    ],
+    "keep": true,
+    "reading_order": 15,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 17,
+    "region_class": "verse",
+    "box": [
+     208.494,
+     2581.06,
+     956.124,
+     2712.252
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     525,
+     85,
+     876,
+     131
+    ],
+    "keep": true,
+    "reading_order": 16,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 18,
+    "region_class": "verse",
+    "box": [
+     1105.65,
+     242.42,
+     1844.856,
+     373.612
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     511,
+     134,
+     912,
+     256
+    ],
+    "keep": true,
+    "reading_order": 17,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 19,
+    "region_class": "paragraph",
+    "box": [
+     1076.166,
+     382.168,
+     1920.672,
+     730.112
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     525,
+     260,
+     845,
+     306
+    ],
+    "keep": true,
+    "reading_order": 18,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 20,
+    "region_class": "verse",
+    "box": [
+     1105.65,
+     741.52,
+     1779.57,
+     872.712
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     511,
+     309,
+     912,
+     363
+    ],
+    "keep": true,
+    "reading_order": 19,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 21,
+    "region_class": "paragraph",
+    "box": [
+     1076.166,
+     881.268,
+     1920.672,
+     1035.276
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     525,
+     366,
+     821,
+     412
+    ],
+    "keep": true,
+    "reading_order": 20,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 22,
+    "region_class": "verse",
+    "box": [
+     1105.65,
+     1043.832,
+     1729.026,
+     1175.024
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     525,
+     416,
+     850,
+     461
+    ],
+    "keep": true,
+    "reading_order": 21,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 23,
+    "region_class": "verse",
+    "box": [
+     1105.65,
+     1186.432,
+     1790.1,
+     1314.772
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     511,
+     465,
+     912,
+     628
+    ],
+    "keep": true,
+    "reading_order": 22,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 24,
+    "region_class": "paragraph",
+    "box": [
+     1076.166,
+     1326.18,
+     1920.672,
+     1791.056
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     525,
+     632,
+     876,
+     678
+    ],
+    "keep": true,
+    "reading_order": 23,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 25,
+    "region_class": "verse",
+    "box": [
+     1105.65,
+     1802.464,
+     1844.856,
+     1933.656
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     511,
+     681,
+     912,
+     771
+    ],
+    "keep": true,
+    "reading_order": 24,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 26,
+    "region_class": "paragraph",
+    "box": [
+     1076.166,
+     1942.212,
+     1920.672,
+     2198.892
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     525,
+     774,
+     814,
+     821
+    ],
+    "keep": true,
+    "reading_order": 25,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 27,
+    "region_class": "verse",
+    "box": [
+     1105.65,
+     2207.448,
+     1714.284,
+     2341.492
+    ]
+   },
+   {
+    "type": "translation",
+    "box_1000": [
+     511,
+     825,
+     912,
+     897
+    ],
+    "keep": true,
+    "reading_order": 26,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 28,
+    "region_class": "paragraph",
+    "box": [
+     1076.166,
+     2352.9,
+     1920.672,
+     2558.244
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     525,
+     901,
+     832,
+     949
+    ],
+    "keep": true,
+    "reading_order": 27,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 29,
+    "region_class": "verse",
+    "box": [
+     1105.65,
+     2569.652,
+     1752.192,
+     2706.548
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

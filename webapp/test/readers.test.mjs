@@ -236,6 +236,54 @@ test("completion is independent of transcription and cached region trials can be
   assert.equal(calls.length, before + 2);
 });
 
+test("local finder trials retain independent results and preserve current page work", async () => {
+  const { maker, book, calls, costs } = fixture();
+  let analyses = 0;
+  maker.outlines = async (pid, url, boxes) => {
+    analyses++;
+    assert.equal(boxes, null);
+    return { blocks: [{ box: [0, 0, 101, 21], column: 0, line_count: 1, text_height: 20 }],
+      geometry: [{ rings: polygon(), lines: [{ line_id: 10, rings: polygon() }] }], charH: 15, angle: 0, method: "063-fragment-band-lines" };
+  };
+  const original = JSON.stringify(await maker.regions("p1"));
+  const trial = await maker.findRegions("p1", { finder: "local-blocks", save: false, trial: true, force: false });
+  assert.equal(await book.current("p1"), null);
+  assert.equal(JSON.stringify(await maker.regions("p1")), original);
+  assert.equal(trial.region_call.cost_usd, 0);
+  assert.equal(calls.length, 0);
+  const selected = await maker.findRegions("p1", { finder: "local-blocks", force: false });
+  assert.equal(selected.cached, true);
+  assert.equal(analyses, 1);
+  assert.equal((await book.current("p1")).source.layers.regions.made_by, "079-local-line-block-regions");
+  assert.equal(JSON.stringify(await maker.finderResult("p1", "terra-regions")), original);
+  assert.deepEqual(costs, [0]);
+  const edited = structuredClone(await book.current("p1"));
+  edited.page.regions[0].source.uncertain = false;
+  edited.page.regions[0].box[2] = 100;
+  await book.saveEdit("p1", edited, { focus: "regions" });
+  await maker.findRegions("p1", { finder: "local-blocks", force: true });
+  assert.equal((await book.current("p1")).page.regions[0].source.uncertain, false);
+  assert.equal((await book.current("p1")).source.suggestions.regions, "work/region-finders/p1/local-blocks.json");
+});
+
+test("Tesseract finder caches depend on language and type definitions", async () => {
+  const { maker, book, calls } = fixture();
+  let recognitions = 0;
+  maker.layout = async () => { recognitions++; return { blocks: [] }; };
+  maker.outlines = async () => ({ geometry: [], charH: 15, angle: 0, method: "063-fragment-band-lines" });
+  await book.saveReaderOptions({ finder: "tesseract-regions", ocr_languages: "eng" });
+  await maker.findRegions("p1", { force: false, save: false, trial: true });
+  await maker.findRegions("p1", { force: false, save: false, trial: true });
+  assert.equal(recognitions, 1);
+  await book.saveReaderOptions({ finder: "tesseract-regions", ocr_languages: "san+eng" });
+  await maker.findRegions("p1", { force: false, save: false, trial: true });
+  assert.equal(recognitions, 2);
+  book.types.types.paragraph.description = "Changed definition";
+  await maker.findRegions("p1", { force: false, save: false, trial: true });
+  assert.equal(recognitions, 3);
+  assert.equal(calls.length, 0);
+});
+
 const visionResponse = { responses: [{ fullTextAnnotation: { pages: [{ blocks: [{ paragraphs: [{ words: [
   { symbols: [{ text: "P" }, { text: "rint" }], boundingBox: { vertices: [{}, { x: 40 }, { x: 40, y: 15 }, { y: 15 }] } },
 ] }] }] }] } }] };

@@ -1,0 +1,629 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "605cf7e3-c4da-41f1-a04b-f700afe95372",
+ "page": "cole-1903-page-003",
+ "stage": "regions",
+ "profile": {
+  "id": "astra-regions",
+  "label": "GPT-6 Astra · low reasoning",
+  "provider": "openai",
+  "model": "gpt-6-astra",
+  "reasoning": "low",
+  "method": "081-gpt-6-astra-low-book-regions",
+  "pricing": {
+   "checked_on": "2026-11-10",
+   "input_per_million_usd": 10,
+   "output_per_million_usd": 50,
+   "cached_input_per_million_usd": 1,
+   "cache_write_30m_per_million_usd": 12.5,
+   "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+  }
+ },
+ "started_at_utc": "2026-11-10T17:50:27.212Z",
+ "request_sha256": "321be80a95ec7c4b03c71269a320536f3ebc13e0da96c98dc25531e779b9dd12",
+ "request": {
+  "model": "gpt-6-astra",
+  "input": [
+   {
+    "role": "user",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Cole (1903), On the factoring of large numbers: four pages of the Bulletin of the American Mathematical Society. Journal pages of English prose with inline and displayed mathematics. An article can begin or end anywhere on a page: it opens with its title, byline and a note on where it was read, and closes with the author's address and date, and a short rule separates it from the next article. The pages hold the end of the previous article, Cole's article, divided into numbered sections, and the beginning of the next article. Footnotes, marked *, † and so on, sit below a rule at the foot of the page and restart on each page.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: The title of an article, in capitals, such as ON THE FACTORING OF LARGE NUMBERS. A title of two lines is one heading.\n- byline: The author's line under the title, in small capitals, such as BY PROFESSOR F. N. COLE.\n- read_before: The line in parentheses under the byline saying where and when the paper was read, such as (Read before the American Mathematical Society, October 31, 1903.)\n- paragraph: A paragraph of prose with inline mathematics. Its first line is indented, and the first paragraph of a section begins with the section's number. A paragraph often contains displayed formulas, and its sentence goes on after them, as in …reduce N to the form [formula] the factors u and v being so chosen…; a line such as and between two formulas is the paragraph's text. Text after a formula that begins at the margin, not indented, belongs to the same paragraph. One region per paragraph, including one continued from the previous page or onto the next.\n- formula: Mathematics displayed on lines of its own, set apart from the prose: an equation, a chain of equations or congruences, or a list of numbers running over several lines. Lines that continue one another (for example a chain of = or ≡) form one region; displays separated by prose or by space are separate.\n- signoff: The author's address and date at the end of an article, in small capitals and italics, such as COLUMBIA UNIVERSITY, October, 1903., on two lines. One region for both lines.\n- footnote: One footnote below the rule, marked *, † or ‡. Include its marker. Separate neighboring notes even when they share a printed line.\n- running_header: The running title and the bracketed month or year beside it, such as THE FACTORING OF LARGE NUMBERS. [Dec., or 1903.] ON THE p-DISCRIMINANT. One region for both. Page furniture, keep=false.\n- page_number: The printed page number at the outer corner of the head, such as 134. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- article: One article: its title, byline and the note on where it was read, its text, and the author's address and date at the end.\n- section: A numbered section of an article. Its number, such as 1., begins its first paragraph.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- A region holds the text of one unit only. Where one unit contains another, as with a formula inside a paragraph, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|byline|read_before|paragraph|formula|signoff|footnote|running_header|page_number|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+     },
+     {
+      "type": "input_image",
+      "image_url": "<image rebuilt from the book's source>",
+      "detail": "original"
+     }
+    ]
+   }
+  ],
+  "reasoning": {
+   "effort": "low"
+  },
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "name": "page_regions",
+    "strict": true,
+    "schema": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "regions"
+     ],
+     "properties": {
+      "regions": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "type",
+         "box_1000",
+         "keep",
+         "reading_order",
+         "uncertain",
+         "continues_from_earlier",
+         "continues_later"
+        ],
+        "properties": {
+         "type": {
+          "type": "string",
+          "enum": [
+           "heading",
+           "byline",
+           "read_before",
+           "paragraph",
+           "formula",
+           "signoff",
+           "footnote",
+           "running_header",
+           "page_number",
+           "other"
+          ]
+         },
+         "box_1000": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+         },
+         "keep": {
+          "type": "boolean"
+         },
+         "reading_order": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 1
+         },
+         "uncertain": {
+          "type": "boolean"
+         },
+         "continues_from_earlier": {
+          "type": "boolean"
+         },
+         "continues_later": {
+          "type": "boolean"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "max_output_tokens": 16384,
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "id": "resp_0265604e60a74c13016af359643a3487d0b5a6e55d2d2370dd",
+  "object": "response",
+  "created_at": 1794333028,
+  "status": "completed",
+  "access_programs": {
+   "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+   "payer": "developer"
+  },
+  "completed_at": 1794333040,
+  "error": null,
+  "frequency_penalty": 0,
+  "image": {
+   "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6-astra",
+  "moderation": null,
+  "output": [
+   {
+    "id": "msg_0265604e60a74c13016af35968304487d08a3dba442476f5ad",
+    "type": "message",
+    "status": "completed",
+    "content": [
+     {
+      "type": "output_text",
+      "annotations": [],
+      "logprobs": [],
+      "text": "{\"regions\":[{\"type\":\"page_number\",\"box_1000\":[177,123,219,138],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"running_header\",\"box_1000\":[297,123,826,141],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[176,156,827,284],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[202,291,404,306],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"formula\",\"box_1000\":[311,316,691,331],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[176,340,826,371],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true},{\"type\":\"formula\",\"box_1000\":[176,381,827,430],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[176,437,826,485],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[175,486,827,630],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[201,631,520,647],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"formula\",\"box_1000\":[307,654,691,673],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[175,678,825,713],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true},{\"type\":\"formula\",\"box_1000\":[201,719,795,770],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"footnote\",\"box_1000\":[174,779,826,838],\"keep\":true,\"reading_order\":12,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}"
+     }
+    ],
+    "phase": "final_answer",
+    "role": "assistant"
+   }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+   "context": "all_turns",
+   "effort": "low",
+   "mode": "standard",
+   "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1,
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "description": null,
+    "name": "page_regions",
+    "schema": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "regions"
+     ],
+     "properties": {
+      "regions": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "type",
+         "box_1000",
+         "keep",
+         "reading_order",
+         "uncertain",
+         "continues_from_earlier",
+         "continues_later"
+        ],
+        "properties": {
+         "type": {
+          "type": "string",
+          "enum": [
+           "heading",
+           "byline",
+           "read_before",
+           "paragraph",
+           "formula",
+           "signoff",
+           "footnote",
+           "running_header",
+           "page_number",
+           "other"
+          ]
+         },
+         "box_1000": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+         },
+         "keep": {
+          "type": "boolean"
+         },
+         "reading_order": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 1
+         },
+         "uncertain": {
+          "type": "boolean"
+         },
+         "continues_from_earlier": {
+          "type": "boolean"
+         },
+         "continues_later": {
+          "type": "boolean"
+         }
+        }
+       }
+      }
+     }
+    },
+    "strict": true
+   },
+   "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+   "image_gen": {
+    "input_tokens": 0,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 0
+    },
+    "output_tokens": 0,
+    "output_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 0
+    },
+    "total_tokens": 0
+   },
+   "web_search": {
+    "num_requests": 0
+   }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+   "input_tokens": 7610,
+   "input_tokens_details": {
+    "cache_write_tokens": 7607,
+    "cached_tokens": 0
+   },
+   "output_tokens": 674,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 8284
+  },
+  "user": null,
+  "metadata": {}
+ },
+ "seconds": 13.483309833000002,
+ "usage": {
+  "input_tokens": 7610,
+  "input_tokens_details": {
+   "cache_write_tokens": 7607,
+   "cached_tokens": 0
+  },
+  "output_tokens": 674,
+  "output_tokens_details": {
+   "reasoning_tokens": 0
+  },
+  "total_tokens": 8284
+ },
+ "cost_usd": 0.1288175,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     177,
+     123,
+     219,
+     138
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     318.6,
+     350.55,
+     394.2,
+     393.3
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     297,
+     123,
+     826,
+     141
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "running_header",
+    "box": [
+     534.6,
+     350.55,
+     1486.8,
+     401.85
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     176,
+     156,
+     827,
+     284
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "paragraph",
+    "box": [
+     316.8,
+     444.6,
+     1488.6,
+     809.4
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     202,
+     291,
+     404,
+     306
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": true,
+    "region_id": 4,
+    "region_class": "paragraph",
+    "box": [
+     363.6,
+     829.35,
+     727.2,
+     872.1
+    ]
+   },
+   {
+    "type": "formula",
+    "box_1000": [
+     311,
+     316,
+     691,
+     331
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "formula",
+    "box": [
+     559.8,
+     900.6,
+     1243.8,
+     943.35
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     176,
+     340,
+     826,
+     371
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": true,
+    "region_id": 6,
+    "region_class": "paragraph",
+    "box": [
+     316.8,
+     969,
+     1486.8,
+     1057.35
+    ]
+   },
+   {
+    "type": "formula",
+    "box_1000": [
+     176,
+     381,
+     827,
+     430
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "formula",
+    "box": [
+     316.8,
+     1085.85,
+     1488.6,
+     1225.5
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     176,
+     437,
+     826,
+     485
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "paragraph",
+    "box": [
+     316.8,
+     1245.45,
+     1486.8,
+     1382.25
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     175,
+     486,
+     827,
+     630
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 9,
+    "region_class": "paragraph",
+    "box": [
+     315,
+     1385.1,
+     1488.6,
+     1795.5
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     201,
+     631,
+     520,
+     647
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": true,
+    "region_id": 10,
+    "region_class": "paragraph",
+    "box": [
+     361.8,
+     1798.35,
+     936,
+     1843.95
+    ]
+   },
+   {
+    "type": "formula",
+    "box_1000": [
+     307,
+     654,
+     691,
+     673
+    ],
+    "keep": true,
+    "reading_order": 9,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 11,
+    "region_class": "formula",
+    "box": [
+     552.6,
+     1863.9,
+     1243.8,
+     1918.05
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     175,
+     678,
+     825,
+     713
+    ],
+    "keep": true,
+    "reading_order": 10,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": true,
+    "region_id": 12,
+    "region_class": "paragraph",
+    "box": [
+     315,
+     1932.3,
+     1485,
+     2032.05
+    ]
+   },
+   {
+    "type": "formula",
+    "box_1000": [
+     201,
+     719,
+     795,
+     770
+    ],
+    "keep": true,
+    "reading_order": 11,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 13,
+    "region_class": "formula",
+    "box": [
+     361.8,
+     2049.15,
+     1431,
+     2194.5
+    ]
+   },
+   {
+    "type": "footnote",
+    "box_1000": [
+     174,
+     779,
+     826,
+     838
+    ],
+    "keep": true,
+    "reading_order": 12,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 14,
+    "region_class": "note",
+    "box": [
+     313.2,
+     2220.15,
+     1486.8,
+     2388.3
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

@@ -1,0 +1,392 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "5ef25d01-bda0-45fd-9c31-f1ce1235a6e2",
+ "page": "telang-dli-page-108",
+ "stage": "regions",
+ "profile": {
+  "id": "flash-lite-regions",
+  "label": "Gemini 3.5 Flash-Lite · minimal thinking",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "thinking": "minimal",
+  "method": "086-gemini-3.5-flash-lite-book-regions",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 0.3,
+    "output": 2.5,
+    "cached": 0.03
+   }
+  ]
+ },
+ "started_at_utc": "2026-11-10T17:59:49.315Z",
+ "request_sha256": "b75cf039242946b3f3be5e192976d5416e248c2dd4506debbdd8dcc975520e75",
+ "request": {
+  "model": "gemini-3.5-flash-lite",
+  "input": [
+   {
+    "type": "text",
+    "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Telang's edition of Bhartṛhari's śatakas (Digital Library of India scan). The scan of the Digital Library of India begins and ends with the library's cover, labels and barcode pages. The book has an English preface and introduction with footnotes; a critical notice describing the sources; addenda et corrigenda; an index of stanzas in tables printed sideways; the Sanskrit text of the Nītiśataka and the Vairāgyaśataka, in sections, with a critical apparatus of variant readings below a rule on each page; and English notes on the stanzas.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A title or heading: of a part, of a śataka, or of a section, such as अथ दुर्जनप्रशंसा ।\n- paragraph: A paragraph of the English preface, introduction or critical notice, such as one describing an edition, C. The Bombay Oblong edition, …; or a line introducing corrections in the addenda et corrigenda. One region per paragraph, including one continued from the previous page or onto the next.\n- corrigendum: One correction of the addenda et corrigenda, such as P. 6. (Text) line 1 from bottom, for … read …, with its page reference. One region per entry.\n- table: One index table, with its column heads (the sigla of editions and manuscripts) and, in each row, the first words of a stanza and its numbers. The tables are printed sideways; the page images of the index have been turned upright. One region per table, including any rotated text in it.\n- lead_in: A short Sanskrit line of its own that introduces the next stanza, such as साहंकारं पुरुषमुद्दिश्याह । It often ends in a dash or colon.\n- verse: One Sanskrit stanza with its number in Devanagari digits, such as ॥ २९ ॥. Its lines are set alternately flush and indented. A stanza can begin at the foot of one page and end at the top of the next. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- apparatus_entry: The variant readings of one stanza, below the rule: the stanza's Roman numeral, such as XXVIII., then readings for its quarters (a) to (d) with the sigla of the sources, such as K. Bo. M. An entry can run onto the next page; the apparatus at the top of that page then continues it without a numeral, for example from (c). Include its marker. Separate neighboring notes even when they share a printed line.\n- stanza_note: The English note on one stanza, beginning with its number, such as St. XXXIII.—, and often ending with the name of the metre, such as —Anushṭubh. A note can run across pages. One region per paragraph, including one continued from the previous page or onto the next.\n- footnote: A footnote below the rule in the preface, introduction, critical notice or notes, marked *, †, ‡, §, ¶ or ‖; or a note printed below an index table, such as N. B.—The numbers marked * refer to the Miscellaneous Stanzas…. Include its marker. Separate neighboring notes even when they share a printed line.\n- page_number: The page number at the head of the page: Devanagari digits in brackets on text pages, such as [ ७२ ]; roman numerals in the introduction; Arabic digits in the notes. Page furniture, keep=false.\n- running_header: The running title beside the page number, such as NOTES. Page furniture, keep=false.\n- scan_matter: Matter of the scan, not of the book: the library's covers and labels (NOT TO BE ISSUED OUT OF THE LIBRARY.), stamps, barcodes and accession numbers, and the note Digitized with financial assistance from the Government of Maharashtra. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- introduction: The English preface and introduction, with page numbers in roman numerals.\n- critical_notice: The critical notice after the introduction, headed CRITICAL NOTICE., describing the printed editions and manuscripts used and their sigla.\n- corrigenda: The pages headed ADDENDA ET CORRIGENDA., a list of corrections, with short lines introducing groups of them, such as In Index No. I. the following corrections should be made.\n- index: The index of stanzas: tables giving each stanza's number in other editions and manuscripts, with the headings INDEX. and INDEX No. 2.\n- shataka: The Sanskrit text of one śataka, with its title and sections, ending with its miscellaneous stanzas: one unit from its title to the next śataka or the notes, going on across the heading MISCELLANEOUS.\n- section: A group of stanzas on one theme, with its heading, such as अथ दुर्जनप्रशंसा ।. The miscellaneous stanzas at the end of a śataka, headed MISCELLANEOUS., are its last section: the śataka goes on across that heading.\n- notes: The English notes on the stanzas, after the text: one unit for the notes on both śatakas and their miscellaneous stanzas. Its headings, such as NOTES., MISCELLANEOUS., VAIRĀGYAS'ATAKA. and MISCELLANEOUS STANZAS., are inside it, and it goes on across them.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|paragraph|corrigendum|table|lead_in|verse|apparatus_entry|stanza_note|footnote|page_number|running_header|scan_matter|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+   },
+   {
+    "type": "image",
+    "data": "<image rebuilt from the book's source>",
+    "mime_type": "image/png",
+    "resolution": "high"
+   }
+  ],
+  "generation_config": {
+   "thinking_level": "minimal",
+   "thinking_summaries": "none",
+   "max_output_tokens": 16384
+  },
+  "response_format": {
+   "type": "text",
+   "mime_type": "application/json",
+   "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "regions"
+    ],
+    "properties": {
+     "regions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "box_1000",
+        "keep",
+        "reading_order",
+        "uncertain",
+        "continues_from_earlier",
+        "continues_later"
+       ],
+       "properties": {
+        "type": {
+         "type": "string",
+         "enum": [
+          "heading",
+          "paragraph",
+          "corrigendum",
+          "table",
+          "lead_in",
+          "verse",
+          "apparatus_entry",
+          "stanza_note",
+          "footnote",
+          "page_number",
+          "running_header",
+          "scan_matter",
+          "other"
+         ]
+        },
+        "box_1000": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "minItems": 4,
+         "maxItems": 4
+        },
+        "keep": {
+         "type": "boolean"
+        },
+        "reading_order": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "minimum": 1
+        },
+        "uncertain": {
+         "type": "boolean"
+        },
+        "continues_from_earlier": {
+         "type": "boolean"
+        },
+        "continues_later": {
+         "type": "boolean"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "service_tier": "standard",
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "status": "completed",
+  "usage": {
+   "total_tokens": 3724,
+   "total_input_tokens": 2844,
+   "input_tokens_by_modality": [
+    {
+     "modality": "image",
+     "tokens": 1075
+    },
+    {
+     "modality": "text",
+     "tokens": 1769
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 880,
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 0,
+   "initial_input_tokens": 2844
+  },
+  "created": "2026-11-10T17:59:52Z",
+  "updated": "2026-11-10T17:59:52Z",
+  "service_tier": "standard",
+  "steps": [
+   {
+    "signature": "EmAKXgFpFH0TmhIGucWbyUmFOGCs7ee+83a43KhEgGdUc4Ei/XU2Gome/PfQ436q6xmSALwhHa9IfAFrcMmPs1oWLvAUDlEZrXecejj1ClL4QaA6LTvFQPaAvnXxRul+bV8=",
+    "type": "thought"
+   },
+   {
+    "content": [
+     {
+      "text": "{\n  \"regions\": [\n    {\n      \"type\": \"page_number\",\n      \"box_1000\": [\n        455,\n        104,\n        565,\n        155\n      ],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [\n        161,\n        165,\n        834,\n        256\n      ],\n      \"keep\": true,\n      \"reading_order\": 1,\n      \"uncertain\": false,\n      \"continues_from_earlier\": true,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [\n        213,\n        224,\n        833,\n        348\n      ],\n      \"keep\": true,\n      \"reading_order\": 2,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [\n        310,\n        172,\n        832,\n        436\n      ],\n      \"keep\": true,\n      \"reading_order\": 3,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [\n        425,\n        165,\n        773,\n        508\n      ],\n      \"keep\": true,\n      \"reading_order\": 4,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": true\n    },\n    {\n      \"type\": \"apparatus_entry\",\n      \"box_1000\": [\n        551,\n        118,\n        878,\n        229\n      ],\n      \"keep\": true,\n      \"reading_order\": 5,\n      \"uncertain\": false,\n      \"continues_from_earlier\": true,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"apparatus_entry\",\n      \"box_1000\": [\n        581,\n        117,\n        891,\n        878\n      ],\n      \"keep\": true,\n      \"reading_order\": 6,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"apparatus_entry\",\n      \"box_1000\": [\n        762,\n        153,\n        892,\n        878\n      ],\n      \"keep\": true,\n      \"reading_order\": 7,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"apparatus_entry\",\n      \"box_1000\": [\n        855,\n        117,\n        893,\n        873\n      ],\n      \"keep\": true,\n      \"reading_order\": 8,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": true\n    }\n  ]\n}",
+      "type": "text"
+     }
+    ],
+    "type": "model_output"
+   }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.5-flash-lite"
+ },
+ "seconds": 3.0568411660000003,
+ "usage": {
+  "total_tokens": 3724,
+  "total_input_tokens": 2844,
+  "input_tokens_by_modality": [
+   {
+    "modality": "image",
+    "tokens": 1075
+   },
+   {
+    "modality": "text",
+    "tokens": 1769
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 880,
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 0,
+  "initial_input_tokens": 2844
+ },
+ "cost_usd": 0.0030532,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     455,
+     104,
+     565,
+     155
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     682.5,
+     260,
+     847.5,
+     387.5
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     161,
+     165,
+     834,
+     256
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "verse",
+    "box": [
+     241.5,
+     412.5,
+     1251,
+     640
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     213,
+     224,
+     833,
+     348
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "verse",
+    "box": [
+     319.5,
+     560,
+     1249.5,
+     870
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     310,
+     172,
+     832,
+     436
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "verse",
+    "box": [
+     465,
+     430,
+     1248,
+     1090
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     425,
+     165,
+     773,
+     508
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": true,
+    "region_id": 5,
+    "region_class": "verse",
+    "box": [
+     637.5,
+     412.5,
+     1159.5,
+     1270
+    ]
+   },
+   {
+    "type": "apparatus_entry",
+    "box_1000": [
+     551,
+     118,
+     878,
+     229
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "note",
+    "box": [
+     826.5,
+     295,
+     1317,
+     572.5
+    ]
+   },
+   {
+    "type": "apparatus_entry",
+    "box_1000": [
+     581,
+     117,
+     891,
+     878
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "note",
+    "box": [
+     871.5,
+     292.5,
+     1336.5,
+     2195
+    ]
+   },
+   {
+    "type": "apparatus_entry",
+    "box_1000": [
+     762,
+     153,
+     892,
+     878
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "note",
+    "box": [
+     1143,
+     382.5,
+     1338,
+     2195
+    ]
+   },
+   {
+    "type": "apparatus_entry",
+    "box_1000": [
+     855,
+     117,
+     893,
+     873
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": true,
+    "region_id": 9,
+    "region_class": "note",
+    "box": [
+     1282.5,
+     292.5,
+     1339.5,
+     2182.5
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

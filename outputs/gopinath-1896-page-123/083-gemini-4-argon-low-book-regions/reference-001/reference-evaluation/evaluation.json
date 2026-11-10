@@ -1,0 +1,231 @@
+{
+ "created_at_utc": "2026-11-10T17:53:50.084075+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/gopinath-1896-page-123.png",
+  "sha256": "0361671dc5c57360331f210f9f4cbe771cb1cd77b6c5ab870ee1628d8264a47b"
+ },
+ "reference": {
+  "path": "references/gopinath-1896-page-123",
+  "status": "version 3, revised by Claude on 2026-11-04: version 2, which the user reviewed and confirmed, with one more component rule. The closing quotation mark of note (b) had been labeled note-cf-a, through the line finder; not yet re-reviewed by the user",
+  "labels_png_sha256": "f47edb4f81574bedf7dc005bd5eb8e452c5b66f6c31f89b042a25c03a34a5bc4",
+  "spec_sha256": "e2aee331e436efdb6056070adab4ab6b3a4ba7b37119a7e44f3e3d16372e8fd6"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "083-gemini-4-argon-low-book-regions",
+   "path": "outputs/gopinath-1896-page-123/083-gemini-4-argon-low-book-regions/reference-001/regions.json",
+   "sha256": "60c1cb9ade1ed0ee585c4c693a8595c70c3031866c725862efc762f90bfa31a4",
+   "totals": {
+    "other_passages_ink_included": 830168,
+    "own_ink_left_out": 308589,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 308589,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "hindi-translation-54"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3
+    ]
+   },
+   "passages": {
+    "verse-54": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 89968,
+     "other_included": {
+      "hindi-translation-54": 31541,
+      "bhavartha-54": 14605,
+      "english-translation-54": 21239,
+      "note-source": 3035,
+      "note-cf-a": 7051,
+      "note-cf-b": 7886
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 89968
+    },
+    "hindi-translation-54": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 92274,
+     "other_included": {
+      "verse-54": 42147,
+      "bhavartha-54": 14605,
+      "english-translation-54": 21239,
+      "note-source": 3035,
+      "note-cf-a": 7051,
+      "note-cf-b": 7886
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      10
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 92274
+    },
+    "bhavartha-heading-54": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {
+      "verse-54": 9657,
+      "hindi-translation-54": 8703,
+      "bhavartha-54": 3234,
+      "english-translation-54": 4810,
+      "note-source": 742,
+      "note-cf-a": 1571,
+      "note-cf-b": 273
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "bhavartha-54": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 19075,
+     "other_included": {
+      "verse-54": 42147,
+      "hindi-translation-54": 31541,
+      "english-translation-54": 21239,
+      "note-source": 3035,
+      "note-cf-a": 7051,
+      "note-cf-b": 7886
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 19075
+    },
+    "english-translation-54": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 50571,
+     "other_included": {
+      "verse-54": 42147,
+      "hindi-translation-54": 31541,
+      "bhavartha-54": 14605,
+      "note-source": 3035,
+      "note-cf-a": 7051,
+      "note-cf-b": 7886
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 50571
+    },
+    "note-source": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 11856,
+     "other_included": {
+      "verse-54": 20074,
+      "hindi-translation-54": 26744,
+      "bhavartha-54": 5475,
+      "english-translation-54": 20699,
+      "note-cf-a": 1293,
+      "note-cf-b": 728
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 11856
+    },
+    "note-cf-a": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 12389,
+     "other_included": {
+      "verse-54": 42147,
+      "hindi-translation-54": 31541,
+      "bhavartha-54": 14605,
+      "english-translation-54": 21239,
+      "note-source": 3035,
+      "note-cf-b": 7886
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 12389
+    },
+    "note-cf-b": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 10986,
+     "other_included": {
+      "verse-54": 42147,
+      "hindi-translation-54": 31541,
+      "bhavartha-54": 14605,
+      "english-translation-54": 21239,
+      "note-source": 3035,
+      "note-cf-a": 7051
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 10986
+    },
+    "note-cf-c": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 21470,
+     "other_included": {
+      "verse-54": 25258,
+      "hindi-translation-54": 29595,
+      "bhavartha-54": 5349,
+      "english-translation-54": 12633,
+      "note-source": 1608,
+      "note-cf-a": 3786,
+      "note-cf-b": 7381
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 21470
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-54",
+     "lower": "hindi-translation-54",
+     "upper_region_takes_lower_ink": 31541,
+     "lower_region_takes_upper_ink": 42147
+    },
+    {
+     "upper": "hindi-translation-54",
+     "lower": "bhavartha-heading-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 8703
+    },
+    {
+     "upper": "bhavartha-heading-54",
+     "lower": "bhavartha-54",
+     "upper_region_takes_lower_ink": 3234,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-54",
+     "lower": "english-translation-54",
+     "upper_region_takes_lower_ink": 21239,
+     "lower_region_takes_upper_ink": 14605
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

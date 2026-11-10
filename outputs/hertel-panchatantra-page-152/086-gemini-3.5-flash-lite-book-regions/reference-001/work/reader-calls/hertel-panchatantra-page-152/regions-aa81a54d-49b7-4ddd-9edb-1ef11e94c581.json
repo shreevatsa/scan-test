@@ -1,0 +1,586 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "aa81a54d-49b7-4ddd-9edb-1ef11e94c581",
+ "page": "hertel-panchatantra-page-152",
+ "stage": "regions",
+ "profile": {
+  "id": "flash-lite-regions",
+  "label": "Gemini 3.5 Flash-Lite · minimal thinking",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "thinking": "minimal",
+  "method": "086-gemini-3.5-flash-lite-book-regions",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 0.3,
+    "output": 2.5,
+    "cached": 0.03
+   }
+  ]
+ },
+ "started_at_utc": "2026-11-10T17:59:30.636Z",
+ "request_sha256": "c7b7db718f08be2e3d389f4f78c0384447598dde88d586f1ff03050388feecbf",
+ "request": {
+  "model": "gemini-3.5-flash-lite",
+  "input": [
+   {
+    "type": "text",
+    "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Pañcatantra, Hertel's edition (Book I: The Estranging of Friends). Sanskrit prose stories with numbered verses quoted by the speakers. Tales are told inside other tales. Prose is set in long paragraphs; a verse is displayed and indented, and the prose after it resumes flush left.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A tale heading such as ॥ कथा २१ ॥, or a book title.\n- paragraph: A printed prose paragraph, from an indented line or the start of a tale to the next indented line, heading or tale. A verse quoted by a speaker is inside the paragraph, and the prose after it continues the same paragraph. One region per paragraph, including one continued from the previous page or onto the next.\n- lead_in: A short line of its own that introduces a quoted verse, such as किं च । It often ends in a dash or colon.\n- verse: One quoted verse with its number, such as ॥३४८॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- running_header: The running title and the tale title above the rule. Page furniture, keep=false.\n- page_number: The printed page number. Page furniture, keep=false.\n- line_number: The editor's line numbers in the outer margin (3, 6, 9, …). Page furniture, keep=false.\n- margin_mark: Any other short mark in the outer margin beside a line. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- story: A story: the frame story of a book, or a tale told inside another story. An inner tale begins with its heading, such as ॥ कथा २१ ॥, and ends with a double danda.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- A region holds the text of one unit only. Where one unit contains another, as with a verse inside a paragraph (or a lead_in inside a paragraph), the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|paragraph|lead_in|verse|running_header|page_number|line_number|margin_mark|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+   },
+   {
+    "type": "image",
+    "data": "<image rebuilt from the book's source>",
+    "mime_type": "image/png",
+    "resolution": "high"
+   }
+  ],
+  "generation_config": {
+   "thinking_level": "minimal",
+   "thinking_summaries": "none",
+   "max_output_tokens": 16384
+  },
+  "response_format": {
+   "type": "text",
+   "mime_type": "application/json",
+   "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "regions"
+    ],
+    "properties": {
+     "regions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "box_1000",
+        "keep",
+        "reading_order",
+        "uncertain",
+        "continues_from_earlier",
+        "continues_later"
+       ],
+       "properties": {
+        "type": {
+         "type": "string",
+         "enum": [
+          "heading",
+          "paragraph",
+          "lead_in",
+          "verse",
+          "running_header",
+          "page_number",
+          "line_number",
+          "margin_mark",
+          "other"
+         ]
+        },
+        "box_1000": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "minItems": 4,
+         "maxItems": 4
+        },
+        "keep": {
+         "type": "boolean"
+        },
+        "reading_order": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "minimum": 1
+        },
+        "uncertain": {
+         "type": "boolean"
+        },
+        "continues_from_earlier": {
+         "type": "boolean"
+        },
+        "continues_later": {
+         "type": "boolean"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "service_tier": "standard",
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "status": "completed",
+  "usage": {
+   "total_tokens": 3734,
+   "total_input_tokens": 2133,
+   "input_tokens_by_modality": [
+    {
+     "modality": "image",
+     "tokens": 1080
+    },
+    {
+     "modality": "text",
+     "tokens": 1053
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 1601,
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 0,
+   "initial_input_tokens": 2133
+  },
+  "created": "2026-11-10T17:59:36Z",
+  "updated": "2026-11-10T17:59:36Z",
+  "service_tier": "standard",
+  "steps": [
+   {
+    "signature": "EmAKXgFpFH0TQznWitoVSH8rThYcJSXL4wgIfpRg9tg2FVN0O27BbM54ZPkhctBtaFVrPO4TThYUPVGmaP+MCE/q+fVPr6v+ACk0VljoEsfsV0DH+FSeJTodqJHaN5HwmWU=",
+    "type": "thought"
+   },
+   {
+    "content": [
+     {
+      "text": "{\n  \"regions\": [\n    {\n      \"type\": \"running_header\",\n      \"box_1000\": [85, 233, 98, 726],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"running_header\",\n      \"box_1000\": [111, 356, 120, 600],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"page_number\",\n      \"box_1000\": [85, 892, 97, 919],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [141, 84, 421, 882],\n      \"keep\": true,\n      \"reading_order\": 1,\n      \"uncertain\": false,\n      \"continues_from_earlier\": true,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"line_number\",\n      \"box_1000\": [214, 888, 220, 898],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"line_number\",\n      \"box_1000\": [313, 888, 319, 898],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"line_number\",\n      \"box_1000\": [408, 888, 416, 898],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [435, 125, 478, 876],\n      \"keep\": true,\n      \"reading_order\": 2,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"lead_in\",\n      \"box_1000\": [496, 82, 517, 175],\n      \"keep\": true,\n      \"reading_order\": 3,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"line_number\",\n      \"box_1000\": [506, 888, 513, 899],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [529, 125, 588, 819],\n      \"keep\": true,\n      \"reading_order\": 4,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [600, 84, 747, 880],\n      \"keep\": true,\n      \"reading_order\": 5,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"line_number\",\n      \"box_1000\": [605, 888, 613, 905],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"line_number\",\n      \"box_1000\": [700, 888, 709, 905],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"verse\",\n      \"box_1000\": [759, 125, 826, 827],\n      \"keep\": true,\n      \"reading_order\": 6,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"line_number\",\n      \"box_1000\": [801, 883, 809, 901],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [839, 84, 937, 778],\n      \"keep\": true,\n      \"reading_order\": 7,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"line_number\",\n      \"box_1000\": [899, 882, 907, 901],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    }\n  ]\n}",
+      "type": "text"
+     }
+    ],
+    "type": "model_output"
+   }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.5-flash-lite"
+ },
+ "seconds": 6.171190334,
+ "usage": {
+  "total_tokens": 3734,
+  "total_input_tokens": 2133,
+  "input_tokens_by_modality": [
+   {
+    "modality": "image",
+    "tokens": 1080
+   },
+   {
+    "modality": "text",
+    "tokens": 1053
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 1601,
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 0,
+  "initial_input_tokens": 2133
+ },
+ "cost_usd": 0.0046424,
+ "parsed": {
+  "regions": [
+   {
+    "type": "running_header",
+    "box_1000": [
+     85,
+     233,
+     98,
+     726
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "running_header",
+    "box": [
+     177.48,
+     727.193,
+     204.624,
+     2265.846
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     111,
+     356,
+     120,
+     600
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "running_header",
+    "box": [
+     231.768,
+     1111.076,
+     250.56,
+     1872.6
+    ]
+   },
+   {
+    "type": "page_number",
+    "box_1000": [
+     85,
+     892,
+     97,
+     919
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "page_number",
+    "box": [
+     177.48,
+     2783.932,
+     202.536,
+     2868.199
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     141,
+     84,
+     421,
+     882
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "paragraph",
+    "box": [
+     294.408,
+     262.164,
+     879.048,
+     2752.722
+    ]
+   },
+   {
+    "type": "line_number",
+    "box_1000": [
+     214,
+     888,
+     220,
+     898
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "other",
+    "box": [
+     446.832,
+     2771.448,
+     459.36,
+     2802.658
+    ]
+   },
+   {
+    "type": "line_number",
+    "box_1000": [
+     313,
+     888,
+     319,
+     898
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "other",
+    "box": [
+     653.544,
+     2771.448,
+     666.072,
+     2802.658
+    ]
+   },
+   {
+    "type": "line_number",
+    "box_1000": [
+     408,
+     888,
+     416,
+     898
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "other",
+    "box": [
+     851.904,
+     2771.448,
+     868.608,
+     2802.658
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     435,
+     125,
+     478,
+     876
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "verse",
+    "box": [
+     908.28,
+     390.125,
+     998.064,
+     2733.996
+    ]
+   },
+   {
+    "type": "lead_in",
+    "box_1000": [
+     496,
+     82,
+     517,
+     175
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 9,
+    "region_class": "lead_in",
+    "box": [
+     1035.648,
+     255.922,
+     1079.496,
+     546.175
+    ]
+   },
+   {
+    "type": "line_number",
+    "box_1000": [
+     506,
+     888,
+     513,
+     899
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 10,
+    "region_class": "other",
+    "box": [
+     1056.528,
+     2771.448,
+     1071.144,
+     2805.779
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     529,
+     125,
+     588,
+     819
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 11,
+    "region_class": "verse",
+    "box": [
+     1104.552,
+     390.125,
+     1227.744,
+     2556.099
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     600,
+     84,
+     747,
+     880
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 12,
+    "region_class": "paragraph",
+    "box": [
+     1252.8,
+     262.164,
+     1559.736,
+     2746.48
+    ]
+   },
+   {
+    "type": "line_number",
+    "box_1000": [
+     605,
+     888,
+     613,
+     905
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 13,
+    "region_class": "other",
+    "box": [
+     1263.24,
+     2771.448,
+     1279.944,
+     2824.505
+    ]
+   },
+   {
+    "type": "line_number",
+    "box_1000": [
+     700,
+     888,
+     709,
+     905
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 14,
+    "region_class": "other",
+    "box": [
+     1461.6,
+     2771.448,
+     1480.392,
+     2824.505
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     759,
+     125,
+     826,
+     827
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 15,
+    "region_class": "verse",
+    "box": [
+     1584.792,
+     390.125,
+     1724.688,
+     2581.067
+    ]
+   },
+   {
+    "type": "line_number",
+    "box_1000": [
+     801,
+     883,
+     809,
+     901
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 16,
+    "region_class": "other",
+    "box": [
+     1672.488,
+     2755.843,
+     1689.192,
+     2812.021
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     839,
+     84,
+     937,
+     778
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 17,
+    "region_class": "paragraph",
+    "box": [
+     1751.832,
+     262.164,
+     1956.456,
+     2428.138
+    ]
+   },
+   {
+    "type": "line_number",
+    "box_1000": [
+     899,
+     882,
+     907,
+     901
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 18,
+    "region_class": "other",
+    "box": [
+     1877.112,
+     2752.722,
+     1893.816,
+     2812.021
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

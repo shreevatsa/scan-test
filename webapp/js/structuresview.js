@@ -1,12 +1,12 @@
-import { reviewPage } from "./review-view.js?v=20261110-review-3";
-import { assignmentOf, settledStructureScore } from "./review.js?v=20261110-review-3";
+import { reviewPage } from "./review-view.js?v=20261110-finders-4";
+import { assignmentOf, settledStructureScore } from "./review.js?v=20261110-finders-4";
 import { h } from "./render.js";
-import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261110-reading-2";
-import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, projectBookCost } from "./pipeline/readers.js";
+import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261110-finders-4";
+import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-finders-4";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
 import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
-import { settings } from "./store.js?v=20261110-review-3";
+import { settings } from "./store.js?v=20261110-finders-4";
 import { runProgress } from "./run-progress.js";
 
 export async function renderStructures(el, app) {

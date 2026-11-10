@@ -1,0 +1,180 @@
+{
+ "created_at_utc": "2026-11-10T14:07:59.533207+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/gopinath-1896-page-123.png",
+  "sha256": "0361671dc5c57360331f210f9f4cbe771cb1cd77b6c5ab870ee1628d8264a47b"
+ },
+ "reference": {
+  "path": "references/gopinath-1896-page-123",
+  "status": "version 3, revised by Claude on 2026-11-04: version 2, which the user reviewed and confirmed, with one more component rule. The closing quotation mark of note (b) had been labeled note-cf-a, through the line finder; not yet re-reviewed by the user",
+  "labels_png_sha256": "f47edb4f81574bedf7dc005bd5eb8e452c5b66f6c31f89b042a25c03a34a5bc4",
+  "spec_sha256": "e2aee331e436efdb6056070adab4ab6b3a4ba7b37119a7e44f3e3d16372e8fd6"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "079-local-line-block-regions",
+   "path": "outputs/gopinath-1896-page-123/079-local-line-block-regions/reference-001/regions.json",
+   "sha256": "d84d950c8ed118f3d15a98c04fd3cf6a269d5c7bd1be07e590269e60e1e11e44",
+   "totals": {
+    "other_passages_ink_included": 255930,
+    "own_ink_left_out": 36163,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [
+     "english-translation-54",
+     "note-cf-a",
+     "note-cf-b",
+     "note-cf-c"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     2
+    ]
+   },
+   "passages": {
+    "verse-54": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {
+      "hindi-translation-54": 123815
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "hindi-translation-54": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {
+      "verse-54": 132115
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "bhavartha-heading-54": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "bhavartha-54": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "english-translation-54": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 11122,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [
+      5
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "note-source": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "note-cf-a": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 9853,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [
+      9,
+      10
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "note-cf-b": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 6781,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [
+      12
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "note-cf-c": {
+     "matched_region_id": 13,
+     "region_kind": "polygon",
+     "own_left_out": 8407,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [
+      14
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-54",
+     "lower": "hindi-translation-54",
+     "upper_region_takes_lower_ink": 123815,
+     "lower_region_takes_upper_ink": 132115
+    },
+    {
+     "upper": "hindi-translation-54",
+     "lower": "bhavartha-heading-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-heading-54",
+     "lower": "bhavartha-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-54",
+     "lower": "english-translation-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

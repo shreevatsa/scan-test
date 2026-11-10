@@ -1,0 +1,22 @@
+{
+  "id": "astra-regions",
+  "label": "GPT-6 Astra \u00b7 low reasoning",
+  "provider": "openai",
+  "model": "gpt-6-astra",
+  "reasoning": "low",
+  "method": "081-gpt-6-astra-low-book-regions",
+  "pricing": {
+    "checked_on": "2026-11-10",
+    "input_per_million_usd": 10,
+    "output_per_million_usd": 50,
+    "cached_input_per_million_usd": 1,
+    "cache_write_30m_per_million_usd": 12.5,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+  },
+  "prompt": "Method 042 book-types-continuations-v1",
+  "local_outlines": "063-fragment-band-lines",
+  "coordinate_format": "xyxy_1000",
+  "max_output_tokens": 16384,
+  "store": false,
+  "runtime_snapshot": "../081-gpt-6-astra-low-book-regions/snapshot/"
+}

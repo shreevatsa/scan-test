@@ -1,0 +1,110 @@
+{
+ "baseline": "063-fragment-band-lines/regression-001, zero geometric errors on all nine pages",
+ "models": [
+  {
+   "method": "079-local-line-block-regions",
+   "label": "Line blocks \u00b7 free on this device",
+   "pages": 9,
+   "estimated_cost_usd": 0,
+   "other_passage_ink": 1068958,
+   "own_ink_omitted": 541723,
+   "own_ink_omitted_beyond_splits": 138070,
+   "separator_ink": 0,
+   "split_passages": 30,
+   "merged_regions": 12,
+   "missing_passages": 0
+  },
+  {
+   "method": "080-tesseract-paragraph-regions",
+   "label": "Tesseract paragraphs \u00b7 free on this device",
+   "pages": 9,
+   "estimated_cost_usd": 0,
+   "other_passage_ink": 2592012,
+   "own_ink_omitted": 383964,
+   "own_ink_omitted_beyond_splits": 93967,
+   "separator_ink": 0,
+   "split_passages": 13,
+   "merged_regions": 13,
+   "missing_passages": 0
+  },
+  {
+   "method": "081-gpt-6-astra-low-book-regions",
+   "label": "GPT-6 Astra \u00b7 low reasoning",
+   "pages": 9,
+   "estimated_cost_usd": 1.01437,
+   "other_passage_ink": 0,
+   "own_ink_omitted": 0,
+   "own_ink_omitted_beyond_splits": 0,
+   "separator_ink": 0,
+   "split_passages": 0,
+   "merged_regions": 0,
+   "missing_passages": 0
+  },
+  {
+   "method": "082-gpt-6.1-sol-low-book-regions",
+   "label": "GPT-6.1 Sol \u00b7 low reasoning",
+   "pages": 9,
+   "estimated_cost_usd": 0.2008865,
+   "other_passage_ink": 0,
+   "own_ink_omitted": 0,
+   "own_ink_omitted_beyond_splits": 0,
+   "separator_ink": 0,
+   "split_passages": 0,
+   "merged_regions": 0,
+   "missing_passages": 0
+  },
+  {
+   "method": "083-gemini-4-argon-low-book-regions",
+   "label": "Gemini 4 Argon \u00b7 low thinking",
+   "pages": 9,
+   "estimated_cost_usd": 0.12171,
+   "other_passage_ink": 4193060,
+   "own_ink_omitted": 1318279,
+   "own_ink_omitted_beyond_splits": 1315059,
+   "separator_ink": 0,
+   "split_passages": 1,
+   "merged_regions": 6,
+   "missing_passages": 2
+  },
+  {
+   "method": "084-gemini-4-argon-high-book-regions",
+   "label": "Gemini 4 Argon \u00b7 high thinking",
+   "pages": 9,
+   "estimated_cost_usd": 0.28796,
+   "other_passage_ink": 0,
+   "own_ink_omitted": 0,
+   "own_ink_omitted_beyond_splits": 0,
+   "separator_ink": 0,
+   "split_passages": 0,
+   "merged_regions": 0,
+   "missing_passages": 0
+  },
+  {
+   "method": "085-gemini-3.8-flash-low-book-regions",
+   "label": "Gemini 3.8 Flash \u00b7 low thinking",
+   "pages": 9,
+   "estimated_cost_usd": 0.04294275,
+   "other_passage_ink": 3606725,
+   "own_ink_omitted": 833381,
+   "own_ink_omitted_beyond_splits": 827535,
+   "separator_ink": 0,
+   "split_passages": 4,
+   "merged_regions": 8,
+   "missing_passages": 6
+  },
+  {
+   "method": "086-gemini-3.5-flash-lite-book-regions",
+   "label": "Gemini 3.5 Flash-Lite \u00b7 minimal thinking",
+   "pages": 9,
+   "estimated_cost_usd": 0.0330156,
+   "other_passage_ink": 8795645,
+   "own_ink_omitted": 1802398,
+   "own_ink_omitted_beyond_splits": 1799168,
+   "separator_ink": 0,
+   "split_passages": 3,
+   "merged_regions": 14,
+   "missing_passages": 7
+  }
+ ],
+ "estimated_model_call_cost_usd": 1.7008848499999996
+}

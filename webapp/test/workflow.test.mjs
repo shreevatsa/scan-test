@@ -136,6 +136,20 @@ test("stale credential checks never validate a changed key or quota project", as
   assert.deepEqual(await vision.check({ provider: "vision", model: "TEXT_DETECTION" }), { valid: false, message: "Billing disabled" });
 });
 
+test("credential checks use the chosen OpenAI model's supported reasoning setting", async () => {
+  const requests = [];
+  const checks = new CredentialChecks({ openai: "fixture" }, async (provider, payload) => {
+    requests.push(payload);
+    return { body: { output: [{ type: "message", content: [{ type: "output_text", text: "OK" }] }] } };
+  });
+  await checks.check({ provider: "openai", model: "gpt-6-astra", reasoning: "low" });
+  assert.deepEqual(requests[0].reasoning, { effort: "low" });
+  assert.equal(requests[0].max_output_tokens, 256);
+  await checks.check({ provider: "openai", model: "gpt-6.1-terra", reasoning: "none" });
+  assert.deepEqual(requests[1].reasoning, { effort: "none" });
+  assert.equal(requests[1].max_output_tokens, 64);
+});
+
 test("acceptance and sending back persist in edits, folder stages and a book PDF round trip", async () => {
   const originals = { ...idb }, values = new Map();
   const key = (store, id) => JSON.stringify([store, id]);

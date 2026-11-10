@@ -191,6 +191,12 @@ Human choices are saved as protected edits. A whole-page choice or dismissal cle
 
 Merged type proposals retain source definitions and keep/drop choices in `types.source.discovery.comparison`. Each proposal has its own call record. Comparison totals are separate from the primary call metadata, so existing proposal packages retain their provenance checks.
 
+## Region finder choices and trials
+
+`reader_options.finder` holds the book's region finder profile. A missing choice uses the legacy Terra profile. The existing OCR language setting also selects the language pack for Tesseract layout. Finder trials are independent work records at `work/region-finders/<page>/<profile>.json`, with the scan hash, type revision, compatibility fingerprint, model or local profile, geometry and cost provenance. Compatibility includes the method, type list and language pack where applicable. The active geometry record remains at `work/<page>.regions.json` for existing consumers. Comparison trials preserve it.
+
+`source.review.regions_page` holds an explicitly reviewed whole-page layout and its call provenance. The canonical layout includes region types, reading order, outlines, line geometry, continuation flags and omitted blocks. It ignores local region and line IDs and transcribed text. Exact matching scores expire when the current layout changes. The review dialog replaces whole layouts because different finders assign independent region IDs.
+
 ## Relations
 
 A relation has a type from the book's list, a source and a target unit. So far the only use is footnote markers: a relation of type `note` goes from a position in the text to the footnote unit. The position is a region, optionally a line and character offsets, and the printed marker.

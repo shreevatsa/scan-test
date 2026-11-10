@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Tesseract paragraph benchmark</title>
+<style>
+body { font: 17px system-ui; max-width: 70rem; margin: 2rem auto; }
+button { padding: .7rem; } table { border-collapse: collapse; } td, th { padding: .5rem; border: 1px solid #bbb; }
+textarea { width: 100%; height: 15rem; } progress { width: 25rem; }
+</style>
+<h1>Tesseract paragraph benchmark</h1>
+<p>Nine public reference scans, bundled Tesseract.js 6.0.1, automatic page segmentation mode 3. Processing runs on this device.</p>
+<button id="run">Run local benchmark</button>
+<p id="status" role="status">Ready</p>
+<progress id="progress" max="9" value="0"></progress>
+<table><thead><tr><th>Page</th><th>Language pack</th><th>Blocks</th><th>Paragraphs</th><th>Seconds</th></tr></thead><tbody id="rows"></tbody></table>
+<h2>Saved layout data</h2>
+<textarea id="results" aria-label="Benchmark layout JSON" readonly></textarea>
+<script type="module">
+import { localLayout } from './snapshot/pipeline/ocr.js';
+const root = new URL('../../', location.href);
+const read = async path => (await fetch(new URL(path, root))).json();
+document.querySelector('#run').onclick = async event => {
+  event.target.disabled = true;
+  const result = {}, status = document.querySelector('#status');
+  try {
+    const { pages } = await read('outputs/surveys/063-fragment-band-lines/regression-001/summary.json');
+    for (const fixture of pages) {
+      const pid = fixture.page, metadata = await read(`inputs/${pid}.json`);
+      const types = await read(`schema/types/${metadata.book_id}.json`);
+      const languages = types.languages.some(language => language.startsWith('sa')) ? 'san+eng' : 'eng';
+      status.textContent = `Processing ${pid}`;
+      const start = performance.now();
+      const layout = await localLayout(new URL(`inputs/${pid}.png`, root).href, languages,
+        message => { status.textContent = `${pid} · ${message}`; });
+      result[pid] = { ...layout, languages, seconds: (performance.now() - start) / 1000 };
+      const row = document.createElement('tr');
+      for (const value of [pid, languages, layout.block_count, layout.paragraph_count, result[pid].seconds.toFixed(2)]) {
+        const cell = document.createElement('td'); cell.textContent = value; row.append(cell);
+      }
+      document.querySelector('#rows').append(row);
+      document.querySelector('#progress').value++;
+      document.querySelector('#results').value = JSON.stringify(result);
+    }
+    status.textContent = 'Finished all nine pages · $0 API cost';
+  } catch(error) { status.textContent = error.message; }
+};
+</script>

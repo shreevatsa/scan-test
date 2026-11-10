@@ -1,0 +1,437 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "0890aa63-a0a7-4ad6-a723-9ce68f5b641b",
+ "page": "gopinath-1896-page-123",
+ "stage": "regions",
+ "profile": {
+  "id": "argon-high-regions",
+  "label": "Gemini 4 Argon · high thinking",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking": "high",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 2,
+    "output": 10,
+    "cached": 0.1
+   },
+   {
+    "from": "2026-12-01",
+    "input": 4,
+    "output": 20,
+    "cached": 0.2
+   }
+  ],
+  "method": "084-gemini-4-argon-high-book-regions"
+ },
+ "started_at_utc": "2026-11-10T17:55:21.350Z",
+ "request_sha256": "55df42484944857bfff8e51f32dcad934273c526010961f7ab66e3410d934387",
+ "request": {
+  "model": "gemini-4-argon",
+  "input": [
+   {
+    "type": "text",
+    "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Purohit Gopinath (1896): The Nītiśataka, Śṛṅgāraśataka and Vairāgyaśataka of Bhartṛhari, with Hindi and English translations. An English preface; then the three śatakas, one stanza to a page or so, each page inside a ruled border: the Sanskrit stanza in large type, its Hindi translation, sometimes the label भावार्थ । with a Hindi gist and lettered Hindi glosses of words with two meanings, its English translation and sometimes an English purport, then below a rule notes on where the stanza is quoted and on parallel passages. After the text come the variant readings, English notes on the stanzas, a list of works consulted and an index of stanzas.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A title or heading: of a part (PREFACE., VARIANTS., NOTES.), of a śataka, or of a śataka within the variants, or a heading inside the preface; also the label भावार्थ । above the Hindi gist.\n- paragraph: A paragraph of the English preface. One region per paragraph, including one continued from the previous page or onto the next.\n- table: One table of the preface, often printed sideways, with its column heads. One region per table, including any rotated text in it.\n- verse: One Sanskrit stanza in the largest type at the top of the text, with its number in Devanagari digits, such as ॥ ५४ ॥. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- hindi_translation: The Hindi translation of the stanza, in Devanagari prose below it, ending with the stanza's number, such as ॥ ५४ ॥. One region per paragraph, including one continued from the previous page or onto the next.\n- bhavartha: The Hindi gist of the stanza below the label भावार्थ ।, usually one or two lines. One region per paragraph, including one continued from the previous page or onto the next.\n- hindi_gloss: One lettered Hindi gloss of a word of the stanza that has two meanings, such as (ग) \"द्विजानां\" = १ दांतोंके और २ ब्राह्मणोंके । One region per entry.\n- english_translation: The English translation of the stanza, a paragraph in roman type below the Hindi. One region per paragraph, including one continued from the previous page or onto the next.\n- english_comment: An English paragraph after the translation, above the rule: the purport, beginning PURPORT., or a comment on the stanza. One region per paragraph, including one continued from the previous page or onto the next.\n- note: One note below the rule on a text page, about the stanza above: where the stanza is quoted, such as Quoted under Bhartrihari in the Subhâshitâvali at No. 464.; a comment on the stanza; or one parallel passage, with the words that introduce it, such as Cf.—(a) or For the point of the stanza, cf.—, the quotation, even of two verse lines, and its source in parentheses. Also a footnote of the preface, marked * or †. Include its marker. Separate neighboring notes even when they share a printed line.\n- variant_entry: The variant readings of one stanza: its Roman numeral, such as XCII., then readings for its quarters (a) to (d) with the sigla of the sources, such as Sp. Sb. T. One region per entry.\n- note_paragraph: One paragraph of the English notes, beginning with a stanza's Roman numeral or a quarter's letter, such as XCVII. (a) or (b). One region per paragraph, including one continued from the previous page or onto the next.\n- quotation: Lines of verse quoted in the notes and set apart, such as the lines of Milton in a note; the note's text before and after them belongs to its paragraph. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- list_entry: One entry of a list at the end of the book: a work consulted, or a stanza's first words with its number. One region per entry.\n- running_header: The running title at the center of the head: on text pages the śataka's name, such as नीतिशतकम् ।, or भाषान्तरादिसमेतम् ।; elsewhere PREFACE., VARIANTS. or NOTES. Page furniture, keep=false.\n- page_number: The page number at the outer corner of the head: Devanagari digits on text pages, Arabic digits in the preface, variants and notes. Page furniture, keep=false.\n- head_stanza_number: On text pages, the number of the page's stanza at the inner corner of the head, opposite the page number, such as ५२. Not the page number. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- preface: The English preface, with its headings, tables printed sideways and footnotes.\n- shataka: One of the three śatakas (नीतिशतकम्, शृङ्गारशतकम्, वैराग्यशतकम्): its title and its stanzas with their translations.\n- group: One stanza with what follows it above the rule: its Hindi translation, the label भावार्थ । and the Hindi gist where printed, lettered Hindi glosses, its English translation, and any English comment. The app can show each group on its own.\n- variants: The variant readings after the text, under the title VARIANTS. and a heading for each śataka, such as VAIRAGYASATAKA.\n- notes: The English notes after the variants, under the title NOTES.\n- stanza_note: The English notes on one stanza, beginning with its Roman numeral, such as XCV. A stanza's notes can have several paragraphs, each on one quarter of the stanza, such as (c) or (d).\n- back_lists: The lists at the end of the book: the works consulted, with their abbreviations, and the index of stanzas by their first words.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- A region holds the text of one unit only. Where one unit contains another, as with a quotation inside a note_paragraph, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|paragraph|table|verse|hindi_translation|bhavartha|hindi_gloss|english_translation|english_comment|note|variant_entry|note_paragraph|quotation|list_entry|running_header|page_number|head_stanza_number|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+   },
+   {
+    "type": "image",
+    "data": "<image rebuilt from the book's source>",
+    "mime_type": "image/png",
+    "resolution": "high"
+   }
+  ],
+  "generation_config": {
+   "thinking_level": "high",
+   "thinking_summaries": "none",
+   "max_output_tokens": 16384
+  },
+  "response_format": {
+   "type": "text",
+   "mime_type": "application/json",
+   "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "regions"
+    ],
+    "properties": {
+     "regions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "box_1000",
+        "keep",
+        "reading_order",
+        "uncertain",
+        "continues_from_earlier",
+        "continues_later"
+       ],
+       "properties": {
+        "type": {
+         "type": "string",
+         "enum": [
+          "heading",
+          "paragraph",
+          "table",
+          "verse",
+          "hindi_translation",
+          "bhavartha",
+          "hindi_gloss",
+          "english_translation",
+          "english_comment",
+          "note",
+          "variant_entry",
+          "note_paragraph",
+          "quotation",
+          "list_entry",
+          "running_header",
+          "page_number",
+          "head_stanza_number",
+          "other"
+         ]
+        },
+        "box_1000": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "minItems": 4,
+         "maxItems": 4
+        },
+        "keep": {
+         "type": "boolean"
+        },
+        "reading_order": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "minimum": 1
+        },
+        "uncertain": {
+         "type": "boolean"
+        },
+        "continues_from_earlier": {
+         "type": "boolean"
+        },
+        "continues_later": {
+         "type": "boolean"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "service_tier": "standard",
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "status": "completed",
+  "usage": {
+   "total_tokens": 5203,
+   "total_input_tokens": 3630,
+   "input_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 2564
+    },
+    {
+     "modality": "image",
+     "tokens": 1066
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 587,
+   "output_tokens_by_modality": [
+    {
+     "modality": "text",
+     "tokens": 587
+    }
+   ],
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 986,
+   "initial_input_tokens": 3630
+  },
+  "created": "2026-11-10T17:55:40Z",
+  "updated": "2026-11-10T17:55:40Z",
+  "service_tier": "standard",
+  "steps": [
+   {
+    "signature": "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",
+    "type": "thought"
+   },
+   {
+    "content": [
+     {
+      "text": "{\"regions\":[{\"type\":\"running_header\",\"box_1000\":[415,61,616,87],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"box_1000\":[172,118,860,300],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"hindi_translation\",\"box_1000\":[146,308,882,480],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"heading\",\"box_1000\":[462,485,567,511],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"bhavartha\",\"box_1000\":[148,513,880,561],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"english_translation\",\"box_1000\":[147,566,882,718],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"note\",\"box_1000\":[148,756,880,803],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"note\",\"box_1000\":[193,800,882,849],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"note\",\"box_1000\":[250,844,880,888],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"note\",\"box_1000\":[250,882,880,932],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}",
+      "type": "text"
+     }
+    ],
+    "type": "model_output"
+   }
+  ],
+  "object": "interaction",
+  "model": "gemini-4-argon"
+ },
+ "seconds": 18.742914499999998,
+ "usage": {
+  "total_tokens": 5203,
+  "total_input_tokens": 3630,
+  "input_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 2564
+   },
+   {
+    "modality": "image",
+    "tokens": 1066
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 587,
+  "output_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 587
+   }
+  ],
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 986,
+  "initial_input_tokens": 3630
+ },
+ "cost_usd": 0.02299,
+ "parsed": {
+  "regions": [
+   {
+    "type": "running_header",
+    "box_1000": [
+     415,
+     61,
+     616,
+     87
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "running_header",
+    "box": [
+     638.685,
+     145.668,
+     948.024,
+     207.756
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     172,
+     118,
+     860,
+     300
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "verse",
+    "box": [
+     264.708,
+     281.784,
+     1323.54,
+     716.4
+    ]
+   },
+   {
+    "type": "hindi_translation",
+    "box_1000": [
+     146,
+     308,
+     882,
+     480
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "paragraph",
+    "box": [
+     224.694,
+     735.504,
+     1357.398,
+     1146.24
+    ]
+   },
+   {
+    "type": "heading",
+    "box_1000": [
+     462,
+     485,
+     567,
+     511
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "heading",
+    "box": [
+     711.018,
+     1158.18,
+     872.613,
+     1220.268
+    ]
+   },
+   {
+    "type": "bhavartha",
+    "box_1000": [
+     148,
+     513,
+     880,
+     561
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "paragraph",
+    "box": [
+     227.772,
+     1225.044,
+     1354.32,
+     1339.668
+    ]
+   },
+   {
+    "type": "english_translation",
+    "box_1000": [
+     147,
+     566,
+     882,
+     718
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "paragraph",
+    "box": [
+     226.233,
+     1351.608,
+     1357.398,
+     1714.584
+    ]
+   },
+   {
+    "type": "note",
+    "box_1000": [
+     148,
+     756,
+     880,
+     803
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "note",
+    "box": [
+     227.772,
+     1805.328,
+     1354.32,
+     1917.564
+    ]
+   },
+   {
+    "type": "note",
+    "box_1000": [
+     193,
+     800,
+     882,
+     849
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "note",
+    "box": [
+     297.027,
+     1910.4,
+     1357.398,
+     2027.412
+    ]
+   },
+   {
+    "type": "note",
+    "box_1000": [
+     250,
+     844,
+     880,
+     888
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 9,
+    "region_class": "note",
+    "box": [
+     384.75,
+     2015.472,
+     1354.32,
+     2120.544
+    ]
+   },
+   {
+    "type": "note",
+    "box_1000": [
+     250,
+     882,
+     880,
+     932
+    ],
+    "keep": true,
+    "reading_order": 9,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 10,
+    "region_class": "note",
+    "box": [
+     384.75,
+     2106.216,
+     1354.32,
+     2225.616
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

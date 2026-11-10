@@ -1,0 +1,365 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "58315b4d-1c01-41ab-8b95-d77c09533d59",
+ "page": "ryder-ten-princes-1927-page-030",
+ "stage": "regions",
+ "profile": {
+  "id": "flash-lite-regions",
+  "label": "Gemini 3.5 Flash-Lite · minimal thinking",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "thinking": "minimal",
+  "method": "086-gemini-3.5-flash-lite-book-regions",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 0.3,
+    "output": 2.5,
+    "cached": 0.03
+   }
+  ]
+ },
+ "started_at_utc": "2026-11-10T17:59:43.393Z",
+ "request_sha256": "fe030d214d5d86676b3a181439643dd98aa378d67f17432320fda520472afdfc",
+ "request": {
+  "model": "gemini-3.5-flash-lite",
+  "input": [
+   {
+    "type": "text",
+    "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Ryder (1927), The Ten Princes: Dandin's Dasha-kumara-charita, translated from the Sanskrit. An English prose translation, scanned as two-page spreads: each image holds a left and a right page, each with its own running header and page number. A translator's introduction, signed and dated, and a table of contents come first, then the chapters, each opening with its number and title. The prose is in paragraphs full of quoted speech. Short rhymed poems are set into it, indented and in smaller type or italics.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A heading: a chapter's number and title, such as CHAPTER I above THE PRINCES ARE BORN, which together are one heading; or the title of the introduction or of the table of contents.\n- paragraph: A prose paragraph, beginning with an indented line. Quoted speech, even several speakers' turns, is part of the paragraph. A paragraph can contain a poem, as in The prince took the letter and read: [poem]. Text after the poem that begins with an indented line is a new paragraph. One region per paragraph, including one continued from the previous page or onto the next.\n- verse: A short rhymed poem set apart from the prose, indented and in smaller type or italics. A poem of several couplets separated by space, such as the benediction facing Chapter I, is one verse. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- contents_entry: One line of the table of contents: a chapter's Roman numeral, its title and its page number. One region per entry.\n- signoff: The translator's name, place and date at the end of the introduction, such as ARTHUR W. RYDER, Berkeley, California, April, 1927. One region for all its lines.\n- running_header: The running title of one page of the spread: THE TEN PRINCES on the left page, and the chapter's title or TRANSLATOR'S INTRODUCTION on the right page. Page furniture, keep=false.\n- page_number: The page number of one page of the spread, beside its running header or centered at the foot of a chapter's first page; Roman numerals in the introduction and contents. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- introduction: The translator's introduction, ending with the translator's name, place and date.\n- contents: The table of contents.\n- chapter: One chapter, such as CHAPTER I, THE PRINCES ARE BORN.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- A region holds the text of one unit only. Where one unit contains another, as with a verse inside a paragraph, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|paragraph|verse|contents_entry|signoff|running_header|page_number|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+   },
+   {
+    "type": "image",
+    "data": "<image rebuilt from the book's source>",
+    "mime_type": "image/png",
+    "resolution": "high"
+   }
+  ],
+  "generation_config": {
+   "thinking_level": "minimal",
+   "thinking_summaries": "none",
+   "max_output_tokens": 16384
+  },
+  "response_format": {
+   "type": "text",
+   "mime_type": "application/json",
+   "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "regions"
+    ],
+    "properties": {
+     "regions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "box_1000",
+        "keep",
+        "reading_order",
+        "uncertain",
+        "continues_from_earlier",
+        "continues_later"
+       ],
+       "properties": {
+        "type": {
+         "type": "string",
+         "enum": [
+          "heading",
+          "paragraph",
+          "verse",
+          "contents_entry",
+          "signoff",
+          "running_header",
+          "page_number",
+          "other"
+         ]
+        },
+        "box_1000": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "minItems": 4,
+         "maxItems": 4
+        },
+        "keep": {
+         "type": "boolean"
+        },
+        "reading_order": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "minimum": 1
+        },
+        "uncertain": {
+         "type": "boolean"
+        },
+        "continues_from_earlier": {
+         "type": "boolean"
+        },
+        "continues_later": {
+         "type": "boolean"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "service_tier": "standard",
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "status": "completed",
+  "usage": {
+   "total_tokens": 3077,
+   "total_input_tokens": 2308,
+   "input_tokens_by_modality": [
+    {
+     "modality": "image",
+     "tokens": 1092
+    },
+    {
+     "modality": "text",
+     "tokens": 1216
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 769,
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 0,
+   "initial_input_tokens": 2308
+  },
+  "created": "2026-11-10T17:59:46Z",
+  "updated": "2026-11-10T17:59:46Z",
+  "service_tier": "standard",
+  "steps": [
+   {
+    "signature": "EmAKXgFpFH0TFIgbkURT6Bw7dhy47BXoyLTaEyyTdGeDTcGfowbFK3xE1VjtLnhuoY4UTSVkwyn6Ltsbv/v7a3ii7fHb0kNspLnphzR3Uznt6lICOj47272QXDUs6K0SjXQ=",
+    "type": "thought"
+   },
+   {
+    "content": [
+     {
+      "text": "{\n  \"regions\": [\n    {\n      \"type\": \"page_number\",\n      \"box_1000\": [\n        94,\n        143,\n        110,\n        158\n      ],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"running_header\",\n      \"box_1000\": [\n        134,\n        183,\n        151,\n        330\n      ],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"running_header\",\n      \"box_1000\": [\n        45,\n        577,\n        61,\n        795\n      ],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"page_number\",\n      \"box_1000\": [\n        44,\n        832,\n        61,\n        854\n      ],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [\n        140,\n        96,\n        438,\n        424\n      ],\n      \"keep\": true,\n      \"reading_order\": 1,\n      \"uncertain\": false,\n      \"continues_from_earlier\": true,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [\n        418,\n        96,\n        861,\n        424\n      ],\n      \"keep\": true,\n      \"reading_order\": 2,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [\n        123,\n        533,\n        715,\n        861\n      ],\n      \"keep\": true,\n      \"reading_order\": 3,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [\n        677,\n        533,\n        858,\n        861\n      ],\n      \"keep\": true,\n      \"reading_order\": 4,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    }\n  ]\n}",
+      "type": "text"
+     }
+    ],
+    "type": "model_output"
+   }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.5-flash-lite"
+ },
+ "seconds": 3.03355475,
+ "usage": {
+  "total_tokens": 3077,
+  "total_input_tokens": 2308,
+  "input_tokens_by_modality": [
+   {
+    "modality": "image",
+    "tokens": 1092
+   },
+   {
+    "modality": "text",
+    "tokens": 1216
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 769,
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 0,
+  "initial_input_tokens": 2308
+ },
+ "cost_usd": 0.0026149000000000003,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     94,
+     143,
+     110,
+     158
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     154.254,
+     170.885,
+     180.51,
+     188.81
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     134,
+     183,
+     151,
+     330
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "running_header",
+    "box": [
+     219.894,
+     218.685,
+     247.791,
+     394.35
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     45,
+     577,
+     61,
+     795
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "running_header",
+    "box": [
+     73.845,
+     689.515,
+     100.101,
+     950.025
+    ]
+   },
+   {
+    "type": "page_number",
+    "box_1000": [
+     44,
+     832,
+     61,
+     854
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "page_number",
+    "box": [
+     72.204,
+     994.24,
+     100.101,
+     1020.53
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     140,
+     96,
+     438,
+     424
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "paragraph",
+    "box": [
+     229.74,
+     114.72,
+     718.758,
+     506.68
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     418,
+     96,
+     861,
+     424
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "paragraph",
+    "box": [
+     685.938,
+     114.72,
+     1412.901,
+     506.68
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     123,
+     533,
+     715,
+     861
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "paragraph",
+    "box": [
+     201.843,
+     636.935,
+     1173.315,
+     1028.895
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     677,
+     533,
+     858,
+     861
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "paragraph",
+    "box": [
+     1110.957,
+     636.935,
+     1407.978,
+     1028.895
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

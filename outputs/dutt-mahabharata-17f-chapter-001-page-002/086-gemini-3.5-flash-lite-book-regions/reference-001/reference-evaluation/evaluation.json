@@ -1,0 +1,641 @@
+{
+ "created_at_utc": "2026-11-10T17:59:30.358199+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/dutt-mahabharata-17f-chapter-001-page-002.png",
+  "sha256": "30d5598a048c41029b6674bafa288f7a0319cdf78f9c47d19d87b336e6d25449"
+ },
+ "reference": {
+  "path": "references/dutt-mahabharata-17f-chapter-001-page-002",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "labels_png_sha256": "b780ccee92acebc9437bae5f78b9dd89961f40b9edffce819d975a3e93a728dd",
+  "spec_sha256": "5e8c7c2b07d8a971c7ae872eedabbe07d6e3dc623fab1ae78e896abc3c32fca1"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "086-gemini-3.5-flash-lite-book-regions",
+   "path": "outputs/dutt-mahabharata-17f-chapter-001-page-002/086-gemini-3.5-flash-lite-book-regions/reference-001/regions.json",
+   "sha256": "58682861ba3bc660df42dadd31be31825e83918af35c5c3e786eea19fb930d77",
+   "totals": {
+    "other_passages_ink_included": 1529445,
+    "own_ink_left_out": 275124,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 275124,
+    "passages_split_in_reading_order": [
+     "translation-1"
+    ],
+    "passages_split_out_of_order": [
+     "translation-10"
+    ],
+    "kept_passages_without_region": [
+     "verse-18",
+     "verse-25"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     5,
+     15,
+     18,
+     24
+    ]
+   },
+   "passages": {
+    "verse-11": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 3232,
+     "other_included": {
+      "verse-12": 12422,
+      "translation-1": 20447,
+      "heading-sanjaya-uvaca": 1958,
+      "verse-13": 11746,
+      "heading-sanjaya-said": 295,
+      "translation-2": 11866,
+      "verse-14": 6465
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 3232
+    },
+    "verse-12": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 3419,
+     "other_included": {
+      "verse-11": 14099,
+      "translation-1": 20447,
+      "heading-sanjaya-uvaca": 1958,
+      "verse-13": 11746,
+      "heading-sanjaya-said": 295,
+      "translation-2": 11866,
+      "verse-14": 6465
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 3419
+    },
+    "translation-1": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 13748,
+     "other_included": {
+      "verse-11": 14099,
+      "verse-12": 12422,
+      "heading-sanjaya-uvaca": 1958,
+      "verse-13": 11746,
+      "heading-sanjaya-said": 295,
+      "translation-2": 11866,
+      "verse-14": 6465
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      6
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 13748
+    },
+    "heading-sanjaya-uvaca": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {
+      "verse-11": 14099,
+      "verse-12": 12422,
+      "translation-1": 20447,
+      "verse-13": 11746,
+      "heading-sanjaya-said": 295,
+      "translation-2": 11866,
+      "verse-14": 6465
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-13": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 3271,
+     "other_included": {
+      "verse-11": 14099,
+      "verse-12": 12422,
+      "translation-1": 20447,
+      "heading-sanjaya-uvaca": 1958,
+      "heading-sanjaya-said": 295,
+      "translation-2": 11866,
+      "verse-14": 6465
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 3271
+    },
+    "heading-sanjaya-said": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 680,
+     "other_included": {
+      "verse-11": 111,
+      "verse-12": 2643,
+      "translation-1": 5426,
+      "verse-13": 1471,
+      "translation-2": 1865
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 680
+    },
+    "translation-2": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 4774,
+     "other_included": {
+      "verse-11": 14099,
+      "verse-12": 12422,
+      "translation-1": 20447,
+      "heading-sanjaya-uvaca": 1958,
+      "verse-13": 11746,
+      "heading-sanjaya-said": 295,
+      "verse-14": 6465
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 4774
+    },
+    "verse-14": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 8367,
+     "other_included": {
+      "verse-11": 14099,
+      "verse-12": 12422,
+      "translation-1": 20447,
+      "heading-sanjaya-uvaca": 1958,
+      "verse-13": 11746,
+      "heading-sanjaya-said": 295,
+      "translation-2": 11866
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 8367
+    },
+    "translation-3": {
+     "matched_region_id": 18,
+     "region_kind": "polygon",
+     "own_left_out": 14728,
+     "other_included": {
+      "verse-15": 10510,
+      "translation-4": 11263,
+      "verse-16": 11274,
+      "verse-17": 11828,
+      "translation-5": 25485
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 14728
+    },
+    "verse-15": {
+     "matched_region_id": 18,
+     "region_kind": "polygon",
+     "own_left_out": 6195,
+     "other_included": {
+      "translation-3": 5121,
+      "translation-4": 11263,
+      "verse-16": 11274,
+      "verse-17": 11828,
+      "translation-5": 25485
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 6195
+    },
+    "translation-4": {
+     "matched_region_id": 18,
+     "region_kind": "polygon",
+     "own_left_out": 14505,
+     "other_included": {
+      "translation-3": 5121,
+      "verse-15": 10510,
+      "verse-16": 11274,
+      "verse-17": 11828,
+      "translation-5": 25485
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 14505
+    },
+    "verse-16": {
+     "matched_region_id": 18,
+     "region_kind": "polygon",
+     "own_left_out": 4932,
+     "other_included": {
+      "translation-3": 5121,
+      "verse-15": 10510,
+      "translation-4": 11263,
+      "verse-17": 11828,
+      "translation-5": 25485
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 4932
+    },
+    "verse-17": {
+     "matched_region_id": 18,
+     "region_kind": "polygon",
+     "own_left_out": 3418,
+     "other_included": {
+      "translation-3": 5121,
+      "verse-15": 10510,
+      "translation-4": 11263,
+      "verse-16": 11274,
+      "translation-5": 25485
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 3418
+    },
+    "translation-5": {
+     "matched_region_id": 18,
+     "region_kind": "polygon",
+     "own_left_out": 17218,
+     "other_included": {
+      "translation-3": 5121,
+      "verse-15": 10510,
+      "translation-4": 11263,
+      "verse-16": 11274,
+      "verse-17": 11828
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 17218
+    },
+    "verse-18": {
+     "matched_region_id": null,
+     "own_left_out": 17240
+    },
+    "verse-19": {
+     "matched_region_id": 15,
+     "region_kind": "polygon",
+     "own_left_out": 10830,
+     "other_included": {
+      "translation-6": 22303,
+      "verse-20": 8929,
+      "translation-7": 11117,
+      "verse-21": 8113,
+      "verse-22": 16475,
+      "translation-8": 4544
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 10830
+    },
+    "translation-6": {
+     "matched_region_id": 15,
+     "region_kind": "polygon",
+     "own_left_out": 25148,
+     "other_included": {
+      "verse-19": 6248,
+      "verse-20": 8929,
+      "translation-7": 11117,
+      "verse-21": 8113,
+      "verse-22": 16475,
+      "translation-8": 4544
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 25148
+    },
+    "verse-20": {
+     "matched_region_id": 15,
+     "region_kind": "polygon",
+     "own_left_out": 7397,
+     "other_included": {
+      "verse-19": 6248,
+      "translation-6": 22303,
+      "translation-7": 11117,
+      "verse-21": 8113,
+      "verse-22": 16475,
+      "translation-8": 4544
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 7397
+    },
+    "translation-7": {
+     "matched_region_id": 15,
+     "region_kind": "polygon",
+     "own_left_out": 9786,
+     "other_included": {
+      "verse-19": 6248,
+      "translation-6": 22303,
+      "verse-20": 8929,
+      "verse-21": 8113,
+      "verse-22": 16475,
+      "translation-8": 4544
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 9786
+    },
+    "verse-21": {
+     "matched_region_id": 15,
+     "region_kind": "polygon",
+     "own_left_out": 8678,
+     "other_included": {
+      "verse-19": 6248,
+      "translation-6": 22303,
+      "verse-20": 8929,
+      "translation-7": 11117,
+      "verse-22": 16475,
+      "translation-8": 4544
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 8678
+    },
+    "verse-22": {
+     "matched_region_id": 15,
+     "region_kind": "polygon",
+     "own_left_out": 77,
+     "other_included": {
+      "verse-19": 6248,
+      "translation-6": 22303,
+      "verse-20": 8929,
+      "translation-7": 11117,
+      "verse-21": 8113,
+      "translation-8": 4544
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 77
+    },
+    "translation-8": {
+     "matched_region_id": 24,
+     "region_kind": "polygon",
+     "own_left_out": 39218,
+     "other_included": {
+      "verse-23": 10944,
+      "translation-9": 18180,
+      "verse-24": 8309,
+      "translation-10": 12626
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 39218
+    },
+    "verse-23": {
+     "matched_region_id": 24,
+     "region_kind": "polygon",
+     "own_left_out": 6525,
+     "other_included": {
+      "translation-8": 17754,
+      "translation-9": 18180,
+      "verse-24": 8309,
+      "translation-10": 12626
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 6525
+    },
+    "translation-9": {
+     "matched_region_id": 24,
+     "region_kind": "polygon",
+     "own_left_out": 16378,
+     "other_included": {
+      "translation-8": 17754,
+      "verse-23": 10944,
+      "verse-24": 8309,
+      "translation-10": 12626
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 16378
+    },
+    "verse-24": {
+     "matched_region_id": 24,
+     "region_kind": "polygon",
+     "own_left_out": 7372,
+     "other_included": {
+      "translation-8": 17754,
+      "verse-23": 10944,
+      "translation-9": 18180,
+      "translation-10": 12626
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 7372
+    },
+    "translation-10": {
+     "matched_region_id": 24,
+     "region_kind": "polygon",
+     "own_left_out": 11522,
+     "other_included": {
+      "translation-8": 17754,
+      "verse-23": 10944,
+      "translation-9": 18180,
+      "verse-24": 8309
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      26
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 11522
+    },
+    "verse-25": {
+     "matched_region_id": null,
+     "own_left_out": 16466
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-11",
+     "lower": "verse-12",
+     "upper_region_takes_lower_ink": 12422,
+     "lower_region_takes_upper_ink": 14099
+    },
+    {
+     "upper": "verse-12",
+     "lower": "translation-1",
+     "upper_region_takes_lower_ink": 20447,
+     "lower_region_takes_upper_ink": 12422
+    },
+    {
+     "upper": "translation-1",
+     "lower": "heading-sanjaya-uvaca",
+     "upper_region_takes_lower_ink": 1958,
+     "lower_region_takes_upper_ink": 20447
+    },
+    {
+     "upper": "heading-sanjaya-uvaca",
+     "lower": "verse-13",
+     "upper_region_takes_lower_ink": 11746,
+     "lower_region_takes_upper_ink": 1958
+    },
+    {
+     "upper": "verse-13",
+     "lower": "heading-sanjaya-said",
+     "upper_region_takes_lower_ink": 295,
+     "lower_region_takes_upper_ink": 1471
+    },
+    {
+     "upper": "heading-sanjaya-said",
+     "lower": "translation-2",
+     "upper_region_takes_lower_ink": 1865,
+     "lower_region_takes_upper_ink": 295
+    },
+    {
+     "upper": "translation-2",
+     "lower": "verse-14",
+     "upper_region_takes_lower_ink": 6465,
+     "lower_region_takes_upper_ink": 11866
+    },
+    {
+     "upper": "verse-14",
+     "lower": "translation-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-3",
+     "lower": "verse-15",
+     "upper_region_takes_lower_ink": 10510,
+     "lower_region_takes_upper_ink": 5121
+    },
+    {
+     "upper": "verse-15",
+     "lower": "translation-4",
+     "upper_region_takes_lower_ink": 11263,
+     "lower_region_takes_upper_ink": 10510
+    },
+    {
+     "upper": "translation-4",
+     "lower": "verse-16",
+     "upper_region_takes_lower_ink": 11274,
+     "lower_region_takes_upper_ink": 11263
+    },
+    {
+     "upper": "verse-16",
+     "lower": "verse-17",
+     "upper_region_takes_lower_ink": 11828,
+     "lower_region_takes_upper_ink": 11274
+    },
+    {
+     "upper": "verse-17",
+     "lower": "translation-5",
+     "upper_region_takes_lower_ink": 25485,
+     "lower_region_takes_upper_ink": 11828
+    },
+    {
+     "upper": "translation-5",
+     "lower": "verse-18",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": null
+    },
+    {
+     "upper": "verse-18",
+     "lower": "verse-19",
+     "upper_region_takes_lower_ink": null,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-19",
+     "lower": "translation-6",
+     "upper_region_takes_lower_ink": 22303,
+     "lower_region_takes_upper_ink": 6248
+    },
+    {
+     "upper": "translation-6",
+     "lower": "verse-20",
+     "upper_region_takes_lower_ink": 8929,
+     "lower_region_takes_upper_ink": 22303
+    },
+    {
+     "upper": "verse-20",
+     "lower": "translation-7",
+     "upper_region_takes_lower_ink": 11117,
+     "lower_region_takes_upper_ink": 8929
+    },
+    {
+     "upper": "translation-7",
+     "lower": "verse-21",
+     "upper_region_takes_lower_ink": 8113,
+     "lower_region_takes_upper_ink": 11117
+    },
+    {
+     "upper": "verse-21",
+     "lower": "verse-22",
+     "upper_region_takes_lower_ink": 16475,
+     "lower_region_takes_upper_ink": 8113
+    },
+    {
+     "upper": "verse-22",
+     "lower": "translation-8",
+     "upper_region_takes_lower_ink": 4544,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "translation-8",
+     "lower": "verse-23",
+     "upper_region_takes_lower_ink": 10944,
+     "lower_region_takes_upper_ink": 17754
+    },
+    {
+     "upper": "verse-23",
+     "lower": "translation-9",
+     "upper_region_takes_lower_ink": 18180,
+     "lower_region_takes_upper_ink": 10944
+    },
+    {
+     "upper": "translation-9",
+     "lower": "verse-24",
+     "upper_region_takes_lower_ink": 8309,
+     "lower_region_takes_upper_ink": 18180
+    },
+    {
+     "upper": "verse-24",
+     "lower": "translation-10",
+     "upper_region_takes_lower_ink": 12626,
+     "lower_region_takes_upper_ink": 8309
+    },
+    {
+     "upper": "translation-10",
+     "lower": "verse-25",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": null
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

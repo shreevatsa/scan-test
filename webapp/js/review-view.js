@@ -1,11 +1,11 @@
 import { h, cropInto, bbox, esc } from "./render.js";
-import { clone } from "./ops.js?v=20261110-reading-2";
+import { clone } from "./ops.js?v=20261110-finders-4";
 import { parseLine, TAGS } from "./inline.js";
 import { markedText } from "./pipeline/split.js";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
 import { checkDocument } from "./schema.js?v=20261110-reading-2";
-import { assignmentOf, reviewCandidate, saveReview, settle } from "./review.js?v=20261110-review-3";
+import { assignmentOf, reviewCandidate, saveReview, settle } from "./review.js?v=20261110-finders-4";
 
 const titles = { regions: "Page regions", text: "Transcription", units: "Units and links" };
 
@@ -30,6 +30,7 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
   const scope = h("select", { "aria-label": "Review scope" }, h("option", { value: "" }, "Whole page"),
     ...base.page.regions.map(value => h("option", { value: value.id, selected: value.id === region }, value.id)));
   if (region) scope.value = region;
+  if (layer === "regions") { scope.value = ""; scope.disabled = true; }
   const lineSelect = h("select", { "aria-label": "Review line" });
   const fieldSelect = h("select", { "aria-label": "Assignment to review" }, h("option", { value: "units" }, "Grouping, continuations and links"),
     h("option", { value: "line_ends" }, "Line joins"), h("option", { value: "type" }, "Region type"));
@@ -72,6 +73,7 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
     finally {
       busy = app.workflowBusy = false;
       dialog.querySelectorAll("button,input,select,textarea").forEach(control => { control.disabled = false; });
+      if (layer === "regions") scope.disabled = true;
       if (dialog.open) updatePreview();
     }
   }

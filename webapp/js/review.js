@@ -1,10 +1,11 @@
-import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261110-reading-2";
-import { layerRecords } from "./layers.js?v=20261110-reading-2";
-import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261110-reading-2";
+import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261110-finders-4";
+import { layerRecords } from "./layers.js?v=20261110-finders-4";
+import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261110-finders-4";
 import { checkDocument } from "./schema.js?v=20261110-reading-2";
 import { markedText } from "./pipeline/split.js";
 import { structureDecisions } from "./pipeline/structure-compare.js";
-import { unitPath, unitRegionIds } from "./editing.js?v=20261110-reading-2";
+import { unitPath, unitRegionIds } from "./editing.js?v=20261110-finders-4";
+import { regionLayout } from "./pipeline/finders.js?v=20261110-finders-4";
 
 export const reviewSnapshot = (doc, types) => canonical({ doc, types });
 const freeLayer = (doc, layer) => {
@@ -187,6 +188,8 @@ export function settle(current, candidate, types, layer, scope = {}, { path = nu
       ...(line ? { geometry: lineShape(doc, region, line) } : {}),
       value: line ? markedText(line) : clone(decisions.get(key)) };
   }
+  if (layer === "regions" && !scope.region) doc.source.review.regions_page = { layout: regionLayout(doc),
+    at_utc: at, path, profile, fingerprint, call, kept_current: keep };
   if (doc.source.suggestions && !scope.region) delete doc.source.suggestions[layer];
   return { doc, keys, regions: [...new Set(keys.map(key => key.split(":")[0]))] };
 }

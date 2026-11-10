@@ -1,0 +1,192 @@
+{
+ "created_at_utc": "2026-11-10T17:57:25.387433+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/kale-1913-page-106.png",
+  "sha256": "9c3e44d95356adce4cae37d1262ee93e5cf074197d8b1ccab1b94916a1fad0e7"
+ },
+ "reference": {
+  "path": "references/kale-1913-page-106",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "labels_png_sha256": "80bc98dfec009f0e4ecf865d0ff621fbf4203988a8888b6a0be2d3b298238a6c",
+  "spec_sha256": "ea18409ea80c06f8dc1746a364399e36d2ea3aeb0ca4fb633a5b68bd973422f6"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "084-gemini-4-argon-high-book-regions",
+   "path": "outputs/kale-1913-page-106/084-gemini-4-argon-high-book-regions/reference-001/regions.json",
+   "sha256": "5950fe71e24ab10ae4d7835a92d3a31299e92abed5f4cda9c26cef69ef7acf85",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "commentary-19": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-20": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "commentary-20": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-21": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "commentary-21": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "verse-22": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "commentary-22": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "footnote-1": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "footnote-2": {
+     "matched_region_id": 11,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "footnote-3": {
+     "matched_region_id": 12,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "footnote-4": {
+     "matched_region_id": 13,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "commentary-19",
+     "lower": "verse-20",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-20",
+     "lower": "commentary-20",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "commentary-20",
+     "lower": "verse-21",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-21",
+     "lower": "commentary-21",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "commentary-21",
+     "lower": "verse-22",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "verse-22",
+     "lower": "commentary-22",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

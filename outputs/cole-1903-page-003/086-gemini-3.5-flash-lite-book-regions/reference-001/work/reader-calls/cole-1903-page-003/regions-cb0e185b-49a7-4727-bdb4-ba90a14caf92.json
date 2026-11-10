@@ -1,0 +1,521 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "cb0e185b-49a7-4727-bdb4-ba90a14caf92",
+ "page": "cole-1903-page-003",
+ "stage": "regions",
+ "profile": {
+  "id": "flash-lite-regions",
+  "label": "Gemini 3.5 Flash-Lite · minimal thinking",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "thinking": "minimal",
+  "method": "086-gemini-3.5-flash-lite-book-regions",
+  "rates": [
+   {
+    "from": "2026-01-01",
+    "input": 0.3,
+    "output": 2.5,
+    "cached": 0.03
+   }
+  ]
+ },
+ "started_at_utc": "2026-11-10T17:59:07.341Z",
+ "request_sha256": "7fd8c9ebc0b5d494ed63b1bd5f4fc46cdedb0ede2747fa9211c46aaede89ee57",
+ "request": {
+  "model": "gemini-3.5-flash-lite",
+  "input": [
+   {
+    "type": "text",
+    "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Cole (1903), On the factoring of large numbers: four pages of the Bulletin of the American Mathematical Society. Journal pages of English prose with inline and displayed mathematics. An article can begin or end anywhere on a page: it opens with its title, byline and a note on where it was read, and closes with the author's address and date, and a short rule separates it from the next article. The pages hold the end of the previous article, Cole's article, divided into numbered sections, and the beginning of the next article. Footnotes, marked *, † and so on, sit below a rule at the foot of the page and restart on each page.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: The title of an article, in capitals, such as ON THE FACTORING OF LARGE NUMBERS. A title of two lines is one heading.\n- byline: The author's line under the title, in small capitals, such as BY PROFESSOR F. N. COLE.\n- read_before: The line in parentheses under the byline saying where and when the paper was read, such as (Read before the American Mathematical Society, October 31, 1903.)\n- paragraph: A paragraph of prose with inline mathematics. Its first line is indented, and the first paragraph of a section begins with the section's number. A paragraph often contains displayed formulas, and its sentence goes on after them, as in …reduce N to the form [formula] the factors u and v being so chosen…; a line such as and between two formulas is the paragraph's text. Text after a formula that begins at the margin, not indented, belongs to the same paragraph. One region per paragraph, including one continued from the previous page or onto the next.\n- formula: Mathematics displayed on lines of its own, set apart from the prose: an equation, a chain of equations or congruences, or a list of numbers running over several lines. Lines that continue one another (for example a chain of = or ≡) form one region; displays separated by prose or by space are separate.\n- signoff: The author's address and date at the end of an article, in small capitals and italics, such as COLUMBIA UNIVERSITY, October, 1903., on two lines. One region for both lines.\n- footnote: One footnote below the rule, marked *, † or ‡. Include its marker. Separate neighboring notes even when they share a printed line.\n- running_header: The running title and the bracketed month or year beside it, such as THE FACTORING OF LARGE NUMBERS. [Dec., or 1903.] ON THE p-DISCRIMINANT. One region for both. Page furniture, keep=false.\n- page_number: The printed page number at the outer corner of the head, such as 134. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- article: One article: its title, byline and the note on where it was read, its text, and the author's address and date at the end.\n- section: A numbered section of an article. Its number, such as 1., begins its first paragraph.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- A region holds the text of one unit only. Where one unit contains another, as with a formula inside a paragraph, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"regions\":[{\"type\":\"heading|byline|read_before|paragraph|formula|signoff|footnote|running_header|page_number|other\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+   },
+   {
+    "type": "image",
+    "data": "<image rebuilt from the book's source>",
+    "mime_type": "image/png",
+    "resolution": "high"
+   }
+  ],
+  "generation_config": {
+   "thinking_level": "minimal",
+   "thinking_summaries": "none",
+   "max_output_tokens": 16384
+  },
+  "response_format": {
+   "type": "text",
+   "mime_type": "application/json",
+   "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "regions"
+    ],
+    "properties": {
+     "regions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "type",
+        "box_1000",
+        "keep",
+        "reading_order",
+        "uncertain",
+        "continues_from_earlier",
+        "continues_later"
+       ],
+       "properties": {
+        "type": {
+         "type": "string",
+         "enum": [
+          "heading",
+          "byline",
+          "read_before",
+          "paragraph",
+          "formula",
+          "signoff",
+          "footnote",
+          "running_header",
+          "page_number",
+          "other"
+         ]
+        },
+        "box_1000": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "minItems": 4,
+         "maxItems": 4
+        },
+        "keep": {
+         "type": "boolean"
+        },
+        "reading_order": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "minimum": 1
+        },
+        "uncertain": {
+         "type": "boolean"
+        },
+        "continues_from_earlier": {
+         "type": "boolean"
+        },
+        "continues_later": {
+         "type": "boolean"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "service_tier": "standard",
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "status": "completed",
+  "usage": {
+   "total_tokens": 3748,
+   "total_input_tokens": 2410,
+   "input_tokens_by_modality": [
+    {
+     "modality": "image",
+     "tokens": 1092
+    },
+    {
+     "modality": "text",
+     "tokens": 1318
+    }
+   ],
+   "total_cached_tokens": 0,
+   "total_output_tokens": 1338,
+   "total_tool_use_tokens": 0,
+   "total_thought_tokens": 0,
+   "initial_input_tokens": 2410
+  },
+  "created": "2026-11-10T17:59:11Z",
+  "updated": "2026-11-10T17:59:11Z",
+  "service_tier": "standard",
+  "steps": [
+   {
+    "signature": "EmAKXgFpFH0TRStaZXYaTOZLCc1hxl3SlaNoT7yjePQitroMxMKVExs3c1c8axeMO5/REXdHQPfbEb6WiYRaIzf+BA8pQ6nJd4+HukFVGXzdWo+0ReItMuuqpDB2pFZ82dE=",
+    "type": "thought"
+   },
+   {
+    "content": [
+     {
+      "text": "{\n  \"regions\": [\n    {\n      \"type\": \"page_number\",\n      \"box_1000\": [178, 178, 209, 218],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"running_header\",\n      \"box_1000\": [178, 297, 199, 703],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"running_header\",\n      \"box_1000\": [178, 762, 199, 824],\n      \"keep\": false,\n      \"reading_order\": null,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [227, 178, 305, 824],\n      \"keep\": true,\n      \"reading_order\": 1,\n      \"uncertain\": false,\n      \"continues_from_earlier\": true,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [317, 203, 331, 403],\n      \"keep\": true,\n      \"reading_order\": 2,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"formula\",\n      \"box_1000\": [342, 312, 355, 688],\n      \"keep\": true,\n      \"reading_order\": 3,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [366, 178, 396, 824],\n      \"keep\": true,\n      \"reading_order\": 4,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [404, 178, 442, 824],\n      \"keep\": true,\n      \"reading_order\": 5,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [450, 178, 489, 824],\n      \"keep\": true,\n      \"reading_order\": 6,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [500, 178, 646, 824],\n      \"keep\": true,\n      \"reading_order\": 7,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [655, 203, 669, 534],\n      \"keep\": true,\n      \"reading_order\": 8,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"formula\",\n      \"box_1000\": [680, 310, 695, 689],\n      \"keep\": true,\n      \"reading_order\": 9,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"paragraph\",\n      \"box_1000\": [703, 178, 735, 824],\n      \"keep\": true,\n      \"reading_order\": 10,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"formula\",\n      \"box_1000\": [744, 203, 769, 793],\n      \"keep\": true,\n      \"reading_order\": 11,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    },\n    {\n      \"type\": \"footnote\",\n      \"box_1000\": [781, 178, 839, 824],\n      \"keep\": true,\n      \"reading_order\": 12,\n      \"uncertain\": false,\n      \"continues_from_earlier\": false,\n      \"continues_later\": false\n    }\n  ]\n}",
+      "type": "text"
+     }
+    ],
+    "type": "model_output"
+   }
+  ],
+  "object": "interaction",
+  "model": "gemini-3.5-flash-lite"
+ },
+ "seconds": 3.8184006249999998,
+ "usage": {
+  "total_tokens": 3748,
+  "total_input_tokens": 2410,
+  "input_tokens_by_modality": [
+   {
+    "modality": "image",
+    "tokens": 1092
+   },
+   {
+    "modality": "text",
+    "tokens": 1318
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 1338,
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 0,
+  "initial_input_tokens": 2410
+ },
+ "cost_usd": 0.004068,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     178,
+     178,
+     209,
+     218
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     320.4,
+     507.3,
+     376.2,
+     621.3
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     178,
+     297,
+     199,
+     703
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "running_header",
+    "box": [
+     320.4,
+     846.45,
+     358.2,
+     2003.55
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     178,
+     762,
+     199,
+     824
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "running_header",
+    "box": [
+     320.4,
+     2171.7,
+     358.2,
+     2348.4
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     227,
+     178,
+     305,
+     824
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "paragraph",
+    "box": [
+     408.6,
+     507.3,
+     549,
+     2348.4
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     317,
+     203,
+     331,
+     403
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "paragraph",
+    "box": [
+     570.6,
+     578.55,
+     595.8,
+     1148.55
+    ]
+   },
+   {
+    "type": "formula",
+    "box_1000": [
+     342,
+     312,
+     355,
+     688
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "formula",
+    "box": [
+     615.6,
+     889.2,
+     639,
+     1960.8
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     366,
+     178,
+     396,
+     824
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "paragraph",
+    "box": [
+     658.8,
+     507.3,
+     712.8,
+     2348.4
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     404,
+     178,
+     442,
+     824
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "paragraph",
+    "box": [
+     727.2,
+     507.3,
+     795.6,
+     2348.4
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     450,
+     178,
+     489,
+     824
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 9,
+    "region_class": "paragraph",
+    "box": [
+     810,
+     507.3,
+     880.2,
+     2348.4
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     500,
+     178,
+     646,
+     824
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 10,
+    "region_class": "paragraph",
+    "box": [
+     900,
+     507.3,
+     1162.8,
+     2348.4
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     655,
+     203,
+     669,
+     534
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 11,
+    "region_class": "paragraph",
+    "box": [
+     1179,
+     578.55,
+     1204.2,
+     1521.9
+    ]
+   },
+   {
+    "type": "formula",
+    "box_1000": [
+     680,
+     310,
+     695,
+     689
+    ],
+    "keep": true,
+    "reading_order": 9,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 12,
+    "region_class": "formula",
+    "box": [
+     1224,
+     883.5,
+     1251,
+     1963.65
+    ]
+   },
+   {
+    "type": "paragraph",
+    "box_1000": [
+     703,
+     178,
+     735,
+     824
+    ],
+    "keep": true,
+    "reading_order": 10,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 13,
+    "region_class": "paragraph",
+    "box": [
+     1265.4,
+     507.3,
+     1323,
+     2348.4
+    ]
+   },
+   {
+    "type": "formula",
+    "box_1000": [
+     744,
+     203,
+     769,
+     793
+    ],
+    "keep": true,
+    "reading_order": 11,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 14,
+    "region_class": "formula",
+    "box": [
+     1339.2,
+     578.55,
+     1384.2,
+     2260.05
+    ]
+   },
+   {
+    "type": "footnote",
+    "box_1000": [
+     781,
+     178,
+     839,
+     824
+    ],
+    "keep": true,
+    "reading_order": 12,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 15,
+    "region_class": "note",
+    "box": [
+     1405.8,
+     507.3,
+     1510.2,
+     2348.4
+    ]
+   }
+  ],
+  "warnings": []
+ }
+}

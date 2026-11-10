@@ -4999,3 +4999,32 @@ Review saves recheck the page, type list and model record under the book lock. T
 Type discovery offers both existing models in one run. The merged draft groups matching names, shows agreement or differing definitions, identifies types found by one model, and offers keep/drop and source-definition controls. Each model keeps its call record. The primary call metadata stays intact and comparison metadata records the combined cost. Review and approval use the existing replacement preview and protection checks. Keep/drop choices survive saving and reopening.
 
 All 216 app tests and 11 schema tests pass. Sixteen new review tests cover protected text, Indic lines, stale scores, blank pages, marker identity and links, partial subtrees, widened scopes, structural scores, invalid inputs, replacement-stage states, immutable work, stale choices, journal recovery and merged drafts. An existing pipeline test now checks that preparing corrected completion input makes no call and changes no page. Chrome exercised kept and dismissed suggestions, a corrected line chosen from a model comparison, structural settlement and scores, and a two-model type draft whose dropped type remained dropped after application and reload. Provider replies were simulated throughout, with zero live API requests or charges. Continue with step 8. Ask the user which additional OpenAI region models to try, as required by the design, before starting paid finder experiments.
+
+## Region finders on the nine public references, build step 8 (2026-11-10)
+
+The two local finders and six additional model finders were run on the nine public passage references used for method 063. Every result went through method 063's local ownership and line-outline code and method 043's passage evaluator. Astra and Sol were chosen by the user. The first pass used GPT-6 Astra and GPT-6.1 Sol with low reasoning, the four existing Gemini thinking settings, and the existing book-specific region prompt and response schema.
+
+| Method | Finder | Other-passage ink | Own ink omitted beyond splits | Split passages | Merged regions | Missing passages | API cost |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| [079](methods/079-local-line-block-regions/README.md) | Line blocks · free on this device | 1,068,958 | 138,070 | 30 | 12 | 0 | $0.000000 |
+| [080](methods/080-tesseract-paragraph-regions/README.md) | Tesseract paragraphs · free on this device | 2,592,012 | 93,967 | 13 | 13 | 0 | $0.000000 |
+| [081](methods/081-gpt-6-astra-low-book-regions/README.md) | GPT-6 Astra · low reasoning | 0 | 0 | 0 | 0 | 0 | $1.014370 |
+| [082](methods/082-gpt-6.1-sol-low-book-regions/README.md) | GPT-6.1 Sol · low reasoning | 0 | 0 | 0 | 0 | 0 | $0.200886 |
+| [083](methods/083-gemini-4-argon-low-book-regions/README.md) | Gemini 4 Argon · low thinking | 4,193,060 | 1,315,059 | 1 | 6 | 2 | $0.121710 |
+| [084](methods/084-gemini-4-argon-high-book-regions/README.md) | Gemini 4 Argon · high thinking | 0 | 0 | 0 | 0 | 0 | $0.287960 |
+| [085](methods/085-gemini-3.8-flash-low-book-regions/README.md) | Gemini 3.8 Flash · low thinking | 3,606,725 | 827,535 | 4 | 8 | 6 | $0.042943 |
+| [086](methods/086-gemini-3.5-flash-lite-book-regions/README.md) | Gemini 3.5 Flash-Lite · minimal thinking | 8,795,645 | 1,799,168 | 3 | 14 | 7 | $0.033016 |
+
+The six model finders made 54 successful requests with $1.700885 in estimated token charges. All costs were available. The two local finders made zero API requests. The prior Terra plus method 063 baseline has zero passage-geometry errors on these same nine references. These scores concern passage boundaries and grouping. Semantic type assignments and continuation flags need separate review. All methods retained zero separator pixels.
+
+The local line-block finder had fewer severe merges than Tesseract paragraphs, but both need manual correction. The page record marks every local class guess uncertain. A guessed class maps to a book type only when the class has exactly one matching type. Ambiguous blocks stay visible as other, for manual typing. Method 079 preserves the browser line-block source. Method 080 preserves the bundled Tesseract.js layout run, its paragraphs, language choices, elapsed times and asset hashes. English pages used eng and Sanskrit pages used san+eng.
+
+The model request runtime, templates and source hashes are preserved under method 081 and shared by methods 082–086. Original images went to OpenAI with original detail and to Gemini with high resolution. Responses, usage, image-free requests, request hashes, cost records, derived outlines and reference-evaluation images are retained per page and method in fresh reference-001 directories. The combined [score file](outputs/surveys/081-gpt-6-astra-low-book-regions/reference-001/comparison.json) and [call summary](outputs/surveys/081-gpt-6-astra-low-book-regions/reference-001/summary.json) retain the cross-model evidence.
+
+The app now saves the region finder for the book and compares saved candidate layouts as scan overlays, with exact reviewed-layout matches kept separate from model-reference differences. It accepts all, page ranges and lists, groups credential checks by provider, shows progress, reuses compatible trials and stops between finders. Its single book-total estimate includes the selected transcription and completion sample costs and assumes those downstream costs stay at their sampled level. Local work is kept independently from Terra results. Choosing a trial in the normal stage grid reuses it, protects human edits as a suggestion, and requires explicit whole-page replacement when finder-local IDs differ.
+
+All 225 app tests and 11 schema tests pass. Chrome checked grouped model access, all nine candidates, actual local finders, a comparison with only free finders, cached progress, saved choice persistence, kept and applied region suggestions, pending transcription after layout replacement, and the 390-pixel layout. Model replies in those interaction checks were simulated. A separate public Cole fixture loaded every actual benchmark result for visual inspection. The paid benchmark's 54 calls are the live API requests for this stage.
+
+![Local line blocks on the Cole reference](outputs/cole-1903-page-003/079-local-line-block-regions/reference-001/reference-evaluation/comparison.png)
+
+![Sol boundaries on the Cole reference](outputs/cole-1903-page-003/082-gpt-6.1-sol-low-book-regions/reference-001/reference-evaluation/comparison.png)

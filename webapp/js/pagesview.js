@@ -1,23 +1,25 @@
-import { suggestionButton } from "./review-view.js?v=20261110-review-3";
+import { suggestionButton } from "./review-view.js?v=20261110-finders-4";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261110-reading-2";
-import { regionTypesPanel } from "./regionsview.js?v=20261110-review-3";
+import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261110-finders-4";
+import { regionTypesPanel } from "./regionsview.js?v=20261110-finders-4";
 import { regionBoxes } from "./pageimage.js?v=20261110-reading-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
-import { READERS, STRUCTURERS } from "./pipeline/readers.js";
-import { SETTINGS } from "./pipeline/steps.js?v=20261110-reading-2";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-review-3";
-import { settings } from "./store.js?v=20261110-review-3";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261110-finders-4";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261110-finders-4";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-finders-4";
+import { settings } from "./store.js?v=20261110-finders-4";
 import { runBatch } from "./pipeline/batch.js?v=20261110-reading-2";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261110-reading-2";
+import { money } from "./reader-controls.js?v=20261110-finders-4";
+import { renderFinders } from "./findersview.js?v=20261110-finders-4";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
 const stateLabel = state => !state ? "Pending" : state.accepted ? "Moved on" : state.state === "model" ? "Ready to review" : state.state === "edited" ? "Edited" : "Provisional";
 
 export async function renderPages(el, app) {
+  if (app.stage === "regions" && app.routeView === "compare") return renderFinders(el, app);
   const book = app.book, stage = app.stage, layer = STAGE_LAYER[stage];
   const token = app.routeToken;
   const active = () => app.book === book && app.stage === stage && app.mode === "grid" && app.routeToken === token;
@@ -189,26 +191,33 @@ export async function renderPages(el, app) {
   const maker = await app.getMaker(), options = await maker.options();
   if (!active()) return;
   checks = maker.credentials ||= new CredentialChecks(maker.keys);
-  const profiles = stage === "regions" ? [{ id: "terra-regions", label: "GPT-6.1 Terra", provider: "openai", model: SETTINGS.regions.model }]
+  const profiles = stage === "regions" ? FINDERS
     : stage === "text" ? READERS : STRUCTURERS;
-  const chosen = stage === "regions" ? "terra-regions" : stage === "text" ? options.reader : options.structurer;
+  const chosen = stage === "regions" ? finderById(options.finder).id : stage === "text" ? options.reader : options.structurer;
   profile = profiles.find(item => item.id === chosen);
   const select = h("select", { "aria-label": `Chosen ${stage === "text" ? "transcription" : stage === "read" ? "completion" : "region"} model` },
     ...profiles.map(item => h("option", { value: item.id, selected: item.id === chosen }, item.label)));
   const keyPanel = h("div");
+  const languages = h("select", { "aria-label": "Region finder OCR language pack" },
+    ...OCR_LANGUAGES.map(([id, name]) => h("option", { value: id, selected: id === options.ocr_languages }, name)));
+  const languageLabel = h("label", {}, "OCR language pack ", languages);
+  languages.onchange = async () => {
+    await book.saveReaderOptions({ ...await maker.options(), ocr_languages: languages.value });
+    await refreshModel();
+  };
   const refreshModel = async () => {
     profile = profiles.find(item => item.id === select.value);
     keyPanel.replaceChildren(stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), refreshSummary));
+    languageLabel.hidden = stage !== "regions" || profile.id !== "tesseract-regions";
     const ledger = await book.readWork("work/reader-lab/ledger.json");
     const calls = (ledger?.calls || []).filter(call => call.stage === { regions: "regions", text: "reading", read: "structure" }[stage] && call.profile === profile.id && call.status === "completed" && Number.isFinite(call.cost_usd));
     estimate = profile.provider === "local" ? 0 : calls.length ? calls.reduce((sum, call) => sum + call.cost_usd, 0) / calls.length : null;
     refreshSummary();
   };
   select.onchange = async () => {
-    try { await book.saveReaderOptions({ ...await maker.options(), [stage === "text" ? "reader" : "structurer"]: select.value }); await refreshModel(); }
+    try { await book.saveReaderOptions({ ...await maker.options(), [stage === "regions" ? "finder" : stage === "text" ? "reader" : "structurer"]: select.value }); await refreshModel(); }
     catch (error) { message.textContent = error.message; }
   };
-  if (stage === "regions") select.disabled = true;
   const threshold = h("input", { type: "number", min: 0.1, step: 0.5, value: 5, "aria-label": "Processing spend threshold" });
   const progress = runProgress(`${TITLES[stage]} processing progress`);
   const status = h("p", { role: "status" });
@@ -219,7 +228,6 @@ export async function renderPages(el, app) {
     app.header.querySelectorAll("button, select").forEach(field => { field.disabled = value; });
     if (!value) app.updateWorkflowNavigation();
     container.querySelectorAll("button, input, select").forEach(field => { field.disabled = value; });
-    if (stage === "regions") select.disabled = true;
     stop.disabled = !value;
     refreshSummary();
   };
@@ -274,12 +282,11 @@ export async function renderPages(el, app) {
   if (stage === "text" || stage === "read") backButton = h("button", { onclick: () => move(stage === "text" ? "regions" : "text", false) }, `Send back to ${stage === "text" ? "Regions" : "Text"}`);
   actions.append(h("div", { class: "fields" }, h("label", {}, "Model ", select),
     h("button", { onclick: () => app.setMode(stage === "regions" ? "regions&view=compare" : stage === "text" ? "readers" : "structures") }, "Compare models"),
-    stage === "regions" ? h("button", { onclick: () => app.setMode("types") }, "Book’s unit types") : null), keyPanel,
+    stage === "regions" ? h("button", { onclick: () => app.setMode("types") }, "Book’s unit types") : null, languageLabel), keyPanel,
     ...(!book.writable ? [h("p", {}, "Keep an editable copy to process pages. ", h("button", { onclick: () => app.continueBook(stage) }, "Make an editable copy"))] : []),
     h("div", { class: "fields" }, h("label", {}, include, " Include pages already processed"), h("label", {}, fresh, " Request fresh model results"),
       h("label", {}, "Spend threshold $", threshold)), estimateLabel,
     h("div", { class: "actions" }, runButton, stop, moveButton, backButton), progress.element, status);
-  if (stage === "regions" && app.routeView === "compare") actions.prepend(h("p", { class: "box" }, "GPT-6.1 Terra is the current region finder. Additional finders and their comparison are build step 8."));
   include.onchange = refreshSummary;
   await refreshModel();
   refreshSummary();

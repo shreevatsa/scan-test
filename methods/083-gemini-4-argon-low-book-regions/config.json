@@ -1,0 +1,28 @@
+{
+  "id": "argon-low-regions",
+  "label": "Gemini 4 Argon \u00b7 low thinking",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking": "low",
+  "rates": [
+    {
+      "from": "2026-01-01",
+      "input": 2,
+      "output": 10,
+      "cached": 0.1
+    },
+    {
+      "from": "2026-12-01",
+      "input": 4,
+      "output": 20,
+      "cached": 0.2
+    }
+  ],
+  "method": "083-gemini-4-argon-low-book-regions",
+  "prompt": "Method 042 book-types-continuations-v1",
+  "local_outlines": "063-fragment-band-lines",
+  "coordinate_format": "xyxy_1000",
+  "max_output_tokens": 16384,
+  "store": false,
+  "runtime_snapshot": "../081-gpt-6-astra-low-book-regions/snapshot/"
+}
