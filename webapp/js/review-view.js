@@ -5,11 +5,12 @@ import { markedText } from "./pipeline/split.js";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
 import { checkDocument } from "./schema.js?v=20261110-reading-2";
-import { assignmentOf, reviewCandidate, saveReview, settle } from "./review.js?v=20261110-finders-4";
+import { assignmentOf, reviewCandidate, saveReview, settle } from "./review.js?v=20261110-partial-3";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261110-partial-3";
 
 const titles = { regions: "Page regions", text: "Transcription", units: "Units and links" };
 
-export async function reviewPage(app, { pid, layer, path = null, region = null, line, field, correction: initialCorrection, onSaved = async () => {} }) {
+export async function reviewPage(app, { pid, layer, path = null, region = null, line, field, suggestion = false, correction: initialCorrection, onSaved = async () => {} }) {
   if (app.workflowBusy || app.maker?.processing) throw new Error("Wait for active processing before reviewing a choice.");
   await app.flush();
   if (app.dirty) throw new Error("Save the page’s current changes before reviewing a result.");
@@ -20,10 +21,11 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
   const record = path ? await book.readWork(path) : null;
   if (path && !record) throw new Error("This saved model result is unavailable.");
   const label = record?.profile?.label || record?.profile?.id || (record ? "Saved model result" : "Current page");
+  const repairScope = layer === "text" && suggestion && record ? partialTextScope(base, record) : null;
   const maker = layer === "regions" && record ? await app.getMaker() : null;
   const regionCandidate = maker?.provisional(pid, record, record.image_sha256 || base.page.image_sha256);
   let proposed, buildError = "";
-  try { proposed = record ? reviewCandidate(base, record, layer, types, regionCandidate) : clone(base); }
+  try { proposed = record ? reviewCandidate(base, record, layer, types, regionCandidate, { suggestion }) : clone(base); }
   catch (error) { proposed = clone(record?.doc || base); buildError = error.message; }
   const dialog = h("dialog", { class: "review-dialog", "aria-label": `Review ${titles[layer]}` });
   const status = h("p", { role: "status" }), preview = h("div"), controls = h("div", { class: "actions" });
@@ -127,7 +129,7 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
       const left = (current.lines || []).map(markedText), right = (other?.lines || []).map(markedText);
       preview.append(h("section", { class: "trial-region", dataset: { reviewRegion: current.id } }, h("h3", {}, current.id), h("div", { class: "source-line-scroll" }, source),
         h("div", { class: "review-columns" }, h("section", {}, h("h4", {}, "Current page"), h("pre", { html: transcriptionHtml(right, left) }), extraFormatting(current)),
-          h("section", {}, h("h4", {}, label), h("pre", { html: transcriptionHtml(left, right) }), extraFormatting(other)))));
+          h("section", {}, h("h4", {}, repairScope && !repairScope.includes(current.id) ? "Current text retained" : label), h("pre", { html: transcriptionHtml(left, right) }), extraFormatting(other)))));
     }
   } else {
     preview.append(h("div", { class: "review-columns" }, ...[{ doc: base, title: "Current page" }, { doc: proposed, title: label }].map(({ doc, title }) => {
@@ -151,6 +153,6 @@ export function suggestionButton(app, pid, layer = null, onSaved = () => app.rou
   const layers = layer ? [layer].filter(key => suggestions[key]) : Object.keys(suggestions).filter(key => titles[key]);
   if (!layers.length) return h("div", { class: "suggestion-actions", hidden: true });
   return h("div", { class: "suggestion-actions" }, ...layers.map(key => h("button", { class: "mini", onclick: () => reviewPage(app, {
-    pid, layer: key, path: suggestions[key], onSaved,
+    pid, layer: key, path: suggestions[key], suggestion: true, onSaved,
   }).catch(error => app.toast(error.message, "bad")) }, `Review ${titles[key].toLowerCase()} suggestion`)));
 }

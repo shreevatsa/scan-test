@@ -1,8 +1,8 @@
-import { reviewPage } from "./review-view.js?v=20261110-finders-4";
-import { assignmentOf, settledStructureScore } from "./review.js?v=20261110-finders-4";
+import { reviewPage } from "./review-view.js?v=20261110-partial-3";
+import { assignmentOf, settledStructureScore } from "./review.js?v=20261110-partial-3";
 import { h } from "./render.js";
-import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261110-finders-4";
-import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-finders-4";
+import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261110-partial-3";
+import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-partial-3";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
 import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
@@ -199,7 +199,7 @@ export async function renderStructures(el, app) {
     h("p", { class: "hint" }, "Existing compatible transcriptions and schema assignments are reused. Transcribe pages before comparing their assignments. Every model receives the same printed text and neighboring transcription. A spend threshold can be exceeded by the final call. Failed and unresolved calls are saved in the shared attempt ledger on the Transcription models tab."),
     h("div", { class: "actions" }, h("button", { class: "primary", onclick: trial }, "Run schema comparison"), " ", stopButton, " ", h("button", { onclick: refresh }, "Refresh saved schema results")), progress.element, status,
     h("h3", {}, "2. Review costs and schema assignments"), h("label", {}, "Book pages ", pageCount),
-    h("p", { class: "hint" }, "The single total includes region detection, the fixed input transcription and each model’s schema assignment. It projects one pass from completed sample calls at their recorded prices. Schema checks flag invalid results. All stage costs must be available."), summary,
+    h("p", { class: "hint" }, "The single total includes region detection, the fixed input transcription and each model’s schema assignment. It projects one pass from whole-page samples at their recorded prices. Region repairs are excluded from this projection. Schema checks flag invalid results. All stage costs must be available."), summary,
     h("h3", {}, "Inspect schema choices"), h("label", {}, "Page ", pageSelect), " ", h("label", {}, onlyDifferences, " Focus on differing regions"),
     h("p", { class: "hint" }, "Amber marks assignments that differ from the reference. Number badges count changed categories. Select matching region labels to compare their unit membership and joins. Trees retain surrounding regions for context."), detail,
     choice, continueControls(app));

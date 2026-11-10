@@ -3,6 +3,7 @@ import { canonical } from "../ops.js?v=20261110-finders-4";
 import { checkDocument, typeRevision } from "../schema.js?v=20261110-reading-2";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
 import { pageLabel, transcribedLines } from "./steps.js?v=20261110-reading-2";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261110-partial-3";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
@@ -64,7 +65,7 @@ function markersOf(doc) {
   return markers;
 }
 
-export function mergeText(current, reading, types, check = doc => checkDocument(doc, types)) {
+export function mergeText(current, reading, types, check = doc => checkDocument(doc, types), { regionIds = null } = {}) {
   const sent = sentRegions(current, types);
   let parsed = reading.parsed || reading;
   if (reading.regions_record) {
@@ -82,8 +83,11 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
   }
   checkReading(parsed, sent);
   const doc = structuredClone(current);
+  const selected = regionIds && new Set(regionIds);
+  const usedMarkers = new Set(doc.page.regions.flatMap(region => (region.lines || []).flatMap(line => (line.spans || []).map(span => span.id))));
   let marker = 1;
   for (const region of doc.page.regions) {
+    if (selected && !selected.has(region.id)) continue;
     const input = parsed.regions.find(value => value.id === region.id);
     if (!input) continue;
     const ids = sent.find(value => value.rid === region.id).line_ids;
@@ -92,6 +96,7 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
     marker = output.nextMarker;
     for (const line of output.lines) {
       const target = region.lines.find(value => value.line === line.line);
+      if (selected) line.spans = preserveMarkerIds(target.spans || [], line.spans || [], usedMarkers);
       target.text = line.text;
       delete target.spans;
       if (line.spans) target.spans = line.spans;

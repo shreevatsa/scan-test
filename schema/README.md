@@ -181,6 +181,16 @@ Focused Text edits preserve provisional unit grouping while allowing note-marker
 
 Cross-page joins save edits to both pages under the book write lock. Matching ancestor paths receive `open.end` on the earlier page and `open.start` on the next. `work/pending-pages.json` journals the page versions and prior drafts for replay after an interrupted write. Exports share the lock and recover pending writes before collecting files. Text saves merge changed text fields into the latest document, preserving newer grouping and independent text corrections. Conflicting changes to the same field or unit snapshot require reloading.
 
+## Partial transcription work records
+
+`work/readings/<page>/<profile>.json` remains a complete `page-reading`, including after a repair. Compatibility uses the scan hash, model profile, OCR options, image dimensions, region IDs and region/line polygons. Type descriptions and reading order are excluded. A composite adds `partial: true`, changed `region_ids`, `reused_regions`, `base_fingerprint`, `previous_reading` and `parts`. Each part records its immutable `path`, contributing `region_ids`, `cost_usd` and `seconds`. Composite totals count each path once. The complete prior reading is archived at `work/reading-history/<page>/<profile>/<hash>.json`.
+
+A raw partial `reader-call` retains the same profile and method and adds the target and reuse metadata. Its deterministic pointer at `work/reading-parts/<page>/<profile>/<hash>.json` identifies the raw call path using the request hash and target region IDs. The raw call and ledger entry are persisted as requesting before the provider request. A completed response can recover an interrupted combined save. A requesting call, or a failed call with unknown cost, blocks automatic repetition. An explicit fresh whole-page request bypasses this partial pointer after the attempt has been reviewed. A concurrent newer full reading wins the cache save check.
+
+Local partial results without a raw API call are retained as `reading-part` files. Tesseract still recognizes the full page for consistent word ownership. Vision reuses the complete saved response's word boxes when available and remaps recovered responses against the latest geometry. Its repeated contribution refers to the same call path, so it adds no charge.
+
+`source.calls.reading` carries `partial` and `parts` after a composite is applied by the model-stage merge. A repair suggestion for the page's existing model replaces only target or missing text regions. Other current text and marker identities are preserved. Explicit model comparisons use the full model reading. The API ledger retains repair charges. Whole-book projections exclude composite reading samples because they contain incremental repair spending.
+
 ## Human review provenance
 
 `source.review.text` records reviewed lines by region and line ID, with their marked text, line geometry, timestamp, model profile, cache path, fingerprint and immutable call path where available. Matching printed markers keep their IDs and links. A unique marker may move within a line. Replaced markers receive fresh IDs and obsolete anchor links are removed.

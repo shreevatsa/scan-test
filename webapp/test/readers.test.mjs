@@ -11,6 +11,7 @@ import { selectPageRegions, checkReading, combineReading, structureSchema, marke
 import { compareReadings, characterEdits, compareRegions } from "../js/pipeline/compare.js";
 import { tesseractWords, wordsToReading } from "../js/pipeline/ocr.js";
 import { layerState } from "../js/layers.js";
+import { reviewCandidate, saveReview } from "../js/review.js";
 
 const types = { format: "types", schema_version: "0.1", book_id: "trial", title: "Trial", languages: ["en"],
   types: { paragraph: { description: "A paragraph", region: "paragraph", flow: "main" },
@@ -55,6 +56,289 @@ function fixture() {
     recognize: async () => ({ reading: reading("Print"), words: 1, confidence: 99 }) });
   return { book, maker, calls, costs, files };
 }
+
+function repairFixture() {
+  const state = fixture(), texts = { r1: "Original one[1]", r2: "Original two", r3: "Added three" }, images = [];
+  for (const pid of ["p1", "p2"]) state.book.work.set(`work/${pid}.regions.json`, { ...structuredClone(records), regions: [region(1), region(2, 40)] });
+  state.maker.images = {
+    overview: async (bitmap, sources) => { images.push(sources.map(([id]) => id)); return "data:image/png;base64,AA=="; },
+    cutout: async () => "data:image/png;base64,AA==",
+  };
+  state.maker.request = async (provider, payload) => {
+    state.calls.push({ provider, payload });
+    const format = payload.response_format.schema;
+    let parsed;
+    if (format.properties.regions.items.properties.ends) {
+      const input = JSON.parse(payload.input[1].text);
+      parsed = { regions: input.regions.map(source => ({ id: source.id, type: source.type, ends: source.lines.map(() => "line"), uncertain: false, note: null })),
+        units: input.regions.map((source, index) => ({ id: `u${index + 1}`, type: source.type, number: null, label: null,
+          open_start: false, open_end: false, children: [source.id] })), flows: [{ flow: "main", units: input.regions.map((source, index) => `u${index + 1}`) }] };
+    } else {
+      const captions = payload.input.filter(item => item.type === "text").flatMap(item => [...item.text.matchAll(/(r\d+): ([^,\n]+), (\d+) lines?/g)]);
+      parsed = { regions: captions.map(match => ({ id: match[1], uncertain: false, note: null,
+        lines: Array.from({ length: Number(match[3]) }, (_, index) => ({ n: index + 1, text: texts[match[1]] || match[1] })) })) };
+    }
+    return { seconds: 2, body: { status: "completed", usage, outputs: [{ type: "text", text: JSON.stringify(parsed) }] } };
+  };
+  return { ...state, texts, images };
+}
+
+async function moveSecondRegion(book) {
+  const current = await book.current("p1");
+  if (!current) {
+    const source = book.work.get("work/p1.regions.json").regions[1];
+    source.polygons[0][0][0] = 2;
+    source.lines[0].polygons[0][0][0] = 2;
+    source.model_box[0] = 2;
+    return;
+  }
+  const doc = structuredClone(current), second = doc.page.regions[1];
+  second.polygons[0][0][0] = 2;
+  second.lines[0].polygons[0][0][0] = 2;
+  second.box[0] = 2;
+  await book.saveEdit("p1", doc, { focus: "regions" });
+}
+
+test("a changed region gets one cut-out and combines with unchanged model text", async () => {
+  const { maker, book, calls, texts, images, costs } = repairFixture();
+  const first = await maker.read("p1");
+  await moveSecondRegion(book);
+  texts.r2 = "Repaired ಕನ್ನಡ[2]";
+  const repaired = await maker.read("p1", null, { save: true });
+  assert.equal(calls.length, 2);
+  assert.deepEqual(calls[1].payload.response_format.schema.properties.regions.items.properties.id.enum, ["r2"]);
+  assert.deepEqual(images, [["r1", "r2"], ["r2"]]);
+  assert.deepEqual(repaired.parsed.regions.map(region => region.lines[0].text), [texts.r1, texts.r2]);
+  assert.equal(repaired.partial, true);
+  assert.deepEqual(repaired.region_ids, ["r2"]);
+  assert.deepEqual(repaired.reused_regions, ["r1"]);
+  assert.equal(repaired.parts.length, 2);
+  assert.ok(Math.abs(repaired.cost_usd - costs[0] - costs[1]) < 1e-12);
+  assert.deepEqual(await book.readWork(repaired.previous_reading), first);
+  const call = await book.readWork(repaired.path);
+  assert.equal(call.partial, true);
+  assert.deepEqual(call.parsed.regions.map(region => region.id), ["r2"]);
+  const doc = await book.current("p1");
+  assert.equal(doc.page.regions[0].lines[0].text, "Original one");
+  assert.equal(doc.page.regions[1].lines[0].text, "Repaired ಕನ್ನಡ");
+  assert.equal((await maker.read("p1")).cached, true);
+  assert.equal(calls.length, 2);
+  const completed = await maker.complete("p1");
+  assert.deepEqual(calls[2].payload.input[1].text.includes("Repaired ಕನ್ನಡ"), true);
+  assert.equal(completed.doc.page.regions.length, 2);
+  assert.deepEqual(checkPage(validate, completed.doc, book.types)[0], []);
+});
+
+test("a partial suggestion keeps human corrections and marker identities outside the repaired region", async () => {
+  const { maker, book, texts, calls } = repairFixture();
+  await maker.read("p1", null, { save: true });
+  const human = structuredClone(await book.current("p1"));
+  human.page.regions[0].lines[0].text = "Reviewed ಕನ್ನಡ";
+  human.page.regions[0].lines[0].spans = [{ kind: "italic", start: 0, end: 3 },
+    { kind: "note_marker", id: "m1", marker: "1", start: 3, end: 3 }];
+  await book.saveEdit("p1", human, { focus: "text" });
+  await moveSecondRegion(book);
+  texts.r2 = "Repaired two[2]";
+  const repaired = await maker.read("p1", null, { save: true });
+  const base = structuredClone(await book.current("p1"));
+  const suggestion = reviewCandidate(base, repaired, "text", book.types, null, { suggestion: true });
+  const comparison = reviewCandidate(base, repaired, "text", book.types);
+  assert.equal(base.page.regions[1].lines[0].text, "Original two");
+  assert.deepEqual(suggestion.page.regions[0].lines, base.page.regions[0].lines);
+  assert.equal(comparison.page.regions[0].lines[0].text, "Original one");
+  assert.equal(suggestion.page.regions[1].lines[0].spans[0].id, "m2");
+  await saveReview(book, "p1", { base, types: structuredClone(book.types), candidate: suggestion, layer: "text", scope: {},
+    record: repaired, path: "work/readings/p1/argon-low.json", profile: "argon-low" });
+  const saved = await book.current("p1");
+  assert.equal(saved.page.regions[0].lines[0].text, "Reviewed ಕನ್ನಡ");
+  assert.equal(saved.page.regions[1].lines[0].text, "Repaired two");
+  assert.deepEqual(checkPage(validate, saved, book.types)[0], []);
+  assert.equal(calls.length, 2);
+});
+
+test("failed or invalid partial responses retain the complete previous reading", async () => {
+  const { maker, book, calls } = repairFixture();
+  const first = await maker.read("p1");
+  await moveSecondRegion(book);
+  const request = maker.request;
+  maker.request = async (...args) => {
+    const value = await request(...args);
+    value.body.outputs[0].text = '{"regions":[]}';
+    return value;
+  };
+  await assert.rejects(maker.read("p1"), /returned 0 regions/);
+  assert.deepEqual(await book.readWork("work/readings/p1/argon-low.json"), first);
+  maker.request = request;
+  const repaired = await maker.read("p1");
+  assert.equal(repaired.parsed.regions.length, 2);
+  assert.equal(calls.length, 3);
+  assert.equal((await book.readWork("work/reader-lab/ledger.json")).calls.length, 3);
+});
+
+test("a failed combined save reuses the persisted partial response on retry", async () => {
+  const { maker, book, calls, files, texts } = repairFixture();
+  const first = await maker.read("p1");
+  await moveSecondRegion(book);
+  texts.r2 = "Recovered partial";
+  const write = book.writeFile;
+  book.writeFile = async (path, value) => { if (path === "work/readings/p1/argon-low.json") throw Error("Disk full"); await write(path, value); };
+  await assert.rejects(maker.read("p1"), /Disk full/);
+  assert.deepEqual(JSON.parse(files.get("work/readings/p1/argon-low.json")), first);
+  book.writeFile = write;
+  const repaired = await maker.read("p1");
+  assert.equal(repaired.cached, true);
+  assert.equal(repaired.parsed.regions[1].lines[0].text, "Recovered partial");
+  assert.equal(calls.length, 2);
+  assert.equal((await book.readWork("work/reader-lab/ledger.json")).calls.length, 2);
+});
+
+test("partial-call ledger recovery retains one charge and unknown calls wait for an explicit fresh result", async () => {
+  const { maker, book, calls } = repairFixture();
+  await maker.read("p1");
+  await moveSecondRegion(book);
+  const write = book.writeFile;
+  let ledgerWrites = 0;
+  book.writeFile = async (path, value) => {
+    if (path === "work/reader-lab/ledger.json" && ++ledgerWrites === 2) throw Error("Ledger unavailable");
+    await write(path, value);
+  };
+  await assert.rejects(maker.read("p1"), /Further API calls are stopped/);
+  assert.equal(calls.length, 2);
+  book.writeFile = write;
+  await maker.read("p1");
+  assert.equal(maker.persistenceFailure, null);
+  assert.equal(calls.length, 2);
+  assert.equal((await book.readWork("work/reader-lab/ledger.json")).calls.length, 2);
+
+  const next = repairFixture();
+  await next.maker.read("p1");
+  await moveSecondRegion(next.book);
+  const request = next.maker.request;
+  next.maker.request = async () => { throw Error("signal timed out"); };
+  await assert.rejects(next.maker.read("p1"), /timed out/);
+  next.maker.request = request;
+  await assert.rejects(next.maker.read("p1"), /unresolved call/);
+  const fresh = await next.maker.read("p1", null, { force: true });
+  assert.equal(fresh.partial, undefined);
+  assert.deepEqual(next.calls.at(-1).payload.response_format.schema.properties.regions.items.properties.id.enum, ["r1", "r2"]);
+});
+
+test("a newer cached transcription survives a partial call that finishes later", async () => {
+  const { maker, book, calls } = repairFixture();
+  const first = await maker.read("p1");
+  await moveSecondRegion(book);
+  const newer = structuredClone(first);
+  newer.parsed.regions[0].lines[0].text = "Newer saved result";
+  const request = maker.request;
+  maker.request = async (...args) => { await book.writeWork("work/readings/p1/argon-low.json", newer); return request(...args); };
+  await assert.rejects(maker.read("p1"), /Another transcription was saved/);
+  assert.deepEqual(await book.readWork("work/readings/p1/argon-low.json"), newer);
+  maker.request = request;
+  const repaired = await maker.read("p1");
+  assert.equal(repaired.parsed.regions[0].lines[0].text, "Newer saved result");
+  assert.equal(calls.length, 2);
+});
+
+test("added, removed and figure regions reuse only compatible text", async () => {
+  const state = repairFixture();
+  await state.maker.read("p1");
+  state.book.work.get("work/p1.regions.json").regions.push(region(3, 70));
+  const added = await state.maker.read("p1");
+  assert.deepEqual(added.region_ids, ["r3"]);
+  state.book.work.get("work/p1.regions.json").regions = state.book.work.get("work/p1.regions.json").regions.filter(region => region.region_id !== 2);
+  const removed = await state.maker.read("p1");
+  assert.deepEqual(removed.parsed.regions.map(region => region.id), ["r1", "r3"]);
+  assert.equal(removed.cached, true);
+  assert.equal(state.calls.length, 2);
+
+  const figures = repairFixture();
+  const second = figures.book.work.get("work/p1.regions.json").regions[1];
+  second.type = "figure"; second.region_class = "figure";
+  await figures.maker.read("p1");
+  second.type = "paragraph"; second.region_class = "paragraph";
+  const converted = await figures.maker.read("p1");
+  assert.deepEqual(converted.region_ids, ["r2"]);
+  assert.equal(converted.parsed.regions.length, 2);
+});
+
+test("a changed scan or explicit fresh request transcribes the whole page", async () => {
+  const { maker, book, calls } = repairFixture();
+  await maker.read("p1");
+  book.imageBlob = async () => new Blob(["new scan"], { type: "image/png" });
+  const replaced = await maker.read("p1");
+  assert.equal(replaced.partial, undefined);
+  await moveSecondRegion(book);
+  const fresh = await maker.read("p1", null, { force: true });
+  assert.equal(fresh.partial, undefined);
+  assert.equal(calls.length, 3);
+  assert.deepEqual(calls.at(-1).payload.response_format.schema.properties.regions.items.properties.id.enum, ["r1", "r2"]);
+});
+
+test("whole-book projections use whole-page samples and omit region repairs", () => {
+  const full = { regions: { cost_usd: .01 }, reading: { cost_usd: .02 }, structure: { cost_usd: .03 } };
+  const partial = { regions: { cost_usd: .01 }, reading: { cost_usd: 1, partial: true }, structure: { cost_usd: .03 } };
+  assert.equal(projectBookCost([partial], 1000), null);
+  assert.equal(projectBookCost([full, partial], 1000), 60);
+});
+
+test("local OCR maps the whole page and retains an immutable base for a region repair", async () => {
+  const { maker, book, calls } = repairFixture();
+  const recognized = [];
+  maker.recognize = async (file, sources) => {
+    recognized.push(sources.map(source => source.rid));
+    return { reading: { regions: sources.filter(source => source.line_ids.length).map(source => ({ id: source.rid,
+      lines: source.line_ids.map((id, index) => ({ n: index + 1, text: `OCR ${source.rid}` })), uncertain: false, note: null })) }, words: 2, confidence: 99 };
+  };
+  const first = await maker.read("p1", { reader: "tesseract" });
+  await moveSecondRegion(book);
+  const repaired = await maker.read("p1", { reader: "tesseract" });
+  assert.equal(repaired.cost_usd, 0);
+  assert.deepEqual(recognized, [["r1", "r2"], ["r1", "r2"]]);
+  assert.deepEqual(repaired.region_ids, ["r2"]);
+  assert.equal(repaired.parts.length, 2);
+  assert.deepEqual(await book.readWork(repaired.parts[0].path), first);
+  assert.equal((await book.readWork(repaired.parts[1].path)).format, "reading-part");
+  assert.equal(calls.length, 0);
+});
+
+test("Cloud Vision reuses saved full-page word geometry for repairs and charges fresh recognition per image", async () => {
+  const { maker, book, calls, costs } = repairFixture();
+  maker.keys.vision = "fixture";
+  const body = { responses: [{ fullTextAnnotation: { pages: [{ blocks: [{ paragraphs: [{ words: [
+    { symbols: [{ text: "One" }], boundingBox: { vertices: [{ x: 10, y: 2 }, { x: 50, y: 2 }, { x: 50, y: 15 }, { x: 10, y: 15 }] } },
+    { symbols: [{ text: "Two" }], boundingBox: { vertices: [{ x: 10, y: 42 }, { x: 50, y: 42 }, { x: 50, y: 55 }, { x: 10, y: 55 }] } },
+  ] }] }] }] } }] };
+  maker.request = async (provider, payload) => { calls.push({ provider, payload }); return { body, seconds: 1 }; };
+  const first = await maker.read("p1", { reader: "vision-document" });
+  await moveSecondRegion(book);
+  const repaired = await maker.read("p1", { reader: "vision-document" });
+  assert.equal(repaired.partial, true);
+  assert.equal(repaired.ocr_reused, true);
+  assert.equal(repaired.cost_usd, .0015);
+  assert.deepEqual(repaired.parsed.regions.map(region => region.lines[0].text), ["One", "Two"]);
+  assert.equal(calls.length, 1);
+  assert.deepEqual(costs, [.0015]);
+  assert.equal(repaired.parts[0].path, first.path);
+  assert.equal(repaired.parts[1].path, first.path);
+  const fresh = await maker.read("p1", { reader: "vision-document" }, { force: true });
+  assert.equal(calls.length, 2);
+  assert.deepEqual(calls[0].payload, calls[1].payload);
+
+  // Older caches may lack the full response. Recover a paid repair even if the box moved again.
+  delete fresh.response;
+  await book.writeWork("work/readings/p1/vision-document.json", fresh);
+  const source = book.work.get("work/p1.regions.json").regions[1];
+  source.polygons = polygon(70); source.lines[0].polygons = polygon(70);
+  const write = book.writeFile;
+  book.writeFile = async (path, value) => { if (path === "work/readings/p1/vision-document.json") throw Error("Disk full"); await write(path, value); };
+  await assert.rejects(maker.read("p1", { reader: "vision-document" }), /Disk full/);
+  book.writeFile = write;
+  source.polygons = polygon(45); source.lines[0].polygons = polygon(45);
+  const recovered = await maker.read("p1", { reader: "vision-document" });
+  assert.equal(recovered.parsed.regions[1].lines[0].text, "Two");
+  assert.equal(calls.length, 3);
+  assert.equal((await book.readWork(recovered.parts[1].path)).parsed.regions[0].lines[0].text, "");
+});
 
 test("reader defaults cover legacy books and script subtags", () => {
   assert.deepEqual(readerOptions(), { reader: "argon-low", ocr_languages: "eng", structurer: "argon-structure" });

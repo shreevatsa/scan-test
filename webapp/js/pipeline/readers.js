@@ -70,12 +70,14 @@ export function usageCost(usage, profile, at) {
 }
 
 // Project one pass from completed calls, including shared region detection once per page.
+// Region repairs have their own charges and do not supply a new whole-page sample.
 // A missing stage cost makes the complete estimate unavailable, including for older books.
 export function projectBookCost(samples, pageCount) {
-  if (!samples.length || !Number.isSafeInteger(pageCount) || pageCount <= 0) return null;
-  const costs = samples.flatMap(sample => [sample.regions?.cost_usd, sample.reading?.cost_usd, sample.structure?.cost_usd]);
+  const wholePages = samples.filter(sample => !sample.reading?.partial);
+  if (!wholePages.length || !Number.isSafeInteger(pageCount) || pageCount <= 0) return null;
+  const costs = wholePages.flatMap(sample => [sample.regions?.cost_usd, sample.reading?.cost_usd, sample.structure?.cost_usd]);
   if (!costs.every(value => Number.isFinite(value) && value >= 0)) return null;
-  return costs.reduce((sum, value) => sum + value, 0) / samples.length * pageCount;
+  return costs.reduce((sum, value) => sum + value, 0) / wholePages.length * pageCount;
 }
 
 export function geminiReadingRequest(profile, input, schema, maxOutputTokens = 32768) {

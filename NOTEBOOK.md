@@ -5028,3 +5028,18 @@ All 225 app tests and 11 schema tests pass. Chrome checked grouped model access,
 ![Local line blocks on the Cole reference](outputs/cole-1903-page-003/079-local-line-block-regions/reference-001/reference-evaluation/comparison.png)
 
 ![Sol boundaries on the Cole reference](outputs/cole-1903-page-003/082-gpt-6.1-sol-low-book-regions/reference-001/reference-evaluation/comparison.png)
+
+
+## Changed-region transcription, build step 9 (2026-11-10)
+
+The app now repairs a saved transcription by region. Matching region IDs, polygons and numbered line geometry reuse the same model's saved text on the same scan. Changed or added regions use the existing image and request builders with only their targeted cut-outs. The result is checked and saved as a complete reading. A fresh request, different scan or options, or no reusable text uses the full page. Removed regions can be reconciled with no request. Full unedited requests retain their existing payloads and method IDs.
+
+Previous readings are archived, and composite records retain contributing parts and costs. Partial raw calls include their target and reuse IDs. Deterministic pointers recover completed calls after failed combined saves. Requesting calls are recorded before sending, and unknown-cost attempts stop an automatic repeat. Saving the final cache rechecks its baseline under the book lock so a slower call cannot replace a newer reading. Failed or invalid responses retain the previous full reading.
+
+Repairs to the same model leave unchanged human corrections in the current page and its suggestion. The review labels those regions “Current text retained”. Marker identities are preserved when the printed marker still matches. Model comparisons retain original model output, and completion uses the full corrected current text. Cloud Vision can remap saved full-page word geometry with no new request. Recovery also remaps if a box was edited again before retrying. Tesseract reruns locally on the full page for consistent ownership and merges only the changed results.
+
+Cost projections use whole-page samples. Composite repair samples are excluded, and estimates are unavailable when all samples are repairs. Actual repair and retry charges remain in the ledger. Composite costs count each contributing call path once, including reused Vision responses.
+
+All 236 app tests and 11 schema tests pass. Eleven added cases cover scoped requests, combined completion input, protected corrections and marker IDs, invalid results, interrupted writes and ledger repair, unresolved calls, stale concurrent saves, region additions and deletion, figure transitions, changed scans, fresh requests, projection costs and both OCR paths. Chrome used real local outlines and cut-outs with simulated provider responses. One two-region page was transcribed, corrected by hand, and enlarged to include an additional line in its second region. The next request contained only that region. The suggestion retained the first region's correction and saved the second region's four new lines. Reload, comparison with current text, the repair ledger and a 390-pixel view were checked. The comparison kept the original model text distinct from the human correction. This implementation made zero live provider requests and incurred zero provider charges.
+
+All nine workflow build steps are complete. The separately listed experiments in HANDOFF.md remain open. The next unused method ID is 087.

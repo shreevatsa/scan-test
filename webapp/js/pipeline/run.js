@@ -6,18 +6,19 @@ import { mappedTypeNames } from "../type-revisions.js?v=20261110-finders-4";
 import * as P from "./prompts.js";
 import * as S from "./steps.js?v=20261110-reading-2";
 import * as I from "./images.js?v=20261110-reading-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261110-finders-4";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261110-partial-3";
 import * as Split from "./split.js";
 import { localReading, localLayout } from "./ocr.js?v=20261110-finders-4";
 import { classifyBlocks } from "../local/blocks.js?v=20261110-finders-4";
 import { finderById, finderPath } from "./finders.js?v=20261110-finders-4";
-import { finderRequest } from "./finder-requests.js?v=20261110-finders-4";
+import { finderRequest } from "./finder-requests.js?v=20261110-partial-3";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261110-partial-3";
 import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261110-finders-4";
 import { bbox } from "../render.js";
 import { canonical } from "../ops.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "../layers.js?v=20261110-finders-4";
 import { provisionalDocument } from "./provisional.js?v=20261110-finders-4";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261110-finders-4";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261110-partial-3";
 
 let TEMPLATES = null;
 export async function templates() {
@@ -277,16 +278,50 @@ export class Maker {
     return this.previewCache.get(fingerprint);
   }
 
-  async callJSON(pid, stage, profile, payload, validate, cost = null, parse = null) {
-    if (this.persistenceFailure) throw new Error(this.persistenceFailure);
+  async saveCall(record, path) {
+    await this.book.writeWork(path, record);
+    await this.book.updateWork("work/reader-lab/ledger.json", old => ({ format: "reader-ledger", version: 1,
+      calls: [...(old?.calls || []).filter(call => call.id !== record.id), { id: record.id, path, page: record.page,
+        stage: record.stage, profile: record.profile.id, status: record.status, cost_usd: record.cost_usd ?? null,
+        seconds: record.seconds ?? null, ...(record.partial ? { partial: true, region_ids: record.region_ids } : {}) }] }));
+  }
+
+  async callJSON(pid, stage, profile, payload, validate, cost = null, parse = null, scope = {}) {
     const provider = profile.provider, key = this.keys[provider];
+    const requestHash = await jsonHash(payload);
+    const partKey = scope.partial && await jsonHash({ requestHash, regions: scope.region_ids });
+    const partPath = scope.partial ? `work/reading-parts/${pid}/${profile.id}/${partKey}.json` : null;
+    if (partPath) {
+      this.book.work.delete(partPath);
+      const saved = await this.book.readWork(partPath);
+      if (saved?.path) {
+        this.book.work.delete(saved.path);
+        const record = await this.book.readWork(saved.path);
+        if (record?.status === "completed" && record.request_sha256 === requestHash) {
+          const parsed = parse ? parse(record.response) : record.parsed;
+          validate(parsed);
+          await this.saveCall(record, saved.path);
+          if (this.failedCallPath === saved.path) { this.persistenceFailure = null; this.failedCallPath = null; }
+          return { ...record, parsed, path: saved.path, cached: true };
+        }
+        if (record?.status === "requesting" || record?.status === "failed" && record.cost_usd == null)
+          throw new Error("An earlier partial transcription has an unresolved call. Review its saved attempt before requesting a fresh whole-page result.");
+      }
+    }
     if (!key) throw new Error(`Add a ${provider === "vision" ? "Cloud Vision credential" : provider === "openai" ? "OpenAI API key" : "Gemini API key"} for ${stage}.`);
+    if (this.persistenceFailure) throw new Error(this.persistenceFailure);
     const id = crypto.randomUUID(), started = new Date().toISOString();
     const path = `work/reader-calls/${pid}/${stage}-${id}.json`;
     const record = { format: "reader-call", version: 1, id, page: pid, stage, profile, started_at_utc: started,
-      request_sha256: await jsonHash(payload), request: JSON.parse(JSON.stringify(payload, (key, value) =>
-        key === "data" || key === "image_url" || provider === "vision" && key === "content" ? "<image rebuilt from the book's source>" : value)), status: "requesting" };
+      request_sha256: requestHash, request: JSON.parse(JSON.stringify(payload, (key, value) =>
+        key === "data" || key === "image_url" || provider === "vision" && key === "content" ? "<image rebuilt from the book's source>" : value)),
+      status: partPath ? "prepared" : "requesting", ...scope };
     await this.book.writeWork(path, record);
+    if (partPath) {
+      await this.book.writeWork(partPath, { format: "reading-part-call", version: 1, path, request_sha256: requestHash });
+      record.status = "requesting";
+      await this.saveCall(record, path);
+    }
     try {
       const { body, seconds } = await this.request(provider, payload, key, { mode: this.keys.vision_auth, project: this.keys.vision_project });
       Object.assign(record, { response: body, seconds, usage: body.usage || null,
@@ -305,11 +340,10 @@ export class Maker {
     }
     this.onCost(record.cost_usd ?? null);
     try {
-      await this.book.writeWork(path, record);
-      await this.book.updateWork("work/reader-lab/ledger.json", old => ({ format: "reader-ledger", version: 1,
-        calls: [...(old?.calls || []), { id, path, page: pid, stage, profile: profile.id, status: record.status, cost_usd: record.cost_usd ?? null, seconds: record.seconds ?? null }] }));
+      await this.saveCall(record, path);
     } catch (error) {
       this.persistenceFailure = `Could not save the ${stage} call record. Further API calls are stopped. ${error.message}`;
+      this.failedCallPath = path;
       throw new Error(this.persistenceFailure);
     }
     if (record.status === "failed") {
@@ -331,8 +365,10 @@ export class Maker {
     try { reading = await job; } finally { if (this.jobs.get(key) === job) this.jobs.delete(key); }
     if (save) {
       await this.saveMerged(pid, "text", `work/readings/${pid}/${profile.id}.json`, current =>
-        mergeText(current || this.provisional(pid, reading.regions_record, reading.image_sha256), reading, this.book.types, this.check),
-        { reader: profile, model: profile.model, calls: { reading: { cost_usd: reading.cost_usd, seconds: reading.seconds } } });
+        mergeText(current || this.provisional(pid, reading.regions_record, reading.image_sha256), reading, this.book.types, this.check,
+          { regionIds: partialTextScope(current, reading) }),
+        { reader: profile, model: profile.model, calls: { reading: { cost_usd: reading.cost_usd, seconds: reading.seconds,
+          ...(reading.partial ? { partial: true, parts: reading.parts } : {}) } } });
     }
     return reading;
   }
@@ -341,33 +377,65 @@ export class Maker {
     const rec = structuredClone(await this.sourceRegions(pid)), { sent, skipped } = Split.selectPageRegions(rec.regions);
     const file = await this.image(pid), imageHash = await sha256(file);
     const fingerprint = await jsonHash({ version: Split.SPLIT_VERSION, chosen, profile, imageHash, regions: rec.regions, prompt: Split.readingPrompt(this.book.types) });
-    const path = `work/readings/${pid}/${profile.id}.json`, cached = await this.book.readWork(path);
+    const path = `work/readings/${pid}/${profile.id}.json`;
+    this.book.work.delete(path);
+    const cached = await this.book.readWork(path), baseline = canonical(cached);
     const geometry_key = await geometryKey(rec, chosen, profile, imageHash);
     const previousKey = cached?.geometry_key || (cached?.regions_record && await geometryKey(cached.regions_record,
       cached.options, cached.profile, cached.image_sha256));
-    if (!force && cached?.status === "completed" && (cached.fingerprint === fingerprint || previousKey === geometry_key)) {
+    if (!force && readingFits(cached, rec, imageHash) && (cached.fingerprint === fingerprint || previousKey === geometry_key)) {
       if (!cached.geometry_key) await this.book.writeWork(path, { ...cached, geometry_key: previousKey });
       return { ...cached, geometry_key, cached: true, ...(cached.fingerprint === fingerprint ? {} : { prior_revision: true, requested_fingerprint: fingerprint }) };
     }
+    const plan = planReading(cached, rec, chosen, profile, imageHash, force), targets = plan.request;
+    const scope = plan.partial ? { partial: true, region_ids: targets.map(source => source.rid),
+      base_fingerprint: cached.fingerprint, reused_regions: plan.reused.map(region => region.id) } : {};
+    const targetIds = new Set(targets.map(source => source.rid));
+    const selectTargets = parsed => ({ regions: parsed.regions.filter(region => targetIds.has(region.id)) });
     let result;
-    if (!sent.some(s => s.line_ids.length)) result = { status: "completed", parsed: { regions: [] }, cost_usd: 0, seconds: 0 };
+    if (!targets.some(s => s.line_ids.length)) result = { status: "completed", parsed: { regions: [] }, cost_usd: 0, seconds: 0, cached: true };
     else if (profile.provider === "local") {
       const started = performance.now();
       const local = await this.recognize(file, sent, chosen.ocr_languages, progress);
-      result = { status: "completed", parsed: Split.checkReading(local.reading, sent), cost_usd: 0,
+      Split.checkReading(local.reading, sent);
+      result = { status: "completed", parsed: Split.checkReading(selectTargets(local.reading), targets), cost_usd: 0,
         seconds: (performance.now() - started) / 1000, local: { words: local.words, confidence: local.confidence } };
     } else if (profile.provider === "vision") {
-      const payload = visionRequest(profile, await dataUrlOf(file));
-      result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, sent),
-        (usage, body) => visionCost(body, profile), body => visionReading(body, sent));
+      if (!force && sameReadingSource(cached, rec, chosen, profile, imageHash) && cached.response) {
+        result = { status: "completed", parsed: Split.checkReading(selectTargets(visionReading(cached.response, sent)), targets),
+          cost_usd: cached.cost_usd, seconds: cached.seconds, path: cached.path, response: cached.response, cached: true, ocr_reused: true };
+      } else {
+        const payload = visionRequest(profile, await dataUrlOf(file));
+        result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets),
+          (usage, body) => visionCost(body, profile), body => selectTargets(visionReading(body, sent)), scope);
+      }
     } else {
-      const images = await this.imageSet(pid, file, rec, sent, fingerprint);
-      const payload = geminiReadingRequest(profile, Split.readingContent(this.book.types, sent, images), Split.readingSchema(sent));
-      result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, sent));
+      const imageKey = plan.partial ? await jsonHash({ fingerprint, regions: scope.region_ids, char_h: rec.char_h }) : fingerprint;
+      const images = await this.imageSet(pid, file, rec, targets, imageKey);
+      const payload = geminiReadingRequest(profile, Split.readingContent(this.book.types, targets, images), Split.readingSchema(targets));
+      result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets), null, null, scope);
     }
     const reading = { ...result, format: "page-reading", version: 1, page: pid, profile, options: chosen, fingerprint,
       image_sha256: imageHash, geometry_key, regions_record: rec, skipped };
-    await this.book.writeWork(path, reading);
+    if (plan.partial) {
+      const archive = `work/reading-history/${pid}/${profile.id}/${await jsonHash(cached)}.json`;
+      if (!await this.book.readWork(archive)) await this.book.writeWork(archive, cached);
+      const parts = retainedParts(cached, plan.reused, archive);
+      if (targets.length) {
+        let partPath = result.path;
+        if (!partPath) {
+          partPath = `work/reading-parts/${pid}/${profile.id}/local-${crypto.randomUUID()}.json`;
+          await this.book.writeWork(partPath, { ...reading, ...scope, format: "reading-part", regions_record: { ...rec, regions: targets.map(source => source.region) } });
+        }
+        parts.push({ path: partPath, region_ids: targets.map(source => source.rid), cost_usd: result.cost_usd, seconds: result.seconds });
+      }
+      Object.assign(reading, scope, { parsed: combineReading(plan, result.parsed, sent), parts, previous_reading: archive,
+        cost_usd: partTotals(parts, "cost_usd"), seconds: partTotals(parts, "seconds") });
+    }
+    await this.book.updateWork(path, latest => {
+      if (canonical(latest) !== baseline) throw new Error("Another transcription was saved while this call was running. Retry using the newer saved reading.");
+      return reading;
+    });
     return reading;
   }
 
@@ -454,7 +522,8 @@ export class Maker {
       const record = await this.sourceRegions(pid), { sent } = Split.selectPageRegions(record.regions);
       const parsed = Split.readingFromDocument(current, sent, chosen.reader);
       reading = { profile: readerById(chosen.reader), options: chosen, regions_record: record, parsed,
-        image_sha256: current.page.image_sha256, fingerprint: await jsonHash({ text: parsed.regions }), cost_usd: 0, seconds: 0 };
+        image_sha256: current.page.image_sha256, fingerprint: await jsonHash({ text: parsed.regions }), cost_usd: 0, seconds: 0,
+        ...(current.source?.calls?.reading?.partial ? { partial: true, parts: current.source.calls.reading.parts } : {}) };
     }
     let input = reading;
     if (current && layerState(current, "text")) {
@@ -493,11 +562,8 @@ function sameReading(a, b) {
 }
 
 async function geometryKey(record, chosen, profile, imageHash) {
-  const { sent } = Split.selectPageRegions(record.regions);
   return jsonHash({ version: Split.SPLIT_VERSION, profile, chosen, imageHash,
-    regions: sent.map(value => ({ id: value.rid, polygons: value.region.polygons,
-      lines: value.region.lines.filter(line => line.polygons?.length).map(line => ({ id: line.line_id, polygons: line.polygons })) }))
-      .sort((left, right) => left.id.localeCompare(right.id)) });
+    regions: readingGeometry(record) });
 }
 
 export async function jsonHash(value) {

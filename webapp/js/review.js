@@ -1,11 +1,13 @@
 import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261110-finders-4";
 import { layerRecords } from "./layers.js?v=20261110-finders-4";
-import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261110-finders-4";
+import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261110-partial-3";
 import { checkDocument } from "./schema.js?v=20261110-reading-2";
 import { markedText } from "./pipeline/split.js";
 import { structureDecisions } from "./pipeline/structure-compare.js";
 import { unitPath, unitRegionIds } from "./editing.js?v=20261110-finders-4";
 import { regionLayout } from "./pipeline/finders.js?v=20261110-finders-4";
+import { preserveMarkerIds } from "./marker-ids.js?v=20261110-partial-3";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261110-partial-3";
 
 export const reviewSnapshot = (doc, types) => canonical({ doc, types });
 const freeLayer = (doc, layer) => {
@@ -22,7 +24,7 @@ const unitInput = doc => canonical(doc.page.regions.map(region => ({ id: region.
 const lineShape = (doc, region, line) => canonical({ image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
   region: region.id, polygons: line.polygons, line: line.line });
 
-export function reviewCandidate(current, record, layer, types, regionCandidate = null) {
+export function reviewCandidate(current, record, layer, types, regionCandidate = null, { suggestion = false } = {}) {
     if (layer === "regions") {
     if (!regionCandidate || regionCandidate.page.id !== current.page.id || regionCandidate.page.image_sha256 !== current.page.image_sha256 || regionCandidate.page.width !== current.page.width || regionCandidate.page.height !== current.page.height)
       throw new EditError("These region results belong to a different scan.");
@@ -30,7 +32,7 @@ export function reviewCandidate(current, record, layer, types, regionCandidate =
   }
   if (layer === "text") {
     const unlocked = freeLayer(freeLayer(current, "text"), "units"); unlocked.relations = [];
-    const out = mergeText(unlocked, record, types, () => [[], []]);
+    const out = mergeText(unlocked, record, types, () => [[], []], { regionIds: suggestion ? partialTextScope(current, record) : null });
     if (!out.taken.includes("text")) throw new EditError("The region geometry has changed. Compare a transcription made for the current regions.");
     return out.doc;
   }
@@ -65,17 +67,8 @@ function takeText(doc, candidate, scope) {
   if (!selected.length && (scope.line !== undefined || scope.region && !doc.page.regions.some(region => region.id === scope.region)))
     throw new EditError("Select an existing text line or region.");
   const used = new Set(doc.page.regions.flatMap(region => (region.lines || []).flatMap(line => (line.spans || []).map(span => span.id))));
-  let next = 1;
   for (const { region, line, proposed } of selected) {
-    const spans = clone(proposed.spans || []), matched = new Set();
-    for (const span of spans.filter(span => span.id)) {
-      const possible = (line.spans || []).filter(value => !matched.has(value.id) && value.kind === span.kind && value.marker === span.marker);
-      const exact = possible.find(value => value.start === span.start);
-      const unique = possible.length === 1 && spans.filter(value => value.kind === span.kind && value.marker === span.marker).length === 1;
-      const old = exact || (unique ? possible[0] : null);
-      if (old) { span.id = old.id; matched.add(old.id); }
-      else { while (used.has(`m${next}`)) next++; span.id = `m${next++}`; used.add(span.id); }
-    }
+    const spans = preserveMarkerIds(line.spans || [], proposed.spans || [], used);
     setLine(doc, region.id, region.lines.indexOf(line), proposed.text || "", spans);
     region.source = { ...region.source, transcription: clone(candidate.page.regions.find(value => value.id === region.id).source?.transcription || {}) };
   }

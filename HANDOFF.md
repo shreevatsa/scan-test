@@ -1,10 +1,10 @@
 # Scanned books, source-aware: session handoff
 
-Updated 2026-11-10. Start with the design of the stage-based workflow below, which is the next thing to build, then read "Current state" for the app as it is. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every public test, in order; private tests are recorded only in private/.
+Updated 2026-11-10. The nine-step stage-based workflow is implemented. Start with "Build progress" and "Current state", then use the design below for its decisions and the remaining experiments. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every public test, in order; private tests are recorded only in private/.
 
-## Next: the stage-based workflow (design of 2026-11-09)
+## Stage-based workflow (design of 2026-11-09)
 
-This section is the task for the next sessions. Steps 1 through 8 are complete, as recorded under "Build progress". Continue with partial transcription of changed regions in step 9. "Current state" below describes the app's current screens. The design starts from the user's four phases, a review of the code and the recorded evidence, and the user's answers of 2026-11-09. Build it in the order under "Build order", with each step leaving the app working and the tests passing.
+Steps 1 through 9 are complete, as recorded under "Build progress". The next work is hands-on testing of the full-book workflow and the experiments listed after the build. "Current state" below describes the app's current screens. The design starts from the user's four phases, a review of the code and the recorded evidence, and the user's answers of 2026-11-09. Build it in the order under "Build order", with each step leaving the app working and the tests passing.
 
 ### What the user asked for
 
@@ -190,7 +190,7 @@ Other rules:
 - Reuse a saved reading when its `geometry_key` matches. For readings saved before this build, compute the key from their saved `regions_record`.
 - Keep the full fingerprint too. When it differs, show the page as "transcribed under an earlier type list" and offer re-reading; never re-read by itself.
 - **Completion keeps its present fingerprint,** because types and reading order are real inputs to it. When the document's transcription is equivalent to the saved reading, pass the original saved reading to `structure` so the existing result is found. Equivalence must compare canonical text, formatting and note markers, using the document's spans as well as its plain strings. When that content differs, build the input from the document with `readingFromDocument`, and use a hash of that content where the reading's fingerprint went. The pure completion merge already holds results whose model-facing text or geometry differs from the current document.
-- **A region changed after transcription** (the user goes back to Regions and fixes a box): `applyGeometry` (`webapp/js/ops.js`) already keeps each line piece's text with its line. Line pieces left without text make the page show "text missing on N lines" in Text. Until step 9 the fix is to transcribe the page again, at the page's full cost; step 9 sends only the changed regions.
+- **A region changed after transcription** (the user goes back to Regions and fixes a box): `applyGeometry` (`webapp/js/ops.js`) already keeps each line piece's text with its line. Line pieces left without text make the page show "text missing on N lines" in Text. Running transcription again sends the changed text regions and combines their results with the compatible saved reading. Cloud Vision can remap its saved full-page word boxes, while Tesseract reruns locally to preserve full-page word ownership.
 
 #### Suggestions
 
@@ -472,9 +472,19 @@ Finder work is saved separately under work/region-finders/<page>/<profile>.json.
 
 All 225 app tests and 11 schema tests pass. Added checks cover coarse typing, ambiguous types, block splitting, native paragraph extraction, legacy defaults, independent caches, language and type changes, protected suggestions, reviewed-layout evidence, frozen request parity and the new OpenAI credential settings. Chrome exercised all nine finder choices with simulated model responses and real local finders, cache reuse, a comparison using only the two free finders, grouped key checks, saved choice persistence, a held-back region suggestion, explicit layout replacement and pending downstream stages. The view was checked at 390-pixel width. A separate public Cole fixture loaded the actual recorded benchmark outputs for visual inspection. Browser validation added zero live API calls. Continue with step 9.
 
+Step 9 is complete on 2026-11-10. Transcription compares each region ID, polygon and numbered line geometry with the same model's saved reading on the same scan. Compatible regions are reused. Changed or added text regions go through the existing request builder with their own cut-outs and response contract. The saved result remains a complete page reading. Deleted regions require no request when the remaining text is reusable. An explicit fresh request or a page with no compatible saved text for its scan, model and OCR language uses a whole-page pass. Existing full-page requests and method IDs are retained.
+
+The previous reading is archived under work/reading-history. Composite readings list their contributing parts, target IDs and reused IDs. Raw partial calls retain the method profile and are marked partial. A deterministic request pointer recovers a completed paid response after an interrupted save. The raw call and ledger are saved before sending a partial request. An unresolved attempt blocks an automatic repeat, with an explicit fresh whole-page request available after reviewing the saved attempt. Cache saves recheck the previous reading under the book lock, preserving a newer result if calls finish out of order.
+
+Protected transcription receives a suggestion. For a repair using the page's existing model, accepting the suggestion retains current text in the other regions, including human corrections and marker identities. The review labels those regions "Current text retained". Model comparisons still show the saved model text, so those corrections do not become model output. Completion receives the full current transcription. Cloud Vision reuses its saved full-page word geometry without a new API request. A recovered Vision response is remapped against the latest region geometry. Local Tesseract reruns on the full image to keep competing word ownership consistent, then combines only the targeted regions.
+
+Book projections use whole-page samples. Composite repaired samples are excluded, with an unavailable estimate when no whole-page sample remains. The API ledger retains repair and retry charges, and contributing call paths prevent a reused Vision response being counted twice in a composite. Text progress reports changed and reused regions. The comparison identifies repaired readings and exposes their partial API attempts.
+
+All 236 app tests and 11 schema tests pass. Eleven added cases cover cut-out scope, combined completion input, protected corrections, marker identity, invalid responses, interrupted saves and ledgers, unresolved calls, concurrent cache writes, additions and deletions, figure transitions, changed scans, explicit fresh results, cost projections and both OCR providers. A regression within the Vision case checks recovery after another box edit. Chrome used real outlines and image cut-outs with simulated provider responses. It enlarged one of two regions to include a new line, requested only that region, reviewed and saved the repair, retained the other region's human correction across reload, and checked raw model text, repair ledger details and the 390-pixel view. This step made zero live API requests and incurred no provider charges. All nine build steps are complete. The next unused method ID remains 087.
+
 ### Build order
 
-Each step ends with the tests passing (225 app tests and 11 schema tests now, with the two commands under "Current state"), a browser check, a NOTEBOOK entry, and `webapp/README.md` and this file brought up to date.
+Each step ends with the tests passing (236 app tests and 11 schema tests now, with the two commands under "Current state"), a browser check, a NOTEBOOK entry, and `webapp/README.md` and this file brought up to date.
 
 1. **Complete. The pure modules and their tests:** `layers.js`, `pipeline/provisional.js`, `pipeline/apply.js`.
    - Provisional documents made from the `regions` lists of the nine committed region records (`outputs/<page>/063-fragment-band-lines/regression-001/regions.json`, written by the Python method; the page sizes are in the same files) with their books' type lists (`schema/types/`) pass `checkPage`. So does the empty document.
@@ -505,7 +515,7 @@ Each step ends with the tests passing (225 app tests and 11 schema tests now, wi
    - A model step on a page with an edited layer leaves the layer alone, and the page shows a suggestion that can be taken or dismissed.
 8. **Complete. Region finders:** the further models, the two no-cost finders and the comparison (new method IDs; the first step that needs paid calls beyond checks). The keys that make work by hand quick.
    - Each finder's scores on the nine reference pages are in NOTEBOOK.md before it appears in the app.
-9. **Re-reading single regions:** send only the regions whose shapes changed, with the same request builder, and merge the result into the saved reading. Treat it as the same method, with the call record marked as partial; the user was told this on 2026-11-09 and raised no objection.
+9. **Complete. Re-reading single regions:** send only the regions whose shapes changed, with the same request builder, and merge the result into the saved reading. Treat it as the same method, with the call record marked as partial; the user was told this on 2026-11-09 and raised no objection.
    - Moving one box on a transcribed page causes a request with that region only.
 
 Walk through the whole flow by hand after steps 4 and 6, on a public PDF (`Kale-1913-pp21-272.pdf` in the repository root; include a few of its pages only): open the plain PDF, browse, propose and edit types, find regions on a few pages, correct one, add a type from a page, move on, transcribe, move on, complete, read, fix a join across a page break, export, and open the exported `.chaya.pdf` again. Also do one page entirely by hand. Keep paid checks to a few pages and record their cost. Work on the private series follows the budget in PRIVATE.md.
@@ -537,7 +547,7 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 
 1. Read this section, "Current state" below, PRIVATE.md on this machine (local; it has the source PDF locations, the browser origin and book in use, the unfinished comparisons and the cost accounting), `webapp/README.md` and `schema/README.md`.
 2. Run both test suites, and open a book in the app to see the current modes.
-3. Continue at step 9 of "Build order", following the completed finder comparison under "Build progress". Commit when the user asks. They have had finished work committed straight to `main`.
+3. The nine build steps are complete. Continue with the user's full-book workflow, correcting concrete issues found there. The separately listed experiments remain open and require new method IDs and recorded costs. The user has authorized committing and pushing finished work straight to `main`.
 
 ## Current state (2026-11-10)
 
@@ -570,8 +580,9 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 - **input:** PDFs only;
 - **storage:** books are kept in the browser's private file system, with autosave, and saved as one file, a `.chaya.pdf`. That is the original PDF's bytes, unchanged, plus one update attaching `chaya.json` with the book's data; the original is recoverable exactly. Pages are drawn from the PDF;
 - **published books** open by URL, read only;
+- **transcription repairs** reuse unchanged model readings after region edits and request only changed text regions. Protected text receives a scoped suggestion. Saved Vision word boxes can be remapped for free, and Tesseract reruns locally. Whole-book cost projections exclude composite repairs and the ledger records their API charges.
 - **editing** Regions edits page geometry. Text edits transcription and markers. Read edits units, line joins and note links through its page fallback or passage panel. Cross-page joins have coordinated saves and recovery. The style sheet editor remains under Read.
-- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (225) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
+- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (236) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
 
 **Running:**
 - `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/;

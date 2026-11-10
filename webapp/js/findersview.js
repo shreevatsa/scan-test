@@ -1,11 +1,11 @@
 import { h, esc } from "./render.js";
 import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261110-finders-4";
-import { OCR_LANGUAGES, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-finders-4";
+import { OCR_LANGUAGES, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-partial-3";
 import { pageRange } from "./pipeline/pdf.js";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-finders-4";
-import { reviewPage } from "./review-view.js?v=20261110-finders-4";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-partial-3";
+import { reviewPage } from "./review-view.js?v=20261110-partial-3";
 import { settings } from "./store.js?v=20261110-finders-4";
-import { money } from "./reader-controls.js?v=20261110-finders-4";
+import { money } from "./reader-controls.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
 
 function scanCard(record, profile, image, reference, onReview) {
@@ -202,7 +202,7 @@ export async function renderFinders(el, app) {
     h("p", { class: "hint" }, "Compatible saved trials are reused. The final API call can exceed the spend threshold. Choosing a free finder runs it on this device."),
     h("div", { class: "actions" }, runButton, stopButton, h("button", { onclick: () => refresh().catch(error => { status.textContent = error.message; }) }, "Refresh saved region results")), progress.element, status,
     h("h3", {}, "2. Review region layouts"), h("label", {}, "Book pages ", pageCount),
-    h("p", { class: "hint" }, "The total includes this finder plus the selected transcription and completion models at their recorded sample costs. It becomes available when all three stages have samples. It assumes downstream costs stay at their sampled level. Exact layout matches count only pages explicitly reviewed against the scan."), summary,
+    h("p", { class: "hint" }, "The total includes this finder plus the selected transcription and completion models at their recorded whole-page sample costs. Region repairs are excluded from this projection. It becomes available when all three stages have samples. It assumes downstream costs stay at their sampled level. Exact layout matches count only pages explicitly reviewed against the scan."), summary,
     h("label", {}, "Inspect ", inspect), h("p", { class: "hint" }, "For a page already prepared in Regions, review a candidate to keep or replace the whole layout. You can edit its individual blocks in Regions."), detail,
     h("fieldset", { class: "model-choice" }, h("legend", {}, "3. Choose the region finder for this book"), h("label", {}, "Region finder ", choice), saveChoice, choiceStatus,
       h("button", { onclick: () => app.setMode("regions") }, "Continue to Regions")));

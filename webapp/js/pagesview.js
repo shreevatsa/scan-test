@@ -1,18 +1,18 @@
-import { suggestionButton } from "./review-view.js?v=20261110-finders-4";
+import { suggestionButton } from "./review-view.js?v=20261110-partial-3";
 import { h } from "./render.js";
 import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261110-finders-4";
-import { regionTypesPanel } from "./regionsview.js?v=20261110-finders-4";
+import { regionTypesPanel } from "./regionsview.js?v=20261110-partial-3";
 import { regionBoxes } from "./pageimage.js?v=20261110-reading-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261110-finders-4";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261110-partial-3";
 import { FINDERS, finderById } from "./pipeline/finders.js?v=20261110-finders-4";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-finders-4";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-partial-3";
 import { settings } from "./store.js?v=20261110-finders-4";
-import { runBatch } from "./pipeline/batch.js?v=20261110-reading-2";
+import { runBatch } from "./pipeline/batch.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261110-finders-4";
-import { renderFinders } from "./findersview.js?v=20261110-finders-4";
+import { money } from "./reader-controls.js?v=20261110-partial-3";
+import { renderFinders } from "./findersview.js?v=20261110-partial-3";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -210,7 +210,7 @@ export async function renderPages(el, app) {
     keyPanel.replaceChildren(stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), refreshSummary));
     languageLabel.hidden = stage !== "regions" || profile.id !== "tesseract-regions";
     const ledger = await book.readWork("work/reader-lab/ledger.json");
-    const calls = (ledger?.calls || []).filter(call => call.stage === { regions: "regions", text: "reading", read: "structure" }[stage] && call.profile === profile.id && call.status === "completed" && Number.isFinite(call.cost_usd));
+    const calls = (ledger?.calls || []).filter(call => call.stage === { regions: "regions", text: "reading", read: "structure" }[stage] && call.profile === profile.id && call.status === "completed" && !call.partial && Number.isFinite(call.cost_usd));
     estimate = profile.provider === "local" ? 0 : calls.length ? calls.reduce((sum, call) => sum + call.cost_usd, 0) / calls.length : null;
     refreshSummary();
   };
@@ -239,7 +239,12 @@ export async function renderPages(el, app) {
     progress.start(ids.length);
     try {
       const out = await runBatch({ maker, ids, stage, limit: Number(threshold.value), force: fresh.checked, stopped: () => stopped,
-        onProgress: value => { status.textContent = `${ACTIONS[stage]} · ${value.pid} · New spend ${money(value.spend)}${value.unknown ? " · Cost unavailable" : ""}`; },
+        onProgress: value => {
+          const reading = value.value;
+          const scope = reading?.partial && !reading.cached
+            ? ` · ${reading.region_ids.length} changed ${reading.region_ids.length === 1 ? "region" : "regions"} transcribed · ${reading.reused_regions.length} reused` : "";
+          status.textContent = `${ACTIONS[stage]} · ${value.pid}${scope} · New spend ${money(value.spend)}${value.unknown ? " · Cost unavailable" : ""}`;
+        },
         onPage: async (pid, value, error) => {
           progress.advance(error ? "failed" : value.cached ? "reused" : "completed");
           await app.refreshWorkflowPage(pid);

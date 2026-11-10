@@ -24,7 +24,7 @@ export async function runBatch({ maker, ids, stage, limit, force = false, stoppe
       } catch (failure) { error = failure; result.failed++; }
       result.processed++;
       await onPage(pid, value, error);
-      onProgress({ ...result, pid, error });
+      onProgress({ ...result, pid, error, value });
     }
     result.paused ||= stopped() || !!maker.persistenceFailure || !!result.unknown || result.spend >= limit;
     return result;

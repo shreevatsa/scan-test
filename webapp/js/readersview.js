@@ -1,14 +1,16 @@
-import { reviewPage } from "./review-view.js?v=20261110-finders-4";
-import { settledChecks } from "./review.js?v=20261110-finders-4";
+import { reviewPage } from "./review-view.js?v=20261110-partial-3";
+import { settledChecks } from "./review.js?v=20261110-partial-3";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money } from "./reader-controls.js?v=20261110-finders-4";
-import { READERS, readerOptions, projectBookCost, structurePath, structurerById } from "./pipeline/readers.js?v=20261110-finders-4";
+import { modelChoice, keyControls, money } from "./reader-controls.js?v=20261110-partial-3";
+import { READERS, readerOptions, projectBookCost, structurePath, structurerById } from "./pipeline/readers.js?v=20261110-partial-3";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, compareRegions } from "./pipeline/compare.js";
-import { jsonHash } from "./pipeline/run.js?v=20261110-finders-4";
+import { jsonHash } from "./pipeline/run.js?v=20261110-partial-3";
 import { settings } from "./store.js?v=20261110-finders-4";
 import { runProgress } from "./run-progress.js";
+import { readingFits } from "./pipeline/partial-reading.js?v=20261110-partial-3";
+import { sha256hex } from "./chayapdf.js";
 
 export async function renderReaders(el, app) {
   const token = Symbol();
@@ -63,6 +65,7 @@ export async function renderReaders(el, app) {
     try { rec = await maker.sourceRegions(pid); } catch { return null; }
     const { sent } = selectPageRegions(rec.regions);
     const signature = await jsonHash(rec.regions);
+    const imageHash = await sha256hex(new Uint8Array(await (await book.imageBlob(pid)).arrayBuffer()));
     geometry.set(pid, { rec, sent, signature });
     const checked = { ...(await book.readWork(`work/reader-lab/checked/${pid}/${signature}.json`))?.lines };
     const current = await book.current(pid);
@@ -72,7 +75,7 @@ export async function renderReaders(el, app) {
     for (const reader of READERS) {
       const reading = await book.readWork(`work/readings/${pid}/${reader.id}.json`);
       let structure = await book.readWork(structurePath(pid, reader.id, defaults.structurer));
-      if (!reading || await jsonHash(reading.regions_record.regions) !== signature) continue;
+      if (!readingFits(reading, rec, imageHash)) continue;
       if (structure?.reading_fingerprint !== reading.fingerprint) structure = null;
       if (structure) {
         const [errors, warnings] = app.check(structure.doc);
@@ -111,8 +114,9 @@ export async function renderReaders(el, app) {
       })), Number(projectionPages.value));
       const seconds = runs.reduce((sum, x) => sum + x.value.reading.seconds + (x.value.structure?.seconds || 0), 0) / runs.length;
       rows.push(h("tr", {}, h("td", {}, reader.label, h("div", {}, `${runs.length}/${chosenPages.size} pages`),
+        runs.some(run => run.value.reading.partial) ? h("div", { class: "meta" }, "Includes saved region repairs") : null,
         reader.id === defaults.reader ? h("div", { class: "ok" }, "Selected for this book") : null),
-        h("td", {}, money(totalCost, 2), totalCost === null ? h("div", { class: "meta" }, "Needs all stage costs and a valid page count") : null),
+        h("td", {}, money(totalCost, 2), totalCost === null ? h("div", { class: "meta" }, "Needs whole-page samples, all stage costs and a valid page count") : null),
         h("td", {}, chars ? (edits / chars * 1000).toFixed(2) : "—", compared ? h("div", { class: "meta" }, `${chars.toLocaleString()} characters`) : null),
         h("td", {}, checkedChars ? (checkedEdits / checkedChars * 1000).toFixed(2) : "—", checkedChars ? h("div", { class: "meta" }, `${checkedChars} checked characters`) : null),
         h("td", {}, structured ? `${valid}/${structured} valid` : "Pending"), h("td", {}, `${seconds.toFixed(1)} s`)));
@@ -127,15 +131,15 @@ export async function renderReaders(el, app) {
     const ledger = await book.readWork("work/reader-lab/ledger.json");
     if (!active() || !ledger?.calls.length) return;
     const known = ledger.calls.filter(call => Number.isFinite(call.cost_usd));
-    const failed = ledger.calls.filter(call => call.status === "failed");
+    const detailed = ledger.calls.filter(call => call.partial || ["failed", "requesting"].includes(call.status));
     const messages = [];
-    for (const call of failed) {
+    for (const call of detailed) {
       const record = await book.readWork(call.path);
-      messages.push(`${call.page} · ${call.profile} · ${call.stage} · ${record?.error || "Failed call"}`);
+      messages.push(`${call.page} · ${call.profile} · ${call.stage}${call.partial ? ` · regions ${call.region_ids.join(", ")}` : ""} · ${money(call.cost_usd)} · ${record?.error || call.status}`);
     }
     if (!active()) return;
     ledgerSummary.replaceChildren(h("p", {}, `Saved API attempts total ${money(known.reduce((sum, call) => sum + call.cost_usd, 0))} in known estimated charges. ${ledger.calls.length - known.length} charges are unresolved.`),
-      ...messages.length ? [h("details", {}, h("summary", {}, `${messages.length} failed API attempts`), ...messages.map(message => h("div", {}, message)))] : []);
+      ...messages.length ? [h("details", {}, h("summary", {}, "Region repairs and interrupted API attempts"), ...messages.map(message => h("div", {}, message)))] : []);
   }
 
   async function showDetail() {
@@ -329,7 +333,7 @@ export async function renderReaders(el, app) {
     h("p", { class: "hint" }, "The reference transcription comes from the selected source above. Argon high is the default reference. Error scores use only the reference lines you mark checked against the scan. Missing regions are detected once and shared across transcription models. A spend threshold can be exceeded by the final call."),
     h("div", { class: "actions" }, run, " ", stopButton, " ", refreshButton), progress.element, trialStatus,
     h("h3", {}, "2. Review costs and transcription differences"), h("label", {}, "Book pages ", projectionPages),
-    h("p", { class: "hint" }, `${book.manifest.cost_projection?.label ? `Default target is ${book.manifest.cost_projection.label}. ` : ""}Change the page count to estimate another book size, including 1,000 pages. Each total scales the completed sample calls to one pass at their recorded prices, including region detection once per page. All three stage costs must be available. Retry charges appear in the saved-attempt ledger.`),
+    h("p", { class: "hint" }, `${book.manifest.cost_projection?.label ? `Default target is ${book.manifest.cost_projection.label}. ` : ""}Change the page count to estimate another book size, including 1,000 pages. Each total scales whole-page samples to one pass at their recorded prices, including region detection once per page. All three stage costs must be available. Saved region repairs are excluded from this projection. Repair and retry charges appear in the saved-attempt ledger.`),
     summary, ledgerSummary,
     h("h3", {}, "Inspect the transcriptions"), h("div", { class: "fields" }, h("label", {}, "Page ", pageSelect), " ",
       h("label", {}, onlyDifferences, " Show differing regions only")),

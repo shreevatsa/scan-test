@@ -5,27 +5,27 @@ import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?
 import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya } from "./store.js?v=20261110-finders-4";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-reading-2";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261110-finders-4";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-finders-4";
-import { renderStyle } from "./styleview.js?v=20261110-finders-4";
-import { renderTypes } from "./typesview.js?v=20261110-finders-4";
-import { typeSetup } from "./type-setup.js?v=20261110-finders-4";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261110-partial-3";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-partial-3";
+import { renderStyle } from "./styleview.js?v=20261110-partial-3";
+import { renderTypes } from "./typesview.js?v=20261110-partial-3";
+import { typeSetup } from "./type-setup.js?v=20261110-partial-3";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
-import { Maker } from "./pipeline/run.js?v=20261110-finders-4";
+import { Maker } from "./pipeline/run.js?v=20261110-partial-3";
 import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261110-finders-4";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261110-finders-4";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261110-partial-3";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
 import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=20261110-finders-4";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261110-finders-4";
+import { renderPages } from "./pagesview.js?v=20261110-partial-3";
 import { settings } from "./store.js?v=20261110-finders-4";
-import { renderReaders } from "./readersview.js?v=20261110-finders-4";
-import { renderStructures } from "./structuresview.js?v=20261110-finders-4";
+import { renderReaders } from "./readersview.js?v=20261110-partial-3";
+import { renderStructures } from "./structuresview.js?v=20261110-partial-3";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
