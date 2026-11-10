@@ -1,9 +1,10 @@
+import { suggestionButton } from "./review-view.js?v=20261110-review-3";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { h, esc, lineHtml } from "./render.js";
 import * as ops from "./ops.js?v=20261110-reading-2";
 import { orderedRegions, regionFlags } from "./flags.js?v=20261110-reading-2";
 import { REGION_CLASSES } from "./book-types.js?v=20261110-reading-2";
-import { typeSetup } from "./type-setup.js?v=20261110-reading-2";
+import { typeSetup } from "./type-setup.js?v=20261110-review-3";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 import { sha256hex } from "./chayapdf.js";
 import { reviewTypeChange } from "./type-operations.js?v=20261110-reading-2";
@@ -151,6 +152,7 @@ export class RegionsPanel {
 export function renderRegionInspector(el, app) {
   const { doc, selection } = app;
   el.replaceChildren();
+  el.append(suggestionButton(app, doc.page.id));
   if (selection.omitted !== undefined) {
     const omitted = doc.source?.omitted_regions?.[selection.omitted];
     if (!omitted) return;

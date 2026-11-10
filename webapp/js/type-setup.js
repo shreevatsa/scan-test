@@ -1,13 +1,14 @@
+import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261110-review-3";
 import { h } from "./render.js";
 import { checkTypes } from "./schema.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261110-reading-2";
+import { settings } from "./store.js?v=20261110-review-3";
 import { money } from "./reader-controls.js?v=20261110-reading-2";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261110-reading-2";
-import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261110-reading-2";
+import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261110-review-3";
+import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261110-review-3";
 import { readerById, structurerById } from "./pipeline/readers.js";
 import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261110-reading-2";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261110-review-3";
 import { citedSamplePages } from "./type-revisions.js?v=20261110-reading-2";
 
 export function typeSetup({ app, title, bookId, description, index, template, book = null, initialSource = "starter", proposalUrl = null, onBusy }) {
@@ -25,7 +26,9 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
   const mode = h("input", { type: "radio", name: "type-source", value: "discover", checked: !template && (!!proposalUrl || initialSource === "discover") });
   const reuse = h("input", { type: "radio", name: "type-source", value: "existing", checked: !!template });
   const model = h("select", { "aria-label": "Unit type discovery model" }, ...TYPE_MODELS.map(profile =>
-    h("option", { value: profile.id }, profile.label)));
+    h("option", { value: profile.id }, profile.label)), h("option", { value: "both" }, "Both models · review a merged draft"));
+  const selectedProfiles = () => TYPE_MODELS.filter(profile => model.value === "both" || profile.id === model.value);
+  const credentialsReady = () => selectedProfiles().every(profile => checks.status(profile)?.valid);
   const pages = h("input", { size: 30, "aria-label": "Sample PDF pages", placeholder: "all, 1-50, or 1, 7, 43-44" });
   const browser = pageBrowser({ pages, render: drawPage });
   const status = h("p", { class: "meta", role: "status" });
@@ -83,6 +86,24 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
     samplingTitle.textContent = result ? "Choose more sample pages or request another proposal" : "Choose sample pages and a model";
     if (!result) { review.replaceChildren(); approval.hidden = true; return; }
     const tl = result.types;
+    result.merged ||= tl.source.discovery.comparison;
+    const merged = result.merged;
+    if (merged) tl.source.discovery.comparison = merged;
+    const draftChoices = merged ? h("section", { class: "box" }, h("h4", {}, "Types found across the models"),
+      h("p", {}, "Keep or drop each proposed type, then review its definition and grouping below. Matching names are combined. Book details and conflicting shared definitions initially use the first proposal."),
+      ...Object.entries(merged.types).map(([name, variants]) => {
+        const keep = h("input", { type: "checkbox", checked: merged.kept[name], "aria-label": `Keep proposed type ${name}`, onchange: () => {
+          if (!keep.checked) { merged.kept[name] = false; merged.saved ||= {}; merged.saved[name] = tl.types[name]; delete tl.types[name]; }
+          else { merged.kept[name] = true; tl.types[name] = structuredClone(merged.saved?.[name] || variants[0].definition); }
+          changed(); renderReview();
+        } });
+        return h("div", { class: "type-draft-choice" }, h("label", {}, keep, ` ${name} · ${typeAgreement(variants)}`),
+          h("p", { class: "meta" }, variants.map(variant => variant.model).join(" · ")),
+          variants.length > 1 ? h("details", {}, h("summary", {}, "Compare definitions"), ...variants.map(variant => h("section", {},
+            h("b", {}, variant.model), h("p", {}, variant.definition.description),
+            h("p", {}, `${variant.definition.region || "container"} · contains ${(variant.definition.contains || []).join(", ") || "no children"} · ${variant.definition.flow || "inside another unit"}`),
+            h("button", { disabled: !keep.checked, onclick: () => { tl.types[name] = structuredClone(variant.definition); changed(); renderReview(); } }, `Use ${variant.model} definition`)))) : null);
+      })) : null;
     tl.source.discovery.questions ||= [...result.proposal.questions];
     const cards = Object.entries(tl.types).map(([original, type]) => {
       let name = original;
@@ -129,6 +150,11 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
           status.textContent = "Use a unique name with lowercase letters, digits and underscores, starting with a letter.";
           return;
         }
+        if (result.merged?.types[name]) {
+          result.merged.types[next] = result.merged.types[name]; delete result.merged.types[name];
+          result.merged.kept[next] = result.merged.kept[name]; delete result.merged.kept[name];
+          if (result.merged.saved?.[name]) { result.merged.saved[next] = result.merged.saved[name]; delete result.merged.saved[name]; }
+        }
         tl.types[next] = type;
         delete tl.types[name];
         if (evidence) evidence.name = next;
@@ -149,13 +175,13 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
     json.value = JSON.stringify(tl, null, 2);
     const packetText = h("textarea", { rows: 12, readonly: true, class: "type-json", "aria-label": "Saved unit-type proposal JSON" });
     review.replaceChildren(h("div", {}, h("h3", {}, "Review this book’s unit types"),
-      h("p", {}, `${tl.source.discovery.model} inspected ${tl.source.discovery.sample_pages.length} of ${pdf.doc.numPages} PDF pages (${pageSelectionText(tl.source.discovery.sample_pages, pdf.doc.numPages)}). Estimated call cost ${money(result.call.cost_usd)}.`),
+      h("p", {}, `${tl.source.discovery.model} inspected ${tl.source.discovery.sample_pages.length} of ${pdf.doc.numPages} PDF pages (${pageSelectionText(tl.source.discovery.sample_pages, pdf.doc.numPages)}). Estimated proposal cost ${money(merged ? merged.cost_usd : result.call.cost_usd)}.`),
       h("p", {}, tl.description), h("p", { class: "meta" }, `Languages ${(tl.languages || []).join(", ")}`),
       result.reader_options ? h("p", { class: "hint" }, `Models for this book after setup · ${readerById(result.reader_options.reader).label} for transcription · ${structurerById(result.reader_options.structurer).label} for schema assignment.`) : null,
       Array.isArray(tl.source.review_notes) ? h("div", {}, h("h4", {}, "Adjustments from review"),
         h("ul", {}, ...tl.source.review_notes.map(note => h("li", {}, note)))) : null,
       h("p", { class: "hint" }, "Check the descriptions and grouping rules against the sample pages. Edit descriptions directly. Each type’s grouping rules can also be changed."),
-      ...cards,
+      ...(draftChoices ? [draftChoices] : []), ...cards,
       h("button", { onclick: () => {
         let name = "new_type";
         while (name in tl.types) name += "_new";
@@ -224,7 +250,7 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
     busy = value;
     element.querySelectorAll("input,select,textarea,button").forEach(control => { control.disabled = value; });
     onBusy(value);
-    if (!value) generate.disabled = !checks.status(TYPE_MODELS.find(profile => profile.id === model.value))?.valid;
+    if (!value) generate.disabled = !credentialsReady();
   };
   const preview = h("button", { onclick: () => {
     try { selectedPages(); browser.showSelection(); status.textContent = "Open any selected page for a larger preview."; }
@@ -233,15 +259,21 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
   const generate = h("button", { class: "primary", disabled: true, onclick: async () => {
     lock(true);
     try {
-      const profile = TYPE_MODELS.find(profile => profile.id === model.value);
+      const profiles = selectedProfiles();
       const id = bookId.value.trim();
       if (!/^[A-Za-z0-9._-]+$/.test(id)) throw new Error("Give the book an id using letters, digits, dots, dashes and underscores.");
-      if (!checks.status(profile)?.valid) throw new Error("Check the credential for this model before proposing types.");
+      if (!credentialsReady()) throw new Error("Check the credentials for the selected models before proposing types.");
       const keys = checks.keys;
       const samples = await sampleImages();
-      status.textContent = `${profile.label} is inspecting ${samples.length} sample pages…`;
-      const proposed = await discoverTypes({ store, keys, profile, images: samples, title: title.value.trim(), description: description.value.trim(),
-        pageCount: pdf.doc.numPages, id, pdfSha: pdf.sha, schema: app.schema, request: book ? (await app.getMaker()).request : undefined });
+      const proposals = [];
+      for (const profile of profiles) {
+        status.textContent = `${profile.label} is inspecting ${samples.length} sample pages…`;
+        const proposed = await discoverTypes({ store, keys, profile, images: samples, title: title.value.trim(), description: description.value.trim(),
+          pageCount: pdf.doc.numPages, id, pdfSha: pdf.sha, schema: app.schema, request: book ? (await app.getMaker()).request : undefined });
+        await store.writeWork(`work/type-discovery/proposals/${profile.id}.json`, proposed);
+        proposals.push({ profile, result: proposed });
+      }
+      const proposed = proposals.length > 1 ? mergeTypeProposals(proposals) : proposals[0].result;
       if (result?.reader_options) proposed.reader_options = result.reader_options;
       await store.writeWork("work/type-discovery/selection.json", proposed);
       result = proposed;
@@ -264,16 +296,16 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
     h("p", { class: "hint" }, "Proposing types sends the selected page images to the selected provider using your API key. The estimated charge is shown with the saved result."),
     credentials);
   const showCredentials = async () => {
-    const token = ++credentialsToken, profile = TYPE_MODELS.find(profile => profile.id === model.value);
-    generate.disabled = true;
+    const token = ++credentialsToken, profiles = selectedProfiles();
     if (book) {
       const maker = await app.getMaker();
       checks = maker.credentials ||= new CredentialChecks(maker.keys);
-    } else checks.keys[profile.provider] = await settings.get(`key:${profile.provider}`) || "";
+    } else for (const profile of profiles) checks.keys[profile.provider] = await settings.get(`key:${profile.provider}`) || "";
     if (token !== credentialsToken) return;
-    credentials.replaceChildren(stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), () => {
-      if (!busy) generate.disabled = !checks.status(profile)?.valid;
-    }));
+    credentials.replaceChildren(...profiles.map(profile => stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), () => {
+      if (!busy) generate.disabled = !credentialsReady();
+    })));
+    generate.disabled = !credentialsReady();
   };
   model.addEventListener("change", () => showCredentials().catch(error => { status.textContent = error.message; }));
   showCredentials().catch(error => { status.textContent = error.message; });

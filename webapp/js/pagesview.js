@@ -1,13 +1,14 @@
+import { suggestionButton } from "./review-view.js?v=20261110-review-3";
 import { h } from "./render.js";
 import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261110-reading-2";
-import { regionTypesPanel } from "./regionsview.js?v=20261110-reading-2";
+import { regionTypesPanel } from "./regionsview.js?v=20261110-review-3";
 import { regionBoxes } from "./pageimage.js?v=20261110-reading-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 import { READERS, STRUCTURERS } from "./pipeline/readers.js";
 import { SETTINGS } from "./pipeline/steps.js?v=20261110-reading-2";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261110-reading-2";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-review-3";
+import { settings } from "./store.js?v=20261110-review-3";
 import { runBatch } from "./pipeline/batch.js?v=20261110-reading-2";
 import { runProgress } from "./run-progress.js";
 import { money } from "./reader-controls.js?v=20261110-reading-2";
@@ -96,6 +97,8 @@ export async function renderPages(el, app) {
     row.flags.textContent = flags.length ? `${flags.length} ${flags.length === 1 ? "flag" : "flags"} · ${flags[0]}` : "";
     row.element.classList.toggle("has-flags", !!flags.length);
     row.flags.title = flags.join("\n");
+    row.element.querySelector(".suggestion-actions")?.remove();
+    row.element.append(suggestionButton(app, pid, layer));
     row.element.querySelector(".stage-boxes")?.remove();
     if (state.doc) row.element.querySelector(".start-manual")?.remove();
     if (stage === "regions" && state.doc) row.element.querySelector(".stage-thumbnail").append(regionBoxes(state.doc, app.colors));

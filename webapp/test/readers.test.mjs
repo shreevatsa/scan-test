@@ -143,6 +143,11 @@ test("completion uses corrected formatting and markers without paying for anothe
   edited.page.regions[0].lines[0].spans = [{ kind: "italic", start: 0, end: 5 },
     { kind: "note_marker", id: "m1", marker: "2", start: 5, end: 5 }];
   await book.saveEdit("p1", edited);
+  const before = JSON.stringify(await book.current("p1"));
+  const prepared = await maker.completionInput("p1");
+  assert.equal(calls.length, 2);
+  assert.equal(prepared.input.parsed.regions[0].lines[0].text, "<i>Fixed</i>[2]");
+  assert.equal(JSON.stringify(await book.current("p1")), before);
   const out = await maker.transcribe("p1");
   assert.equal(calls.length, 3);
   assert.ok(JSON.stringify(calls[2].payload).includes("<i>Fixed</i>[2]"));

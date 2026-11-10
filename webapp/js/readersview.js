@@ -1,11 +1,13 @@
+import { reviewPage } from "./review-view.js?v=20261110-review-3";
+import { settledChecks } from "./review.js?v=20261110-review-3";
 import { h, bbox, cropInto } from "./render.js";
 import { modelChoice, keyControls, money } from "./reader-controls.js?v=20261110-reading-2";
 import { READERS, readerOptions, projectBookCost, structurePath, structurerById } from "./pipeline/readers.js";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, compareRegions } from "./pipeline/compare.js";
-import { jsonHash } from "./pipeline/run.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261110-reading-2";
+import { jsonHash } from "./pipeline/run.js?v=20261110-review-3";
+import { settings } from "./store.js?v=20261110-review-3";
 import { runProgress } from "./run-progress.js";
 
 export async function renderReaders(el, app) {
@@ -62,7 +64,10 @@ export async function renderReaders(el, app) {
     const { sent } = selectPageRegions(rec.regions);
     const signature = await jsonHash(rec.regions);
     geometry.set(pid, { rec, sent, signature });
-    checks.set(pid, (await book.readWork(`work/reader-lab/checked/${pid}/${signature}.json`))?.lines || {});
+    const checked = { ...(await book.readWork(`work/reader-lab/checked/${pid}/${signature}.json`))?.lines };
+    const current = await book.current(pid);
+    for (const key of Object.keys(current?.source?.review?.text || {})) delete checked[key];
+    checks.set(pid, { ...checked, ...(current ? settledChecks(current, sent) : {}) });
     const runs = new Map();
     for (const reader of READERS) {
       const reading = await book.readWork(`work/readings/${pid}/${reader.id}.json`);
@@ -168,6 +173,8 @@ export async function renderReaders(el, app) {
             : model.lines ? `${model.edits} character differences · ${model.formatting_differences} lines differ in formatting or markers` : "Awaiting transcription"),
           model.lines ? h("pre", { html: transcriptionHtml(referenceLines, model.lines.map(line => line.candidate)) })
             : h("p", { class: "hint" }, "Run this transcription model on this page to add its result."),
+          model.lines ? h("button", { class: "mini", onclick: () => reviewPage(app, { pid, layer: "text", region: region.id,
+            path: `work/readings/${pid}/${model.id}.json`, onSaved: refresh }).catch(error => { trialStatus.textContent = error.message; }) }, "Review and choose transcription") : null,
           note?.uncertain || note?.note ? h("p", { class: "hint" }, `${note.uncertain ? "Uncertain transcription. " : ""}${note.note || ""}`) : null);
       });
       const referenceReview = region.lines.map(row => {
@@ -184,6 +191,8 @@ export async function renderReaders(el, app) {
         corrected.addEventListener("input", () => { checked.checked = false; });
         const save = h("button", { class: "mini", onclick: async () => {
           try {
+            if (checked.checked) return await reviewPage(app, { pid, layer: "text", region: row.region, line: row.line,
+              correction: corrected.value, onSaved: refresh });
             const path = `work/reader-lab/checked/${pid}/${geo.signature}.json`;
             const next = await book.updateWork(path, old => ({ format: "checked-reading", version: 1,
               lines: { ...(old?.lines || {}), [row.key]: { text: corrected.value, checked: checked.checked } } }));
@@ -198,13 +207,18 @@ export async function renderReaders(el, app) {
       });
       return h("section", { class: "trial-region", "aria-label": `Region ${region.id}` }, h("h3", {}, `${region.id} · ${region.source.type}`),
         h("div", { class: "source-line-scroll" }, crop),
-        ...(referenceId === "current" ? [h("section", { class: "trial-transcription reference" }, h("h4", {}, referenceLabel), h("div", { class: "meta" }, "Reference transcription"), h("pre", { html: transcriptionHtml(referenceLines, referenceLines) }))] : []),
+        ...(referenceId === "current" ? [h("section", { class: "trial-transcription reference" }, h("h4", {}, referenceLabel), h("div", { class: "meta" }, "Reference transcription"), h("pre", { html: transcriptionHtml(referenceLines, referenceLines) }),
+          h("button", { class: "mini", onclick: () => reviewPage(app, { pid, layer: "text", region: region.id, onSaved: refresh }).catch(error => { trialStatus.textContent = error.message; }) }, "Review current transcription"))] : []),
         ...transcriptions, h("details", {}, h("summary", {}, "Review reference lines against the scan"), ...referenceReview));
     });
     const unitTree = value?.structure ? h("details", {}, h("summary", {}, "Units and links from schema assignment"),
       h("pre", {}, JSON.stringify({ units: value.structure.doc.units, flows: value.structure.doc.flows, relations: value.structure.doc.relations,
         errors: value.structure.errors, warnings: value.structure.warnings, problems: value.structure.problems }, null, 2))) : h("p", { class: "hint" }, "Run the structural check for the selected transcription to inspect its units and links.");
-    detail.replaceChildren(h("p", { class: "hint" }, `${regions.filter(region => region.differs).length} of ${regions.length} text regions differ from the reference across the available model transcriptions. Each region shows the scan and every model’s result.`),
+    const pageReview = h("details", {}, h("summary", {}, "Review a whole-page transcription"),
+      ...models.filter(model => model.transcription).map(model => h("button", { onclick: () => reviewPage(app, {
+        pid, layer: "text", path: `work/readings/${pid}/${model.id}.json`, onSaved: refresh,
+      }).catch(error => { trialStatus.textContent = error.message; }) }, model.label)));
+    detail.replaceChildren(pageReview, h("p", { class: "hint" }, `${regions.filter(region => region.differs).length} of ${regions.length} text regions differ from the reference across the available model transcriptions. Each region shows the scan and every model’s result.`),
       ...(blocks.length ? blocks : [h("p", {}, models.some(model => model.transcription && model.id !== referenceId)
         ? "These transcriptions agree on the displayed comparison. Turn off the difference filter to inspect agreeing regions."
         : "Run a sample comparison with additional transcription models to inspect their differences.")]),

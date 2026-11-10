@@ -76,6 +76,16 @@ Renames update region and unit types, containment rules and the style sheet, wit
   - The keys are kept in the browser (IndexedDB) and sent only to OpenAI and Google. Costs are estimated from returned usage, including thinking, cached input and OpenAI cache writes, at the recorded paid-tier prices. Unavailable costs are displayed explicitly and stop further calls in the batch.
   - **Processing a book** starts in Regions. Select pages, check the credential and find regions. Move reviewed regions on to Text, transcribe there and move reviewed text on to Read. Complete units and links in Read’s grid. Each stage has a spend threshold, progress and a stop button. Existing layers are skipped unless included explicitly. A separate checkbox requests fresh model results. Compatible cached trials are reused. Review Problems, correct individual pages and save the `.chaya.pdf` from Export.
 
+## Reviewing suggestions and model differences
+
+A saved result held back by protected work appears as a suggestion in its stage grid, page editor and reading panel. Open it to compare current and proposed versions against the scan. Keep the current version, take the proposed version or dismiss the suggestion. Saving a choice protects the reviewed layer. A partial choice retains the suggestion for the remaining items.
+
+The same dialog is available from transcription and completion comparisons. Choose a whole page, one region or one text line, and correct the chosen line when needed. A grouping choice replaces the smallest complete shared subtree. Changes to ancestry, flow or linked units may require the whole page. The preview reports the number of regions affected, transcriptions becoming pending and removed links. Invalid or stale choices require a fresh review.
+
+Reviewed text supplies checked-error scores. Completion scores use reviewed structural fields whose input and current page choices still match. Counts of model differences remain separate. Review saves and their evidence share a recovery journal, with the previous page retained in work history. Saving choices requires an editable copy of the book.
+
+Type discovery can run both existing proposal models and build one draft. It identifies shared names and model-specific types, shows definition differences, and lets the reviewer keep, drop or choose a source definition. Approval and application use the same type-list preview as single-model proposals.
+
 ## Choosing and comparing transcription models
 
 Open **Edit book → Transcription models** (`#readers`). This also works on published books opened by URL. The selected transcription model, schema assignment model and OCR language pack are saved per book. Trial page selections, reference, inspection choices and estimate page count survive reload. Argon low is the default transcription model for existing books. Page-region detection uses GPT-6.1 Terra. The page runs from sample comparison to source review, then ends with “Choose the transcription model for this book”. Select a model and press “Use transcription model for this book” to save that choice, then continue to the schema comparison. Whole-book estimates hold the selected schema assignment model fixed across transcriptions. Its optional execution checkbox is under “Whole-book estimate settings”.
@@ -224,12 +234,13 @@ node webapp/test/browser.mjs SCRIPT.mjs            # drives headless Chrome thro
 - `store.test.mjs` checks style saving, journal recovery at every stage-save file boundary, failed writes and retries, newer drafts, cross-instance edits and concurrent manifest updates.
 - `stages.test.mjs` validates provisional documents on the nine public region references and checks stage states, legacy blank/illustrated pages, protected edits, geometry and text compatibility, marker parsing, invalid candidates and note-link matching. The pipeline uses these foundations. The five-tab interface and page grid are step 3 of HANDOFF.md.
 - `workflow.test.mjs` covers stage availability and routes, reading gaps, acceptance persistence through a book PDF round trip, batch stopping, credential errors and stale checks.
+- `review.test.mjs` checks human choices, marker links, stale scores and snapshots, subtree scope, replacement stages, interrupted review saves and merged type drafts.
 - `editing.test.mjs` checks focus locks, provisional reading, logical-unit fragments, semantic metadata, stage-preserving saves, stale snapshots, cross-page joins, recovery after interrupted two-page writes and coherent export.
 - `browser.mjs` is a small headless-Chrome driver over the DevTools protocol (no packages), for scripted runs of the app itself.
 
 ## Not yet
 
-- Suggestion review and settled comparisons are build step 7. Further region finders are step 8, and re-transcribing changed regions is step 9.
+- Further region finders are build step 8, and re-transcribing changed regions is step 9.
 
 - **Preprocessing** such as `render_pages.py`'s background flattening and rotation, and method 054's cut-outs for dark-band pages.
 - **Automatic retries** of schema-invalid structure results. Use the Transcription models tab’s explicit structural retry to make a new call.

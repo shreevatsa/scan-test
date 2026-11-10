@@ -476,3 +476,19 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
   .schema-model-grid { width: calc(var(--model-count) * 230px); }
   .schema-joins th:nth-child(2), .schema-joins td:nth-child(2) { position: static; }
 }
+
+.review-dialog { width: min(1200px, 96vw); max-height: 92vh; overflow: auto; border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
+.review-dialog::backdrop { background: #0007; }
+.review-dialog > .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; position: sticky; top: 0; background: var(--bg); padding: 8px 0; z-index: 5; }
+.review-dialog > .fields { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.review-dialog .stack { display: flex; flex-direction: column; gap: 6px; }
+.review-dialog pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 17px/1.6 var(--deva), serif; }
+.review-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.review-columns > section { min-width: 0; padding: 12px; border: 1px solid var(--line); }
+.review-page { position: relative; }
+.review-page img { display: block; width: 100%; }
+.review-overlay { position: absolute; inset: 0; }
+.review-overlay svg { width: 100%; height: 100%; fill: #2483b51c; stroke: #1869a1; stroke-width: 4; }
+.suggestion-actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.suggestion-actions[hidden] { display: none; }
+@media (max-width: 650px) { .review-columns { grid-template-columns: 1fr; } }

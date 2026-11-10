@@ -181,6 +181,16 @@ Focused Text edits preserve provisional unit grouping while allowing note-marker
 
 Cross-page joins save edits to both pages under the book write lock. Matching ancestor paths receive `open.end` on the earlier page and `open.start` on the next. `work/pending-pages.json` journals the page versions and prior drafts for replay after an interrupted write. Exports share the lock and recover pending writes before collecting files. Text saves merge changed text fields into the latest document, preserving newer grouping and independent text corrections. Conflicting changes to the same field or unit snapshot require reloading.
 
+## Human review provenance
+
+`source.review.text` records reviewed lines by region and line ID, with their marked text, line geometry, timestamp, model profile, cache path, fingerprint and immutable call path where available. Matching printed markers keep their IDs and links. A unique marker may move within a line. Replaced markers receive fresh IDs and obsolete anchor links are removed.
+
+`source.review.units` and `regions` record reviewed region decisions and their fields. Each structural layer has a shared geometry context, and units also record the printed input and region order. Structural comparison uses canonical membership and ancestry rather than model-local unit IDs. Scores exclude reviews whose current content or input no longer matches. Older records with geometry on each item remain readable.
+
+Human choices are saved as protected edits. A whole-page choice or dismissal clears its layer’s `source.suggestions` entry. Partial choices leave it available. Coordinated page-save journals can include previous pages, saved at `work/history/<pid>.json` before edits. Review evidence and suggestion removal recover with the chosen document. Work records retain their original data.
+
+Merged type proposals retain source definitions and keep/drop choices in `types.source.discovery.comparison`. Each proposal has its own call record. Comparison totals are separate from the primary call metadata, so existing proposal packages retain their provenance checks.
+
 ## Relations
 
 A relation has a type from the book's list, a source and a target unit. So far the only use is footnote markers: a relation of type `note` goes from a position in the text to the footnote unit. The position is a region, optionally a line and character offsets, and the printed marker.

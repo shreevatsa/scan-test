@@ -384,10 +384,10 @@ export class Maker {
     return this.complete(pid, { options: chosen, reading, force, save });
   }
 
-  async complete(pid, { options = null, reading = null, force = false, save = this.book.writable } = {}) {
+  async completionInput(pid, { options = null, reading = null, requireText = true } = {}) {
     const chosen = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
     const current = await this.stageCurrent(pid);
-    if (save && current && (!layerState(current, "text") || current.page.regions.some(region =>
+    if (requireText && current && (!layerState(current, "text") || current.page.regions.some(region =>
       this.book.types.types[region.type]?.region !== "figure" &&
       region.lines?.some(line => line.polygons?.length && typeof line.text !== "string"))))
       throw new Error("Some current line pieces have no transcription. Review the saved suggestion or transcribe the updated regions.");
@@ -407,6 +407,14 @@ export class Maker {
       input = { ...reading, regions_record: record, parsed: unchanged ? reading.parsed : parsed,
         fingerprint: unchanged ? reading.fingerprint : await jsonHash({ text: parsed.regions }) };
     }
+    return { reading, input };
+  }
+
+  async complete(pid, { options = null, reading = null, force = false, save = this.book.writable } = {}) {
+    const chosen = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
+    const prepared = await this.completionInput(pid, { options: chosen, reading, requireText: save });
+    reading = prepared.reading;
+    const input = prepared.input;
     const structure = await this.structure(pid, input, { force, structurer: chosen.structurer });
     let merged;
     if (save) merged = await this.saveMerged(pid, "units", structurePath(pid, reading.profile.id, chosen.structurer), latest =>

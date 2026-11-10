@@ -4,7 +4,7 @@ Updated 2026-11-10. Start with the design of the stage-based workflow below, whi
 
 ## Next: the stage-based workflow (design of 2026-11-09)
 
-This section is the task for the next sessions. Steps 1 through 6 are complete, as recorded under "Build progress". Continue with suggestions and settling in step 7. "Current state" below describes the app's current screens. The design starts from the user's four phases, a review of the code and the recorded evidence, and the user's answers of 2026-11-09. Build it in the order under "Build order", with each step leaving the app working and the tests passing.
+This section is the task for the next sessions. Steps 1 through 7 are complete, as recorded under "Build progress". Continue with additional region finders in step 8. "Current state" below describes the app's current screens. The design starts from the user's four phases, a review of the code and the recorded evidence, and the user's answers of 2026-11-09. Build it in the order under "Build order", with each step leaving the app working and the tests passing.
 
 ### What the user asked for
 
@@ -452,9 +452,21 @@ Step 6 is complete on 2026-11-10. Text has a flat region transcription editor wi
 
 All 200 app tests and 11 schema tests pass. Fourteen added cases cover focus locks, provisional rendering, fragment mapping, semantic fields, language protection, conflicting joins, stale saves, interrupted writes at every file boundary, coherent export and preservation of newer work. Chrome exercised transcription corrections and marker insertion, focused fallbacks, cross-page joining, whole-unit labeling, reload persistence, inline problems and read-only inspection. A three-page public Kale sample exercised plain-PDF creation, scan browsing, an in-book type proposal, replacement, model region discovery, a box correction, manual region drawing and verse-type creation, acceptance, transcription, completion and joining. The book PDF download was produced and its exporter’s bytes were reimported as a separate browser copy, retaining the joined unit and note marker. The passage panel was checked at desktop and 390-pixel widths, including a saved line-join change. Provider responses were simulated throughout, with zero live API requests or charges. The next build step is suggestions and settling.
 
+Step 7 is complete on 2026-11-10. `review.js` applies explicit human choices to page documents and records the evidence under `source.review`. `review-view.js` supplies the shared comparison dialog. Suggestions can be opened from stage grids, focused editors and the reading panel. A person can keep the current version, take the candidate or dismiss its suggestion. Partial choices keep the remaining suggestion available. Whole-page choices clear it. Reviewed layers become protected edits even when the chosen content already matches the current page.
+
+Transcription comparisons can settle a page, region or line. A line can be corrected in the dialog, with formatting and note markers retained. Matching note anchors keep their IDs and links, including a uniquely matching marker that moved within its line. Changed or ambiguous markers get fresh IDs and obsolete links are removed. The preview reports transcribed lines becoming pending and links being removed. Structural comparisons include the current page beside model results, with actions for grouping, line joins and region types. A region grouping choice uses the smallest shared complete subtree. Changes to ancestry, flow or links can widen the choice to the page, with the affected-region count shown before saving. Full region replacements leave text pending and units provisional.
+
+Reviewed transcription lines supply the checked-error score. Structural scores count only reviewed region decisions and fields. They require matching ink, printed input and current choices. Local marker IDs do not count as a transcription difference. Geometry is retained once per structural review context. Comparison differences from a model remain separately labelled. Schema comparison now shares `Maker.completionInput` with normal completion, so saved text corrections reach every candidate without a new transcription request. The existing prompts, response schemas and model settings are retained.
+
+Review saves recheck the page, type list and model record under the book lock. The page edit, evidence, suggestion removal and previous page are covered by the existing page-save journal. Previous pages go to `work/history/<pid>.json`, and raw work records are preserved. Tests interrupt every write boundary and recover the complete choice. Writable copies are required for saving reviewed choices.
+
+Type discovery offers both existing models in one run. The merged draft groups matching names, shows agreement or differing definitions, identifies types found by one model, and offers keep/drop and source-definition controls. Each model keeps its call record. The primary call metadata stays intact and comparison metadata records the combined cost. Review and approval use the existing replacement preview and protection checks. Keep/drop choices survive saving and reopening.
+
+All 216 app tests and 11 schema tests pass. Sixteen new review tests cover protected text, Indic lines, stale scores, blank pages, marker identity and links, partial subtrees, widened scopes, structural scores, invalid inputs, replacement-stage states, immutable work, stale choices, journal recovery and merged drafts. An existing pipeline test now checks that preparing corrected completion input makes no call and changes no page. Chrome exercised kept and dismissed suggestions, a corrected line chosen from a model comparison, structural settlement and scores, and a two-model type draft whose dropped type remained dropped after application and reload. Provider replies were simulated throughout, with zero live API requests or charges. Continue with step 8. Ask the user which additional OpenAI region models to try, as required by the design, before starting paid finder experiments.
+
 ### Build order
 
-Each step ends with the tests passing (200 app tests and 11 schema tests now, with the two commands under "Current state"), a browser check, a NOTEBOOK entry, and `webapp/README.md` and this file brought up to date.
+Each step ends with the tests passing (216 app tests and 11 schema tests now, with the two commands under "Current state"), a browser check, a NOTEBOOK entry, and `webapp/README.md` and this file brought up to date.
 
 1. **Complete. The pure modules and their tests:** `layers.js`, `pipeline/provisional.js`, `pipeline/apply.js`.
    - Provisional documents made from the `regions` lists of the nine committed region records (`outputs/<page>/063-fragment-band-lines/regression-001/regions.json`, written by the Python method; the page sizes are in the same files) with their books' type lists (`schema/types/`) pass `checkPage`. So does the empty document.
@@ -481,7 +493,7 @@ Each step ends with the tests passing (200 app tests and 11 schema tests now, wi
 6. **Complete. Text and Read:** the Text overview and the editor's text focus; in Read, running completion, the editor's units focus (the fallback), then the side panel on the reading view, joining across a page break, and problems in place.
    - A page moved on from Regions, transcribed and completed keeps the region types it was moved on with.
    - A join across a page break gives one unit in the reading view and no assembly warning.
-7. **Suggestions and settling:** the suggestion panel; settling in the two existing comparisons; the merged type-list draft.
+7. **Complete. Suggestions and settling:** the suggestion panel; settling in the two existing comparisons; the merged type-list draft.
    - A model step on a page with an edited layer leaves the layer alone, and the page shows a suggestion that can be taken or dismissed.
 8. **Region finders:** the further models, the two no-cost finders and the comparison (new method IDs; the first step that needs paid calls beyond checks). The keys that make work by hand quick.
    - Each finder's scores on the nine reference pages are in NOTEBOOK.md before it appears in the app.
@@ -518,7 +530,7 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 
 1. Read this section, "Current state" below, PRIVATE.md on this machine (local; it has the source PDF locations, the browser origin and book in use, the unfinished comparisons and the cost accounting), `webapp/README.md` and `schema/README.md`.
 2. Run both test suites, and open a book in the app to see the current modes.
-3. Continue at step 7 of "Build order", following the completed stage workflow, type-list revisions and focused Text and Read editing under "Build progress". Commit when the user asks. They have had finished work committed straight to `main`.
+3. Continue at step 8 of "Build order", following the completed workflow and review controls under "Build progress". Ask which additional OpenAI region models to try before starting that step. Commit when the user asks. They have had finished work committed straight to `main`.
 
 ## Current state (2026-11-10)
 
@@ -552,7 +564,7 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 - **storage:** books are kept in the browser's private file system, with autosave, and saved as one file, a `.chaya.pdf`. That is the original PDF's bytes, unchanged, plus one update attaching `chaya.json` with the book's data; the original is recoverable exactly. Pages are drawn from the PDF;
 - **published books** open by URL, read only;
 - **editing** Regions edits page geometry. Text edits transcription and markers. Read edits units, line joins and note links through its page fallback or passage panel. Cross-page joins have coordinated saves and recovery. The style sheet editor remains under Read.
-- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (200) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
+- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (216) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
 
 **Running:**
 - `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/;
@@ -1144,4 +1156,4 @@ The total is about $2.76.
 
 This handoff is kept up to date during the session rather than written only at the end.
 
-A useful next-session opening instruction is “Read HANDOFF.md's section on the stage-based workflow and its Current state, PRIVATE.md on this machine, webapp/README.md and schema/README.md. Then continue at step 7 of the Build order.”
+A useful next-session opening instruction is “Read HANDOFF.md's section on the stage-based workflow and its Current state, PRIVATE.md on this machine, webapp/README.md and schema/README.md. Then continue at step 8 of the Build order, first asking which additional OpenAI region models to try.”

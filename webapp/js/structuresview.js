@@ -1,11 +1,12 @@
+import { reviewPage } from "./review-view.js?v=20261110-review-3";
+import { assignmentOf, settledStructureScore } from "./review.js?v=20261110-review-3";
 import { h } from "./render.js";
 import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261110-reading-2";
 import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, projectBookCost } from "./pipeline/readers.js";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
-import { renderStructureComparison } from "./structure-visual.js";
-import { jsonHash } from "./pipeline/run.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261110-reading-2";
+import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
+import { settings } from "./store.js?v=20261110-review-3";
 import { runProgress } from "./run-progress.js";
 
 export async function renderStructures(el, app) {
@@ -20,7 +21,7 @@ export async function renderStructures(el, app) {
   const active = () => app.mode === "structures" && app.structureViewToken === token;
   if (!active()) return;
   const chosen = new Set((saved.pages || transcriptionSelection.pages || book.pages.slice(0, 3).map(p => p.id)).filter(pid => pid in book.index));
-  const candidates = new Set(saved.models || STRUCTURERS.map(profile => profile.id));
+  const candidates = new Set((saved.models || STRUCTURERS.map(profile => profile.id)).filter(id => STRUCTURERS.some(profile => profile.id === id)));
   const pageSelect = h("select", { "aria-label": "Inspect schema assignment page" }, ...book.pages.map(page => h("option", {
     value: page.id, selected: page.id === (saved.focus || [...chosen][0]),
   }, page.label ? `${page.id} · ${page.label}` : page.id)));
@@ -53,10 +54,9 @@ export async function renderStructures(el, app) {
     const rec = await maker.sourceRegions(pid).catch(() => null);
     if (!rec) return;
     geometry.set(pid, rec);
-    const reading = await book.readWork(`work/readings/${pid}/${options.reader}.json`);
-    if (!reading || await jsonHash(reading.regions_record.regions) !== await jsonHash(rec.regions)) {
-      inputs.delete(pid); results.delete(pid); return;
-    }
+    const prepared = await maker.completionInput(pid, { options }).catch(() => null);
+    const reading = prepared?.input;
+    if (!reading) { inputs.delete(pid); results.delete(pid); return; }
     inputs.set(pid, reading);
     const runs = new Map();
     for (const profile of STRUCTURERS) {
@@ -74,19 +74,22 @@ export async function renderStructures(el, app) {
       const runs = [...chosen].flatMap(pid => results.get(pid)?.has(profile.id) ? [{ pid, structure: results.get(pid).get(profile.id) }] : []);
       if (!runs.length) continue;
       const cost = projectBookCost(runs.map(({ pid, structure }) => ({ regions: geometry.get(pid)?.region_call, reading: inputs.get(pid), structure })), Number(pageCount.value));
-      let compared = 0, differences = 0;
+      let compared = 0, differences = 0, reviewed = 0, reviewedErrors = 0;
       for (const { pid, structure } of runs) {
+        const current = await book.current(pid);
+        const score = current ? settledStructureScore(current, structure.doc) : { reviewed: 0, errors: 0 };
+        reviewed += score.reviewed; reviewedErrors += score.errors;
         const ref = results.get(pid)?.get(reference.value);
         if (ref) { compared++; differences += structureDifferences(structure.parsed, ref.parsed).length; }
       }
       rows.push(h("tr", {}, h("td", {}, profile.label, h("div", { class: "meta" }, `${runs.length}/${chosen.size} pages`),
-        profile.id === options.structurer ? h("div", { class: "ok" }, "Selected for this book") : null), h("td", {}, money(cost, 2)), h("td", {}, compared ? `${differences} regions across ${compared} pages` : "Awaiting reference"),
+        profile.id === options.structurer ? h("div", { class: "ok" }, "Selected for this book") : null), h("td", {}, money(cost, 2)), h("td", {}, compared ? `${differences} regions across ${compared} pages` : "Awaiting reference"), h("td", {}, reviewed ? `${reviewedErrors} / ${reviewed} reviewed regions` : "—"),
         h("td", { class: runs.every(run => !run.structure.errors.length) ? "ok" : "bad" }, `${runs.filter(run => !run.structure.errors.length).length}/${runs.length} valid`),
         h("td", {}, `${(runs.reduce((sum, run) => sum + run.structure.seconds, 0) / runs.length).toFixed(1)} s`)));
     }
     if (!active()) return;
     summary.replaceChildren(rows.length ? h("div", { class: "table-scroll" }, h("table", { class: "pages" },
-      h("thead", {}, h("tr", {}, ...["Schema assignment model", `Estimated total / ${Number(pageCount.value).toLocaleString()} pages`, "Differences from reference", "Schema checks", "Schema time / page"].map(label => h("th", {}, label)))),
+      h("thead", {}, h("tr", {}, ...["Schema assignment model", `Estimated total / ${Number(pageCount.value).toLocaleString()} pages`, "Differences from reference", "Reviewed errors", "Schema checks", "Schema time / page"].map(label => h("th", {}, label)))),
       h("tbody", {}, ...rows))) : h("p", {}, "Run a sample comparison to inspect schema assignment choices."));
     const pid = pageSelect.value, rec = geometry.get(pid), reading = inputs.get(pid), runs = results.get(pid);
     const ref = runs?.get(reference.value);
@@ -94,8 +97,16 @@ export async function renderStructures(el, app) {
     const { sent } = selectPageRegions(rec.regions), referenceId = reference.value;
     const image = await book.imageUrl(pid);
     if (!active() || pid !== pageSelect.value || referenceId !== reference.value) return;
-    detail.replaceChildren(renderStructureComparison({ rec, sent, reading: reading.parsed, image,
-      reference: referenceId, models: STRUCTURERS.map(profile => ({ ...profile, result: runs?.get(profile.id) || null })),
+    const current = await book.current(pid);
+    const choose = (id, rid = null, field = null) => reviewPage(app, { pid, layer: "units", region: rid, field,
+      path: id === "current" ? null : structurePath(pid, options.reader, id), onSaved: refresh,
+    }).catch(error => { status.textContent = error.message; });
+    const models = [...(current ? [{ id: "current", label: "Current page", result: { parsed: assignmentOf(current), errors: app.check(current)[0] } }] : []),
+      ...STRUCTURERS.map(profile => ({ ...profile, result: runs?.get(profile.id) || null }))];
+    detail.replaceChildren(h("details", {}, h("summary", {}, "Review a whole-page assignment"),
+      ...models.filter(model => model.result).map(model => h("button", { onclick: () => choose(model.id) }, model.label))),
+      renderStructureComparison({ rec, sent, reading: reading.parsed, image,
+      reference: referenceId, models, onReview: choose,
       onlyDifferences: onlyDifferences.checked, selectedRegion, width: el.clientWidth || 900,
       onSelect: rid => { selectedRegion = rid; save().catch(error => { status.textContent = error.message; }); },
     }));
@@ -141,10 +152,10 @@ export async function renderStructures(el, app) {
         }
         progress.advance(regionOutcome);
         if (paused()) break;
-        status.textContent = `Preparing the fixed ${readerById(reader).label} transcription on ${pid}…`;
+        status.textContent = `Preparing the current transcription on ${pid}…`;
         try {
-          const reading = await maker.read(pid, { ...options, reader });
-          progress.advance(reading.cached ? "reused" : "completed");
+          await maker.completionInput(pid, { options: { ...options, reader } });
+          progress.advance("reused");
         } catch (error) { failures.push(`${pid} · ${error.message}`); progress.advance("failed"); }
       }
       for (const id of ids) for (const pid of chosen) {
@@ -177,7 +188,7 @@ export async function renderStructures(el, app) {
     field.addEventListener("change", async () => { try { await save(); await refresh(); } catch (error) { status.textContent = error.message; } });
   const content = h("div", { class: "checkview reader-lab" }, h("h2", {}, "Compare schema assignment models"),
     h("p", {}, "Compare units, line-end joins, continuations, reading flows and links using the same transcription for every model. Differences are measured against the selected reference. Schema validity checks consistency. Check the scan and book conventions to judge correctness."),
-    h("p", { class: "box" }, `Fixed transcription · ${readerById(options.reader).label}. This is the transcription model selected for this book. `,
+    h("p", { class: "box" }, `Fixed input · the current page transcription, including saved corrections. The book’s transcription model is ${readerById(options.reader).label}. `,
       h("button", { class: "link", onclick: () => app.setMode("readers") }, "Review transcription choice")),
     h("h3", {}, "1. Run a schema assignment comparison"),
     keyControls(maker.keys, (id, value) => settings.set(`key:${id}`, value)),
@@ -185,7 +196,7 @@ export async function renderStructures(el, app) {
       h("fieldset", {}, h("legend", {}, "Sample pages"), ...pages), h("fieldset", {}, h("legend", {}, "Schema assignment models"), ...models))),
     h("div", { class: "fields col" }, h("label", {}, "Reference schema assignment from ", reference),
       h("label", {}, "Stop after an API call once new trial spend reaches $", budget)),
-    h("p", { class: "hint" }, "Existing compatible transcriptions and schema assignments are reused. A missing input transcription is prepared once per page. Every model receives the same printed text and neighboring transcription. A spend threshold can be exceeded by the final call. Failed and unresolved calls are saved in the shared attempt ledger on the Transcription models tab."),
+    h("p", { class: "hint" }, "Existing compatible transcriptions and schema assignments are reused. Transcribe pages before comparing their assignments. Every model receives the same printed text and neighboring transcription. A spend threshold can be exceeded by the final call. Failed and unresolved calls are saved in the shared attempt ledger on the Transcription models tab."),
     h("div", { class: "actions" }, h("button", { class: "primary", onclick: trial }, "Run schema comparison"), " ", stopButton, " ", h("button", { onclick: refresh }, "Refresh saved schema results")), progress.element, status,
     h("h3", {}, "2. Review costs and schema assignments"), h("label", {}, "Book pages ", pageCount),
     h("p", { class: "hint" }, "The single total includes region detection, the fixed input transcription and each model’s schema assignment. It projects one pass from completed sample calls at their recorded prices. Schema checks flag invalid results. All stage costs must be available."), summary,

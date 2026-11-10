@@ -9,7 +9,7 @@ const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
 const name = value => String(value || "Unknown").replaceAll("_", " ");
 const printedText = line => parseLine(line || "", [], 1)[0];
 
-export function renderStructureComparison({ rec, sent, reading, models, reference, image, onlyDifferences, selectedRegion, onSelect, width }) {
+export function renderStructureComparison({ rec, sent, reading, models, reference, image, onlyDifferences, selectedRegion, onSelect, width, onReview = null }) {
   const sources = new Map(sent.map(source => [source.rid, source]));
   const text = new Map(reading.regions.map(region => [region.id, region.lines.map(line => line.text)]));
   const colors = new Map(sent.map((source, index) => [source.rid, PALETTE[index % PALETTE.length]]));
@@ -177,7 +177,9 @@ export function renderStructureComparison({ rec, sent, reading, models, referenc
         ["relations", linksView(decision.relations)],
       ];
       card.append(...parts.map(([key, value]) => h("section", { class: `schema-field${!same(decision[key], baseline?.[key]) ? " differs" : ""}` },
-        h("h5", {}, fields[key], !same(decision[key], baseline?.[key]) ? h("span", { class: "schema-unit-change" }, "Differs") : null), value)));
+        h("h5", {}, fields[key], !same(decision[key], baseline?.[key]) ? h("span", { class: "schema-unit-change" }, "Differs") : null), value,
+        onReview ? h("button", { class: "mini", "aria-label": `Review ${fields[key]} from ${model.label}`, onclick: () => onReview(model.id, focus, key === "type" ? "type" : "units") }, "Review this choice") : null)));
+      if (onReview) card.append(h("div", { class: "actions" }, h("button", { class: "mini", onclick: () => onReview(model.id, focus, "line_ends") }, "Review line joins")));
       return card;
     });
     inspector.replaceChildren(h("div", { class: "schema-inspector-title" }, h("h3", {}, `Selected region ${focus}`),

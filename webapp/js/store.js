@@ -11,7 +11,7 @@ import { LAYERS, isProtected, noteEdit } from "./layers.js?v=20261110-reading-2"
 import { addBookType, initialBookTypes } from "./book-types.js?v=20261110-reading-2";
 import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261110-reading-2";
 import { canonical } from "./ops.js?v=20261110-reading-2";
-import { checkDocument } from "./schema.js?v=20261110-reading-2";
+import { checkDocument, typeRevision } from "./schema.js?v=20261110-reading-2";
 import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-reading-2";
 
 const bookWrites = new Map();
@@ -207,7 +207,7 @@ export class Book {
     await this.removeFile("work/pending-types.json");
   }
 
-  async editPages(ids, mutate, { check = (doc, types) => checkDocument(doc, types)[0], expected = new Map(), focus = "units" } = {}) {
+  async editPages(ids, mutate, { check = (doc, types) => checkDocument(doc, types)[0], expected = new Map(), focus = "units", archive = false, protect = [] } = {}) {
     return this.pageWrite(async () => {
       if (this.writable) this.types = await this.readJson(this.manifest.types) || this.types;
       const models = new Map(), before = new Map(), drafts = {};
@@ -235,9 +235,15 @@ export class Book {
         const errors = check(doc, this.types);
         if (errors.length) throw new Error(errors[0]);
         docs[pid] = noteEdit(models.get(pid), doc, { focus });
+        if (protect.includes("regions") && doc.source?.layers?.units?.state === "provisional")
+          docs[pid].source.layers.units = structuredClone(doc.source.layers.units);
+        for (const layer of protect) {
+          if (!LAYERS.includes(layer)) throw new Error(`Unknown review layer ${layer}.`);
+          docs[pid].source.layers[layer] = { ...docs[pid].source.layers[layer], state: "edited", types_revision: typeRevision(this.types.source?.revision) };
+        }
       }
       if (this.writable) {
-        const journal = { format: "page-edits", version: 1, docs, drafts };
+        const journal = { format: "page-edits", version: 1, docs, drafts, ...(archive ? { previous: Object.fromEntries(before) } : {}) };
         await this.writeFile("work/pending-pages.json", pretty(journal));
         await this.finishPages(journal);
       } else {
@@ -257,6 +263,7 @@ export class Book {
 
   async finishPages(journal) {
     const manifest = await this.readJson("book.json") || structuredClone(this.manifest);
+    for (const [pid, doc] of Object.entries(journal.previous || {})) await this.writeFile(`work/history/${pid}.json`, pretty(doc));
     for (const [pid, doc] of Object.entries(journal.docs)) {
       await this.writeFile(`edits/${pid}.json`, pretty(doc));
       this.edits.set(pid, doc);

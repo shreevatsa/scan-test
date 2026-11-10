@@ -2,30 +2,30 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya } from "./store.js?v=20261110-reading-2";
+import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya } from "./store.js?v=20261110-review-3";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-reading-2";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261110-reading-2";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-reading-2";
-import { renderStyle } from "./styleview.js?v=20261110-reading-2";
-import { renderTypes } from "./typesview.js?v=20261110-reading-2";
-import { typeSetup } from "./type-setup.js?v=20261110-reading-2";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261110-review-3";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-review-3";
+import { renderStyle } from "./styleview.js?v=20261110-review-3";
+import { renderTypes } from "./typesview.js?v=20261110-review-3";
+import { typeSetup } from "./type-setup.js?v=20261110-review-3";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-reading-2";
 import { EditError } from "./ops.js?v=20261110-reading-2";
-import { Maker } from "./pipeline/run.js?v=20261110-reading-2";
+import { Maker } from "./pipeline/run.js?v=20261110-review-3";
 import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261110-reading-2";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261110-reading-2";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261110-review-3";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-reading-2";
 import { layerState, noteEdit } from "./layers.js?v=20261110-reading-2";
 import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=20261110-reading-2";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-reading-2";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-reading-2";
-import { renderPages } from "./pagesview.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261110-reading-2";
-import { renderReaders } from "./readersview.js?v=20261110-reading-2";
-import { renderStructures } from "./structuresview.js?v=20261110-reading-2";
+import { renderPages } from "./pagesview.js?v=20261110-review-3";
+import { settings } from "./store.js?v=20261110-review-3";
+import { renderReaders } from "./readersview.js?v=20261110-review-3";
+import { renderStructures } from "./structuresview.js?v=20261110-review-3";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -852,6 +852,7 @@ class App {
   }
 
   keydown(e) {
+    if (e.target.closest("dialog")) return;
     const mod = e.metaKey || e.ctrlKey;
     if (this.mode === "page" && !e.target.closest("input,textarea,select") && mod && e.key.toLowerCase() === "z") { e.preventDefault(); if (e.shiftKey) this.redo(); else this.undo(); return; }
     if (this.mode === "page" && !e.target.closest("input,textarea,select") && mod && e.key.toLowerCase() === "y") { e.preventDefault(); this.redo(); return; }
