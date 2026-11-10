@@ -12,12 +12,13 @@ const svgEl = (tag, attrs = {}) => {
 };
 
 export class PageView {
-  constructor(el, { onSelectRegion, onBox, onDraw, onHoverLine }) {
+  constructor(el, { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, editable = true }) {
     this.el = el;
-    this.cb = { onSelectRegion, onBox, onDraw, onHoverLine };
+    this.cb = { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine };
     this.zoom = 1;
     this.fit = "width";        // "width", "height" (kept as the pane or the page changes), or null after zooming
     this.drawing = false;
+    this.editable = editable;
     el.innerHTML = "";
     this.wrap = document.createElement("div");
     this.wrap.className = "pv-wrap";
@@ -33,8 +34,11 @@ export class PageView {
       this.setZoom(this.zoom * (e.deltaY < 0 ? 1.15 : 1 / 1.15), e);
     }, { passive: false });
     this.svg.addEventListener("pointerdown", e => this.pointerDown(e));
-    new ResizeObserver(() => { if (this.fit === "height") this.fitHeight(); }).observe(el);
+    this.resizeObserver = new ResizeObserver(() => { if (this.fit === "height") this.fitHeight(); });
+    this.resizeObserver.observe(el);
   }
+
+  destroy() { this.resizeObserver.disconnect(); }
 
   // The whole page's width in the pane (zoom 1: the image is as wide as the pane).
   fitWidth() {
@@ -82,6 +86,7 @@ export class PageView {
   redraw() {
     const svg = this.svg, doc = this.doc;
     svg.replaceChildren();
+    svg.append(hatchPattern("pv-omitted-hatch"));
     this.regionEls = {};
     for (const r of doc.page.regions) {
       const col = this.colors[r.type] || "#888";
@@ -98,6 +103,13 @@ export class PageView {
       svg.append(g);
       this.regionEls[r.id] = g;
     }
+    for (const [index, omitted] of (doc.source?.omitted_regions || []).entries()) if (omitted.box) {
+      const [x1, y1, x2, y2] = omitted.box;
+      const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-omitted", fill: "url(#pv-omitted-hatch)", "data-omitted": index });
+      const title = svgEl("title"); title.textContent = `${omitted.region} needs a type`; rect.append(title);
+      rect.addEventListener("click", event => { event.stopPropagation(); this.cb.onSelectOmitted?.(index); });
+      svg.append(rect);
+    }
     this.boxLayer = svgEl("g", { class: "pv-box" });
     svg.append(this.boxLayer);
     this.select(this.selected);
@@ -108,7 +120,7 @@ export class PageView {
     for (const [id, g] of Object.entries(this.regionEls || {})) g.classList.toggle("sel", id === rid);
     this.boxLayer.replaceChildren();
     const r = rid && this.doc.page.regions.find(x => x.id === rid);
-    if (!r) return;
+    if (!r || !this.editable) return;
     const box = r.box || boundsOf(r.polygons);
     this.drawBox(box);
   }
@@ -135,6 +147,7 @@ export class PageView {
   }
 
   pointerDown(e) {
+    if (!this.editable) return;
     const handle = e.target.dataset?.h;
     if (this.drawing) return this.startDraw(e);
     if (!handle) return;
@@ -164,6 +177,7 @@ export class PageView {
   }
 
   setDrawing(on) {
+    if (!this.editable) return;
     this.drawing = on;
     this.el.classList.toggle("drawing", on);
   }
@@ -208,6 +222,28 @@ export class PageView {
     const top = y1 * scale - 40;
     if (top < this.el.scrollTop || top > this.el.scrollTop + this.el.clientHeight - 80) this.el.scrollTo({ top, behavior: "smooth" });
   }
+}
+
+function hatchPattern(id) {
+  const defs = svgEl("defs"), pattern = svgEl("pattern", { id, width: 10, height: 10, patternUnits: "userSpaceOnUse" });
+  pattern.append(svgEl("path", { d: "M-2,2 L2,-2 M0,10 L10,0 M8,12 L12,8", stroke: "#b77916", "stroke-width": 1 }));
+  defs.append(pattern);
+  return defs;
+}
+
+export function regionBoxes(doc, colors) {
+  const svg = svgEl("svg", { class: "stage-boxes", viewBox: `0 0 ${doc.page.width} ${doc.page.height}`, "aria-hidden": "true" });
+  const id = `omitted-${doc.page.id.replace(/[^\w-]/g, "_")}`;
+  svg.append(hatchPattern(id));
+  const draw = (box, color, omitted = false) => {
+    if (!box) return;
+    const [x1, y1, x2, y2] = box;
+    svg.append(svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1,
+      stroke: color, fill: omitted ? `url(#${id})` : "none", "stroke-width": 1, "vector-effect": "non-scaling-stroke" }));
+  };
+  for (const region of doc.page.regions) draw(region.box || boundsOf(region.polygons), colors[region.type] || "#888");
+  for (const omitted of doc.source?.omitted_regions || []) draw(omitted.box, "#b77916", true);
+  return svg;
 }
 
 export function boundsOf(rings) {

@@ -4,6 +4,11 @@
 
 export const FORMATTING = ["bold", "italic", "small_caps", "superscript", "subscript", "underline", "spaced"];
 
+// Older type lists used this provenance field for a narrative revision note.
+export function typeRevision(value) {
+  return Number.isSafeInteger(value) && value > 0 ? value : 1;
+}
+
 function typeOk(value, t) {
   switch (t) {
     case "integer": return Number.isInteger(value);

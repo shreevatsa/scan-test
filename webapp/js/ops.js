@@ -6,6 +6,7 @@
 // is checked with schema.js before it is saved.
 
 import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-reading-2";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };
@@ -146,7 +147,7 @@ export function joinWithNext(doc, uid) {
   if (n.type !== u.type) fail(`the next unit is a ${n.type}, not a ${u.type}`);
   u.children.push(...n.children);
   setOpen(doc, uid, "end", !!(n.open || {}).end);
-  for (const k of ["number", "label"]) if (n[k] && !u[k]) u[k] = n[k];
+  for (const k of ["number", "label", "lang"]) if (n[k] && !u[k]) u[k] = n[k];
   place.list.splice(place.index + 1, 1);
   doc.units.splice(doc.units.indexOf(n), 1);
   for (const rel of doc.relations || []) for (const side of ["from", "to"]) if (rel[side].unit === nid) rel[side].unit = uid;
@@ -239,6 +240,7 @@ export const boxRing = ([x1, y1, x2, y2]) => [[x1, y1], [x2, y1], [x2, y2], [x1,
 
 // Set a region's editable box. Until the outline step runs in the browser, the outline becomes the box itself.
 export function setBox(doc, rid, box, outline = null) {
+  if (!Array.isArray(box) || box.length !== 4 || box.some(value => !Number.isFinite(value))) fail("enter four finite box coordinates");
   const r = regionById(doc, rid);
   const [x1, y1, x2, y2] = box;
   const b = [Math.min(x1, x2), Math.min(y1, y2), Math.max(x1, x2), Math.max(y1, y2)].map(Math.round);
@@ -255,11 +257,13 @@ export function setBox(doc, rid, box, outline = null) {
 export function addRegion(doc, tl, type, box, into = null) {
   if (!tl.types[type] || !printedAs(tl, type)) fail(`${type} is not printed as regions`);
   const rid = newRegionId(doc);
-  const r = { id: rid, type, polygons: [boxRing(box)], box: box.map(Math.round), lines: [{ text: "" }],
+  const r = { id: rid, type, polygons: [boxRing(box)], box: box.map(Math.round), lines: doc.source?.layers?.units?.state === "provisional" ? [] : [{ text: "" }],
+              order: isFurniture(tl, type) ? null : Math.max(0, ...doc.page.regions.map(region => region.order || 0)) + 1,
               source: { added_by: "the user, in the web app" } };
   // A figure has no text of its own (its unit's label says what it shows).
   if (printedAs(tl, type) === "figure") delete r.lines;
   doc.page.regions.push(r);
+  if (doc.source?.layers?.units?.state === "provisional") { rebuildProvisional(doc, tl); return rid; }
   if (isFurniture(tl, type)) return rid;
   const ref = regionRef(doc, rid);
   if (into) {
@@ -292,6 +296,18 @@ export function setRegionType(doc, tl, rid, type, into = null) {
   const r = regionById(doc, rid);
   if (!tl.types[type] || !printedAs(tl, type)) fail(`${type} is not printed as regions`);
   if (r.type === type) return doc;
+  if (doc.source?.layers?.units?.state === "provisional") {
+    r.type = type;
+    r.order = isFurniture(tl, type) ? null : r.order ?? Math.max(0, ...doc.page.regions.map(region => region.order || 0)) + 1;
+    if (printedAs(tl, type) === "figure" && r.lines?.length) {
+      r.source = { ...r.source, kept_text: clone(r.lines) };
+      r.lines = [];
+    } else if (printedAs(tl, type) !== "figure" && r.source?.kept_text) {
+      r.lines = clone(r.source.kept_text);
+      delete r.source.kept_text;
+    }
+    return rebuildProvisional(doc, tl);
+  }
   const owner = ownerOf(doc, rid), ref = regionRef(doc, rid);
   if (isFurniture(tl, type)) {
     if (owner) { owner.children.splice(owner.children.findIndex(c => c.region === ref), 1); pruneEmpty(doc, owner.id); }
@@ -324,6 +340,89 @@ export function setRegionType(doc, tl, rid, type, into = null) {
   if (i > 0) splitUnit(doc, owner.id, i);
   const alone = i > 0 ? childUid(placeOf(doc, owner.id).list[placeOf(doc, owner.id).index + 1]) : owner.id;
   return retypeUnit(doc, tl, alone, type);
+}
+
+export function moveRegionOrder(doc, tl, rid, delta) {
+  const region = regionById(doc, rid);
+  if (![1, -1].includes(delta)) fail("move a region one position earlier or later");
+  if (isFurniture(tl, region.type)) fail("page furniture has no reading-order position");
+  const ordered = doc.page.regions.filter(value => !isFurniture(tl, value.type))
+    .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
+  const index = ordered.indexOf(region), destination = index + delta;
+  if (destination < 0 || destination >= ordered.length) return doc;
+  [ordered[index], ordered[destination]] = [ordered[destination], ordered[index]];
+  ordered.forEach((value, position) => { value.order = position + 1; });
+  return rebuildProvisional(doc, tl);
+}
+
+function mergedLinePieces(lines) {
+  const result = [], byId = new Map();
+  for (const original of lines) {
+    const line = clone(original), previous = line.line === undefined ? null : byId.get(line.line);
+    if (!previous) {
+      result.push(line);
+      if (line.line !== undefined) byId.set(line.line, line);
+      continue;
+    }
+    if (canonical(previous.polygons) === canonical(line.polygons)) {
+      if (canonical(previous) !== canonical(line)) fail("overlapping line pieces have conflicting text or formatting; review their text before merging");
+      continue;
+    }
+    if ((previous.text !== undefined) !== (line.text !== undefined)) fail("review the partially transcribed line pieces before merging these regions");
+    if (previous.style && line.style && canonical(previous.style) !== canonical(line.style)) fail("review the different line styles before merging these regions");
+    const prefix = cp(previous.text || "");
+    if (previous.end === "hyphen" && /[-‐]/u.test(prefix.at(-1) || "")) prefix.pop();
+    const separator = prefix.length && line.text && !["join", "hyphen"].includes(previous.end) ? " " : "";
+    const shift = prefix.length + separator.length;
+    const spans = (previous.spans || []).map(span => ({ ...span, start: Math.min(span.start, prefix.length), end: Math.min(span.end, prefix.length) }));
+    spans.push(...(line.spans || []).map(span => ({ ...span, start: span.start + shift, end: span.end + shift })));
+    if (previous.text !== undefined || line.text !== undefined) previous.text = prefix.join("") + separator + (line.text || "");
+    previous.polygons = [...(previous.polygons || []), ...(line.polygons || [])];
+    if (spans.length) previous.spans = normalizeSpans(spans);
+    if (line.end !== undefined) previous.end = line.end; else delete previous.end;
+    if (line.style && !previous.style) previous.style = line.style;
+  }
+  return result.sort((a, b) => (a.line ?? Infinity) - (b.line ?? Infinity));
+}
+
+export function mergeRegions(doc, tl, keepRid, otherRid) {
+  if (keepRid === otherRid) fail("choose a second region to merge");
+  const keep = regionById(doc, keepRid), other = regionById(doc, otherRid);
+  if (keep.type !== other.type) fail("give the regions the same type before merging them");
+  const keepOwner = ownerOf(doc, keepRid), otherOwner = ownerOf(doc, otherRid);
+  const provisional = doc.source?.layers?.units?.state === "provisional";
+  if (!provisional && keepOwner?.id !== otherOwner?.id) {
+    if (!keepOwner || !otherOwner || otherOwner.children.length !== 1) fail("merge regions in the same unit or merge a whole neighboring leaf unit");
+    const a = placeOf(doc, keepOwner.id), b = placeOf(doc, otherOwner.id);
+    if (!a || !b || a.list !== b.list) fail("put these units under the same parent in Read before merging their regions");
+    for (const key of ["number", "label", "style"]) if (keepOwner[key] && otherOwner[key] && canonical(keepOwner[key]) !== canonical(otherOwner[key]))
+      fail(`the units have different ${key} values; review them in Read before merging`);
+  }
+  const ordered = [keep, other].sort((a, b) => (a.order ?? doc.page.regions.indexOf(a)) - (b.order ?? doc.page.regions.indexOf(b)));
+  const firstOwner = ownerOf(doc, ordered[0].id), lastOwner = ownerOf(doc, ordered[1].id);
+  const open = { ...(firstOwner?.open?.start ? { start: true } : {}), ...(lastOwner?.open?.end ? { end: true } : {}) };
+  const lines = mergedLinePieces(ordered.flatMap(region => region.lines || []));
+  const a = regionBox(keep), b = regionBox(other);
+  keep.box = [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[2], b[2]), Math.max(a[3], b[3])];
+  keep.polygons = [boxRing(keep.box)];
+  keep.lines = lines;
+  keep.order = isFurniture(tl, keep.type) ? null : Math.min(keep.order ?? Infinity, other.order ?? Infinity);
+  if (!Number.isFinite(keep.order) && keep.order !== null) keep.order = 1;
+  keep.source = { ...keep.source, merged_from: [...(keep.source?.merged_from || []), clone(other)],
+    continues_from_earlier: !!ordered[0].source?.continues_from_earlier, continues_later: !!ordered[1].source?.continues_later,
+    outline: "the merged box (outline not recomputed)" };
+  if (keepOwner && otherOwner && keepOwner !== otherOwner) for (const key of ["number", "label", "style"]) {
+    if (!keepOwner[key] && otherOwner[key]) keepOwner[key] = clone(otherOwner[key]);
+  }
+  if (keepOwner) { if (Object.keys(open).length) keepOwner.open = open; else delete keepOwner.open; }
+  for (const relation of doc.relations || []) for (const endpoint of [relation.from, relation.to]) {
+    if (endpoint.region === regionRef(doc, otherRid)) endpoint.region = regionRef(doc, keepRid);
+    if (otherOwner && keepOwner && otherOwner !== keepOwner && endpoint.unit === otherOwner.id) endpoint.unit = keepOwner.id;
+  }
+  // Its markers and their links now belong to the merged region.
+  other.lines = [];
+  deleteRegion(doc, otherRid);
+  return rebuildProvisional(doc, tl);
 }
 
 // Make a unit page furniture of `type` (a furniture type, such as an ornament): its regions take the type and leave
@@ -387,7 +486,7 @@ export function applyGeometry(doc, geometry) {
         if (j >= 0) { src = take(rj, j); sourceRegion = rj; }
       }
     }
-    const piece = { line: G.line_id, polygons: G.rings, text: "" };
+    const piece = { line: G.line_id, polygons: G.rings };
     if (src) for (const key of ["text", "end", "spans", "style"]) if (src[key] !== undefined) piece[key] = src[key];
     if (src) for (const relation of doc.relations || []) for (const side of ["from", "to"]) {
       const endpoint = relation[side];
@@ -406,7 +505,7 @@ export function applyGeometry(doc, geometry) {
     if (!g.rings.length) {
       r.polygons = [boxRing(r.box || boxesOf(doc)[ri])];
       r.lines = old[ri];
-      r.source = { ...(r.source || {}), outline: "the box (no ink in it)" };
+      r.source = { ...(r.source || {}), no_ink: true, outline: "the box (no ink in it)" };
       return;
     }
     r.polygons = g.rings;
@@ -414,6 +513,7 @@ export function applyGeometry(doc, geometry) {
     lines.sort((a, b) => (a.line ?? Infinity) - (b.line ?? Infinity));
     r.lines = lines;
     r.source = { ...(r.source || {}), outline: "recomputed in the browser from the boxes" };
+    delete r.source.no_ink;
   });
   return doc;
 }
@@ -604,6 +704,14 @@ export function splitRegionAt(doc, rid, i, newUnit = true) {
   const box = regionBox(r);
   const nid = newRegionId(doc);
   const nr = { id: nid, type: r.type, polygons: [], lines: lines.splice(i), source: { split_from: rid, by: "the user, in the web app" } };
+  if (Number.isFinite(r.order)) {
+    for (const other of doc.page.regions) if (other !== r && other.order > r.order) other.order++;
+    nr.order = r.order + 1;
+  }
+  if (r.source?.continues_later) {
+    nr.source.continues_later = true;
+    delete r.source.continues_later;
+  }
   const a = piecesBounds(r.lines), b = piecesBounds(nr.lines);
   const cut = a && b && a[3] < b[1] ? Math.round((a[3] + b[1]) / 2)
     : Math.round(box[1] + (box[3] - box[1]) * r.lines.length / (r.lines.length + nr.lines.length));

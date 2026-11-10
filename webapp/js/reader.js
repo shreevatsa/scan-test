@@ -4,10 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js";
+import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
+import { readingGaps, readingDocuments, eligible } from "./workflow.js?v=20261110-reading-2";
+import { layerState } from "./layers.js?v=20261110-reading-2";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261110-reading-2";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -20,7 +23,16 @@ function dropHyphen(L) {
 const SEP = { space: " ", hyphen: "", join: "", line: "<br>" };
 
 export function prepare(docs, tl, sheet = null) {
-  const [book, warnings] = assemble(docs, tl);
+  const merged = {};
+  const [book, warnings] = assemble(docs, tl, {}, { onMerge: (a, b) => { merged[b] = a; } });
+  const unitCanonical = {}, unitFragments = {};
+  for (const doc of docs) for (const unit of doc.units) {
+    const id = `${doc.page.id}#${unit.id}`;
+    let target = id;
+    while (merged[target]) target = merged[target];
+    unitCanonical[id] = target;
+    (unitFragments[target] ||= []).push({ page: doc.page.id, unit: unit.id });
+  }
   const pages = Object.fromEntries(book.pages.map(p => [p.id, p]));
   const regions = {};
   for (const p of book.pages) for (const r of p.regions) regions[`${p.id}#${r.id}`] = { page: p, region: r };
@@ -31,7 +43,8 @@ export function prepare(docs, tl, sheet = null) {
     noteOf[rel.from.anchor] = rel.to.unit;
     (markersOf[rel.to.unit] ||= []).push(rel.from.anchor);
   }
-  return { book, warnings, pages, regions, units, noteOf, markersOf, tl, sheet };
+  return { book, warnings, pages, regions, units, noteOf, markersOf, tl, sheet, unitCanonical, unitFragments,
+    provisionalPages: new Set(docs.filter(doc => layerState(doc, "units")?.state === "provisional").map(doc => doc.page.id)) };
 }
 
 // HTML for the whole book, flow by flow. Consecutive units in one row (style.row, schema 0.3) stand side by side,
@@ -53,7 +66,7 @@ export function bookHtml(P, { printed = false, figureSrc = null } = {}) {
   const marker = pid => sp => {
     const a = `${pid}#${sp.id}`, note = noteOf[a];
     return note ? `<a class="r-mk" id="mk-${esc(a)}" href="#note-${esc(note)}" data-sign="${esc(sp.marker)}" title="note ${esc(sp.marker)}"></a>`
-      : `<span class="r-mk none" data-sign="${esc(sp.marker)}" title="a note marker not linked to a note"></span>`;
+      : `<span class="r-mk none" id="mk-${esc(a)}" data-sign="${esc(sp.marker)}" title="a note marker not linked to a note"></span>`;
   };
   // The text of a run of regions of one unit, joined across line pieces, regions and pages. As printed, a line
   // piece's own style is kept, and a heading's lines are set one under the other.
@@ -66,7 +79,7 @@ export function bookHtml(P, { printed = false, figureSrc = null } = {}) {
       out += pageMark(pid) + `<span class="r-reg" data-ref="${esc(ref)}">`;
       lines.forEach((L, i) => {
         const last = k === refs.length - 1 && i === lines.length - 1;
-        const end = L.end || (cls === "verse" ? "line" : "space");
+        const end = P.provisionalPages?.has(pid) ? "space" : L.end || (cls === "verse" ? "line" : "space");
         const shown = end === "hyphen" && !last ? dropHyphen(L) : L;
         if (cls === "table") { out += `<span class="r-row">${lineHtml(shown.text || "", shown.spans || [], marker(pid))}</span>`; return; }
         const text = lineHtml(shown.text || "", shown.spans || [], marker(pid));
@@ -175,11 +188,24 @@ export function bookHtml(P, { printed = false, figureSrc = null } = {}) {
   return html;
 }
 
-export async function renderReader(el, app) {
+export async function renderReader(el, app, { keepPlace = false } = {}) {
   const { book } = app;
+  const token = app.routeToken;
+  const generation = app.readerGeneration = (app.readerGeneration || 0) + 1;
+  const current = () => app.book === book && app.routeToken === token && app.readerGeneration === generation && app.mode === "read";
+  const oldAnchor = keepPlace && [...el.querySelectorAll(".r-reg")].find(region => region.getBoundingClientRect().bottom > el.getBoundingClientRect().top);
+  const bookmark = oldAnchor && { ref: oldAnchor.dataset.ref, top: oldAnchor.getBoundingClientRect().top };
+  const oldScroll = el.scrollTop;
+  app.onLeaveReader?.(); app.onLeaveReader = null;
+  app.textPanel?.destroy?.(); app.pageView?.destroy(); app.textPanel = null; app.pageView = null; app.doc = null;
   el.replaceChildren(h("div", { class: "loading" }, "Loading the pages…"));
-  const docs = await book.all((d, n) => { el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
+  const all = await book.all((d, n) => { if (current()) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
+  if (!current()) return;
+  const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
+  const docs = readingDocuments(book.pages, accepted);
+  const gaps = readingGaps(book.pages, new Set(docs.map(doc => doc.page.id)));
   const P = prepare(docs, book.types, book.style);
+  const issues = readingIssues(accepted, book.types, app.validate, P.warnings, P.unitCanonical);
   app.readerData = P;
   if (app.readerPrinted === undefined) app.readerPrinted = !!book.style;
   const body = h("article", { class: "reader" });
@@ -187,20 +213,33 @@ export async function renderReader(el, app) {
     const printed = app.readerPrinted && !!P.sheet;
     body.innerHTML = bookHtml(P, { printed });
     body.classList.toggle("printed", printed);
+    body.classList.toggle("structure", !!app.readerStructure);
     body.style.cssText = printed ? baseCss(P.sheet) : "";
     fillFigures(body, app, P);
   };
   const tools = h("div", { class: "r-tools" },
-    h("label", {}, h("input", { type: "checkbox", onchange: e => body.classList.toggle("structure", e.target.checked) }), " show the units"),
+    h("label", {}, h("input", { type: "checkbox", checked: app.readerStructure, onchange: e => { app.readerStructure = e.target.checked; body.classList.toggle("structure", e.target.checked); } }), " show the units"),
     P.sheet ? h("label", { title: "fonts, sizes, alignment and spacing from the book's style sheet and each unit's style" },
-      h("input", { type: "checkbox", checked: app.readerPrinted ? true : null, onchange: e => { app.readerPrinted = e.target.checked; draw(); } }), " as printed") : null,
+      h("input", { type: "checkbox", checked: app.readerPrinted ? true : null, onchange: e => { app.readerPrinted = e.target.checked; renderReader(el, app, { keepPlace: true }).catch(error => app.toast(error.message, "bad")); } }), " as printed") : null,
     h("span", { class: "meta" }, `${docs.length} pages · ${P.book.units.length} units · ${book.edits.size} pages corrected`),
-    P.warnings.length ? h("details", { class: "warn" }, h("summary", {}, `${P.warnings.length} places where units open at a page edge do not match`),
-      ...P.warnings.map(w => h("div", {}, w))) : null,
+    issues.length ? h("details", { class: "warn" }, h("summary", {}, `${issues.length} reading problems`),
+      ...issues.map(issue => h("p", {}, h("button", { class: "link", onclick: () => app.selectReadingIssue?.(issue) }, issue.message)))) : null,
     app.dirty ? h("div", { class: "warn" }, "The page open in the editor has changes that are not saved yet; they are not shown here.") : null);
   draw();
-  el.replaceChildren(tools, body);
+  const panel = h("aside", { class: "read-panel", "aria-label": "Passage structure", hidden: true });
+  const workspace = h("div", { class: "read-workspace" }, h("div", { class: "reading-main" }, tools, body), panel);
+  el.replaceChildren(h("div", { class: "r-stage-actions" }, h("button", { onclick: () => app.setMode("read&view=pages") }, "Complete and review units and links")),
+    ...(gaps.length ? [h("p", { class: "reading-gaps" }, `${gaps.join(" · ")} ${gaps.length === 1 && !gaps[0].startsWith("Pages") ? "is" : "are"} not here yet. Move these pages on from Text to include them.`)] : []),
+    ...(P.provisionalPages.size ? [h("p", { class: "reading-gaps" }, `${P.provisionalPages.size} pages have provisional unit grouping. Complete units and links to review that grouping.`)] : []), workspace);
   wireSourcePreview(body, app, P);
+  const leavePreview = app.onLeaveReader;
+  const leavePanel = await wireReadingPanel({ app, body, panel, workspace, docs: accepted, P, issues, redraw: () => renderReader(el, app, { keepPlace: true }) });
+  if (!current()) { leavePanel(); leavePreview(); return; }
+  app.onLeaveReader = () => { leavePanel(); leavePreview(); };
+  if (bookmark) {
+    const anchor = body.querySelector(`[data-ref="${CSS.escape(bookmark.ref)}"]`);
+    if (anchor) el.scrollTop = oldScroll + anchor.getBoundingClientRect().top - bookmark.top;
+  } else if (keepPlace) el.scrollTop = oldScroll;
   body.addEventListener("click", e => {
     const pb = e.target.closest(".r-pb");
     if (pb) { e.preventDefault(); app.openPage(pb.dataset.page); }
@@ -306,7 +345,7 @@ export function bookText(P) {
     const ls = R.region.lines || [];
     ls.forEach((L, i) => {
       const last = isLastRegion && i === ls.length - 1;
-      const end = L.end || (cls === "verse" || cls === "table" ? "line" : "space");
+      const end = P.provisionalPages?.has(R.page.id) ? "space" : L.end || (cls === "verse" || cls === "table" ? "line" : "space");
       let t = L.text || "";
       if (end === "hyphen" && !last) t = t.replace(/[-‐]$/u, "");
       out += t + (last ? "" : end === "line" ? "\n" : end === "space" ? " " : "");

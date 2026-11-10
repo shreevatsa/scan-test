@@ -4,7 +4,7 @@
 
 const clone = x => (x === undefined ? x : JSON.parse(JSON.stringify(x)));
 
-export function assemble(pageDocs, tl, source = {}) {
+export function assemble(pageDocs, tl, source = {}, { onMerge = () => {} } = {}) {
   const units = new Map(), startOpen = {}, endOpen = {}, mergedInto = {}, warnings = [];
   const flows = {};
   for (const f of Object.keys(tl.flows)) flows[f] = [];
@@ -15,6 +15,7 @@ export function assemble(pageDocs, tl, source = {}) {
     const A = units.get(a), B = units.get(b);
     units.delete(b);
     mergedInto[b] = a;
+    onMerge(a, b);
     let kids = B.children;
     const last = A.children[A.children.length - 1], first = kids[0];
     if (("unit" in last && endOpen[last.unit]) || ("unit" in first && startOpen[first.unit])) {

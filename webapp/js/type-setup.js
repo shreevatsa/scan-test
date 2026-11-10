@@ -1,14 +1,16 @@
 import { h } from "./render.js";
-import { checkTypes } from "./schema.js";
-import { settings } from "./store.js";
-import { money } from "./reader-controls.js";
+import { checkTypes } from "./schema.js?v=20261110-reading-2";
+import { settings } from "./store.js?v=20261110-reading-2";
+import { money } from "./reader-controls.js?v=20261110-reading-2";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js";
-import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js";
+import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261110-reading-2";
+import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261110-reading-2";
 import { readerById, structurerById } from "./pipeline/readers.js";
-import { pageBrowser, pageSelectionText } from "./page-browser.js";
+import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261110-reading-2";
+import { citedSamplePages } from "./type-revisions.js?v=20261110-reading-2";
 
-export function typeSetup({ app, title, bookId, description, index, template, proposalUrl = null, onBusy }) {
+export function typeSetup({ app, title, bookId, description, index, template, book = null, initialSource = "starter", proposalUrl = null, onBusy }) {
   let pdf = null, store = null, result = null, busy = false;
   let rendering = Promise.resolve();
   const drawPage = (doc, page, dpi) => {
@@ -17,7 +19,10 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
     return task;
   };
   const images = new Map();
-  const mode = h("input", { type: "radio", name: "type-source", value: "discover", checked: !template });
+  let checks = new CredentialChecks({}), credentialsToken = 0;
+  const credentials = h("div");
+  const starter = h("input", { type: "radio", name: "type-source", value: "starter", checked: !template && !proposalUrl && initialSource === "starter" });
+  const mode = h("input", { type: "radio", name: "type-source", value: "discover", checked: !template && (!!proposalUrl || initialSource === "discover") });
   const reuse = h("input", { type: "radio", name: "type-source", value: "existing", checked: !!template });
   const model = h("select", { "aria-label": "Unit type discovery model" }, ...TYPE_MODELS.map(profile =>
     h("option", { value: profile.id }, profile.label)));
@@ -69,7 +74,7 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
     result.types.source.discovery.reviewed = approved.checked;
     try {
       await saveReview();
-      status.textContent = approved.checked ? "Unit types reviewed. Make the book to continue." : "Review the proposed types before continuing.";
+      status.textContent = approved.checked ? (book ? "Unit types reviewed. Preview the type-list replacement to continue." : "Unit types reviewed. Make the book to continue.") : "Review the proposed types before continuing.";
     } catch (error) { approved.checked = false; status.textContent = `Could not save the review. ${error.message}`; }
   });
 
@@ -78,6 +83,7 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
     samplingTitle.textContent = result ? "Choose more sample pages or request another proposal" : "Choose sample pages and a model";
     if (!result) { review.replaceChildren(); approval.hidden = true; return; }
     const tl = result.types;
+    tl.source.discovery.questions ||= [...result.proposal.questions];
     const cards = Object.entries(tl.types).map(([original, type]) => {
       let name = original;
       const evidence = result.proposal.types.find(t => t.name === original);
@@ -162,8 +168,20 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
         h("p", {}, h("b", {}, name), " · ", kind.description, kind.formatting ? ` (${kind.formatting})` : ""))] : null,
       h("h4", {}, "Transcription conventions"), h("ul", {}, ...(tl.conventions || []).map(item => h("li", {}, item))),
       result.proposal.questions.length ? h("div", { class: "type-questions" }, h("h4", {}, "Questions to review"),
-        h("ul", {}, ...result.proposal.questions.map(question => h("li", {}, question)))) : null,
-      h("details", { ontoggle: event => { if (event.currentTarget.open) json.value = JSON.stringify(result.types, null, 2); } }, h("summary", {}, "Edit the complete type list as JSON"), json,
+        h("ul", {}, ...result.proposal.questions.map(question => {
+          const cited = citedSamplePages(question, tl.source.discovery.sample_pages);
+          const answer = h("textarea", { rows: 2, "aria-label": `Review decision for ${question}` }, tl.source.discovery.resolved_questions?.[question]?.answer || "");
+          const answerStatus = h("p", { class: "ok" }, tl.source.discovery.resolved_questions?.[question] ? "Decision recorded" : "");
+          return h("li", {}, h("p", {}, question), ...cited.map(number => h("button", { onclick: () => browser.showPage(number) }, `Page ${number}`)),
+            answer, h("button", { onclick: () => {
+              if (!answer.value.trim()) { status.textContent = "Record the review decision first."; return; }
+              tl.source.discovery.resolved_questions = { ...tl.source.discovery.resolved_questions, [question]: { answer: answer.value.trim(), at_utc: new Date().toISOString() } };
+              changed(); saveReview().catch(error => { status.textContent = error.message; });
+              answerStatus.textContent = "Decision recorded";
+              status.textContent = "Review decision recorded. Apply any type or convention changes above before approving the list.";
+            } }, "Record review decision"), answerStatus);
+        }))) : null,
+      !book ? h("details", { ontoggle: event => { if (event.currentTarget.open) json.value = JSON.stringify(result.types, null, 2); } }, h("summary", {}, "Edit the complete type list as JSON"), json,
         h("button", { onclick: () => {
           try {
             const next = JSON.parse(json.value), errors = problems(next);
@@ -172,7 +190,7 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
             result.types = next;
             changed(); renderReview();
           } catch (error) { status.textContent = error.message; }
-        } }, "Apply type list changes")),
+        } }, "Apply type list changes")) : null,
       h("details", { ontoggle: async event => {
         if (!event.currentTarget.open) return;
         try { packetText.value = JSON.stringify(proposalPackage(result, await store.readWork(result.call.path)), null, 2); }
@@ -206,30 +224,31 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
     busy = value;
     element.querySelectorAll("input,select,textarea,button").forEach(control => { control.disabled = value; });
     onBusy(value);
+    if (!value) generate.disabled = !checks.status(TYPE_MODELS.find(profile => profile.id === model.value))?.valid;
   };
   const preview = h("button", { onclick: () => {
     try { selectedPages(); browser.showSelection(); status.textContent = "Open any selected page for a larger preview."; }
     catch (error) { status.textContent = error.message; }
   } }, "Preview sample pages");
-  const generate = h("button", { class: "primary", onclick: async () => {
+  const generate = h("button", { class: "primary", disabled: true, onclick: async () => {
     lock(true);
     try {
       const profile = TYPE_MODELS.find(profile => profile.id === model.value);
       const id = bookId.value.trim();
       if (!/^[A-Za-z0-9._-]+$/.test(id)) throw new Error("Give the book an id using letters, digits, dots, dashes and underscores.");
-      const keys = { [profile.provider]: await settings.get(`key:${profile.provider}`) };
-      if (!keys[profile.provider]) throw new Error(`Add your ${profile.provider === "openai" ? "OpenAI" : "Gemini"} API key below.`);
+      if (!checks.status(profile)?.valid) throw new Error("Check the credential for this model before proposing types.");
+      const keys = checks.keys;
       const samples = await sampleImages();
       status.textContent = `${profile.label} is inspecting ${samples.length} sample pages…`;
       const proposed = await discoverTypes({ store, keys, profile, images: samples, title: title.value.trim(), description: description.value.trim(),
-        pageCount: pdf.doc.numPages, id, pdfSha: pdf.sha, schema: app.schema });
+        pageCount: pdf.doc.numPages, id, pdfSha: pdf.sha, schema: app.schema, request: book ? (await app.getMaker()).request : undefined });
       if (result?.reader_options) proposed.reader_options = result.reader_options;
       await store.writeWork("work/type-discovery/selection.json", proposed);
       result = proposed;
       approved.checked = false;
       if (!description.dataset.edited) description.value = result.types.description;
       renderReview();
-      status.textContent = "Proposal saved. Review the types and questions below before making the book.";
+      status.textContent = book ? "Proposal saved. Review the types and questions below before previewing the type-list replacement." : "Proposal saved. Review the types and questions below before making the book.";
     } catch (error) {
       status.textContent = `Could not propose unit types. ${error.message}${error.record ? ` Estimated attempt cost ${money(error.record.cost_usd)}. The attempt is saved.` : ""}`;
     } finally { lock(false); }
@@ -243,38 +262,44 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
       h("label", {}, "Propose types with ", model)),
     h("div", { class: "actions" }, preview, " ", generate),
     h("p", { class: "hint" }, "Proposing types sends the selected page images to the selected provider using your API key. The estimated charge is shown with the saved result."),
-    h("details", {}, h("summary", {}, "API keys for unit type discovery"), ...[["openai", "OpenAI"], ["gemini", "Gemini"]].map(([provider, label]) => {
-      const input = h("input", { type: "password", autocomplete: "off", size: 30,
-        "aria-label": `${label} API key for unit type discovery`,
-        oninput: () => { input.dataset.edited = "1"; },
-        onblur: async () => {
-          if (!input.dataset.edited) return;
-          try { await settings.set(`key:${provider}`, input.value.trim()); }
-          catch (error) { status.textContent = error.message; }
-        } });
-      settings.get(`key:${provider}`).then(value => {
-        if (!input.dataset.edited) input.value = value || "";
-      }).catch(error => { status.textContent = error.message; });
-      return h("label", { class: "type-key" }, `${label} API key `, input);
-    })));
+    credentials);
+  const showCredentials = async () => {
+    const token = ++credentialsToken, profile = TYPE_MODELS.find(profile => profile.id === model.value);
+    generate.disabled = true;
+    if (book) {
+      const maker = await app.getMaker();
+      checks = maker.credentials ||= new CredentialChecks(maker.keys);
+    } else checks.keys[profile.provider] = await settings.get(`key:${profile.provider}`) || "";
+    if (token !== credentialsToken) return;
+    credentials.replaceChildren(stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), () => {
+      if (!busy) generate.disabled = !checks.status(profile)?.valid;
+    }));
+  };
+  model.addEventListener("change", () => showCredentials().catch(error => { status.textContent = error.message; }));
+  showCredentials().catch(error => { status.textContent = error.message; });
   const discover = h("div", {}, sampling, review, approval);
   const element = h("section", { class: "type-setup" }, h("h2", {}, "Determine this book’s unit types"),
+    h("label", {}, starter, " Start with draft types and refine them in Regions"), " ",
     h("label", {}, mode, " Propose types from sample pages"), " ", h("label", {}, reuse, " Use a type list I already have"),
     discover, existing, status);
   const changeMode = () => {
     discover.hidden = !mode.checked;
     existing.hidden = !reuse.checked;
+    if (starter.checked) status.textContent = "Start with common draft types, then add book-specific types while reviewing Regions.";
+    else if (reuse.checked) status.textContent = "Choose the type list to use for this book.";
+    else status.textContent = result ? "Review the saved proposal before continuing." : "Choose sample pages, then propose this book’s unit types.";
     if (reuse.checked) fillDescription();
     else if (!description.dataset.edited) description.value = result?.types.description || template?.types.description || "";
   };
   mode.addEventListener("change", changeMode);
   reuse.addEventListener("change", changeMode);
+  starter.addEventListener("change", changeMode);
   changeMode();
   return {
     element,
     async usePdf(value) {
       pdf = value;
-      store = value ? discoveryStore(value.sha) : null;
+      store = value ? book || discoveryStore(value.sha) : null;
       images.clear(); result = null; approved.checked = false; renderReview();
       pages.value = value ? pageSelectionText(samplePages(value.doc.numPages), value.doc.numPages) : "";
       browser.usePdf(value);
@@ -303,12 +328,18 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
           browser.refreshSelection();
           approved.checked = !!saved.types.source.discovery.reviewed;
           renderReview();
-          status.textContent = "Saved proposal ready. Review the types, then make the book.";
+          status.textContent = book ? "Saved proposal ready. Review the types, then preview the replacement." : "Saved proposal ready. Review the types, then make the book.";
         } else status.textContent = "Choose sample pages, then propose this book’s unit types.";
       }
+      if (!mode.checked) changeMode();
     },
     async loadTypes() {
       if (busy) throw new Error("Wait for unit type discovery to finish.");
+      if (starter.checked) {
+        const types = await (await fetch(new URL("../types/generic.json", import.meta.url))).json();
+        types.source = { ...types.source, draft: true };
+        return types;
+      }
       if (reuse.checked) return loadExisting();
       if (!result) throw new Error("Propose this book’s unit types from sample pages first.");
       if (!approved.checked) throw new Error("Review the proposed unit types and check the review box before continuing.");
@@ -319,8 +350,8 @@ export function typeSetup({ app, title, bookId, description, index, template, pr
       return structuredClone(result.types);
     },
     async saveToBook(book) {
-      if (store) await store.copyTo(book);
-      if (result?.reader_options) await book.saveReaderOptions(result.reader_options);
+      if (store && store !== book) await store.copyTo(book);
+      if (mode.checked && result?.reader_options) await book.saveReaderOptions(result.reader_options);
     },
   };
 }

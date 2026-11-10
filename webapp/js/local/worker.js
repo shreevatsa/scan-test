@@ -4,7 +4,7 @@
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
 
 import { analyzePage } from "./ink.js";
-import { regionsFromBoxes } from "./regions.js";
+import { regionsFromBoxes } from "./regions.js?v=20261110-reading-2";
 import { LINES, OWNERSHIP } from "./config.js";
 
 const cache = new Map();
@@ -33,8 +33,8 @@ onmessage = async e => {
     }
     const a = cache.get(pid);
     if (a.status !== "ok") throw new Error(`the page's line analysis failed (${a.status})`);
-    const { geometry } = regionsFromBoxes(a, boxes, OWNERSHIP);
-    postMessage({ id, geometry, method: "063-fragment-band-lines", charH: a.charH, angle: a.angle, lines: a.seg.lines.length, seconds: (performance.now() - t0) / 1000 });
+    const { geometry, uncovered } = regionsFromBoxes(a, boxes, OWNERSHIP);
+    postMessage({ id, geometry, uncovered, method: "063-fragment-band-lines", charH: a.charH, angle: a.angle, lines: a.seg.lines.length, seconds: (performance.now() - t0) / 1000 });
   } catch (err) {
     postMessage({ id, error: err.message });
   }

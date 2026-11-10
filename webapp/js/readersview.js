@@ -1,11 +1,11 @@
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money } from "./reader-controls.js?v=20261109-model-flow";
+import { modelChoice, keyControls, money } from "./reader-controls.js?v=20261110-reading-2";
 import { READERS, readerOptions, projectBookCost, structurePath, structurerById } from "./pipeline/readers.js";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, compareRegions } from "./pipeline/compare.js";
-import { jsonHash } from "./pipeline/run.js";
-import { settings } from "./store.js";
+import { jsonHash } from "./pipeline/run.js?v=20261110-reading-2";
+import { settings } from "./store.js?v=20261110-reading-2";
 import { runProgress } from "./run-progress.js";
 
 export async function renderReaders(el, app) {
@@ -246,7 +246,7 @@ export async function renderReaders(el, app) {
         try {
           if (!await maker.regions(pid) && !await book.current(pid)) {
             trialStatus.textContent = `Finding shared regions on ${pid}…`;
-            await maker.findRegions(pid);
+            await maker.findRegions(pid, { save: false });
             regionOutcome = "completed";
           }
         } catch (error) { failures.push(`${pid} · ${error.message}`); regionOutcome = "failed"; }

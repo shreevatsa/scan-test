@@ -5,7 +5,9 @@
 
 import { cp, cpLength, covered, removeKind, normalizeSpans } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js";
+import * as ops from "./ops.js?v=20261110-reading-2";
+import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261110-reading-2";
+import { orderedRegions, textFlags } from "./flags.js?v=20261110-reading-2";
 
 const END_CYCLE = { space: "hyphen", hyphen: "join", join: "line", line: "space" };
 const END_NAMES = { space: "a space", hyphen: "a hyphen to drop (the word goes on)", join: "nothing (the word goes on)", line: "a line break" };
@@ -88,11 +90,17 @@ export class TextPanel {
     this.el = el;
     this.app = app;
     this.lastSel = null;
-    document.addEventListener("selectionchange", () => {
+    this.focus = editorFocus(app.stage);
+    this.onSelection = () => {
       const info = this.selectionInfo();
       if (info) this.lastSel = info;
-    });
+    };
+    document.addEventListener("selectionchange", this.onSelection);
   }
+
+  destroy() { document.removeEventListener("selectionchange", this.onSelection); }
+  get textEditable() { return this.focus !== "units"; }
+  get unitsEditable() { return this.focus !== "text"; }
 
   get inlineKinds() { return new Set(Object.keys(this.app.tl.inline || {})); }
 
@@ -106,6 +114,10 @@ export class TextPanel {
     this.drawn = new Set();
     const problems = doc.source?.problems || [];
     if (problems.length) el.append(h("div", { class: "problems model" }, h("b", {}, "The model's notes on this page"), ...problems.map(p => h("div", {}, "• " + p))));
+    if (this.focus === "text") {
+      for (const region of orderedRegions(doc, this.app.tl)) el.append(this.regionBlock(region.id, null, 0));
+      el.scrollTop = scroll; this.markSelection(); return;
+    }
     for (const [flow, tops] of Object.entries(doc.flows)) {
       const sec = h("section", { class: "flow" }, h("div", { class: "flow-name" }, `flow ${flow}`));
       tops.forEach((uid, i) => sec.append(this.unitBlock(uid, { flow }, i)));
@@ -180,7 +192,8 @@ export class TextPanel {
       return block;
     }
     const lang = app.tl.types[r.type]?.lang;
-    const host = h("div", { class: "rtext", contenteditable: "true", spellcheck: "false", dataset: { rid }, lang: lang || null });
+    const host = h("div", { class: `rtext${this.unitsEditable ? " line-joins" : ""}`, contenteditable: this.textEditable ? "true" : null, spellcheck: "false", dataset: { rid }, lang: lang || null,
+      "aria-label": `${rid} transcription${this.textEditable ? "" : ", read only"}` });
     this.fillHost(host, r);
     this.wire(host);
     block.append(host);
@@ -188,7 +201,7 @@ export class TextPanel {
     if (kept && (r.lines || []).every(L => !L.text)) {
       block.append(h("div", { class: "kept" }, h("div", {}, `The transcription has ${kept.length} lines for ${(r.lines || []).length} line pieces, so it was kept aside:`),
         h("div", { class: "kept-text" }, kept.map(k => k.text).join(" / ")),
-        h("button", { onclick: () => app.edit(d => ops.useKeptText(d, rid)) }, "Put it on the line pieces")));
+        this.textEditable ? h("button", { onclick: () => app.edit(d => ops.useKeptText(d, rid)) }, "Put it on the line pieces") : null));
     }
     return block;
   }
@@ -219,7 +232,7 @@ export class TextPanel {
       const mk = e.target.closest(".mk");
       if (mk) { e.preventDefault(); app.select({ marker: mk.dataset.id }); return; }
       const lp = e.target.closest(".lp");
-      if (lp && e.offsetX > lp.clientWidth - 24 && e.target === lp) {
+      if (this.unitsEditable && lp && e.offsetX > lp.clientWidth - 24 && e.target === lp) {
         e.preventDefault();
         const i = +lp.dataset.i;
         app.edit(d => ops.setLineEnd(d, rid, i, END_CYCLE[lp.dataset.end || "space"]), { after: () => this.placeCaret(rid, i, Infinity) });
@@ -228,6 +241,7 @@ export class TextPanel {
     host.addEventListener("focusin", () => { if (app.selection.region !== rid) app.select({ region: rid }, { keepFocus: true }); });
     host.addEventListener("mouseover", e => { const lp = e.target.closest(".lp"); if (lp) app.pageView.highlightLine(`${rid}:${lp.dataset.i}`, true); });
     host.addEventListener("mouseout", e => { const lp = e.target.closest(".lp"); if (lp) app.pageView.highlightLine(`${rid}:${lp.dataset.i}`, false); });
+    if (!this.textEditable) return;
     host.addEventListener("drop", e => e.preventDefault());
     host.addEventListener("keydown", e => {
       const mod = e.metaKey || e.ctrlKey;
@@ -262,6 +276,7 @@ export class TextPanel {
 
   // After the browser has changed a host's text, take the changed line pieces into the document.
   readBack(host) {
+    if (!this.textEditable) return;
     const app = this.app, rid = host.dataset.rid;
     const r = app.doc.page.regions.find(x => x.id === rid);
     const lps = [...host.querySelectorAll(":scope > .lp")];
@@ -340,6 +355,7 @@ export class TextPanel {
 
   // Toggle a formatting kind over the selection (on every line piece it touches).
   format(kind) {
+    if (!this.textEditable) return;
     const info = this.selectionInfo() || this.lastSel;
     if (!info || info.collapsed) { this.app.toast("Select some text first."); return; }
     const { rid } = info, [si, so] = info.start, [ei, eo] = info.end;
@@ -389,14 +405,56 @@ export function renderInspector(el, app) {
   const { doc, tl, selection: s } = app;
   el.replaceChildren();
   if (s.marker) return markerInspector(el, app, s.marker);
-  if (s.unit && doc.units.some(u => u.id === s.unit)) return unitInspector(el, app, s.unit);
-  if (s.region && doc.page.regions.some(r => r.id === s.region)) return regionInspector(el, app, s.region);
+  if (app.stage === "text") return textInspector(el, app);
+  if (s.unit && doc.units.some(u => u.id === s.unit)) {
+    unitInspector(el, app, s.unit);
+    if (app.stage === "read") for (const rid of unitRegionIds(doc, s.unit)) regionLineJoins(el, app, rid);
+    return;
+  }
+  if (s.region && doc.page.regions.some(r => r.id === s.region)) {
+    if (app.stage === "read") {
+      const owner = ops.ownerOf(doc, s.region);
+      if (owner) unitInspector(el, app, owner.id);
+      regionLineJoins(el, app, s.region);
+      return;
+    }
+    return regionInspector(el, app, s.region);
+  }
+  if (app.stage === "read") { el.append(h("p", { class: "hint" }, "Select a unit to change its grouping, or a region to review its line joins. Its transcription is read only.")); return; }
   el.append(h("div", { class: "hint" },
     "Click a region on the page or its heading in the text to select it; click a unit's heading to select the unit. ",
     "Type to correct the text; select text and use the formatting buttons (or ⌘B, ⌘I); click a line's right edge to change how it joins the next line. ",
     "Changes are checked as you go and saved when the page passes the checks."));
   const loose = (doc.relations || []).map((r, i) => [r, i]).filter(([r]) => r.type === "note" && !r.from.anchor && !r.from.unit);
   if (loose.length) el.append(looseRelations(app, loose));
+}
+
+function textInspector(el, app) {
+  const { doc, tl } = app, rid = app.selection.region;
+  const region = doc.page.regions.find(region => region.id === rid);
+  el.append(h("p", { class: "hint" }, "Correct each line’s transcription and formatting. Select a printed note marker to change its sign."),
+    field("Printed page label", h("input", { value: doc.page.label || "", "aria-label": "Printed page label", onchange: event => app.edit(next => {
+      if (event.target.value.trim()) next.page.label = event.target.value.trim(); else delete next.page.label;
+    }) })));
+  if (region) el.append(h("h3", {}, `${region.id} · ${region.type}`), h("p", {}, tl.types[region.type]?.description || ""));
+  for (const flag of textFlags(doc, tl).filter(flag => !flag.region || !rid || flag.region === rid)) el.append(h("p", { class: "warn" }, flag.message));
+  el.append(h("button", { onclick: () => {
+    app.pendingStageSelection = { stage: "text", ids: [doc.page.id], reprocess: true }; app.setMode("text");
+  } }, "Review re-transcription of this page"));
+}
+
+export function regionLineJoins(el, app, rid) {
+  const region = ops.regionById(app.doc, rid);
+  const rows = (region.lines || []).map((line, index) => h("div", { class: "line-join-row" },
+    h("span", {}, line.text || "Text pending"),
+    select(Object.entries(END_NAMES), line.end || "space", end => app.edit(doc => ops.setLineEnd(doc, rid, index, end)),
+      { "aria-label": `Join after ${rid} line ${index + 1}` })));
+  if (app.readPanel) {
+    const key = `${app.doc.page.id}#${rid}`;
+    el.append(h("details", { open: app.lineJoinsOpen.has(key), ontoggle: event => {
+      if (event.target.open) app.lineJoinsOpen.add(key); else app.lineJoinsOpen.delete(key);
+    } }, h("summary", {}, `Line joins · ${rid}`), ...rows));
+  } else el.append(h("h4", {}, `Line joins · ${rid}`), ...rows);
 }
 
 function looseRelations(app, loose) {
@@ -409,40 +467,45 @@ function looseRelations(app, loose) {
       h("button", { class: "mini", onclick: () => app.edit(d => ops.removeRelation(d, i)) }, "remove"))));
 }
 
-function unitInspector(el, app, uid) {
+export function unitInspector(el, app, uid) {
   const { doc, tl } = app;
-  const u = doc.units.find(x => x.id === uid);
+  const local = doc.units.find(x => x.id === uid), u = app.displayUnit ? { ...local, ...app.displayUnit(uid) } : local;
   const place = ops.placeOf(doc, uid);
   const t = tl.types[u.type] || {};
-  const text = (k, v) => h("input", { value: v || "", onchange: e => app.edit(d => ops.setUnitField(d, uid, k, e.target.value)) });
+  const change = (action, value) => app.unitAction ? app.unitAction(uid, action, value) : app.edit(doc => { app.selection = applyUnitAction(doc, tl, uid, action, value); });
+  const text = (k, v) => h("input", { value: v || "", "aria-label": `Unit ${k}`, onchange: e => change(k, e.target.value) });
   el.append(h("div", { class: "ititle" }, "Unit ", h("b", {}, unitName(u))),
     h("div", { class: "desc" }, t.description || ""),
     h("div", { class: "fields" },
-      field("type", select(ops.retypeChoices(doc, tl, uid), u.type, v => app.edit(d => ops.retypeUnit(d, tl, uid, v)))),
+      field("type", select(ops.retypeChoices(doc, tl, uid).filter(type => app.stage !== "read" || (tl.types[type].region === "figure") === (t.region === "figure")), u.type, v => change("type", v), { "aria-label": "Unit type" })),
       field("number", text("number", u.number)), field("label", text("label", u.label)),
-      field("begun on an earlier page", h("input", { type: "checkbox", checked: (u.open || {}).start ? true : null, onchange: e => app.edit(d => ops.setOpen(d, uid, "start", e.target.checked)) })),
-      field("goes on on a later page", h("input", { type: "checkbox", checked: (u.open || {}).end ? true : null, onchange: e => app.edit(d => ops.setOpen(d, uid, "end", e.target.checked)) }))));
+      field("begun on an earlier page", h("input", { type: "checkbox", checked: (u.open || {}).start ? true : null, onchange: e => change("start", e.target.checked) })),
+      field("goes on on a later page", h("input", { type: "checkbox", checked: (u.open || {}).end ? true : null, onchange: e => change("end", e.target.checked) }))));
   // How the unit is printed (schema 0.3 style): presentation only, used by the reader's "as printed" view and exports.
   const st = u.style || {};
   const nextSib = place && place.index + 1 < place.list.length ? place.list[place.index + 1] : null;
   const nextUid = nextSib && (typeof nextSib === "string" ? nextSib : nextSib.unit);
   const besideNext = !!st.row && !!nextUid && doc.units.find(x => x.id === nextUid)?.style?.row === st.row;
-  el.append(h("div", { class: "fields printed" },
+  if (!app.readPanel) el.append(h("div", { class: "fields printed" },
     field("printed: align", select([["", "as its type"], "left", "center", "right", "justify"], st.align || "", v => app.edit(d => ops.setUnitStyle(d, uid, "align", v)))),
     field("size (pt)", h("input", { type: "number", step: "0.5", min: "1", value: st.size_pt ?? "", style: "width:5em",
       onchange: e => app.edit(d => ops.setUnitStyle(d, uid, "size_pt", e.target.value === "" ? null : +e.target.value)) })),
     field("side by side with the next unit", h("input", { type: "checkbox", checked: besideNext ? true : null, disabled: nextUid ? null : true,
       onchange: e => app.edit(d => ops.setRowWithNext(d, uid, e.target.checked)) }))));
   const wrapTypes = ops.containersFor(tl, u.type);
+  if (app.stage === "read" && u.children.length > 1) {
+    const split = select(u.children.slice(1).map((child, index) => [String(index + 1), `Before ${child.unit || child.region}`]), "1", () => {}, { "aria-label": "Split before child" });
+    el.append(h("div", { class: "actions" }, split, h("button", { onclick: () => change("split", Number(split.value)) }, "Split unit")));
+  }
   // Page furniture (an ornament, a running header): the unit's regions leave the text.
-  const furnitureTypes = u.children.every(c => c.region) ? Object.entries(tl.types).filter(([, t]) => t.role === "furniture" && t.region).map(([n]) => n) : [];
+  const furnitureTypes = u.children.every(c => c.region) ? Object.entries(tl.types).filter(([, type]) => type.role === "furniture" && type.region && (app.stage !== "read" || (type.region === "figure") === (t.region === "figure"))).map(([n]) => n) : [];
   el.append(h("div", { class: "actions" },
-    h("button", { onclick: () => app.edit(d => ops.joinWithNext(d, uid)) }, "Join with the next unit"),
-    wrapTypes.length ? select([["", "Put inside a new…"], ...wrapTypes], "", v => v && app.edit(d => { const w = ops.wrapUnit(d, tl, uid, v); app.selection = { unit: w }; })) : null,
-    furnitureTypes.length ? select([["", "Make it page furniture…"], ...furnitureTypes], "", v => v && app.edit(d => { const rids = ops.unitToFurniture(d, tl, uid, v); app.selection = { region: rids[0] }; }),
+    h("button", { onclick: () => app.joinNext ? app.joinNext(uid) : app.edit(d => ops.joinWithNext(d, uid)) }, "Join with the next unit"),
+    wrapTypes.length ? select([["", "Put inside a new…"], ...wrapTypes], "", v => v && change("wrap", v), { "aria-label": "Wrap in a container" }) : null,
+    furnitureTypes.length ? select([["", "Make it page furniture…"], ...furnitureTypes], "", v => v && change("furniture", v),
       { title: "take it out of the text: its regions stay on the page as furniture (as an ornament or a running header)" }) : null,
-    u.children.every(c => c.unit) ? h("button", { onclick: () => app.edit(d => ops.unwrapUnit(d, uid)) }, "Unwrap (keep its contents)") : null,
-    h("button", { class: "danger", onclick: () => app.edit(d => { ops.deleteUnit(d, uid); app.selection = {}; }) }, "Delete with its regions")));
+    u.children.every(c => c.unit) ? h("button", { onclick: () => change("unwrap") }, "Unwrap (keep its contents)") : null,
+    app.stage !== "read" ? h("button", { class: "danger", onclick: () => app.edit(d => { ops.deleteUnit(d, uid); app.selection = {}; }) }, "Delete with its regions") : null));
   // Relations from and to this unit.
   const rels = (doc.relations || []).map((r, i) => [r, i]).filter(([r]) => r.from.unit === uid || r.to.unit === uid ||
     (r.from.anchor && u.children.some(c => c.region && regionHasAnchor(doc, localRegion(c.region), r.from.anchor))));
@@ -513,15 +576,16 @@ function markerInspector(el, app, sid) {
   const notes = ops.noteTargets(doc, tl);
   el.append(h("div", { class: "ititle" }, "Note marker ", h("b", {}, m.span.marker), ` in ${m.region.id}, line piece ${m.index + 1}`),
     h("div", { class: "fields" },
-      field("printed as", h("input", { value: m.span.marker, size: 4, onchange: e => app.edit(d => ops.setMarkerSign(d, sid, e.target.value.trim())) })),
-      field("its note", select([["", "(none)"], ...notes.map(u => [u.id, unitName(u)])], rel ? rel.to.unit : "", v => app.edit(d => ops.linkMarker(d, tl, sid, v || null))))),
+      field("printed as", app.stage === "read" ? h("span", {}, m.span.marker) : h("input", { value: m.span.marker, size: 4, onchange: e => app.edit(d => ops.setMarkerSign(d, sid, e.target.value.trim())) })),
+      app.stage !== "text" ? field("its note", select([["", "(none)"], ...notes.map(u => [u.id, unitName(u)])], rel ? rel.to.unit : "", v => app.edit(d => ops.linkMarker(d, tl, sid, v || null)))) : null),
     h("div", { class: "actions" },
       rel ? h("button", { onclick: () => app.select({ unit: rel.to.unit }) }, "Go to the note") : null,
-      h("button", { class: "danger", onclick: () => app.edit(d => { ops.deleteMarker(d, sid); app.selection = { region: m.region.id }; }) }, "Delete the marker")));
+      app.stage !== "read" ? h("button", { class: "danger", onclick: () => app.edit(d => { ops.deleteMarker(d, sid); app.selection = { region: m.region.id }; }) }, "Delete the marker") : null));
 }
 
 // A form to insert a marker at the last caret position.
 export function markerForm(el, app) {
+  if (app.stage === "read") return;
   const at = app.textPanel.lastSel;
   el.replaceChildren();
   if (!at) { el.append(h("div", { class: "hint" }, "Put the caret in the text where the marker is printed, then click ＋ Marker again.")); return; }
@@ -532,7 +596,7 @@ export function markerForm(el, app) {
   let note = "";
   el.append(h("div", { class: "ititle" }, `Insert a note marker in ${at.rid}, line piece ${at.end[0] + 1}, at character ${at.end[1]}`),
     h("div", { class: "fields" }, field("printed as", input),
-      field("its note", select([["", "(none yet)"], ...notes.map(u => [u.id, unitName(u)])], "", v => (note = v)))),
+      app.stage !== "text" ? field("its note", select([["", "(none yet)"], ...notes.map(u => [u.id, unitName(u)])], "", v => (note = v))) : null),
     h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => {
       let id = null;
       app.edit(d => { id = ops.insertMarker(d, at.rid, at.end[0], at.end[1], input.value.trim()); if (note) ops.linkMarker(d, app.tl, id, note); },

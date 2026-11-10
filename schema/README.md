@@ -51,6 +51,12 @@ Each book has its own list of unit types (`types/<book_id>.json`), which the use
 
 The type list also names the book's flows, its relation types, and its transcription conventions.
 
+The app records numeric revisions in `source.revision` and operations in `source.revisions`, with a revision number, UTC timestamp, author and operation list. Operations cover descriptions, book metadata and conventions, adding, renaming, merging, splitting, containment and flow, printed class, unused-type removal, list replacement and resolving discovery questions. `source.aliases` maps historical names to current names. Removed names are reserved in `source.retired_types`. Common starter lists have `source.draft`. Historical prose values of `source.revision` count as revision 1 and move to `source.legacy_revision` on the first type-list operation. These fields live in free-form provenance.
+
+Replacement is allowed while every page’s layers are unprotected, with drafts also protecting their pages. It clears current page documents and sets `source.region_reset_revision` to invalidate earlier region trials. `work/type-revisions/<n>.json` retains prior types, style, manifest and changed document versions. `work/pending-types.json` journals multi-file writes for recovery. Original work records are preserved, and readers map aliases on copies of region and unit data. A revision preview fingerprints the saved inputs, so concurrent changes require another preview. Book exports take the same write lock to capture consistent types and pages.
+
+Migrated page versions record `source.types_migration_revision` separately from the revision under which a model layer ran. `source.type_review.regions` identifies figure-class changes needing region discovery, `units` identifies provisional units needing completion, and `manual` flags protected units needing repair. Values are the revision that requested the work. Protected unit trees are preserved during containment changes. `source.discovery.questions` and `resolved_questions` retain review questions and decisions with UTC timestamps.
+
 The lists written so far:
 
 | Book | Containers | Printed types | Flows |
@@ -160,6 +166,20 @@ page 3:  chapter (open start) > group 25–26 (open start) > verse_set (open sta
 ```
 
 Assembly joins the chapter, the group and the verse set; the two verses stay separate units. The same pattern covers a verse ending one column and the next verse beginning the next column, but there no assembly is needed, because both are on one page.
+
+## Stage layers in page provenance
+
+The stage foundations store bookkeeping in the free-form page `source.layers` object. `regions` owns geometry, region types and reading order. `text` owns line text, spans and the page label. `units` owns the unit tree, flows, relations, line joins and unit/line presentation styles. Region and text states are `model` or `edited`. Units can also be `provisional`. A new provisional page has region and unit states, with text pending. Empty and figure-only pages can acquire a completed text layer with an empty transcription.
+
+`accepted_at_utc` records the user's acceptance of a layer. Either acceptance or an `edited` state protects that layer. The layer helpers infer acceptance for older completed documents and persist that inference as `accepted_legacy: true` when materializing their records, without inventing a historical timestamp. A legacy page with zero text lines is treated as having completed text. `layerState` returns a derived `accepted` boolean, while `layerRecords` produces the records to save. Sending a layer back clears its acceptance markers and retains its edit state.
+
+`layerView` compares stage-owned content, including formatting and note markers, while excluding provenance. The pure stage merges return a new document, the layers taken and a suggestion flag. Protected content is retained. Completion uses the current text and geometry, maps note anchors onto current markers, and can fill empty metadata on protected units where their type and first region identify a unique match. Region replacement can reuse text on matching geometry. Full page validation is passed to merges when replacing a saved document through the normal processing pipeline.
+
+Manual Regions edits keep pending text pending and retain provisional units while rebuilding their containment and flows. `source.provisional_problems` separates temporary grouping problems from other diagnostics. The local geometry step returns `source.uncovered_lines`, with a line ID and bounding box for ink left outside every region. Empty recomputed regions have `region.source.no_ink`. Unassigned regions retain their boxes in `source.omitted_regions`. Merging retains the removed region in `region.source.merged_from` and preserves compatible text, spans and links. Temporarily retyping a provisional text region as a figure retains its line pieces in `region.source.kept_text` for restoration.
+
+Focused Text edits preserve provisional unit grouping while allowing note-marker cleanup. A manual unit edit in Read changes that layer to `edited`, protecting it from replacement. Unit language is included in the unit-layer comparison. Before completion, the reading view treats every line end on a provisional page as a space.
+
+Cross-page joins save edits to both pages under the book write lock. Matching ancestor paths receive `open.end` on the earlier page and `open.start` on the next. `work/pending-pages.json` journals the page versions and prior drafts for replay after an interrupted write. Exports share the lock and recover pending writes before collecting files. Text saves merge changed text fields into the latest document, preserving newer grouping and independent text corrections. Conflicting changes to the same field or unit snapshot require reloading.
 
 ## Relations
 

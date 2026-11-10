@@ -1,11 +1,11 @@
 import { h } from "./render.js";
-import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261109-model-flow";
+import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261110-reading-2";
 import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, projectBookCost } from "./pipeline/readers.js";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
 import { renderStructureComparison } from "./structure-visual.js";
-import { jsonHash } from "./pipeline/run.js";
-import { settings } from "./store.js";
+import { jsonHash } from "./pipeline/run.js?v=20261110-reading-2";
+import { settings } from "./store.js?v=20261110-reading-2";
 import { runProgress } from "./run-progress.js";
 
 export async function renderStructures(el, app) {
@@ -130,7 +130,7 @@ export async function renderStructures(el, app) {
         try {
           if (!await maker.regions(pid) && !await book.current(pid)) {
             status.textContent = `Finding shared regions on ${pid}…`;
-            await maker.findRegions(pid);
+            await maker.findRegions(pid, { save: false });
             regionOutcome = "completed";
           }
         } catch (error) {

@@ -456,5 +456,17 @@ export function regionsFromBoxes(analysis, boxes, cfg) {
       line.line_id = band.anchor_line_id;
     }
   }
-  return { geometry, owner, decisions, dropped, attached };
+  const uncovered = uncoveredLines(comp, prep, decisions, owner, seg.lines);
+  return { geometry, owner, decisions, dropped, attached, uncovered };
+}
+
+export function uncoveredLines(comp, prep, decisions, owner, bands = []) {
+  return decisions.filter(decision => decision.mode === "uncovered").flatMap(decision => {
+    const members = [];
+    for (let index = 1; index < comp.count; index++) if (prep.lineOf[index] === decision.line_id) members.push(index);
+    if (!members.length || members.some(index => owner[index] !== UNASSIGNED)) return [];
+    return [{ line_id: bands[decision.line_id]?.anchor_line_id ?? decision.line_id,
+      box: [Math.min(...members.map(index => comp.x0[index])), Math.min(...members.map(index => comp.y0[index])),
+        Math.max(...members.map(index => comp.x1[index])), Math.max(...members.map(index => comp.y1[index]))] }];
+  });
 }

@@ -148,13 +148,28 @@ export function geminiRequest(content, schema) {
 
 const DIGITS = Object.fromEntries([..."०१२३४५६७८९"].map((d, i) => [d, String(i)]).concat([..."೦೧೨೩೪೫೬೭೮೯"].map((d, i) => [d, String(i)])));
 
-function pageLabel(regions) {
+export function pageLabel(regions) {
   for (const r of regions) {
     if (r.type !== "page_number") continue;
     const digits = [...(r.lines || []).map(L => L.text || "").join("")].map(c => DIGITS[c] ?? c).join("").replace(/\D/g, "");
     if (digits) return digits;
   }
   return null;
+}
+
+// Parse a region's marked lines, continuing formatting and numbering page-wide note markers.
+export function transcribedLines(lineIds, polygons, lines, firstMarker = 1) {
+  let open = [], nextMarker = firstMarker;
+  const records = lineIds.map((id, index) => {
+    const line = lines[index];
+    const [text, spans, stillOpen, next] = parseLine(line.text, open, nextMarker);
+    open = stillOpen; nextMarker = next;
+    const record = { line: id, polygons: polygons[id], text };
+    if (spans.length) record.spans = spans;
+    if (line.end !== undefined && line.end !== "space") record.end = line.end;
+    return record;
+  });
+  return { lines: records, nextMarker };
 }
 
 // sent: selectRegions(...).sent; parsed: the model's answer with regions as a list (method 052's schema).
@@ -176,18 +191,12 @@ export function buildPageDocument(pid, page, tl, sent, parsed, source) {
     else if (lines.map(L => L.n).join() !== lines.map((_, i) => i + 1).join()) problems.push(`${rid}: line numbers [${lines.map(L => L.n).join(", ")}]; text kept by position`);
     if (!(o.type in tl.types)) { omitted.push({ region: rid, type: o.type, text: lines.map(L => L.text) }); continue; }
     const polys = Object.fromEntries(src.lines.filter(L => L.polygons && L.polygons.length).map(L => [L.line_id, L.polygons]));
-    let open = [];
-    const recs = s.line_ids.map((lid, k) => {
-      const rec = { line: lid, polygons: polys[lid] };
-      if (aligned) {
-        const [plain, spans, still, nm] = parseLine(lines[k].text, open, nextMarker);
-        open = still; nextMarker = nm;
-        rec.text = plain;
-        if (spans.length) rec.spans = spans;
-        if (lines[k].end !== "space") rec.end = lines[k].end;
-      }
-      return rec;
-    });
+    let recs = s.line_ids.map(line => ({ line, polygons: polys[line] }));
+    if (aligned) {
+      const parsedLines = transcribedLines(s.line_ids, polys, lines, nextMarker);
+      recs = parsedLines.lines;
+      nextMarker = parsedLines.nextMarker;
+    }
     const info = { method: source.regions_method, region_id: src.region_id, method_type: src.type, region_class: src.region_class, keep: src.keep,
       uncertain: src.uncertain, continues_from_earlier: src.continues_from_earlier, continues_later: src.continues_later, model_box: src.model_box,
       transcription: { uncertain: o.uncertain, note: o.note } };

@@ -1,6 +1,16 @@
 import { h } from "./render.js";
 import { pageRange } from "./pipeline/pdf.js";
 
+export function lazyThumbnails(root, load) {
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) if (entry.isIntersecting) {
+      observer.unobserve(entry.target);
+      load(entry.target);
+    }
+  }, { root, rootMargin: "160px" });
+  return observer;
+}
+
 export function pageSelectionText(selected, count) {
   const pages = [...new Set(selected)].sort((a, b) => a - b);
   if (pages.length === count) return "all";
@@ -52,6 +62,8 @@ export function pageBrowser({ pages, render }) {
   include.addEventListener("change", () => setSelected(previewPage, include.checked));
   const showPage = async page => {
     if (!pdf || page < 1 || page > pdf.doc.numPages) return;
+    const section = element.closest("details");
+    if (section) section.open = true;
     clearPreview();
     const current = previewRevision, source = pdf;
     previewPage = page;
@@ -98,6 +110,7 @@ export function pageBrowser({ pages, render }) {
         cards.get(page)?.element.scrollIntoView({ block: "nearest" });
       } }, "Go to page")), grid), count, dialog);
   return {
+    showPage,
     element,
     refreshSelection,
     showSelection() {
@@ -124,23 +137,19 @@ export function pageBrowser({ pages, render }) {
       title.textContent = `Browse all ${pdf.doc.numPages} PDF pages`;
       jump.max = pdf.doc.numPages;
       jump.value = 1;
-      observer = new IntersectionObserver(entries => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          observer.unobserve(entry.target);
-          const page = Number(entry.target.dataset.page), card = cards.get(page);
-          (async () => {
-            try {
-              const rendered = await render(source.doc, page, 36);
-              if (current !== revision) return;
-              const url = URL.createObjectURL(rendered.blob);
-              urls.push(url);
-              card.image.src = url;
-              card.button.title = `Open PDF page ${page}`;
-            } catch (error) { if (current === revision) card.button.title = `Preview unavailable. ${error.message}`; }
-          })();
-        }
-      }, { root: grid, rootMargin: "160px" });
+      observer = lazyThumbnails(grid, target => {
+        const page = Number(target.dataset.page), card = cards.get(page);
+        (async () => {
+          try {
+            const rendered = await render(source.doc, page, 36);
+            if (current !== revision) return;
+            const url = URL.createObjectURL(rendered.blob);
+            urls.push(url);
+            card.image.src = url;
+            card.button.title = `Open PDF page ${page}`;
+          } catch (error) { if (current === revision) card.button.title = `Preview unavailable. ${error.message}`; }
+        })();
+      });
       for (let page = 1; page <= pdf.doc.numPages; page++) {
         const thumbnail = h("img", { alt: `PDF page ${page}`, width: 108, height: 148 });
         const button = h("button", { class: "pdf-thumbnail", "aria-label": `Open PDF page ${page}`,

@@ -1,6 +1,6 @@
 import { h } from "./render.js";
 import { READERS, STRUCTURERS, OCR_LANGUAGES, readerOptions, readerById, structurerById } from "./pipeline/readers.js";
-import { SETTINGS } from "./pipeline/steps.js";
+import { SETTINGS } from "./pipeline/steps.js?v=20261110-reading-2";
 
 export const money = (value, digits = 4) => Number.isFinite(value) ? `$${value.toFixed(digits)}` : "—";
 
@@ -109,14 +109,16 @@ export function keyControls(keys, save) {
 }
 
 export function continueControls(app) {
+  const stage = app.mode === "structures" ? "read&view=pages" : app.available?.text ? "text" : "regions";
+  const label = stage.startsWith("read") ? "units and links" : stage === "text" ? "Text" : "Regions";
   return h("section", { class: "reader-next" }, h("h3", {}, "Continue with this book"),
     h("p", {}, `The selected models apply when processing pages. This book contains ${app.book.pages.length} pages.`),
     h("div", { class: "actions" },
       h("button", { class: "primary", onclick: async event => {
         const button = event.currentTarget;
         button.disabled = true;
-        try { await app.continueBook(); } finally { button.disabled = false; }
-      } }, app.book.writable ? "Continue to Make pages" : "Make an editable copy and continue"),
+        try { await app.continueBook(stage); } finally { button.disabled = false; }
+      } }, app.book.writable ? `Continue to ${label}` : "Make an editable copy and continue"),
       app.book.manifest.cost_projection?.page_count > app.book.pages.length ? h("button", { onclick: () => app.newBookForm(null, app.book) }, "Start from the full PDF with these settings") : null),
-    h("p", { class: "hint" }, "In Make pages, choose a page range and process it with the selected models. Then review Problems, correct text and structure in Edit pages, and save a .chaya.pdf from Export."));
+    h("p", { class: "hint" }, "Choose pages in the stage grid and process them with the selected model. Move reviewed regions on to Text, and reviewed transcriptions on to Read. Save the book from Export."));
 }

@@ -7,6 +7,14 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
+import { LAYERS, isProtected, noteEdit } from "./layers.js?v=20261110-reading-2";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261110-reading-2";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261110-reading-2";
+import { canonical } from "./ops.js?v=20261110-reading-2";
+import { checkDocument } from "./schema.js?v=20261110-reading-2";
+import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-reading-2";
+
+const bookWrites = new Map();
 
 // ---------------------------------------------------------------- IndexedDB
 
@@ -112,7 +120,6 @@ export class Book {
     this.imageUrls = new Map();
     this.work = new Map();
     this.writeQueue = new Map();
-    this.workUpdates = new Map();
     this.style = null;           // the book's style sheet (schema 0.3), if book.json names one
     this.key = browser ? `browser:${where.name}` : kind === "folder" ? `folder:${manifest.book_id}:${where.name}` : `${kind}:${where}`;
   }
@@ -120,12 +127,181 @@ export class Book {
   get title() { return this.manifest.title; }
   get writable() { return this.kind === "folder"; }
 
+  async typesSnapshot() {
+    const manifest = await this.readJson("book.json") || structuredClone(this.manifest);
+    const snapshot = { manifest, pages: manifest.pages, models: {}, edits: {}, drafts: {},
+      style: manifest.style ? await this.readJson(manifest.style) : this.style };
+    for (const page of snapshot.pages) {
+      const pending = await this.readJson(this.stagePath(page.id));
+      if (pending) await this.finishStage(page.id, pending);
+      snapshot.models[page.id] = await this.readJson(page.document);
+      snapshot.edits[page.id] = await this.readJson(`edits/${page.id}.json`);
+      snapshot.drafts[page.id] = await this.draft(page.id);
+    }
+    snapshot.manifest = await this.readJson("book.json") || manifest;
+    snapshot.pages = snapshot.manifest.pages;
+    const types = await this.readJson(manifest.types) || this.types;
+    return { types, snapshot, token: await sha256hex(new TextEncoder().encode(canonical({ types, snapshot }))) };
+  }
+
+  async previewTypes(operations, options = {}) {
+    if (!this.writable) throw new Error("Keep an editable copy before changing the type list.");
+    return this.pageWrite(async () => {
+      const { types, snapshot, token } = await this.typesSnapshot();
+      return { ...planTypeRevision(types, snapshot, operations, options), token };
+    });
+  }
+
+  async saveTypes(types, operations, { expected, ...options } = {}) {
+    if (!this.writable) throw new Error("Keep an editable copy before changing the type list.");
+    return this.pageWrite(async () => {
+      const current = await this.typesSnapshot();
+      if (expected && expected !== current.token) throw new Error("The book changed after this preview. Preview the change again.");
+      const plan = planTypeRevision(current.types, current.snapshot, operations, { ...options, at: types.source?.revisions?.at(-1)?.at_utc });
+      if (canonical(types) !== canonical(plan.types)) throw new Error("The type list changed. Preview the operation again.");
+      const journal = { format: "type-revision", version: 1, types: plan.types, style: plan.style,
+        manifest: { ...structuredClone(current.snapshot.manifest), title: plan.types.title }, changes: plan.changes,
+        previous: { types: current.types, style: current.snapshot.style, manifest: current.snapshot.manifest, changes: plan.changes },
+        reach: { pages: plan.pages, regions: plan.regions, units: plan.units, find: plan.find, complete: plan.complete, manual: plan.manual } };
+      for (const page of journal.manifest.pages) {
+        const changed = plan.changes.filter(change => change.page === page.id);
+        if (!changed.length) continue;
+        const modelChange = changed.find(change => change.kind === "model"), editChange = changed.find(change => change.kind === "edit");
+        const doc = (editChange ? editChange.after : current.snapshot.edits[page.id]) || (modelChange ? modelChange.after : current.snapshot.models[page.id]);
+        page.valid = !!doc && !(options.check ? options.check(doc, plan.types) : checkDocument(doc, plan.types)[0]).length;
+        page.label = doc?.page.label ?? null;
+      }
+      await this.writeFile("work/pending-types.json", pretty(journal));
+      await this.finishTypes(journal);
+      return plan;
+    });
+  }
+
+  // Replay is idempotent. The journal is removed only after every file and draft is saved.
+  async finishTypes(journal) {
+    await this.writeFile(`work/type-revisions/${journal.types.source.revision}.json`, pretty(journal.previous));
+    for (const change of journal.changes) {
+      if (change.kind === "draft") {
+        const current = await this.draft(change.page);
+        if (canonical(current) !== canonical(change.before) && canonical(current) !== canonical(change.after)) {
+          if (current) {
+            const doc = migrateTypeDocument(current.doc, journal.types, journal.types.source.revisions.at(-1).operations);
+            await idb.put("drafts", [this.key, change.page], { ...current, doc });
+          }
+        } else if (change.after) await idb.put("drafts", [this.key, change.page], change.after);
+        else await this.clearDraft(change.page);
+        continue;
+      }
+      const path = change.kind === "model" ? journal.manifest.pages.find(page => page.id === change.page).document : `edits/${change.page}.json`;
+      if (change.after) await this.writeFile(path, pretty(change.after)); else await this.removeFile(path);
+    }
+    if (journal.style && journal.manifest.style) await this.writeFile(journal.manifest.style, pretty(journal.style));
+    await this.writeFile(journal.manifest.types, pretty(journal.types));
+    await this.writeFile("book.json", pretty(journal.manifest));
+    this.types = journal.types; this.style = journal.style; this.manifest = journal.manifest; this.pages = this.manifest.pages;
+    this.models.clear(); this.edits.clear();
+    for (const page of this.pages) {
+      const edit = await this.readJson(`edits/${page.id}.json`);
+      if (edit) this.edits.set(page.id, edit);
+    }
+    await this.removeFile("work/pending-types.json");
+  }
+
+  async editPages(ids, mutate, { check = (doc, types) => checkDocument(doc, types)[0], expected = new Map(), focus = "units" } = {}) {
+    return this.pageWrite(async () => {
+      if (this.writable) this.types = await this.readJson(this.manifest.types) || this.types;
+      const models = new Map(), before = new Map(), drafts = {};
+      for (const pid of [...new Set(ids)]) {
+        if (!(pid in this.index)) throw new Error(`Unknown page ${pid}.`);
+        const pending = this.writable && await this.readJson(this.stagePath(pid));
+        if (pending) await this.finishStage(pid, pending);
+        const model = this.writable ? await this.readJson(this.page(pid).document) : await this.model(pid);
+        const edit = this.writable ? await this.readJson(`edits/${pid}.json`) : await idb.get("edits", [this.key, pid]) || this.edits.get(pid);
+        const draft = await this.draft(pid), doc = draft?.doc || edit || model;
+        if (!doc) throw new Error(`Prepare page ${this.index[pid] + 1} first.`);
+        const errors = check(doc, this.types);
+        if (draft && errors.length) throw new Error(`Fix page ${this.index[pid] + 1}’s draft first. ${errors[0]}`);
+        if (model) this.models.set(pid, model);
+        if (edit) this.edits.set(pid, edit); else this.edits.delete(pid);
+        if (expected.has(pid) && unitSnapshot(doc) !== expected.get(pid)) throw new Error("This page’s units changed. Select the passage again before editing.");
+        models.set(pid, model); before.set(pid, doc); drafts[pid] = draft;
+      }
+      const changed = await mutate(new Map([...before].map(([pid, doc]) => [pid, structuredClone(doc)])), this.types);
+      const docs = {};
+      for (const [pid, previous] of before) {
+        const doc = changed.get(pid);
+        if (!doc || doc.page.id !== pid) throw new Error("The edit must return each requested page.");
+        assertFocusEdit(focus, previous, doc);
+        const errors = check(doc, this.types);
+        if (errors.length) throw new Error(errors[0]);
+        docs[pid] = noteEdit(models.get(pid), doc, { focus });
+      }
+      if (this.writable) {
+        const journal = { format: "page-edits", version: 1, docs, drafts };
+        await this.writeFile("work/pending-pages.json", pretty(journal));
+        await this.finishPages(journal);
+      } else {
+        const database = await db();
+        await new Promise((resolve, reject) => {
+          const transaction = database.transaction(["edits", "drafts"], "readwrite");
+          for (const [pid, doc] of Object.entries(docs)) {
+            transaction.objectStore("edits").put(doc, [this.key, pid]); transaction.objectStore("drafts").delete([this.key, pid]);
+          }
+          transaction.oncomplete = resolve; transaction.onerror = () => reject(transaction.error); transaction.onabort = () => reject(transaction.error);
+        });
+        for (const [pid, doc] of Object.entries(docs)) this.edits.set(pid, doc);
+      }
+      return docs;
+    });
+  }
+
+  async finishPages(journal) {
+    const manifest = await this.readJson("book.json") || structuredClone(this.manifest);
+    for (const [pid, doc] of Object.entries(journal.docs)) {
+      await this.writeFile(`edits/${pid}.json`, pretty(doc));
+      this.edits.set(pid, doc);
+      Object.assign(manifest.pages.find(page => page.id === pid), { valid: true, label: doc.page.label ?? null });
+    }
+    await this.writeFile("book.json", pretty(manifest)); this.manifest = manifest; this.pages = manifest.pages;
+    for (const pid of Object.keys(journal.docs)) if (canonical(await this.draft(pid)) === canonical(journal.drafts[pid])) await this.clearDraft(pid);
+    await this.removeFile("work/pending-pages.json");
+  }
+
+  async addType(definition, validate) {
+    if (!this.writable) throw new Error("Keep an editable copy of the book before adding a type.");
+    return this.pageWrite(async () => {
+      const current = await this.readJson(this.manifest.types) || this.types;
+      const next = addBookType(current, definition);
+      const errors = validate(next);
+      if (errors.length) throw new Error(errors[0]);
+      await this.writeFile(this.manifest.types, pretty(next));
+      this.types = next;
+      return next;
+    });
+  }
+
+  async initializeTypes(proposed, validate) {
+    if (!this.writable) throw new Error("Keep an editable copy of the book before choosing its types.");
+    return this.pageWrite(async () => {
+      for (const page of this.pages) if (await this.readJson(page.document) || await this.readJson(`edits/${page.id}.json`) || await this.draft(page.id))
+        throw new Error("Apply an initial type list before making page documents. Existing pages can use added types.");
+      const current = await this.readJson(this.manifest.types) || this.types;
+      const next = initialBookTypes(current, proposed, this.manifest.book_id, this.title);
+      const errors = validate(next);
+      if (errors.length) throw new Error(errors[0]);
+      await this.writeFile(this.manifest.types, pretty(next));
+      this.types = next;
+      return next;
+    });
+  }
+
   static async openFolder(handle, { browser = false } = {}) {
     const manifest = await readJsonFile(handle, "book.json");
     if (manifest.format !== "book-folder") throw new Error("book.json is not a book folder's manifest");
     const types = await readJsonFile(handle, manifest.types);
     const book = new Book("folder", handle, manifest, types, { browser });
-    if (manifest.style) book.style = await readJsonFile(handle, manifest.style).catch(e => { console.warn("style sheet", e); return null; });
+    await book.recoverStages();
+    if (book.manifest.style) book.style = await readJsonFile(handle, book.manifest.style).catch(e => { console.warn("style sheet", e); return null; });
     try {
       const edits = await handle.getDirectoryHandle("edits", { create: true });
       for await (const [name, fh] of edits.entries()) {
@@ -210,11 +386,11 @@ export class Book {
   // Processing records also work for books opened by URL. Their local overlay is exported with the book.
   async readWork(path) {
     if (!path.startsWith("work/")) throw new Error("Expected a work-file path.");
-    if (this.work.has(path)) return this.work.get(path);
+    if (this.work.has(path)) return mappedTypeNames(this.work.get(path), this.types);
     const value = this.writable ? await this.readJson(path)
       : (await idb.get("settings", ["work", this.key, path]).catch(() => null)) ?? this.files?.[path] ?? null;
     this.work.set(path, value);
-    return value;
+    return mappedTypeNames(value, this.types);
   }
 
   async writeWork(path, value) {
@@ -225,15 +401,12 @@ export class Book {
   }
 
   async updateWork(path, update) {
-    const prior = this.workUpdates.get(path) || Promise.resolve();
-    const job = prior.catch(() => {}).then(async () => {
+    return this.pageWrite(async () => {
+      this.work.delete(path);
       const value = await update(await this.readWork(path));
       await this.writeWork(path, value);
       return value;
     });
-    this.workUpdates.set(path, job);
-    try { return await job; }
-    finally { if (this.workUpdates.get(path) === job) this.workUpdates.delete(path); }
   }
 
   async getReaderOptions() {
@@ -248,13 +421,13 @@ export class Book {
   async saveReaderOptions(options) {
     const next = JSON.parse(JSON.stringify(options));
     if (this.writable) {
-      const previous = this.manifest.reader_options;
-      this.manifest.reader_options = next;
-      try { await this.writeFile("book.json", pretty(this.manifest)); }
-      catch (error) {
-        if (this.manifest.reader_options === next) this.manifest.reader_options = previous;
-        throw error;
-      }
+      await this.pageWrite(async () => {
+        const manifest = await this.readJson("book.json") || structuredClone(this.manifest);
+        manifest.reader_options = next;
+        await this.writeFile("book.json", pretty(manifest));
+        this.manifest = manifest;
+        this.pages = manifest.pages;
+      });
     } else {
       await idb.put("settings", ["reader-options", this.key], next);
       this.manifest.reader_options = next;
@@ -305,6 +478,17 @@ export class Book {
   // The book's files for a .chaya.pdf (all but the PDF and the page images), as they stand: the model's pages, the
   // user's corrections, the style sheet in use and the work files.
   async chayaFiles(progress = () => {}) {
+    await this.recoverStages();
+    return this.pageWrite(() => this.collectChayaFiles(progress));
+  }
+
+  async collectChayaFiles(progress) {
+    if (this.writable) {
+      const { types, snapshot } = await this.typesSnapshot();
+      this.types = types; this.manifest = snapshot.manifest; this.pages = snapshot.pages; this.style = snapshot.style;
+      this.models = new Map(Object.entries(snapshot.models).filter(([, value]) => value));
+      this.edits = new Map(Object.entries(snapshot.edits).filter(([, value]) => value));
+    }
     await this.getReaderOptions();
     const manifest = JSON.parse(JSON.stringify(this.manifest));
     const files = {};
@@ -353,12 +537,21 @@ export class Book {
   // book's PDF opened read only kept in this browser over the PDF's.
   async saveStyle(sheet) {
     if (this.kind === "folder") {
-      const path = this.manifest.style || "style.json";
-      await this.writeFile(path, JSON.stringify(sheet, null, 1) + "\n");
-      if (this.manifest.style !== path) {
-        this.manifest.style = path;
-        await this.writeFile("book.json", JSON.stringify(this.manifest, null, 1) + "\n");
-      }
+      await this.pageWrite(async () => {
+        this.manifest = await this.readJson("book.json") || this.manifest;
+        const types = await this.readJson(this.manifest.types) || this.types;
+        const aliases = Object.entries(types.source?.aliases || {}).filter(([old]) => Object.hasOwn(sheet.types || {}, old));
+        if (aliases.length) sheet = structuredClone(sheet);
+        for (const [old, name] of aliases) {
+          sheet.types[name] = sheet.types[name] || sheet.types[old]; delete sheet.types[old];
+        }
+        const path = this.manifest.style || "style.json";
+        await this.writeFile(path, pretty(sheet));
+        if (this.manifest.style !== path) {
+          this.manifest.style = path;
+          await this.writeFile("book.json", pretty(this.manifest));
+        }
+      });
     } else {
       await idb.put("settings", ["style", this.key], sheet);
       this.styleEdited = true;
@@ -392,6 +585,94 @@ export class Book {
     await this.writeFile("book.json", JSON.stringify(this.manifest, null, 1) + "\n");
   }
 
+  // Serialize page mutations across instances and, with Web Locks, browser tabs.
+  pageWrite(change) {
+    const previous = bookWrites.get(this.key) || Promise.resolve();
+    const recover = async () => {
+      if (this.writable) {
+        const pending = await this.readJson("work/pending-types.json");
+        if (pending) await this.finishTypes(pending);
+        const pages = await this.readJson("work/pending-pages.json");
+        if (pages) await this.finishPages(pages);
+      }
+      return change();
+    };
+    const run = () => globalThis.navigator?.locks?.request ? navigator.locks.request(`book-write:${this.key}`, recover) : recover();
+    const job = previous.catch(() => {}).then(run);
+    bookWrites.set(this.key, job);
+    return job.finally(() => { if (bookWrites.get(this.key) === job) bookWrites.delete(this.key); });
+  }
+
+  async removeFile(path) {
+    const parts = path.split("/");
+    try {
+      let dir = this.where;
+      for (const part of parts.slice(0, -1)) dir = await dir.getDirectoryHandle(part);
+      await dir.removeEntry(parts.at(-1));
+    } catch (error) { if (error.name !== "NotFoundError") throw error; }
+  }
+
+  stagePath(pid) { return `work/pending-stage/${pid}.json`; }
+
+  async finishStage(pid, pending) {
+    if (pending.previous) await this.writeWork(`work/history/${pid}.json`, pending.previous);
+    const manifest = await this.readJson("book.json");
+    if (manifest) {
+      this.manifest = manifest;
+      this.pages = manifest.pages;
+    }
+    await this.saveModel(pid, structuredClone(pending.doc), pending.valid);
+    await this.removeFile(`edits/${pid}.json`);
+    this.edits.delete(pid);
+    const draft = await this.draft(pid);
+    if (pending.draft && JSON.stringify(draft) === JSON.stringify(pending.draft)) await this.clearDraft(pid);
+    await this.removeFile(this.stagePath(pid));
+    this.work.delete(this.stagePath(pid));
+  }
+
+  async recoverStages() {
+    if (!this.writable) return;
+    await this.pageWrite(async () => {
+      let dir;
+      try { dir = await this.where.getDirectoryHandle("work").then(work => work.getDirectoryHandle("pending-stage")); }
+      catch (error) { if (error.name === "NotFoundError") return; throw error; }
+      for await (const [name] of dir.entries()) {
+        const pid = name.replace(/\.json$/, "");
+        if (!name.endsWith(".json") || !(pid in this.index)) continue;
+        const pending = await this.readJson(this.stagePath(pid));
+        if (pending) await this.finishStage(pid, pending);
+      }
+    });
+  }
+
+  // Merge while holding the write lock so a result cannot overtake a saved correction.
+  async updateStage(pid, update) {
+    if (!this.writable) throw new Error("Save a writable copy of the book before saving page stages.");
+    return this.pageWrite(async () => {
+      const pending = await this.readJson(this.stagePath(pid));
+      if (pending) await this.finishStage(pid, pending);
+      const diskModel = await this.readJson(this.page(pid).document);
+      const types = await this.readJson(this.manifest.types);
+      if (types) this.types = types;
+      if (diskModel) this.models.set(pid, diskModel);
+      const model = diskModel || await this.model(pid);
+      const edit = await this.readJson(`edits/${pid}.json`);
+      if (edit) this.edits.set(pid, edit); else this.edits.delete(pid);
+      const current = edit || model;
+      const draft = await this.draft(pid);
+      const out = await update(current, draft?.doc || null);
+      if (!out?.doc) return out;
+      const previous = draft?.doc || current;
+      const journal = { format: "page-stage-save", version: 1, page: pid, doc: out.doc, valid: out.valid, draft: draft || null,
+        previous: previous && LAYERS.some(layer => isProtected(previous, layer)) ? previous : null };
+      await this.writeFile(this.stagePath(pid), pretty(journal));
+      await this.finishStage(pid, journal);
+      return { ...out, doc: await this.model(pid) };
+    });
+  }
+
+  saveStage(pid, doc, valid) { return this.updateStage(pid, () => ({ doc, valid })); }
+
   // A new book in an empty directory, from a PDF: the PDF itself (source.pdf, the book's source), the manifest and
   // the type list. pdf: {file, sha256, pageCount}; pages: [{pdfPage, width, height, source}] (the size each page is
   // drawn at, and how it was analyzed); the page images are drawn from the PDF when they are needed.
@@ -412,7 +693,21 @@ export class Book {
     return Book.openFolder(handle, { browser });
   }
 
-  async current(pid) { return this.edits.get(pid) || this.model(pid); }
+  async current(pid, { refresh = false } = {}) {
+    if (this.writable && (refresh || await this.readJson("work/pending-types.json") || await this.readJson("work/pending-pages.json") || await this.readJson(this.stagePath(pid)))) await this.pageWrite(async () => {
+      const pending = await this.readJson(this.stagePath(pid));
+      if (pending) await this.finishStage(pid, pending);
+      if (refresh) {
+        const types = await this.readJson(this.manifest.types);
+        if (types) this.types = types;
+        const model = await this.readJson(this.page(pid).document);
+        if (model) this.models.set(pid, model);
+        const edit = await this.readJson(`edits/${pid}.json`);
+        if (edit) this.edits.set(pid, edit); else this.edits.delete(pid);
+      }
+    });
+    return this.edits.get(pid) || this.model(pid);
+  }
 
   imageUrl(pid) {
     if (!this.imageUrls.has(pid)) {
@@ -424,31 +719,78 @@ export class Book {
   }
 
   // Save the user's corrected version of a page (it has passed the checks).
-  async saveEdit(pid, doc) {
-    if (this.kind === "folder") {
-      const dir = await this.where.getDirectoryHandle("edits", { create: true });
-      await writeHandle(await dir.getFileHandle(`${pid}.json`, { create: true }), pretty(doc));
-    } else {
-      await idb.put("edits", [this.key, pid], doc);
-    }
-    this.edits.set(pid, doc);
-    await this.clearDraft(pid);
+  async saveEdit(pid, doc, { classify = true, focus = null, base = null } = {}) {
+    return this.pageWrite(async () => {
+      if (this.writable) {
+        const pending = await this.readJson(this.stagePath(pid));
+        if (pending) await this.finishStage(pid, pending);
+        const model = await this.readJson(this.page(pid).document);
+        if (model) this.models.set(pid, model);
+        this.types = await this.readJson(this.manifest.types) || this.types;
+        const revision = doc.source?.types_migration_revision || 1;
+        const operations = (this.types.source?.revisions || []).filter(entry => entry.n > revision).flatMap(entry => entry.operations);
+        doc = migrateTypeDocument(doc, this.types, operations);
+        if (base) {
+          const latest = await this.readJson(`edits/${pid}.json`) || model;
+          const prior = migrateTypeDocument(base, this.types, operations);
+          if (latest && focus === "text") doc = mergeTextEdit(latest, doc, prior);
+          if (latest && focus === "units") doc = applyUnitChanges(prior, doc, latest);
+        }
+      } else if (base) {
+        const latest = await idb.get("edits", [this.key, pid]) || this.edits.get(pid) || await this.model(pid);
+        if (focus === "text") doc = mergeTextEdit(latest, doc, base);
+        if (focus === "units") doc = applyUnitChanges(base, doc, latest);
+      }
+      if (base && ["text", "units"].includes(focus)) {
+        const errors = checkDocument(doc, this.types)[0];
+        if (errors.length) throw new Error(errors[0]);
+      }
+      if (classify) doc = noteEdit(await this.model(pid), doc, { focus });
+      if (doc.source?.type_review?.manual && !checkDocument(doc, this.types)[0].length) {
+        delete doc.source.type_review.manual;
+        delete doc.source.type_review.errors;
+        if (!Object.keys(doc.source.type_review).length) delete doc.source.type_review;
+      }
+      if (this.kind === "folder") {
+        await this.writeFile(`edits/${pid}.json`, pretty(doc));
+      } else {
+        await idb.put("edits", [this.key, pid], doc);
+      }
+      this.edits.set(pid, doc);
+      await this.clearDraft(pid);
+      return doc;
+    });
   }
 
   // Go back to the model's version.
   async revert(pid) {
-    if (this.kind === "folder") {
-      const dir = await this.where.getDirectoryHandle("edits", { create: true });
-      try { await dir.removeEntry(`${pid}.json`); } catch (e) { if (e.name !== "NotFoundError") throw e; }
-    } else {
-      await idb.del("edits", [this.key, pid]);
-    }
-    this.edits.delete(pid);
-    await this.clearDraft(pid);
+    return this.pageWrite(async () => {
+      if (this.writable) {
+        const pending = await this.readJson(this.stagePath(pid));
+        if (pending) await this.finishStage(pid, pending);
+        await this.removeFile(`edits/${pid}.json`);
+      } else {
+        await idb.del("edits", [this.key, pid]);
+      }
+      this.edits.delete(pid);
+      await this.clearDraft(pid);
+    });
   }
 
   draft(pid) { return idb.get("drafts", [this.key, pid]); }
-  putDraft(pid, doc) { return idb.put("drafts", [this.key, pid], { doc, at: Date.now() }); }
+  putDraft(pid, doc) {
+    return this.pageWrite(async () => {
+      if (this.writable) {
+        const pending = await this.readJson(this.stagePath(pid));
+        if (pending) await this.finishStage(pid, pending);
+        this.types = await this.readJson(this.manifest.types) || this.types;
+        const revision = doc.source?.types_migration_revision || 1;
+        const operations = (this.types.source?.revisions || []).filter(entry => entry.n > revision).flatMap(entry => entry.operations);
+        doc = migrateTypeDocument(doc, this.types, operations);
+      }
+      await idb.put("drafts", [this.key, pid], { doc, at: Date.now() });
+    });
+  }
   clearDraft(pid) { return idb.del("drafts", [this.key, pid]); }
 
   // Every page's current document, loading what is not loaded yet.

@@ -1,5 +1,5 @@
-import { makeValidator, checkTypes } from "./schema.js";
-import { discoverySchema } from "./pipeline/type-discovery.js";
+import { makeValidator, checkTypes } from "./schema.js?v=20261110-reading-2";
+import { discoverySchema } from "./pipeline/type-discovery.js?v=20261110-reading-2";
 import { readerOptions } from "./pipeline/readers.js";
 
 export function proposalPackage(result, callRecord = null) {

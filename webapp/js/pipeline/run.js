@@ -1,14 +1,20 @@
+import { typeRevision } from "../schema.js?v=20261110-reading-2";
+import { mappedTypeNames } from "../type-revisions.js?v=20261110-reading-2";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js";
-import * as I from "./images.js";
+import * as S from "./steps.js?v=20261110-reading-2";
+import * as I from "./images.js?v=20261110-reading-2";
 import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js";
 import * as Split from "./split.js";
 import { localReading } from "./ocr.js";
 import { visionRequest, visionReading, visionCost } from "./vision.js";
 import { bbox } from "../render.js";
+import { canonical } from "../ops.js?v=20261110-reading-2";
+import { layerState, noteEdit } from "../layers.js?v=20261110-reading-2";
+import { provisionalDocument } from "./provisional.js?v=20261110-reading-2";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261110-reading-2";
 
 let TEMPLATES = null;
 export async function templates() {
@@ -52,7 +58,7 @@ export async function post(provider, payload, key, auth = {}) {
 
 export class Maker {
   // outlines(pid, url, boxes) runs the local step (the app's worker); check(doc) runs the schema checks.
-  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, onCost = () => {} }) {
+  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, onCost = () => {}, onSaved = () => {} }) {
     this.book = book;
     this.outlines = outlines;
     this.keys = keys;
@@ -61,6 +67,7 @@ export class Maker {
     this.images = images;
     this.recognize = recognize;
     this.onCost = onCost;
+    this.onSaved = onSaved;
     this.jobs = new Map();
     this.previewCache = new Map();
   }
@@ -69,7 +76,63 @@ export class Maker {
   regions(pid) { return this.book.readWork(this.workPath(pid)); }
   image(pid) { return this.book.imageBlob(pid); }
 
-  async findRegions(pid) {
+  async stageCurrent(pid, { ignoreInvalidDraft = false } = {}) {
+    const current = await this.book.current(pid, { refresh: true }), draft = await this.book.draft(pid);
+    if (!draft) return current;
+    if (this.check(draft.doc)[0].length) {
+      if (ignoreInvalidDraft) return current;
+      throw new Error("Fix this page's draft before running a model step.");
+    }
+    return noteEdit(current, draft.doc);
+  }
+
+  async saveMerged(pid, layer, path, merge, provenance = {}) {
+    const out = await this.book.updateStage(pid, (current, draft) => {
+      if (draft && this.check(draft)[0].length) throw new Error("Fix this page's draft before saving a model result.");
+      const latest = draft ? noteEdit(current, draft) : current;
+      const result = merge(latest);
+      result.doc.source ||= {};
+      if (result.taken.includes(layer)) {
+        const { calls, ...source } = provenance;
+        Object.assign(result.doc.source, source);
+        if (calls) result.doc.source.calls = { ...result.doc.source.calls, ...calls };
+        if (result.doc.source.type_review) {
+          delete result.doc.source.type_review[layer];
+          if (layer === "units") delete result.doc.source.type_review.manual;
+          if (!Object.keys(result.doc.source.type_review).some(key => key !== "errors")) delete result.doc.source.type_review;
+        }
+      }
+      if (result.suggestion) result.doc.source.suggestions = { ...result.doc.source.suggestions, [layer]: path };
+      else if (result.doc.source.suggestions) delete result.doc.source.suggestions[layer];
+      result.valid = !this.check(result.doc)[0].length;
+      return result;
+    });
+    await this.onSaved(pid);
+    return out;
+  }
+
+  provisional(pid, record, imageHash) {
+    const p = this.book.page(pid);
+    return provisionalDocument(pid, { image: (p.image || `${pid}.png`).split("/").pop(), image_sha256: imageHash,
+      width: record.width, height: record.height }, this.book.types, record,
+      { firstPage: this.book.index[pid] === 0, lastPage: this.book.index[pid] === this.book.pages.length - 1 });
+  }
+
+  async findRegions(pid, { save = this.book.writable, force = true } = {}) {
+    if (save) await this.stageCurrent(pid);
+    if (!force) {
+      const cached = await this.regions(pid);
+      if (cached) {
+        const imageHash = await sha256(await this.image(pid));
+        const current = await this.book.current(pid, { refresh: true });
+        const reset = Math.max(this.book.types.source?.region_reset_revision || 1, current?.source?.type_review?.regions || 1);
+        if ((!cached.image_sha256 || cached.image_sha256 === imageHash) && typeRevision(cached.types_revision) >= reset) {
+          if (save) await this.saveMerged(pid, "regions", this.workPath(pid), current =>
+            mergeRegions(current, this.provisional(pid, cached, imageHash), this.check));
+          return { ...cached, cached: true };
+        }
+      }
+    }
     const t = await templates(), tl = this.book.types;
     const file = await this.image(pid);
     const bitmap = await createImageBitmap(file);
@@ -79,14 +142,19 @@ export class Maker {
     const call = await this.callJSON(pid, "regions", { id: "terra-regions", provider: "openai", model: payload.model }, payload,
       parsed => S.scaleRegions(parsed, W, H, tl), (usage, body) => S.openaiCost(usage, t.regionPricing, body.service_tier));
     const body = call.response, { regions, warnings } = call.parsed;
-    const res = regions.length ? await this.outlines(pid, await this.book.imageUrl(pid), regions.map(r => r.box))
-      : { geometry: [], charH: 0, angle: 0, method: "063-fragment-band-lines" };
+    const empty = { geometry: [], charH: 0, angle: 0, method: "063-fragment-band-lines" };
+    let res = this.outlines ? await this.outlines(pid, await this.book.imageUrl(pid), regions.map(r => r.box)) : empty;
+    if (!regions.length && res.error) res = empty;
     if (res.error) throw new Error(res.error);
-    const out = { format: "page-regions", page: pid, width: W, height: H, char_h: res.charH, page_angle_deg: res.angle, local_method: res.method,
-      regions: S.regionRecords(regions, res.geometry),
+    const out = { format: "page-regions", page: pid, types_revision: typeRevision(tl.source?.revision), width: W, height: H, image_sha256: await sha256(file), char_h: res.charH, page_angle_deg: res.angle, local_method: res.method,
+      regions: S.regionRecords(regions, res.geometry), uncovered_lines: res.uncovered || [],
       warnings, region_call: { model: body.model, response_id: body.id, usage: body.usage, cost_usd: call.cost_usd, seconds: call.seconds,
       output: S.openaiText(body) }, made_at_utc: new Date().toISOString() };
     await this.book.writeWork(this.workPath(pid), out);
+    if (save) {
+      const candidate = this.provisional(pid, out, await sha256(file));
+      await this.saveMerged(pid, "regions", this.workPath(pid), current => mergeRegions(current, mappedTypeNames(candidate, this.book.types), this.check));
+    }
     return out;
   }
 
@@ -96,24 +164,41 @@ export class Maker {
 
   async sourceRegions(pid) {
     const saved = await this.regions(pid);
-    if (saved) return saved;
-    const doc = await this.book.current(pid);
+    const doc = await this.stageCurrent(pid);
+    if (!doc && saved) return saved;
     if (!doc) throw new Error("Find the page's regions first.");
     const classes = P.regionClasses(this.book.types);
     const regions = doc.page.regions.map((r, index) => {
+      const original = saved?.regions.find(value => (value.document_region_id || `r${value.region_id}`) === r.id);
       const b = bbox(r.polygons || []);
       const bounds = Number.isFinite(b[0]) ? [b[0], b[1], b[2] + 1, b[3] + 1] : null;
-      return {
+      const region = {
         region_id: r.source?.region_id || index + 1, document_region_id: r.id, type: r.type, keep: this.book.types.types[r.type]?.role !== "furniture",
         reading_order: r.order ?? null, uncertain: r.source?.uncertain || false,
         continues_from_earlier: r.source?.continues_from_earlier || false, continues_later: r.source?.continues_later || false,
-        region_class: classes[r.type] || "other", model_box: r.source?.model_box || r.box || bounds,
+        region_class: classes[r.type] || "other", model_box: r.box || bounds,
         status: bounds ? "ok" : "no_ink", polygons: r.polygons, bounds,
         lines: (r.lines || []).filter(L => L.polygons?.length).map(L => ({ line_id: L.line, polygons: L.polygons })),
       };
+      // Keep the original precision and request metadata when the current page agrees.
+      if (original) {
+        const unchanged = r.type === original.type && (r.order ?? null) === original.reading_order &&
+          region.region_class === original.region_class && region.keep === original.keep &&
+          canonical(r.polygons) === canonical(original.polygons) &&
+          canonical(region.lines) === canonical(original.lines) &&
+          canonical(r.box) === canonical(original.model_box.map(Math.round)) &&
+          region.continues_from_earlier === Boolean(original.continues_from_earlier) &&
+          region.continues_later === Boolean(original.continues_later);
+        if (unchanged) return structuredClone(original);
+        if (canonical(r.box) === canonical(original.model_box.map(Math.round))) region.model_box = original.model_box;
+      }
+      return region;
     });
-    return { format: "page-regions", page: pid, width: doc.page.width, height: doc.page.height,
-      char_h: Math.max(8, doc.page.height / 70), regions, local_method: doc.source?.geometry_update?.method || doc.source?.regions_method || "existing page geometry",
+    if (saved && canonical(regions) === canonical(saved.regions)) return saved;
+    return { ...saved, format: "page-regions", page: pid, width: doc.page.width, height: doc.page.height,
+      char_h: doc.source?.char_h ?? saved?.char_h ?? Math.max(8, doc.page.height / 70), regions,
+      page_angle_deg: doc.source?.page_angle_deg ?? saved?.page_angle_deg ?? 0,
+      local_method: doc.source?.geometry_update?.method || doc.source?.regions_method || saved?.local_method || "existing page geometry",
       region_call: doc.source?.calls?.regions || null };
   }
 
@@ -178,22 +263,35 @@ export class Maker {
     return { ...record, path, cached: false };
   }
 
-  async read(pid, options = null, { force = false, progress } = {}) {
+  async read(pid, options = null, { force = false, progress, save = false } = {}) {
+    if (save) await this.stageCurrent(pid);
     const all = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
     const chosen = { reader: all.reader, ocr_languages: all.ocr_languages };
     const profile = readerById(chosen.reader), key = `read:${pid}:${JSON.stringify(chosen)}`;
-    if (this.jobs.has(key)) return this.jobs.get(key);
-    const job = this.readPage(pid, chosen, profile, { force, progress });
+    const job = this.jobs.get(key) || this.readPage(pid, chosen, profile, { force, progress });
     this.jobs.set(key, job);
-    try { return await job; } finally { this.jobs.delete(key); }
+    let reading;
+    try { reading = await job; } finally { if (this.jobs.get(key) === job) this.jobs.delete(key); }
+    if (save) {
+      await this.saveMerged(pid, "text", `work/readings/${pid}/${profile.id}.json`, current =>
+        mergeText(current || this.provisional(pid, reading.regions_record, reading.image_sha256), reading, this.book.types, this.check),
+        { reader: profile, model: profile.model, calls: { reading: { cost_usd: reading.cost_usd, seconds: reading.seconds } } });
+    }
+    return reading;
   }
 
   async readPage(pid, chosen, profile, { force, progress }) {
-    const rec = await this.sourceRegions(pid), { sent, skipped } = Split.selectPageRegions(rec.regions);
+    const rec = structuredClone(await this.sourceRegions(pid)), { sent, skipped } = Split.selectPageRegions(rec.regions);
     const file = await this.image(pid), imageHash = await sha256(file);
     const fingerprint = await jsonHash({ version: Split.SPLIT_VERSION, chosen, profile, imageHash, regions: rec.regions, prompt: Split.readingPrompt(this.book.types) });
     const path = `work/readings/${pid}/${profile.id}.json`, cached = await this.book.readWork(path);
-    if (!force && cached?.fingerprint === fingerprint && cached.status === "completed") return { ...cached, cached: true };
+    const geometry_key = await geometryKey(rec, chosen, profile, imageHash);
+    const previousKey = cached?.geometry_key || (cached?.regions_record && await geometryKey(cached.regions_record,
+      cached.options, cached.profile, cached.image_sha256));
+    if (!force && cached?.status === "completed" && (cached.fingerprint === fingerprint || previousKey === geometry_key)) {
+      if (!cached.geometry_key) await this.book.writeWork(path, { ...cached, geometry_key: previousKey });
+      return { ...cached, geometry_key, cached: true, ...(cached.fingerprint === fingerprint ? {} : { prior_revision: true, requested_fingerprint: fingerprint }) };
+    }
     let result;
     if (!sent.some(s => s.line_ids.length)) result = { status: "completed", parsed: { regions: [] }, cost_usd: 0, seconds: 0 };
     else if (profile.provider === "local") {
@@ -211,7 +309,7 @@ export class Maker {
       result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, sent));
     }
     const reading = { ...result, format: "page-reading", version: 1, page: pid, profile, options: chosen, fingerprint,
-      image_sha256: imageHash, regions_record: rec, skipped };
+      image_sha256: imageHash, geometry_key, regions_record: rec, skipped };
     await this.book.writeWork(path, reading);
     return reading;
   }
@@ -226,9 +324,13 @@ export class Maker {
       const sourcePage = this.book.page(pid);
       if (sourcePage.pdf_page && page.pdf_page && page.pdf_page !== sourcePage.pdf_page + step) continue;
       const saved = await this.book.readWork(`work/readings/${page.id}/${options.reader}.json`);
-      const doc = saved ? null : await this.book.current(page.id);
+      const neighbor = await this.stageCurrent(page.id, { ignoreInvalidDraft: true });
+      const doc = neighbor && layerState(neighbor, "text") ? neighbor : null;
       if (!saved && !doc) continue;
-      const regions = saved ? saved.parsed.regions.filter(r => {
+      // Preserve the saved request when the document has the same marked text.
+      const useSaved = saved && (!doc || sameReading(Split.readingFromDocument(doc,
+        Split.selectPageRegions(saved.regions_record.regions).sent), saved.parsed));
+      const regions = useSaved ? saved.parsed.regions.filter(r => {
         const source = saved.regions_record.regions.find(s => (s.document_region_id || `r${s.region_id}`) === r.id);
         return source?.keep;
       }) : doc.page.regions.filter(r => Number.isFinite(r.order)).map(r => ({ id: r.id,
@@ -240,6 +342,7 @@ export class Maker {
   }
 
   async structure(pid, reading, { force = false, structurer = null } = {}) {
+    await this.stageCurrent(pid);
     const profile = structurerById(structurer || (await this.options()).structurer);
     const { sent, skipped } = Split.selectPageRegions(reading.regions_record.regions);
     const context = await this.context(pid, reading.options);
@@ -260,6 +363,7 @@ export class Maker {
       const p = this.book.page(pid), rec = reading.regions_record;
       const page = { image: (p.image || `${pid}.png`).split("/").pop(), image_sha256: reading.image_sha256, width: rec.width, height: rec.height };
       const source = { method: Split.SPLIT_VERSION, regions_method: rec.local_method || "existing page geometry", model: reading.profile.model,
+        char_h: rec.char_h, page_angle_deg: rec.page_angle_deg ?? 0,
         reader: reading.profile, structurer: profile, created_at_utc: new Date().toISOString(), regions_skipped: skipped,
         calls: { regions: rec.region_call || null, reading: { cost_usd: reading.cost_usd, seconds: reading.seconds },
           structure: { cost_usd: result.cost_usd, seconds: result.seconds } } };
@@ -276,12 +380,59 @@ export class Maker {
 
   async transcribe(pid, { options = null, force = false, save = this.book.writable } = {}) {
     const chosen = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
-    const reading = await this.read(pid, chosen, { force });
-    const structure = await this.structure(pid, reading, { force, structurer: chosen.structurer });
-    if (save) await this.book.saveModel(pid, structure.doc, !structure.errors.length);
-    const cost = reading.cost_usd !== null && structure.cost_usd !== null ? reading.cost_usd + structure.cost_usd : null;
-    return { ...structure, reading, structure, cost, seconds: reading.seconds + structure.seconds };
+    const reading = await this.read(pid, chosen, { force, save });
+    return this.complete(pid, { options: chosen, reading, force, save });
   }
+
+  async complete(pid, { options = null, reading = null, force = false, save = this.book.writable } = {}) {
+    const chosen = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
+    const current = await this.stageCurrent(pid);
+    if (save && current && (!layerState(current, "text") || current.page.regions.some(region =>
+      this.book.types.types[region.type]?.region !== "figure" &&
+      region.lines?.some(line => line.polygons?.length && typeof line.text !== "string"))))
+      throw new Error("Some current line pieces have no transcription. Review the saved suggestion or transcribe the updated regions.");
+    reading ||= await this.book.readWork(`work/readings/${pid}/${chosen.reader}.json`);
+    if (!reading) {
+      if (!current || !layerState(current, "text")) throw new Error("Transcribe this page before completing its units and links.");
+      const record = await this.sourceRegions(pid), { sent } = Split.selectPageRegions(record.regions);
+      const parsed = Split.readingFromDocument(current, sent, chosen.reader);
+      reading = { profile: readerById(chosen.reader), options: chosen, regions_record: record, parsed,
+        image_sha256: current.page.image_sha256, fingerprint: await jsonHash({ text: parsed.regions }), cost_usd: 0, seconds: 0 };
+    }
+    let input = reading;
+    if (current && layerState(current, "text")) {
+      const record = await this.sourceRegions(pid), { sent } = Split.selectPageRegions(record.regions);
+      const parsed = Split.readingFromDocument(current, sent, reading.profile.id);
+      const unchanged = sameReading(parsed, reading.parsed);
+      input = { ...reading, regions_record: record, parsed: unchanged ? reading.parsed : parsed,
+        fingerprint: unchanged ? reading.fingerprint : await jsonHash({ text: parsed.regions }) };
+    }
+    const structure = await this.structure(pid, input, { force, structurer: chosen.structurer });
+    let merged;
+    if (save) merged = await this.saveMerged(pid, "units", structurePath(pid, reading.profile.id, chosen.structurer), latest =>
+      mergeCompletion(latest, mappedTypeNames(structure.doc, this.book.types), this.book.types, this.check),
+      { method: structure.doc.source.method, structurer: structure.profile, created_at_utc: structure.doc.source.created_at_utc,
+        calls: { structure: structure.doc.source.calls.structure } });
+    const cost = reading.cost_usd !== null && structure.cost_usd !== null ? reading.cost_usd + structure.cost_usd : null;
+    return { ...structure, ...(merged ? { doc: merged.doc, errors: this.check(merged.doc)[0], suggestion: merged.suggestion } : {}),
+      reading, structure, cost, seconds: reading.seconds + structure.seconds };
+  }
+}
+
+function sameReading(a, b) {
+  const content = value => value.regions.map(region => ({ id: region.id,
+    lines: region.lines.map(line => ({ n: line.n,
+      text: Split.markedText(S.transcribedLines([line.n], { [line.n]: [] }, [line]).lines[0]) })) }))
+    .sort((left, right) => left.id.localeCompare(right.id));
+  return canonical(content(a)) === canonical(content(b));
+}
+
+async function geometryKey(record, chosen, profile, imageHash) {
+  const { sent } = Split.selectPageRegions(record.regions);
+  return jsonHash({ version: Split.SPLIT_VERSION, profile, chosen, imageHash,
+    regions: sent.map(value => ({ id: value.rid, polygons: value.region.polygons,
+      lines: value.region.lines.filter(line => line.polygons?.length).map(line => ({ id: line.line_id, polygons: line.polygons })) }))
+      .sort((left, right) => left.id.localeCompare(right.id)) });
 }
 
 export async function jsonHash(value) {

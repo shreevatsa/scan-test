@@ -1,9 +1,9 @@
 // Book-specific unit types proposed from rendered sample pages, before page processing starts.
-import { FORMATTING, makeValidator, checkTypes } from "../schema.js";
+import { FORMATTING, makeValidator, checkTypes } from "../schema.js?v=20261110-reading-2";
 import { structurerById, geminiReadingRequest } from "./readers.js";
-import { Maker, templates } from "./run.js";
-import { openaiCost } from "./steps.js";
-import { settings, idb } from "../store.js";
+import { Maker, templates } from "./run.js?v=20261110-reading-2";
+import { openaiCost } from "./steps.js?v=20261110-reading-2";
+import { settings, idb } from "../store.js?v=20261110-reading-2";
 
 export const TYPE_MODELS = [
   { ...structurerById("terra-structure"), id: "terra-types", method: "077-gpt-6-1-terra-unit-types" },
@@ -130,6 +130,7 @@ export async function discoverTypes({ store, keys, profile, images, title, descr
   }, pricing ? (usage, body) => openaiCost(usage, pricing, body.service_tier) : null);
   source.discovery.call = call.path;
   source.discovery.response_id = call.response.id;
+  source.discovery.questions = [...call.parsed.questions];
   const types = proposalTypes(call.parsed, { id, title, source, schema, pages });
   return { types, proposal: call.parsed, call: { path: call.path, cost_usd: call.cost_usd, seconds: call.seconds } };
 }

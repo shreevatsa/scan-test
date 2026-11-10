@@ -1,23 +1,31 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes } from "./schema.js";
-import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya } from "./store.js";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
+import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya } from "./store.js?v=20261110-reading-2";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { PageView } from "./pageimage.js";
-import { TextPanel, renderInspector, markerForm } from "./editor.js";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js";
-import { renderStyle } from "./styleview.js";
-import { renderTypes } from "./typesview.js";
-import { typeSetup } from "./type-setup.js?v=20261109-page-browser";
+import { PageView } from "./pageimage.js?v=20261110-reading-2";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261110-reading-2";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-reading-2";
+import { renderStyle } from "./styleview.js?v=20261110-reading-2";
+import { renderTypes } from "./typesview.js?v=20261110-reading-2";
+import { typeSetup } from "./type-setup.js?v=20261110-reading-2";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js";
-import { EditError } from "./ops.js";
-import { Maker } from "./pipeline/run.js";
-import { settings } from "./store.js";
-import { renderReaders } from "./readersview.js?v=20261109-progress";
-import { renderStructures } from "./structuresview.js?v=20261109-progress";
-import { readerControls, keyControls, money } from "./reader-controls.js?v=20261109-model-flow";
+import * as ops from "./ops.js?v=20261110-reading-2";
+import { EditError } from "./ops.js?v=20261110-reading-2";
+import { Maker } from "./pipeline/run.js?v=20261110-reading-2";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261110-reading-2";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261110-reading-2";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-reading-2";
+import { layerState, noteEdit } from "./layers.js?v=20261110-reading-2";
+import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=20261110-reading-2";
+import { assemble } from "./assemble.js?v=20261110-reading-2";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-reading-2";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-reading-2";
+import { renderPages } from "./pagesview.js?v=20261110-reading-2";
+import { settings } from "./store.js?v=20261110-reading-2";
+import { renderReaders } from "./readersview.js?v=20261110-reading-2";
+import { renderStructures } from "./structuresview.js?v=20261110-reading-2";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -34,7 +42,7 @@ class App {
     this.lastTypingAt = 0;
     this.outlineJobs = new Map();
     this.outlineSeq = 0;
-    window.addEventListener("hashchange", () => this.route());
+    window.addEventListener("hashchange", () => this.route().catch(error => this.toast(error.message, "bad")));
     window.addEventListener("keydown", e => this.keydown(e));
     window.addEventListener("beforeunload", e => { if (this.dirty) { this.flush(); } });
   }
@@ -59,7 +67,7 @@ class App {
     } else this.library();
   }
 
-  check(doc) { return checkPage(this.validate, doc, this.tl); }
+  check(doc) { return checkPage(this.validate, doc, this.book.types); }
 
   toast(msg, kind = "info") {
     const t = h("div", { class: `toast ${kind}` }, msg);
@@ -259,7 +267,7 @@ class App {
         if (template) await book.saveReaderOptions(await template.getReaderOptions());
         progress.textContent = "Done.";
         await this.openBook(book);
-        location.hash = "#make";
+        location.hash = "#pages";
       } catch (e) { this.toast(e.message, "bad"); progress.textContent = ""; }
       finally { creating = false; formFields.disabled = makeButton.disabled = false; }
     };
@@ -273,7 +281,7 @@ class App {
     this.root.replaceChildren(h("div", { class: "lib" }, h("h1", {}, "A new book"),
       h("p", {}, "From the book's PDF (a scan or a digital PDF; page images can be made into a PDF first, for example with img2pdf), its unit types and a description. ",
         "The book is kept in this browser; its pages are drawn from the PDF (a scanned page at 300 dpi, or at the scan's own resolution when lower; a digital page at 300 dpi). ",
-        "Then, in Edit book → Make pages, the app finds each page's regions and transcribes them with your API keys."),
+        "Then work through Regions, Text and Read with the models selected for the book."),
       formFields,
       h("div", { class: "actions" }, makeButton, " ",
         h("button", { onclick: () => this.library() }, "Cancel")), progress));
@@ -302,93 +310,221 @@ class App {
     this.tl = book.types;
     this.colors = typeColors(this.tl);
     this.furniture = new Set(Object.entries(this.tl.types).filter(([, t]) => t.role === "furniture").map(([n]) => n));
+    this.doc = null;
+    this.pid = null;
+    this.dirty = false;
+    this.pageBuilt = false;
+    this.pageStates = new Map();
+    this.workflowLoading = true;
+    this.main?.replaceChildren(h("p", { class: "loading" }, "Loading page states…"));
+    await book.all();
+    await Promise.all(book.pages.map(page => this.refreshWorkflowPage(page.id)));
+    this.workflowLoading = false;
+    this.refreshWorkflowFlags();
     const tlErrors = [...this.validate(this.tl)];
     if (tlErrors.length) this.toast(`The type list has problems: ${tlErrors[0]}`, "bad");
     this.layout();
-    if (!location.hash) location.hash = `#p=${encodeURIComponent(book.pages[0].id)}`;
-    else this.route();
+    if (!location.hash) location.hash = book.pages.every(page => this.pageStates.get(page.id).layers.text?.accepted) ? "#read" : "#pages";
+    else await this.route();
+  }
+
+  async refreshWorkflowPage(pid) {
+    const book = this.book, current = await book.current(pid), draft = await book.draft(pid).catch(() => null);
+    const [errors, warnings] = draft ? this.check(draft.doc) : current ? this.check(current) : [[], []];
+    this.pageStates.set(pid, { ...pageStages(current, book.types, errors, warnings), runErrors: this.pageStates.get(pid)?.runErrors || {} });
+    if (!this.workflowLoading) this.refreshWorkflowFlags();
+    this.updateWorkflowNavigation();
+  }
+
+  refreshWorkflowFlags() {
+    const docs = [...this.pageStates.values()].filter(state => state.valid && state.doc).map(state => state.doc);
+    let warnings = [];
+    try { [, warnings] = assemble(docs, this.book.types); } catch { /* Page checks identify invalid trees. */ }
+    reviewPageStates(this.book.pages, this.pageStates, this.book.types, warnings);
+  }
+
+  syncTypes() {
+    this.tl = this.book.types;
+    this.colors = typeColors(this.tl);
+    this.furniture = new Set(Object.entries(this.tl.types).filter(([, type]) => type.role === "furniture").map(([name]) => name));
+    if (!this.workflowLoading) this.refreshWorkflowFlags();
+  }
+
+  async afterTypesSaved(plan) {
+    this.workflowLoading = true;
+    try {
+      this.syncTypes();
+      for (const page of this.book.pages) await this.refreshWorkflowPage(page.id);
+    } finally { this.workflowLoading = false; }
+    this.refreshWorkflowFlags();
+    const title = this.header.querySelector(".title");
+    title.textContent = title.title = this.book.title;
+    this.doc = null; this.pageBuilt = false; this.undoStack = []; this.redoStack = [];
+    this.lastTypeRevision = plan;
+    this.dirty = false;
+    this.workflowBusy = false;
+    await this.route();
+  }
+
+  regionFlagContext(doc) {
+    const index = this.book.index[doc.page.id], page = this.book.pages[index];
+    const neighbor = delta => {
+      const other = this.book.pages[index + delta];
+      if (doc.source?.sample?.[`consecutive_${delta < 0 ? "previous" : "next"}`] === false) return null;
+      return other && (!page.pdf_page || !other.pdf_page || other.pdf_page === page.pdf_page + delta) ? this.pageStates.get(other.id)?.doc : null;
+    };
+    const docs = [...this.pageStates.values()].map(state => state.doc).filter(value => value && value.page.id !== doc.page.id);
+    const frequency = layoutCounts([...docs, doc], this.tl).get(layoutSignature(doc, this.tl));
+    return { errors: this.check(doc)[0], previous: neighbor(-1), next: neighbor(1), frequency };
+  }
+
+  async startByHand(pid) {
+    if (this.workflowBusy) return;
+    const book = this.book;
+    this.workflowBusy = true;
+    try {
+      const maker = await this.getMaker(), file = await book.imageBlob(pid);
+      const bitmap = await createImageBitmap(file);
+      const record = { width: bitmap.width, height: bitmap.height, regions: [], local_method: "manual", types_revision: typeRevision(book.types.source?.revision) };
+      bitmap.close?.();
+      const candidate = maker.provisional(pid, record, await sha256hex(new Uint8Array(await file.arrayBuffer())));
+      candidate.source.layers.regions.state = "edited";
+      candidate.source.layers.regions.made_by = "user";
+      const local = await this.outlines(pid, await book.imageUrl(pid), []);
+      if (!local.error) Object.assign(candidate.source, { char_h: local.charH, page_angle_deg: local.angle, uncovered_lines: local.uncovered || [] });
+      await book.updateStage(pid, (current, draft) => {
+        if (draft) throw new Error("Resume this page’s draft before starting it by hand.");
+        return { doc: current || candidate, valid: !this.check(current || candidate)[0].length };
+      });
+      if (this.book !== book) return;
+      await this.refreshWorkflowPage(pid);
+      this.doc = null; this.pageBuilt = false;
+    } finally { this.workflowBusy = false; }
+    if (location.hash === workflowAddress("regions", pid)) await this.route(); else this.openPage(pid, {}, "regions");
+  }
+
+  retypeRegion(rid, type) {
+    const previous = this.tl.types[ops.regionById(this.doc, rid).type]?.region;
+    if (this.edit(doc => ops.setRegionType(doc, this.tl, rid, type)) && (previous === "figure" || this.tl.types[type]?.region === "figure")) this.recompute();
+  }
+
+  recoverOmitted(index, type) {
+    const omitted = this.doc.source?.omitted_regions?.[index];
+    if (!omitted) return;
+    if (this.edit(doc => {
+      const rid = ops.addRegion(doc, this.tl, type, omitted.box);
+      doc.source.omitted_regions.splice(index, 1);
+      this.selection = { region: rid };
+    })) this.recompute();
+  }
+
+  updateWorkflowNavigation() {
+    this.available = availability([...this.pageStates.values()]);
+    if (!this.header) return;
+    this.header.querySelectorAll(".mode").forEach(button => {
+      button.disabled = !this.available[button.dataset.mode];
+      button.title = button.disabled ? `Move pages on from ${button.dataset.mode === "text" ? "Regions" : "Text"} first` : "";
+    });
   }
 
   layout() {
     const book = this.book;
     this.root.className = "book";
-    // Four top-level modes: Read, Edit book (its type list, style sheet, problems, and making its pages), Edit pages
-    // (one page at a time, with the navigator, undo and redo) and Export.
-    const bookViews = [["types", "Types"], ["style", "Style sheet"], ["check", "Problems"], ["readers", "Transcription models"], ["structures", "Schema assignment"], ...(book.writable ? [["make", "Make pages"]] : [])];
-    this.bookViews = bookViews.map(v => v[0]);
     const pageSel = h("select", { class: "pagesel", onchange: e => this.openPage(e.target.value) },
       ...book.pages.map(p => h("option", { value: p.id }, `${p.id.replace(/^.*-page-/, "")}${p.label ? ` (p. ${p.label})` : ""}${book.edits.has(p.id) ? " ✎" : ""}`)));
     this.pageSel = pageSel;
     this.status = h("span", { class: "status" });
     const modeBtn = (mode, text) => h("button", { class: "mode", dataset: { mode }, onclick: () => this.setMode(mode) }, text);
-    const tabBtn = (view, text) => h("button", { class: "tab", dataset: { view }, onclick: () => this.setMode(view) }, text);
+    const tabBtn = (stage, view, text) => h("button", { class: "tab", dataset: { stage, view }, onclick: () => this.setMode(`${stage}${view ? `&view=${view}` : ""}`) }, text);
     this.header = h("header", {},
-      h("button", { class: "link", title: "the library", onclick: () => { history.replaceState(null, "", location.pathname); this.library(); } }, "⌂"),
+      h("button", { class: "link", title: "the library", onclick: () => {
+        if (this.workflowBusy || this.outlineBusy || this.maker?.processing) return this.toast("Wait for the active operation before opening the library.");
+        history.replaceState(null, "", location.pathname); this.library();
+      } }, "⌂"),
       h("span", { class: "title", title: book.title }, book.title),
-      h("span", { class: "modes" }, modeBtn("read", "Read"), modeBtn("book", "Edit book"), modeBtn("pages", "Edit pages"), modeBtn("export", "Export")),
-      h("span", { class: "tabs" }, ...bookViews.map(([v, t]) => tabBtn(v, t))),
+      h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode[0].toUpperCase() + mode.slice(1)))),
+      h("nav", { class: "tabs", "aria-label": "Stage views" },
+        tabBtn("regions", "", "Pages"), tabBtn("regions", "types", "Unit types"), tabBtn("regions", "compare", "Compare models"),
+        tabBtn("text", "", "Pages"), tabBtn("text", "compare", "Compare models"),
+        tabBtn("read", "", "Read"), tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
       h("span", { class: "nav" }, h("button", { title: "previous page (Alt ←)", onclick: () => this.step(-1) }, "←"), pageSel, h("button", { title: "next page (Alt →)", onclick: () => this.step(1) }, "→")),
       h("span", { class: "undo" }, h("button", { title: "undo (⌘Z)", onclick: () => this.undo() }, "↶"), h("button", { title: "redo (⇧⌘Z)", onclick: () => this.redo() }, "↷")),
-      this.status);
+      h("span", { class: "page-stage-links" }, ...["regions", "text", "read"].map(stage => h("button", { class: "mini", dataset: { stage }, onclick: () => this.openPage(this.pid, {}, stage) }, `Open in ${stage === "read" ? "Read" : stage[0].toUpperCase() + stage.slice(1)}`)),
+        h("button", { class: "mini", onclick: () => {
+          const ids = book.pages.filter(page => eligible(this.stage, this.pageStates.get(page.id)) && this.pageStates.get(page.id).flags.length).map(page => page.id);
+          const next = ids.find(pid => book.index[pid] > book.index[this.pid]) || ids[0];
+          if (next) this.openPage(next);
+        } }, "Next flagged page")), this.status);
     this.main = h("main", {});
     this.root.replaceChildren(this.header, this.main);
+    this.updateWorkflowNavigation();
   }
 
-  route() {
+  async route() {
     if (!this.book) return;
-    const hash = new URLSearchParams(location.hash.slice(1));
-    let mode = ["read", "types", "style", "check", "readers", "structures", "export", "make"].find(m => hash.has(m)) || "page";
-    if (mode === "make" && !this.book.writable) mode = "page";
+    if (this.workflowBusy || this.outlineBusy || this.maker?.processing) { history.replaceState(null, "", this.lastWorkflowUrl); return this.toast("Wait for the active operation before switching views."); }
+    const token = this.routeToken = (this.routeToken || 0) + 1;
+    await this.flush();
+    if (this.dirty) { history.replaceState(null, "", this.lastWorkflowUrl); return; }
+    if (this.pid) await this.refreshWorkflowPage(this.pid);
+    if (token !== this.routeToken) return;
+    const route = workflowRoute(location.hash, this.available, pid => this.pageStates.get(pid)), { stage } = route;
+    let { mode } = route;
+    if (route.pid && (!this.pageStates.has(route.pid) || !eligible(stage, this.pageStates.get(route.pid)))) mode = "grid";
+    this.onLeaveGrid?.(); this.onLeaveGrid = null;
+    this.lastWorkflowUrl = location.href;
+    this.stage = stage;
+    this.routeView = route.view;
     this.mode = mode;
-    const top = mode === "read" || mode === "export" ? mode : mode === "page" ? "pages" : "book";
-    this.header.dataset.top = top;
+    this.header.dataset.top = stage;
     this.header.dataset.view = mode;
-    if (top === "book") this.lastBookView = mode;
-    this.header.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === top));
-    this.header.querySelectorAll(".tab").forEach(b => b.classList.toggle("on", b.dataset.view === mode));
+    this.header.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === stage));
+    this.header.querySelectorAll(".tab").forEach(b => { b.hidden = b.dataset.stage !== stage; b.classList.toggle("on", b.dataset.view === (route.view || "")); });
+    this.header.querySelectorAll(".page-stage-links [data-stage]").forEach(button => { button.disabled = !route.pid || !eligible(button.dataset.stage, this.pageStates.get(route.pid)); });
+    for (const option of this.pageSel.options) option.hidden = !eligible(stage, this.pageStates.get(option.value));
     if (this.onLeaveReader && mode !== "read") { this.onLeaveReader(); this.onLeaveReader = null; }
     if (mode === "page") {
-      const pid = hash.get("p") || this.book.pages[0].id;
-      const sel = hash.get("r") ? { region: hash.get("r") } : hash.get("u") ? { unit: hash.get("u") } : null;
-      this.showPage(pid in this.book.index ? pid : this.book.pages[0].id, sel);
+      const sel = route.region ? { region: route.region } : route.unit ? { unit: route.unit } : null;
+      await this.showPage(route.pid, sel);
     } else {
-      this.flush();
       this.pageBuilt = false;
       this.main.className = mode;
-      if (mode === "read") renderReader(this.main, this);
+      if (mode === "grid") await renderPages(this.main, this);
+      if (mode === "read") await renderReader(this.main, this);
       if (mode === "types") renderTypes(this.main, this);
+      if (mode === "type-proposal") renderTypeDiscovery(this.main, this).catch(error => this.toast(error.message, "bad"));
       if (mode === "style") renderStyle(this.main, this);
       if (mode === "check") this.renderCheck();
       if (mode === "export") this.renderExport();
-      if (mode === "make") this.renderMake();
       if (mode === "readers") renderReaders(this.main, this).catch(error => this.toast(error.message, "bad"));
       if (mode === "structures") renderStructures(this.main, this).catch(error => this.toast(error.message, "bad"));
     }
+    if (route.locked) this.toast("Move pages on from the previous stage to open this tab.");
   }
 
   setMode(mode) {
-    if (mode === "book") location.hash = `#${this.lastBookView || "types"}`;
-    else if (mode === "pages" || mode === "page") location.hash = `#p=${encodeURIComponent(this.pid || this.book.pages[0].id)}`;
-    else location.hash = `#${mode}`;
+    location.hash = workflowAddress(mode);
   }
 
-  openPage(pid, sel = {}) {
-    const extra = sel.region ? `&r=${encodeURIComponent(sel.region)}` : sel.unit ? `&u=${encodeURIComponent(sel.unit)}` : "";
-    location.hash = `#p=${encodeURIComponent(pid)}${extra}`;
+  openPage(pid, sel = {}, stage = ["regions", "text", "read"].includes(this.stage) ? this.stage : "regions") {
+    location.hash = workflowAddress(stage, pid, sel);
   }
 
   // The previous or next page (Edit pages).
   step(d) {
     if (this.mode !== "page") return;
-    const i = this.book.index[this.pid] ?? 0;
-    const j = Math.max(0, Math.min(this.book.pages.length - 1, i + d));
-    if (j !== i) this.openPage(this.book.pages[j].id);
+    const pages = this.book.pages.filter(page => eligible(this.stage, this.pageStates.get(page.id)));
+    const i = pages.findIndex(page => page.id === this.pid);
+    const j = Math.max(0, Math.min(pages.length - 1, i + d));
+    if (j !== i && pages[j]) this.openPage(pages[j].id);
   }
 
   // ---------------------------------------------------------------- page mode
 
   async showPage(pid, sel) {
-    const changed = this.pid !== pid || !this.doc;
+    const focusChanged = this.editorStage !== this.stage;
+    if (focusChanged) this.pageBuilt = false;
+    const changed = this.pid !== pid || !this.doc || focusChanged;
     if (changed || !this.pageBuilt) {
       await this.flush();
       this.pid = pid;
@@ -397,7 +533,8 @@ class App {
         this.pid = pid; this.doc = null; this.pageBuilt = false;
         this.main.className = "page-empty";
         this.main.replaceChildren(h("div", { class: "lib" }, h("h3", {}, `${pid} has no page document yet`),
-          this.book.writable ? h("p", {}, "Make it with ", h("button", { class: "link", onclick: () => this.setMode("make") }, "Make pages"), " (in Edit book).") : null,
+          this.book.writable ? h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => this.startByHand(pid).catch(error => this.toast(error.message, "bad")) }, "Start by hand"),
+            h("button", { onclick: () => this.setMode("regions") }, "Find regions with a model")) : null,
           h("img", { src: await this.book.imageUrl(pid), style: "max-width:100%;border:1px solid #ccc" })));
         this.pageSel.value = pid;
         return;
@@ -413,6 +550,7 @@ class App {
       this.selection = {};
     }
     if (!this.pageBuilt) {
+      this.editorStage = this.stage;
       this.buildPageMode();
       this.pageBuilt = true;
     } else if (changed) {
@@ -424,6 +562,8 @@ class App {
   }
 
   buildPageMode() {
+    this.textPanel?.destroy?.();
+    this.pageView?.destroy();
     this.main.className = "page";
     const imgPane = h("div", { class: "imgpane" });
     const toolbar = h("div", { class: "toolbar" },
@@ -439,21 +579,30 @@ class App {
       h("button", { title: "the page's whole height in the pane (kept as you resize the window or change pages)", onclick: () => this.pageView.fitHeight() }, "fit height"),
       h("button", { title: "zoom in (or ⌘ + scroll on the page)", onclick: () => this.pageView.setZoom(this.pageView.zoom * 1.25) }, "+"),
       h("span", { class: "sep" }),
-      h("button", { class: "revert", title: "go back to the model's version of this page", onclick: () => this.revertPage() }, "Revert page"));
+      h("button", { class: "revert", title: "return to this page’s last stage save", onclick: () => this.revertPage() }, "Revert page"));
+    if (this.stage !== "text") {
+      toolbar.querySelectorAll(".fmt").forEach(button => button.remove());
+      toolbar.querySelector('[title="insert a note marker at the caret"]')?.remove();
+    }
+    if (this.stage !== "regions") toolbar.querySelector(".draw")?.remove();
     const textPane = h("div", { class: "textpane" });
     this.inspector = h("div", { class: "inspector" });
     this.problems = h("div", { class: "checks" });
     const side = h("div", { class: "side" }, toolbar, textPane, h("div", { class: "lower" }, this.problems, this.inspector));
-    this.main.replaceChildren(imgPane, side);
+    this.regionTypePanel = this.stage === "regions" ? regionTypesPanel(this) : null;
+    this.main.classList.toggle("regions-editor", this.stage === "regions");
+    this.main.replaceChildren(...(this.regionTypePanel ? [this.regionTypePanel.element] : []), imgPane, side);
     const fit = this.pageView?.fit;   // fit height is kept when the page view is made again
     this.pageView = new PageView(imgPane, {
+      editable: this.stage === "regions",
       onSelectRegion: rid => this.select({ region: rid }),
+      onSelectOmitted: index => this.select({ omitted: index }),
       onBox: (rid, box) => { if (this.edit(d => ops.setBox(d, rid, box))) this.recompute(); },
       onDraw: (box, ev) => this.drawn(box, ev),
       onHoverLine: (key, on) => this.textPanel.el.querySelectorAll(`.rtext[data-rid="${CSS.escape(key.split(":")[0])}"] > .lp[data-i="${key.split(":")[1]}"]`).forEach(x => x.classList.toggle("hl", on)),
     });
     if (fit === "height") this.pageView.fit = "height";
-    this.textPanel = new TextPanel(textPane, this);
+    this.textPanel = this.stage === "regions" ? new RegionsPanel(textPane, this) : new TextPanel(textPane, this);
     this.refresh();
   }
 
@@ -461,12 +610,13 @@ class App {
     const url = await this.book.imageUrl(this.pid);
     this.pageView.show(this.doc, url, this.colors, this.furniture);
     this.textPanel.render();
+    this.regionTypePanel?.refresh();
     this.afterRender();
   }
 
   afterRender() {
     this.pageView.select(this.selection.region || (this.selection.marker && ops.findMarker(this.doc, this.selection.marker)?.region.id) || null);
-    renderInspector(this.inspector, this);
+    if (this.stage === "regions") renderRegionInspector(this.inspector, this); else renderInspector(this.inspector, this);
     this.renderChecks();
   }
 
@@ -477,7 +627,7 @@ class App {
     let state;
     if (errors.length) state = h("span", { class: "bad" }, `not saved: ${errors.length} problem${errors.length > 1 ? "s" : ""}`);
     else if (this.dirty) state = h("span", { class: "pending" }, "saving…");
-    else state = h("span", { class: "ok" }, edited ? (this.book.writable ? "your version, saved in edits/" : "your version, saved in this browser") : "the model's version");
+    else state = h("span", { class: "ok" }, edited ? (this.book.writable ? "your version, saved in edits/" : "your version, saved in this browser") : "saved stage version");
     this.status.replaceChildren(state);
     const goto = msg => {
       const m = /region [^#\s]+#(\S+?)[: ]/.exec(msg + " ") || /unit (\S+?)[: ]/.exec(msg + " ");
@@ -502,13 +652,37 @@ class App {
       if (first) this.pageView.reveal(first);
     }
     if (target && !keepFocus) target.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    renderInspector(this.inspector, this);
+    if (this.stage === "regions") renderRegionInspector(this.inspector, this); else renderInspector(this.inspector, this);
+  }
+
+  async joinNext(uid) {
+    if (this.workflowBusy || this.outlineBusy) return this.toast("Wait for the current edit to finish.");
+    await this.flush();
+    if (this.dirty) return;
+    const pid = this.pid, expected = new Map([[pid, unitSnapshot(this.doc)]]);
+    this.workflowBusy = true;
+    try {
+      const saved = await joinFollowingUnit(this, pid, uid, expected);
+      for (const id of Object.keys(saved)) await this.refreshWorkflowPage(id);
+      this.doc = null; this.pageBuilt = false;
+      await this.showPage(pid, { unit: uid });
+    } catch (error) { this.toast(error.message, "warn"); }
+    finally { this.workflowBusy = false; }
   }
 
   // Apply an edit to a copy of the working document; keep the old one for undo.
   edit(fn, { after, sameStep = false } = {}) {
-    const next = ops.clone(this.doc);
-    try { fn(next); }
+    let next = ops.clone(this.doc);
+    try {
+      fn(next);
+      const focus = editorFocus(this.stage);
+      assertFocusEdit(focus, this.doc, next);
+      if (this.stage === "regions") {
+        rebuildProvisional(next, this.tl, { firstPage: this.book.index[this.pid] === 0, lastPage: this.book.index[this.pid] === this.book.pages.length - 1 });
+        next = noteEdit(this.doc, next, { focus: "regions" });
+        next.source.layers.regions.types_revision = typeRevision(this.tl.source?.revision);
+      } else next = noteEdit(this.doc, next, { focus });
+    }
     catch (e) {
       if (e instanceof EditError) { this.toast(e.message, "warn"); return false; }
       console.error(e);
@@ -540,6 +714,7 @@ class App {
 
   // Text the user typed, read back from a line (the DOM already shows it).
   typed(rid, i, text, spans) {
+    if (this.stage !== "text") return;
     ops.setLine(this.doc, rid, i, text, spans);
     this.changed();
     this.renderChecks();
@@ -555,19 +730,33 @@ class App {
   // Save the working document: as the user's version if it passes the checks, else as a draft.
   async flush() {
     clearTimeout(this.saveTimer);
+    if (this.pageSave) { await this.pageSave; if (this.dirty) return this.flush(); return; }
+    if (this.outlineBusy) { this.saveTimer = setTimeout(() => this.flush(), 300); return; }
     if (!this.dirty || !this.doc) return;
-    const doc = this.doc, pid = this.pid;
+    this.pageSave = this.persistPage();
+    try { await this.pageSave; } finally { this.pageSave = null; }
+  }
+
+  async persistPage() {
+    const doc = ops.clone(this.doc), pid = this.pid, focus = editorFocus(this.stage), base = this.savedDoc;
     const [errors] = this.check(doc);
     try {
-      if (errors.length) { await this.book.putDraft(pid, doc); }
-      else if (same(doc, this.modelDoc)) {
+      if (errors.length) { await this.book.putDraft(pid, doc); this.dirty = ops.canonical(this.doc) !== ops.canonical(doc); }
+      else if (same(doc, this.modelDoc) && focus === "regions") {
         if (this.book.edits.has(pid)) await this.book.revert(pid); else await this.book.clearDraft(pid);
         this.dirty = false;
       } else {
         const out = ops.markEdited(ops.clone(doc), this.modelDoc.source?.created_at_utc || null);
-        await this.book.saveEdit(pid, out);
-        this.savedDoc = out;
-        this.dirty = false;
+        this.savedDoc = await this.book.saveEdit(pid, out, { focus, base }) || out;
+        const unchanged = ops.canonical(this.doc) === ops.canonical(doc);
+        if (unchanged) this.doc = this.savedDoc;
+        else if (focus === "text") this.doc = mergeTextEdit(this.savedDoc, this.doc, doc);
+        else if (focus === "units") this.doc = applyUnitChanges(doc, this.doc, this.savedDoc);
+        if (ops.canonical(this.tl) !== ops.canonical(this.book.types)) {
+          this.syncTypes();
+          this.pageBuilt = false;
+        }
+        this.dirty = !unchanged;
       }
     } catch (e) { console.error(e); this.toast(`Could not save: ${e.message}`, "bad"); }
     if (pid === this.pid) { this.renderChecks(); this.markPageOption(pid); }
@@ -597,19 +786,19 @@ class App {
   }
 
   async revertPage() {
-    if (!this.book.edits.has(this.pid) && !this.dirty) { this.toast("This page is the model's version already."); return; }
+    if (!this.book.edits.has(this.pid) && !this.dirty) { this.toast("This page is already at its last stage save."); return; }
     this.undoStack.push(this.doc);
     this.doc = ops.clone(this.modelDoc);
     this.dirty = true;
     await this.flush();
     this.refresh();
-    this.toast("Back to the model's version (undo brings your version back).");
+    this.toast("Returned to the last stage save. Undo restores your changes.");
   }
 
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261110-reading-2", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
@@ -624,9 +813,14 @@ class App {
     const res = await this.outlines(pid, await this.book.imageUrl(pid), ops.boxesOf(doc));
     this.outlineBusy = false;
     if (this.pid !== pid) return;
-    if (res.error) { this.toast(`The outlines could not be recomputed: ${res.error}. The box is used as the outline.`, "warn"); this.renderChecks(); return; }
+    if (res.error) { this.edit(next => { next.source.geometry_error = res.error; }, { sameStep: true }); this.toast(`The outlines could not be recomputed. ${res.error}`, "warn"); return; }
     if (this.doc !== doc) { this.recompute(); return; }
-    this.edit(d => ops.applyGeometry(d, res.geometry), { sameStep: true });
+    this.edit(d => {
+      const geometry = res.geometry.map((value, index) => this.tl.types[d.page.regions[index].type]?.region === "figure" ? { ...value, lines: [] } : value);
+      ops.applyGeometry(d, geometry);
+      d.source = { ...d.source, char_h: res.charH, page_angle_deg: res.angle, uncovered_lines: res.uncovered || [] };
+      delete d.source.geometry_error;
+    }, { sameStep: true });
   }
 
   toggleDraw(btn) {
@@ -648,18 +842,35 @@ class App {
         let rid = null;
         if (this.edit(d => { rid = ops.addRegion(d, this.tl, t, box, into); }, { after: () => { this.select({ region: rid }); this.textPanel.placeCaret(rid, 0, 0); } })) this.recompute();
       } }, h("i", { style: `background:${this.colors[t]}` }), t)),
+      h("button", { class: "link", disabled: !this.book.writable, onclick: () => {
+        menu.remove(); newTypeDialog(this, type => {
+          if (this.edit(doc => { const rid = ops.addRegion(doc, this.tl, type, box, into); this.selection = { region: rid }; })) this.recompute();
+        }, true);
+      } }, "New type…"),
       h("button", { class: "mini", onclick: () => menu.remove() }, "cancel"));
     document.body.append(menu);
   }
 
   keydown(e) {
     const mod = e.metaKey || e.ctrlKey;
-    if (mod && e.key.toLowerCase() === "z") { e.preventDefault(); if (e.shiftKey) this.redo(); else this.undo(); return; }
-    if (mod && e.key.toLowerCase() === "y") { e.preventDefault(); this.redo(); return; }
+    if (this.mode === "page" && !e.target.closest("input,textarea,select") && mod && e.key.toLowerCase() === "z") { e.preventDefault(); if (e.shiftKey) this.redo(); else this.undo(); return; }
+    if (this.mode === "page" && !e.target.closest("input,textarea,select") && mod && e.key.toLowerCase() === "y") { e.preventDefault(); this.redo(); return; }
     if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); this.flush(); return; }
     if (e.altKey && e.key === "ArrowLeft" && this.mode === "page") { e.preventDefault(); this.step(-1); }
     if (e.altKey && e.key === "ArrowRight" && this.mode === "page") { e.preventDefault(); this.step(1); }
     if (e.key === "Escape") { this.pageView?.setDrawing(false); document.querySelectorAll(".popup").forEach(p => p.remove()); }
+    if (this.mode !== "page" || this.stage !== "regions" || mod || e.altKey || e.target.closest("input,select,textarea,button,dialog,[contenteditable]")) return;
+    if (/^[1-9]$/.test(e.key) && this.selection.region) {
+      const type = Object.entries(this.tl.types).filter(([, value]) => value.region)[Number(e.key) - 1]?.[0];
+      if (type) { e.preventDefault(); this.retypeRegion(this.selection.region, type); }
+    }
+    if (e.key === "Tab" && this.selection.region) {
+      const regions = orderedRegions(this.doc, this.tl), index = regions.findIndex(region => region.id === this.selection.region);
+      if (regions.length) {
+        e.preventDefault();
+        this.select({ region: regions[(index + (e.shiftKey ? regions.length - 1 : 1)) % regions.length].id });
+      }
+    }
   }
 
   // ---------------------------------------------------------------- checks across the book
@@ -703,7 +914,7 @@ class App {
 
   // ---------------------------------------------------------------- making a book
 
-  async continueBook() {
+  async continueBook(stage = "regions") {
     try {
       await this.flush();
       if (!this.book.writable) {
@@ -712,128 +923,31 @@ class App {
         const copy = await importChaya(await this.book.chayaBytes());
         await this.openBook(copy);
       }
-      this.setMode("make");
+      this.setMode(stage);
     } catch (error) { this.toast(error.message, "bad"); }
   }
 
   async getMaker() {
     if (this.maker?.book === this.book) return this.maker;
     const book = this.book;
-    const keys = Object.fromEntries(await Promise.all(["openai", "gemini", "vision", "vision_auth", "vision_project"].map(async provider => [provider, await settings.get(`key:${provider}`) || ""])));
-    const maker = new Maker(book, { outlines: (pid, url, boxes) => this.outlines(pid, url, boxes), keys, check: d => checkPage(this.validate, d, book.types) });
-    if (this.book === book) this.maker = maker;
-    return maker;
-  }
-
-  async renderMake() {
-    const el = this.main, book = this.book;
-    const maker = await this.getMaker(), controls = await readerControls(book);
-    if (this.mode !== "make" || this.book !== book) return;
-    const rows = {}, state = {};
-    let total = 0, unknown = 0, busy = false, stop = false, loaded = false;
-    const totalEl = h("span", { class: "meta" });
-    const range = h("input", { value: "all", size: 20, "aria-label": "Pages to process" });
-    const existing = h("input", { type: "checkbox" });
-    const threshold = h("input", { type: "number", min: 0.1, step: 0.5, value: 5, "aria-label": "Processing spend threshold" });
-    const progress = h("p", { role: "status" });
-    const stopButton = h("button", { onclick: () => { stop = true; } }, "Stop after the active call");
-    const showTotal = () => totalEl.textContent = `New API spend here ${money(total)}${unknown ? ` · ${unknown} costs unavailable` : ""}`;
-    const table = h("table", { class: "pages" }, h("tr", {}, ...["page", "regions", "document", ""].map(t => h("th", {}, t))));
-    const refresh = async pid => {
-      const rec = await maker.sourceRegions(pid).catch(() => null), doc = await book.model(pid);
-      state[pid] = { regions: !!rec, doc: !!doc };
-      const r = rows[pid];
-      r.regions.replaceChildren(rec ? `${rec.regions.length} regions` + (rec.region_call?.cost_usd != null ? ` · $${rec.region_call.cost_usd.toFixed(4)}` : "") : "—");
-      const p = book.page(pid);
-      r.doc.replaceChildren(doc ? h("span", { class: p.valid === false ? "bad" : "ok" }, p.valid === false ? "made, not passing the checks" : "made") : "—");
-    };
-    const run = async (pid, what, options) => {
-      const r = rows[pid];
-      let completed = false;
-      r.status.replaceChildren(h("span", { class: "pending" }, what === "regions" ? "finding the regions…" : what === "read" ? "transcribing…" : "building units…"));
-      try {
-        if (what === "regions") await maker.findRegions(pid);
-        else if (what === "read") await maker.read(pid, options);
-        else {
-          const out = await maker.transcribe(pid, { options });
-          if (out.errors.length) r.status.replaceChildren(h("span", { class: "bad" }, out.errors[0]));
-        }
-        showTotal();
-        completed = true;
-        if (what === "regions" || !r.status.querySelector(".bad")) r.status.replaceChildren();
-      } catch (e) { r.status.replaceChildren(h("span", { class: "bad" }, e.message)); }
-      await refresh(pid);
-      return completed;
-    };
-    const start = async (what, pid = null) => {
-      if (!loaded) return this.toast("Wait for the page status to finish loading.");
-      if (busy || maker.processing || maker.jobs.size) return this.toast("Wait for the active processing to finish.");
-      let selected;
-      const limit = Number(threshold.value), startedAt = total;
-      try {
-        const { pageRange } = await import("./pipeline/pdf.js");
-        selected = pid ? [pid] : pageRange(range.value, book.pages.length).map(n => book.pages[n - 1].id);
-        if (!Number.isFinite(limit) || limit <= 0) throw new Error("Enter a positive processing spend threshold.");
-      } catch (error) { return this.toast(error.message, "bad"); }
-      busy = true; maker.processing = true; stop = false;
-      const fields = [...el.querySelectorAll("button, input, select")].filter(field => field !== stopButton);
-      fields.forEach(field => { field.disabled = true; });
-      maker.onCost = cost => { if (cost === null) unknown++; else total += cost; showTotal(); };
-      const paused = () => stop || unknown || total - startedAt >= limit;
-      let completed = 0;
-      try {
-        const options = await maker.options();
-        const ids = pid ? selected : selected.filter(id => what === "regions" ? !state[id]?.regions : existing.checked || !state[id]?.doc);
-        if (!ids.length) { progress.textContent = "All selected pages already have documents. Enable reprocessing to use the selected models on them."; return; }
-        for (const id of ids) {
-          if (paused()) break;
-          if (what === "regions" || !state[id]?.regions) {
-            progress.textContent = `Finding regions on ${id}…`;
-            if (await run(id, "regions", options) && what === "regions") completed++;
+    if (this.makerJob?.book === book) return this.makerJob.promise;
+    const promise = (async () => {
+      const keys = Object.fromEntries(await Promise.all(["openai", "gemini", "vision", "vision_auth", "vision_project"].map(async provider => [provider, await settings.get(`key:${provider}`) || ""])));
+      const maker = new Maker(book, { outlines: (pid, url, boxes) => this.outlines(pid, url, boxes), keys, check: d => checkPage(this.validate, d, book.types),
+        onSaved: async pid => {
+          if (this.book === book) {
+            this.syncTypes();
+            if (this.pid === pid) { this.doc = null; this.pageBuilt = false; }
+            await this.refreshWorkflowPage(pid);
           }
-        }
-        const ready = [];
-        if (what !== "regions") for (const id of ids) {
-          if (paused()) break;
-          if (!state[id]?.regions) continue;
-          progress.textContent = `Transcribing ${id}…`;
-          if (await run(id, "read", options)) ready.push(id);
-        }
-        for (const id of ready) {
-          if (paused()) break;
-          progress.textContent = `Building units and links on ${id}…`;
-          if (await run(id, "process", options)) completed++;
-        }
-        progress.textContent = `${completed} ${what === "regions" ? "pages with regions saved" : "page documents saved"}.${paused() ? " Stopped after the active call. Run again to continue from cached stages." : " Review Problems and Edit pages, then save the book from Export."}`;
-      } finally {
-        busy = false; maker.processing = false;
-        fields.forEach(field => { field.disabled = false; });
-      }
-    };
-    for (const p of book.pages) {
-      const r = rows[p.id] = { regions: h("td"), doc: h("td"), status: h("span") };
-      table.append(h("tr", {}, h("td", {}, h("button", { class: "link", onclick: () => this.openPage(p.id) }, p.id)), r.regions, r.doc,
-        h("td", {}, h("button", { class: "mini", onclick: () => start("regions", p.id) }, "find regions"), " ",
-          h("button", { class: "mini", onclick: () => start("process", p.id) }, "Process this page"), " ", r.status)));
-    }
-    el.replaceChildren(h("div", { class: "checkview" }, h("h2", {}, "Make the page documents"),
-      h("p", {}, "Process a page range with the selected models. The app finds missing regions with GPT-6.1 Terra, transcribes the pages, then assigns their units and links using neighboring text. Compatible completed stages are reused. Saved corrections take priority over generated model documents when reading and editing."),
-      controls, h("p", {}, h("button", { onclick: () => this.setMode("readers") }, "Compare transcription models on sample pages")),
-      keyControls(maker.keys, (id, value) => settings.set(`key:${id}`, value)),
-      h("div", { class: "fields col" }, h("label", {}, "Pages in this book, numbered 1 to ", book.pages.length, " ", range),
-        h("label", {}, existing, " Reprocess pages that already have model documents"),
-        h("label", {}, "Stop after an API call once new processing spend reaches $", threshold)),
-      h("p", { class: "hint" }, "Enter all or a range such as 1-20, 25. The spend threshold applies to this run and can be exceeded by the final call."),
-      h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => start("regions") }, "Find missing regions in selected pages"), " ",
-        h("button", { class: "primary", onclick: () => start("process") }, "Process selected pages"), " ", stopButton, " ", totalEl), progress,
-      h("div", { class: "actions" }, h("button", { onclick: () => this.setMode("check") }, "Review Problems"), " ", h("button", { onclick: () => this.setMode("pages") }, "Edit pages"), " ",
-        h("button", { onclick: () => this.setMode("export") }, "Export and save book")), table));
-    showTotal();
-    await Promise.all(book.pages.map(p => refresh(p.id)));
-    loaded = true;
+        } });
+      if (this.book === book) this.maker = maker;
+      return maker;
+    })();
+    this.makerJob = { book, promise };
+    try { return await promise; }
+    finally { if (this.makerJob?.promise === promise) this.makerJob = null; }
   }
-
-  // ---------------------------------------------------------------- exports
 
   renderExport() {
     const el = this.main, book = this.book;
@@ -896,6 +1010,14 @@ class App {
       h("div", { class: "row" }, h("button", { onclick: () => save(`${id}.edits.json`, JSON.stringify(book.exportEdits()) + "\n") }, "Your corrections"),
         ` the ${book.edits.size} pages you corrected, as one file${book.writable ? " (they are also in the folder's edits/)" : ""}.`),
       h("div", { class: "row" }, "Import corrections: ", fileInput)));
+    if (![...this.pageStates.values()].some(state => state.layers.text)) {
+      el.querySelectorAll(".row button").forEach(button => {
+        if (["The book (JSON)", "The text", "The book as a web page"].includes(button.textContent)) {
+          button.disabled = true;
+          button.title = "Transcribe some pages before exporting text.";
+        }
+      });
+    }
   }
 }
 
@@ -927,4 +1049,4 @@ function canKeepBooks() { return window.isSecureContext && !!navigator.storage?.
 
 const app = new App();
 window.app = app;
-app.start();
+app.start().catch(error => app.library(error.message));

@@ -5,7 +5,11 @@
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
 import { h } from "./render.js";
-import { prepare } from "./reader.js";
+import { prepare } from "./reader.js?v=20261110-reading-2";
+import { typeRevision } from "./schema.js?v=20261110-reading-2";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261110-reading-2";
+import { newTypeDialog } from "./regionsview.js?v=20261110-reading-2";
+import { citedSamplePages } from "./type-revisions.js?v=20261110-reading-2";
 
 export async function renderTypes(el, app) {
   const { book, tl } = app;
@@ -41,7 +45,7 @@ export async function renderTypes(el, app) {
   const table = h("table", { class: "typetable" },
     h("thead", {}, h("tr", {}, ...["type", "printed as", "may contain", "top level of", "language", "numbered", "in the book", "description"].map(x => h("th", {}, x)))),
     h("tbody", {}, ...Object.entries(types).map(([name, t]) => h("tr", { class: t.role === "furniture" ? "furn" : "" },
-      h("th", {}, name),
+      h("th", {}, name, book.writable ? h("button", { class: "mini", "aria-label": `Edit type ${name}`, onclick: () => editTypeDialog(app, name) }, "Edit…") : null),
       h("td", {}, t.region ? t.region + (t.role === "furniture" ? " (furniture)" : "") : "container"),
       h("td", {}, (t.contains || []).join(", ")),
       h("td", {}, t.flow || ""),
@@ -57,9 +61,15 @@ export async function renderTypes(el, app) {
   } }, "Download types.json");
 
   el.replaceChildren(h("div", { class: "typesview" },
-    h("div", { class: "stylebar" }, h("h2", {}, "Types"), download),
-    h("p", { class: "hint" }, "The book's type list is its own part of the schema: the kinds of unit its pages are divided into, which may contain which, its flows and relations. The format and its rules (schema/schema.json) are the same for every book. The checks use both, and the prompts that find regions and transcribe pages are written from this list. It is shown here, not edited; it was written for this book by looking at its pages",
-      tl.source ? ` (${typeof tl.source === "string" ? tl.source : Object.values(tl.source).join(", ")})` : "", "."),
+    h("div", { class: "stylebar" }, h("h2", {}, "Types"), download,
+      book.writable ? h("button", { onclick: () => editBookTypesDialog(app) }, "Edit book details") : null,
+      book.writable ? h("button", { onclick: () => newTypeDialog(app, () => app.route()) }, "＋ Type") : null,
+      h("button", { onclick: () => app.setMode("regions&view=proposal") }, "Propose types from sample pages")),
+    h("p", { class: "hint" }, `Revision ${typeRevision(tl.source?.revision)}. The type list defines this book’s units, containment, reading flows and transcription conventions. Preview a change to see its reach before applying it.`),
+    app.lastTypeRevision ? h("p", { class: "box" }, `Revision ${app.lastTypeRevision.revision} saved. `,
+      app.lastTypeRevision.pages.length ? h("button", { onclick: () => {
+        app.pendingStageSelection = { stage: "regions", ids: app.lastTypeRevision.pages }; app.setMode("regions");
+      } }, `Review ${app.lastTypeRevision.pages.length} affected ${app.lastTypeRevision.pages.length === 1 ? "page" : "pages"}`) : "Book details updated.") : null,
     h("h3", {}, tl.title || tl.book_id),
     tl.description ? h("p", {}, tl.description) : null,
     (tl.languages || []).length ? h("p", { class: "meta" }, `Languages: ${tl.languages.join(", ")}`) : null,
@@ -69,7 +79,18 @@ export async function renderTypes(el, app) {
     h("h3", {}, "Each type"), h("div", { class: "tablewrap" }, table),
     Object.keys(tl.relations || {}).length ? [h("h3", {}, "Relations"), list(tl.relations, ([n, d]) => h("li", {}, h("b", {}, n), ` — ${d}`))] : null,
     Object.keys(tl.inline || {}).length ? [h("h3", {}, "Inline kinds"), list(tl.inline, ([n, d]) => h("li", {}, h("b", {}, n), d.formatting ? ` (printed ${d.formatting})` : "", ` — ${d.description}`))] : null,
-    (tl.conventions || []).length ? [h("h3", {}, "Transcription conventions"), h("ul", {}, ...tl.conventions.map(c => h("li", {}, c)))] : null));
+    (tl.conventions || []).length ? [h("h3", {}, "Transcription conventions"), h("ul", {}, ...tl.conventions.map(c => h("li", {}, c)))] : null,
+    tl.source?.discovery?.questions?.length ? [h("h3", {}, "Questions to review"), ...tl.source.discovery.questions.map(question => {
+      const decision = tl.source.discovery.resolved_questions?.[question];
+      const answer = h("textarea", { rows: 2, "aria-label": `Review decision for ${question}` }, decision?.answer || "");
+      const cited = citedSamplePages(question, tl.source.discovery.sample_pages || []);
+      return h("section", { class: "box" }, h("p", {}, question), ...cited.map(number => h("button", { onclick: () => {
+        const page = book.pages.find(page => page.pdf_page === number); if (page) app.openPage(page.id, {}, "regions");
+      } }, `Page ${number}`)), decision ? h("p", { class: "ok" }, `Resolved · ${decision.answer}`) : null,
+      book.writable ? [answer, h("button", { onclick: () => reviewTypeChange(app, [{ kind: "resolve_question", question, answer: answer.value }]).catch(error => app.toast(error.message, "bad")) }, "Preview review decision")] : null);
+    })] : null,
+    h("details", {}, h("summary", {}, "Revision history"), ...(tl.source?.revisions || []).map(entry => h("p", {}, `Revision ${entry.n} · ${entry.at_utc} · ${entry.operations.map(op => `${op.kind}${op.name ? ` ${op.name}` : ""}${op.to ? ` → ${op.to}` : ""}`).join(", ")}`)),
+      tl.source?.legacy_revision ? h("p", {}, tl.source.legacy_revision) : null)));
 
   // How many units of each type the book has (assembled across pages), and furniture regions.
   const docs = await book.all();

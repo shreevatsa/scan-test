@@ -1,61 +1,80 @@
 # The web app: reading and correcting digitized books
 
-A static web app for the books this repository's methods produce. It runs entirely in the browser: plain HTML, CSS and JavaScript modules, with no build step and bundled PDF and OCR runtimes. It works on **books**: a book's PDF with its page documents (schema 0.2 and 0.3, [schema/README.md](../schema/README.md)), kept in the browser and saved as one file, a **.chaya.pdf** ("Books" below). It offers four modes:
-- **Read** and **Export** work on the whole book.
-- **Edit book** has tabs for the book-level views: Types, Style sheet, Problems, Transcription models, Schema assignment, and Make pages for a book opened from a folder.
-- **Edit pages** edits one page at a time, with a page navigator (← and →, or Alt ← and Alt →), undo and redo, and the page's save status.
-- Each Edit mode reopens where it was left.
+A static web app for the books this repository's methods produce. It runs entirely in the browser with plain HTML, CSS and JavaScript modules, bundled PDF and OCR runtimes, and no build step. A book consists of its PDF and page documents (schema 0.2 and 0.3, [schema/README.md](../schema/README.md)), kept in the browser and saved together as a **.chaya.pdf** ("Books" below).
 
-- **Edit pages:** the page image with every region's and line piece's outline, next to the page's units in reading order with their text, line by line.
-  - Hovering a line highlights it on the image.
-  - The image is zoomed with − and + (or ⌘ + scroll), "fit width" (the page's whole width in the pane) or "fit height" (the whole page in view). Fit height is kept as the window is resized, from page to page, and when coming back from another mode.
-  - Text is corrected by typing. Formatting (bold, italics, small capitals, superscript, subscript, underline, letter spacing, and the book's own inline kinds) is toggled on a selection.
-  - Note markers are inserted at the caret, given their printed sign, and linked to their notes.
-  - Units are retyped, renumbered, relabeled, split (✂ between two children), joined, wrapped in a container, unwrapped, moved and deleted. "Make it page furniture…" takes a unit out of the text: its regions stay on the page as furniture of the chosen type (an ornament, a running header), and the unit goes. Their open ends at the page edges are toggled (↑ ↓).
-  - How a unit is printed (schema 0.3 styles) is set in the unit inspector: its alignment, its size, and "side by side with the next unit" (a row). Making a column with "Move the text after the caret to a column on the right" puts the two units in a row.
-  - A region is split at the caret's line piece, into a new unit of the same type ("Start a new unit at the caret's line") or within its unit. For a block printed in two columns but read across both, "Move the text after the caret to a column on the right" moves the rest of the caret's line to a column region beside it. That region is made the first time, in its own unit, and added to after that.
-  - A figure (a type whose region class is `figure`) is a region with no line pieces, shown as its part of the page image; its unit's label says what it shows. A picture that is not part of the text (an ornament) is taken out of the reading order by giving its region a furniture type with region class `figure` (such as an `ornament` type). Given a text type again, a region without a unit goes back into the unit on the page that may hold it and that it falls in.
-  - Regions are retyped, moved to another unit, resized or moved by their box's handles on the image, drawn new (＋ Region), and deleted. After a box changes, method 063's local step runs in the browser (in a worker) and recomputes every region's outline and line pieces from the page's ink. Detached glyph parts join their parent line. Each parent keeps its original line ID, and text edited on a former fragment follows its parent. Each line piece keeps its text, following its line to another region if the line moves. A piece whose line has left the region keeps its text and is marked as having no outline. Line pieces are added and deleted. A line's join with the next (space, hyphen, nothing, line break) is set by clicking its right edge.
-  - Every change is checked as it is made, with the same rules as `schema/book.py check`, and saved when the page passes. Undo and redo cover every change (⌘Z, ⇧⌘Z). "Revert page" goes back to the model's version.
+The five workflow tabs are **Pages · Regions · Text · Read · Export**.
+
+- **Pages** browses the scans and shows all three layers of progress. Open a thumbnail for a scan preview before processing anything.
+- **Regions** finds page regions and contains the book's unit types. Move reviewed pages on to Text together.
+- **Text** lists pages with accepted regions, compares and runs transcription models, and moves reviewed transcriptions on to Read.
+- **Read** shows accepted text. Its Units and links view runs completion separately. Completion comparisons, Problems and Style sheet are also here. Omitted page ranges are marked, and units do not join across those gaps.
+- **Export** saves the book PDF and source PDF at every stage. Text-based exports become available after some transcription exists.
+
+Text and Read are disabled until pages are moved on from the preceding stage. Legacy documents infer acceptance. A book with pending pages opens at Pages, while a complete legacy book opens at Read. Old bookmarks route to their corresponding views. Each stage grid opens the page editor with previous/next eligible page, a next-flagged-page button and links to the same page in other stages. Regions, Text and Read each open the editor with controls for that stage.
+
+The grids support checkbox selection, shift-click ranges and fields such as `all` or `1-50,62`. With no selection, actions target displayed pages. Filters cover layer states, flags, earlier type revisions and suggestions. Explicit selections hidden by a filter are counted in the selection summary. Moving on and sending back are saved in the document and survive a book PDF round trip.
+
+Regions has colored region boxes on thumbnails and layout grouping, rarest first. Its types panel shows colors and book-wide counts beside both the grid and the editor. “Start by hand” creates an empty provisional page. Draw boxes, choose their types, set reading order and continuation flags, split at a line piece or merge same-type regions, then move the page on to Text. Existing transcription is shown read only. Keys 1–9 assign the corresponding printed type to the selected region, and Tab or Shift+Tab selects the next or previous region while working on the scan. On phones, the scan and controls stack vertically.
+
+Unassigned model regions are hatched and have “Give it a type” controls. Review flags include uncertain or unknown types, missing order, empty regions, uncovered printed lines, overlapping boxes, provisional containment problems, continuation disagreements and layouts occurring fewer than three times. Text and completion flags are computed separately for their stages.
+
+“＋ Type” adds printed types and containers. A container starts with at least one child type. “New type…” in a region menu adds a printed type for immediate assignment. Regions › Unit types has forms for descriptions, renaming, merging, splitting, containment, flow, printed class and unused-type removal. “Edit book details” changes the title, description, languages and transcription conventions. Each operation previews its reach across model pages, saved corrections and drafts, with affected PDF pages, follow-up work and estimated model cost.
+
+Renames update region and unit types, containment rules and the style sheet, with old names recorded as aliases. Merges require the same printed class and furniture role, or two containers. An existing target style takes precedence. Transcription is preserved. Containment changes rebuild provisional or unprotected units where needed and flag protected units for manual repair. Figure-class changes retain text in provenance and flag region discovery. Unused-type removal checks every document version and draft.
+
+“Propose types from sample pages” uses the selected grid pages and saves attempts inside the book. A reviewed proposal can replace the list while every page’s layers are unprotected. The preview identifies the documents to clear and the region work to repeat. Previous types and page versions are retained in revision history. Review questions link to cited sample pages and retain recorded decisions. Revisions, aliases and historical prose notes are saved with the book. Multi-file operations use a recovery journal and a book write lock, including draft migration and coherent book exports. Work records retain their original bytes, with aliases applied when reading copies.
+
+- **Page editing** shows the scan and line outlines beside the transcription.
+  - Regions edits boxes, region types, reading order and continuation flags. Its transcription is read only.
+  - Text edits line text, inline formatting, printed note markers and the printed page label. Boxes, unit grouping and line joins are locked. “Review re-transcription of this page” selects the page in the Text overview with reprocessing enabled.
+  - Read edits unit types, numbers, labels, grouping, open ends, note links and line joins. Transcription and page geometry are locked. A unit can be split between children, joined to the next unit, wrapped, unwrapped or converted to page furniture. Unit and line presentation styles remain available in this fallback editor.
+  - Hovering a line highlights its outline. Zoom, fit width and fit height work in every focus. Fit height is retained across pages and resizes.
+  - Text inserts note markers at the caret and changes their printed signs. Read assigns their note links. Line joins have explicit controls and can also be cycled at a line’s right edge in Read.
+  - Changes are checked and autosaved. Invalid edits are retained as drafts. Undo and redo cover page edits. “Revert page” returns to the latest stage save.
+  - Focused saves preserve newer work in other layers. Concurrent changes to the same text or unit grouping require a fresh selection or reload.
 - **Read:** the whole book as one text, assembled from its pages as `book.py assemble` does, with the user's corrections.
   - Headings, verses, paragraphs, tables and notes are shown according to their types, with formatting. Figures are shown as their part of the page image, with their label.
   - Note markers link to their notes and back.
   - The printed page number is shown where each page starts.
-  - Hovering any passage shows its region on the page image, and double-clicking it opens the page in the editor.
+  - Clicking a passage opens its scan and clickable unit ancestry in a side panel. Editable books expose unit fields, grouping, line joins and note links there. Double-clicking opens the page fallback.
+  - A cross-page unit has page-fragment navigation. Its semantic fields and wrapping apply across all fragments. Splits and open ends apply to the selected fragment. Joining at a page break opens the matching ancestor paths on both pages. Nonconsecutive pages and conflicting metadata require review.
+  - Each saved change reassembles the reading and retains its scroll position. Problems appear beside their passages and in a list. Read-only books expose inspection controls.
+  - Text can be read before completion, with provisional grouping identified and line ends treated as spaces until completion. The side panel stacks below the text on narrow screens.
   - "Show the units" shows the unit tree in the margin.
   - Units in a row stand side by side where the width allows, and one under the other where it is narrow.
   - "As printed" (for a book with a style sheet) sets each unit as the book prints it: fonts, sizes, alignment, margins, indents and spacing, from the style sheet and the units' own styles, at the book's measure.
-- **Edit book, Types:** the book's type list, its own part of the schema (the format, `schema/schema.json`, is shared by every book):
+- **Regions, Unit types** the book's type list, its own part of the schema (the format, `schema/schema.json`, is shared by every book):
   - the tree of what may contain what, from each flow's top level, with how many units of each type stand in each place;
   - the page furniture types;
   - a table of each type: its region class, what it may contain, its flow, language, numbering, total and description;
   - the relations, inline kinds and transcription conventions.
 
-  It is shown here, not edited; "Download types.json" gives the file.
-- **Edit book, Style sheet:** the book's style sheet (schema 0.3), seen and edited:
+  Operation forms preview and apply changes. “Download types.json” gives the file, and the revision history records applied operations.
+- **Read, Style sheet** the book's style sheet (schema 0.3), seen and edited:
   - the base style of all text and each type's style (font role, size, leading, weight, italic, alignment, left margin, first-line indent, space above and below), in a table where an empty cell inherits the base;
   - the font roles and their font families;
   - the page's size and text box (whose width is the measure).
 
   A preview of a few pages, set as printed, follows every change, and each change is checked against the schema. "Save" writes `style.json` into a book folder (and names it in `book.json`). For a book opened by URL, the sheet is kept in this browser over the served one, until "Back to the book's own". "Download style.json" gives the file. A book with no style sheet can start one from plain defaults. Units' and line pieces' own styles are set in the page view.
-- **Edit book, Problems:** what the checks find across the book (as method 047's `book_report.py`):
+- **Read, Problems** what the checks find across the book (as method 047's `book_report.py`):
   - pages whose document fails the checks (the schema and the type list's rules, as `book.py check`), whose corrections are kept as drafts until they pass;
   - page breaks where units marked as going on do not join;
   - printed page numbers out of sequence. Pages that print no number, as a chapter's first page, are listed apart, as a note;
   - which pages the user corrected, and the transcription model's notes.
 - **Export:** the book as one document of the book schema (JSON), the book as plain text with page references (a figure as `[figure: label]`), the book as one web page (HTML, as printed where the book has a style sheet, with its figures embedded), and the user's corrections as one file (and importing such a file).
-- **Edit book, Make pages** (editable books) makes page documents in the browser with the user's API credentials, using Terra regions and separately selected transcription and schema assignment models. The comparison views offer an editable copy of a URL book. For an excerpt with a larger cost-projection target, “Start from the full PDF with these settings” opens a new-book form carrying the current types and model choices.
-  - **Making a book:** Open a plain PDF from the library to create a book from the whole PDF or a page range. The form defaults to proposing this book's unit types from sample pages. Browse all PDF pages as thumbnails, open larger previews and check pages to include. The sample field accepts `all`, ranges such as `1-50`, and lists such as `1, 7, 43-44`. Request a proposal from GPT-6.1 Terra with reasoning off or Gemini 4 Argon with high thinking. The review shows descriptions, containment rules, reading flows, links, inline kinds, transcription conventions, supporting page references and questions. Descriptions and grouping rules can be edited before approval. A reviewed, valid list is required before creating the book. An existing type list can also be supplied from a bundled list or a file. Continuing from an excerpt carries over that book's types and model choices.
+- **Stage processing** makes page documents in the browser with the user's API credentials. Regions finds and types regions with Terra, Text runs the selected transcription model, and Read completes units and links with its selected model. The comparison views offer an editable copy of a URL book. For an excerpt with a larger cost-projection target, “Start from the full PDF with these settings” opens a new-book form carrying the current types and model choices.
+  - **Making a book.** Open a plain PDF from the library to create a book from the whole PDF or a page range. The form defaults to common draft types, which can be refined in Regions. Alternatively, propose book-specific types from sample pages or supply an existing list. Browse all PDF pages as thumbnails, open larger previews and check pages to include. The sample field accepts `all`, ranges such as `1-50`, and lists such as `1, 7, 43-44`. Request a proposal from GPT-6.1 Terra with reasoning off or Gemini 4 Argon with high thinking after checking the credential. The review shows descriptions, containment rules, reading flows, links, inline kinds, transcription conventions, supporting page references and questions. Descriptions and grouping rules can be edited before approval. A model proposal must be reviewed before use. Continuing from an excerpt carries over that book's types and model choices.
   - **Unit-type proposals** use rendered page images and the user's description. The default sample spans the beginning, middle and end, including two neighboring middle pages. The sample is editable to include contents, section openings, ordinary text and special layouts. Each explicit proposal is one model call whose estimated charge is shown with the result. API keys are configured in this browser. Attempts and the latest saved proposal are retained by PDF hash before a book exists. Creating the book includes these records in its work files for export. The recipes are [method 077](../methods/077-gpt-6-1-terra-unit-types/README.md) and [method 078](../methods/078-gemini-4-argon-high-unit-types/README.md).
   - **The source PDF:** the PDF is copied into the folder as `source.pdf`, the book's source.
   - **Page images:** each page is analyzed (its images, where they are drawn and how much of the page they cover, and its text layer's characters) and rendered with the bundled pdf.js. A scanned page (an image covering at least half of it) is rendered at 300 dpi, or at the scan's own resolution when that is lower; any other page at 300 dpi. The cap no longer applies to a digital page with a small ornament, which it used to lower to 240 dpi.
   - **What each page records:** its PDF page, its rendering, its images and its text layer's size.
-  - **Regions:** each page goes to the region call (OpenAI GPT-6.1 Terra, method 042's prompt and schema generated from the type list), and then to method 063's local step in the worker. The result is saved in `work/<page>.regions.json`.
+  - **Regions** go to the region call (OpenAI GPT-6.1 Terra, method 042's prompt and schema generated from the type list), and then to method 063's local step in the worker. The result is saved in `work/<page>.regions.json` and merged into an editable provisional page document. Make pages distinguishes saved regions, saved text and completed units.
   - **Transcription** uses the per-book choice of Argon low or high, Flash low, Flash-Lite minimal, local Tesseract, or Cloud Vision Text Detection or Document Text Detection. The language models receive the overview and numbered region cut-outs. Tesseract and Cloud Vision map full-page word boxes to shared source-line polygons.
   - **Schema assignment** uses text-only input with Argon high or low, Flash low, Flash-Lite minimal, or Terra with reasoning off. It builds unit trees, joins, continuations and note links while the app retains the selected transcription model’s text. Argon high is the default for existing books. Transcription and schema assignment are saved independently for each model. Batches transcribe all queued pages before schema assignment, so adjacent readings are available.
-  - **Retries and caching** reuse matching successful stages. A failed structural call can be retried without repeating transcription. The Transcription models tab also offers an explicit new structural call for a selected result.
+  - **Retries and caching** reuse matching successful stages. Transcriptions also match by image, model and region/line polygons, so changing types, conventions or reading order reuses the reading. Older reading records gain this geometry key when used. Completion takes current corrected text, formatting and note markers, retaining the old completion fingerprint when their content is equivalent. A failed structural call can be retried without repeating transcription. The Transcription models tab also offers an explicit new structural call for a selected result.
+  - **Saving stages** merges the latest page and preserves edited or accepted layers. Conflicting candidates are recorded in `source.suggestions` with their work-record paths. A valid draft participates as edited content. An invalid draft stops the model step. A journal in `work/pending-stage/` makes the model document, manifest and removal of the merged edit recoverable together. The previous protected page is retained in `work/history/`. Opening or exporting a book recovers pending saves. Comparisons and read-only books keep their trials in work records. The suggestion review interface is a later build step.
   - The keys are kept in the browser (IndexedDB) and sent only to OpenAI and Google. Costs are estimated from returned usage, including thinking, cached input and OpenAI cache writes, at the recorded paid-tier prices. Unavailable costs are displayed explicitly and stop further calls in the batch.
-  - **Processing a book** starts by choosing a range such as `all`, `1-20` or `1-20,25`, setting a spend threshold and clicking “Process selected pages”. Missing regions are found automatically, then the range is transcribed and assigned to schema. Existing model documents are skipped unless reprocessing is enabled. Saved corrections take priority in reading and editing. A paused batch resumes from cached stages. Review Problems, correct pages in Edit pages and save the `.chaya.pdf` from Export.
+  - **Processing a book** starts in Regions. Select pages, check the credential and find regions. Move reviewed regions on to Text, transcribe there and move reviewed text on to Read. Complete units and links in Read’s grid. Each stage has a spend threshold, progress and a stop button. Existing layers are skipped unless included explicitly. A separate checkbox requests fresh model results. Compatible cached trials are reused. Review Problems, correct individual pages and save the `.chaya.pdf` from Export.
 
 ## Choosing and comparing transcription models
 
@@ -163,12 +182,18 @@ images/       page images: a cache of pages drawn from the PDF (or, in the repos
 | `js/assemble.js` | Pages into a book: a port of `book.py assemble` |
 | `js/inline.js` | Spans and markers: a port of `schema/inline.py`, plus span editing |
 | `js/ops.js` | Every edit, as functions on a page document |
+| `js/layers.js` | Layer content, legacy acceptance, edit protection and acceptance transitions |
+| `js/pipeline/provisional.js`, `js/pipeline/apply.js` | Provisional region documents and pure stage merges used by the processing pipeline |
+| `js/workflow.js`, `js/pagesview.js` | Stage availability, routing, transitions, page grids and previews |
+| `js/regionsview.js`, `js/book-types.js`, `js/flags.js` | Regions editing, atomic type additions and initial lists, stage review flags and layout grouping |
+| `js/key-check.js`, `js/pipeline/batch.js` | Credential tests and the shared stage processing loop |
 | `js/store.js` | Books: in the browser (origin private file system), on disk (File System Access API), at a URL, or from a `.chaya.pdf`; pages drawn from the PDF; saving as a `.chaya.pdf`; corrections, drafts and remembered folders in IndexedDB |
 | `js/chayapdf.js` | A book inside its PDF: writing and reading a `.chaya.pdf` (a small PDF parser for the catalog and cross-references; the original recovered and checked) |
 | `js/style.js` | Styles (schema 0.3) as CSS |
 | `js/styleview.js` | The style sheet view, with its preview |
 | `js/typesview.js` | The type list view |
-| `js/type-setup.js` | Initial unit-type proposals and review in the new-book form |
+| `js/type-revisions.js`, `js/type-operations.js` | Pure type-list migrations and reach previews, editing forms and review decisions |
+| `js/type-setup.js` | Sample-page type proposals and review in new books and Regions |
 | `js/page-browser.js`, `js/type-proposal.js` | Lazy PDF thumbnails, sample selection and source-checked saved proposals |
 | `js/pageimage.js` | The page image with outlines, selection, box handles and drawing |
 | `js/editor.js` | The units and their editable lines, reading typed text back into text and spans; the inspector |
@@ -195,10 +220,16 @@ node webapp/test/browser.mjs SCRIPT.mjs            # drives headless Chrome thro
 - `local.test.mjs` runs the port with the legacy settings on six pages against method 043. The threshold, component count, character height, page angle and line centers are identical; every region gets the same line pieces; and the outlines' pixel overlap is 0.98–1.0 per region. It also checks that recomputed outlines keep every line's text.
 - `pipeline.test.mjs` checks the region and transcription prompts and schemas against methods 042 and 055 for every type list (byte for byte), and the copied templates and type lists.
 - `pagedoc.test.mjs` builds the page documents of method 055's six test pages from their saved answers and region records, and compares them with method 055's. Two additions are left out of the comparison: each region's `box`, and a relation without a marker sign anchored to its line's only marker.
-- `readers.test.mjs` covers reader options, costs, reading contracts, authoritative reader text, OCR word mapping, checked-reference scoring, cache reuse and invalidation, failed paid calls, concurrency, neighbor context and URL-book export persistence.
+- `readers.test.mjs` covers reader options, costs, reading contracts, authoritative reader text, OCR word mapping, checked-reference scoring, cache reuse and invalidation, failed paid calls, concurrency, neighbor context and URL-book export persistence. Integration cases check request and fingerprint parity, geometry-key migration, corrected page inputs, drafts, protected edits and comparison isolation.
+- `store.test.mjs` checks style saving, journal recovery at every stage-save file boundary, failed writes and retries, newer drafts, cross-instance edits and concurrent manifest updates.
+- `stages.test.mjs` validates provisional documents on the nine public region references and checks stage states, legacy blank/illustrated pages, protected edits, geometry and text compatibility, marker parsing, invalid candidates and note-link matching. The pipeline uses these foundations. The five-tab interface and page grid are step 3 of HANDOFF.md.
+- `workflow.test.mjs` covers stage availability and routes, reading gaps, acceptance persistence through a book PDF round trip, batch stopping, credential errors and stale checks.
+- `editing.test.mjs` checks focus locks, provisional reading, logical-unit fragments, semantic metadata, stage-preserving saves, stale snapshots, cross-page joins, recovery after interrupted two-page writes and coherent export.
 - `browser.mjs` is a small headless-Chrome driver over the DevTools protocol (no packages), for scripted runs of the app itself.
 
 ## Not yet
+
+- Suggestion review and settled comparisons are build step 7. Further region finders are step 8, and re-transcribing changed regions is step 9.
 
 - **Preprocessing** such as `render_pages.py`'s background flattening and rotation, and method 054's cut-outs for dark-band pages.
 - **Automatic retries** of schema-invalid structure results. Use the Transcription models tab’s explicit structural retry to make a new call.
