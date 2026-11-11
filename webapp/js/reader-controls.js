@@ -1,8 +1,18 @@
 import { h } from "./render.js";
-import { READERS, STRUCTURERS, OCR_LANGUAGES, readerOptions, readerById, structurerById } from "./pipeline/readers.js?v=20261110-partial-3";
+import { READERS, STRUCTURERS, OCR_LANGUAGES, readerOptions, readerById, structurerById } from "./pipeline/readers.js?v=20261110-comparison-cost-2";
 import { finderById } from "./pipeline/finders.js?v=20261110-finders-4";
+import { stageKeyControls } from "./key-check.js?v=20261110-comparison-cost-2";
 
 export const money = (value, digits = 4) => Number.isFinite(value) ? `$${value.toFixed(digits)}` : "—";
+
+export function costEstimate(estimate) {
+  if (estimate.invalid_page_count) return h("div", { class: "meta" }, "Enter a positive whole-number page count.");
+  const labels = { regions: "region detection", reading: "transcription", structure: "schema assignment" };
+  const missing = estimate.missing.map(stage => labels[stage]).join(" + ");
+  return h("div", {}, estimate.total !== null ? money(estimate.total, 2)
+    : estimate.known_total !== null ? `${money(estimate.known_total, 2)} + ${missing}` : "Awaiting price samples",
+    missing ? h("div", { class: "meta" }, `No measured cost yet for ${missing}.`) : null);
+}
 
 export async function readerControls(book, changed = () => {}) {
   let options = readerOptions(await book.getReaderOptions(), book.types);
@@ -86,26 +96,18 @@ export async function modelChoice(book, stage, changed) {
   return controls;
 }
 
-export function keyControls(keys, save) {
-  const visionCredential = h("input", { type: "password", value: keys.vision || "", autocomplete: "off", size: 36, "aria-label": "Cloud Vision credential",
-    onchange: async event => {
-      keys.vision = event.target.value.trim();
-      if (keys.vision_auth !== "oauth") await save("vision", keys.vision);
-    } });
-  const visionAuth = h("select", { "aria-label": "Cloud Vision authentication", onchange: async event => {
-    keys.vision_auth = event.target.value;
-    keys.vision = visionCredential.value = "";
-    await save("vision", "");
-    await save("vision_auth", keys.vision_auth);
-  } }, h("option", { value: "key", selected: keys.vision_auth !== "oauth" }, "API key"), h("option", { value: "oauth", selected: keys.vision_auth === "oauth" }, "OAuth access token"));
-  return h("details", { class: "reader-keys" }, h("summary", {}, "API keys"),
-    h("div", { class: "fields col" }, ...[["openai", "OpenAI API key"], ["gemini", "Gemini API key"]].map(([id, label]) =>
-      h("label", {}, label, " ", h("input", { type: "password", value: keys[id] || "", autocomplete: "off", size: 36,
-        onchange: async event => { keys[id] = event.target.value.trim(); await save(id, keys[id]); } }))),
-      h("label", {}, "Cloud Vision authentication ", visionAuth), h("label", {}, "Cloud Vision credential ", visionCredential),
-      h("label", {}, "Google Cloud quota project for OAuth ", h("input", { value: keys.vision_project || "", size: 36, "aria-label": "Google Cloud quota project",
-        onchange: async event => { keys.vision_project = event.target.value.trim(); await save("vision_project", keys.vision_project); } })),
-      h("p", { class: "hint" }, "API keys are kept in this browser. OAuth access tokens are held for this book’s current session and need replacing when they expire. Page images go to the selected model provider. Tesseract reads images on this device. Cloud Vision requires its API enabled and billing configured. Use an OAuth token and quota project when API-key authentication is rejected. Its estimate uses the standard paid rate before monthly free usage and volume discounts.")));
+export function keyControls(checks, profiles, save, changed) {
+  const panels = [];
+  for (const [provider, label] of [["openai", "OpenAI"], ["gemini", "Gemini"], ["vision", "Cloud Vision"]]) {
+    const models = profiles.filter(profile => profile.provider === provider);
+    if (!models.length) continue;
+    panels.push(h("section", { "aria-label": `${label} comparison credentials` }, h("h4", {}, label),
+      h("p", { class: "hint" }, [...new Set(models.map(profile => profile.label))].join(" · ")),
+      stageKeyControls(checks.group(models), models[0], save, changed)));
+  }
+  if (profiles.some(profile => profile.provider === "local")) panels.push(h("p", { class: "hint" }, "Local OCR runs on this device and needs no API key."));
+  return h("details", { class: "reader-keys", open: profiles.some(profile => !checks.status(profile)?.valid) },
+    h("summary", {}, "API keys"), ...panels);
 }
 
 export function continueControls(app) {

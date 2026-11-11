@@ -1,4 +1,4 @@
-import { post } from "./pipeline/run.js?v=20261110-partial-3";
+import { post } from "./pipeline/run.js?v=20261110-comparison-cost-2";
 import { openaiText, geminiText } from "./pipeline/steps.js?v=20261110-reading-2";
 import { h } from "./render.js";
 
@@ -12,9 +12,33 @@ export class CredentialChecks {
       profile.provider === "vision" ? [this.keys.vision_auth, this.keys.vision_project] : null]);
   }
   status(profile) { return profile.provider === "local" ? { valid: true } : this.results.get(this.identity(profile)); }
+  group(profiles) {
+    const group = {
+      keys: this.keys,
+      status: () => {
+        const failed = profiles.find(profile => this.status(profile)?.valid === false);
+        if (failed) return { valid: false, message: `${failed.label} · ${this.status(failed).message}` };
+        return profiles.every(profile => this.status(profile)?.valid)
+          ? { valid: true, message: "Credential checked successfully for the selected models." } : undefined;
+      },
+      check: async () => {
+        const seen = new Set();
+        for (const profile of profiles) {
+          const id = this.identity(profile);
+          if (seen.has(id)) continue;
+          seen.add(id);
+          const result = await this.check(profile);
+          if (!result.valid) break;
+        }
+        return group.status();
+      },
+    };
+    return group;
+  }
   async check(profile) {
     if (profile.provider === "local") return { valid: true };
     const id = this.identity(profile), keys = { ...this.keys }, provider = profile.provider;
+    this.results.delete(id);
     let result;
     try {
       const payload = provider === "openai" ? { model: profile.model, store: false, reasoning: { effort: profile.reasoning || "none" },
@@ -46,7 +70,7 @@ export function stageKeyControls(checks, profile, save, changed = () => {}) {
   const refresh = () => {
     const result = checks.status(profile);
     status.className = result?.valid ? "ok" : result ? "bad" : "hint";
-    status.textContent = result?.message || "Check this credential to enable processing with the selected model.";
+    status.textContent = result?.message || "Check this credential to enable processing.";
     changed();
   };
   const credential = h("input", { type: "password", value: keys[provider] || "", autocomplete: "off",
@@ -68,7 +92,9 @@ export function stageKeyControls(checks, profile, save, changed = () => {}) {
   const button = h("button", { onclick: async () => {
     button.disabled = true;
     status.textContent = "Checking with a small test request…";
-    await checks.check(profile);
+    const request = checks.check(profile);
+    changed();
+    await request;
     button.disabled = false;
     refresh();
   } }, "Check key");

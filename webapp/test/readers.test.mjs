@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { Maker, post } from "../js/pipeline/run.js";
 import { Book, idb } from "../js/store.js";
 import { makeValidator, checkPage } from "../js/schema.js";
-import { readerOptions, readerById, usageCost, projectBookCost, STRUCTURER, structurePath } from "../js/pipeline/readers.js";
+import { readerOptions, readerById, usageCost, projectBookCost, bookCostEstimate, wholePageReading, STRUCTURER, structurePath } from "../js/pipeline/readers.js";
 import { openaiCost } from "../js/pipeline/steps.js";
 import { visionRequest, visionReading, visionCost } from "../js/pipeline/vision.js";
 import { selectPageRegions, checkReading, combineReading, structureSchema, markedText, plainReading } from "../js/pipeline/split.js";
@@ -279,6 +279,33 @@ test("whole-book projections use whole-page samples and omit region repairs", ()
   const partial = { regions: { cost_usd: .01 }, reading: { cost_usd: 1, partial: true }, structure: { cost_usd: .03 } };
   assert.equal(projectBookCost([partial], 1000), null);
   assert.equal(projectBookCost([full, partial], 1000), 60);
+});
+
+test("price estimates retain measured stages when sample coverage differs or a stage has no price yet", () => {
+  const samples = [{ reading: { cost_usd: .02 } }, { regions: { cost_usd: .01 } }, { structure: { cost_usd: .03 } }];
+  const estimate = bookCostEstimate(samples, 1000);
+  assert.equal(estimate.total, 60);
+  assert.deepEqual(estimate.counts, { regions: 1, reading: 1, structure: 1 });
+  samples.pop();
+  const partial = bookCostEstimate(samples, 1000);
+  assert.equal(partial.total, null);
+  assert.equal(partial.known_total, 30);
+  assert.deepEqual(partial.missing, ["structure"]);
+});
+
+test("repaired readings recover their whole-page price without including repair charges", async () => {
+  const source = { image_sha256: "scan", profile: { id: "argon-low" }, cost_usd: .02 };
+  const first = { ...source, partial: true, previous_reading: "original", cost_usd: .04 };
+  const current = { ...first, previous_reading: "repair", cost_usd: .08 };
+  const records = new Map([["original", source], ["repair", first]]);
+  const book = { readWork: async path => records.get(path) };
+  assert.equal((await wholePageReading(book, current)).cost_usd, .02);
+  records.set("original", { ...source, image_sha256: "different scan" });
+  assert.equal(await wholePageReading(book, current), null);
+  records.set("original", { ...first, previous_reading: "repair" });
+  assert.equal(await wholePageReading(book, current), null);
+  records.clear();
+  assert.equal(await wholePageReading(book, current), null);
 });
 
 test("local OCR maps the whole page and retains an immutable base for a region repair", async () => {
@@ -643,12 +670,12 @@ test("whole-book projections include every stage and preserve zero-cost local OC
   assert.equal(projectBookCost(samples, 1000), 60);
   const old = structuredClone(samples);
   delete old[0].regions;
-  assert.equal(projectBookCost(old, 267), null);
+  assert.ok(Math.abs(projectBookCost(old, 267) - 17.355) < 1e-10);
   old[0].regions = { cost_usd: null };
-  assert.equal(projectBookCost(old, 267), null);
+  assert.ok(Math.abs(projectBookCost(old, 267) - 17.355) < 1e-10);
   old[0].regions = { cost_usd: 0.01 };
   delete old[0].structure;
-  assert.equal(projectBookCost(old, 267), null);
+  assert.ok(Math.abs(projectBookCost(old, 267) - 17.355) < 1e-10);
   assert.equal(projectBookCost([], 267), null);
   for (const count of [0, -1, 2.5, NaN, Infinity]) assert.equal(projectBookCost(samples, count), null);
 });

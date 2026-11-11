@@ -1,12 +1,12 @@
 import { h, esc } from "./render.js";
 import { regionPath } from "./pageimage.js?v=20261110-figure-region-2";
 import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261110-finders-4";
-import { OCR_LANGUAGES, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-partial-3";
+import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261110-comparison-cost-2";
 import { pageRange } from "./pipeline/pdf.js";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-partial-3";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-comparison-cost-2";
 import { reviewPage } from "./review-view.js?v=20261110-figure-region-2";
 import { settings } from "./store.js?v=20261110-finders-4";
-import { money } from "./reader-controls.js?v=20261110-partial-3";
+import { money, costEstimate } from "./reader-controls.js?v=20261110-comparison-cost-2";
 import { runProgress } from "./run-progress.js";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 
@@ -61,20 +61,7 @@ export async function renderFinders(el, app, { selected, onChoose, onBusy, onRev
     for (const provider of ["openai", "gemini"]) {
       const profiles = selected.filter(profile => profile.provider === provider);
       if (!profiles.length) continue;
-      const group = {
-        keys: checks.keys,
-        status: () => profiles.every(profile => checks.status(profile)?.valid)
-          ? { valid: true, message: "Key checked successfully for the selected models." }
-          : profiles.map(profile => checks.status(profile)).find(result => result && !result.valid),
-        check: async () => {
-          for (const profile of profiles) {
-            if (checks.status(profile)?.valid) continue;
-            const result = await checks.check(profile);
-            if (!result.valid) return result;
-          }
-          return group.status();
-        },
-      };
+      const group = checks.group(profiles);
       panels.push(h("section", {}, h("p", { class: "hint" }, profiles.map(profile => profile.label).join(" · ")),
         stageKeyControls(group, profiles[0], (id, value) => settings.set(`key:${id}`, value), updateRunButton)));
     }
@@ -114,12 +101,12 @@ export async function renderFinders(el, app, { selected, onChoose, onBusy, onRev
           const score = reviewedRegionLayout(current, run.doc);
           reviewed += score.reviewed; matches += score.matches;
         }
-        const reading = await book.readWork(`work/readings/${pid}/${options.reader}.json`);
+        const reading = await wholePageReading(book, await book.readWork(`work/readings/${pid}/${options.reader}.json`));
         const structure = await book.readWork(structurePath(pid, options.reader, options.structurer));
         costs.push({ regions: run.record.region_call, reading, structure });
       }
       rows.push(h("tr", {}, h("td", {}, profile.label, h("div", { class: "meta" }, `${available.length}/${ids.length} sample pages`)),
-        h("td", {}, money(projectBookCost(costs, Number(pageCount.value)), 2)),
+        h("td", {}, costEstimate(bookCostEstimate(costs, Number(pageCount.value)))),
         h("td", {}, compared ? `${differences} / ${compared} pages` : "Awaiting reference"),
         h("td", {}, reviewed ? `${matches} / ${reviewed} pages` : "—"),
         h("td", {}, available.every(pid => Number.isFinite(results.get(pid).get(profile.id).record.region_call?.seconds))
@@ -212,7 +199,7 @@ export async function renderFinders(el, app, { selected, onChoose, onBusy, onRev
     h("p", { class: "hint" }, "Compatible saved trials are reused. The final API call can exceed the spend threshold. Choosing a free finder runs it on this device."),
     h("div", { class: "actions" }, runButton, stopButton, h("button", { onclick: () => refresh().catch(error => { status.textContent = error.message; }) }, "Refresh saved region results")), progress.element, status,
     h("h3", {}, "Review region layouts"), h("label", {}, "Book pages ", pageCount),
-    h("p", { class: "hint" }, "The total includes this finder plus the selected transcription and completion models at their recorded whole-page sample costs. Region repairs are excluded from this projection. It becomes available when all three stages have samples. It assumes downstream costs stay at their sampled level. Exact layout matches count only pages explicitly reviewed against the scan."), summary,
+    h("p", { class: "hint" }, "The estimate includes this finder plus the selected transcription and completion models at their recorded sample prices. Original whole-page readings supply transcription prices after region edits. Unmeasured stages are named beside the subtotal. It assumes downstream costs stay at their sampled level. Exact layout matches count only pages explicitly reviewed against the scan."), summary,
     h("label", {}, "Inspect ", inspect), h("p", { class: "hint" }, "Choose a finder for the book, or review its layout for a page already prepared in Regions."), detail);
   el.replaceChildren(content);
   for (const control of [samples, inspect, reference, pageCount, budget]) control.addEventListener("change", async () => {

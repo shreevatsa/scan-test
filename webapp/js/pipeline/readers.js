@@ -69,15 +69,37 @@ export function usageCost(usage, profile, at) {
     (usage.total_output_tokens + usage.total_thought_tokens) * rates.output) / 1e6;
 }
 
-// Project one pass from completed calls, including shared region detection once per page.
-// Region repairs have their own charges and do not supply a new whole-page sample.
-// A missing stage cost makes the complete estimate unavailable, including for older books.
+// Estimate each stage from its available samples. Repair charges stay in the actual-spend ledger.
+export function bookCostEstimate(samples, pageCount) {
+  const counts = {}, totals = {}, missing = [];
+  if (!Number.isSafeInteger(pageCount) || pageCount <= 0) return { total: null, known_total: null, counts, missing, invalid_page_count: true };
+  for (const stage of ["regions", "reading", "structure"]) {
+    const costs = samples.filter(sample => stage !== "reading" || !sample.reading?.partial)
+      .map(sample => sample[stage]?.cost_usd).filter(value => Number.isFinite(value) && value >= 0);
+    counts[stage] = costs.length;
+    if (costs.length) totals[stage] = costs.reduce((sum, value) => sum + value, 0) / costs.length * pageCount;
+    else missing.push(stage);
+  }
+  const known = Object.values(totals);
+  const knownTotal = known.length ? known.reduce((sum, value) => sum + value, 0) : null;
+  return { total: missing.length ? null : knownTotal, known_total: knownTotal, counts, missing };
+}
+
 export function projectBookCost(samples, pageCount) {
-  const wholePages = samples.filter(sample => !sample.reading?.partial);
-  if (!wholePages.length || !Number.isSafeInteger(pageCount) || pageCount <= 0) return null;
-  const costs = wholePages.flatMap(sample => [sample.regions?.cost_usd, sample.reading?.cost_usd, sample.structure?.cost_usd]);
-  if (!costs.every(value => Number.isFinite(value) && value >= 0)) return null;
-  return costs.reduce((sum, value) => sum + value, 0) / wholePages.length * pageCount;
+  return bookCostEstimate(samples, pageCount).total;
+}
+
+// A repaired reading retains its original whole-page call in history, which still supplies a price sample.
+export async function wholePageReading(book, reading) {
+  const source = reading, seen = new Set();
+  while (reading?.partial) {
+    const path = reading.previous_reading;
+    if (!path || seen.has(path)) return null;
+    seen.add(path);
+    reading = await book.readWork(path);
+    if (reading?.image_sha256 !== source.image_sha256 || reading?.profile?.id !== source.profile?.id) return null;
+  }
+  return reading || null;
 }
 
 export function geminiReadingRequest(profile, input, schema, maxOutputTokens = 32768) {

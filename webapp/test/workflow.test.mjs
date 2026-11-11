@@ -137,6 +137,33 @@ test("stale credential checks never validate a changed key or quota project", as
   assert.deepEqual(await vision.check({ provider: "vision", model: "TEXT_DETECTION" }), { valid: false, message: "Billing disabled" });
 });
 
+test("checking Gemini leaves Cloud Vision unchecked and rejected OCR credentials keep a comparison unready", async () => {
+  const gemini = { provider: "gemini", model: "test", label: "Gemini" };
+  const vision = { provider: "vision", model: "TEXT_DETECTION", label: "Cloud Vision" };
+  const keys = { gemini: "gemini-secret", vision: "rejected-secret" }, calls = [];
+  const checks = new CredentialChecks(keys, async (provider, payload, key) => {
+    calls.push({ provider, key, payload });
+    if (provider === "vision" && key === "rejected-secret") throw Error("API key not valid");
+    return { body: provider === "vision" ? { responses: [{}] } : { outputs: [{ type: "text", text: "OK" }] } };
+  });
+  await checks.group([gemini]).check();
+  assert.equal(checks.status(vision), undefined);
+  const selected = checks.group([gemini, vision]);
+  assert.equal(selected.status(), undefined);
+  assert.equal((await selected.check()).valid, false);
+  assert.match(selected.status().message, /Cloud Vision.*API key not valid/);
+  assert.deepEqual(calls.map(call => call.provider), ["gemini", "gemini", "vision"]);
+  assert.equal(calls[2].payload.requests[0].features[0].type, "TEXT_DETECTION");
+  keys.vision = "working-secret";
+  assert.equal(selected.status(), undefined);
+  assert.equal((await selected.check()).valid, true);
+  assert.equal(calls.length, 5);
+  await checks.group([gemini, gemini]).check();
+  assert.equal(calls.length, 6, "an explicit recheck sends a fresh test, once per distinct model");
+  keys.vision_auth = "oauth";
+  assert.equal(selected.status(), undefined);
+});
+
 test("credential checks use the chosen OpenAI model's supported reasoning setting", async () => {
   const requests = [];
   const checks = new CredentialChecks({ openai: "fixture" }, async (provider, payload) => {

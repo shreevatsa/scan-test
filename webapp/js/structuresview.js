@@ -1,8 +1,10 @@
 import { reviewPage } from "./review-view.js?v=20261110-figure-region-2";
 import { assignmentOf, settledStructureScore } from "./review.js?v=20261110-partial-3";
 import { h } from "./render.js";
-import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261110-partial-3";
-import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-partial-3";
+import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261110-comparison-cost-2";
+import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261110-comparison-cost-2";
+import { finderById } from "./pipeline/finders.js";
+import { CredentialChecks } from "./key-check.js?v=20261110-comparison-cost-2";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
 import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
@@ -43,7 +45,19 @@ export async function renderStructures(el, app) {
     return h("label", {}, box, " ", profile.label);
   });
   const results = new Map(), inputs = new Map(), geometry = new Map();
+  const checks = maker.credentials ||= new CredentialChecks(maker.keys), credentials = h("div");
   let busy = false, stop = false, selectedRegion = saved.region, refreshVersion = 0;
+
+  function requiredProfiles() {
+    const profiles = [...new Set([...candidates, reference.value])].map(id => STRUCTURERS.find(profile => profile.id === id));
+    if ([...chosen].some(pid => !geometry.has(pid))) profiles.push(finderById(options.finder));
+    return profiles;
+  }
+  function updateRun() { run.disabled = busy || !requiredProfiles().every(profile => checks.status(profile)?.valid); }
+  function updateCredentials() {
+    credentials.replaceChildren(keyControls(checks, requiredProfiles(), (id, value) => settings.set(`key:${id}`, value), updateRun));
+    updateRun();
+  }
 
   async function save() {
     await book.writeWork("work/structure-lab/selection.json", { pages: [...chosen], models: [...candidates], focus: pageSelect.value,
@@ -73,7 +87,9 @@ export async function renderStructures(el, app) {
     for (const profile of STRUCTURERS) {
       const runs = [...chosen].flatMap(pid => results.get(pid)?.has(profile.id) ? [{ pid, structure: results.get(pid).get(profile.id) }] : []);
       if (!runs.length) continue;
-      const cost = projectBookCost(runs.map(({ pid, structure }) => ({ regions: geometry.get(pid)?.region_call, reading: inputs.get(pid), structure })), Number(pageCount.value));
+      const samples = await Promise.all(runs.map(async ({ pid, structure }) => ({ regions: geometry.get(pid)?.region_call,
+        reading: await wholePageReading(book, inputs.get(pid)), structure })));
+      const estimate = bookCostEstimate(samples, Number(pageCount.value));
       let compared = 0, differences = 0, reviewed = 0, reviewedErrors = 0;
       for (const { pid, structure } of runs) {
         const current = await book.current(pid);
@@ -83,7 +99,7 @@ export async function renderStructures(el, app) {
         if (ref) { compared++; differences += structureDifferences(structure.parsed, ref.parsed).length; }
       }
       rows.push(h("tr", {}, h("td", {}, profile.label, h("div", { class: "meta" }, `${runs.length}/${chosen.size} pages`),
-        profile.id === options.structurer ? h("div", { class: "ok" }, "Selected for this book") : null), h("td", {}, money(cost, 2)), h("td", {}, compared ? `${differences} regions across ${compared} pages` : "Awaiting reference"), h("td", {}, reviewed ? `${reviewedErrors} / ${reviewed} reviewed regions` : "—"),
+        profile.id === options.structurer ? h("div", { class: "ok" }, "Selected for this book") : null), h("td", {}, costEstimate(estimate)), h("td", {}, compared ? `${differences} regions across ${compared} pages` : "Awaiting reference"), h("td", {}, reviewed ? `${reviewedErrors} / ${reviewed} reviewed regions` : "—"),
         h("td", { class: runs.every(run => !run.structure.errors.length) ? "ok" : "bad" }, `${runs.filter(run => !run.structure.errors.length).length}/${runs.length} valid`),
         h("td", {}, `${(runs.reduce((sum, run) => sum + run.structure.seconds, 0) / runs.length).toFixed(1)} s`)));
     }
@@ -117,12 +133,14 @@ export async function renderStructures(el, app) {
     for (const pid of new Set([...chosen, pageSelect.value])) await load(pid);
     if (version !== refreshVersion) return;
     await show();
+    updateCredentials();
   }
 
   async function trial() {
     if (busy || maker.processing || maker.jobs.size) { status.textContent = "Wait for active processing to finish."; return; }
     const limit = Number(budget.value), reader = options.reader;
     if (!chosen.size || !candidates.size || !Number.isFinite(limit) || limit <= 0) { status.textContent = "Select sample pages and models, and enter a positive spend threshold."; return; }
+    if (!requiredProfiles().every(profile => checks.status(profile)?.valid)) { status.textContent = "Check the API credentials for the selected comparison models before running."; return; }
     busy = maker.processing = true; stop = false;
     const ids = new Set([...candidates, reference.value]);
     progress.start(chosen.size * (2 + ids.size));
@@ -184,22 +202,23 @@ export async function renderStructures(el, app) {
   }
 
   const stopButton = h("button", { onclick: () => { stop = true; } }, "Stop after the active call");
+  const run = h("button", { class: "primary", onclick: trial }, "Run schema comparison");
   for (const field of [reference, pageSelect, pageCount, budget, onlyDifferences, ...pages.flatMap(label => [...label.querySelectorAll("input")]), ...models.flatMap(label => [...label.querySelectorAll("input")])])
-    field.addEventListener("change", async () => { try { await save(); await refresh(); } catch (error) { status.textContent = error.message; } });
+    field.addEventListener("change", async () => { updateCredentials(); try { await save(); await refresh(); } catch (error) { status.textContent = error.message; } });
   const content = h("div", { class: "checkview reader-lab" }, h("h2", {}, "Compare schema assignment models"),
     h("p", {}, "Compare units, line-end joins, continuations, reading flows and links using the same transcription for every model. Differences are measured against the selected reference. Schema validity checks consistency. Check the scan and book conventions to judge correctness."),
     h("p", { class: "box" }, `Fixed input · the current page transcription, including saved corrections. The book’s transcription model is ${readerById(options.reader).label}. `,
       h("button", { class: "link", onclick: () => app.setMode("readers") }, "Review transcription choice")),
     h("h3", {}, "1. Run a schema assignment comparison"),
-    keyControls(maker.keys, (id, value) => settings.set(`key:${id}`, value)),
+    credentials,
     h("details", { open: true }, h("summary", {}, "Sample pages and schema assignment models"), h("div", { class: "trial-selection" },
       h("fieldset", {}, h("legend", {}, "Sample pages"), ...pages), h("fieldset", {}, h("legend", {}, "Schema assignment models"), ...models))),
     h("div", { class: "fields col" }, h("label", {}, "Reference schema assignment from ", reference),
       h("label", {}, "Stop after an API call once new trial spend reaches $", budget)),
     h("p", { class: "hint" }, "Existing compatible transcriptions and schema assignments are reused. Transcribe pages before comparing their assignments. Every model receives the same printed text and neighboring transcription. A spend threshold can be exceeded by the final call. Failed and unresolved calls are saved in the shared attempt ledger on the Transcription models tab."),
-    h("div", { class: "actions" }, h("button", { class: "primary", onclick: trial }, "Run schema comparison"), " ", stopButton, " ", h("button", { onclick: refresh }, "Refresh saved schema results")), progress.element, status,
+    h("div", { class: "actions" }, run, " ", stopButton, " ", h("button", { onclick: refresh }, "Refresh saved schema results")), progress.element, status,
     h("h3", {}, "2. Review costs and schema assignments"), h("label", {}, "Book pages ", pageCount),
-    h("p", { class: "hint" }, "The single total includes region detection, the fixed input transcription and each model’s schema assignment. It projects one pass from whole-page samples at their recorded prices. Region repairs are excluded from this projection. Schema checks flag invalid results. All stage costs must be available."), summary,
+    h("p", { class: "hint" }, "The estimate includes region detection, the fixed input transcription and each model’s schema assignment. Each stage uses its available sample prices. Original whole-page readings supply transcription prices after region edits. Unmeasured stages are named beside the subtotal. Schema checks flag invalid results."), summary,
     h("h3", {}, "Inspect schema choices"), h("label", {}, "Page ", pageSelect), " ", h("label", {}, onlyDifferences, " Focus on differing regions"),
     h("p", { class: "hint" }, "Amber marks assignments that differ from the reference. Number badges count changed categories. Select matching region labels to compare their unit membership and joins. Trees retain surrounding regions for context."), detail,
     choice, continueControls(app));
