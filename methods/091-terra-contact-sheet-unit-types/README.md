@@ -1,0 +1,13 @@
+# 091-terra-contact-sheet-unit-types
+
+GPT-6.1 Terra · reasoning off surveys labelled contact sheets of a PDF and proposes book-specific unit types, containment, flows, evidence pages and review questions. Its response inventories every supplied PDF page exactly once, listing proposed types visible in that thumbnail and an uncertainty flag. Page-presence summaries are computed from that inventory.
+
+The recipe uses four columns by five rows of 256 × 384 pixel cells. Each page fits inside a 240 × 344 pixel area below its one-based PDF-position label. Sheets are JPEG at quality 0.85, with a maximum size of 1024 × 1920 pixels. A request contains at most 16 sheets and 12 MB of serialized payload. Larger books are surveyed in batches, with validated proposals merged for review. Every page remains represented at the same thumbnail scale. A 267-page book uses 14 sheets in one request when the payload fits.
+
+The 12 MB application budget leaves room under Gemini's documented 20 MB inline request limit and OpenAI's documented image and payload limits. The sheet dimensions preserve original-detail patch limits on OpenAI and high-resolution image input on Gemini. Limits were checked on 2026-11-11. [OpenAI image inputs](https://developers.openai.com/api/docs/guides/images-vision), [Terra](https://developers.openai.com/api/docs/models/gpt-6.1-terra), [Gemini image inputs](https://aistudio.google.com/docs/image-understanding), [Argon](https://aistudio.google.com/docs/models/gemini-4-argon)
+
+The user allowed a five-minute deadline for this whole-book operation. Other model requests use the app's ordinary deadline. The request retains store false, structured output and a 16,384-token output cap. Exact settings are in [config.json](config.json). The shared source is archived under [method 091](../091-terra-contact-sheet-unit-types/snapshot/), with [source hashes](../091-terra-contact-sheet-unit-types/source-sha256.json).
+
+Open Unit types → Propose and compare unit types → Whole-book contact sheets. Each API attempt records the image-free request, response, sheet hashes and cell maps, usage, time and estimated charge. Completed batches are reused. The ledger can recover a completed response after a failed batch-pointer save. An unresolved attempt requires an explicit retry choice. Overview estimates remain distinguishable from page counts measured from saved regions and units. Existing sample-page discovery remains under Selected pages in detail.
+
+Fixture checks cover complete page coverage, unknown types, request budgets, provider envelopes, scoped deadlines, cached results, recovery after a pointer-save failure and explicit retry after an unresolved attempt. Private-book model trials are recorded locally.

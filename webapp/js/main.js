@@ -6,27 +6,27 @@ import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, del
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
 import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-cross-page-carbon-2";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261111-cross-page-carbon-2";
-import { renderStyle } from "./styleview.js?v=20261111-cross-page-carbon-2";
-import { openTypeList } from "./typesview.js?v=20261111-carbon-high-5";
-import { typeSetup } from "./type-setup.js?v=20261111-carbon-high-5";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261111-type-overview-4";
+import { renderStyle } from "./styleview.js?v=20261111-type-overview-4";
+import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261111-type-overview-4";
+import { typeSetup } from "./type-setup.js?v=20261111-type-overview-4";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
-import { Maker } from "./pipeline/run.js?v=20261111-carbon-high-5";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261110-regions-3";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261111-carbon-high-5";
+import { Maker } from "./pipeline/run.js?v=20261111-type-overview-4";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261111-type-overview-4";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261111-type-overview-4";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
 import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=20261110-finders-4";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261111-carbon-high-5";
+import { renderPages } from "./pagesview.js?v=20261111-type-overview-4";
 import { settings } from "./store.js?v=20261110-finders-4";
-import { renderReaders } from "./readersview.js?v=20261111-carbon-high-5";
-import { renderStructures } from "./structuresview.js?v=20261111-carbon-high-5";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261111-carbon-high-5";
+import { renderReaders } from "./readersview.js?v=20261111-type-overview-4";
+import { renderStructures } from "./structuresview.js?v=20261111-type-overview-4";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261111-type-overview-4";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -308,6 +308,8 @@ class App {
   async openBook(book) {
     this.book = book;
     this.regionOverview = {};
+    this.typeOverview = {};
+    this.workflowScroll = new Map();
     this.lastTypeRevision = null;
     if (book.browser) history.replaceState(null, "", `${location.pathname}?local=${encodeURIComponent(book.where.name)}${location.hash}`);
     this.tl = book.types;
@@ -367,6 +369,7 @@ class App {
     this.lastTypeRevision = plan;
     if (plan.types.source.revisions.at(-1).operations.some(operation => operation.kind === "replace")) {
       this.regionOverview.proposal = false;
+      this.typeOverview.open = false;
       if (this.routeView === "proposal") history.replaceState(null, "", workflowAddress("regions"));
     }
     this.dirty = false;
@@ -452,7 +455,7 @@ class App {
         history.replaceState(null, "", location.pathname); this.library();
       } }, "⌂"),
       h("span", { class: "title", title: book.title }, book.title),
-      h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode[0].toUpperCase() + mode.slice(1)))),
+      h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "types", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode === "types" ? "Unit types" : mode[0].toUpperCase() + mode.slice(1)))),
       h("nav", { class: "tabs", "aria-label": "Stage views" },
         tabBtn("text", "", "Pages"), tabBtn("text", "compare", "Compare models"),
         tabBtn("read", "", "Read"), tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
@@ -472,6 +475,8 @@ class App {
   async route() {
     if (!this.book) return;
     if (this.workflowBusy || this.outlineBusy || this.maker?.processing) { history.replaceState(null, "", this.lastWorkflowUrl); return this.toast("Wait for the active operation before switching views."); }
+    this.workflowScroll ||= new Map();
+    if (this.stage) this.workflowScroll.set(`${this.stage}/${this.mode}`, this.main.scrollTop);
     const token = this.routeToken = (this.routeToken || 0) + 1;
     await this.flush();
     if (this.dirty) { history.replaceState(null, "", this.lastWorkflowUrl); return; }
@@ -499,6 +504,7 @@ class App {
       this.pageBuilt = false;
       this.main.className = mode;
       if (mode === "grid") await renderPages(this.main, this);
+      if (mode === "types") await renderTypeOverview(this.main, this);
       if (mode === "read") await renderReader(this.main, this);
       if (mode === "style") renderStyle(this.main, this);
       if (mode === "check") this.renderCheck();
@@ -506,6 +512,7 @@ class App {
       if (mode === "readers") renderReaders(this.main, this).catch(error => this.toast(error.message, "bad"));
       if (mode === "structures") renderStructures(this.main, this).catch(error => this.toast(error.message, "bad"));
     }
+    if (mode !== "page" && token === this.routeToken) this.main.scrollTop = this.workflowScroll.get(`${stage}/${mode}`) || 0;
     if (route.locked) this.toast("Move pages on from the previous stage to open this tab.");
   }
 

@@ -207,6 +207,6 @@ test("merged type drafts retain common and model-specific definitions and proven
   const inputs = [{ profile: { id: "a", label: "A" }, result: a }, { profile: { id: "b", label: "B" }, result: b }], before = clone(inputs);
   const merged = mergeTypeProposals(inputs);
   assert.deepEqual(inputs, before); assert.deepEqual(Object.keys(merged.types.types), ["paragraph", "verse"]);
-  assert.match(typeAgreement(merged.merged.types.paragraph), /different definitions/); assert.match(typeAgreement(merged.merged.types.verse), /one model/);
+  assert.match(typeAgreement(merged.merged.types.paragraph), /different definitions/); assert.match(typeAgreement(merged.merged.types.verse), /one proposal/);
   assert.equal(merged.merged.cost_usd, 0.2); assert.equal(merged.call.cost_usd, 0.1); assert.equal(merged.merged.sources.length, 2); assert.equal(merged.types.source.discovery.reviewed, false);
 });

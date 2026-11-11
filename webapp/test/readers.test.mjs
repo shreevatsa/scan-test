@@ -834,7 +834,8 @@ test("provider requests use a 75-second deadline", async () => {
     await post("gemini", { model: "gemini-4-argon", generation_config: { thinking_level: "high" } }, "fixture");
     await post("vision", {}, "fixture");
     await post("openai", { model: "gpt-6.1-terra" }, "fixture");
-    assert.deepEqual(timeouts, [75000, 75000, 75000, 75000, 75000]);
+    await post("openai", { model: "gpt-6.1-terra" }, "fixture", { timeout_ms: 300000 });
+    assert.deepEqual(timeouts, [75000, 75000, 75000, 75000, 75000, 300000]);
   } finally { globalThis.fetch = originalFetch; AbortSignal.timeout = originalTimeout; }
 });
 

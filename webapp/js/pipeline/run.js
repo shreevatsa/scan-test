@@ -54,7 +54,7 @@ export async function post(provider, payload, key, auth = {}) {
     if (auth.project) headers["x-goog-user-project"] = auth.project;
   }
   const t0 = performance.now();
-  const r = await fetch(S.ENDPOINTS[provider], { method: "POST", headers, body: JSON.stringify(payload), signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+  const r = await fetch(S.ENDPOINTS[provider], { method: "POST", headers, body: JSON.stringify(payload), signal: AbortSignal.timeout(auth.timeout_ms || REQUEST_TIMEOUT_MS) });
   const raw = await r.json().catch(() => null);
   const body = raw?.interaction || raw;
   if (!r.ok) throw new Error(`${provider} HTTP ${r.status}${body?.error?.message ? ": " + body.error.message : ""}`);
@@ -325,7 +325,8 @@ export class Maker {
     }
     await this.saveCall(record, path);
     try {
-      const { body, seconds } = await this.request(provider, payload, key, { mode: this.keys.vision_auth, project: this.keys.vision_project });
+      const { body, seconds } = await this.request(provider, payload, key, { mode: this.keys.vision_auth, project: this.keys.vision_project,
+        timeout_ms: profile.request_timeout_ms });
       Object.assign(record, { response: body, seconds, usage: body.usage || null,
         cost_usd: cost ? cost(body.usage, body) : usageCost(body.usage, profile, started) });
       if (body.status && body.status !== "completed") throw new Error(`The ${stage} response is ${body.status}.`);

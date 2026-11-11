@@ -2,7 +2,7 @@ import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { layerState, accept, sendBack, noteEdit } from "./layers.js?v=20261110-finders-4";
 import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags } from "./flags.js?v=20261110-finders-4";
 
-export const STAGES = ["pages", "regions", "text", "read", "export"];
+export const STAGES = ["pages", "types", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
 
 export function pageStages(doc, types, errors = [], warnings = []) {
@@ -51,13 +51,13 @@ export function eligible(stage, state) {
 }
 
 export function availability(states) {
-  return { pages: true, regions: true, text: states.some(state => eligible("text", state)),
+  return { pages: true, types: true, regions: true, text: states.some(state => eligible("text", state)),
     read: states.some(state => eligible("read", state)), export: true };
 }
 
 export function workflowRoute(value, ready, pageState = () => null) {
   const hash = new URLSearchParams(value.replace(/^#/, ""));
-  const aliases = { types: ["regions", "types"], readers: ["text", "compare"], structures: ["read", "compare"],
+  const aliases = { readers: ["text", "compare"], structures: ["read", "compare"],
     check: ["read", "problems"], style: ["read", "style"], make: ["regions", "pages"] };
   const old = Object.keys(aliases).find(key => hash.has(key));
   let stage = old ? aliases[old][0] : STAGES.find(key => hash.has(key));
@@ -66,19 +66,23 @@ export function workflowRoute(value, ready, pageState = () => null) {
     stage = hash.has("p") ? state ? state.layers.text?.accepted ? "read" : state.layers.regions?.accepted ? "text" : "regions"
       : ready.read ? "read" : "regions" : "pages";
   }
-  const view = old ? aliases[old][1] : hash.get("view") || "";
+  let view = old ? aliases[old][1] : hash.get("view") || "";
+  if (stage === "regions" && ["types", "proposal"].includes(view)) {
+    stage = "types";
+    if (view === "types") view = "";
+  }
   const locked = !ready[stage];
   if (locked) return { stage: "pages", mode: "grid", locked };
   const pid = hash.get("p");
   const views = { "text/compare": "readers", "read/compare": "structures",
     "read/problems": "check", "read/style": "style" };
-  const mode = pid && !view ? "page" : views[`${stage}/${view}`] ||
-    (stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");
+  const mode = pid && !view && stage !== "types" ? "page" : views[`${stage}/${view}`] ||
+    (stage === "types" ? "types" : stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");
   return { stage, mode, pid, view, region: hash.get("r"), unit: hash.get("u"), locked: false };
 }
 
 export function workflowAddress(mode, pid = null, selection = {}) {
-  const aliases = { types: "regions&view=types", readers: "text&view=compare", structures: "read&view=compare",
+  const aliases = { readers: "text&view=compare", structures: "read&view=compare",
     check: "read&view=problems", style: "read&view=style", make: "regions", book: "regions", page: "read" };
   const hash = aliases[mode] || mode;
   const extra = selection.region ? `&r=${encodeURIComponent(selection.region)}` : selection.unit ? `&u=${encodeURIComponent(selection.unit)}` : "";

@@ -14,6 +14,8 @@ export function mergeTypeProposals(results) {
   first.merged = { sources: results.map(({ profile, result }) => ({ id: profile.id, label: profile.label, call: result.call.path, cost_usd: result.call.cost_usd, seconds: result.call.seconds })), types: variants, kept };
   first.types.source.discovery = { ...first.types.source.discovery, model: results.map(({ profile }) => profile.label).join(" + "), reviewed: false,
     comparison: first.merged, questions: [...new Set(results.flatMap(({ result }) => result.proposal.questions || []))] };
+  const overviews = results.flatMap(({ result }) => result.types.source.discovery.overviews || []);
+  if (overviews.length) first.types.source.discovery.overviews = overviews;
   first.proposal.types = Object.keys(types).map(name => results.flatMap(({ result }) => result.proposal.types).find(type => type.name === name));
   first.proposal.questions = first.types.source.discovery.questions;
   first.merged.cost_usd = results.every(({ result }) => Number.isFinite(result.call.cost_usd)) ? results.reduce((sum, { result }) => sum + result.call.cost_usd, 0) : null;
@@ -22,6 +24,6 @@ export function mergeTypeProposals(results) {
 }
 
 export function typeAgreement(variants) {
-  return variants.length === 1 ? "Found by one model" : variants.every(value => canonical(value.definition) === canonical(variants[0].definition))
-    ? "Both models agree" : "Both models found this type with different definitions";
+  return variants.length === 1 ? "Found in one proposal" : variants.every(value => canonical(value.definition) === canonical(variants[0].definition))
+    ? "Proposals agree" : "Proposals use different definitions";
 }

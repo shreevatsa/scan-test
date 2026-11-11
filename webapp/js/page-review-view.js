@@ -1,9 +1,9 @@
 import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261111-carbon-high-5";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261111-carbon-high-5";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261111-type-overview-4";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261111-type-overview-4";
 import { settings } from "./store.js?v=20261110-finders-4";
-import { money } from "./reader-controls.js?v=20261111-carbon-high-5";
-import { reviewTypeChange } from "./type-operations.js?v=20261111-carbon-high-5";
+import { money } from "./reader-controls.js?v=20261111-type-overview-4";
+import { reviewTypeChange } from "./type-operations.js?v=20261111-type-overview-4";
 import { reviewPage } from "./review-view.js?v=20261111-cross-page-carbon-2";
 import { runProgress } from "./run-progress.js";
 

@@ -275,7 +275,20 @@ header[data-top="pages"] .tabs, header[data-top="regions"] .tabs, header[data-to
 main.page-empty { overflow: auto; }
 button:disabled { opacity: .45; cursor: default; }
 [hidden] { display: none !important; }
-main.grid { overflow: auto; }
+main.grid, main.types { overflow: auto; }
+header[data-top="types"] .tabs { display: none; }
+.type-overview .typesview { max-width: none; padding: 12px 0 24px; }
+.type-overview label.stack { display: block; }
+.type-overview label.stack textarea { display: block; box-sizing: border-box; width: 100%; min-height: 5em; margin-top: 6px; }
+.contact-sheets { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-top: 12px; }
+.contact-sheets figure { margin: 0; }
+.contact-sheet-open { padding: 0; background: white; width: 100%; }
+.contact-sheet-open img { width: 100%; display: block; }
+.contact-sheets figcaption { font-size: 13px; color: var(--muted); }
+.contact-sheet-dialog { width: min(1100px, 95vw); max-height: 95vh; overflow: auto; }
+.contact-sheet-dialog img { display: block; max-width: 100%; margin: 12px auto; }
+.overview-inventory { margin: 16px 0; }
+.overview-inventory td .link { margin-right: 8px; }
 .stage-overview { max-width: 1380px; margin: 0 auto; padding: 24px 28px 70px; }
 .stage-overview h1 { margin: 0 0 6px; font-size: 28px; }
 .stage-actions { margin: 18px 0; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }

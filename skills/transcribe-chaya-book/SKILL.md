@@ -22,7 +22,7 @@ Keep these meanings distinct when planning the work.
 
 Choose models independently for type discovery, region detection, transcription and completion of units and links. Use small comparisons when the choice matters. The reference model supplies a comparison baseline. Source-checked decisions supply accuracy evidence. Reuse existing successful results.
 
-The current runtime limits each provider request to 75 seconds. Prefer a faster model or a smaller request when a step repeatedly exceeds it. Retain interrupted attempts and unresolved charges in the ledger before deciding whether to retry. Use the user's existing budget and processing scope.
+The current runtime limits ordinary provider requests to 75 seconds. Whole-book contact-sheet discovery has a five-minute limit authorized for that operation. Prefer a faster model or a smaller request when a step repeatedly exceeds its limit. Retain interrupted attempts and unresolved charges in the ledger before deciding whether to retry. Use the user's existing budget and processing scope.
 
 ## Inspect the PDF and establish coordinates
 
@@ -42,7 +42,7 @@ For an overview inventory, ask for the proposed types present on each PDF page a
 
 Define each type using the schema's existing fields. Printed types have a neutral `region` class such as `paragraph`, `verse`, `heading`, `list_item`, `note`, `table` or `figure`. A name such as `toc_entry` can use `region: "list_item"` and a book-specific description. Containers omit `region` and list their allowed children in `contains`. `flow` names a flow where a type can occur at the top level. Furniture uses `role: "furniture"`. Descriptions should explain how to recognize the type in this book. Record languages, numbering, relations, inline distinctions and faithful transcription conventions where applicable.
 
-Use the existing proposal validation and merge logic in `type-discovery.js` and `type-draft.js` where their contracts fit. The current sample-image discovery path is implemented. Whole-book contact-sheet discovery is an experiment to evaluate against that baseline. Keep its input recipe and provenance distinct. Review proposed additions and revise the schema as new page forms appear. Existing books should use the type-revision operations so aliases, page migrations and protected edits stay consistent.
+Use the existing proposal validation and merge logic in `type-discovery.js` and `type-draft.js` where their contracts fit. `pipeline/type-overview.js` implements contact-sheet rendering, bounded request batches, page-inventory validation, cached batches and recovery from saved calls. The Unit types tab offers Whole-book contact sheets and Selected pages in detail, each with a two-model comparison. Contact-sheet methods 091–092 retain their own input recipe and provenance. Review proposed additions and revise the schema as new page forms appear. Existing books should use the type-revision operations so aliases, page migrations and protected edits stay consistent.
 
 Validate a proposed list before detecting regions.
 

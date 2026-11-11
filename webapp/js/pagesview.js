@@ -1,19 +1,17 @@
 import { suggestionButton } from "./review-view.js?v=20261111-cross-page-carbon-2";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261110-regions-3";
-import { renderTypeDiscovery } from "./regionsview.js?v=20261111-carbon-high-5";
-import { renderTypes } from "./typesview.js?v=20261111-carbon-high-5";
+import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261111-type-overview-4";
 import { regionBoxes } from "./pageimage.js?v=20261110-figure-region-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { FINDERS, finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261111-carbon-high-5";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261111-type-overview-4";
 import { settings } from "./store.js?v=20261110-finders-4";
 import { runBatch } from "./pipeline/batch.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261111-carbon-high-5";
-import { renderFinders } from "./findersview.js?v=20261111-carbon-high-5";
+import { money } from "./reader-controls.js?v=20261111-type-overview-4";
+import { renderFinders } from "./findersview.js?v=20261111-type-overview-4";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -189,11 +187,6 @@ export async function renderPages(el, app) {
       section.addEventListener("toggle", () => { if (active()) overview[key] = section.open; });
       return section;
     };
-    const typeList = h("div"), proposalContent = h("div"), count = Object.keys(book.types.types).length;
-    const typeSummary = h("span", { class: "meta" }, `${book.types.source?.draft ? "Draft · " : ""}${count} ${count === 1 ? "unit type" : "unit types"}`);
-    const proposal = book.manifest.pdf || book.kind === "chaya" ? fold("proposal", "Propose or load a type list", view === "proposal" || overview.proposal, null, proposalContent) : null;
-    const firstSetup = book.types.source?.draft && !book.pages.some(page => app.pageStates.get(page.id).doc);
-    const types = fold("types", "Unit types", ["types", "proposal"].includes(view) || (overview.types ?? firstSetup), typeSummary, proposal, typeList);
     finderControls = h("div");
     finderSummary = h("span", { class: "meta" });
     comparisonContent = h("div");
@@ -201,23 +194,15 @@ export async function renderPages(el, app) {
     finderSection = fold("finder", "Find regions", view === "compare" || overview.finder, finderSummary, finderControls, comparison);
     content.insertBefore(actions, message);
     const pages = fold("pages", "Page regions", overview.pages ?? true, h("span", { class: "meta" }, `${book.pages.length} pages`), content);
-    sections = [types, finderSection, pages];
+    sections = [h("p", { class: "hint" }, `${Object.keys(book.types.types).length} unit ${Object.keys(book.types.types).length === 1 ? "type" : "types"} · `,
+      h("button", { class: "link", onclick: () => app.setMode("types") }, "Review unit types")), finderSection, pages];
     setBusy = (area, value) => {
       app.workflowBusy = app.header.inert = value;
-      for (const part of [typeList, proposalContent, finderControls, comparisonContent, content]) if (part !== area) part.inert = value;
+      for (const part of [finderControls, comparisonContent, content]) if (part !== area) part.inert = value;
     };
-    loadOnOpen(types, typeList, () => renderTypes(typeList, app, { onReviewPages: ids => {
-      selected.clear(); for (const pid of ids) selected.add(pid);
-      stateFilter.value = filter.value = "all";
-      showSelection(); applyFilters();
-      pages.open = true; pages.scrollIntoView({ block: "start" });
-    } }));
-    if (proposal) loadOnOpen(proposal, proposalContent, () => renderTypeDiscovery(proposalContent, app, {
-      selected: [...selected], onBusy: value => setBusy(proposalContent, value),
-    }));
   }
   const container = h("div", { class: "stage-overview" }, heading,
-    h("p", { class: "hint" }, stage === "pages" ? "Browse the scans and see each page’s progress. Open a scan to inspect it, then work through Regions, Text and Read."
+    h("p", { class: "hint" }, stage === "pages" ? "Browse the scans and see each page’s progress. Review Unit types, then work through Regions, Text and Read."
       : stage === "regions" ? "Find and review the page regions. Move reviewed pages on to Text together."
         : stage === "text" ? "Transcribe the pages moved on from Regions. Review the text beside the scans, then move pages on to Read."
           : "Complete units and links using the accepted transcription. Open pages to review their structure."),

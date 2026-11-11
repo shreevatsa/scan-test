@@ -4,10 +4,10 @@ import { h, esc, lineHtml } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { orderedRegions, regionFlags } from "./flags.js?v=20261110-finders-4";
 import { REGION_CLASSES } from "./book-types.js?v=20261110-finders-4";
-import { typeSetup } from "./type-setup.js?v=20261111-carbon-high-5";
+import { typeSetup } from "./type-setup.js?v=20261111-type-overview-4";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 import { sha256hex } from "./chayapdf.js";
-import { reviewTypeChange } from "./type-operations.js?v=20261111-carbon-high-5";
+import { reviewTypeChange } from "./type-operations.js?v=20261111-type-overview-4";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {

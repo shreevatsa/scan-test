@@ -5,16 +5,46 @@
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
 import { h } from "./render.js";
-import { prepare } from "./reader.js?v=20261111-cross-page-carbon-2";
+import { prepare } from "./reader.js?v=20261111-type-overview-4";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261111-carbon-high-5";
-import { newTypeDialog } from "./regionsview.js?v=20261111-carbon-high-5";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261111-type-overview-4";
+import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261111-type-overview-4";
 import { citedSamplePages } from "./type-revisions.js?v=20261110-finders-4";
+
+export async function renderTypeOverview(el, app) {
+  const book = app.book, token = app.routeToken;
+  const list = h("div"), discovery = h("div");
+  app.typeOverview ||= {};
+  const section = h("details", { class: "region-section", open: app.routeView === "proposal" || (app.typeOverview.open ?? !!book.types.source?.draft) },
+    h("summary", {}, "Propose and compare unit types"), discovery);
+  let loaded = false;
+  const load = async () => {
+    app.typeOverview.open = section.open;
+    if (!section.open || loaded || app.book !== book || app.routeToken !== token) return;
+    loaded = true;
+    try {
+      await renderTypeDiscovery(discovery, app, { selected: [...(app.regionOverview?.selected || [])], onBusy: value => {
+        app.workflowBusy = app.header.inert = list.inert = value;
+      } });
+    } catch (error) { discovery.replaceChildren(h("p", { class: "bad", role: "status" }, error.message)); loaded = false; }
+  };
+  section.addEventListener("toggle", load);
+  el.replaceChildren(h("div", { class: "stage-overview type-overview" }, h("h1", {}, "Unit types"),
+    h("p", { class: "hint" }, "Define the kinds of content in this book and how they fit together. Inspect the scans, compare proposals, then continue to Regions."),
+    ...(book.manifest.pdf || book.kind === "chaya" ? [section] : []), list,
+    h("button", { class: "primary", onclick: () => app.setMode("regions") }, "Continue to Regions")));
+  await renderTypes(list, app, { onReviewPages: ids => {
+    app.pendingStageSelection = { stage: "regions", ids };
+    app.setMode("regions");
+  } });
+  await load();
+}
 
 export async function renderTypes(el, app, { onAdded = () => app.route(), onReviewPages, onOpenPage = pid => app.openPage(pid, {}, "regions") } = {}) {
   const { book, tl } = app;
   const types = tl.types || {};
   const badges = [];
+  const pageButtons = new Map(), typePages = new Map();
   // A count to fill in once the book is assembled: of a type in the book (short: just the number), or of a type in
   // one place of the tree (within: the parent type, or flow:<name> at a flow's top level).
   const badge = (name, { short = false, within = "" } = {}) => {
@@ -43,7 +73,7 @@ export async function renderTypes(el, app, { onAdded = () => app.route(), onRevi
 
   const yes = v => (v ? "yes" : "");
   const table = h("table", { class: "typetable" },
-    h("thead", {}, h("tr", {}, ...["type", "printed as", "may contain", "top level of", "language", "numbered", "in the book", "description"].map(x => h("th", {}, x)))),
+    h("thead", {}, h("tr", {}, ...["type", "printed as", "may contain", "top level of", "language", "numbered", "in the book", "pages with this type", "description"].map(x => h("th", {}, x)))),
     h("tbody", {}, ...Object.entries(types).map(([name, t]) => h("tr", { class: t.role === "furniture" ? "furn" : "" },
       h("th", {}, name, book.writable ? h("button", { class: "mini", "aria-label": `Edit type ${name}`, onclick: () => editTypeDialog(app, name) }, "Edit…") : null),
       h("td", {}, t.region ? t.region + (t.role === "furniture" ? " (furniture)" : "") : "container"),
@@ -52,6 +82,15 @@ export async function renderTypes(el, app, { onAdded = () => app.route(), onRevi
       h("td", {}, t.lang || ""),
       h("td", {}, yes(t.numbered)),
       h("td", { class: "num" }, badge(name, { short: true })),
+      h("td", {}, (() => {
+        const button = h("button", { class: "link", disabled: true, onclick: () => {
+          const ids = typePages.get(name) || [];
+          if (onReviewPages) onReviewPages(ids);
+          else if (ids.length) onOpenPage(ids[0]);
+        } }, "…");
+        pageButtons.set(name, button);
+        return button;
+      })()),
       h("td", { class: "desc" }, t.description || "")))));
 
   const list = (obj, render) => h("ul", {}, ...Object.entries(obj).map(render));
@@ -94,6 +133,17 @@ export async function renderTypes(el, app, { onAdded = () => app.route(), onRevi
   const docs = await book.all();
   if (!el.isConnected || app.book !== book || app.tl !== tl) return;
   const P = prepare(docs, tl);
+  for (const doc of docs) {
+    const names = new Set([...doc.page.regions.map(region => region.type), ...doc.units.map(unit => unit.type)]);
+    for (const name of names) {
+      if (!typePages.has(name)) typePages.set(name, []);
+      typePages.get(name).push(doc.page.id);
+    }
+  }
+  for (const [name, button] of pageButtons) {
+    button.textContent = `${typePages.get(name)?.length || 0} / ${docs.length} processed pages`;
+    button.disabled = !typePages.get(name)?.length;
+  }
   const n = {}, at = {};
   const add = (obj, k) => { obj[k] = (obj[k] || 0) + 1; };
   for (const u of P.book.units) {

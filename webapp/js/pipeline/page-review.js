@@ -5,7 +5,7 @@ import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revis
 import { finderById } from "./finders.js?v=20261111-cross-page-carbon-2";
 import { finderRequest } from "./finder-requests.js?v=20261111-carbon-high-5";
 import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261110-reading-2";
-import { templates, jsonHash } from "./run.js?v=20261111-carbon-high-5";
+import { templates, jsonHash } from "./run.js?v=20261111-type-overview-4";
 import { sha256hex } from "../chayapdf.js";
 
 export const PAGE_REVIEW_MODELS = [

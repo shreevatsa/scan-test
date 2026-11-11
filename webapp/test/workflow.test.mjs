@@ -14,7 +14,7 @@ const page = (id = "p1") => ({ page: { id, regions: [{ id: "r1", type: "paragrap
 
 test("stage availability follows acceptance and legacy documents retain their completed stages", () => {
   const empty = pageStages(null, types);
-  assert.deepEqual(availability([empty]), { pages: true, regions: true, text: false, read: false, export: true });
+  assert.deepEqual(availability([empty]), { pages: true, types: true, regions: true, text: false, read: false, export: true });
   const doc = page();
   assert.equal(eligible("text", pageStages(doc, types)), false);
   const regions = accept(doc, "regions");
@@ -26,12 +26,12 @@ test("stage availability follows acceptance and legacy documents retain their co
 });
 
 test("new and old addresses reach the stage views and locked stages return to Pages", () => {
-  const ready = { pages: true, regions: true, text: true, read: true, export: true };
-  const cases = { pages: ["pages", "grid"], regions: ["regions", "grid"], "regions&view=types": ["regions", "grid"],
-    "regions&view=proposal": ["regions", "grid"], "regions&view=compare": ["regions", "grid"],
+  const ready = { pages: true, types: true, regions: true, text: true, read: true, export: true };
+  const cases = { pages: ["pages", "grid"], regions: ["regions", "grid"], "regions&view=types": ["types", "types"],
+    "regions&view=proposal": ["types", "types"], "regions&view=compare": ["regions", "grid"],
     "text&view=compare": ["text", "readers"], "read&view=pages": ["read", "grid"], "read&view=compare": ["read", "structures"],
     "read&view=problems": ["read", "check"], "read&view=style": ["read", "style"], read: ["read", "read"], export: ["export", "export"],
-    types: ["regions", "grid"], readers: ["text", "readers"], structures: ["read", "structures"], make: ["regions", "grid"],
+    types: ["types", "types"], "types&view=proposal": ["types", "types"], readers: ["text", "readers"], structures: ["read", "structures"], make: ["regions", "grid"],
     check: ["read", "check"], style: ["read", "style"], "p=p1": ["read", "page"] };
   for (const [hash, expected] of Object.entries(cases)) {
     const out = workflowRoute(`#${hash}`, ready);

@@ -1,14 +1,14 @@
 import { reviewPage } from "./review-view.js?v=20261111-cross-page-carbon-2";
 import { settledChecks } from "./review.js?v=20261111-cross-page-carbon-2";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261111-carbon-high-5";
+import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261111-type-overview-4";
 import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
-import { CredentialChecks } from "./key-check.js?v=20261111-carbon-high-5";
+import { CredentialChecks } from "./key-check.js?v=20261111-type-overview-4";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261111-cross-page-carbon-2";
-import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261111-carbon-high-5";
+import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261111-type-overview-4";
 import { settings } from "./store.js?v=20261110-finders-4";
 import { runProgress } from "./run-progress.js";
 import { readingFits } from "./pipeline/partial-reading.js?v=20261110-partial-3";

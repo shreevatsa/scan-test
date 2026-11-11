@@ -1,0 +1,51 @@
+{
+  "method": "092-argon-low-contact-sheet-unit-types",
+  "stage": "unit-types",
+  "profile": {
+    "id": "argon-overview",
+    "label": "Gemini 4 Argon · low thinking",
+    "provider": "gemini",
+    "model": "gemini-4-argon",
+    "thinking": "low",
+    "rates": [
+      {
+        "from": "2026-01-01",
+        "input": 2,
+        "output": 10,
+        "cached": 0.1
+      },
+      {
+        "from": "2026-12-01",
+        "input": 4,
+        "output": 20,
+        "cached": 0.2
+      }
+    ],
+    "method": "092-argon-low-contact-sheet-unit-types",
+    "request_timeout_ms": 300000
+  },
+  "source_snapshot": "091-terra-contact-sheet-unit-types/snapshot",
+  "recipe": {
+    "version": 1,
+    "columns": 4,
+    "rows": 5,
+    "cell_width": 256,
+    "cell_height": 384,
+    "padding": 8,
+    "label_height": 24,
+    "mime_type": "image/jpeg",
+    "quality": 0.85,
+    "max_sheets": 16,
+    "max_payload_bytes": 12000000
+  },
+  "max_output_tokens": 16384,
+  "store": false,
+  "image_detail": "high",
+  "sources_checked_on": "2026-11-11",
+  "sources": [
+    "https://developers.openai.com/api/docs/guides/images-vision",
+    "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+    "https://aistudio.google.com/docs/image-understanding",
+    "https://aistudio.google.com/docs/models/gemini-4-argon"
+  ]
+}
