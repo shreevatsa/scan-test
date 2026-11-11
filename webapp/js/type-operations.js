@@ -2,7 +2,7 @@ import { h } from "./render.js";
 import { checkPage } from "./schema.js?v=20261110-reading-2";
 import { REGION_CLASSES } from "./book-types.js?v=20261110-finders-4";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
-import { money } from "./reader-controls.js?v=20261110-comparison-cost-2";
+import { money } from "./reader-controls.js?v=20261111-cross-page-carbon-2";
 
 const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change printed class", remove: "Remove unused type" };
 const quantity = (n, name) => `${n} ${name}${n === 1 ? "" : "s"}`;

@@ -8,7 +8,7 @@ import { readerOptions, readerById, usageCost, projectBookCost, bookCostEstimate
 import { openaiCost } from "../js/pipeline/steps.js";
 import { visionRequest, visionReading, visionCost } from "../js/pipeline/vision.js";
 import { selectPageRegions, checkReading, combineReading, structureSchema, markedText, plainReading } from "../js/pipeline/split.js";
-import { compareReadings, characterEdits, compareRegions } from "../js/pipeline/compare.js";
+import { compareReadings, characterEdits, compareRegions, comparePages } from "../js/pipeline/compare.js";
 import { tesseractWords, wordsToReading } from "../js/pipeline/ocr.js";
 import { layerState } from "../js/layers.js";
 import { reviewCandidate, saveReview } from "../js/review.js";
@@ -780,6 +780,44 @@ test("differing regions show all models and retain agreeing lines for context", 
   assert.equal(formatted[0].models[2].formatting_differences, 1);
   candidate.regions[0].lines[0].text = "same";
   assert.ok(compareRegions(reference, models, selected, types).every(region => !region.differs));
+});
+
+test("cross-page comparisons retain repeated region IDs and skip missing references and unprocessed models", () => {
+  const page = (id, reference, candidate) => ({ id, referenceId: "reference", reference, sent,
+    models: [{ id: "reference", transcription: reference }, { id: "candidate", transcription: candidate }] });
+  const regions = comparePages([
+    page("p1", reading("same"), reading("different")),
+    page("p2", null, reading("waiting for reference")),
+    page("p3", reading("agree"), reading("agree")),
+    page("p4", reading("reference only"), null),
+    page("p5", reading("word"), reading("<b>word</b>")),
+    page("p6", null, null),
+  ], types);
+  assert.deepEqual(regions.map(region => [region.page, region.id, region.differs]), [
+    ["p1", "r1", true], ["p3", "r1", false], ["p5", "r1", true],
+  ]);
+  assert.deepEqual(regions.filter(region => region.differs).map(region => region.page), ["p1", "p5"]);
+});
+
+test("Carbon transcription uses its own model, cache and dated token prices", async () => {
+  const { maker, book, calls } = fixture();
+  const carbon = readerById("carbon-low");
+  const config = JSON.parse(readFileSync(new URL("../../methods/089-gemini-4-carbon-low-reading/config.json", import.meta.url)));
+  assert.deepEqual(config.profile, carbon);
+  assert.equal(usageCost(usage, carbon, "2026-11-09"), null);
+  assert.equal(usageCost(usage, carbon, "2026-11-11"), .0005);
+  assert.equal(usageCost(usage, carbon, "2026-12-01"), .001);
+  const result = await maker.read("p1", { reader: "carbon-low" });
+  assert.equal(calls[0].payload.model, "gemini-4-carbon");
+  assert.equal(calls[0].payload.generation_config.thinking_level, "low");
+  assert.equal(calls[0].payload.generation_config.max_output_tokens, config.max_output_tokens);
+  assert.equal(calls[0].payload.store, false);
+  assert.equal(result.profile.method, config.method);
+  assert.equal((await book.readWork("work/readings/p1/carbon-low.json")).profile.id, "carbon-low");
+  assert.equal((await maker.read("p1", { reader: "carbon-low" })).cached, true);
+  await maker.read("p1", { reader: "argon-low" });
+  assert.equal(calls.length, 2);
+  assert.equal(calls[1].payload.model, "gemini-4-argon");
 });
 
 test("Tesseract word boxes map to source lines and ignore outside text", () => {

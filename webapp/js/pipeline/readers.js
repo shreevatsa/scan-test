@@ -1,11 +1,13 @@
 // Transcription and schema-assignment profiles. Token prices are paid-tier USD per million.
-import { finderById } from "./finders.js?v=20261110-finders-4";
+import { finderById } from "./finders.js?v=20261111-cross-page-carbon-2";
 // Source fetched 2026-11-08: https://ai.google.dev/gemini-api/docs/pricing
-import { argonRates, flashRates } from "./model-prices.js?v=20261110-finders-4";
+import { carbonRates, argonRates, flashRates } from "./model-prices.js?v=20261111-cross-page-carbon-2";
 
 export const READERS = [
   { id: "argon-low", label: "Gemini 4 Argon · low thinking", provider: "gemini", model: "gemini-4-argon", thinking: "low", rates: argonRates, formatting: true },
   { id: "argon-high", label: "Gemini 4 Argon · high thinking", provider: "gemini", model: "gemini-4-argon", thinking: "high", rates: argonRates, formatting: true },
+  { id: "carbon-low", label: "Gemini 4 Carbon · low thinking", provider: "gemini", model: "gemini-4-carbon", thinking: "low", rates: carbonRates, formatting: true,
+    method: "089-gemini-4-carbon-low-reading" },
   { id: "flash-low", label: "Gemini 3.8 Flash · low thinking", provider: "gemini", model: "gemini-3.8-flash", thinking: "low", rates: flashRates, formatting: true },
   { id: "flash-lite", label: "Gemini 3.5 Flash-Lite · minimal thinking", provider: "gemini", model: "gemini-3.5-flash-lite", thinking: "minimal", rates: [{ from: "2026-01-01", input: 0.3, output: 2.5, cached: 0.03 }], formatting: true },
   { id: "tesseract", label: "Tesseract · local OCR", provider: "local", model: "tesseract.js-6.0.1", formatting: false },

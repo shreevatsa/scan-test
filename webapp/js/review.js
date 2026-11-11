@@ -5,7 +5,7 @@ import { checkDocument } from "./schema.js?v=20261110-reading-2";
 import { markedText } from "./pipeline/split.js";
 import { structureDecisions } from "./pipeline/structure-compare.js";
 import { unitPath, unitRegionIds } from "./editing.js?v=20261110-finders-4";
-import { regionLayout } from "./pipeline/finders.js?v=20261110-finders-4";
+import { regionLayout } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
 import { preserveMarkerIds } from "./marker-ids.js?v=20261110-partial-3";
 import { partialTextScope } from "./pipeline/partial-reading.js?v=20261110-partial-3";
 

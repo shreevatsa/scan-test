@@ -2,6 +2,7 @@ import { plainReading } from "./split.js";
 import { parseLine } from "../inline.js";
 
 export function characterEdits(a, b) {
+  if (a === b) return 0;
   const left = Array.from(a), right = Array.from(b);
   let previous = right.map((_, i) => i + 1);
   previous.unshift(0);
@@ -72,4 +73,12 @@ export function compareRegions(reference, transcriptions, sent, types) {
     return { id: source.rid, source: source.region, lines, models: comparisons,
       differs: comparisons.some(model => model.edits > 0 || model.formatting_differences > 0) };
   }).filter(region => region.lines.length);
+}
+
+// Keep the source page with each region, since region IDs repeat on different pages.
+export function comparePages(pages, types) {
+  return pages.flatMap(page => {
+    if (!page.reference || !page.models.some(model => model.transcription && model.id !== page.referenceId)) return [];
+    return compareRegions(page.reference, page.models, page.sent, types).map(region => ({ ...region, page: page.id }));
+  });
 }

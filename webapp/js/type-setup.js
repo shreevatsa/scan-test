@@ -2,13 +2,13 @@ import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261110-fi
 import { h } from "./render.js";
 import { checkTypes } from "./schema.js?v=20261110-reading-2";
 import { settings } from "./store.js?v=20261110-finders-4";
-import { money } from "./reader-controls.js?v=20261110-comparison-cost-2";
+import { money } from "./reader-controls.js?v=20261111-cross-page-carbon-2";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261110-comparison-cost-2";
-import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261110-comparison-cost-2";
-import { readerById, structurerById } from "./pipeline/readers.js?v=20261110-comparison-cost-2";
+import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261111-cross-page-carbon-2";
+import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261111-cross-page-carbon-2";
+import { readerById, structurerById } from "./pipeline/readers.js?v=20261111-cross-page-carbon-2";
 import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261110-comparison-cost-2";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261111-cross-page-carbon-2";
 import { citedSamplePages } from "./type-revisions.js?v=20261110-finders-4";
 
 export function typeSetup({ app, title, bookId, description, index, template, book = null, initialSource = "starter", proposalUrl = null, onBusy }) {

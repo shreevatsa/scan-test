@@ -1,6 +1,6 @@
 # Scanned books, source-aware: session handoff
 
-Updated 2026-11-10. The nine-step stage-based workflow is implemented. Start with "Build progress" and "Current state", then use the design below for its decisions and the remaining experiments. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every public test, in order; private tests are recorded only in private/.
+Updated 2026-11-11. The nine-step stage-based workflow is implemented. Start with "Build progress" and "Current state", then use the design below for its decisions and the remaining experiments. The later sections are earlier notes, kept for reference; where they differ from it, "Current state" wins. NOTEBOOK.md has every public test, in order; private tests are recorded only in private/.
 
 ## Stage-based workflow (design of 2026-11-09)
 
@@ -53,7 +53,7 @@ Steps 1 through 9 are complete, as recorded under "Build progress". The next wor
 5. **One way of settling differences.** Comparing models, and reviewing a suggestion against a person's work, are the same activity: two versions of a page side by side, and a person choosing. What the person chooses becomes the page's data and also scores the models. Disagreement with a reference model is not accuracy and is never shown as accuracy.
 6. **A change to the type list is one of a few named operations, each with a known reach** (the table under "Type list revisions"). There is no general invalidation scheme.
 7. **Where the text comes from is open.** A scanned page gets its text from a transcription model; a digital PDF's page will get it from the PDF (methods 058 and 062, not yet ported: item 2 under "Open"). New code reads a page's state from its document, never from the presence of a model's work record.
-8. **Steps 1 to 7 change no request that processes a page:** no prompt, response schema, image or setting. So they need no new method ID, and saved results stay reusable. (The key check of step 3 is a new request, but it reads no page and is not a method.) Step 8 adds region finders, and the experiments at the end change requests; each of those gets a new ID (the next unused is 089).
+8. **Steps 1 to 7 change no request that processes a page:** no prompt, response schema, image or setting. So they need no new method ID, and saved results stay reusable. (The key check of step 3 is a new request, but it reads no page and is not a method.) Step 8 adds region finders, and the experiments at the end change requests; each of those gets a new ID (the next unused is 090).
 
 ### Data model
 
@@ -556,7 +556,7 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 2. Run both test suites, and open a book in the app to see the current modes.
 3. The nine build steps are complete. Continue with the user's full-book workflow, correcting concrete issues found there. The separately listed experiments remain open and require new method IDs and recorded costs. The user has authorized committing and pushing finished work straight to `main`.
 
-## Current state (2026-11-10)
+## Current state (2026-11-11)
 
 **Goal (unchanged):**
 - turn a book's PDF into a digital book whose every unit (paragraph, verse, saying, footnote…) links to its page regions;
@@ -566,7 +566,7 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 - **scans** (model calls), as the app's Make pages runs them:
   1. page regions with the chosen finder, using Terra (042), local blocks (079), Tesseract (080), Astra (081), Sol (082), or Gemini variants (083–086);
   2. method 063: the local step (ink lines and outlines, with fragment bands joined to their parent lines);
-  3. selectable reading profiles 065–069 and 071–072, with Argon low/high, Flash low, Flash-Lite minimal, local Tesseract or Cloud Vision Text Detection and Document Text Detection;
+  3. selectable reading profiles 065–069, 071–072 and 089, with Argon low/high, Carbon low, Flash low, Flash-Lite minimal, local Tesseract or Cloud Vision Text Detection and Document Text Detection;
   4. selectable text-only schema assignment with Argon high (070, the default), Argon low, Flash low, Flash-Lite minimal or Terra without reasoning (073–076), preserving the transcription’s printed text. Each model and stage is cached separately. Method 064 preserves the earlier combined transcription recipe on method 063 geometry;
 
   Earlier book runs: Kale (method 052) and Telang (methods 052 and 054);
@@ -588,12 +588,14 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 - **storage:** books are kept in the browser's private file system, with autosave, and saved as one file, a `.chaya.pdf`. That is the original PDF's bytes, unchanged, plus one update attaching `chaya.json` with the book's data; the original is recoverable exactly. Pages are drawn from the PDF;
 - **published books** open by URL, read only;
 - **Page AI review** accepts an instruction for one page and returns an explanation, proposed printed types and a complete layout through methods 087–088. Types and regions are reviewed through the existing previews. The editor has a page-specific color legend, bidirectional hover highlights, blank-page deselection and compact region cards.
+- **Transcription inspection** lists saved comparable pages across the book, with 20 regions per batch in source order and page headings. The default filter shows differing regions. Agreeing regions can be included, and the batch position survives reload. Region and whole-page review retain their source page. The former inspection page dropdown is removed.
+- **Carbon transcription** adds Gemini 4 Carbon with low thinking as method 089. Model ID, image and structured-output support, thinking settings and dated standard pricing were verified in Google’s documentation on 2026-11-11. Its normal transcription path, saved profile, cache separation and price transition have fixture checks. The next unused method ID is 090.
 - **Comparison credentials** are checked against every selected model and reference, including optional fixed-model completion and region finding when needed. Gemini and Cloud Vision are checked separately. Changing a credential or selecting an unchecked model disables running until its check succeeds. An explicit Check key click sends fresh tests, deduplicated by model, and blocks running while they are pending. Finder comparisons share the grouped check logic. Browser checks used simulated responses and confirmed both rejection and successful runs without live provider requests.
 - **Illustration overlays** show the full rectangular image crop in the page editor, finder comparisons and side-by-side region reviews, matching Read and HTML export. Existing saved figures work directly, with polygon bounds as the fallback when a box is absent.
 - **Regions overview** groups unit types, the finder choice and per-page work in three collapsible sections. Each comparison opens beside the choice it informs. The page editor opens the full type list in a dialog and keeps the selected region when applying a revision.
 - **transcription repairs** reuse unchanged model readings after region edits and request only changed text regions. Protected text receives a scoped suggestion. Saved Vision word boxes can be remapped for free, and Tesseract reruns locally. Whole-book cost projections recover original whole-page prices from reading history. Each stage uses available samples, with unmeasured stages named beside a dollar subtotal. The transcription comparison shares the fixed schema model’s sampled price across candidates. The ledger records repair and retry charges.
 - **editing** Regions edits page geometry. Text edits transcription and markers. Read edits units, line joins and note links through its page fallback or passage panel. Cross-page joins have coordinated saves and recovery. The style sheet editor remains under Read.
-- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (248) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
+- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (250) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
 
 **Running:**
 - `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/;
@@ -1174,7 +1176,7 @@ The total is about $2.76.
 ## Conventions to preserve
 
 - Keep code and README under `methods/<method_id>/`, shared inputs under `inputs/`, human or proposed references under `references/<input_id>/`, the draft book schema and its type lists under `schema/`, and outputs indexed by input and method. Cross-page surveys go under `outputs/surveys/<method_id>/`.
-- A frozen method keeps its ID on new data. Changing the prompt, model, settings or processing recipe gets a new ID; the next unused ID is 089. Repeated requests use a fresh output subdirectory such as `run-002`, not a new method ID.
+- A frozen method keeps its ID on new data. Changing the prompt, model, settings or processing recipe gets a new ID; the next unused ID is 090. Repeated requests use a fresh output subdirectory such as `run-002`, not a new method ID.
 - Keep prior runtime code and saved requests/responses immutable: hashes tie them to results. Save new derived coordinates separately with their source result and every adjustment.
 - Keep NOTEBOOK.md limited to actual tests, settings, observations and images. Use self-contained entries, full method names, stable method IDs, and one physical line per prose paragraph. Method README links and image references are expected. Keep planning and cross-experiment conclusions in this handoff or another separate document.
 - Add results within the appropriate test-page section while preserving previous entries. Do not label tests on a new page as newly numbered methods.
