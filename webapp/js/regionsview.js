@@ -125,12 +125,15 @@ export class RegionsPanel {
   format() {}
   render() {
     const app = this.app, scroll = this.el.scrollTop;
-    const cards = orderedRegions(app.doc, app.tl).map(region => {
+    const regions = orderedRegions(app.doc, app.tl);
+    const idWidth = regions.reduce((width, region) => Math.max(width, region.id.length), 3);
+    this.el.style.setProperty("--region-id-width", `${idWidth}ch`);
+    const cards = regions.map(region => {
       const card = h("section", { class: "region", dataset: { rid: region.id }, style: `border-left-color:${app.colors[region.type] || "#888"}`,
         onpointerenter: () => app.hoverRegion(region.id, true), onpointerleave: () => app.hoverRegion(region.id, false),
       }, h("div", { class: "fields" }, h("button", { class: "link region-select", onclick: () => app.select({ region: region.id }), "aria-label": `Select region ${region.id}` }, region.id),
           regionTypeSelect(app, region.type, type => app.retypeRegion(region.id, type), region.id),
-          h("span", { class: "meta" }, Number.isFinite(region.order) ? `Position ${region.order}` : "Page furniture"),
+          h("span", { class: "meta region-position" }, Number.isFinite(region.order) ? `Position ${region.order}` : "Page furniture"),
           h("button", { onclick: () => app.edit(doc => ops.moveRegionOrder(doc, app.tl, region.id, -1)), disabled: app.tl.types[region.type]?.role === "furniture" }, "Earlier"),
           h("button", { onclick: () => app.edit(doc => ops.moveRegionOrder(doc, app.tl, region.id, 1)), disabled: app.tl.types[region.type]?.role === "furniture" }, "Later")));
       const text = h("div", { class: "rtext readonly", dataset: { rid: region.id }, "aria-label": `${region.id} transcription, read only` });

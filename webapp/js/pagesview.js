@@ -1,8 +1,8 @@
 import { suggestionButton } from "./review-view.js?v=20261110-page-review-5";
 import { h } from "./render.js";
 import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261110-regions-3";
-import { renderTypeDiscovery } from "./regionsview.js?v=20261110-page-review-5";
-import { renderTypes } from "./typesview.js?v=20261110-page-review-5";
+import { renderTypeDiscovery } from "./regionsview.js?v=20261110-region-alignment-1";
+import { renderTypes } from "./typesview.js?v=20261110-region-alignment-1";
 import { regionBoxes } from "./pageimage.js?v=20261110-page-review-5";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
