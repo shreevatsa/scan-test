@@ -532,5 +532,5 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .finder-scan img { width: 100%; display: block; }
 .finder-overlay { position: absolute; inset: 0; pointer-events: none; }
 .finder-overlay svg { width: 100%; height: 100%; }
-.finder-overlay polygon { fill-opacity: .08; stroke-width: 3; }
+.finder-overlay path { fill-opacity: .08; stroke-width: 3; }
 .finder-overlay text { font: 24px sans-serif; stroke: white; stroke-width: 3; paint-order: stroke; }

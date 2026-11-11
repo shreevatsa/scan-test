@@ -1,4 +1,5 @@
 import { h, cropInto, bbox, esc } from "./render.js";
+import { regionPath } from "./pageimage.js?v=20261110-figure-region-2";
 import { clone } from "./ops.js?v=20261110-finders-4";
 import { parseLine, TAGS } from "./inline.js";
 import { markedText } from "./pipeline/split.js";
@@ -133,7 +134,7 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
     }
   } else {
     preview.append(h("div", { class: "review-columns" }, ...[{ doc: base, title: "Current page" }, { doc: proposed, title: label }].map(({ doc, title }) => {
-      const polygons = doc.page.regions.map(value => `<g><title>${esc(value.id)} ${esc(value.type)}</title>${(value.polygons || []).map(poly => `<polygon points="${poly.map(point => point.map(Number).join(",")).join(" ")}"/>`).join("")}</g>`).join("");
+      const polygons = doc.page.regions.map(value => `<g><title>${esc(value.id)} ${esc(value.type)}</title><path d="${esc(regionPath(value, types.types[value.type]?.region))}"/></g>`).join("");
       return h("section", {}, h("h3", {}, title), h("div", { class: "review-page" }, h("img", { src: image, alt: `${title} regions` }),
         h("div", { class: "review-overlay", html: `<svg viewBox="0 0 ${Number(doc.page.width)} ${Number(doc.page.height)}">${polygons}</svg>` })),
         ...doc.page.regions.map(value => h("p", {}, `${value.id} · ${value.type} · ${value.lines?.length || 0} line pieces`)));

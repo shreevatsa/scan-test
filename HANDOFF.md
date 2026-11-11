@@ -588,10 +588,11 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 - **storage:** books are kept in the browser's private file system, with autosave, and saved as one file, a `.chaya.pdf`. That is the original PDF's bytes, unchanged, plus one update attaching `chaya.json` with the book's data; the original is recoverable exactly. Pages are drawn from the PDF;
 - **published books** open by URL, read only;
 - **Page AI review** accepts an instruction for one page and returns an explanation, proposed printed types and a complete layout through methods 087–088. Types and regions are reviewed through the existing previews. The editor has a page-specific color legend, bidirectional hover highlights, blank-page deselection and compact region cards.
+- **Illustration overlays** show the full rectangular image crop in the page editor, finder comparisons and side-by-side region reviews, matching Read and HTML export. Existing saved figures work directly, with polygon bounds as the fallback when a box is absent.
 - **Regions overview** groups unit types, the finder choice and per-page work in three collapsible sections. Each comparison opens beside the choice it informs. The page editor opens the full type list in a dialog and keeps the selected region when applying a revision.
 - **transcription repairs** reuse unchanged model readings after region edits and request only changed text regions. Protected text receives a scoped suggestion. Saved Vision word boxes can be remapped for free, and Tesseract reruns locally. Whole-book cost projections exclude composite repairs and the ledger records their API charges.
 - **editing** Regions edits page geometry. Text edits transcription and markers. Read edits units, line joins and note links through its page fallback or passage panel. Cross-page joins have coordinated saves and recovery. The style sheet editor remains under Read.
-- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (242) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
+- **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (245) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).
 
 **Running:**
 - `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/;

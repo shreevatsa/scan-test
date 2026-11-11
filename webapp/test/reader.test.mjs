@@ -4,7 +4,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { prepare, bookHtml, bookDocument, bookText } from "../js/reader.js";
+import { prepare, bookHtml, bookDocument, bookText, fillFigures } from "../js/reader.js";
 import { makeValidator, checkPage } from "../js/schema.js";
 
 const ROOT = new URL("../..", import.meta.url).pathname;
@@ -70,4 +70,14 @@ test("rows, styles and figures in the reader's HTML", () => {
   assert.ok(doc.startsWith("<!DOCTYPE html>") && doc.includes('<img class="r-figimg" src="data:image/png;base64,'), "a standalone document with images");
   assert.ok(doc.includes("max-width:calc(var(--pt, 1pt) * 297.6)"), "the book's measure");
   assert.ok(bookText(P).includes("[figure: a symbol]"));
+});
+
+test("figures in Read retain the full crop when the detected ink covers only a small area", async () => {
+  const docs = pages(), region = docs[0].page.regions[0];
+  region.polygons = rect(550, 60, 570, 80);
+  const image = { dataset: { ref: `${docs[0].page.id}#r1` }, style: {} };
+  await fillFigures({ querySelectorAll: () => [image] }, { book: { imageUrl: async () => "page.png" } }, prepare(docs, TL));
+  assert.equal(image.style.width, "201px");
+  assert.equal(image.style.height, "201px");
+  assert.equal(image.style.backgroundPosition, "-500px -50px");
 });

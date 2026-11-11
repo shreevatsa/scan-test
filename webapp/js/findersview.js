@@ -1,9 +1,10 @@
 import { h, esc } from "./render.js";
+import { regionPath } from "./pageimage.js?v=20261110-figure-region-2";
 import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261110-finders-4";
 import { OCR_LANGUAGES, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-partial-3";
 import { pageRange } from "./pipeline/pdf.js";
 import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-partial-3";
-import { reviewPage } from "./review-view.js?v=20261110-review-order-1";
+import { reviewPage } from "./review-view.js?v=20261110-figure-region-2";
 import { settings } from "./store.js?v=20261110-finders-4";
 import { money } from "./reader-controls.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
@@ -13,7 +14,7 @@ function scanCard(record, profile, image, reference, onChoose, onReview) {
   const paths = record.regions.map(region => {
     const color = region.type === "other" ? "#ad6800" : "#2056a5";
     const box = region.model_box;
-    const polygons = region.polygons.map(ring => `<polygon points="${ring.map(point => point.map(Number).join(",")).join(" ")}"/>`).join("");
+    const polygons = `<path d="${esc(regionPath(region, region.region_class))}"/>`;
     return `<g stroke="${color}" fill="${color}"><title>${esc(`r${region.region_id} · ${region.type}`)}</title>${polygons}<text x="${Number(box[0])}" y="${Math.max(18, Number(box[1]) - 4)}">${esc(`r${region.region_id} ${region.type}`)}</text></g>`;
   }).join("");
   return h("section", { class: `finder-card${reference ? " reference" : ""}` }, h("h3", {}, profile.label),

@@ -1,9 +1,9 @@
-import { suggestionButton } from "./review-view.js?v=20261110-review-order-1";
+import { suggestionButton } from "./review-view.js?v=20261110-figure-region-2";
 import { h } from "./render.js";
 import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261110-regions-3";
-import { renderTypeDiscovery } from "./regionsview.js?v=20261110-review-order-1";
-import { renderTypes } from "./typesview.js?v=20261110-review-order-1";
-import { regionBoxes } from "./pageimage.js?v=20261110-page-review-5";
+import { renderTypeDiscovery } from "./regionsview.js?v=20261110-figure-region-2";
+import { renderTypes } from "./typesview.js?v=20261110-figure-region-2";
+import { regionBoxes } from "./pageimage.js?v=20261110-figure-region-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261110-partial-3";
@@ -13,7 +13,7 @@ import { settings } from "./store.js?v=20261110-finders-4";
 import { runBatch } from "./pipeline/batch.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
 import { money } from "./reader-controls.js?v=20261110-partial-3";
-import { renderFinders } from "./findersview.js?v=20261110-review-order-1";
+import { renderFinders } from "./findersview.js?v=20261110-figure-region-2";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };

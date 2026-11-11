@@ -1,9 +1,9 @@
-import { suggestionButton } from "./review-view.js?v=20261110-review-order-1";
+import { suggestionButton } from "./review-view.js?v=20261110-figure-region-2";
 import { h, bbox, cropInto } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { applyUnitAction, applyUnitChanges, assertJoinMetadata, nextPageUnit, unitPath, unitRegionIds, unitSnapshot } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit } from "./reading-edit.js?v=20261110-finders-4";
-import { renderInspector } from "./editor.js?v=20261110-review-order-1";
+import { renderInspector } from "./editor.js?v=20261110-figure-region-2";
 import { checkPage } from "./schema.js?v=20261110-reading-2";
 
 const nameOf = unit => [unit.type, unit.number, unit.label].filter(Boolean).join(" · ");

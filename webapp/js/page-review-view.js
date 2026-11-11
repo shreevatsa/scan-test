@@ -4,7 +4,7 @@ import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261110-pa
 import { settings } from "./store.js?v=20261110-finders-4";
 import { money } from "./reader-controls.js?v=20261110-partial-3";
 import { reviewTypeChange } from "./type-operations.js?v=20261110-page-review-5";
-import { reviewPage } from "./review-view.js?v=20261110-review-order-1";
+import { reviewPage } from "./review-view.js?v=20261110-figure-region-2";
 import { runProgress } from "./run-progress.js";
 
 export async function reviewPageWithAI(app) {

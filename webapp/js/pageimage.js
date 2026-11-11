@@ -2,7 +2,16 @@
 // its editable box with handles (drag a corner or an edge to resize, the middle to move). In drawing mode, drag a
 // rectangle to add a region.
 
-import { pathD } from "./render.js";
+import { bbox, pathD } from "./render.js";
+
+// Figures use the full image crop in Read and HTML export. Text outlines describe detected ink.
+export function regionPath(region, regionClass) {
+  if (regionClass === "figure") {
+    const [x1, y1, x2, y2] = region.box || region.model_box || bbox(region.polygons);
+    return `M${x1},${y1} H${x2} V${y2} H${x1} Z`;
+  }
+  return pathD(region.polygons);
+}
 
 const SVGNS = "http://www.w3.org/2000/svg";
 const svgEl = (tag, attrs = {}) => {
@@ -82,11 +91,12 @@ export class PageView {
     return old;
   }
 
-  show(doc, imageUrl, colors, furniture) {
+  show(doc, imageUrl, colors, furniture, types) {
     this.tooltip.hidden = true;
     this.doc = doc;
     this.colors = colors;
     this.furniture = furniture;
+    this.types = types;
     if (this.img.getAttribute("src") !== imageUrl) this.img.src = imageUrl;
     const { width: W, height: H } = doc.page;
     this.svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
@@ -104,7 +114,7 @@ export class PageView {
       const col = this.colors[r.type] || "#888";
       const g = svgEl("g", { "data-rid": r.id });
       const title = svgEl("title"); title.textContent = `${r.id} · ${r.type}`; g.append(title);
-      const p = svgEl("path", { d: pathD(r.polygons), class: "pv-reg" + (this.furniture.has(r.type) ? " furn" : ""), stroke: col, fill: col });
+      const p = svgEl("path", { d: regionPath(r, this.types?.types[r.type]?.region), class: "pv-reg" + (this.furniture.has(r.type) ? " furn" : ""), stroke: col, fill: col });
       g.append(p);
       (r.lines || []).forEach((L, i) => {
         if (L.polygons) g.append(svgEl("path", { d: pathD(L.polygons), class: "pv-ln", "data-line": `${r.id}:${i}` }));
