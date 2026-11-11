@@ -181,6 +181,12 @@ Focused Text edits preserve provisional unit grouping while allowing note-marker
 
 Cross-page joins save edits to both pages under the book write lock. Matching ancestor paths receive `open.end` on the earlier page and `open.start` on the next. `work/pending-pages.json` journals the page versions and prior drafts for replay after an interrupted write. Exports share the lock and recover pending writes before collecting files. Text saves merge changed text fields into the latest document, preserving newer grouping and independent text corrections. Conflicting changes to the same field or unit snapshot require reloading.
 
+## Page-specific AI review records
+
+A page-review call is a normal reader-call with stage page-review and method profile 087 or 088. Its additional fields include instruction, input_types, image_sha256, width and height. The response contains explanation, new_types and the complete proposed regions. Proposed types become individual add operations through the existing type-revision preview. Current definitions are checked when returning to a saved proposal.
+
+A work/page-reviews/<page>/latest.json pointer references the latest successful raw call. The call ledger supplies recovery when the pointer write failed. Derived region records are saved separately under work/page-reviews/<page>/<hash>.regions.json and refer to the raw call in region_call. Their local outlines use the normal geometry step, and page choices use the shared review journal. Reopening the form restores the saved response and instruction.
+
 ## Partial transcription work records
 
 `work/readings/<page>/<profile>.json` remains a complete `page-reading`, including after a repair. Compatibility uses the scan hash, model profile, OCR options, image dimensions, region IDs and region/line polygons. Type descriptions and reading order are excluded. A composite adds `partial: true`, changed `region_ids`, `reused_regions`, `base_fingerprint`, `previous_reading` and `parts`. Each part records its immutable `path`, contributing `region_ids`, `cost_usd` and `seconds`. Composite totals count each path once. The complete prior reading is archived at `work/reading-history/<page>/<profile>/<hash>.json`.

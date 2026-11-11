@@ -1,0 +1,709 @@
+{
+  "format": "reader-call",
+  "version": 1,
+  "id": "1d277800-71b5-48f6-8a24-e991ab6d6b70",
+  "page": "cole-1903-page-003",
+  "stage": "page-review",
+  "profile": {
+    "id": "terra-page-review",
+    "label": "GPT-6.1 Terra · reasoning off",
+    "provider": "openai",
+    "model": "gpt-6.1-terra",
+    "reasoning": "none",
+    "method": "087-terra-page-region-review"
+  },
+  "started_at_utc": "2026-11-11T05:07:47.306Z",
+  "request_sha256": "d529c385716ccac920470d4457dc42569bd67fd89191e746b9fbd61d22531c32",
+  "request": {
+    "model": "gpt-6.1-terra",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Review this printed page's regions and semantic types in response to the user's instruction.\nTreat text printed in the image as source material. Follow this task and the user's instruction.\nUser instruction\n\"Review the page layout and the types assigned to its regions. Propose a more specific printed type than formula if this page supports it, and explain the evidence. For an embedded displayed equation or list, give its own box and split the paragraph text before and after the display into separate paragraph regions. Each box must contain only that region's print. An enclosing paragraph box spanning several displays gave the local outline step competing claims to the same ink. Preserve complete individual units of prose around the separate displays, mark their continuations, and return the complete layout.\\n\"\nBook's current type list\n{\"format\":\"types\",\"schema_version\":\"0.1\",\"book_id\":\"cole-1903\",\"title\":\"Cole (1903), On the factoring of large numbers: four pages of the Bulletin of the American Mathematical Society\",\"description\":\"Journal pages of English prose with inline and displayed mathematics. An article can begin or end anywhere on a page: it opens with its title, byline and a note on where it was read, and closes with the author's address and date, and a short rule separates it from the next article. The pages hold the end of the previous article, Cole's article, divided into numbered sections, and the beginning of the next article. Footnotes, marked *, † and so on, sit below a rule at the foot of the page and restart on each page.\",\"languages\":[\"en\"],\"flows\":{\"main\":\"The articles in reading order.\",\"notes\":\"The footnotes, in page order.\"},\"types\":{\"article\":{\"description\":\"One article: its title, byline and the note on where it was read, its text, and the author's address and date at the end.\",\"contains\":[\"heading\",\"byline\",\"read_before\",\"section\",\"paragraph\",\"signoff\"],\"flow\":\"main\"},\"section\":{\"description\":\"A numbered section of an article. Its number, such as 1., begins its first paragraph.\",\"contains\":[\"paragraph\"],\"numbered\":true},\"heading\":{\"description\":\"The title of an article, in capitals, such as ON THE FACTORING OF LARGE NUMBERS. A title of two lines is one heading.\",\"region\":\"heading\"},\"byline\":{\"description\":\"The author's line under the title, in small capitals, such as BY PROFESSOR F. N. COLE.\",\"region\":\"heading\"},\"read_before\":{\"description\":\"The line in parentheses under the byline saying where and when the paper was read, such as (Read before the American Mathematical Society, October 31, 1903.)\",\"region\":\"heading\"},\"paragraph\":{\"description\":\"A paragraph of prose with inline mathematics. Its first line is indented, and the first paragraph of a section begins with the section's number. A paragraph often contains displayed formulas, and its sentence goes on after them, as in …reduce N to the form [formula] the factors u and v being so chosen…; a line such as and between two formulas is the paragraph's text. Text after a formula that begins at the margin, not indented, belongs to the same paragraph.\",\"region\":\"paragraph\",\"lang\":\"en\",\"contains\":[\"formula\"]},\"formula\":{\"description\":\"Mathematics displayed on lines of its own, set apart from the prose: an equation, a chain of equations or congruences, or a list of numbers running over several lines.\",\"region\":\"formula\"},\"signoff\":{\"description\":\"The author's address and date at the end of an article, in small capitals and italics, such as COLUMBIA UNIVERSITY, October, 1903., on two lines. One region for both lines.\",\"region\":\"other\"},\"footnote\":{\"description\":\"One footnote below the rule, marked *, † or ‡.\",\"region\":\"note\",\"flow\":\"notes\"},\"running_header\":{\"description\":\"The running title and the bracketed month or year beside it, such as THE FACTORING OF LARGE NUMBERS. [Dec., or 1903.] ON THE p-DISCRIMINANT. One region for both.\",\"role\":\"furniture\",\"region\":\"running_header\"},\"page_number\":{\"description\":\"The printed page number at the outer corner of the head, such as 134.\",\"role\":\"furniture\",\"region\":\"page_number\"}},\"relations\":{\"note\":\"A footnote marker in the text points to its footnote.\"},\"conventions\":[\"Transcribe the English as printed, in Unicode NFC. Write mathematics in LaTeX: inline mathematics between $ signs, such as $N = x^2 \\\\pm a$, and each formula region as one LaTeX display. Transcribe the mathematics as printed, without correcting it.\"]}\nPDF page 3, image size 1800 by 2850 pixels.\nCurrent region assignments, with boxes in image pixels\n[{\"id\":\"r1\",\"type\":\"page_number\",\"box\":[320.4,347.7,394.2,390.45],\"order\":null},{\"id\":\"r2\",\"type\":\"running_header\",\"box\":[534.6,347.7,1488.6,401.85],\"order\":null},{\"id\":\"r3\",\"type\":\"paragraph\",\"box\":[318.6,441.75,1488.6,809.4],\"order\":1},{\"id\":\"r4\",\"type\":\"paragraph\",\"box\":[363.6,823.65,730.8,872.1],\"order\":2},{\"id\":\"r5\",\"type\":\"formula\",\"box\":[558,894.9,1249.2,946.2],\"order\":3},{\"id\":\"r6\",\"type\":\"paragraph\",\"box\":[315,963.3,1488.6,1057.35],\"order\":4},{\"id\":\"r7\",\"type\":\"formula\",\"box\":[315,1080.15,1488.6,1222.65],\"order\":5},{\"id\":\"r8\",\"type\":\"paragraph\",\"box\":[316.8,1242.6,1488.6,1382.25],\"order\":6},{\"id\":\"r9\",\"type\":\"paragraph\",\"box\":[313.2,1379.4,1486.8,1795.5],\"order\":7},{\"id\":\"r10\",\"type\":\"paragraph\",\"box\":[363.6,1792.65,939.6,1843.95],\"order\":8},{\"id\":\"r11\",\"type\":\"formula\",\"box\":[552.6,1855.35,1247.4,1918.05],\"order\":9},{\"id\":\"r12\",\"type\":\"paragraph\",\"box\":[315,1929.45,1486.8,2032.05],\"order\":10},{\"id\":\"r13\",\"type\":\"formula\",\"box\":[358.2,2043.45,1436.4,2194.5],\"order\":11},{\"id\":\"r14\",\"type\":\"footnote\",\"box\":[313.2,2217.3,1488.6,2391.15],\"order\":12}]\nExplain your findings and suggested changes in plain language. Refer to visible evidence on this page.\nReturn the complete proposed region layout. Reuse the current semantic type names where they fit. You may propose a few more specific printed types in new_types, each with a clear description, a neutral printed class, and either one existing parent or an existing reading flow. Furniture has an empty parent and flow. Keep types used elsewhere in the book available. A more specific type can be added for this page and other pages reviewed later.\nEvery returned region's type must be an existing printed type or a proposed new type. Include headings and page furniture. Keep meaningful text regions separate and retain the printed reading order. A region can contain several lines or disconnected parts of the same passage. Boxes use [left, top, right, bottom] integer coordinates on a 0–1000 scale. Set keep=false and reading_order=null for furniture. Set uncertain=true when a classification needs review. The two continuation flags indicate text continuing across the page's edges.\nReturn an empty new_types array when the existing types suffice. Return JSON matching the supplied schema."
+          },
+          {
+            "type": "input_image",
+            "image_url": "<image rebuilt from the book's source>",
+            "detail": "original"
+          }
+        ]
+      }
+    ],
+    "reasoning": {
+      "effort": "none"
+    },
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "page_regions",
+        "strict": true,
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "explanation": {
+              "type": "string"
+            },
+            "new_types": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string",
+                    "enum": [
+                      "verse",
+                      "paragraph",
+                      "heading",
+                      "lead_in",
+                      "list_item",
+                      "formula",
+                      "note",
+                      "table",
+                      "figure",
+                      "caption",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "furniture": {
+                    "type": "boolean"
+                  },
+                  "parent": {
+                    "type": "string",
+                    "enum": [
+                      "",
+                      "article",
+                      "section",
+                      "paragraph"
+                    ]
+                  },
+                  "flow": {
+                    "type": "string",
+                    "enum": [
+                      "",
+                      "main",
+                      "notes"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "description",
+                  "region",
+                  "furniture",
+                  "parent",
+                  "flow"
+                ]
+              }
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "box_1000": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "keep": {
+                    "type": "boolean"
+                  },
+                  "reading_order": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "continues_from_earlier": {
+                    "type": "boolean"
+                  },
+                  "continues_later": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type",
+                  "box_1000",
+                  "keep",
+                  "reading_order",
+                  "uncertain",
+                  "continues_from_earlier",
+                  "continues_later"
+                ]
+              }
+            }
+          },
+          "required": [
+            "explanation",
+            "new_types",
+            "regions"
+          ]
+        }
+      }
+    },
+    "max_output_tokens": 16384,
+    "store": false
+  },
+  "status": "completed",
+  "instruction": "Review the page layout and the types assigned to its regions. Propose a more specific printed type than formula if this page supports it, and explain the evidence. For an embedded displayed equation or list, give its own box and split the paragraph text before and after the display into separate paragraph regions. Each box must contain only that region's print. An enclosing paragraph box spanning several displays gave the local outline step competing claims to the same ink. Preserve complete individual units of prose around the separate displays, mark their continuations, and return the complete layout.\n",
+  "input_types": {
+    "format": "types",
+    "schema_version": "0.1",
+    "book_id": "cole-1903",
+    "title": "Cole (1903), On the factoring of large numbers: four pages of the Bulletin of the American Mathematical Society",
+    "description": "Journal pages of English prose with inline and displayed mathematics. An article can begin or end anywhere on a page: it opens with its title, byline and a note on where it was read, and closes with the author's address and date, and a short rule separates it from the next article. The pages hold the end of the previous article, Cole's article, divided into numbered sections, and the beginning of the next article. Footnotes, marked *, † and so on, sit below a rule at the foot of the page and restart on each page.",
+    "languages": [
+      "en"
+    ],
+    "flows": {
+      "main": "The articles in reading order.",
+      "notes": "The footnotes, in page order."
+    },
+    "types": {
+      "article": {
+        "description": "One article: its title, byline and the note on where it was read, its text, and the author's address and date at the end.",
+        "contains": [
+          "heading",
+          "byline",
+          "read_before",
+          "section",
+          "paragraph",
+          "signoff"
+        ],
+        "flow": "main"
+      },
+      "section": {
+        "description": "A numbered section of an article. Its number, such as 1., begins its first paragraph.",
+        "contains": [
+          "paragraph"
+        ],
+        "numbered": true
+      },
+      "heading": {
+        "description": "The title of an article, in capitals, such as ON THE FACTORING OF LARGE NUMBERS. A title of two lines is one heading.",
+        "region": "heading"
+      },
+      "byline": {
+        "description": "The author's line under the title, in small capitals, such as BY PROFESSOR F. N. COLE.",
+        "region": "heading"
+      },
+      "read_before": {
+        "description": "The line in parentheses under the byline saying where and when the paper was read, such as (Read before the American Mathematical Society, October 31, 1903.)",
+        "region": "heading"
+      },
+      "paragraph": {
+        "description": "A paragraph of prose with inline mathematics. Its first line is indented, and the first paragraph of a section begins with the section's number. A paragraph often contains displayed formulas, and its sentence goes on after them, as in …reduce N to the form [formula] the factors u and v being so chosen…; a line such as and between two formulas is the paragraph's text. Text after a formula that begins at the margin, not indented, belongs to the same paragraph.",
+        "region": "paragraph",
+        "lang": "en",
+        "contains": [
+          "formula"
+        ]
+      },
+      "formula": {
+        "description": "Mathematics displayed on lines of its own, set apart from the prose: an equation, a chain of equations or congruences, or a list of numbers running over several lines.",
+        "region": "formula"
+      },
+      "signoff": {
+        "description": "The author's address and date at the end of an article, in small capitals and italics, such as COLUMBIA UNIVERSITY, October, 1903., on two lines. One region for both lines.",
+        "region": "other"
+      },
+      "footnote": {
+        "description": "One footnote below the rule, marked *, † or ‡.",
+        "region": "note",
+        "flow": "notes"
+      },
+      "running_header": {
+        "description": "The running title and the bracketed month or year beside it, such as THE FACTORING OF LARGE NUMBERS. [Dec., or 1903.] ON THE p-DISCRIMINANT. One region for both.",
+        "role": "furniture",
+        "region": "running_header"
+      },
+      "page_number": {
+        "description": "The printed page number at the outer corner of the head, such as 134.",
+        "role": "furniture",
+        "region": "page_number"
+      }
+    },
+    "relations": {
+      "note": "A footnote marker in the text points to its footnote."
+    },
+    "conventions": [
+      "Transcribe the English as printed, in Unicode NFC. Write mathematics in LaTeX: inline mathematics between $ signs, such as $N = x^2 \\pm a$, and each formula region as one LaTeX display. Transcribe the mathematics as printed, without correcting it."
+    ]
+  },
+  "image_sha256": "d4ea9bd561c16f7feda5eafd23eeb0620771202182cf0c5bd7e966e2271a99a2",
+  "width": 1800,
+  "height": 2850,
+  "response": {
+    "id": "resp_03ff0c915abdf71c016af3f823e26087d0b57e7a4a9047eee2",
+    "object": "response",
+    "created_at": 1794373667,
+    "status": "completed",
+    "access_programs": {
+      "cyber": "standard"
+    },
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "completed_at": 1794373681,
+    "error": null,
+    "frequency_penalty": 0,
+    "image": {
+      "context_compression": "disabled"
+    },
+    "incomplete_details": null,
+    "instructions": null,
+    "max_output_tokens": 16384,
+    "max_tool_calls": null,
+    "model": "gpt-6.1-terra",
+    "moderation": null,
+    "output": [
+      {
+        "id": "msg_03ff0c915abdf71c016af3f8281b2087d0a3f4a16ec45189d0",
+        "type": "message",
+        "status": "completed",
+        "content": [
+          {
+            "type": "output_text",
+            "annotations": [],
+            "logprobs": [],
+            "text": "{\"explanation\":\"The three-line display after “quadratic remainders” is a comma-separated list of numbers, not an equation, so it is assigned a more specific displayed-number-list type. The equations and congruences retain formula. Prose is boxed separately from each display, including the sentence resumed after the first equation. The opening prose continues from the preceding page; the closing congruence display may continue with its paragraph on the next page.\",\"new_types\":[{\"name\":\"displayed_number_list\",\"description\":\"A list of mathematical numbers or expressions displayed separately from prose, typically comma-separated and potentially spanning several lines.\",\"region\":\"formula\",\"furniture\":false,\"parent\":\"paragraph\",\"flow\":\"\"}],\"regions\":[{\"type\":\"page_number\",\"box_1000\":[178,122,219,137],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"running_header\",\"box_1000\":[297,122,827,141],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[177,155,827,284],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[202,289,406,306],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"formula\",\"box_1000\":[310,314,694,332],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[175,338,827,371],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"displayed_number_list\",\"box_1000\":[175,379,827,429],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[176,436,827,485],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[174,485,826,630],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[202,630,522,647],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"formula\",\"box_1000\":[307,651,693,673],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"box_1000\":[175,677,826,713],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"formula\",\"box_1000\":[199,717,798,770],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"footnote\",\"box_1000\":[174,778,827,839],\"keep\":true,\"reading_order\":12,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}"
+          }
+        ],
+        "phase": "final_answer",
+        "role": "assistant"
+      }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "24h",
+    "reasoning": {
+      "context": "all_turns",
+      "effort": "none",
+      "mode": "standard",
+      "summary": null
+    },
+    "safety_identifier": null,
+    "service_tier": "default",
+    "store": false,
+    "temperature": 1,
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "description": null,
+        "name": "page_regions",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "explanation": {
+              "type": "string"
+            },
+            "new_types": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string",
+                    "enum": [
+                      "verse",
+                      "paragraph",
+                      "heading",
+                      "lead_in",
+                      "list_item",
+                      "formula",
+                      "note",
+                      "table",
+                      "figure",
+                      "caption",
+                      "running_header",
+                      "page_number",
+                      "other"
+                    ]
+                  },
+                  "furniture": {
+                    "type": "boolean"
+                  },
+                  "parent": {
+                    "type": "string",
+                    "enum": [
+                      "",
+                      "article",
+                      "section",
+                      "paragraph"
+                    ]
+                  },
+                  "flow": {
+                    "type": "string",
+                    "enum": [
+                      "",
+                      "main",
+                      "notes"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "description",
+                  "region",
+                  "furniture",
+                  "parent",
+                  "flow"
+                ]
+              }
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "box_1000": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "keep": {
+                    "type": "boolean"
+                  },
+                  "reading_order": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "uncertain": {
+                    "type": "boolean"
+                  },
+                  "continues_from_earlier": {
+                    "type": "boolean"
+                  },
+                  "continues_later": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "type",
+                  "box_1000",
+                  "keep",
+                  "reading_order",
+                  "uncertain",
+                  "continues_from_earlier",
+                  "continues_later"
+                ]
+              }
+            }
+          },
+          "required": [
+            "explanation",
+            "new_types",
+            "regions"
+          ]
+        },
+        "strict": true
+      },
+      "verbosity": "medium"
+    },
+    "tool_choice": "auto",
+    "tool_usage": {
+      "image_gen": {
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "total_tokens": 0
+      },
+      "web_search": {
+        "num_requests": 0
+      }
+    },
+    "tools": [],
+    "top_logprobs": 0,
+    "top_p": 0.98,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 8062,
+      "input_tokens_details": {
+        "cache_write_tokens": 8059,
+        "cached_tokens": 0
+      },
+      "output_tokens": 820,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 8882
+    },
+    "user": null,
+    "metadata": {}
+  },
+  "seconds": 13.989133709,
+  "usage": {
+    "input_tokens": 8062,
+    "input_tokens_details": {
+      "cache_write_tokens": 8059,
+      "cached_tokens": 0
+    },
+    "output_tokens": 820,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 8882
+  },
+  "cost_usd": 0.01417675,
+  "parsed": {
+    "explanation": "The three-line display after “quadratic remainders” is a comma-separated list of numbers, not an equation, so it is assigned a more specific displayed-number-list type. The equations and congruences retain formula. Prose is boxed separately from each display, including the sentence resumed after the first equation. The opening prose continues from the preceding page; the closing congruence display may continue with its paragraph on the next page.",
+    "new_types": [
+      {
+        "name": "displayed_number_list",
+        "description": "A list of mathematical numbers or expressions displayed separately from prose, typically comma-separated and potentially spanning several lines.",
+        "region": "formula",
+        "furniture": false,
+        "parent": "paragraph",
+        "flow": ""
+      }
+    ],
+    "regions": [
+      {
+        "type": "page_number",
+        "box_1000": [
+          178,
+          122,
+          219,
+          137
+        ],
+        "keep": false,
+        "reading_order": null,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "running_header",
+        "box_1000": [
+          297,
+          122,
+          827,
+          141
+        ],
+        "keep": false,
+        "reading_order": null,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "paragraph",
+        "box_1000": [
+          177,
+          155,
+          827,
+          284
+        ],
+        "keep": true,
+        "reading_order": 1,
+        "uncertain": false,
+        "continues_from_earlier": true,
+        "continues_later": false
+      },
+      {
+        "type": "paragraph",
+        "box_1000": [
+          202,
+          289,
+          406,
+          306
+        ],
+        "keep": true,
+        "reading_order": 2,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "formula",
+        "box_1000": [
+          310,
+          314,
+          694,
+          332
+        ],
+        "keep": true,
+        "reading_order": 3,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "paragraph",
+        "box_1000": [
+          175,
+          338,
+          827,
+          371
+        ],
+        "keep": true,
+        "reading_order": 4,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "displayed_number_list",
+        "box_1000": [
+          175,
+          379,
+          827,
+          429
+        ],
+        "keep": true,
+        "reading_order": 5,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "paragraph",
+        "box_1000": [
+          176,
+          436,
+          827,
+          485
+        ],
+        "keep": true,
+        "reading_order": 6,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "paragraph",
+        "box_1000": [
+          174,
+          485,
+          826,
+          630
+        ],
+        "keep": true,
+        "reading_order": 7,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "paragraph",
+        "box_1000": [
+          202,
+          630,
+          522,
+          647
+        ],
+        "keep": true,
+        "reading_order": 8,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "formula",
+        "box_1000": [
+          307,
+          651,
+          693,
+          673
+        ],
+        "keep": true,
+        "reading_order": 9,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "paragraph",
+        "box_1000": [
+          175,
+          677,
+          826,
+          713
+        ],
+        "keep": true,
+        "reading_order": 10,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      },
+      {
+        "type": "formula",
+        "box_1000": [
+          199,
+          717,
+          798,
+          770
+        ],
+        "keep": true,
+        "reading_order": 11,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": true
+      },
+      {
+        "type": "footnote",
+        "box_1000": [
+          174,
+          778,
+          827,
+          839
+        ],
+        "keep": true,
+        "reading_order": 12,
+        "uncertain": false,
+        "continues_from_earlier": false,
+        "continues_later": false
+      }
+    ]
+  }
+}

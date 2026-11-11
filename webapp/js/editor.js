@@ -1,4 +1,4 @@
-import { suggestionButton } from "./review-view.js?v=20261110-partial-3";
+import { suggestionButton } from "./review-view.js?v=20261110-page-review-5";
 // The text side of the page editor: the page's units in reading order, each region's line pieces as editable
 // lines (one region is one editing host, so a selection can run across its lines), and an inspector for the
 // selected unit, region or note marker. Text typed into a line is read back from the DOM into text and spans; every

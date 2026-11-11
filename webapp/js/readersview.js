@@ -1,4 +1,4 @@
-import { reviewPage } from "./review-view.js?v=20261110-partial-3";
+import { reviewPage } from "./review-view.js?v=20261110-page-review-5";
 import { settledChecks } from "./review.js?v=20261110-partial-3";
 import { h, bbox, cropInto } from "./render.js";
 import { modelChoice, keyControls, money } from "./reader-controls.js?v=20261110-partial-3";

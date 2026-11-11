@@ -12,9 +12,9 @@ const svgEl = (tag, attrs = {}) => {
 };
 
 export class PageView {
-  constructor(el, { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, editable = true }) {
+  constructor(el, { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, onHoverRegion, editable = true }) {
     this.el = el;
-    this.cb = { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine };
+    this.cb = { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, onHoverRegion };
     this.zoom = 1;
     this.fit = "width";        // "width", "height" (kept as the pane or the page changes), or null after zooming
     this.drawing = false;
@@ -27,7 +27,18 @@ export class PageView {
     this.img.draggable = false;
     this.svg = svgEl("svg", { preserveAspectRatio: "none" });
     this.wrap.append(this.img, this.svg);
-    el.append(this.wrap);
+    this.tooltip = document.createElement("div");
+    this.tooltip.className = "pv-tooltip";
+    this.tooltip.setAttribute("role", "tooltip");
+    this.tooltip.hidden = true;
+    el.append(this.wrap, this.tooltip);
+    el.addEventListener("pointerdown", event => {
+      this.clearOnClick = !this.drawing && !event.target.closest("[data-rid], [data-omitted], .pv-box");
+    });
+    el.addEventListener("click", () => {
+      if (this.clearOnClick) this.cb.onSelectRegion(null);
+      this.clearOnClick = false;
+    });
     el.addEventListener("wheel", e => {
       if (!(e.ctrlKey || e.metaKey)) return;
       e.preventDefault();
@@ -72,6 +83,7 @@ export class PageView {
   }
 
   show(doc, imageUrl, colors, furniture) {
+    this.tooltip.hidden = true;
     this.doc = doc;
     this.colors = colors;
     this.furniture = furniture;
@@ -91,13 +103,21 @@ export class PageView {
     for (const r of doc.page.regions) {
       const col = this.colors[r.type] || "#888";
       const g = svgEl("g", { "data-rid": r.id });
+      const title = svgEl("title"); title.textContent = `${r.id} · ${r.type}`; g.append(title);
       const p = svgEl("path", { d: pathD(r.polygons), class: "pv-reg" + (this.furniture.has(r.type) ? " furn" : ""), stroke: col, fill: col });
-      const t = svgEl("title"); t.textContent = `${r.id} ${r.type}`; p.append(t);
       g.append(p);
       (r.lines || []).forEach((L, i) => {
         if (L.polygons) g.append(svgEl("path", { d: pathD(L.polygons), class: "pv-ln", "data-line": `${r.id}:${i}` }));
       });
       g.addEventListener("click", e => { if (!this.drawing) { e.stopPropagation(); this.cb.onSelectRegion(r.id); } });
+      g.addEventListener("pointerenter", event => {
+        this.cb.onHoverRegion?.(r.id, true);
+        this.tooltip.textContent = `${r.id} · ${r.type}`;
+        this.tooltip.hidden = false;
+        this.positionTooltip(event);
+      });
+      g.addEventListener("pointermove", event => this.positionTooltip(event));
+      g.addEventListener("pointerleave", () => { this.cb.onHoverRegion?.(r.id, false); this.tooltip.hidden = true; });
       g.addEventListener("mouseover", e => { const k = e.target.dataset?.line; if (k) this.cb.onHoverLine(k, true); });
       g.addEventListener("mouseout", e => { const k = e.target.dataset?.line; if (k) this.cb.onHoverLine(k, false); });
       svg.append(g);
@@ -147,6 +167,7 @@ export class PageView {
   }
 
   pointerDown(e) {
+    this.clearOnClick = false;
     if (!this.editable) return;
     const handle = e.target.dataset?.h;
     if (this.drawing) return this.startDraw(e);
@@ -211,6 +232,12 @@ export class PageView {
   highlightRegion(rid, on) {
     const g = this.regionEls?.[rid];
     if (g) g.classList.toggle("hl", on);
+  }
+
+  positionTooltip(event) {
+    const bounds = this.el.getBoundingClientRect();
+    this.tooltip.style.left = `${this.el.scrollLeft + Math.max(4, Math.min(event.clientX - bounds.left + 12, this.el.clientWidth - this.tooltip.offsetWidth - 8))}px`;
+    this.tooltip.style.top = `${this.el.scrollTop + Math.max(4, Math.min(event.clientY - bounds.top + 12, this.el.clientHeight - this.tooltip.offsetHeight - 8))}px`;
   }
 
   // Scroll so that a region is in view.

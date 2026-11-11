@@ -1,0 +1,118 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "explanation": {
+      "type": "string"
+    },
+    "new_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string",
+            "enum": [
+              "verse",
+              "paragraph",
+              "heading",
+              "lead_in",
+              "list_item",
+              "formula",
+              "note",
+              "table",
+              "figure",
+              "caption",
+              "running_header",
+              "page_number",
+              "other"
+            ]
+          },
+          "furniture": {
+            "type": "boolean"
+          },
+          "parent": {
+            "type": "string",
+            "enum": [
+              ""
+            ]
+          },
+          "flow": {
+            "type": "string",
+            "enum": [
+              "",
+              "main"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "region",
+          "furniture",
+          "parent",
+          "flow"
+        ]
+      }
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "box_1000": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "keep": {
+            "type": "boolean"
+          },
+          "reading_order": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "uncertain": {
+            "type": "boolean"
+          },
+          "continues_from_earlier": {
+            "type": "boolean"
+          },
+          "continues_later": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "box_1000",
+          "keep",
+          "reading_order",
+          "uncertain",
+          "continues_from_earlier",
+          "continues_later"
+        ]
+      }
+    }
+  },
+  "required": [
+    "explanation",
+    "new_types",
+    "regions"
+  ]
+}

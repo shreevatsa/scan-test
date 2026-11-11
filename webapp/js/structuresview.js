@@ -1,4 +1,4 @@
-import { reviewPage } from "./review-view.js?v=20261110-partial-3";
+import { reviewPage } from "./review-view.js?v=20261110-page-review-5";
 import { assignmentOf, settledStructureScore } from "./review.js?v=20261110-partial-3";
 import { h } from "./render.js";
 import { modelChoice, keyControls, money, continueControls } from "./reader-controls.js?v=20261110-partial-3";

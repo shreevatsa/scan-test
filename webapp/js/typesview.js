@@ -5,10 +5,10 @@
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
 import { h } from "./render.js";
-import { prepare } from "./reader.js?v=20261110-regions-3";
+import { prepare } from "./reader.js?v=20261110-page-review-5";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261110-partial-3";
-import { newTypeDialog } from "./regionsview.js?v=20261110-regions-3";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261110-page-review-5";
+import { newTypeDialog } from "./regionsview.js?v=20261110-page-review-5";
 import { citedSamplePages } from "./type-revisions.js?v=20261110-finders-4";
 
 export async function renderTypes(el, app, { onAdded = () => app.route(), onReviewPages, onOpenPage = pid => app.openPage(pid, {}, "regions") } = {}) {

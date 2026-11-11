@@ -1,0 +1,11 @@
+{
+  "id": "terra-page-review",
+  "label": "GPT-6.1 Terra · reasoning off",
+  "provider": "openai",
+  "model": "gpt-6.1-terra",
+  "reasoning": "none",
+  "method": "087-terra-page-region-review",
+  "shared_runtime": "087-terra-page-region-review/snapshot",
+  "image_input": "One original rendered page image",
+  "max_output_tokens": 16384
+}

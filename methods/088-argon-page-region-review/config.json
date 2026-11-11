@@ -1,0 +1,25 @@
+{
+  "id": "argon-page-review",
+  "label": "Gemini 4 Argon · high thinking",
+  "provider": "gemini",
+  "model": "gemini-4-argon",
+  "thinking": "high",
+  "rates": [
+    {
+      "from": "2026-01-01",
+      "input": 2,
+      "output": 10,
+      "cached": 0.1
+    },
+    {
+      "from": "2026-12-01",
+      "input": 4,
+      "output": 20,
+      "cached": 0.2
+    }
+  ],
+  "method": "088-argon-page-region-review",
+  "shared_runtime": "087-terra-page-region-review/snapshot",
+  "image_input": "One original rendered page image",
+  "max_output_tokens": 16384
+}

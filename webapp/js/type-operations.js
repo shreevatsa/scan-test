@@ -25,7 +25,7 @@ export async function reviewTypeChange(app, operations, { applied = () => {} } =
   try {
     plan = await book.previewTypes(operations, options);
     if (!dialog.open) return;
-    content.replaceChildren(h("p", {}, `Revision ${plan.revision} · ${operations.map(op => labels[op.kind] || { metadata: "Book details and conventions", replace: "Replace the whole list", resolve_question: "Record a review decision" }[op.kind]).join(", ")}`),
+    content.replaceChildren(h("p", {}, `Revision ${plan.revision} · ${operations.map(op => labels[op.kind] || { add: "Add type", metadata: "Book details and conventions", replace: "Replace the whole list", resolve_question: "Record a review decision" }[op.kind]).join(", ")}`),
       h("p", {}, `${quantity(plan.regions, "region")} and ${quantity(plan.units, "unit")} on ${quantity(plan.pages.length, "page")} use the affected types.`),
       h("p", {}, `${quantity(plan.changes.filter(change => change.kind === "model").length, "model page")}, ${quantity(plan.changes.filter(change => change.kind === "edit").length, "saved correction")} and ${quantity(plan.changes.filter(change => change.kind === "draft").length, "draft")} will be updated.`));
     for (const op of operations) {

@@ -81,7 +81,7 @@ main.read, main.check, main.export, main.style, main.types { overflow: auto; }
 .pv-wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .pv-reg { fill-opacity: .05; stroke-width: 3; stroke-opacity: .75; cursor: pointer; vector-effect: non-scaling-stroke; }
 .pv-reg.furn { stroke-dasharray: 6 5; }
-g.hl .pv-reg { fill-opacity: .2; }
+g.hl .pv-reg { fill-opacity: .22; stroke-opacity: 1; stroke-width: 4; }
 g.sel .pv-reg { fill-opacity: .14; stroke-width: 4; stroke-opacity: 1; }
 .pv-ln { fill: none; stroke: none; pointer-events: visibleFill; }
 .pv-ln.hl { fill: #ffd400; fill-opacity: .35; stroke: #e6a800; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
@@ -91,6 +91,7 @@ g.sel .pv-reg { fill-opacity: .14; stroke-width: 4; stroke-opacity: 1; }
 .pv-handle.n, .pv-handle.s { cursor: ns-resize; } .pv-handle.e, .pv-handle.w { cursor: ew-resize; }
 .pv-handle.move { cursor: move; fill: #111; fill-opacity: .25; }
 .pv-draw { fill: #1f4e9e; fill-opacity: .1; stroke: #1f4e9e; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.pv-tooltip { position: absolute; z-index: 4; pointer-events: none; padding: 4px 8px; border: 1px solid #888; border-radius: 4px; background: #fff; color: #222; font-size: 13px; box-shadow: 0 2px 6px #0002; }
 
 /* text side */
 .side { display: flex; flex-direction: column; min-height: 0; border-left: 1px solid var(--line); }
@@ -319,7 +320,16 @@ main.grid { overflow: auto; }
 .layout-heading { grid-column: 1 / -1; margin: 12px 0 0; font-size: 15px; }
 main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(320px, 1fr); }
 .regions-editor > .region-types { height: 100%; overflow: auto; border-radius: 0; }
-.regions-editor .region { margin: 10px 0; padding: 10px; }
+.regions-editor .region { margin: 6px 0; padding: 6px 8px; }
+.regions-editor .region.hl { background: var(--hl); }
+.regions-editor .region.sel.hl { box-shadow: inset 0 0 0 2px #d1ac42; }
+.regions-editor .region-select { font: 12px Menlo, monospace; }
+.regions-editor .region .fields select { max-width: min(260px, 100%); }
+.regions-editor .lower:has(.inspector[hidden]):has(.checks:empty) { display: none; }
+.region-type-legend { margin: 8px 0 12px; }
+.region-type-legend .region-type-row:hover { background: var(--hl); }
+.region-types > details { margin: 12px 0; }
+.region-types > details > summary { cursor: pointer; }
 .regions-editor .region .fields { display: flex; flex-wrap: wrap; gap: 5px; }
 .regions-editor .region.sel { background: #edf3fd; }
 .region-grid-content { min-width: 0; }
@@ -362,6 +372,9 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .region-section .typesview, .type-list-dialog .typesview { max-width: none; padding: 0; }
 .typesview .tablewrap { overflow-x: auto; }
 .type-list-dialog { width: min(1100px, calc(100vw - 28px)); max-height: calc(100dvh - 28px); }
+.page-review-dialog { width: min(850px, calc(100vw - 28px)); max-height: calc(100dvh - 28px); }
+.page-review-dialog .actions { flex-wrap: wrap; }
+.page-review-explanation { white-space: pre-wrap; }
 .type-list-dialog > .stylebar { position: sticky; top: 0; padding-bottom: 12px; background: #fff; }
 .typesview .hint { color: #777; font-size: 13px; }
 .typesview h4 { margin: 10px 0 4px; }

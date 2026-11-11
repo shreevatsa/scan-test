@@ -1,0 +1,6 @@
+{
+  "status": "invalid verification input",
+  "issue": "The runner omitted width and height from the legacy source-region record. Its model response is retained, and its attempted geometry derivation was stopped.",
+  "cost_usd": 0.0147705,
+  "correction": "The runner now copies dimensions from input metadata. The app rejects invalid source dimensions before making a call. See live-002 for the corrected check."
+}

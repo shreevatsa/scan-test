@@ -1,0 +1,110 @@
+{
+  "format": "types",
+  "schema_version": "0.1",
+  "book_id": "cole-1903",
+  "title": "Cole (1903), On the factoring of large numbers: four pages of the Bulletin of the American Mathematical Society",
+  "description": "Journal pages of English prose with inline and displayed mathematics. An article can begin or end anywhere on a page: it opens with its title, byline and a note on where it was read, and closes with the author's address and date, and a short rule separates it from the next article. The pages hold the end of the previous article, Cole's article, divided into numbered sections, and the beginning of the next article. Footnotes, marked *, † and so on, sit below a rule at the foot of the page and restart on each page.",
+  "languages": [
+    "en"
+  ],
+  "flows": {
+    "main": "The articles in reading order.",
+    "notes": "The footnotes, in page order."
+  },
+  "types": {
+    "article": {
+      "description": "One article: its title, byline and the note on where it was read, its text, and the author's address and date at the end.",
+      "contains": [
+        "heading",
+        "byline",
+        "read_before",
+        "section",
+        "paragraph",
+        "signoff"
+      ],
+      "flow": "main"
+    },
+    "section": {
+      "description": "A numbered section of an article. Its number, such as 1., begins its first paragraph.",
+      "contains": [
+        "paragraph"
+      ],
+      "numbered": true
+    },
+    "heading": {
+      "description": "The title of an article, in capitals, such as ON THE FACTORING OF LARGE NUMBERS. A title of two lines is one heading.",
+      "region": "heading"
+    },
+    "byline": {
+      "description": "The author's line under the title, in small capitals, such as BY PROFESSOR F. N. COLE.",
+      "region": "heading"
+    },
+    "read_before": {
+      "description": "The line in parentheses under the byline saying where and when the paper was read, such as (Read before the American Mathematical Society, October 31, 1903.)",
+      "region": "heading"
+    },
+    "paragraph": {
+      "description": "A paragraph of prose with inline mathematics. Its first line is indented, and the first paragraph of a section begins with the section's number. A paragraph often contains displayed formulas, and its sentence goes on after them, as in …reduce N to the form [formula] the factors u and v being so chosen…; a line such as and between two formulas is the paragraph's text. Text after a formula that begins at the margin, not indented, belongs to the same paragraph.",
+      "region": "paragraph",
+      "lang": "en",
+      "contains": [
+        "formula",
+        "displayed_number_list"
+      ]
+    },
+    "formula": {
+      "description": "Mathematics displayed on lines of its own, set apart from the prose: an equation, a chain of equations or congruences, or a list of numbers running over several lines.",
+      "region": "formula"
+    },
+    "signoff": {
+      "description": "The author's address and date at the end of an article, in small capitals and italics, such as COLUMBIA UNIVERSITY, October, 1903., on two lines. One region for both lines.",
+      "region": "other"
+    },
+    "footnote": {
+      "description": "One footnote below the rule, marked *, † or ‡.",
+      "region": "note",
+      "flow": "notes"
+    },
+    "running_header": {
+      "description": "The running title and the bracketed month or year beside it, such as THE FACTORING OF LARGE NUMBERS. [Dec., or 1903.] ON THE p-DISCRIMINANT. One region for both.",
+      "role": "furniture",
+      "region": "running_header"
+    },
+    "page_number": {
+      "description": "The printed page number at the outer corner of the head, such as 134.",
+      "role": "furniture",
+      "region": "page_number"
+    },
+    "displayed_number_list": {
+      "description": "A list of mathematical numbers or expressions displayed separately from prose, typically comma-separated and potentially spanning several lines.",
+      "region": "formula"
+    }
+  },
+  "relations": {
+    "note": "A footnote marker in the text points to its footnote."
+  },
+  "conventions": [
+    "Transcribe the English as printed, in Unicode NFC. Write mathematics in LaTeX: inline mathematics between $ signs, such as $N = x^2 \\pm a$, and each formula region as one LaTeX display. Transcribe the mathematics as printed, without correcting it."
+  ],
+  "source": {
+    "revision": 2,
+    "revisions": [
+      {
+        "n": 2,
+        "at_utc": "2026-11-11T05:09:08.297Z",
+        "by": "user",
+        "operations": [
+          {
+            "kind": "add",
+            "name": "displayed_number_list",
+            "description": "A list of mathematical numbers or expressions displayed separately from prose, typically comma-separated and potentially spanning several lines.",
+            "region": "formula",
+            "furniture": false,
+            "parent": "paragraph",
+            "flow": null
+          }
+        ]
+      }
+    ]
+  }
+}

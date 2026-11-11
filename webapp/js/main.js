@@ -4,28 +4,29 @@
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
 import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya } from "./store.js?v=20261110-finders-4";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { PageView } from "./pageimage.js?v=20261110-reading-2";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261110-partial-3";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-regions-3";
-import { renderStyle } from "./styleview.js?v=20261110-regions-3";
-import { openTypeList } from "./typesview.js?v=20261110-regions-3";
+import { PageView } from "./pageimage.js?v=20261110-page-review-5";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261110-page-review-5";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-page-review-5";
+import { renderStyle } from "./styleview.js?v=20261110-page-review-5";
+import { openTypeList } from "./typesview.js?v=20261110-page-review-5";
 import { typeSetup } from "./type-setup.js?v=20261110-partial-3";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
 import { Maker } from "./pipeline/run.js?v=20261110-partial-3";
 import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261110-regions-3";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261110-regions-3";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261110-page-review-5";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
 import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=20261110-finders-4";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261110-regions-3";
+import { renderPages } from "./pagesview.js?v=20261110-page-review-5";
 import { settings } from "./store.js?v=20261110-finders-4";
-import { renderReaders } from "./readersview.js?v=20261110-partial-3";
-import { renderStructures } from "./structuresview.js?v=20261110-partial-3";
+import { renderReaders } from "./readersview.js?v=20261110-page-review-5";
+import { renderStructures } from "./structuresview.js?v=20261110-page-review-5";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261110-page-review-5";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -591,6 +592,7 @@ class App {
       toolbar.querySelector('[title="insert a note marker at the caret"]')?.remove();
     }
     if (this.stage !== "regions") toolbar.querySelector(".draw")?.remove();
+    else toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"));
     const textPane = h("div", { class: "textpane" });
     this.inspector = h("div", { class: "inspector" });
     this.problems = h("div", { class: "checks" });
@@ -601,11 +603,12 @@ class App {
     const fit = this.pageView?.fit;   // fit height is kept when the page view is made again
     this.pageView = new PageView(imgPane, {
       editable: this.stage === "regions",
-      onSelectRegion: rid => this.select({ region: rid }),
+      onSelectRegion: rid => this.select(rid ? { region: rid } : {}),
       onSelectOmitted: index => this.select({ omitted: index }),
       onBox: (rid, box) => { if (this.edit(d => ops.setBox(d, rid, box))) this.recompute(); },
       onDraw: (box, ev) => this.drawn(box, ev),
       onHoverLine: (key, on) => this.textPanel.el.querySelectorAll(`.rtext[data-rid="${CSS.escape(key.split(":")[0])}"] > .lp[data-i="${key.split(":")[1]}"]`).forEach(x => x.classList.toggle("hl", on)),
+      onHoverRegion: (rid, on) => this.hoverRegion(rid, on, true),
     });
     if (fit === "height") this.pageView.fit = "height";
     this.textPanel = this.stage === "regions" ? new RegionsPanel(textPane, this) : new TextPanel(textPane, this);
@@ -659,6 +662,11 @@ class App {
     }
     if (target && !keepFocus) target.scrollIntoView({ block: "nearest", behavior: "smooth" });
     if (this.stage === "regions") renderRegionInspector(this.inspector, this); else renderInspector(this.inspector, this);
+  }
+
+  hoverRegion(rid, on, revealText = false) {
+    this.pageView?.highlightRegion(rid, on);
+    this.textPanel?.highlightRegion?.(rid, on, revealText);
   }
 
   async joinNext(uid) {
