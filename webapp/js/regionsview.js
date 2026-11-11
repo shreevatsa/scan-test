@@ -81,15 +81,12 @@ export function newTypeDialog(app, use = () => {}, printedOnly = false) {
   name.focus();
 }
 
-export function regionTypesPanel(app, selection = () => []) {
+export function regionTypesPanel(app, editTypes) {
   const list = h("div", { class: "region-type-list" });
   const status = h("p", { class: "hint" });
   const element = h("aside", { class: "region-types" }, h("h3", {}, "Unit types"), status, list,
     h("div", { class: "actions" }, h("button", { disabled: !app.book.writable, onclick: () => newTypeDialog(app) }, "＋ Type"),
-      h("button", { onclick: () => app.setMode("types") }, "Edit types and nesting")),
-    h("p", {}, h("button", { disabled: !(app.book.manifest.pdf || app.book.kind === "chaya"), onclick: () => {
-      app.typeSamples = selection(); app.setMode("regions&view=proposal");
-    } }, "Propose types from sample pages")));
+      h("button", { onclick: editTypes }, "Edit type list")));
   const refresh = () => {
     const counts = new Map();
     for (const [pid, state] of app.pageStates) for (const region of (app.mode === "page" && app.pid === pid ? app.doc : state.doc)?.page.regions || [])
@@ -189,7 +186,7 @@ export function renderRegionInspector(el, app) {
   } }, "Delete region")));
 }
 
-export async function renderTypeDiscovery(el, app) {
+export async function renderTypeDiscovery(el, app, { selected, onBusy }) {
   const book = app.book, token = app.routeToken;
   el.replaceChildren(h("p", { class: "loading" }, "Opening the source PDF for type discovery…"));
   const index = await (await fetch(new URL("../types/index.json", import.meta.url))).json();
@@ -197,27 +194,30 @@ export async function renderTypeDiscovery(el, app) {
   const bookId = h("input", { value: book.manifest.book_id, dataset: { edited: "1" } });
   const description = h("textarea", { rows: 3, "aria-label": "Description of this book" }, book.types.description || "");
   description.addEventListener("input", () => { description.dataset.edited = "1"; });
-  const setup = typeSetup({ app, title, bookId, description, index, book, initialSource: "discover", onBusy: value => { app.workflowBusy = value; } });
+  const setup = typeSetup({ app, title, bookId, description, index, book, initialSource: "discover", onBusy: value => {
+    onBusy(value);
+    description.disabled = value;
+    apply.disabled = value || !book.writable;
+  } });
   const pdf = await book.pdf();
   const sha = book.manifest.pdf?.sha256 || await sha256hex(await book.originalPdf());
   await setup.usePdf({ doc: pdf, sha });
   if (app.book !== book || app.routeToken !== token) return;
-  if (app.typeSamples?.length) {
+  if (selected.length) {
     const field = setup.element.querySelector('[aria-label="Sample PDF pages"]');
-    field.value = pageSelectionText(app.typeSamples.map(pid => book.page(pid).pdf_page || book.index[pid] + 1), pdf.numPages);
+    field.value = pageSelectionText(selected.map(pid => book.page(pid).pdf_page || book.index[pid] + 1), pdf.numPages);
     field.dispatchEvent(new Event("input", { bubbles: true }));
   }
-  app.typeSamples = null;
   const status = h("p", { role: "status" });
   const apply = h("button", { class: "primary", disabled: !book.writable, onclick: async () => {
     apply.disabled = true;
     try {
-      await reviewTypeChange(app, [{ kind: "replace", types: await setup.loadTypes() }], { applied: () => app.setMode("types") });
+      await reviewTypeChange(app, [{ kind: "replace", types: await setup.loadTypes() }]);
     } catch (error) { status.textContent = error.message; }
     finally { apply.disabled = !book.writable; }
   } }, "Preview replacing the type list");
-  el.replaceChildren(h("div", { class: "typesview" }, h("h2", {}, "Propose this book’s unit types"),
-    h("p", {}, "Review the proposal, then preview replacing the type list. Replacement is available while every page’s layers are unprotected. The preview lists the pages to find again and estimates their cost."),
+  el.replaceChildren(h("div", {},
+    h("p", { class: "hint" }, "Review the proposal before replacing the list. You can replace the list while the book’s page layers are unprotected."),
     h("label", { class: "stack" }, "Description of the book ", description), setup.element, status,
-    h("div", { class: "actions" }, apply, h("button", { onclick: () => app.setMode("regions") }, "Back to Regions"))));
+    h("div", { class: "actions" }, apply)));
 }

@@ -5,13 +5,13 @@
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
 import { h } from "./render.js";
-import { prepare } from "./reader.js?v=20261110-partial-3";
+import { prepare } from "./reader.js?v=20261110-regions-3";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261110-partial-3";
-import { newTypeDialog } from "./regionsview.js?v=20261110-partial-3";
+import { newTypeDialog } from "./regionsview.js?v=20261110-regions-3";
 import { citedSamplePages } from "./type-revisions.js?v=20261110-finders-4";
 
-export async function renderTypes(el, app) {
+export async function renderTypes(el, app, { onAdded = () => app.route(), onReviewPages, onOpenPage = pid => app.openPage(pid, {}, "regions") } = {}) {
   const { book, tl } = app;
   const types = tl.types || {};
   const badges = [];
@@ -61,15 +61,13 @@ export async function renderTypes(el, app) {
   } }, "Download types.json");
 
   el.replaceChildren(h("div", { class: "typesview" },
-    h("div", { class: "stylebar" }, h("h2", {}, "Types"), download,
+    h("div", { class: "stylebar" }, download,
       book.writable ? h("button", { onclick: () => editBookTypesDialog(app) }, "Edit book details") : null,
-      book.writable ? h("button", { onclick: () => newTypeDialog(app, () => app.route()) }, "＋ Type") : null,
-      h("button", { onclick: () => app.setMode("regions&view=proposal") }, "Propose types from sample pages")),
+      book.writable ? h("button", { onclick: () => newTypeDialog(app, onAdded) }, "＋ Type") : null),
     h("p", { class: "hint" }, `Revision ${typeRevision(tl.source?.revision)}. The type list defines this book’s units, containment, reading flows and transcription conventions. Preview a change to see its reach before applying it.`),
     app.lastTypeRevision ? h("p", { class: "box" }, `Revision ${app.lastTypeRevision.revision} saved. `,
-      app.lastTypeRevision.pages.length ? h("button", { onclick: () => {
-        app.pendingStageSelection = { stage: "regions", ids: app.lastTypeRevision.pages }; app.setMode("regions");
-      } }, `Review ${app.lastTypeRevision.pages.length} affected ${app.lastTypeRevision.pages.length === 1 ? "page" : "pages"}`) : "Book details updated.") : null,
+      app.lastTypeRevision.pages.length && onReviewPages ? h("button", { onclick: () => onReviewPages(app.lastTypeRevision.pages) },
+        `Review ${app.lastTypeRevision.pages.length} affected ${app.lastTypeRevision.pages.length === 1 ? "page" : "pages"}`) : null) : null,
     h("h3", {}, tl.title || tl.book_id),
     tl.description ? h("p", {}, tl.description) : null,
     (tl.languages || []).length ? h("p", { class: "meta" }, `Languages: ${tl.languages.join(", ")}`) : null,
@@ -85,7 +83,7 @@ export async function renderTypes(el, app) {
       const answer = h("textarea", { rows: 2, "aria-label": `Review decision for ${question}` }, decision?.answer || "");
       const cited = citedSamplePages(question, tl.source.discovery.sample_pages || []);
       return h("section", { class: "box" }, h("p", {}, question), ...cited.map(number => h("button", { onclick: () => {
-        const page = book.pages.find(page => page.pdf_page === number); if (page) app.openPage(page.id, {}, "regions");
+        const page = book.pages.find(page => page.pdf_page === number); if (page) onOpenPage(page.id);
       } }, `Page ${number}`)), decision ? h("p", { class: "ok" }, `Resolved · ${decision.answer}`) : null,
       book.writable ? [answer, h("button", { onclick: () => reviewTypeChange(app, [{ kind: "resolve_question", question, answer: answer.value }]).catch(error => app.toast(error.message, "bad")) }, "Preview review decision")] : null);
     })] : null,
@@ -94,7 +92,7 @@ export async function renderTypes(el, app) {
 
   // How many units of each type the book has (assembled across pages), and furniture regions.
   const docs = await book.all();
-  if (app.mode !== "types") return;
+  if (!el.isConnected || app.book !== book || app.tl !== tl) return;
   const P = prepare(docs, tl);
   const n = {}, at = {};
   const add = (obj, k) => { obj[k] = (obj[k] || 0) + 1; };
@@ -110,4 +108,19 @@ export async function renderTypes(el, app) {
     b.textContent = short ? String(k) : types[type]?.role === "furniture" ? `${k} on the pages` : within.startsWith("flow:") ? `${k} in the book` : `${k} here`;
     b.classList.toggle("zero", !k);
   }
+}
+
+export async function openTypeList(app) {
+  if (app.workflowBusy || app.outlineBusy || app.maker?.processing) throw new Error("Wait for the active operation before editing types.");
+  const content = h("div");
+  const dialog = h("dialog", { class: "type-dialog type-list-dialog", "aria-label": "Edit type list" },
+    h("div", { class: "stylebar" }, h("h2", {}, "Unit types"), h("button", { onclick: () => dialog.close() }, "Close")), content);
+  const refresh = () => renderTypes(content, app, { onAdded: refresh, onOpenPage: pid => {
+    dialog.close(); app.openPage(pid, {}, "regions");
+  } });
+  app.refreshTypeList = refresh;
+  dialog.addEventListener("close", () => { dialog.remove(); app.refreshTypeList = null; }, { once: true });
+  document.body.append(dialog);
+  dialog.showModal();
+  await refresh();
 }

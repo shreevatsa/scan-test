@@ -70,7 +70,7 @@ export function workflowRoute(value, ready, pageState = () => null) {
   const locked = !ready[stage];
   if (locked) return { stage: "pages", mode: "grid", locked };
   const pid = hash.get("p");
-  const views = { "regions/types": "types", "regions/proposal": "type-proposal", "text/compare": "readers", "read/compare": "structures",
+  const views = { "text/compare": "readers", "read/compare": "structures",
     "read/problems": "check", "read/style": "style" };
   const mode = pid && !view ? "page" : views[`${stage}/${view}`] ||
     (stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");

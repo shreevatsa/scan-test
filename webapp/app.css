@@ -270,7 +270,7 @@ header .tabs button.on { border-color: var(--line); background: #fff; font-weigh
 header:not([data-view="page"]) .undo, header:not([data-view="page"]) .status { display: none; }
 header:not([data-view="page"]) .page-stage-links { display: none; }
 header .tabs:empty { display: none; }
-header[data-top="pages"] .tabs, header[data-top="export"] .tabs { display: none; }
+header[data-top="pages"] .tabs, header[data-top="regions"] .tabs, header[data-top="export"] .tabs { display: none; }
 main.page-empty { overflow: auto; }
 button:disabled { opacity: .45; cursor: default; }
 [hidden] { display: none !important; }
@@ -296,7 +296,17 @@ main.grid { overflow: auto; }
 .stage-thumbnail img:not([src]) { visibility: hidden; }
 .stage-boxes { position: absolute; left: 50%; top: 0; width: 120px; height: 166px; transform: translateX(-50%); pointer-events: none; }
 .stage-thumbnail { position: relative; }
-.regions-workspace { display: grid; grid-template-columns: 225px minmax(0, 1fr); gap: 22px; }
+.region-section { margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; background: #fff; scroll-margin-top: 12px; }
+.region-section > summary, .region-disclosure > summary { padding: 12px 16px; cursor: pointer; font-weight: 600; }
+.region-section[open] > summary, .region-disclosure[open] > summary { border-bottom: 1px solid var(--line); }
+.region-section > summary .meta { margin-left: 12px; font-weight: 400; overflow-wrap: anywhere; }
+.region-section > div, .region-section > .region-disclosure, .region-disclosure > div { margin: 12px 16px; }
+.region-disclosure { border: 1px solid var(--line); border-radius: 6px; }
+.region-section .fields { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.region-section select, .region-section input:not([type=checkbox], [type=radio]) { max-width: 100%; }
+.region-section .stage-filters { padding-top: 0; border-top: 0; }
+.region-section .stage-actions { margin: 12px 0; }
+.region-section .stage-actions > .actions:not(:empty) { margin-top: 10px; }
 .region-types { border: 1px solid var(--line); border-radius: 7px; padding: 12px; background: #fff; align-self: start; min-width: 0; }
 .region-types h3 { margin: 0; }
 .region-type-list { max-height: 54vh; overflow: auto; }
@@ -306,7 +316,6 @@ main.grid { overflow: auto; }
 .region-type-row .meta { margin-left: auto; }
 .region-type-row kbd { font-size: 11px; padding: 0 4px; border: 1px solid var(--line); border-radius: 3px; color: var(--muted); background: var(--panel); }
 .region-types .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-.region-types p button { text-align: left; }
 .layout-heading { grid-column: 1 / -1; margin: 12px 0 0; font-size: 15px; }
 main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(320px, 1fr); }
 .regions-editor > .region-types { height: 100%; overflow: auto; border-radius: 0; }
@@ -332,7 +341,7 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .type-dialog .type-child-choice { display: inline-flex; gap: 5px; margin: 5px 12px 5px 0; }
 .typetable th .mini { display: block; margin-top: 5px; }
 .type-questions textarea { display: block; width: 100%; max-width: 650px; margin: 8px 0; }
-@media (max-width: 850px) { .regions-workspace { grid-template-columns: 1fr; } .region-type-list { max-height: 150px; } main.page.regions-editor { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .regions-editor > .region-types { grid-column: 1 / -1; max-height: 180px; } .regions-editor .side { min-width: 0; } }
+@media (max-width: 850px) { .region-type-list { max-height: 150px; } main.page.regions-editor { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .regions-editor > .region-types { grid-column: 1 / -1; max-height: 180px; } .regions-editor .side { min-width: 0; } }
 @media (max-width: 560px) {
   main.page.regions-editor { display: block; overflow: auto; }
   .regions-editor > .region-types { height: auto; max-height: none; }
@@ -350,6 +359,10 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 
 /* The type list view. */
 .typesview { max-width: 1100px; margin: 0 auto; padding: 12px 24px 60px; }
+.region-section .typesview, .type-list-dialog .typesview { max-width: none; padding: 0; }
+.typesview .tablewrap { overflow-x: auto; }
+.type-list-dialog { width: min(1100px, calc(100vw - 28px)); max-height: calc(100dvh - 28px); }
+.type-list-dialog > .stylebar { position: sticky; top: 0; padding-bottom: 12px; background: #fff; }
 .typesview .hint { color: #777; font-size: 13px; }
 .typesview h4 { margin: 10px 0 4px; }
 .ttree, .ttree ul { list-style: none; margin: 0; padding-left: 18px; }
@@ -497,7 +510,6 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .finder-lab .fields { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
 .finder-lab .fields label { max-width: 100%; }
 .finder-lab .fields select { max-width: 100%; }
-.finder-lab .model-choice { display: grid; gap: .75rem; justify-items: start; }
 .finder-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: 1rem; margin: 1rem 0; }
 .finder-card { border: 1px solid #d1d5df; border-radius: .5rem; padding: .8rem; min-width: 0; }
 .finder-card h3 { min-height: 2.6em; }

@@ -273,8 +273,9 @@ Addresses (the router, `route` in `main.js`, reads the hash as parameters, so th
 | `#pages` | the Pages tab |
 | `#regions` | Regions: the overview |
 | `#regions&p=<page>` | Regions: one page in the editor (`&r=<region>` selects a region, as now) |
-| `#regions&view=types` | Regions: the types panel opened wide |
-| `#regions&view=compare` | Regions: comparing region finders (step 8) |
+| `#regions&view=types` | Regions with Unit types open |
+| `#regions&view=proposal` | Regions with the type proposal open |
+| `#regions&view=compare` | Regions with Find regions and its comparison open |
 | `#text`, `#text&p=<page>`, `#text&view=compare` | Text: the overview, one page, comparing transcription models |
 | `#read` | Read: the reading view |
 | `#read&view=pages`, `#read&view=compare`, `#read&view=problems`, `#read&view=style` | Read: the grid, comparing completion models, Problems, the style sheet |
@@ -305,7 +306,7 @@ The Pages tab is the same grid with all three layers' states on each page and no
 
 #### Regions
 
-- **The types panel** stays beside the grid and beside the page editor: each type with its color (`typeColors` in `webapp/js/render.js`, which the region boxes also use) and its count of regions. It holds "＋ Type" and the operations of "Type list revisions", and opens wide into the tree and table of `typesview.js` for the nesting rules. "Propose types from sample pages" works on the pages selected in the grid. The same panel can be opened from Read, where nesting rules are also changed.
+- **Regions overview** has collapsible Unit types, Find regions and Page regions sections. The type proposal and two-model comparison are under Unit types. Compare finders opens inline under Find regions. The selected finder is saved from its result card or the selector. Draw by hand keeps page actions available while hiding automatic processing controls. Page regions retains its selection while switching between the grid and editor. The editor’s type panel shows each type’s color and region count. Edit type list opens the tree and table in a dialog and preserves the selected region across type revisions.
 - **A new type while working:** the type menu of a region ends with "New type…", so that a new kind of thing met on a page is named, added and assigned without leaving the page.
 - **Finding regions:** the model step runs the chosen region finder on the selected pages. "Start by hand" gives a page an empty document to draw regions on.
 - **The page editor with the regions' focus:** the scan with its boxes, and the list of regions with type, reading order and flags. Text, where a page already has it, is shown and cannot be changed. The operations exist in `webapp/js/ops.js`: drag a box (`setBox`, then the outlines are recomputed), "＋ Region" (`addRegion`), retype (`setRegionType`), delete (`deleteRegion`), split (`splitRegionAt`). Add two: move a region earlier or later in the reading order (renumbering `order`), and merge two regions into one.
@@ -580,6 +581,7 @@ Each is a new method, with a NOTEBOOK entry and immutable outputs. They decide h
 - **input:** PDFs only;
 - **storage:** books are kept in the browser's private file system, with autosave, and saved as one file, a `.chaya.pdf`. That is the original PDF's bytes, unchanged, plus one update attaching `chaya.json` with the book's data; the original is recoverable exactly. Pages are drawn from the PDF;
 - **published books** open by URL, read only;
+- **Regions overview** groups unit types, the finder choice and per-page work in three collapsible sections. Each comparison opens beside the choice it informs. The page editor opens the full type list in a dialog and keeps the selected region when applying a revision.
 - **transcription repairs** reuse unchanged model readings after region edits and request only changed text regions. Protected text receives a scoped suggestion. Saved Vision word boxes can be remapped for free, and Tesseract reruns locally. Whole-book cost projections exclude composite repairs and the ledger records their API charges.
 - **editing** Regions edits page geometry. Text edits transcription and markers. Read edits units, line joins and note links through its page fallback or passage panel. Cross-page joins have coordinated saves and recovery. The style sheet editor remains under Read.
 - **tests** run `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 node --test webapp/test/*.test.mjs` (236) and `UV_CACHE_DIR=/private/tmp/scan-test-uv-cache UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11).

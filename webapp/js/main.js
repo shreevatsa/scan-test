@@ -6,23 +6,23 @@ import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, del
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-reading-2";
 import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261110-partial-3";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-partial-3";
-import { renderStyle } from "./styleview.js?v=20261110-partial-3";
-import { renderTypes } from "./typesview.js?v=20261110-partial-3";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261110-regions-3";
+import { renderStyle } from "./styleview.js?v=20261110-regions-3";
+import { openTypeList } from "./typesview.js?v=20261110-regions-3";
 import { typeSetup } from "./type-setup.js?v=20261110-partial-3";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
 import { Maker } from "./pipeline/run.js?v=20261110-partial-3";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261110-finders-4";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261110-partial-3";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261110-regions-3";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261110-regions-3";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
 import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=20261110-finders-4";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261110-partial-3";
+import { renderPages } from "./pagesview.js?v=20261110-regions-3";
 import { settings } from "./store.js?v=20261110-finders-4";
 import { renderReaders } from "./readersview.js?v=20261110-partial-3";
 import { renderStructures } from "./structuresview.js?v=20261110-partial-3";
@@ -306,6 +306,8 @@ class App {
 
   async openBook(book) {
     this.book = book;
+    this.regionOverview = {};
+    this.lastTypeRevision = null;
     if (book.browser) history.replaceState(null, "", `${location.pathname}?local=${encodeURIComponent(book.where.name)}${location.hash}`);
     this.tl = book.types;
     this.colors = typeColors(this.tl);
@@ -351,6 +353,7 @@ class App {
   }
 
   async afterTypesSaved(plan) {
+    const pid = this.pid, region = this.mode === "page" ? this.selection.region : null;
     this.workflowLoading = true;
     try {
       this.syncTypes();
@@ -361,9 +364,15 @@ class App {
     title.textContent = title.title = this.book.title;
     this.doc = null; this.pageBuilt = false; this.undoStack = []; this.redoStack = [];
     this.lastTypeRevision = plan;
+    if (plan.types.source.revisions.at(-1).operations.some(operation => operation.kind === "replace")) {
+      this.regionOverview.proposal = false;
+      if (this.routeView === "proposal") history.replaceState(null, "", workflowAddress("regions"));
+    }
     this.dirty = false;
     this.workflowBusy = false;
     await this.route();
+    if (region && this.mode === "page" && this.pid === pid && this.doc?.page.regions.some(value => value.id === region)) this.select({ region });
+    await this.refreshTypeList?.();
   }
 
   regionFlagContext(doc) {
@@ -444,7 +453,6 @@ class App {
       h("span", { class: "title", title: book.title }, book.title),
       h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode[0].toUpperCase() + mode.slice(1)))),
       h("nav", { class: "tabs", "aria-label": "Stage views" },
-        tabBtn("regions", "", "Pages"), tabBtn("regions", "types", "Unit types"), tabBtn("regions", "compare", "Compare models"),
         tabBtn("text", "", "Pages"), tabBtn("text", "compare", "Compare models"),
         tabBtn("read", "", "Read"), tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
       h("span", { class: "nav" }, h("button", { title: "previous page (Alt ←)", onclick: () => this.step(-1) }, "←"), pageSel, h("button", { title: "next page (Alt →)", onclick: () => this.step(1) }, "→")),
@@ -491,8 +499,6 @@ class App {
       this.main.className = mode;
       if (mode === "grid") await renderPages(this.main, this);
       if (mode === "read") await renderReader(this.main, this);
-      if (mode === "types") renderTypes(this.main, this);
-      if (mode === "type-proposal") renderTypeDiscovery(this.main, this).catch(error => this.toast(error.message, "bad"));
       if (mode === "style") renderStyle(this.main, this);
       if (mode === "check") this.renderCheck();
       if (mode === "export") this.renderExport();
@@ -589,7 +595,7 @@ class App {
     this.inspector = h("div", { class: "inspector" });
     this.problems = h("div", { class: "checks" });
     const side = h("div", { class: "side" }, toolbar, textPane, h("div", { class: "lower" }, this.problems, this.inspector));
-    this.regionTypePanel = this.stage === "regions" ? regionTypesPanel(this) : null;
+    this.regionTypePanel = this.stage === "regions" ? regionTypesPanel(this, () => openTypeList(this).catch(error => this.toast(error.message, "bad"))) : null;
     this.main.classList.toggle("regions-editor", this.stage === "regions");
     this.main.replaceChildren(...(this.regionTypePanel ? [this.regionTypePanel.element] : []), imgPane, side);
     const fit = this.pageView?.fit;   // fit height is kept when the page view is made again
