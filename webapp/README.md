@@ -2,6 +2,8 @@
 
 A static web app for the books this repository's methods produce. It runs entirely in the browser with plain HTML, CSS and JavaScript modules, bundled PDF and OCR runtimes, and no build step. A book consists of its PDF and page documents (schema 0.2 and 0.3, [schema/README.md](../schema/README.md)), kept in the browser and saved together as a **.chaya.pdf** ("Books" below).
 
+Agents preparing a book can use [the transcription skill](../skills/transcribe-chaya-book/SKILL.md), which covers the pipeline, validation and PDF packaging, including work performed outside the app.
+
 The five workflow tabs are **Pages · Regions · Text · Read · Export**.
 
 - **Pages** browses the scans and shows all three layers of progress. Open a thumbnail for a scan preview before processing anything.
