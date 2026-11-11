@@ -1,14 +1,14 @@
 import { reviewPage } from "./review-view.js?v=20261111-cross-page-carbon-2";
 import { settledChecks } from "./review.js?v=20261111-cross-page-carbon-2";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261111-cross-page-carbon-2";
-import { READERS, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261111-cross-page-carbon-2";
+import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261111-carbon-high-5";
+import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
-import { CredentialChecks } from "./key-check.js?v=20261111-cross-page-carbon-2";
+import { CredentialChecks } from "./key-check.js?v=20261111-carbon-high-5";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261111-cross-page-carbon-2";
-import { jsonHash } from "./pipeline/run.js?v=20261111-cross-page-carbon-2";
+import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261111-carbon-high-5";
 import { settings } from "./store.js?v=20261110-finders-4";
 import { runProgress } from "./run-progress.js";
 import { readingFits } from "./pipeline/partial-reading.js?v=20261110-partial-3";
@@ -24,7 +24,8 @@ export async function renderReaders(el, app) {
   const selection = await book.readWork("work/reader-lab/selection.json") || {};
   const choice = await modelChoice(book, "transcription", () => renderReaders(el, app));
   if (app.readerViewToken !== token || app.mode !== "readers") return;
-  const candidates = new Set((selection.readers || READERS.map(r => r.id)).filter(id => READERS.some(r => r.id === id)));
+  const candidates = new Set((selection.readers || READERS.filter(reader => reader.id !== "carbon-high").map(reader => reader.id))
+    .filter(id => READERS.some(reader => reader.id === id)));
   const chosenPages = new Set((selection.pages || []).filter(id => id in book.index));
   const count = Math.min(6, book.pages.length);
   if (!selection.pages) for (let i = 0; i < count; i++) chosenPages.add(book.pages[Math.round(i * (book.pages.length - 1) / Math.max(1, count - 1))].id);
@@ -36,7 +37,7 @@ export async function renderReaders(el, app) {
   const summary = h("div", { class: "reader-summary" });
   const ledgerSummary = h("div", { class: "reader-ledger hint" });
   const detail = h("div", { class: "reader-detail" });
-  const referenceId = selection.reference || "argon-high";
+  const referenceId = selection.reference || DEFAULT_TRANSCRIPTION_REFERENCE;
   const referenceSelect = h("select", { "aria-label": "Reference transcription source" }, h("option", { value: "current", selected: referenceId === "current" }, "Current page text"),
     ...READERS.map(r => h("option", { value: r.id, selected: r.id === referenceId }, r.label)));
   const onlyDifferences = h("input", { type: "checkbox", checked: selection.only_differences ?? true });
@@ -392,7 +393,7 @@ export async function renderReaders(el, app) {
     h("details", { class: "trial-cost-settings" }, h("summary", {}, "Whole-book estimate settings"),
       h("p", { class: "hint" }, `For total-cost estimates, every transcription uses the fixed ${structurerById(defaults.structurer).label} schema assignment model. Its measured price is shared across the transcription models. Page-region detection uses ${finderById(defaults.finder).label}. Schema models are compared on the next page.`),
       h("label", {}, includeStructure, " Include fixed-model schema assignment in this trial")),
-    h("p", { class: "hint" }, "The reference transcription comes from the selected source above. Argon high is the default reference. Error scores use only the reference lines you mark checked against the scan. Missing regions are detected once and shared across transcription models. A spend threshold can be exceeded by the final call."),
+    h("p", { class: "hint" }, `The reference transcription comes from the selected source above. Argon high is the default reference. Error scores use only the reference lines you mark checked against the scan. Missing regions are detected once and shared across transcription models. Requests time out after ${REQUEST_TIMEOUT_MS / 1000} seconds. A spend threshold can be exceeded by the final call.`),
     h("div", { class: "actions" }, run, " ", stopButton, " ", refreshButton), progress.element, trialStatus,
     h("h3", {}, "2. Review costs and transcription differences"), h("label", {}, "Book pages ", projectionPages),
     h("p", { class: "hint" }, `${book.manifest.cost_projection?.label ? `Default target is ${book.manifest.cost_projection.label}. ` : ""}Change the page count to estimate another book size, including 1,000 pages. Each stage uses its available sample costs, including region detection once per page. Original whole-page readings supply transcription prices after region edits. Unmeasured stages are named beside the subtotal. Repair and retry charges appear in the saved-attempt ledger.`),

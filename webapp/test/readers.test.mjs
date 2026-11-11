@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { Maker, post } from "../js/pipeline/run.js";
 import { Book, idb } from "../js/store.js";
 import { makeValidator, checkPage } from "../js/schema.js";
-import { readerOptions, readerById, usageCost, projectBookCost, bookCostEstimate, wholePageReading, STRUCTURER, structurePath } from "../js/pipeline/readers.js";
+import { readerOptions, readerById, usageCost, projectBookCost, bookCostEstimate, wholePageReading, DEFAULT_TRANSCRIPTION_REFERENCE, STRUCTURER, structurePath } from "../js/pipeline/readers.js";
 import { openaiCost } from "../js/pipeline/steps.js";
 import { visionRequest, visionReading, visionCost } from "../js/pipeline/vision.js";
 import { selectPageRegions, checkReading, combineReading, structureSchema, markedText, plainReading } from "../js/pipeline/split.js";
@@ -799,25 +799,59 @@ test("cross-page comparisons retain repeated region IDs and skip missing referen
   assert.deepEqual(regions.filter(region => region.differs).map(region => region.page), ["p1", "p5"]);
 });
 
-test("Carbon transcription uses its own model, cache and dated token prices", async () => {
+test("Carbon low and high use distinct settings and caches with dated token prices", async () => {
   const { maker, book, calls } = fixture();
-  const carbon = readerById("carbon-low");
-  const config = JSON.parse(readFileSync(new URL("../../methods/089-gemini-4-carbon-low-reading/config.json", import.meta.url)));
-  assert.deepEqual(config.profile, carbon);
-  assert.equal(usageCost(usage, carbon, "2026-11-09"), null);
-  assert.equal(usageCost(usage, carbon, "2026-11-11"), .0005);
-  assert.equal(usageCost(usage, carbon, "2026-12-01"), .001);
-  const result = await maker.read("p1", { reader: "carbon-low" });
-  assert.equal(calls[0].payload.model, "gemini-4-carbon");
-  assert.equal(calls[0].payload.generation_config.thinking_level, "low");
-  assert.equal(calls[0].payload.generation_config.max_output_tokens, config.max_output_tokens);
-  assert.equal(calls[0].payload.store, false);
-  assert.equal(result.profile.method, config.method);
-  assert.equal((await book.readWork("work/readings/p1/carbon-low.json")).profile.id, "carbon-low");
-  assert.equal((await maker.read("p1", { reader: "carbon-low" })).cached, true);
+  assert.equal(readerById(DEFAULT_TRANSCRIPTION_REFERENCE).thinking, "high");
+  for (const level of ["low", "high"]) {
+    const carbon = readerById(`carbon-${level}`);
+    const config = JSON.parse(readFileSync(new URL(`../../methods/${carbon.method}/config.json`, import.meta.url)));
+    assert.deepEqual(config.profile, carbon);
+    assert.equal(usageCost(usage, carbon, "2026-11-09"), null);
+    assert.equal(usageCost(usage, carbon, "2026-11-11"), .0005);
+    assert.equal(usageCost(usage, carbon, "2026-12-01"), .001);
+    const result = await maker.read("p1", { reader: carbon.id });
+    const payload = calls.at(-1).payload;
+    assert.equal(payload.model, "gemini-4-carbon");
+    assert.equal(payload.generation_config.thinking_level, level);
+    assert.equal(payload.generation_config.max_output_tokens, config.max_output_tokens);
+    assert.equal(payload.store, false);
+    assert.equal(result.profile.method, config.method);
+    assert.equal((await book.readWork(`work/readings/p1/${carbon.id}.json`)).profile.id, carbon.id);
+    assert.equal((await maker.read("p1", { reader: carbon.id })).cached, true);
+  }
   await maker.read("p1", { reader: "argon-low" });
-  assert.equal(calls.length, 2);
-  assert.equal(calls[1].payload.model, "gemini-4-argon");
+  assert.equal(calls.length, 3);
+  assert.equal(calls[2].payload.model, "gemini-4-argon");
+});
+
+test("provider requests use a 75-second deadline", async () => {
+  const originalFetch = globalThis.fetch, originalTimeout = AbortSignal.timeout, timeouts = [];
+  globalThis.fetch = async () => ({ ok: true, json: async () => ({ outputs: [{ type: "text", text: "OK" }] }) });
+  AbortSignal.timeout = milliseconds => { timeouts.push(milliseconds); return new AbortController().signal; };
+  try {
+    await post("gemini", { model: "gemini-4-carbon", generation_config: { thinking_level: "high" } }, "fixture");
+    await post("gemini", { model: "gemini-4-carbon", generation_config: { thinking_level: "low" } }, "fixture");
+    await post("gemini", { model: "gemini-4-argon", generation_config: { thinking_level: "high" } }, "fixture");
+    await post("vision", {}, "fixture");
+    await post("openai", { model: "gpt-6.1-terra" }, "fixture");
+    assert.deepEqual(timeouts, [75000, 75000, 75000, 75000, 75000]);
+  } finally { globalThis.fetch = originalFetch; AbortSignal.timeout = originalTimeout; }
+});
+
+test("whole-page attempts enter the ledger before the provider request begins", async () => {
+  const { maker, book } = fixture();
+  maker.request = async () => {
+    const pending = await book.readWork("work/reader-lab/ledger.json");
+    assert.equal(pending.calls.length, 1);
+    assert.equal(pending.calls[0].status, "requesting");
+    assert.equal(pending.calls[0].cost_usd, null);
+    throw Error("Request cancelled");
+  };
+  await assert.rejects(maker.read("p1"), /Request cancelled/);
+  const saved = await book.readWork("work/reader-lab/ledger.json");
+  assert.equal(saved.calls.length, 1);
+  assert.equal(saved.calls[0].status, "failed");
+  assert.equal(saved.calls[0].cost_usd, null);
 });
 
 test("Tesseract word boxes map to source lines and ignore outside text", () => {

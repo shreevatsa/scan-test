@@ -8,12 +8,16 @@ export const READERS = [
   { id: "argon-high", label: "Gemini 4 Argon · high thinking", provider: "gemini", model: "gemini-4-argon", thinking: "high", rates: argonRates, formatting: true },
   { id: "carbon-low", label: "Gemini 4 Carbon · low thinking", provider: "gemini", model: "gemini-4-carbon", thinking: "low", rates: carbonRates, formatting: true,
     method: "089-gemini-4-carbon-low-reading" },
+  { id: "carbon-high", label: "Gemini 4 Carbon · high thinking", provider: "gemini", model: "gemini-4-carbon", thinking: "high", rates: carbonRates, formatting: true,
+    method: "090-gemini-4-carbon-high-reading" },
   { id: "flash-low", label: "Gemini 3.8 Flash · low thinking", provider: "gemini", model: "gemini-3.8-flash", thinking: "low", rates: flashRates, formatting: true },
   { id: "flash-lite", label: "Gemini 3.5 Flash-Lite · minimal thinking", provider: "gemini", model: "gemini-3.5-flash-lite", thinking: "minimal", rates: [{ from: "2026-01-01", input: 0.3, output: 2.5, cached: 0.03 }], formatting: true },
   { id: "tesseract", label: "Tesseract · local OCR", provider: "local", model: "tesseract.js-6.0.1", formatting: false },
   { id: "vision-text", label: "Cloud Vision · Text Detection", provider: "vision", model: "TEXT_DETECTION", formatting: false, usd_per_page: 0.0015 },
   { id: "vision-document", label: "Cloud Vision · Document Text Detection", provider: "vision", model: "DOCUMENT_TEXT_DETECTION", formatting: false, usd_per_page: 0.0015 },
 ];
+
+export const DEFAULT_TRANSCRIPTION_REFERENCE = "argon-high";
 
 export const STRUCTURER = { id: "argon-structure", label: "Gemini 4 Argon · high thinking", provider: "gemini", model: "gemini-4-argon", thinking: "high", rates: argonRates };
 export const STRUCTURERS = [STRUCTURER,

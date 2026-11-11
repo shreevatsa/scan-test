@@ -1,0 +1,38 @@
+{
+  "method": "090-gemini-4-carbon-high-reading",
+  "stage": "reading",
+  "contract": "reading-and-structure-v1",
+  "profile": {
+    "id": "carbon-high",
+    "label": "Gemini 4 Carbon · high thinking",
+    "provider": "gemini",
+    "model": "gemini-4-carbon",
+    "thinking": "high",
+    "rates": [
+      {
+        "from": "2026-11-10",
+        "input": 2,
+        "output": 10,
+        "cached": 0.1
+      },
+      {
+        "from": "2026-12-01",
+        "input": 4,
+        "output": 20,
+        "cached": 0.2
+      }
+    ],
+    "formatting": true,
+    "method": "090-gemini-4-carbon-high-reading"
+  },
+  "geometry": "Fixed page regions and numbered line pieces",
+  "source_snapshot": "065-gemini-4-argon-low-reading/snapshot",
+  "max_output_tokens": 32768,
+  "image_resolution": "high",
+  "store": false,
+  "service_tier": "standard",
+  "pricing_checked_on": "2026-11-11",
+  "model_source": "https://aistudio.google.com/docs/models/gemini-4-carbon",
+  "pricing_source": "https://aistudio.google.com/docs/pricing#gemini-4-carbon",
+  "request_timeout_ms": 75000
+}

@@ -6,12 +6,12 @@ import { mappedTypeNames } from "../type-revisions.js?v=20261110-finders-4";
 import * as P from "./prompts.js";
 import * as S from "./steps.js?v=20261110-reading-2";
 import * as I from "./images.js?v=20261110-reading-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261111-cross-page-carbon-2";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261111-carbon-high-5";
 import * as Split from "./split.js";
 import { localReading, localLayout } from "./ocr.js?v=20261110-finders-4";
 import { classifyBlocks } from "../local/blocks.js?v=20261110-finders-4";
 import { finderById, finderPath } from "./finders.js?v=20261111-cross-page-carbon-2";
-import { finderRequest } from "./finder-requests.js?v=20261111-cross-page-carbon-2";
+import { finderRequest } from "./finder-requests.js?v=20261111-carbon-high-5";
 import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261110-partial-3";
 import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261110-finders-4";
 import { bbox } from "../render.js";
@@ -19,6 +19,8 @@ import { canonical } from "../ops.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "../layers.js?v=20261110-finders-4";
 import { provisionalDocument } from "./provisional.js?v=20261110-finders-4";
 import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261110-partial-3";
+
+export const REQUEST_TIMEOUT_MS = 75000;
 
 let TEMPLATES = null;
 export async function templates() {
@@ -52,7 +54,7 @@ export async function post(provider, payload, key, auth = {}) {
     if (auth.project) headers["x-goog-user-project"] = auth.project;
   }
   const t0 = performance.now();
-  const r = await fetch(S.ENDPOINTS[provider], { method: "POST", headers, body: JSON.stringify(payload), signal: AbortSignal.timeout(300000) });
+  const r = await fetch(S.ENDPOINTS[provider], { method: "POST", headers, body: JSON.stringify(payload), signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
   const raw = await r.json().catch(() => null);
   const body = raw?.interaction || raw;
   if (!r.ok) throw new Error(`${provider} HTTP ${r.status}${body?.error?.message ? ": " + body.error.message : ""}`);
@@ -320,8 +322,8 @@ export class Maker {
     if (partPath) {
       await this.book.writeWork(partPath, { format: "reading-part-call", version: 1, path, request_sha256: requestHash });
       record.status = "requesting";
-      await this.saveCall(record, path);
     }
+    await this.saveCall(record, path);
     try {
       const { body, seconds } = await this.request(provider, payload, key, { mode: this.keys.vision_auth, project: this.keys.vision_project });
       Object.assign(record, { response: body, seconds, usage: body.usage || null,

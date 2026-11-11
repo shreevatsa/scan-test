@@ -7,8 +7,8 @@
 import { h } from "./render.js";
 import { prepare } from "./reader.js?v=20261111-cross-page-carbon-2";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261111-cross-page-carbon-2";
-import { newTypeDialog } from "./regionsview.js?v=20261111-cross-page-carbon-2";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261111-carbon-high-5";
+import { newTypeDialog } from "./regionsview.js?v=20261111-carbon-high-5";
 import { citedSamplePages } from "./type-revisions.js?v=20261110-finders-4";
 
 export async function renderTypes(el, app, { onAdded = () => app.route(), onReviewPages, onOpenPage = pid => app.openPage(pid, {}, "regions") } = {}) {
