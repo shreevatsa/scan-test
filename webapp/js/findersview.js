@@ -3,7 +3,7 @@ import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } f
 import { OCR_LANGUAGES, structurePath, projectBookCost } from "./pipeline/readers.js?v=20261110-partial-3";
 import { pageRange } from "./pipeline/pdf.js";
 import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261110-partial-3";
-import { reviewPage } from "./review-view.js?v=20261110-page-review-5";
+import { reviewPage } from "./review-view.js?v=20261110-review-order-1";
 import { settings } from "./store.js?v=20261110-finders-4";
 import { money } from "./reader-controls.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";

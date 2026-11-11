@@ -139,7 +139,7 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
         ...doc.page.regions.map(value => h("p", {}, `${value.id} · ${value.type} · ${value.lines?.length || 0} line pieces`)));
     })));
   }
-  controls.append(apply, keep, ...(path && base.source?.suggestions?.[layer] === path ? [dismiss] : []), close);
+  controls.append(keep, apply, ...(path && base.source?.suggestions?.[layer] === path ? [dismiss] : []), close);
   dialog.append(h("h2", {}, `Review ${titles[layer]} · page ${book.index[pid] + 1}`),
     h("p", {}, "Check the scan, choose a scope, then save the version you judge correct. Reviewed choices become page edits and supply the model scores."),
     ...(layer === "regions" ? record?.warnings || [] : []).map(warning => h("p", { class: "box warn" }, warning)),
