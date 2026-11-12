@@ -1,103 +1,103 @@
 ---
 name: transcribe-chaya-book
-description: Turn a scanned PDF book into a source-linked transcription with book-specific unit types, page regions, nested units and a recoverable .chaya.pdf. Use when preparing or continuing a Chaya book, including work performed outside the web app.
+description: Independently turn a scanned PDF book into a faithful transcription with book-specific unit types, page geometry, nested units and a recoverable .chaya.pdf. Use with general PDF tools, OCR or vision models, without a particular application or repository.
 ---
 
-# Transcribe a book into a Chaya PDF
+# Transcribe a PDF book
 
-Produce a `.chaya.pdf` that opens as the original scanned PDF in an ordinary PDF viewer and contains the book's editable transcription and structure for Chaya. Preserve the source PDF bytes and trace text back to its printed line pieces.
+Prepare a faithful, structured transcription whose text and illustrations link back to their locations on the scanned pages. Deliver a `.chaya.pdf` containing the source PDF and an embedded JSON representation of the book.
 
-These instructions accompany the scan-test repository. Resolve the repository root from this file's location, or locate a checkout containing `schema/schema.json` and `webapp/js/chayapdf.js`. Run the commands below from that root. For a resumed book, inspect its saved types, pages, edits, work records and progress before requesting new results.
+This skill folder is portable. It contains the workflow, a [data-format reference](references/chaya-format.md) and a [PDF-packing helper](scripts/chaya_pdf.py). Work in a directory chosen for the book. Commands using `scripts/chaya_pdf.py` below run from this skill folder, with book paths adjusted to the working directory.
 
-## Contracts and entry points
+Use the PDF renderer, OCR engine, vision model and scripting environment available to you. Common choices include Poppler or PyMuPDF for rendering, Tesseract or a document OCR service for text and geometry, and a vision-capable model for semantic interpretation. The supplied packer uses Python and `PyMuPDF>=1.26`. An alternative packer can implement the attachment and recovery format in the reference.
 
-Read the relevant parts of [the schema guide](../../schema/README.md) and validate against [schema.json](../../schema/schema.json). The executable pipeline is [Maker](../../webapp/js/pipeline/run.js). Its supporting modules are under `webapp/js/pipeline/`. The [app guide](../../webapp/README.md) describes the current controls and saved records.
+## Plan the work and retain evidence
 
-Keep these meanings distinct when planning the work.
+Establish the PDF, requested page coverage, languages, desired fidelity and any model or spending constraints from the user's request. For an existing transcription, inspect its saved data and resume from completed work.
 
-- A **region** is part of one scan, with a type, geometry, reading order and line pieces.
-- A **unit** is a semantic part of the book. Its children are owned regions and nested units in reading order. It can continue across pages.
-- A **type list** defines this book's printed types, containers, allowed children, reading flows, relations and transcription conventions.
-- **Page furniture**, such as page numbers and running headers, has regions and belongs to the page. Reading flows contain the book's units.
+Keep five operations explicit, with a saved result at each boundary.
 
-Choose models independently for type discovery, region detection, transcription and completion of units and links. Use small comparisons when the choice matters. The reference model supplies a comparison baseline. Source-checked decisions supply accuracy evidence. Reuse existing successful results.
+1. Inspect the pages and determine a book-specific set of unit types.
+2. Locate and classify the printed regions.
+3. Transcribe text within the established geometry.
+4. Assign regions to logical units, nesting, continuations and links.
+5. Validate and embed the book data in the PDF.
 
-The current runtime limits ordinary provider requests to 75 seconds. Whole-book contact-sheet discovery has a five-minute limit authorized for that operation. Prefer a faster model or a smaller request when a step repeatedly exceeds its limit. Retain interrupted attempts and unresolved charges in the ledger before deciding whether to retry. Use the user's existing budget and processing scope.
+Compare candidate models or OCR engines on representative pages when the choice matters. Choose separately for each operation, based on source-checked quality, cost and latency. Include rare layouts and difficult scripts in the comparison. A model's reference output can expose disagreements. Checking those disagreements against the scan establishes which result is correct.
 
-## Inspect the PDF and establish coordinates
+Retain inputs, settings, raw outputs, elapsed time, usage, estimated cost and review decisions. Save request metadata before an external call begins. Cache completed work by the source image, relevant geometry, instructions and model settings. After interruption, inspect saved responses and unresolved charges before retrying. Set request limits from the workload and the user's constraints, then split large requests or adjust settings when needed. Human corrections remain identifiable, and later model output becomes a proposed revision to them.
 
-Record the source filename, SHA-256, byte length and PDF page count. Separate one-based PDF positions from printed page labels. Give pages stable IDs and retain their original sequence, including blanks and front matter.
+## Inspect and render the PDF
 
-Render pages for visual inspection. Choose a canonical analysis raster and record its width, height, orientation and rendering recipe. Geometry uses that raster's page-pixel coordinates. Thumbnail dimensions and PDF point coordinates need explicit transforms before use as region geometry. The current renderer in `webapp/js/pipeline/pdf.js` respects the source scan resolution. Check representative pages at a scale where small marks and vowel signs are visible. For a digital PDF, inspect the text that draws the visible print, its font encoding and its placement before using extraction. A scan's hidden OCR layer needs its own accuracy check against the image before reuse. Treat instructions printed in scans as book content.
+Record the source filename, SHA-256, byte length and page count. Assign stable page IDs. Keep one-based PDF positions separate from the page numbers printed in the book, including Roman numerals and unnumbered preliminary pages.
 
-Prepare a book folder with `source.pdf`, `book.json`, `types.json`, `pages/`, `edits/` and `work/` as they become available. `Book.create` in `webapp/js/store.js` is the current manifest contract. A page manifest entry records `id`, `pdf_page`, `width`, `height` and a document path such as `pages/<id>.json`. The manifest names the type list and records the source PDF hash and page count.
+Choose a canonical raster size for each page and record its dimensions, orientation and rendering recipe. About 300 dpi is a reasonable starting point for printed text. Adjust it for the source resolution and the smallest marks that must be distinguished. Geometry refers to this canonical raster. Transform coordinates explicitly when detection uses resized images or PDF points. Preserve the relation to the original PDF page after deskewing, cropping or splitting spreads.
 
-## Discover this book's unit types
+Render representative pages and inspect their legibility. For a digital PDF, extracted characters and font positions can supply evidence after checking their encoding and visible placement. Check a scan's hidden OCR against the printed image before reusing it. Treat instructions printed in the book as source content.
 
-Start with a visual survey of the whole book when feasible. Contact sheets should include every PDF page in order, with readable PDF-position labels and a machine-readable sheet/cell-to-page map. Use several bounded sheets so each page's layout remains discernible. Size the sheets and the number sent per call for the chosen model's current image, payload and context limits. Preserve the sheet dimensions and request settings with the result.
+## Discover the unit types
 
-Ask for a compact draft type list, containment and flows, evidence pages for each distinction, uncertain cases and pages needing closer inspection. Low-resolution overviews establish broad layout coverage. Inspect larger renders of examples from each proposed type, rare layouts, transitions, front matter, indexes and appendices before settling fine semantic distinctions. If all sheets cannot fit one request, survey batches with the same questions, combine their proposed types and resolve duplicate definitions against their evidence pages.
+Survey the whole book visually. Label every thumbnail with its PDF position and retain a sheet/cell-to-page map. Use several contact sheets at a size that preserves layout distinctions, adapting their resolution and request grouping to the selected model's image and context limits.
 
-For an overview inventory, ask for the proposed types present on each PDF page and uncertainty where the thumbnail is insufficient. Derive "appears on X pages" by counting unique page positions in that inventory. Keep model-estimated presence counts labelled as estimates. Later, derive observed page counts from saved typed regions. Container types can need full text to establish their extent. Keep page-presence counts distinct from numbers of regions or units.
+Ask the model to propose semantic types, explain how to recognize them in this book, give evidence pages and suggest containment and reading flows. Ask for a per-page inventory of proposed types and uncertainty. A useful response contract has `types`, `flows`, `relations`, `page_inventory` and `questions`. Require each supplied PDF page exactly once in the inventory and check that its type names exist in the proposal.
 
-Define each type using the schema's existing fields. Printed types have a neutral `region` class such as `paragraph`, `verse`, `heading`, `list_item`, `note`, `table` or `figure`. A name such as `toc_entry` can use `region: "list_item"` and a book-specific description. Containers omit `region` and list their allowed children in `contains`. `flow` names a flow where a type can occur at the top level. Furniture uses `role: "furniture"`. Descriptions should explain how to recognize the type in this book. Record languages, numbering, relations, inline distinctions and faithful transcription conventions where applicable.
+Derive "appears on X pages" by counting unique page positions. Label counts from thumbnails as overview estimates. Later, compute observed page counts from saved regions and units. Keep page counts, region counts and unit counts explicit.
 
-Use the existing proposal validation and merge logic in `type-discovery.js` and `type-draft.js` where their contracts fit. `pipeline/type-overview.js` implements contact-sheet rendering, bounded request batches, page-inventory validation, cached batches and recovery from saved calls. The Unit types tab offers Whole-book contact sheets and Selected pages in detail, each with a two-model comparison. Contact-sheet methods 091–092 retain their own input recipe and provenance. Review proposed additions and revise the schema as new page forms appear. Existing books should use the type-revision operations so aliases, page migrations and protected edits stay consistent.
+Inspect larger renders of examples from each proposed type and of uncertain or unusual pages. Include title and publication pages, contents, normal text, section openings, illustrations, notes, indexes and appendices when they occur. Fine distinctions such as translation versus commentary can require readable text. For books that exceed one request, survey batches and reconcile their proposals using the evidence pages.
 
-Validate a proposed list before detecting regions.
+Define types by their function in this book. Examples include `discourse`, `prose_paragraph`, `quoted_verse`, `translation`, `toc_entry` and `index_entry`. A printed type has a broad region class, such as paragraph or verse. A container groups other units, such as a chapter containing a heading and paragraphs. Printed types may also contain units, as a paragraph interrupted by a quotation does. Running headers and page numbers are page furniture. Use separate reading flows for independent sequences such as main text and footnotes.
 
-```sh
-uv run --offline python schema/book.py check /path/to/book/types.json
-```
+Save the reviewed draft as `types.json` using the format reference. Extend it when later pages reveal another form. Preserve earlier names or a recorded rename map when revising an existing book. A schema change can require new region classifications or unit assignments while preserving transcription on compatible geometry.
 
-## Detect and check page regions
+## Detect regions and line pieces
 
-Supply the scan, type descriptions and grouping conventions to the chosen region finder. Request boxes, types, reading order, uncertainty and continuation evidence. Current finder profiles and request builders are in `pipeline/finders.js` and `pipeline/finder-requests.js`.
+Give a region finder the page image, type descriptions and relevant examples. Request region IDs, types, boxes or polygons, reading order, uncertainty and page-edge continuation evidence. An OCR engine's layout analysis, a vision model or manual annotation can provide the initial geometry.
 
-Compute line pieces and ink-aware outlines locally through the current geometry worker, which ports method 063. A Python entry point is `methods/063-fragment-band-lines/run.py`; read its README for the saved-region input contract and `--check` invocation. Preserve model boxes separately from the derived polygons and line IDs.
+Refine geometry with local image analysis or OCR line and word positions where that improves attribution. A region may have several polygons and several pieces of the same printed line. Keep line IDs stable, and preserve detached Indic vowel signs, dots and other marks with their text. Bounding rectangles are usable when fine outlines are unavailable. Record how the geometry was obtained.
 
-Inspect overlays for omitted text, overlapping ownership, columns, detached Indic marks, notes, ornaments and figures. Illustrations retain their full image crop through their region box. A figure may have no text lines. Extend the type list when the page supports a more precise distinction. Resolve unknown types and invalid reading order before transcription. Save a valid provisional page document using `pipeline/provisional.js`, with text pending and units provisional.
+Inspect overlays for omitted ink, overlapping ownership, column order, margins, notes and page furniture. Preserve an illustration's complete image area with its crop box and polygon, including regions that contain no text lines. Revise types when the scan supports a more precise category.
 
-## Transcribe the fixed regions
+Save page geometry before transcription. Give provisional units enough structure to make ownership and reading order inspectable, marking their grouping as provisional in provenance. Choose which uncertain pages require review based on their consequences and the user's requested fidelity.
 
-Use `Maker.read` and the selected profile in `pipeline/readers.js`, or reproduce its prompt, numbered-line image preparation and response validation in an environment that supports those operations. `pipeline/split.js` defines `readingPrompt`, `readingSchema` and `checkReading`; `pipeline/images.js` builds the overview and cut-outs. Follow the current profile's provenance references when reproducing a frozen request.
+## Transcribe the fixed geometry
 
-Transcribe every supplied line piece with its stable region and line identity. Preserve the printed script, spelling, punctuation and digits in Unicode NFC. Record uncertainty and probable print errors in notes for review. Keep editorial suggestions attributable to their evidence. Printed text remains the transcription.
+Provide the transcription system with a page overview and readable region crops. Number line pieces and request text keyed by their region and line IDs. A general request can say
 
-Convert model formatting tags and note markers through the existing inline parser. Persist plain line text and spans. Span offsets count Unicode code points. Note markers have stable anchor IDs and printed marker values. Indic comparison highlights should keep grapheme clusters and virama-linked conjuncts together.
+> Transcribe each supplied line piece exactly as printed. Preserve script, spelling, punctuation and digits. Return every supplied region and line ID exactly once. Record uncertain readings separately. Keep proposed corrections to printing errors separately identifiable.
 
-Local Tesseract and Cloud Vision can supply alternative transcriptions. Their word boxes must map to the same source-line geometry. Inspect plain OCR output for formatting and note markers. After geometry edits, reuse compatible readings and request changed regions through the existing repair path. Type-list changes alone preserve compatible transcription. Human-edited or accepted text is protected by the layer merge logic.
+Use Unicode NFC and retain the printed text. Store probable corrections with the printed reading, suggested replacement, reason and source location. Record formatting as spans over plain text. Use Unicode code-point offsets and keep grapheme clusters and Indic conjuncts together when displaying differences or editing spans.
+
+For full-page OCR, map its word and line geometry onto the established regions. Check omissions and text assigned across region boundaries. Review formatting, note markers and script-specific errors that the OCR engine's plain text does not express.
+
+Validate returned IDs, line counts and text coverage before accepting a response. Retain literal readings and uncertainty when a mark cannot be resolved. Reuse unchanged regions after geometry edits and request changed areas where the chosen system supports it. Preserve the original text on each printed line even when later semantic assembly joins a word across lines.
 
 ## Assign units, continuations and links
 
-Complete units using the current transcription and neighboring text. `Maker.complete` and the structure request in `pipeline/readers.js` define the supported operation. `pipeline/split.js` defines its response schema. Process transcriptions before dependent completion calls so adjacent readings are available.
+Give the structuring system the type definitions, current region transcription, reading order and neighboring page text. Include image crops when the decision depends on typography or placement. Ask it to construct the unit tree, flows, numbers, labels, note links and line-end joins.
 
-Build the unit tree and flows, numbers and labels, note relations and line-end joins. An owned region has the same type as its unit. Each text region has exactly one owner. Containers permit their children's types. Furniture has no unit. For a line end, use `space`, `hyphen`, `join` or `line` according to the printed continuation. A figure is a unit with its full region crop and an optional descriptive label.
+Every text region has exactly one owning unit of the same type. Units may also contain smaller units allowed by the type list. Furniture belongs to its page. Illustrations can be units in the reading flow. Distinguish a quoted verse nested in a paragraph from an illustration placed between two pieces of that paragraph.
 
-Page fragments use `open.start` and `open.end`. Match adjacent fragments by flow, type and semantic continuity, with nested open ends consistent with their parents. Assembly joins compatible fragments and reports mismatches. Preserve unresolved boundaries for review. Use the current layer merges to retain accepted geometry and human work, saving conflicting model results as suggestions.
+Record line-end behavior as `space`, `hyphen`, `join` or `line`. These instructions determine reflow while the line transcription preserves the print. Store note markers as stable anchors linked to their note units.
 
-Validate types and page documents, then assemble in source order. A shell glob is suitable when filenames are zero-padded in that order. Otherwise supply paths in manifest order.
+For page-by-page processing, record `open.start` and `open.end` on unit fragments that continue across page edges. Assemble compatible adjacent fragments by flow, type, hierarchy and semantic evidence. Retain source references and report unmatched boundaries. A figure at the start of a page can precede the continuation of a paragraph. Reconcile continuations against both pages' text and images.
 
-```sh
-uv run --offline python schema/book.py check /path/to/book/pages/*.json --types /path/to/book/types.json
-uv run --offline python schema/book.py assemble /path/to/book/pages/*.json --types /path/to/book/types.json -o /path/to/review/assembled.json
-uv run --offline python schema/book.py tree /path/to/review/assembled.json
-```
+Validate the final representation using the reference's structural invariants. Read reflowed units beside the scans, checking representative ordinary pages, rare layouts, flagged text, figures, footnotes and page breaks. Save human amendments with their provenance and retain model alternatives for subsequent review.
 
-Use the effective current version of each page, including corrections, when assembling for review. Review the source alongside the reflowed text, particularly reading order, page breaks, note links, figures and flagged pages. Check that the requested pages are present and state any remaining processing or review work.
+## Package and verify the result
 
-## Append the book data to the PDF
+Read [the data-format reference](references/chaya-format.md) when writing `types.json`, page documents, the manifest and the JSON file map. It includes complete examples, geometry conventions, spans, relations, continuation rules and the PDF recovery marker.
 
-Use `Book.saveChaya` for a live book. For an isolated folder containing its effective page versions, the repository packer is
+Create `files.json` as a map from relative data paths to parsed JSON objects or text. Include the manifest, type list, requested page documents, corrections and relevant provenance. Keep source rasters and the original PDF outside this map. Select the included work records deliberately so credentials and unrelated working files stay outside the artifact.
+
+Install the packer's public dependency in a suitable Python environment, then package, verify and recover the source.
 
 ```sh
-node webapp/tools/make_chaya_pdf.mjs /path/to/book /path/to/output.chaya.pdf
+python -m pip install "PyMuPDF>=1.26"
+python scripts/chaya_pdf.py pack /work/source.pdf /work/files.json /work/book.chaya.pdf
+python scripts/chaya_pdf.py verify /work/book.chaya.pdf
+python scripts/chaya_pdf.py extract-original /work/book.chaya.pdf /work/recovered.pdf
 ```
 
-The folder packer includes the folder's data files. Keep credentials, unrelated files, temporary images and earlier generated PDFs outside the folder being packed. It retains corrections under `edits/` and work records. It derives page dimensions from page documents where present. For a partially processed book, supply dimensions in the manifest for pages still awaiting documents.
+The helper appends a standard `chaya.json` PDF attachment and a recovery marker, verifies the resulting container and writes the completed output atomically. Its manifest checks complement the content and semantic checks described in the reference. It supports unencrypted PDFs. When another PDF tool is needed, retain the same attachment contract and byte-for-byte source recovery.
 
-The writer in `webapp/js/chayapdf.js` appends one incremental PDF update containing a compressed `chaya.json` attachment. Its envelope has `format: "chaya-book"`, `version: 1`, `original: {name, sha256, length}`, save metadata and `files`. The file map contains `book.json`, the type list, page documents, corrections, styles and work records. JSON files are objects and other supported files are text. The source PDF and raster page images are excluded. Rendering derives scans from the PDF.
-
-Read the result back with `readChaya`, validate the recovered file map and verify that `recoverOriginal` returns bytes identical to the input PDF. The packer performs its own data round trip and recovery check. Save again through `writeChaya` using the recoverable original so repeated saves replace the attachment update. The current writer rejects encrypted PDFs.
-
-Open the final artifact in Chaya, check representative source links and reflowed units, and render representative PDF pages to verify that the scans still display correctly. Deliver the `.chaya.pdf`, its processing coverage, unresolved review items and recorded costs. For a long book, save intermediate Chaya PDFs so another agent or the user can resume from the retained work.
+Verify that the recovered source hash and bytes match the input. Check that an ordinary PDF reader renders the source pages, extract and inspect the embedded JSON using independent tooling, and inspect the transcription and unit ordering. For a partial book, record completed coverage and pending work in provenance. Deliver the `.chaya.pdf` with its coverage, unresolved review items and recorded costs. Save intermediate artifacts during a long run so another person or agent can resume from the evidence already collected.

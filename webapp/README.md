@@ -2,7 +2,7 @@
 
 A static web app for the books this repository's methods produce. It runs entirely in the browser with plain HTML, CSS and JavaScript modules, bundled PDF and OCR runtimes, and no build step. A book consists of its PDF and page documents (schema 0.2 and 0.3, [schema/README.md](../schema/README.md)), kept in the browser and saved together as a **.chaya.pdf** ("Books" below).
 
-Agents preparing a book can use [the transcription skill](../skills/transcribe-chaya-book/SKILL.md), which covers the pipeline, validation and PDF packaging, including work performed outside the app.
+Agents preparing a book can use [the portable transcription skill](../skills/transcribe-chaya-book/SKILL.md). Its folder contains a general workflow, a self-contained format reference and a Python PDF packer that work independently with public PDF tools and the chosen OCR engines or models.
 
 The six workflow tabs are **Pages · Unit types · Regions · Text · Read · Export**.
 
