@@ -1,10 +1,10 @@
 import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261112-leave-out-1";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-leave-out-1";
-import { settings } from "./store.js?v=20261112-leave-out-1";
-import { money } from "./reader-controls.js?v=20261112-leave-out-1";
-import { reviewTypeChange } from "./type-operations.js?v=20261112-leave-out-1";
-import { reviewPage } from "./review-view.js?v=20261112-leave-out-1";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261112-leave-out-2";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-leave-out-2";
+import { settings } from "./store.js?v=20261112-leave-out-2";
+import { money } from "./reader-controls.js?v=20261112-leave-out-2";
+import { reviewTypeChange } from "./type-operations.js?v=20261112-leave-out-2";
+import { reviewPage } from "./review-view.js?v=20261112-leave-out-2";
 import { runProgress } from "./run-progress.js";
 
 export async function reviewPageWithAI(app) {

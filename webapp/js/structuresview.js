@@ -1,14 +1,14 @@
-import { reviewPage } from "./review-view.js?v=20261112-leave-out-1";
+import { reviewPage } from "./review-view.js?v=20261112-leave-out-2";
 import { assignmentOf, settledStructureScore } from "./review.js?v=20261111-cross-page-carbon-2";
 import { h } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261112-leave-out-1";
+import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261112-leave-out-2";
 import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
-import { CredentialChecks } from "./key-check.js?v=20261112-leave-out-1";
+import { CredentialChecks } from "./key-check.js?v=20261112-leave-out-2";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
 import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
-import { settings } from "./store.js?v=20261112-leave-out-1";
+import { settings } from "./store.js?v=20261112-leave-out-2";
 import { runProgress } from "./run-progress.js";
 
 export async function renderStructures(el, app) {
