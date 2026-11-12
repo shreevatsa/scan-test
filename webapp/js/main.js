@@ -2,8 +2,8 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-url-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-url-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-newbook-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-newbook-1";
 import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
 import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
@@ -12,7 +12,7 @@ import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-c
 import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-quiet-1";
 import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
 import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-quiet-1";
-import { typeSetup } from "./type-setup.js?v=20261112-url-1";
+import { typeSetup } from "./type-setup.js?v=20261112-newbook-1";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
@@ -26,10 +26,10 @@ import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
 import { renderPages } from "./pagesview.js?v=20261112-recipe-2";
-import { settings } from "./store.js?v=20261112-url-1";
-import { renderReaders } from "./readersview.js?v=20261112-url-1";
-import { renderStructures } from "./structuresview.js?v=20261112-url-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261112-url-1";
+import { settings } from "./store.js?v=20261112-newbook-1";
+import { renderReaders } from "./readersview.js?v=20261112-newbook-1";
+import { renderStructures } from "./structuresview.js?v=20261112-newbook-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-newbook-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -424,11 +424,12 @@ class App {
       formFields.disabled = makeButton.disabled = true;
       try {
         const id = bookId.value.trim();
-        if (!/^[A-Za-z0-9._-]+$/.test(id)) throw new Error("give a book id of letters, digits, dots, dashes and underscores");
+        if (!/^[A-Za-z0-9._-]+$/.test(id)) { idDetails.open = true; throw new Error("give a book id of letters, digits, dots, dashes and underscores"); }
         let types = await setup.loadTypes();
         if (!types) throw new Error("load a unit type list");
         types = { ...types, book_id: id, title: title.value.trim() || types.title };
-        if (description.dataset.edited && description.value.trim()) types.description = description.value.trim();
+        // What the box shows is what is saved and sent to the models (never a starter list's placeholder text).
+        types.description = description.value.trim();
         const errs = this.validate(types);
         if (!errs.length) errs.push(...checkTypes(types));
         if (errs.length) throw new Error(`the type list: ${errs[0]}`);
@@ -461,10 +462,12 @@ class App {
       } catch (e) { this.toast(e.message, "bad"); progress.textContent = ""; }
       finally { creating = false; formFields.disabled = makeButton.disabled = false; }
     };
+    const idDetails = h("details", { class: "book-id" }, h("summary", { class: "meta" }, "Book id (made from the file name; change it only if needed)"), h("label", {}, "Book id ", bookId));
     const bookFields = h("div", { class: "fields col" },
       pdfGiven ? h("label", {}, "PDF ", h("b", {}, pdfGiven.name), " ", info) : h("label", {}, "PDF ", files, " ", info),
       h("label", {}, "PDF pages to include ", range),
-      h("label", {}, "Title ", title), h("label", {}, "Book id ", bookId),
+      h("label", {}, "Title ", title),
+      idDetails,
       h("label", { class: "stack" }, "Description of the book, for the models ", description));
     const formFields = h("fieldset", { class: "new-book-fields" }, bookFields, setup.element);
     const makeButton = h("button", { class: "primary", onclick: go }, "Make the book");

@@ -1,7 +1,7 @@
 import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261111-type-overview-4";
 import { h } from "./render.js";
 import { checkTypes } from "./schema.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261112-url-1";
+import { settings } from "./store.js?v=20261112-newbook-1";
 import { money } from "./reader-controls.js?v=20261111-type-overview-4";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
 import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261111-type-overview-4";
@@ -75,8 +75,9 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
   approval.hidden = true;
   const typeSel = h("select", { "aria-label": "Existing unit type list" },
     ...(template ? [h("option", { value: "current" }, "This book’s types and model choices")] : []),
-    ...index.map(t => h("option", { value: t.file }, `${t.book_id} · ${t.title}`)),
-    h("option", { value: "" }, "Load types.json from a file…"));
+    h("option", { value: "" }, "Load a types.json file…"),
+    h("optgroup", { label: "Examples: books this app was tested on" },
+      ...index.filter(t => t.file !== "generic.json").map(t => h("option", { value: t.file }, `${t.book_id} · ${t.title}`))));
   const typeFile = h("input", { type: "file", accept: ".json", "aria-label": "Unit type list file" });
   const existing = h("div", { class: "fields col" }, typeSel, typeFile);
   const loadExisting = async () => template && typeSel.value === "current" ? structuredClone(template.types)
@@ -409,13 +410,13 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
   const discover = h("div", {}, sampling, review, approval);
   const element = h("section", { class: "type-setup" }, h("h2", {}, "Determine this book’s unit types"),
     h("label", {}, starter, " Start with draft types and refine them in Regions"), " ",
-    h("label", {}, mode, " Propose this book’s types with AI"), " ", h("label", {}, reuse, " Use a type list I already have"),
+    h("label", {}, mode, " Propose this book’s types with AI"), " ", h("label", {}, reuse, " Start from an existing type list"),
     discover, existing, status);
   const changeMode = () => {
     discover.hidden = !mode.checked;
     existing.hidden = !reuse.checked;
     if (starter.checked) status.textContent = "Start with common draft types, then add book-specific types while reviewing Regions.";
-    else if (reuse.checked) status.textContent = "Choose the type list to use for this book.";
+    else if (reuse.checked) status.textContent = "A close relative, such as another edition of the same work, makes a good starting point. Your own file works too. Revise the list in Regions.";
     else status.textContent = result ? "Review the saved proposal before continuing." : "Choose sample pages, then propose this book’s unit types.";
     if (reuse.checked) fillDescription();
     else if (!description.dataset.edited) description.value = result?.types.description || template?.types.description || "";
