@@ -1,7 +1,7 @@
 import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261111-type-overview-4";
 import { h } from "./render.js";
 import { checkTypes } from "./schema.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261112-newbook-1";
+import { settings } from "./store.js?v=20261112-newbook-3";
 import { money } from "./reader-controls.js?v=20261111-type-overview-4";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
 import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261111-type-overview-4";
@@ -409,7 +409,7 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
   showCredentials().catch(error => { status.textContent = error.message; });
   const discover = h("div", {}, sampling, review, approval);
   const element = h("section", { class: "type-setup" }, h("h2", {}, "Determine this book’s unit types"),
-    h("label", {}, starter, " Start with draft types and refine them in Regions"), " ",
+    book ? null : h("label", {}, starter, " Start with draft types and refine them in Regions"), " ",
     h("label", {}, mode, " Propose this book’s types with AI"), " ", h("label", {}, reuse, " Start from an existing type list"),
     discover, existing, status);
   const changeMode = () => {

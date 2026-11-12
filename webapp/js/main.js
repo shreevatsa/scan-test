@@ -2,8 +2,8 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-newbook-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-newbook-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-newbook-3";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-newbook-3";
 import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
 import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
@@ -12,7 +12,7 @@ import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-c
 import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-quiet-1";
 import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
 import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-quiet-1";
-import { typeSetup } from "./type-setup.js?v=20261112-newbook-1";
+import { typeSetup } from "./type-setup.js?v=20261112-newbook-3";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
@@ -26,10 +26,10 @@ import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
 import { renderPages } from "./pagesview.js?v=20261112-recipe-2";
-import { settings } from "./store.js?v=20261112-newbook-1";
-import { renderReaders } from "./readersview.js?v=20261112-newbook-1";
-import { renderStructures } from "./structuresview.js?v=20261112-newbook-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261112-newbook-1";
+import { settings } from "./store.js?v=20261112-newbook-3";
+import { renderReaders } from "./readersview.js?v=20261112-newbook-3";
+import { renderStructures } from "./structuresview.js?v=20261112-newbook-3";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-newbook-3";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -390,10 +390,20 @@ class App {
     const info = h("span", { class: "meta" });
     const progress = h("div", { class: "meta" });
     let pdfDoc = null, pdfFile = null, pdfSha = null, opening = null, creating = false;
-    const setup = typeSetup({ app: this, title, bookId, description, index, template, proposalUrl, onBusy: busy => {
+    // Choosing types belongs to Regions (By type), where a whole-book proposal or an existing list can be used. This
+    // form offers it only for an excerpt of an existing book (its types are the starting point) and for a saved proposal.
+    const full = !!(template || proposalUrl);
+    const setup = full ? typeSetup({ app: this, title, bookId, description, index, template, proposalUrl, onBusy: busy => {
       bookFields.querySelectorAll("input,textarea").forEach(control => { control.disabled = busy; });
       makeButton.disabled = busy;
-    } });
+    } }) : {
+      element: null, usePdf: async () => {}, saveToBook: async () => {},
+      loadTypes: async () => {
+        const types = await (await fetch(new URL("../types/generic.json", import.meta.url))).json();
+        types.source = { ...types.source, draft: true };
+        return types;
+      },
+    };
     const usePdf = async file => {
       const token = opening = Symbol();
       pdfDoc = null; pdfFile = file && (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) ? file : null;
@@ -465,16 +475,14 @@ class App {
     const idDetails = h("details", { class: "book-id" }, h("summary", { class: "meta" }, "Book id (made from the file name; change it only if needed)"), h("label", {}, "Book id ", bookId));
     const bookFields = h("div", { class: "fields col" },
       pdfGiven ? h("label", {}, "PDF ", h("b", {}, pdfGiven.name), " ", info) : h("label", {}, "PDF ", files, " ", info),
-      h("label", {}, "PDF pages to include ", range),
+      h("details", { class: "book-range" }, h("summary", { class: "meta" }, "Only some pages?"), h("label", {}, "PDF pages to include ", range)),
       h("label", {}, "Title ", title),
       idDetails,
-      h("label", { class: "stack" }, "Description of the book, for the models ", description));
+      full ? h("label", { class: "stack" }, "Description of the book, for the models ", description) : null);
     const formFields = h("fieldset", { class: "new-book-fields" }, bookFields, setup.element);
     const makeButton = h("button", { class: "primary", onclick: go }, "Make the book");
     this.root.replaceChildren(h("div", { class: "lib" }, h("h1", {}, "A new book"),
-      h("p", {}, "From the book's PDF (a scan or a digital PDF; page images can be made into a PDF first, for example with img2pdf), its unit types and a description. ",
-        "The book is kept in this browser; its pages are drawn from the PDF (a scanned page at 300 dpi, or at the scan's own resolution when lower; a digital page at 300 dpi). ",
-        "Then work through Regions, Text and Read with the models selected for the book."),
+      h("p", {}, "The book is kept in this browser, and its pages are drawn from the PDF. Next come Pages, then Regions (where the unit types are chosen), Text and Read."),
       formFields,
       h("div", { class: "actions" }, makeButton, " ",
         h("button", { onclick: () => this.library() }, "Cancel")), progress));

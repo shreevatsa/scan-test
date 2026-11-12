@@ -8,11 +8,11 @@ import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-
 import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { FINDERS, finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
 import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261111-type-overview-4";
-import { settings } from "./store.js?v=20261112-newbook-1";
+import { settings } from "./store.js?v=20261112-newbook-3";
 import { runBatch } from "./pipeline/batch.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
 import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-recipe-2";
-import { renderFinders } from "./findersview.js?v=20261112-newbook-1";
+import { renderFinders } from "./findersview.js?v=20261112-newbook-3";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };

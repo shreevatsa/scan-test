@@ -5,7 +5,7 @@ import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from
 import { pageRange } from "./pipeline/pdf.js";
 import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261111-type-overview-4";
 import { reviewPage } from "./review-view.js?v=20261111-cross-page-carbon-2";
-import { settings } from "./store.js?v=20261112-newbook-1";
+import { settings } from "./store.js?v=20261112-newbook-3";
 import { money, costEstimate } from "./reader-controls.js?v=20261111-type-overview-4";
 import { runProgress } from "./run-progress.js";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
