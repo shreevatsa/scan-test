@@ -9,9 +9,10 @@ Turn a book's PDF into a digital book in which every unit (paragraph, verse, foo
 ## Where things stand
 
 - **The app works and is tested.** `webapp/` is plain HTML, CSS and JavaScript modules with no build step (about 13,000 lines in `webapp/js`). Tabs are Pages · Regions · Text · Read · Export, one per stage. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3).
-- **Tests:** `node --test webapp/test/*.test.mjs` (258 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11 pass).
+- **Tests:** `node --test webapp/test/*.test.mjs` (272 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11 pass).
 - **Running:** `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/. A book opens read only with `?book=/outputs/books/kale-1913.chaya.pdf`. The Tailscale HTTPS address for the user's other devices is in PRIVATE.md.
 - **Books that exist** (`outputs/books/`, not in git): Kale 1913 (252 pages) and Telang, both made by the older one-pass pipeline (method 052), and the vachana book made from a digital PDF's text layer (methods 058 and 062, private).
+- **Books are kept on disk as well as in the browser** (task 1, done 2026-11-12): a book in the browser can keep a `.chaya.pdf` on disk that the app rewrites after runs and moves and at most every five minutes while there are changes; paid runs wait for a copy; a book with unreadable files is not opened as if empty. `webapp/README.md`, "The copy on disk", describes it. Checked in Chrome with the file picker simulated; the real picker and a real file changing on disk still need one manual check by the user.
 - **No scanned book has gone through the staged workflow end to end.** This is the main gap. The user's 267-page private book was lost from browser storage on 2026-11-12 with about $3.86 of model work in it, and was started again; it now has 267 pages, the eleven draft types and nothing processed. A backup `.chaya.pdf` of that fresh state exists (PRIVATE.md says where).
 - **Least tested stage:** completion (units, line joins, note links), compared on two private pages only, with nobody having checked which model was right. Region finding is the best tested (0 / 0 / 0 on the nine reference pages) and the cheapest.
 - **Measured cost per page** on the private series: finding regions about $0.010, transcription $0.038 (Argon low), completion $0.032 (Argon high). About $21 for 267 pages.
@@ -19,20 +20,7 @@ Turn a book's PDF into a digital book in which every unit (paragraph, verse, foo
 
 ## What to do next, in order
 
-Each task is sized for one session. Finish, test and commit one before starting the next. Rules for all of them are under "Working rules".
-
-### Task 1. Make books durable (do this before anything else)
-
-Problem: a book lives only in the browser's private file system (`booksRoot` in `webapp/js/store.js`, via `navigator.storage.getDirectory()`). The app never asks for persistent storage and never writes a copy to disk by itself. A book was lost this way. The cause was not established (the old tab reported `NotFoundError` reading its source PDF), so do not assume eviction was the only reason.
-
-Do:
-1. Call `navigator.storage.persist()` when a book is created or imported and when a writable book is opened. Show the result (persistent or not) with the storage estimate on the library page and in Export.
-2. Add "Keep a copy on disk": the user picks a file once with `showSaveFilePicker` (Chrome and Edge; needs a secure context); keep the handle in IndexedDB; rewrite that file with the current `.chaya.pdf` after each processing run finishes or stops, after "Move on" actions, and at most every five minutes while there are unsaved changes. Use the existing export code (`webapp/js/chayapdf.js` and the Export tab's save). Re-request permission with a visible button when the browser has dropped it; never fail silently.
-3. Show in the book's header when the disk copy was last written, or "no copy on disk" as a warning once the book holds any model result or edit. Where `showSaveFilePicker` is missing, the warning offers the ordinary download.
-4. Before any processing run that will spend money, block with a message if the book has neither a disk copy nor a download made since its last change, with an explicit "run anyway".
-5. On open, if a book's manifest exists but its source PDF or a page document cannot be read, say which file failed and offer "Restore from a .chaya.pdf", and do not present the book as empty.
-
-Done when: tests cover the scheduling logic (a pure module, with the file write injected), the permission-lost path and the unreadable-source path; a manual check in Chrome shows the file on disk changing after an edit; `webapp/README.md` describes it.
+Each task is sized for one session. Finish, test and commit one before starting the next. Rules for all of them are under "Working rules". Task 1 (durable books) is done.
 
 ### Task 2. Quiet screens for reading and reviewing
 

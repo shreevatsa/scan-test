@@ -5,7 +5,7 @@ import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from
 import { pageRange } from "./pipeline/pdf.js";
 import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261111-type-overview-4";
 import { reviewPage } from "./review-view.js?v=20261111-cross-page-carbon-2";
-import { settings } from "./store.js?v=20261110-finders-4";
+import { settings } from "./store.js?v=20261112-durability-1";
 import { money, costEstimate } from "./reader-controls.js?v=20261111-type-overview-4";
 import { runProgress } from "./run-progress.js";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
@@ -140,6 +140,8 @@ export async function renderFinders(el, app, { selected, onChoose, onBusy, onRev
     const limit = Number(budget.value), profiles = selectedModels();
     if (!ids.length || !Number.isFinite(limit) || limit <= 0) { status.textContent = "Choose sample pages and a positive spend threshold."; return; }
     if (!profiles.every(profile => checks.status(profile)?.valid)) { status.textContent = "Check the credentials for the selected finders."; return; }
+    if (profiles.some(profile => profile.provider !== "local") && !await app.confirmSpending()) return;
+    if (busy || app.workflowBusy || maker.processing || maker.jobs.size) return;
     busy = maker.processing = true; stopped = false;
     onBusy(true);
     const fields = new Map([...content.querySelectorAll("button,input,select")].filter(field => field !== stopButton).map(field => [field, field.disabled]));
@@ -173,6 +175,7 @@ export async function renderFinders(el, app, { selected, onChoose, onBusy, onRev
       stopButton.disabled = true;
       await onBusy(false);
       updateCredentials();
+      app.diskCopy?.checkpoint();
       await refresh();
     }
   }

@@ -9,7 +9,7 @@ import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261111-cross-page-carbon-2";
 import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261111-type-overview-4";
-import { settings } from "./store.js?v=20261110-finders-4";
+import { settings } from "./store.js?v=20261112-durability-1";
 import { runProgress } from "./run-progress.js";
 import { readingFits } from "./pipeline/partial-reading.js?v=20261110-partial-3";
 import { sha256hex } from "./chayapdf.js";
@@ -311,6 +311,7 @@ export async function renderReaders(el, app) {
       credentials.scrollIntoView({ block: "start" });
       return;
     }
+    if (!await app.confirmSpending() || busy || maker.processing || maker.jobs.size) return;
     progress.start(samplePages.length * (1 + ids.length * (withStructure ? 2 : 1)));
     let outcome = "Interrupted";
     busy = true; maker.processing = true; stop = false; sessionCost = 0; unknownCosts = 0;
@@ -368,6 +369,7 @@ export async function renderReaders(el, app) {
       progress.finish(outcome);
       busy = false; maker.processing = false;
       for (const input of inputs) input.disabled = false;
+      app.diskCopy?.checkpoint();
       await refresh();
     }
   }

@@ -1,7 +1,7 @@
 import { h } from "./render.js";
 import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261111-type-overview-4";
 import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261111-type-overview-4";
-import { settings } from "./store.js?v=20261110-finders-4";
+import { settings } from "./store.js?v=20261112-durability-1";
 import { money } from "./reader-controls.js?v=20261111-type-overview-4";
 import { reviewTypeChange } from "./type-operations.js?v=20261111-type-overview-4";
 import { reviewPage } from "./review-view.js?v=20261111-cross-page-carbon-2";
@@ -69,6 +69,7 @@ export async function reviewPageWithAI(app) {
   }
   const run = h("button", { class: "primary", onclick: async () => {
     if (busy || app.workflowBusy || !checks.status(selectedProfile())?.valid) return;
+    if (!await app.confirmSpending() || busy || app.workflowBusy) return;
     lock(true); progress.start(1); status.textContent = "The model is reviewing this page…";
     let outcome = "Failed";
     try {
@@ -76,7 +77,7 @@ export async function reviewPageWithAI(app) {
       progress.advance("completed"); outcome = "Finished";
       status.textContent = "Review saved. Read the response and preview any changes below.";
     } catch (error) { progress.advance("failed"); status.textContent = error.message; }
-    finally { progress.finish(outcome); lock(false); }
+    finally { progress.finish(outcome); lock(false); app.diskCopy?.checkpoint(); }
   } }, "Review this page");
   choice.onchange = showCredentials;
   const dialog = h("dialog", { class: "type-dialog page-review-dialog", "aria-label": "Review page with AI" },

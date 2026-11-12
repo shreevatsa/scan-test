@@ -1,7 +1,7 @@
 import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261111-type-overview-4";
 import { h } from "./render.js";
 import { checkTypes } from "./schema.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261110-finders-4";
+import { settings } from "./store.js?v=20261112-durability-1";
 import { money } from "./reader-controls.js?v=20261111-type-overview-4";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
 import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261111-type-overview-4";
@@ -319,6 +319,7 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
     finally { lock(false); }
   } }, "Preview contact sheets");
   const generate = h("button", { class: "primary", disabled: true, onclick: async () => {
+    if (book && !await app.confirmSpending()) return;
     lock(true);
     stopped = false; stop.disabled = coverage.value !== "overview";
     try {
@@ -360,6 +361,7 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
       status.textContent = `Could not propose unit types. ${error.message}${error.record ? ` Estimated attempt cost ${money(error.record.cost_usd)}. The attempt is saved.` : ""}`;
     } finally {
       lock(false); stop.disabled = true;
+      if (book) app.diskCopy?.checkpoint();
       await showAttempts().catch(error => { status.textContent += ` Could not read the saved attempts. ${error.message}`; });
     }
   } }, "Propose unit types");

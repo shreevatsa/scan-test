@@ -303,9 +303,12 @@ export class Book {
   }
 
   static async openFolder(handle, { browser = false } = {}) {
-    const manifest = await readJsonFile(handle, "book.json");
+    const read = path => readJsonFile(handle, path).catch(error => {
+      throw Object.assign(new Error(`${path} could not be read (${error.name && error.name !== "Error" ? `${error.name}: ` : ""}${error.message})`), { path, cause: error });
+    });
+    const manifest = await read("book.json");
     if (manifest.format !== "book-folder") throw new Error("book.json is not a book folder's manifest");
-    const types = await readJsonFile(handle, manifest.types);
+    const types = await read(manifest.types);
     const book = new Book("folder", handle, manifest, types, { browser });
     await book.recoverStages();
     if (book.manifest.style) book.style = await readJsonFile(handle, book.manifest.style).catch(e => { console.warn("style sheet", e); return null; });
@@ -384,6 +387,36 @@ export class Book {
     this.writeQueue.set(path, job);
     try { await job; }
     finally { if (this.writeQueue.get(path) === job) this.writeQueue.delete(path); }
+    this.changed(path);
+  }
+
+  // Tell whoever keeps a copy of the book (main.js, disk-copy.js) that its data changed. Page images are a cache.
+  changed(path) {
+    if (this.onChange && !path.startsWith("images/")) this.onChange(path);
+  }
+
+  // Files the manifest says this book has that cannot be read: its source PDF, and the document of every page that has
+  // one (a page's `valid` is set when its document is saved). A book opened without them would look unprocessed.
+  // With `parse`, page documents are read and checked, and kept so that opening the book does not read them again;
+  // without it, only their presence is checked (before writing a .chaya.pdf, which reads them anyway).
+  async unreadableFiles({ parse = true } = {}) {
+    if (this.kind !== "folder") return [];
+    const out = [];
+    const failed = (path, error) => out.push({ path, error: error.name && error.name !== "Error" ? `${error.name}: ${error.message}` : error.message });
+    const pdf = this.manifest.pdf?.path;
+    if (pdf) {
+      try { if (!(await fileFrom(this.where, pdf)).size) throw new Error("the file is empty"); } catch (error) { failed(pdf, error); }
+    }
+    for (const page of this.pages) {
+      if (page.valid === null || page.valid === undefined) continue;
+      try {
+        if (!parse) { if (!(await fileFrom(this.where, page.document)).size) throw new Error("the file is empty"); continue; }
+        const doc = await readJsonFile(this.where, page.document);
+        if (doc?.page?.id !== page.id) throw new Error(`it holds ${doc?.page?.id ? `page ${doc.page.id}` : "no page"}`);
+        this.models.set(page.id, doc);
+      } catch (error) { failed(page.document, error); }
+    }
+    return out;
   }
 
   async readJson(path) {
@@ -616,6 +649,7 @@ export class Book {
       let dir = this.where;
       for (const part of parts.slice(0, -1)) dir = await dir.getDirectoryHandle(part);
       await dir.removeEntry(parts.at(-1));
+      this.changed(path);
     } catch (error) { if (error.name !== "NotFoundError") throw error; }
   }
 
@@ -852,17 +886,42 @@ async function booksDir() {
   return root.getDirectoryHandle("books", { create: true });
 }
 
-// The books kept in this browser's storage: {name, handle, manifest, saved}, the most recently saved first.
-export async function browserBooks() {
-  const out = [];
+// The books kept in this browser's storage: {name, handle, manifest, saved}, the most recently saved first. With
+// `damaged`, a folder that holds files but no readable book.json is listed too, as {name, handle, error}.
+export async function browserBooks({ damaged = false } = {}) {
+  const out = [], broken = [];
   for await (const [name, h] of (await booksDir()).entries()) {
     if (h.kind !== "directory") continue;
     try {
       const f = await (await h.getFileHandle("book.json")).getFile();
       out.push({ name, handle: h, manifest: JSON.parse(await f.text()), saved: f.lastModified });
-    } catch (e) { /* not a book (yet) */ }
+    } catch (e) {
+      if (!damaged) continue;
+      let files = 0;
+      for await (const _ of h.entries()) { files++; break; }
+      if (files) broken.push({ name, handle: h, error: e.name === "NotFoundError" ? "it has no book.json" : `its book.json could not be read (${e.message})` });
+    }
   }
-  return out.sort((a, b) => b.saved - a.saved);
+  return [...out.sort((a, b) => b.saved - a.saved), ...broken];
+}
+
+// Each book's copy outside the browser (disk-copy.js), by the book's key: the chosen file's handle and when it, or a
+// download, was last written.
+export const copyRecords = {
+  get: key => idb.get("settings", ["disk-copy", key]).catch(() => null),
+  put: (key, record) => idb.put("settings", ["disk-copy", key], record),
+  del: key => idb.del("settings", ["disk-copy", key]),
+  update: (key, change) => settings.update(["disk-copy", key], record => change(record || {})),
+};
+
+// Ask the browser to keep this site's storage rather than clear it when space runs low, and report what it says:
+// {persisted, usage, quota}, with null for what it does not tell.
+export async function storagePersistence({ ask = false } = {}) {
+  const storage = globalThis.navigator?.storage;
+  let persisted = null, usage = null, quota = null;
+  try { persisted = ask && storage?.persist ? await storage.persist() : storage?.persisted ? await storage.persisted() : null; } catch { persisted = null; }
+  try { ({ usage = null, quota = null } = await storage?.estimate?.() || {}); } catch { /* no estimate */ }
+  return { persisted, usage, quota };
 }
 
 // A new, empty directory for a book in this browser (named after its id, with -2, -3… if taken). The browser is
@@ -873,12 +932,23 @@ export async function newBrowserBookDir(bookId) {
   for await (const [name] of dir.entries()) taken.add(name);
   let name = bookId, k = 1;
   while (taken.has(name)) name = `${bookId}-${++k}`;
-  navigator.storage.persist?.().catch(() => {});
+  storagePersistence({ ask: true });
   return dir.getDirectoryHandle(name, { create: true });
 }
 
 export async function deleteBrowserBook(name) {
   await (await booksDir()).removeEntry(name, { recursive: true });
+  await copyRecords.del(`browser:${name}`).catch(() => {});
+}
+
+// Put a .chaya.pdf of a book back into that book's folder in this browser, in place of what is there (a damaged copy).
+// The file must hold the same book.
+export async function restoreChaya(bytes, handle, bookId) {
+  const { data } = await readChaya(bytes);
+  if (!data || data.format !== "chaya-book") throw new Error("this PDF has no book in it (no chaya.json)");
+  const found = data.files["book.json"]?.book_id;
+  if (bookId && found !== bookId) throw new Error(`this file holds the book “${found}”, not “${bookId}”. Open it from the library instead.`);
+  return importChaya(bytes, { into: handle });
 }
 
 // A .chaya.pdf put into this browser's storage, as a book: its original PDF and its files (into `into`, a book's

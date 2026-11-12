@@ -2,14 +2,15 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya } from "./store.js?v=20261110-finders-4";
+import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-durability-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-durability-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
 import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-cross-page-carbon-2";
 import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261111-region-types-2";
 import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
 import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261111-region-types-2";
-import { typeSetup } from "./type-setup.js?v=20261111-type-overview-4";
+import { typeSetup } from "./type-setup.js?v=20261112-durability-1";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
@@ -22,11 +23,11 @@ import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=2026
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261111-region-types-2";
-import { settings } from "./store.js?v=20261110-finders-4";
-import { renderReaders } from "./readersview.js?v=20261111-type-overview-4";
-import { renderStructures } from "./structuresview.js?v=20261111-type-overview-4";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261111-type-overview-4";
+import { renderPages } from "./pagesview.js?v=20261112-durability-1";
+import { settings } from "./store.js?v=20261112-durability-1";
+import { renderReaders } from "./readersview.js?v=20261112-durability-1";
+import { renderStructures } from "./structuresview.js?v=20261112-durability-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-durability-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -62,8 +63,8 @@ class App {
         else await this.openBook(got);
       } catch (e) { this.library(`Could not open ${params.get("book")}: ${e.message}`); }
     } else if (params.get("local")) {
-      const found = (await browserBooks().catch(() => [])).find(b => b.name === params.get("local"));
-      if (found) await this.openBook(await Book.openFolder(found.handle, { browser: true }));
+      const found = (await browserBooks({ damaged: true }).catch(() => [])).find(b => b.name === params.get("local"));
+      if (found) await this.openBrowserBook(found);
       else this.library(`There is no book “${params.get("local")}” in this browser.`);
     } else this.library();
   }
@@ -81,14 +82,26 @@ class App {
 
   async library(message) {
     this.book = null;
+    this.closeDiskCopy();
     this.root.className = "library";
     if (location.search) history.replaceState(null, "", location.pathname);
     const recent = await recentFolders().catch(() => []);
-    const mine = canKeepBooks() ? await browserBooks().catch(e => { console.warn(e); return []; }) : [];
+    const mine = canKeepBooks() ? await browserBooks({ damaged: true }).catch(e => { console.warn(e); return []; }) : [];
+    const copies = new Map(await Promise.all(mine.map(async b => [b.name, await copyRecords.get(`browser:${b.name}`) || {}])));
+    const storage = canKeepBooks() ? await storagePersistence() : null;
     const urlInput = h("input", { placeholder: "URL of a book's PDF", size: 60 });
     const pdfInput = h("input", { type: "file", accept: "application/pdf,.pdf", style: "display:none", onchange: e => e.target.files[0] && this.openPdfFile(e.target.files[0]) });
     const bookRow = b => {
+      if (b.error) {
+        const actions = h("span", {}, h("button", { class: "mini", onclick: () => this.damagedBook(b, [{ path: "book.json", error: b.error }]) }, "restore…"), " ",
+          h("button", { class: "mini danger", onclick: () => actions.replaceChildren(`Delete the folder “${b.name}” from this browser? `,
+            h("button", { class: "mini danger", onclick: async () => { await deleteBrowserBook(b.name); this.library(`The folder “${b.name}” was deleted from this browser.`); } }, "delete"), " ",
+            h("button", { class: "mini", onclick: () => this.library() }, "keep")) }, "delete…"));
+        return h("div", { class: "row" }, h("button", { class: "link", onclick: () => this.damagedBook(b, [{ path: "book.json", error: b.error }]) }, b.name),
+          h("span", { class: "warn" }, ` ${b.error}: this folder in the browser's storage cannot be opened as a book `), actions);
+      }
       const m = b.manifest;
+      const copy = copyLabel(copyState(copies.get(b.name)), { hasWork: true, canPick: !!window.showSaveFilePicker, time: shortTime });
       const actions = h("span", {},
         h("button", { class: "mini", onclick: () => this.openBrowserBook(b) }, "open"), " ",
         h("button", { class: "mini", title: "the book as one file: its PDF with the book's data in it", onclick: async () => {
@@ -99,7 +112,8 @@ class App {
           h("button", { class: "mini danger", onclick: async () => { await deleteBrowserBook(b.name); this.library(`“${m.title}” was deleted from this browser.`); } }, "delete"), " ",
           h("button", { class: "mini", onclick: () => this.library() }, "keep")) }, "delete…"));
       return h("div", { class: "row" }, h("button", { class: "link", onclick: () => this.openBrowserBook(b) }, m.title),
-        h("span", { class: "meta" }, ` ${m.pages.length} pages · ${m.pdf?.name || ""} · saved ${new Date(b.saved).toLocaleString()} `), actions);
+        h("span", { class: "meta" }, ` ${m.pages.length} pages · ${m.pdf?.name || ""} · saved ${new Date(b.saved).toLocaleString()} · `),
+        h("span", { class: copy.warn ? "warn" : "meta" }, copy.text), " ", actions);
     };
     this.root.replaceChildren(h("div", { class: "lib" },
       h("h1", {}, "Books"),
@@ -113,7 +127,8 @@ class App {
         h("button", { class: "primary", onclick: () => pdfInput.click() }, "Open a PDF or a .chaya.pdf…")),
       canKeepBooks() ? h("div", { class: "recent" }, h("h3", {}, "Books in this browser"),
         mine.length ? mine.map(bookRow) : h("p", { class: "meta" }, "None yet."),
-        h("p", { class: "meta" }, "Kept in this browser's own storage, which the browser may clear if told to forget this site's data: download a .chaya.pdf of anything you care about.")) : null,
+        h("p", { class: storage?.persisted === false ? "warn" : "meta" }, storageText(storage || {})),
+        h("p", { class: "meta" }, "Books are kept in this browser's own storage, which is lost if the browser clears this site's data. Give each book a copy on disk (in its header or Export), or download its .chaya.pdf.")) : null,
       h("div", { class: "byurl" }, h("h3", {}, "Open a PDF by URL (a book's PDF opens read only, with corrections kept in this browser; a plain PDF starts a new book)"), urlInput,
         h("button", { onclick: () => { location.search = "?book=" + encodeURIComponent(urlInput.value.trim()); } }, "Open")),
       h("details", {}, h("summary", {}, "Book folders (the repository's tools)"),
@@ -130,9 +145,62 @@ class App {
             h("button", { class: "mini", onclick: async () => { await forgetFolder(r.key); this.library(); } }, "forget")))) : null)));
   }
 
+  // A book in this browser, opened only when the files it is known to have can be read: a book with a lost source PDF
+  // or page document is not shown as if its pages were unprocessed.
   async openBrowserBook(b) {
-    try { await this.openBook(await Book.openFolder(b.handle, { browser: true })); }
+    if (b.error) return this.damagedBook(b, [{ path: "book.json", error: b.error }]);
+    let book;
+    try { book = await Book.openFolder(b.handle, { browser: true }); }
+    catch (e) { return this.damagedBook(b, [{ path: e.path || null, error: e.message }]); }
+    let lost;
+    try { lost = await book.unreadableFiles(); } catch (e) { lost = [{ path: null, error: e.message }]; }
+    if (lost.length) return this.damagedBook(b, lost, book);
+    try { await this.openBook(book); }
     catch (e) { this.library(`Could not open “${b.manifest?.title || b.name}”: ${e.message}`); }
+  }
+
+  // A book in this browser some of whose files cannot be read: which ones, and putting it back from a .chaya.pdf.
+  async damagedBook(entry, lost, book = null) {
+    this.book = null;
+    this.closeDiskCopy();
+    this.root.className = "library";
+    history.replaceState(null, "", `${location.pathname}?local=${encodeURIComponent(entry.name)}`);
+    const key = `browser:${entry.name}`, record = await copyRecords.get(key) || {};
+    const title = entry.manifest?.title || book?.title || entry.name, bookId = entry.manifest?.book_id || book?.manifest.book_id || null;
+    const status = h("p", { role: "status" });
+    const restore = async (bytes, name, fromDisk = false) => {
+      status.textContent = `Restoring from ${name}…`;
+      try {
+        const restored = await restoreChaya(bytes, entry.handle, bookId);
+        const now = Date.now();
+        await copyRecords.update(key, value => fromDisk ? { ...value, changed_at: value.written_at || now }
+          : { ...value, changed_at: now, exported_at: now, exported_as: name });
+        await this.openBrowserBook({ name: entry.name, handle: entry.handle, manifest: restored.manifest });
+      } catch (e) { status.textContent = `Could not restore from ${name}: ${e.message}`; }
+    };
+    const fileInput = h("input", { type: "file", accept: "application/pdf,.pdf", style: "display:none", onchange: async e => {
+      const file = e.target.files[0];
+      if (file) await restore(new Uint8Array(await file.arrayBuffer()), file.name);
+    } });
+    const fromDisk = record.handle ? h("button", { class: "primary", onclick: async () => {
+      try {
+        const asked = await record.handle.queryPermission?.({ mode: "read" });
+        if (asked && asked !== "granted" && await record.handle.requestPermission({ mode: "read" }) !== "granted") throw new Error("the browser was not given permission to read it");
+        const file = await record.handle.getFile();
+        await restore(new Uint8Array(await file.arrayBuffer()), record.name, true);
+      } catch (e) { status.textContent = `Could not read ${record.name}: ${e.message}`; }
+    } }, `Restore from the copy on disk (${record.name}${record.written_at ? `, written ${shortTime(record.written_at)}` : ""})`) : null;
+    this.root.replaceChildren(h("div", { class: "lib" },
+      h("h1", {}, title),
+      h("div", { class: "box warn" }, h("p", {}, "This book is in this browser, but some of its files cannot be read, so it is not opened: without them its processed pages would look unprocessed."),
+        h("ul", {}, ...lost.map(item => h("li", {}, item.path ? [h("code", {}, item.path), " · "] : null, item.error)))),
+      h("p", {}, "Put the book back from a .chaya.pdf of it: its copy on disk, or a file saved from Export. What is in this browser is replaced by the file’s contents."),
+      h("div", { class: "actions" }, fileInput, fromDisk, " ",
+        h("button", { class: fromDisk ? "" : "primary", onclick: () => fileInput.click() }, "Restore from a .chaya.pdf…"), " ",
+        book ? h("button", { onclick: () => this.openBook(book).catch(e => { status.textContent = e.message; }) }, "Open what can be read") : null, " ",
+        h("button", { onclick: () => this.library() }, "Back to the library")),
+      status,
+      book ? h("p", { class: "meta" }, "“Open what can be read” shows the pages whose files are lost as unprocessed. The copy on disk is not written while files are missing, so it is not replaced by this damaged copy.") : null));
   }
 
   // A PDF chosen in the library: a .chaya.pdf goes into this browser (or opens the copy already there); a plain PDF
@@ -153,7 +221,14 @@ class App {
     if (read.data) {
       const m = read.data.files["book.json"];
       const same = mine.find(b => b.manifest.book_id === m.book_id && b.manifest.pdf?.sha256 === m.pdf?.sha256);
-      const load = async into => { try { await this.openBook(await importChaya(bytes, { into })); } catch (e) { this.library(`Could not open ${file.name}: ${e.message}`); } };
+      const load = async into => {
+        try {
+          const book = await importChaya(bytes, { into });
+          const now = Date.now();
+          await copyRecords.update(book.key, value => ({ ...value, changed_at: now, exported_at: now, exported_as: file.name }));
+          await this.openBook(book);
+        } catch (e) { this.library(`Could not open ${file.name}: ${e.message}`); }
+      };
       if (!same) return load(null);
       return choose(m.title, `This browser already has this book, saved ${new Date(same.saved).toLocaleString()}; the file was saved ${new Date(read.data.saved_at_utc).toLocaleString()}.`, [
         h("button", { class: "primary", onclick: () => load(same.handle) }, "Replace the browser's copy with the file"), " ",
@@ -174,6 +249,7 @@ class App {
   async saveChaya(book, { again = false } = {}) {
     try {
       this.toast("Making the .chaya.pdf…");
+      const at = Date.now();
       const bytes = await book.chayaBytes();
       const name = `${book.manifest.book_id}.chaya.pdf`;
       if (window.showSaveFilePicker) {
@@ -184,12 +260,139 @@ class App {
         await w.close();
         book.chayaHandle = fh;
         this.toast(`Saved ${fh.name} (${(bytes.length / 1048576).toFixed(1)} MB).`);
+        this.noteExport(book, at, fh.name);
       } else {
         const a = h("a", { href: URL.createObjectURL(new Blob([bytes], { type: "application/pdf" })), download: name });
         document.body.append(a); a.click(); a.remove();
         this.toast(`Downloaded ${name} (${(bytes.length / 1048576).toFixed(1)} MB).`);
+        this.noteExport(book, at, name);
       }
-    } catch (e) { if (e.name !== "AbortError") this.toast(`Could not save the .chaya.pdf: ${e.message}`, "bad"); }
+      return true;
+    } catch (e) { if (e.name !== "AbortError") this.toast(`Could not save the .chaya.pdf: ${e.message}`, "bad"); return false; }
+  }
+
+  // A book saved as a file covers the changes made before `at`.
+  noteExport(book, at, name) {
+    if (!book.browser) return;
+    if (this.book === book && this.diskCopy) this.diskCopy.noteExport(at, name);
+    else copyRecords.update(book.key, value => ({ ...value, exported_at: at, exported_as: name })).catch(e => console.warn("the copy record", e));
+  }
+
+  // ---------------------------------------------------------------- the copy on disk (disk-copy.js)
+
+  async openDiskCopy(book) {
+    this.closeDiskCopy();
+    if (!book.browser) return;
+    storagePersistence({ ask: true }).then(value => { this.storage = value; }).catch(() => {});
+    const record = await copyRecords.get(book.key) || {};
+    let previous = null;
+    const copy = new DiskCopy({ record,
+      store: value => copyRecords.put(book.key, value),
+      bytes: () => book.chayaBytes(),
+      write: async (handle, bytes) => { const writable = await handle.createWritable(); await writable.write(bytes); await writable.close(); },
+      permission: handle => handle.queryPermission ? handle.queryPermission({ mode: "readwrite" }) : "granted",
+      request: handle => handle.requestPermission ? handle.requestPermission({ mode: "readwrite" }) : "granted",
+      check: async () => (await book.unreadableFiles({ parse: false })).map(item => `${item.path}: ${item.error}`),
+      onState: state => {
+        if (state.kind !== previous && state.kind === "error") this.toast(`The copy on disk was not written: ${state.error}`, "bad");
+        if (state.kind !== previous && state.kind === "permission") this.toast(`The browser needs permission again to write ${state.name}. Use the button in the header.`, "warn");
+        previous = state.kind;
+        this.renderCopyStatus();
+        if (this.mode === "export") this.renderCopySection?.();
+      } });
+    this.diskCopy = copy;
+    book.onChange = () => copy.noteChange();
+    await copy.start();
+  }
+
+  closeDiskCopy() {
+    const copy = this.diskCopy;
+    this.diskCopy = null;
+    if (!copy) return;
+    copy.dispose();
+    if (copy.state.stale && copy.permission === "granted") copy.checkpoint().catch(() => {});
+  }
+
+  // Leaving the book: its last changes are written to the copy on disk first.
+  async leaveBook() {
+    const copy = this.diskCopy;
+    if (copy?.state.stale && copy.permission === "granted") {
+      this.toast("Writing the copy on disk…");
+      if (!await copy.checkpoint()) this.toast(`The copy on disk was not written: ${copy.state.error || "permission is needed"}`, "bad");
+    }
+    history.replaceState(null, "", location.pathname);
+    this.library();
+  }
+
+  // Choose the file for the copy on disk, and write it.
+  async chooseDiskCopy() {
+    const book = this.book, copy = this.diskCopy;
+    if (!copy) return false;
+    if (!window.showSaveFilePicker) return this.saveChaya(book);
+    let handle;
+    try {
+      handle = await window.showSaveFilePicker({ suggestedName: `${book.manifest.book_id}.chaya.pdf`, types: [{ description: "PDF with the book in it", accept: { "application/pdf": [".pdf"] } }] });
+    } catch (e) { if (e.name !== "AbortError") this.toast(`Could not choose the file: ${e.message}`, "bad"); return false; }
+    this.toast(`Writing ${handle.name}…`);
+    const written = await copy.choose(handle);
+    if (written) this.toast(`Wrote ${handle.name}. It is written again after each run, after moving pages on, and at most every five minutes while there are changes.`);
+    return written;
+  }
+
+  bookHasWork() {
+    if (this.book?.edits.size) return true;
+    for (const state of this.pageStates?.values() || []) if (Object.values(state.layers).some(layer => layer && layer.state !== "provisional")) return true;
+    return false;
+  }
+
+  // The header's note on the copy on disk: when it was last written, or a warning with what to do.
+  renderCopyStatus() {
+    const el = this.copyStatus;
+    if (!el) return;
+    const copy = this.diskCopy, label = copy && copyLabel(copy.state, { hasWork: this.bookHasWork(), canPick: !!window.showSaveFilePicker, time: shortTime });
+    el.className = `copy-status${label?.warn ? " warn" : ""}`;
+    if (!label) { el.replaceChildren(); return; }
+    const state = copy.state;
+    el.title = state.disk ? `${state.name}: written again after each processing run, after pages are moved on, and at most every five minutes while there are changes.` : "";
+    const actions = {
+      choose: ["Keep a copy on disk…", () => this.chooseDiskCopy()],
+      download: ["Download .chaya.pdf", () => this.saveChaya(this.book)],
+      allow: ["Allow writing", () => copy.allow()],
+      retry: ["Try again", () => copy.write()] };
+    const action = actions[label.action];
+    el.replaceChildren(label.text, ...action ? [" ", h("button", { class: "mini", onclick: action[1] }, action[0])] : []);
+  }
+
+  // Before a run that spends money: a book with no copy outside the browser that has its latest change waits for one,
+  // or for an explicit "Run anyway". Resolves whether to run.
+  confirmSpending() {
+    const copy = this.diskCopy;
+    const block = copy && spendingBlock(copy.state);
+    if (!block) return Promise.resolve(true);
+    return new Promise(resolve => {
+      const state = copy.state;
+      const dialog = h("dialog", { class: "type-dialog spend-guard", "aria-label": "Keep a copy before spending" });
+      const done = value => { if (dialog.open) dialog.close(); dialog.remove(); resolve(value); };
+      const status = h("p", { role: "status" });
+      const text = block === "permission" ? `The browser needs permission again to write this book’s copy on disk (${state.name}). Without it, the results of this run are kept only in this browser.`
+        : block === "error" ? `The copy on disk was not written: ${state.error}. Without it, the results of this run are kept only in this browser.`
+          : `This book has no copy outside this browser${state.exportedAt ? ` with its latest changes (it was last saved as a file ${shortTime(state.exportedAt)})` : ""}. This run spends money on model calls, and if the browser loses its storage the results are lost with it.`;
+      const primary = block === "permission" ? ["Allow writing", () => copy.allow()]
+        : block === "error" ? ["Try writing it again", () => copy.write()]
+          : window.showSaveFilePicker ? ["Keep a copy on disk…", () => this.chooseDiskCopy()] : ["Download .chaya.pdf", () => this.saveChaya(this.book)];
+      const go = h("button", { class: "primary", onclick: async () => {
+        go.disabled = true;
+        try {
+          if (await primary[1]()) return done(true);
+          status.textContent = copy.state.kind === "permission" ? "The browser did not give permission." : copy.state.error ? `Not written: ${copy.state.error}` : "No copy was made.";
+        } finally { go.disabled = false; }
+      } }, primary[0]);
+      dialog.append(h("h2", {}, "Keep a copy before spending?"), h("p", {}, text), status,
+        h("div", { class: "actions" }, go, h("button", { onclick: () => done(true) }, "Run anyway"), h("button", { onclick: () => done(false) }, "Cancel")));
+      dialog.addEventListener("cancel", event => { event.preventDefault(); done(false); });
+      document.body.append(dialog);
+      dialog.showModal();
+    });
   }
 
   async newBookForm(pdfGiven = null, template = null, proposalUrl = null) {
@@ -323,6 +526,7 @@ class App {
     this.pageStates = new Map();
     this.workflowLoading = true;
     this.main?.replaceChildren(h("p", { class: "loading" }, "Loading page states…"));
+    await this.openDiskCopy(book);
     await book.all();
     await Promise.all(book.pages.map(page => this.refreshWorkflowPage(page.id)));
     this.workflowLoading = false;
@@ -338,7 +542,7 @@ class App {
     const book = this.book, current = await book.current(pid), draft = await book.draft(pid).catch(() => null);
     const [errors, warnings] = draft ? this.check(draft.doc) : current ? this.check(current) : [[], []];
     this.pageStates.set(pid, { ...pageStages(current, book.types, errors, warnings), runErrors: this.pageStates.get(pid)?.runErrors || {} });
-    if (!this.workflowLoading) this.refreshWorkflowFlags();
+    if (!this.workflowLoading) { this.refreshWorkflowFlags(); this.renderCopyStatus(); }
     this.updateWorkflowNavigation();
   }
 
@@ -455,7 +659,7 @@ class App {
     this.header = h("header", {},
       h("button", { class: "link", title: "the library", onclick: () => {
         if (this.workflowBusy || this.outlineBusy || this.maker?.processing) return this.toast("Wait for the active operation before opening the library.");
-        history.replaceState(null, "", location.pathname); this.library();
+        this.leaveBook();
       } }, "⌂"),
       h("span", { class: "title", title: book.title }, book.title),
       h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode[0].toUpperCase() + mode.slice(1)))),
@@ -471,10 +675,11 @@ class App {
           const ids = book.pages.filter(page => eligible(this.stage, this.pageStates.get(page.id)) && this.pageStates.get(page.id).flags.length).map(page => page.id);
           const next = ids.find(pid => book.index[pid] > book.index[this.pid]) || ids[0];
           if (next) this.openPage(next);
-        } }, "Next flagged page")), this.status);
+        } }, "Next flagged page")), this.status, this.copyStatus = h("span", { class: "copy-status" }));
     this.main = h("main", {});
     this.root.replaceChildren(this.header, this.main);
     this.updateWorkflowNavigation();
+    this.renderCopyStatus();
   }
 
   async route() {
@@ -1043,8 +1248,28 @@ class App {
         this.toast(`${n} corrected pages imported.`);
       } catch (err) { this.toast(err.message, "bad"); }
     } });
+    // A book in this browser: whether the browser keeps it, and its copy on disk.
+    const copySection = book.browser ? h("section", { class: "copy-section" }) : null;
+    this.renderCopySection = () => {
+      if (!copySection || this.book !== book) return;
+      const copy = this.diskCopy, state = copy?.state;
+      const label = state && copyLabel(state, { hasWork: true, canPick: !!window.showSaveFilePicker, time: shortTime });
+      const when = "after each processing run, after pages are moved on, and at most every five minutes while there are changes";
+      copySection.replaceChildren(...[h("h3", {}, "Copies of this book"),
+        h("p", { class: this.storage?.persisted === false ? "warn" : "meta" }, storageText(this.storage || {})),
+        state?.disk ? [h("p", { class: label.warn ? "warn" : "" }, `${label.text}. The file ${state.name} is written again ${when}.`),
+          h("div", { class: "actions" }, state.kind === "permission" ? h("button", { class: "primary", onclick: () => copy.allow() }, "Allow writing")
+            : h("button", { disabled: state.kind === "writing", onclick: () => copy.write() }, "Write it now"),
+          h("button", { onclick: () => this.chooseDiskCopy() }, "Choose another file…"),
+          h("button", { onclick: () => copy.forget() }, "Stop keeping a copy"))]
+          : window.showSaveFilePicker ? [h("p", { class: label?.warn ? "warn" : "" }, `${label?.text || "No copy on disk"}. Choose a file once, and the book is written to it as a .chaya.pdf ${when}. If this browser loses the book, open that file again.`),
+            h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => this.chooseDiskCopy() }, "Keep a copy on disk…"))]
+            : h("p", { class: label?.warn ? "warn" : "" }, `${label?.text || "No copy on disk"}. This browser cannot keep a file up to date: save the .chaya.pdf below after each session’s work.`)].flat());
+    };
+    if (copySection) storagePersistence().then(value => { this.storage = value; this.renderCopySection(); }).catch(() => {});
     el.replaceChildren(h("div", { class: "exportview" },
       h("h2", {}, "Export"),
+      copySection,
       h("div", { class: "row" }, h("button", { onclick: async () => {
         const P = await assembled();
         const errors = this.validate(P.book);
@@ -1062,7 +1287,7 @@ class App {
           : " one HTML file, with blocks side by side and the figures (this book has no style sheet, so not as printed)."),
       book.manifest.pdf || book.kind === "chaya" ? h("div", { class: "row" },
         h("button", { class: "primary", onclick: () => this.saveChaya(book) }, "Save as .chaya.pdf"),
-        book.chayaHandle ? [" ", h("button", { onclick: () => this.saveChaya(book, { again: true }) }, `Save to ${book.chayaHandle.name} again`)] : null,
+        book.chayaHandle && !book.browser ? [" ", h("button", { onclick: () => this.saveChaya(book, { again: true }) }, `Save to ${book.chayaHandle.name} again`)] : null,
         " the book as one file: its PDF, unchanged, with the book's types, pages, your corrections and its style sheet inside. It opens as the book in any PDF viewer, and again here to go on (Open a PDF or a .chaya.pdf…), in any browser.") : null,
       book.manifest.pdf || book.kind === "chaya" ? h("div", { class: "row" }, h("button", { onclick: async () => {
         const bytes = await book.originalPdf();
@@ -1072,6 +1297,7 @@ class App {
       h("div", { class: "row" }, h("button", { onclick: () => save(`${id}.edits.json`, JSON.stringify(book.exportEdits()) + "\n") }, "Your corrections"),
         ` the ${book.edits.size} pages you corrected, as one file${book.writable ? " (they are also in the folder's edits/)" : ""}.`),
       h("div", { class: "row" }, "Import corrections: ", fileInput)));
+    this.renderCopySection();
     if (![...this.pageStates.values()].some(state => state.layers.text)) {
       el.querySelectorAll(".row button").forEach(button => {
         if (["The book (JSON)", "The text", "The book as a web page"].includes(button.textContent)) {
@@ -1108,6 +1334,13 @@ function bboxOf(rings) {
 // Whether this browser lets the page keep books in its own storage (a secure context with the origin private file
 // system).
 function canKeepBooks() { return window.isSecureContext && !!navigator.storage?.getDirectory; }
+
+// A time as the header shows it: the time of day today, else the date as well.
+function shortTime(t) {
+  const date = new Date(t), today = new Date().toDateString() === date.toDateString();
+  return today ? date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : date.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+}
 
 const app = new App();
 window.app = app;

@@ -7,11 +7,11 @@ import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-
 import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { FINDERS, finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
 import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261111-type-overview-4";
-import { settings } from "./store.js?v=20261110-finders-4";
+import { settings } from "./store.js?v=20261112-durability-1";
 import { runBatch } from "./pipeline/batch.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
 import { money } from "./reader-controls.js?v=20261111-type-overview-4";
-import { renderFinders } from "./findersview.js?v=20261111-type-overview-4";
+import { renderFinders } from "./findersview.js?v=20261112-durability-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -305,6 +305,8 @@ export async function renderPages(el, app) {
   };
   runButton = h("button", { class: "primary", onclick: async () => {
     if (app.workflowBusy || !profile || !checks.status(profile)?.valid) return;
+    if (profile.provider !== "local" && !await app.confirmSpending()) return;
+    if (app.workflowBusy || !active()) return;
     const ids = runnable();
     stopped = false;
     busyFields(true);
@@ -328,7 +330,7 @@ export async function renderPages(el, app) {
       progress.finish(out.paused ? "Stopped" : "Finished");
       message.textContent = `${out.processed} ${out.processed === 1 ? "page" : "pages"} processed · ${out.failed} failed · ${money(out.spend)} new spend${out.unknown ? " · Stopped because a call’s cost is unavailable" : ""}`;
     } catch (error) { progress.finish("Stopped"); message.textContent = error.message; }
-    finally { busyFields(false); for (const pid of rows.keys()) refreshCard(pid); await refreshModel(); applyFilters(); }
+    finally { busyFields(false); for (const pid of rows.keys()) refreshCard(pid); app.diskCopy?.checkpoint(); await refreshModel(); applyFilters(); }
   } }, ACTIONS[stage]);
   const move = async (owned, forward) => {
     if (app.workflowBusy) return;
@@ -353,7 +355,7 @@ export async function renderPages(el, app) {
           app.setMode("read&view=pages");
         } }, `Review and complete these ${moved.length} pages`));
       }
-    } finally { busyFields(false); applyFilters(); }
+    } finally { busyFields(false); applyFilters(); if (count) app.diskCopy?.checkpoint(); }
   };
   if (stage === "regions" || stage === "text") moveButton = h("button", { class: "primary", onclick: () => move(layer, true) }, `Move on to ${stage === "regions" ? "Text" : "Read"}`);
   if (stage === "text" || stage === "read") backButton = h("button", { onclick: () => move(stage === "text" ? "regions" : "text", false) }, `Send back to ${stage === "text" ? "Regions" : "Text"}`);
