@@ -8,7 +8,7 @@ import { CredentialChecks } from "./key-check.js?v=20261111-type-overview-4";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
 import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
-import { settings } from "./store.js?v=20261112-library-1";
+import { settings } from "./store.js?v=20261112-url-1";
 import { runProgress } from "./run-progress.js";
 
 export async function renderStructures(el, app) {

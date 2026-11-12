@@ -2,8 +2,8 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-library-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-library-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-url-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-url-1";
 import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
 import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
@@ -12,7 +12,7 @@ import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-c
 import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-quiet-1";
 import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
 import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-quiet-1";
-import { typeSetup } from "./type-setup.js?v=20261112-library-1";
+import { typeSetup } from "./type-setup.js?v=20261112-url-1";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
@@ -26,10 +26,10 @@ import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
 import { renderPages } from "./pagesview.js?v=20261112-recipe-2";
-import { settings } from "./store.js?v=20261112-library-1";
-import { renderReaders } from "./readersview.js?v=20261112-library-1";
-import { renderStructures } from "./structuresview.js?v=20261112-library-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261112-library-1";
+import { settings } from "./store.js?v=20261112-url-1";
+import { renderReaders } from "./readersview.js?v=20261112-url-1";
+import { renderStructures } from "./structuresview.js?v=20261112-url-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-url-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -57,12 +57,9 @@ class App {
     const params = new URLSearchParams(location.search);
     if (params.get("book")) {
       try {
-        const got = await Book.openUrl(params.get("book"));
-        if (got.plainPdf) {
-          if (!params.has("proposal")) history.replaceState(null, "", location.pathname);
-          this.openPdfFile(got.plainPdf, params.get("proposal"));
-        }
-        else await this.openBook(got);
+        const file = await Book.fetchPdf(params.get("book"));
+        if (!params.has("proposal")) history.replaceState(null, "", location.pathname);
+        this.openPdfFile(file, params.get("proposal"));
       } catch (e) { this.library(`Could not open ${params.get("book")}: ${e.message}`); }
     } else if (params.get("local")) {
       const found = (await browserBooks({ damaged: true }).catch(() => [])).find(b => b.name === params.get("local"));
@@ -126,7 +123,6 @@ class App {
       h("div", { class: "open" }, pdfInput,
         h("button", { class: "primary", onclick: () => pdfInput.click() }, "Choose a PDF or .chaya.pdf…"),
         h("span", { class: "meta" }, "or at a URL:"), urlInput, h("button", { onclick: openUrl }, "Open")),
-      h("p", { class: "meta" }, "A book's PDF at a URL opens read only, with corrections kept in this browser; a plain PDF starts a new book."),
       canKeepBooks() && mine.length ? h("div", { class: "recent" }, h("h3", {}, "Books in this browser"),
         mine.map(bookRow),
         h("p", { class: storage?.persisted === false ? "warn" : "meta" }, storageText(storage || {})),

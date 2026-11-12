@@ -343,18 +343,13 @@ export class Book {
     return book;
   }
 
-  // A book's PDF at a URL, read only. What it is comes from inside it, not its name: a PDF with a book in it (an
-  // attached chaya.json) opens as that book; a plain PDF gives {plainPdf: File} for the caller to start a book from.
-  static async openUrl(url) {
+  // A PDF at a URL, as a File: opened by the app exactly as a PDF chosen from disk is.
+  static async fetchPdf(url) {
     url = new URL(url, location.href).href;
     const r = await fetch(url);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const bytes = new Uint8Array(await r.arrayBuffer());
-    let read;
-    try { read = await readChaya(bytes); } catch (e) { throw new Error(`not a PDF (${e.message})`); }
-    if (read.data?.format === "chaya-book") return Book.openChaya(bytes, url);
     const name = decodeURIComponent(new URL(url).pathname.split("/").pop() || "book.pdf");
-    return { plainPdf: new File([bytes], name, { type: "application/pdf" }) };
+    return new File([await r.arrayBuffer()], name, { type: "application/pdf" });
   }
 
   page(pid) { return this.pages[this.index[pid]]; }
