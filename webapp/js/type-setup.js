@@ -1,16 +1,16 @@
 import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261111-type-overview-4";
 import { h } from "./render.js";
 import { checkTypes } from "./schema.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261112-no-leave-out-1";
-import { money } from "./reader-controls.js?v=20261112-no-leave-out-1";
+import { settings } from "./store.js?v=20261112-library-2";
+import { money } from "./reader-controls.js?v=20261112-library-2";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261112-no-leave-out-1";
-import { OVERVIEW_MODELS, renderContactSheets, discoverOverview } from "./pipeline/type-overview.js?v=20261112-no-leave-out-1";
-import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261112-no-leave-out-1";
+import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261112-library-2";
+import { OVERVIEW_MODELS, renderContactSheets, discoverOverview } from "./pipeline/type-overview.js?v=20261112-library-2";
+import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261112-library-2";
 import { readerById, structurerById } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-no-leave-out-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261112-no-leave-out-1";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-library-2";
+import { citedSamplePages } from "./type-revisions.js?v=20261112-library-2";
 
 function overviewInventory(overview, types, openPage) {
   const uncertain = overview.inventory.filter(item => item.uncertain).map(item => item.page);

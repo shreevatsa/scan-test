@@ -2,34 +2,34 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-no-leave-out-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-no-leave-out-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-library-2";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-library-2";
 import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
 import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261112-no-leave-out-1";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-no-leave-out-1";
-import { renderStyle } from "./styleview.js?v=20261112-no-leave-out-1";
-import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-no-leave-out-1";
-import { typeSetup } from "./type-setup.js?v=20261112-no-leave-out-1";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261112-library-2";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-library-2";
+import { renderStyle } from "./styleview.js?v=20261112-library-2";
+import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-library-2";
+import { typeSetup } from "./type-setup.js?v=20261112-library-2";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
-import { Maker } from "./pipeline/run.js?v=20261112-no-leave-out-1";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, breakAtEmptyPages } from "./workflow.js?v=20261112-no-leave-out-1";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261112-no-leave-out-1";
+import { Maker } from "./pipeline/run.js?v=20261112-library-2";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, breakAtEmptyPages } from "./workflow.js?v=20261112-library-2";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261112-library-2";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
-import { orderedRegions } from "./flags.js?v=20261112-no-leave-out-1";
+import { orderedRegions } from "./flags.js?v=20261112-library-2";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261112-no-leave-out-1";
-import { renderPages } from "./pagesview.js?v=20261112-no-leave-out-1";
-import { settings } from "./store.js?v=20261112-no-leave-out-1";
-import { renderReaders } from "./readersview.js?v=20261112-no-leave-out-1";
-import { renderStructures } from "./structuresview.js?v=20261112-no-leave-out-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261112-no-leave-out-1";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261112-library-2";
+import { renderPages } from "./pagesview.js?v=20261112-library-2";
+import { settings } from "./store.js?v=20261112-library-2";
+import { renderReaders } from "./readersview.js?v=20261112-library-2";
+import { renderStructures } from "./structuresview.js?v=20261112-library-2";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-library-2";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -102,7 +102,6 @@ class App {
       const m = b.manifest;
       const copy = copyLabel(copyState(copies.get(b.name)), { hasWork: true, canPick: !!window.showSaveFilePicker, time: shortTime });
       const actions = h("span", {},
-        h("button", { class: "mini", onclick: () => this.openBrowserBook(b) }, "open"), " ",
         h("button", { class: "mini", title: "the book as one file: its PDF with the book's data in it", onclick: async () => {
           const book = await Book.openFolder(b.handle, { browser: true });
           await this.saveChaya(book);
@@ -110,9 +109,12 @@ class App {
         h("button", { class: "mini danger", onclick: () => actions.replaceChildren(`Delete “${m.title}” from this browser? `,
           h("button", { class: "mini danger", onclick: async () => { await deleteBrowserBook(b.name); this.library(`“${m.title}” was deleted from this browser.`); } }, "delete"), " ",
           h("button", { class: "mini", onclick: () => this.library() }, "keep")) }, "delete…"));
-      return h("div", { class: "row" }, h("button", { class: "link", onclick: () => this.openBrowserBook(b) }, m.title),
-        h("span", { class: "meta" }, ` ${m.pages.length} pages · ${m.pdf?.name || ""} · saved ${new Date(b.saved).toLocaleString()} · `),
-        h("span", { class: copy.warn ? "warn" : "meta" }, copy.text), " ", actions);
+      return h("div", { class: "book-row" },
+        h("div", { class: "book-main" },
+          h("button", { class: "link book-title", onclick: () => this.openBrowserBook(b) }, m.title),
+          h("div", { class: "meta" }, `${m.pages.length} pages · ${m.pdf?.name || ""} · saved ${new Date(b.saved).toLocaleString()}`),
+          h("div", { class: copy.warn ? "warn" : "meta" }, copy.text)),
+        actions);
     };
     this.root.replaceChildren(h("div", { class: "lib" },
       h("h1", {}, "Books"),

@@ -1,5 +1,5 @@
 import { typeRevision } from "../schema.js?v=20261110-reading-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261112-no-leave-out-1";
+import { mappedTypeNames } from "../type-revisions.js?v=20261112-library-2";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 

@@ -8,9 +8,9 @@ import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, breakAtEmptyPages, noContent } from "./workflow.js?v=20261112-no-leave-out-1";
+import { readingGaps, readingDocuments, eligible, breakAtEmptyPages, noContent } from "./workflow.js?v=20261112-library-2";
 import { layerState } from "./layers.js?v=20261110-finders-4";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261112-no-leave-out-1";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261112-library-2";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {

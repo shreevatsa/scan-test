@@ -61,6 +61,10 @@ code { font-size: 12.5px; background: #eee; padding: 0 3px; border-radius: 3px; 
 .type-questions { background: #fff3cd; padding: 2px 14px; margin: 14px 0; }
 .type-json { display: block; width: 100%; margin: 8px 0; font: 12px monospace; }
 .lib .recent { margin-top: 24px; }
+.lib .book-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 6px 16px; padding: 10px 0; border-bottom: 1px solid #e4e4de; }
+.lib .book-main { min-width: 0; }
+.lib .book-title { font-size: 16px; font-weight: 600; padding: 0; }
+.lib .book-row > span { flex: 0 1 auto; }
 
 /* book layout */
 #app.book { height: 100vh; display: flex; flex-direction: column; }
