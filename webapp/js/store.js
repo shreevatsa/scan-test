@@ -9,7 +9,7 @@
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
 import { LAYERS, isProtected, noteEdit } from "./layers.js?v=20261110-finders-4";
 import { addBookType, initialBookTypes } from "./book-types.js?v=20261110-finders-4";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261112-leave-out-2";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261112-no-leave-out-1";
 import { canonical } from "./ops.js?v=20261110-finders-4";
 import { checkDocument, typeRevision } from "./schema.js?v=20261110-reading-2";
 import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
@@ -124,74 +124,12 @@ export class Book {
 
   get title() { return this.manifest.title; }
   get writable() { return this.kind === "folder"; }
-
-  // The book's pages. book.json's `pages` lists every page of the book, and `left_out` names the pages left out of it
-  // (in the Pages tab). `pages` and `index` are the included pages only, so that processing, the stage grids, counts,
-  // flags, estimates, Read and the exports see the book as if the left-out pages were not there. A left-out page keeps
-  // its files, which are saved with the book and come back when it is included again. `allPages` is every page (for
-  // the Pages grid), and a page's `number` is its place in that list: page numbers do not change when pages are left out.
-  get allPages() { return this.manifest.pages; }
-  get pages() { return this.pageLists().pages; }
-  get index() { return this.pageLists().index; }
-  get leftOut() { return this.pageLists().leftOut; }
-  pageLists() {
-    const manifest = this.manifest, cached = this.lists;
-    if (cached?.manifest === manifest && cached.all === manifest.pages && cached.ids === manifest.left_out) return cached;
-    const numbers = Object.fromEntries(manifest.pages.map((page, i) => [page.id, i + 1]));
-    const leftOut = new Set((manifest.left_out || []).filter(id => Object.hasOwn(numbers, id)));
-    const pages = manifest.pages.filter(page => !leftOut.has(page.id));
-    this.lists = { manifest, all: manifest.pages, ids: manifest.left_out, leftOut, pages, numbers,
-      index: Object.fromEntries(pages.map((page, i) => [page.id, i])) };
-    return this.lists;
-  }
-  isLeftOut(pid) { return this.leftOut.has(pid); }
-  hasPage(pid) { return Object.hasOwn(this.pageLists().numbers, pid); }
-  number(pid) { return this.pageLists().numbers[pid]; }
-  // The included pages with these numbers (from a selection such as 1-50, 62), in order.
-  numbered(numbers) { return numbers.map(n => this.allPages[n - 1]).filter(page => page && !this.isLeftOut(page.id)); }
-  // The page beside a page in the full list (delta -1 or 1), or null where there is none or it is left out: a left-out
-  // page is a gap, and units do not join across it.
-  neighbor(pid, delta) {
-    const page = this.allPages[this.number(pid) - 1 + delta];
-    return page && !this.isLeftOut(page.id) ? page : null;
-  }
-  // The page count a whole-book cost projection starts from: an excerpt's recorded target, else the PDF's pages less
-  // those left out.
-  get projectionPages() {
-    const pdf = this.manifest.pdf?.page_count;
-    return this.manifest.cost_projection?.page_count ?? (pdf ? Math.max(1, pdf - this.leftOut.size) : this.pages.length);
-  }
-
-  // Leave pages out of the book, or include them again (`out` false). Nothing of theirs is deleted: book.json records
-  // the change, and the book is marked changed so its copy on disk is written again. Returns the page ids changed.
-  async leaveOut(ids, out = true) {
-    if (!this.writable) throw new Error("Make an editable copy of the book before leaving pages out.");
-    return this.pageWrite(async () => {
-      const manifest = await this.readJson("book.json") || structuredClone(this.manifest);
-      const known = new Set(manifest.pages.map(page => page.id));
-      for (const pid of ids) if (!known.has(pid)) throw new Error(`Unknown page ${pid}.`);
-      const before = new Set((manifest.left_out || []).filter(id => known.has(id)));
-      const after = new Set(before);
-      for (const pid of ids) if (out) after.add(pid); else after.delete(pid);
-      const changed = manifest.pages.map(page => page.id).filter(id => before.has(id) !== after.has(id));
-      if (!changed.length) return [];
-      if (out && after.size === manifest.pages.length) throw new Error("A book needs at least one page. Include another page before leaving out this one.");
-      const leftOut = manifest.pages.map(page => page.id).filter(id => after.has(id));
-      if (leftOut.length) manifest.left_out = leftOut; else delete manifest.left_out;
-      await this.writeFile("book.json", pretty(manifest));
-      this.manifest = manifest;
-      return changed;
-    });
-  }
-
-  // Which of these pages have work in them (a page document, a correction or a draft), as page ids.
-  async pagesWithWork(ids) {
-    const out = [];
-    for (const pid of ids) {
-      const valid = this.page(pid)?.valid;
-      if (valid !== null && valid !== undefined || this.edits.has(pid) || await this.draft(pid).catch(() => null) || await this.model(pid)) out.push(pid);
-    }
-    return out;
+  // The book's pages, always those of the manifest as last read or written (so they are never stale after book.json is
+  // read again), and each page's place in them.
+  get pages() { return this.manifest.pages; }
+  get index() {
+    if (this.indexed?.pages !== this.manifest.pages) this.indexed = { pages: this.manifest.pages, index: Object.fromEntries(this.manifest.pages.map((p, i) => [p.id, i])) };
+    return this.indexed.index;
   }
 
   async typesSnapshot() {
@@ -267,7 +205,7 @@ export class Book {
     await this.writeFile("book.json", pretty(journal.manifest));
     this.types = journal.types; this.style = journal.style; this.manifest = journal.manifest;
     this.models.clear(); this.edits.clear();
-    for (const page of this.allPages) {
+    for (const page of this.pages) {
       const edit = await this.readJson(`edits/${page.id}.json`);
       if (edit) this.edits.set(page.id, edit);
     }
@@ -279,16 +217,15 @@ export class Book {
       if (this.writable) this.types = await this.readJson(this.manifest.types) || this.types;
       const models = new Map(), before = new Map(), drafts = {};
       for (const pid of [...new Set(ids)]) {
-        if (!this.hasPage(pid)) throw new Error(`Unknown page ${pid}.`);
-        if (this.isLeftOut(pid)) throw new Error(`Page ${this.number(pid)} is left out of the book. Include it again in Pages first.`);
+        if (!(pid in this.index)) throw new Error(`Unknown page ${pid}.`);
         const pending = this.writable && await this.readJson(this.stagePath(pid));
         if (pending) await this.finishStage(pid, pending);
         const model = this.writable ? await this.readJson(this.page(pid).document) : await this.model(pid);
         const edit = this.writable ? await this.readJson(`edits/${pid}.json`) : await idb.get("edits", [this.key, pid]) || this.edits.get(pid);
         const draft = await this.draft(pid), doc = draft?.doc || edit || model;
-        if (!doc) throw new Error(`Prepare page ${this.number(pid)} first.`);
+        if (!doc) throw new Error(`Prepare page ${this.index[pid] + 1} first.`);
         const errors = check(doc, this.types);
-        if (draft && errors.length) throw new Error(`Fix page ${this.number(pid)}’s draft first. ${errors[0]}`);
+        if (draft && errors.length) throw new Error(`Fix page ${this.index[pid] + 1}’s draft first. ${errors[0]}`);
         if (model) this.models.set(pid, model);
         if (edit) this.edits.set(pid, edit); else this.edits.delete(pid);
         if (expected.has(pid) && unitSnapshot(doc) !== expected.get(pid)) throw new Error("This page’s units changed. Select the passage again before editing.");
@@ -358,7 +295,7 @@ export class Book {
   async initializeTypes(proposed, validate) {
     if (!this.writable) throw new Error("Keep an editable copy of the book before choosing its types.");
     return this.pageWrite(async () => {
-      for (const page of this.allPages) if (await this.readJson(page.document) || await this.readJson(`edits/${page.id}.json`) || await this.draft(page.id))
+      for (const page of this.pages) if (await this.readJson(page.document) || await this.readJson(`edits/${page.id}.json`) || await this.draft(page.id))
         throw new Error("Apply an initial type list before making page documents. Existing pages can use added types.");
       const current = await this.readJson(this.manifest.types) || this.types;
       const next = initialBookTypes(current, proposed, this.manifest.book_id, this.title);
@@ -385,7 +322,7 @@ export class Book {
       for await (const [name, fh] of edits.entries()) {
         if (fh.kind !== "file" || !name.endsWith(".json")) continue;
         const pid = name.slice(0, -5);
-        if (book.hasPage(pid)) book.edits.set(pid, JSON.parse(await (await fh.getFile()).text()));
+        if (pid in book.index) book.edits.set(pid, JSON.parse(await (await fh.getFile()).text()));
       }
     } catch (e) { console.warn("edits/ could not be read", e); }
     return book;
@@ -403,7 +340,7 @@ export class Book {
     if (mine) { book.style = mine; book.styleEdited = true; }
     for (const [path, doc] of Object.entries(files)) {
       const m = /^edits\/(.+)\.json$/.exec(path);
-      if (m && book.hasPage(m[1])) book.edits.set(m[1], doc);
+      if (m && m[1] in book.index) book.edits.set(m[1], doc);
     }
     for (const key of await idb.keys("edits")) {
       if (Array.isArray(key) && key[0] === book.key) book.edits.set(key[1], await idb.get("edits", key));
@@ -420,8 +357,7 @@ export class Book {
     return new File([await r.arrayBuffer()], name, { type: "application/pdf" });
   }
 
-  // Any page, included or left out.
-  page(pid) { return this.allPages[this.number(pid) - 1]; }
+  page(pid) { return this.pages[this.index[pid]]; }
 
   // The model's page document, or null for a page not transcribed yet.
   async model(pid) {
@@ -461,8 +397,7 @@ export class Book {
   // Files the manifest says this book has that cannot be read: its source PDF, and the document of every page that has
   // one (a page's `valid` is set when its document is saved). A book opened without them would look unprocessed.
   // With `parse`, page documents are read and checked, and kept so that opening the book does not read them again;
-  // without it, only their presence is checked (before writing a .chaya.pdf, which reads them anyway). Left-out pages
-  // are checked too: their files are still the book's, saved with it, and come back when the pages are included again.
+  // without it, only their presence is checked (before writing a .chaya.pdf, which reads them anyway).
   async unreadableFiles({ parse = true } = {}) {
     if (this.kind !== "folder") return [];
     const out = [];
@@ -471,7 +406,7 @@ export class Book {
     if (pdf) {
       try { if (!(await fileFrom(this.where, pdf)).size) throw new Error("the file is empty"); } catch (error) { failed(pdf, error); }
     }
-    for (const page of this.allPages) {
+    for (const page of this.pages) {
       if (page.valid === null || page.valid === undefined) continue;
       try {
         if (!parse) { if (!(await fileFrom(this.where, page.document)).size) throw new Error("the file is empty"); continue; }
@@ -739,7 +674,7 @@ export class Book {
       catch (error) { if (error.name === "NotFoundError") return; throw error; }
       for await (const [name] of dir.entries()) {
         const pid = name.replace(/\.json$/, "");
-        if (!name.endsWith(".json") || !this.hasPage(pid)) continue;
+        if (!name.endsWith(".json") || !(pid in this.index)) continue;
         const pending = await this.readJson(this.stagePath(pid));
         if (pending) await this.finishStage(pid, pending);
       }
@@ -921,7 +856,7 @@ export class Book {
     if (bundle.format !== "book-edits" || bundle.book_id !== this.manifest.book_id) throw new Error("not this book's corrections");
     let n = 0;
     for (const [pid, doc] of Object.entries(bundle.pages)) {
-      if (!this.hasPage(pid)) continue;
+      if (!(pid in this.index)) continue;
       const [errors] = check(doc);
       if (errors.length) throw new Error(`${pid}: ${errors[0]}`);
       await this.saveEdit(pid, doc);

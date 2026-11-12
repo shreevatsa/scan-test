@@ -2,34 +2,34 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-leave-out-2";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-leave-out-2";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-no-leave-out-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-no-leave-out-1";
 import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
 import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261112-leave-out-2";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-leave-out-2";
-import { renderStyle } from "./styleview.js?v=20261112-leave-out-2";
-import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-leave-out-2";
-import { typeSetup } from "./type-setup.js?v=20261112-leave-out-2";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261112-no-leave-out-1";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-no-leave-out-1";
+import { renderStyle } from "./styleview.js?v=20261112-no-leave-out-1";
+import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-no-leave-out-1";
+import { typeSetup } from "./type-setup.js?v=20261112-no-leave-out-1";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
-import { Maker } from "./pipeline/run.js?v=20261112-leave-out-2";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, withoutLeftOutJoins } from "./workflow.js?v=20261112-leave-out-2";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261112-leave-out-2";
+import { Maker } from "./pipeline/run.js?v=20261112-no-leave-out-1";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, breakAtEmptyPages } from "./workflow.js?v=20261112-no-leave-out-1";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261112-no-leave-out-1";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
-import { orderedRegions } from "./flags.js?v=20261112-quiet-1";
+import { orderedRegions } from "./flags.js?v=20261112-no-leave-out-1";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261112-leave-out-2";
-import { renderPages } from "./pagesview.js?v=20261112-leave-out-2";
-import { settings } from "./store.js?v=20261112-leave-out-2";
-import { renderReaders } from "./readersview.js?v=20261112-leave-out-2";
-import { renderStructures } from "./structuresview.js?v=20261112-leave-out-2";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261112-leave-out-2";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261112-no-leave-out-1";
+import { renderPages } from "./pagesview.js?v=20261112-no-leave-out-1";
+import { settings } from "./store.js?v=20261112-no-leave-out-1";
+import { renderReaders } from "./readersview.js?v=20261112-no-leave-out-1";
+import { renderStructures } from "./structuresview.js?v=20261112-no-leave-out-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-no-leave-out-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -111,7 +111,7 @@ class App {
           h("button", { class: "mini danger", onclick: async () => { await deleteBrowserBook(b.name); this.library(`“${m.title}” was deleted from this browser.`); } }, "delete"), " ",
           h("button", { class: "mini", onclick: () => this.library() }, "keep")) }, "delete…"));
       return h("div", { class: "row" }, h("button", { class: "link", onclick: () => this.openBrowserBook(b) }, m.title),
-        h("span", { class: "meta" }, ` ${m.pages.length - (m.left_out?.length || 0)} pages${m.left_out?.length ? ` (${m.left_out.length} left out)` : ""} · ${m.pdf?.name || ""} · saved ${new Date(b.saved).toLocaleString()} · `),
+        h("span", { class: "meta" }, ` ${m.pages.length} pages · ${m.pdf?.name || ""} · saved ${new Date(b.saved).toLocaleString()} · `),
         h("span", { class: copy.warn ? "warn" : "meta" }, copy.text), " ", actions);
     };
     this.root.replaceChildren(h("div", { class: "lib" },
@@ -319,7 +319,7 @@ class App {
     } catch (e) { if (e.name !== "AbortError") this.toast(`Could not choose the file: ${e.message}`, "bad"); return false; }
     this.toast(`Writing ${handle.name}…`);
     const written = await copy.choose(handle);
-    if (written) this.toast(`Wrote ${handle.name}. It is written again after each run, after moving pages on or leaving them out, and at most every five minutes while there are changes.`);
+    if (written) this.toast(`Wrote ${handle.name}. It is written again after each run, after moving pages on, and at most every five minutes while there are changes.`);
     return written;
   }
 
@@ -337,7 +337,7 @@ class App {
     el.className = `copy-status${label?.warn ? " warn" : ""}`;
     if (!label) { el.replaceChildren(); return; }
     const state = copy.state;
-    el.title = state.disk ? `${state.name}: written again after each processing run, after pages are moved on or left out, and at most every five minutes while there are changes.` : "";
+    el.title = state.disk ? `${state.name}: written again after each processing run, after pages are moved on, and at most every five minutes while there are changes.` : "";
     const actions = {
       choose: ["Keep a copy on disk…", () => this.chooseDiskCopy()],
       download: ["Download .chaya.pdf", () => this.saveChaya(this.book)],
@@ -445,7 +445,8 @@ class App {
         if (!pdfFile) throw new Error("choose the book's PDF");
         if (!pdfDoc) throw new Error("the PDF is not open yet");
         const { pageInfo, drawnSize } = await import("./pipeline/pdf.js");
-        // Every page of the PDF is in the book; pages that are not part of it are left out afterwards, in Pages.
+        // Every page of the PDF is in the book. A page that is not part of it (a library's cover, a blank page) is
+        // left with no regions ("No content on this page" in Regions).
         const numbers = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
         // Each page's make-up and the size it is drawn at (its regions are measured in that size's pixels).
         const pages = [];
@@ -481,7 +482,7 @@ class App {
     const formFields = h("fieldset", { class: "new-book-fields" }, bookFields, setup.element);
     const makeButton = h("button", { class: "primary", onclick: go }, "Start the book");
     this.root.replaceChildren(h("div", { class: "lib" }, h("h1", {}, "A new book"),
-      h("p", {}, "The book is kept in this browser, and its pages are drawn from the PDF. Every page of the PDF is in it: in Pages, leave out those that are not part of the book. Next come Regions (where the unit types are chosen), Text and Read."),
+      h("p", {}, "The book is kept in this browser, and its pages are drawn from the PDF. Next come Pages, then Regions (where the unit types are chosen), Text and Read."),
       formFields,
       h("div", { class: "actions" }, makeButton, " ",
         h("button", { onclick: () => this.library() }, "Cancel")), progress));
@@ -522,8 +523,6 @@ class App {
   }
 
   async refreshWorkflowPage(pid) {
-    // Only the pages in the book have states: a page left out is in the Pages grid alone.
-    if (!(pid in this.book.index)) { this.pageStates.delete(pid); return; }
     const book = this.book, current = await book.current(pid), draft = await book.draft(pid).catch(() => null);
     const [errors, warnings] = draft ? this.check(draft.doc) : current ? this.check(current) : [[], []];
     this.pageStates.set(pid, { ...pageStages(current, book.types, errors, warnings), runErrors: this.pageStates.get(pid)?.runErrors || {} });
@@ -535,9 +534,8 @@ class App {
     // In page order: the states are filled as pages finish loading, and assembly joins each page to the next.
     const docs = this.book.pages.map(page => this.pageStates.get(page.id)).filter(state => state?.valid && state.doc).map(state => state.doc);
     let warnings = [];
-    try { [, warnings] = assemble(withoutLeftOutJoins(this.book, docs), this.book.types); } catch { /* Page checks identify invalid trees. */ }
-    // The full list: a page left out has no state, so it is no page's neighbor.
-    reviewPageStates(this.book.allPages, this.pageStates, this.book.types, warnings);
+    try { [, warnings] = assemble(breakAtEmptyPages(docs), this.book.types); } catch { /* Page checks identify invalid trees. */ }
+    reviewPageStates(this.book.pages, this.pageStates, this.book.types, warnings);
   }
 
   syncTypes() {
@@ -574,9 +572,9 @@ class App {
   }
 
   regionFlagContext(doc) {
-    const page = this.book.page(doc.page.id);
+    const index = this.book.index[doc.page.id], page = this.book.pages[index];
     const neighbor = delta => {
-      const other = this.book.neighbor(doc.page.id, delta);
+      const other = this.book.pages[index + delta];
       if (doc.source?.sample?.[`consecutive_${delta < 0 ? "previous" : "next"}`] === false) return null;
       return other && (!page.pdf_page || !other.pdf_page || other.pdf_page === page.pdf_page + delta) ? this.pageStates.get(other.id)?.doc : null;
     };
@@ -608,6 +606,64 @@ class App {
     if (location.hash === workflowAddress("regions", pid)) await this.route(); else this.openPage(pid, {}, "regions");
   }
 
+  // "No content on this page" (Regions): every region removed, as one editing step that undo restores, and the page
+  // moved on to Text. A page with no regions has nothing to transcribe or complete, and no unit joins across it; this
+  // is how a page that is not part of the book (a library's cover, a blank page) is kept. Asked first when the page
+  // has regions with text or a person's edits.
+  async markNoContent() {
+    if (this.stage !== "regions" || !this.doc || !this.book.writable) return;
+    if (this.workflowBusy || this.outlineBusy) return this.toast("Wait for the current edit to finish.");
+    const pid = this.pid, doc = this.doc, regions = doc.page.regions;
+    const withText = regions.filter(region => region.lines?.some(line => typeof line.text === "string")).length;
+    const edited = this.book.edits.has(pid) || ["regions", "text", "units"].some(layer => layerState(doc, layer)?.state === "edited");
+    if (regions.length && (withText || edited)) {
+      const lines = [`This removes its ${regions.length} ${regions.length === 1 ? "region" : "regions"}${withText ? `, ${withText} of them with text,` : ""} and moves it on to Text.`,
+        ...edited ? ["The page has your edits. Undo restores the regions while the page is open."] : []];
+      if (!await this.confirmDialog("No content on this page?", lines, "Remove the regions")) return;
+      if (this.pid !== pid) return;
+    }
+    if (regions.length || doc.source?.uncovered_lines?.length || doc.source?.omitted_regions?.length || doc.source?.warnings?.length) {
+      const removed = this.edit(next => {
+        for (const region of [...next.page.regions]) ops.deleteRegion(next, region.id);
+        // Printed lines outside the regions, unassigned regions and the region finder's notes are not for review now.
+        delete next.source.uncovered_lines;
+        delete next.source.omitted_regions;
+        delete next.source.warnings;
+        this.selection = {};
+      });
+      if (!removed) return;
+    }
+    await this.flush();
+    if (this.pid !== pid) return;
+    if (this.dirty || this.lastErrors?.length) return this.toast("The page could not be saved without its regions, so it was not moved on.", "bad");
+    this.workflowBusy = true;
+    try {
+      const out = await movePage(this.book, pid, "regions", true, value => this.check(value));
+      if (this.pid !== pid) return;
+      // The editor keeps its undo steps: undoing brings the regions back as an edit, and the page back to Regions.
+      this.modelDoc = out.doc; this.savedDoc = out.doc; this.doc = ops.clone(out.doc); this.dirty = false;
+      await this.refreshWorkflowPage(pid);
+      this.updateWorkflowNavigation();
+      this.markPageOption(pid);
+      await this.refresh();
+      this.diskCopy?.checkpoint();
+      this.toast("No content on this page: its regions are removed and it is moved on to Text, where it needs no transcription. Undo brings the regions back.");
+    } finally { this.workflowBusy = false; }
+  }
+
+  // A question before an action, answered in a dialog: resolves whether to go ahead.
+  confirmDialog(title, lines, action) {
+    return new Promise(resolve => {
+      const dialog = h("dialog", { class: "type-dialog confirm-dialog", "aria-label": title });
+      const done = value => { if (dialog.open) dialog.close(); dialog.remove(); resolve(value); };
+      dialog.append(h("h2", {}, title), ...lines.map(line => h("p", {}, line)),
+        h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => done(true) }, action), h("button", { onclick: () => done(false) }, "Cancel")));
+      dialog.addEventListener("cancel", event => { event.preventDefault(); done(false); });
+      document.body.append(dialog);
+      dialog.showModal();
+    });
+  }
+
   retypeRegion(rid, type) {
     const previous = this.tl.types[ops.regionById(this.doc, rid).type]?.region;
     if (this.edit(doc => ops.setRegionType(doc, this.tl, rid, type)) && (previous === "figure" || this.tl.types[type]?.region === "figure")) this.recompute();
@@ -635,9 +691,9 @@ class App {
   layout() {
     const book = this.book;
     this.root.className = "book";
-    const pageSel = h("select", { class: "pagesel", onchange: e => this.openPage(e.target.value) });
+    const pageSel = h("select", { class: "pagesel", onchange: e => this.openPage(e.target.value) },
+      ...book.pages.map(p => h("option", { value: p.id }, `${p.id.replace(/^.*-page-/, "")}${p.label ? ` (p. ${p.label})` : ""}${book.edits.has(p.id) ? " ✎" : ""}`)));
     this.pageSel = pageSel;
-    this.renderPageSelect();
     this.status = h("span", { class: "status" });
     const modeBtn = (mode, text) => h("button", { class: "mode", dataset: { mode }, onclick: () => this.setMode(mode) }, text);
     const tabBtn = (stage, view, text) => h("button", { class: "tab", dataset: { stage, view }, onclick: () => this.setMode(`${stage}${view ? `&view=${view}` : ""}`) }, text);
@@ -664,32 +720,6 @@ class App {
     this.main = h("main", {});
     this.root.replaceChildren(this.header, this.main);
     this.updateWorkflowNavigation();
-    this.renderCopyStatus();
-  }
-
-  // The header's page list: the pages in the book (not those left out).
-  renderPageSelect() {
-    const book = this.book;
-    this.pageSel.replaceChildren(...book.pages.map(p => h("option", { value: p.id }, `${p.id.replace(/^.*-page-/, "")}${p.label ? ` (p. ${p.label})` : ""}${book.edits.has(p.id) ? " ✎" : ""}`)));
-    if (this.pid && this.pid in book.index) this.pageSel.value = this.pid;
-    for (const option of this.pageSel.options) {
-      const state = this.pageStates?.get(option.value);
-      option.hidden = !!this.stage && !!state && !eligible(this.stage, state);
-    }
-  }
-
-  // After pages are left out or included again (Pages): the page states, flags, tabs and page list follow the pages
-  // in the book. A page left out keeps its files; its state comes back when it is included again.
-  async pagesChanged() {
-    const book = this.book;
-    for (const pid of [...this.pageStates.keys()]) if (!(pid in book.index)) this.pageStates.delete(pid);
-    if (this.pid && !(this.pid in book.index)) { this.pid = null; this.doc = null; this.pageBuilt = false; }
-    this.workflowLoading = true;
-    try { for (const page of book.pages) if (!this.pageStates.has(page.id)) await this.refreshWorkflowPage(page.id); }
-    finally { this.workflowLoading = false; }
-    this.refreshWorkflowFlags();
-    this.updateWorkflowNavigation();
-    this.renderPageSelect();
     this.renderCopyStatus();
   }
 
@@ -858,7 +888,9 @@ class App {
       toolbar.querySelector('[title="insert a note marker at the caret"]')?.remove();
     }
     if (this.stage !== "regions") toolbar.querySelector(".draw")?.remove();
-    else if (this.book.writable) toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"));
+    else if (this.book.writable) toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"),
+      h("button", { class: "no-content", title: "for a page that is not part of the book, such as a library’s cover or a blank page: remove its regions and move it on to Text, where it needs no transcription",
+        onclick: () => this.markNoContent().catch(error => this.toast(error.message, "bad")) }, "No content on this page"));
     const textPane = h("div", { class: "textpane" });
     this.inspector = h("div", { class: "inspector" });
     this.problems = h("div", { class: "checks" });
@@ -1160,7 +1192,7 @@ class App {
     const el = this.main;
     el.replaceChildren(h("div", { class: "loading" }, "Checking every page…"));
     const docs = await this.book.all((d, n) => { el.firstChild.textContent = `Checking every page… ${d} of ${n}`; });
-    const P = prepare(withoutLeftOutJoins(this.book, docs), this.tl);
+    const P = prepare(docs, this.tl);
     const rows = docs.map(doc => {
       const pid = doc.page.id;
       const [errors, warnings] = this.check(doc);
@@ -1237,7 +1269,7 @@ class App {
       document.body.append(a); a.click(); a.remove();
     };
     const id = book.manifest.book_id;
-    const assembled = async () => prepare(withoutLeftOutJoins(book, await book.all()), this.tl, book.style);
+    const assembled = async () => prepare(await book.all(), this.tl, book.style);
     // Each figure unit's regions cut from their page images, as data: URLs (ornaments, being furniture, are not in the text).
     const figureCrops = async P => {
       const out = {};
@@ -1268,7 +1300,7 @@ class App {
       if (!copySection || this.book !== book) return;
       const copy = this.diskCopy, state = copy?.state;
       const label = state && copyLabel(state, { hasWork: true, canPick: !!window.showSaveFilePicker, time: shortTime });
-      const when = "after each processing run, after pages are moved on or left out, and at most every five minutes while there are changes";
+      const when = "after each processing run, after pages are moved on, and at most every five minutes while there are changes";
       copySection.replaceChildren(...[h("h3", {}, "Copies of this book"),
         h("p", { class: this.storage?.persisted === false ? "warn" : "meta" }, storageText(this.storage || {})),
         state?.disk ? [h("p", { class: label.warn ? "warn" : "" }, `${label.text}. The file ${state.name} is written again ${when}.`),

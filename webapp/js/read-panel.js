@@ -1,9 +1,9 @@
-import { suggestionButton } from "./review-view.js?v=20261112-leave-out-2";
+import { suggestionButton } from "./review-view.js?v=20261112-no-leave-out-1";
 import { h, bbox, cropInto } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { applyUnitAction, applyUnitChanges, assertJoinMetadata, nextPageUnit, unitPath, unitRegionIds, unitSnapshot } from "./editing.js?v=20261110-finders-4";
-import { joinFollowingUnit } from "./reading-edit.js?v=20261112-leave-out-2";
-import { renderInspector } from "./editor.js?v=20261112-leave-out-2";
+import { joinFollowingUnit } from "./reading-edit.js?v=20261112-no-leave-out-1";
+import { renderInspector } from "./editor.js?v=20261112-no-leave-out-1";
 import { checkPage } from "./schema.js?v=20261110-reading-2";
 
 const nameOf = unit => [unit.type, unit.number, unit.label].filter(Boolean).join(" · ");
@@ -51,11 +51,11 @@ export async function wireReadingPanel({ app, body, panel, workspace, docs, P, i
     } }, "Close"));
     const crumbs = h("nav", { class: "unit-crumbs", "aria-label": "Unit hierarchy" });
     if (uid) for (const unit of unitPath(doc, uid)) crumbs.append(h("button", { class: "link", onclick: () => select({ page: doc.page.id, unit: unit.id, region: rid }) }, nameOf(unit)), " › ");
-    const source = h("div", { class: "read-unit-source", "aria-label": `Source on page ${book.number(doc.page.id)}` });
+    const source = h("div", { class: "read-unit-source", "aria-label": `Source on page ${book.index[doc.page.id] + 1}` });
     const controls = h("div", { class: "read-unit-controls inspector" }), status = h("p", { role: "status" });
-    panel.replaceChildren(heading, crumbs, h("p", { class: "hint" }, `Page ${book.number(doc.page.id)}${doc.page.label ? ` · printed ${doc.page.label}` : ""}${region ? ` · ${region.id}` : ""}`), source);
+    panel.replaceChildren(heading, crumbs, h("p", { class: "hint" }, `Page ${book.index[doc.page.id] + 1}${doc.page.label ? ` · printed ${doc.page.label}` : ""}${region ? ` · ${region.id}` : ""}`), source);
     if (fragments.length > 1) panel.append(h("p", { class: "hint" }, `This unit has ${fragments.length} page fragments. Its semantic fields and wrapping apply to the whole unit. Splits and open ends apply to this fragment.`),
-      h("div", { class: "actions" }, ...fragments.map(fragment => h("button", { class: "mini", onclick: () => select({ page: fragment.page, unit: fragment.unit }) }, `Page ${book.number(fragment.page)}`))));
+      h("div", { class: "actions" }, ...fragments.map(fragment => h("button", { class: "mini", onclick: () => select({ page: fragment.page, unit: fragment.unit }) }, `Page ${book.index[fragment.page] + 1}`))));
     const owned = uid ? unitRegionIds(doc, uid) : region ? [rid] : [];
     if (owned.length > 1) panel.append(h("label", {}, "Source region ", h("select", { "aria-label": "Source region", onchange: event => select({ page: doc.page.id, unit: uid, region: event.target.value }) },
       ...owned.map(id => h("option", { value: id, selected: id === rid }, id)))));
@@ -114,7 +114,7 @@ export async function wireReadingPanel({ app, body, panel, workspace, docs, P, i
         const pieces = P.unitFragments[P.unitCanonical[`${doc.page.id}#${id}`]] || [{ page: doc.page.id, unit: id }], last = pieces.at(-1);
         save(() => {
           const left = byPage.get(last.page), place = ops.placeOf(left, last.unit), sibling = place?.list[place.index + 1];
-          const right = sibling ? left : byPage.get(book.neighbor(last.page, 1)?.id);
+          const right = sibling ? left : byPage.get(book.pages[book.index[last.page] + 1]?.id);
           if (!right) throw new ops.EditError("Move the next page on from Text before joining it.");
           const next = sibling ? typeof sibling === "string" ? sibling : sibling.unit : nextPageUnit(left, right, last.unit);
           if (!next) throw new ops.EditError("The next item is a region. Join its unit from the page editor.");

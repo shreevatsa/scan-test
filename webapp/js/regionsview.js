@@ -1,13 +1,13 @@
-import { suggestionButton } from "./review-view.js?v=20261112-leave-out-2";
+import { suggestionButton } from "./review-view.js?v=20261112-no-leave-out-1";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { h, esc, lineHtml } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
-import { orderedRegions, regionFlags } from "./flags.js?v=20261112-quiet-1";
+import { orderedRegions, regionFlags } from "./flags.js?v=20261112-no-leave-out-1";
 import { REGION_CLASSES } from "./book-types.js?v=20261110-finders-4";
-import { typeSetup } from "./type-setup.js?v=20261112-leave-out-2";
+import { typeSetup } from "./type-setup.js?v=20261112-no-leave-out-1";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 import { sha256hex } from "./chayapdf.js";
-import { reviewTypeChange, editTypeDialog } from "./type-operations.js?v=20261112-leave-out-2";
+import { reviewTypeChange, editTypeDialog } from "./type-operations.js?v=20261112-no-leave-out-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -234,7 +234,7 @@ export async function renderTypeDiscovery(el, app, { selected, onBusy }) {
   if (app.book !== book || app.routeToken !== token) return;
   if (selected.length) {
     const field = setup.element.querySelector('[aria-label="Sample PDF pages"]');
-    field.value = pageSelectionText(selected.map(pid => book.page(pid).pdf_page || book.number(pid)), pdf.numPages);
+    field.value = pageSelectionText(selected.map(pid => book.page(pid).pdf_page || book.index[pid] + 1), pdf.numPages);
     field.dispatchEvent(new Event("input", { bubbles: true }));
   }
   const status = h("p", { role: "status" });

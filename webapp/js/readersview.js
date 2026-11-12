@@ -1,15 +1,15 @@
-import { reviewPage } from "./review-view.js?v=20261112-leave-out-2";
+import { reviewPage } from "./review-view.js?v=20261112-no-leave-out-1";
 import { settledChecks } from "./review.js?v=20261111-cross-page-carbon-2";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261112-leave-out-2";
+import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261112-no-leave-out-1";
 import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
-import { CredentialChecks } from "./key-check.js?v=20261112-leave-out-2";
+import { CredentialChecks } from "./key-check.js?v=20261112-no-leave-out-1";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261111-cross-page-carbon-2";
-import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261112-leave-out-2";
-import { settings } from "./store.js?v=20261112-leave-out-2";
+import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261112-no-leave-out-1";
+import { settings } from "./store.js?v=20261112-no-leave-out-1";
 import { runProgress } from "./run-progress.js";
 import { readingFits } from "./pipeline/partial-reading.js?v=20261110-partial-3";
 import { sha256hex } from "./chayapdf.js";
@@ -44,7 +44,7 @@ export async function renderReaders(el, app) {
   const includeStructure = h("input", { type: "checkbox", checked: selection.include_structure ?? true });
   const budget = h("input", { type: "number", min: "0.1", step: "0.5", value: selection.budget || "5", "aria-label": "Trial spend threshold" });
   const projectionPages = h("input", { type: "number", min: "1", step: "1", "aria-label": "Book pages for cost estimate",
-    value: selection.projection_pages ?? book.projectionPages });
+    value: selection.projection_pages ?? book.manifest.cost_projection?.page_count ?? book.manifest.pdf?.page_count ?? book.pages.length });
   const pageBoxes = book.pages.map(p => {
     const input = h("input", { type: "checkbox", checked: chosenPages.has(p.id), onchange: () => input.checked ? chosenPages.add(p.id) : chosenPages.delete(p.id) });
     return h("label", {}, input, " ", p.label ? `${p.id} · ${p.label}` : p.id);
@@ -202,7 +202,7 @@ export async function renderReaders(el, app) {
     for (const pid of visiblePages) {
       const geo = geometry.get(pid), models = pages.find(page => page.id === pid).models, runs = results.get(pid);
       const image = images.get(pid), page = book.page(pid);
-      const pageTitle = `PDF page ${page.pdf_page || book.number(pid)}${page.label ? ` · ${page.label}` : ""}`;
+      const pageTitle = `PDF page ${page.pdf_page || book.index[pid] + 1}${page.label ? ` · ${page.label}` : ""}`;
       const blocks = visible.filter(region => region.page === pid).map(region => {
         const crop = h("div", { class: "source-region", title: "Printed source region" });
         const [x0, y0, x1, y1] = bbox(region.source.polygons);

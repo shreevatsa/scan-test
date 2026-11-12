@@ -1,11 +1,11 @@
 import { canonical } from "../ops.js?v=20261110-finders-4";
 import { makeValidator } from "../schema.js?v=20261110-reading-2";
 import { REGION_CLASSES } from "../book-types.js?v=20261110-finders-4";
-import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261112-leave-out-2";
+import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261112-no-leave-out-1";
 import { finderById } from "./finders.js?v=20261111-cross-page-carbon-2";
 import { finderRequest } from "./finder-requests.js?v=20261111-carbon-high-5";
 import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261110-reading-2";
-import { templates, jsonHash } from "./run.js?v=20261112-leave-out-2";
+import { templates, jsonHash } from "./run.js?v=20261112-no-leave-out-1";
 import { sha256hex } from "../chayapdf.js";
 
 export const PAGE_REVIEW_MODELS = [
@@ -88,7 +88,7 @@ export async function requestPageReview(maker, pid, profile, instruction) {
   const book = maker.book, types = structuredClone(book.types), record = await maker.sourceRegions(pid);
   if (![record.width, record.height].every(value => Number.isSafeInteger(value) && value > 0)) throw new Error("The page needs valid image dimensions before requesting a review.");
   const image = await imageData(await book.imageBlob(pid));
-  const input = { types, page: book.page(pid).pdf_page || book.number(pid), width: record.width, height: record.height,
+  const input = { types, page: book.page(pid).pdf_page || book.index[pid] + 1, width: record.width, height: record.height,
     regions: record.regions.map(region => ({ id: region.document_region_id || `r${region.region_id}`, type: region.type,
       box: region.model_box, order: region.reading_order })), instruction };
   const payload = finderRequest(profile, pageReviewPrompt(input), pageReviewSchema(types), image.url);

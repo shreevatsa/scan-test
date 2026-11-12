@@ -1,14 +1,14 @@
-import { reviewPage } from "./review-view.js?v=20261112-leave-out-2";
+import { reviewPage } from "./review-view.js?v=20261112-no-leave-out-1";
 import { assignmentOf, settledStructureScore } from "./review.js?v=20261111-cross-page-carbon-2";
 import { h } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261112-leave-out-2";
+import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261112-no-leave-out-1";
 import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
-import { CredentialChecks } from "./key-check.js?v=20261112-leave-out-2";
+import { CredentialChecks } from "./key-check.js?v=20261112-no-leave-out-1";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
 import { renderStructureComparison } from "./structure-visual.js?v=20261110-review-3";
-import { settings } from "./store.js?v=20261112-leave-out-2";
+import { settings } from "./store.js?v=20261112-no-leave-out-1";
 import { runProgress } from "./run-progress.js";
 
 export async function renderStructures(el, app) {
@@ -31,7 +31,7 @@ export async function renderStructures(el, app) {
     value: profile.id, selected: profile.id === (saved.reference || STRUCTURER.id),
   }, profile.label)));
   const pageCount = h("input", { type: "number", min: 1, step: 1, "aria-label": "Book pages for schema cost estimate",
-    value: saved.page_count ?? transcriptionSelection.projection_pages ?? book.projectionPages });
+    value: saved.page_count ?? transcriptionSelection.projection_pages ?? book.manifest.cost_projection?.page_count ?? book.manifest.pdf?.page_count ?? book.pages.length });
   const budget = h("input", { type: "number", min: 0.1, step: 0.5, value: saved.budget || 5, "aria-label": "Schema trial spend threshold" });
   const onlyDifferences = h("input", { type: "checkbox", checked: saved.only_differences ?? true });
   const status = h("p", { role: "status" }), summary = h("div", { class: "reader-summary" }), detail = h("div");

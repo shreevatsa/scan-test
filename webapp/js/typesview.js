@@ -5,12 +5,11 @@
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261112-leave-out-2";
-import { withoutLeftOutJoins } from "./workflow.js?v=20261112-leave-out-2";
+import { prepare } from "./reader.js?v=20261112-no-leave-out-1";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261112-leave-out-2";
-import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261112-leave-out-2";
-import { citedSamplePages } from "./type-revisions.js?v=20261112-leave-out-2";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261112-no-leave-out-1";
+import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261112-no-leave-out-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261112-no-leave-out-1";
 import { typeExampleIndex } from "./type-examples.js?v=20261111-region-types-2";
 import { regionPath } from "./pageimage.js?v=20261110-figure-region-2";
 
@@ -104,7 +103,7 @@ async function renderTypeExamples(el, app, reviewPages) {
     loaded.clear();
     cards.replaceChildren();
     for (const example of examples.slice(offset, offset + size)) {
-      const page = book.page(example.page.id), number = page.pdf_page || book.number(page.id);
+      const page = book.page(example.page.id), number = page.pdf_page || book.index[page.id] + 1;
       const crop = h("div", { class: "type-example-crop" });
       const button = h("button", { class: "type-example-open", "aria-label": `Open page ${number}, ${example.unit || example.regions[0].id}`, onclick: () => app.openPage(page.id, { region: example.regions[0].id }, "regions") }, crop);
       const status = h("span", { class: "meta" }, "Preparing scan…");
@@ -208,13 +207,9 @@ export async function renderTypes(el, app, { onAdded = () => app.route(), onRevi
       book.writable ? h("button", { onclick: () => editBookTypesDialog(app) }, "Edit book details") : null,
       book.writable ? h("button", { onclick: () => newTypeDialog(app, onAdded) }, "＋ Type") : null),
     h("p", { class: "hint" }, `Revision ${typeRevision(tl.source?.revision)}. The type list defines this book’s units, containment, reading flows and transcription conventions. Preview a change to see its reach before applying it.`),
-    app.lastTypeRevision ? (() => {
-      // Pages left out of the book are revised too, but are not reviewed in Regions.
-      const affected = app.lastTypeRevision.pages.filter(pid => pid in book.index);
-      return h("p", { class: "box" }, `Revision ${app.lastTypeRevision.revision} saved. `,
-        affected.length && onReviewPages ? h("button", { onclick: () => onReviewPages(affected) },
-          `Review ${affected.length} affected ${affected.length === 1 ? "page" : "pages"}`) : null);
-    })() : null,
+    app.lastTypeRevision ? h("p", { class: "box" }, `Revision ${app.lastTypeRevision.revision} saved. `,
+      app.lastTypeRevision.pages.length && onReviewPages ? h("button", { onclick: () => onReviewPages(app.lastTypeRevision.pages) },
+        `Review ${app.lastTypeRevision.pages.length} affected ${app.lastTypeRevision.pages.length === 1 ? "page" : "pages"}`) : null) : null,
     h("h3", {}, tl.title || tl.book_id),
     tl.description ? h("p", {}, tl.description) : null,
     (tl.languages || []).length ? h("p", { class: "meta" }, `Languages: ${tl.languages.join(", ")}`) : null,
@@ -240,7 +235,7 @@ export async function renderTypes(el, app, { onAdded = () => app.route(), onRevi
   // How many units of each type the book has (assembled across pages), and furniture regions.
   const docs = await book.all();
   if (!el.isConnected || app.book !== book || app.tl !== tl) return;
-  const P = prepare(withoutLeftOutJoins(book, docs), tl);
+  const P = prepare(docs, tl);
   for (const doc of docs) {
     const names = new Set([...doc.page.regions.map(region => region.type), ...doc.units.map(unit => unit.type)]);
     for (const name of names) {

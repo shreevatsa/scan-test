@@ -1,5 +1,5 @@
 import { typeRevision } from "../schema.js?v=20261110-reading-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261112-leave-out-2";
+import { mappedTypeNames } from "../type-revisions.js?v=20261112-no-leave-out-1";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
@@ -447,7 +447,7 @@ export class Maker {
     const current = await this.book.current(pid);
     for (const [side, step] of [["previous", -1], ["next", 1]]) {
       if (current?.source?.sample?.[`consecutive_${side}`] === false) continue;
-      const page = this.book.neighbor(pid, step);
+      const page = this.book.pages[this.book.index[pid] + step];
       if (!page) continue;
       const sourcePage = this.book.page(pid);
       if (sourcePage.pdf_page && page.pdf_page && page.pdf_page !== sourcePage.pdf_page + step) continue;

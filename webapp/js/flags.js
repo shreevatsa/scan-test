@@ -114,8 +114,9 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
   }
   for (const error of errors) add("invalid", error);
   const current = flowEdges(doc, types);
+  // A page with no regions (no content) has no continuation to compare, on either side of it.
   for (const [neighbor, side] of [[previous, "previous"], [next, "next"]]) {
-    if (!neighbor?.page.regions.length || unitsSettled(doc) && unitsSettled(neighbor)) continue;
+    if (!regions.length || !neighbor?.page.regions.length || unitsSettled(doc) && unitsSettled(neighbor)) continue;
     const other = flowEdges(neighbor, types);
     for (const flow of new Set([...current.keys(), ...other.keys()])) {
       const edge = current.get(flow), matching = other.get(flow);

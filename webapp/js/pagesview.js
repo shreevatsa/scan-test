@@ -1,36 +1,23 @@
-import { suggestionButton } from "./review-view.js?v=20261112-leave-out-2";
+import { suggestionButton } from "./review-view.js?v=20261112-no-leave-out-1";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, pageStages } from "./workflow.js?v=20261112-leave-out-2";
-import { RARE_LAYOUT } from "./flags.js?v=20261112-quiet-1";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent } from "./workflow.js?v=20261112-no-leave-out-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261112-no-leave-out-1";
 import { regionBoxes } from "./pageimage.js?v=20261110-figure-region-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { FINDERS, finderById } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-leave-out-2";
-import { settings } from "./store.js?v=20261112-leave-out-2";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-no-leave-out-1";
+import { settings } from "./store.js?v=20261112-no-leave-out-1";
 import { runBatch } from "./pipeline/batch.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
 import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-recipe-2";
-import { renderFinders } from "./findersview.js?v=20261112-leave-out-2";
+import { renderFinders } from "./findersview.js?v=20261112-no-leave-out-1";
+import { money } from "./reader-controls.js?v=20261112-no-leave-out-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
 const stateLabel = state => !state ? "Pending" : state.accepted ? "Moved on" : state.state === "model" ? "Ready to review" : state.state === "edited" ? "Edited" : "Provisional";
-const pages = n => `${n} ${n === 1 ? "page" : "pages"}`;
-
-// A question before an action, answered in a dialog: resolves whether to go ahead.
-function confirmAction(title, lines, action) {
-  return new Promise(resolve => {
-    const dialog = h("dialog", { class: "type-dialog confirm-dialog", "aria-label": title });
-    const done = value => { if (dialog.open) dialog.close(); dialog.remove(); resolve(value); };
-    dialog.append(h("h2", {}, title), ...lines.map(line => h("p", {}, line)),
-      h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => done(true) }, action), h("button", { onclick: () => done(false) }, "Cancel")));
-    dialog.addEventListener("cancel", event => { event.preventDefault(); done(false); });
-    document.body.append(dialog);
-    dialog.showModal();
-  });
-}
 
 export async function renderPages(el, app) {
   const book = app.book, stage = app.stage, layer = STAGE_LAYER[stage];
@@ -38,57 +25,50 @@ export async function renderPages(el, app) {
   const token = app.routeToken;
   const active = () => app.book === book && app.stage === stage && app.mode === "grid" && app.routeToken === token;
   const pending = app.pendingStageSelection?.stage === stage ? app.pendingStageSelection : null;
-  const rows = new Map(), urls = new Set(), selected = new Set(pending?.ids || overview?.selected || []);
-  // Pages shows every page, and the pages left out of the book greyed, with their work (kept, not shown elsewhere).
-  // Page numbers are places in the full list, the same in every grid.
-  const pagesStage = stage === "pages", leftOutStates = new Map();
-  if (pagesStage) for (const page of book.allPages) if (book.isLeftOut(page.id))
-    leftOutStates.set(page.id, { ...pageStages(await book.current(page.id).catch(() => null), book.types), runErrors: {} });
-  const stateOf = pid => app.pageStates.get(pid) || leftOutStates.get(pid);
-  // A kept or handed-on selection can name pages left out since (or unknown): they are not in this grid.
-  for (const pid of [...selected]) if (!stateOf(pid)) selected.delete(pid);
+  // Pages has nothing that acts on a selection, so its grid has no selection controls; the stage grids do.
+  const selecting = stage !== "pages";
+  const rows = new Map(), urls = new Set(), selected = new Set(selecting ? pending?.ids || overview?.selected || [] : []);
   if (overview) overview.selected = selected;
   app.pendingStageSelection = null;
   let observer, queue = Promise.resolve(), visible = [], lastSelected = null, stopped = false, busy = false;
   const grid = h("div", { class: "stage-grid", "aria-label": `${TITLES[stage]} page grid` });
   const selection = h("input", { placeholder: "all or 1-50, 62", "aria-label": "Select page range" });
-  const showSelection = () => { selection.value = pageSelectionText([...selected].map(pid => book.number(pid)), book.allPages.length); };
+  const showSelection = () => { selection.value = pageSelectionText([...selected].map(pid => book.index[pid] + 1), book.pages.length); };
   if (selected.size) showSelection();
   const stateFilter = h("select", { "aria-label": "Page state" }, ...["all", "pending", "model", "edited", "provisional", "accepted"].map(value =>
     h("option", { value }, { all: "All states", pending: "Pending", model: "Ready to review", edited: "Edited", provisional: "Provisional", accepted: "Moved on" }[value])));
   const filter = h("select", { "aria-label": "Page flags" }, ...[["all", "All pages"], ["flagged", "Flagged"], ...stage === "regions" ? [["rareLayout", `Rare layouts (under ${RARE_LAYOUT} pages)`]] : [],
-    ["earlier", "Earlier type revision"], ["suggestion", "Has a suggestion"], ...pagesStage ? [["included", "In the book"], ["leftOut", "Left out"]] : []].map(([value, label]) => h("option", { value }, label)));
+    ["earlier", "Earlier type revision"], ["suggestion", "Has a suggestion"]].map(([value, label]) => h("option", { value }, label)));
   const grouping = h("select", { "aria-label": "Group pages by layout" }, h("option", { value: "order" }, "Page order"), h("option", { value: "layout" }, "Layout · rarest first"));
   if (overview?.filters) {
     stateFilter.value = overview.filters.state;
     filter.value = overview.filters.flags;
     grouping.value = overview.filters.grouping;
   }
-  const flagsFor = pid => book.isLeftOut(pid) ? [] : stageFlags(stateOf(pid), stage);
+  const flagsFor = pid => stageFlags(app.pageStates.get(pid), stage);
   const summary = h("p", { class: "stage-selection", role: "status" });
   const message = h("p", { role: "status" });
   const empty = h("p", { class: "hint", hidden: true });
-  const targetIds = () => (selected.size ? [...selected] : visible).filter(pid => eligible(stage, stateOf(pid)));
+  const targetIds = () => (selected.size ? [...selected] : visible).filter(pid => eligible(stage, app.pageStates.get(pid)));
+  // A page with no content (no regions) has nothing to transcribe or complete: Text and Read count it as done, and
+  // their runs and estimates leave it out.
+  const nothingToDo = pid => (layer === "text" || layer === "units") && noContent(app.pageStates.get(pid).doc);
   const layerReady = pid => {
-    const state = stateOf(pid);
-    return state.layers[layer] && (layer !== "units" || state.layers.units.state !== "provisional");
+    const state = app.pageStates.get(pid);
+    return nothingToDo(pid) || state.layers[layer] && (layer !== "units" || state.layers.units.state !== "provisional");
   };
-  let cost = pageCost(null), runButton, moveButton, backButton, leaveButton, includeButton, checks, profile;
+  let cost = pageCost(null), runButton, moveButton, backButton, checks, profile;
   const processSummary = h("span", { class: "meta" }), recipeText = h("span");
   const include = h("input", { type: "checkbox", checked: pending?.reprocess, "aria-label": "Include pages already processed" });
   const fresh = h("input", { type: "checkbox", "aria-label": "Request fresh model results" });
   const estimateLabel = h("p", { class: "hint" });
-  const runnable = () => targetIds().filter(pid => include.checked || !layerReady(pid));
+  const runnable = () => targetIds().filter(pid => !nothingToDo(pid) && (include.checked || !layerReady(pid)));
   const refreshSummary = () => {
     const ids = targetIds(), flagged = ids.filter(pid => flagsFor(pid).length).length;
     const hidden = ids.filter(pid => !visible.includes(pid)).length;
-    const scope = selected.size ? `${ids.length} selected${hidden ? ` (${hidden} hidden by filters)` : ""}`
-      : stage === "pages" ? `${ids.length} pages` : `All ${ids.length} displayed pages targeted`;
-    summary.textContent = `${scope} · ${flagged} flagged · ${visible.length} shown${pagesStage && book.leftOut.size ? ` · ${book.leftOut.size} left out of the book` : ""}`;
-    if (leaveButton) {
-      leaveButton.disabled = busy || !ids.some(pid => !book.isLeftOut(pid));
-      includeButton.disabled = busy || !ids.some(pid => book.isLeftOut(pid));
-    }
+    const scope = selected.size ? `${ids.length} selected${hidden ? ` (${hidden} hidden by filters)` : ""}` : `All ${ids.length} displayed pages targeted`;
+    summary.textContent = selecting ? `${scope} · ${flagged} flagged · ${visible.length} shown`
+      : `${visible.length} of ${rows.size} pages shown · ${flagged} flagged`;
     if (runButton) {
       const ready = profile && checks?.status(profile)?.valid;
       const count = runnable().length;
@@ -99,24 +79,23 @@ export async function renderPages(el, app) {
       estimateLabel.textContent = runEstimate(count, cost);
     }
     if (moveButton) moveButton.disabled = busy || !ids.some(pid => layerReady(pid));
-    if (backButton) backButton.disabled = busy || !ids.some(pid => stateOf(pid).layers[stage === "text" ? "regions" : "text"]?.accepted);
+    if (backButton) backButton.disabled = busy || !ids.some(pid => app.pageStates.get(pid).layers[stage === "text" ? "regions" : "text"]?.accepted);
   };
   const applyFilters = () => {
     if (overview) overview.filters = { state: stateFilter.value, flags: filter.value, grouping: grouping.value };
     visible = [];
     let removed = false;
     const sorted = [...rows].sort(([a], [b]) => grouping.value === "layout"
-      ? stateOf(a).layoutFrequency - stateOf(b).layoutFrequency || stateOf(a).layout.localeCompare(stateOf(b).layout) || book.number(a) - book.number(b)
-      : book.number(a) - book.number(b));
+      ? app.pageStates.get(a).layoutFrequency - app.pageStates.get(b).layoutFrequency || app.pageStates.get(a).layout.localeCompare(app.pageStates.get(b).layout) || book.index[a] - book.index[b]
+      : book.index[a] - book.index[b]);
     grid.querySelectorAll(".layout-heading").forEach(heading => heading.remove());
     let lastLayout = null;
     for (const [pid, row] of sorted) {
-      const state = stateOf(pid), owned = state.layers[layer || "regions"], leftOut = book.isLeftOut(pid);
+      const state = app.pageStates.get(pid), owned = state.layers[layer || "regions"];
       const layers = stage === "pages" ? Object.values(state.layers) : [owned];
       const matchesState = stateFilter.value === "all" || layers.some(value => stateFilter.value === "pending" ? !value || value.state === "provisional"
         : stateFilter.value === "accepted" ? value?.accepted : value?.state === stateFilter.value && !value.accepted);
-      const matchesFlag = filter.value === "all" || (filter.value === "leftOut" ? leftOut : filter.value === "included" ? !leftOut
-        : !leftOut && (filter.value === "flagged" ? flagsFor(pid).length : state[filter.value]));
+      const matchesFlag = filter.value === "all" || (filter.value === "flagged" ? flagsFor(pid).length : state[filter.value]);
       row.element.hidden = !eligible(stage, state) || !matchesState || !matchesFlag;
       if (!eligible(stage, state) && selected.delete(pid)) removed = true;
       if (!row.element.hidden) visible.push(pid);
@@ -125,62 +104,60 @@ export async function renderPages(el, app) {
         lastLayout = state.layout;
       }
       grid.append(row.element);
-      row.checkbox.checked = selected.has(pid);
+      if (row.checkbox) row.checkbox.checked = selected.has(pid);
     }
     if (removed) showSelection();
     empty.hidden = !!visible.length;
-    empty.textContent = [...rows.keys()].some(pid => eligible(stage, stateOf(pid)))
+    empty.textContent = [...rows.keys()].some(pid => eligible(stage, app.pageStates.get(pid)))
       ? "No pages match these filters." : "Move pages on from the previous stage to include them here.";
     refreshSummary();
   };
   const refreshCard = pid => {
-    const row = rows.get(pid), state = stateOf(pid), leftOut = book.isLeftOut(pid);
+    const row = rows.get(pid), state = app.pageStates.get(pid);
     if (!row) return;
-    row.element.classList.toggle("left-out", leftOut);
-    row.states.replaceChildren(...leftOut ? [h("span", { class: "stage-badge left-out-badge" }, "Left out")] : [],
-      ...(stage === "pages" ? ["regions", "text", "units"] : [layer]).map(name =>
-        h("span", { class: `stage-badge ${state.layers[name]?.accepted ? "accepted" : ""}` }, `${{ regions: "Regions", text: "Text", units: "Units" }[name]} · ${stateLabel(state.layers[name])}`)));
+    const empty = noContent(state.doc) && !!state.layers.regions?.accepted;
+    row.states.replaceChildren(...(stage === "pages" ? ["regions", "text", "units"] : [layer]).map(name =>
+      h("span", { class: `stage-badge ${state.layers[name]?.accepted ? "accepted" : ""}` }, `${{ regions: "Regions", text: "Text", units: "Units" }[name]} · ${
+        empty && name !== "regions" && !state.layers[name]?.accepted ? "No content" : stateLabel(state.layers[name])}`)));
     const flags = flagsFor(pid);
     row.flags.textContent = flags.length ? `${flags.length} ${flags.length === 1 ? "flag" : "flags"} · ${flags[0]}` : "";
     row.element.classList.toggle("has-flags", !!flags.length);
     row.flags.title = flags.join("\n");
     row.element.querySelector(".suggestion-actions")?.remove();
-    if (!leftOut) row.element.append(suggestionButton(app, pid, layer));
+    row.element.append(suggestionButton(app, pid, layer));
     row.element.querySelector(".stage-boxes")?.remove();
     if (state.doc) row.element.querySelector(".start-manual")?.remove();
     if (stage === "regions" && state.doc) row.element.querySelector(".stage-thumbnail").append(regionBoxes(state.doc, app.colors));
   };
   const preview = h("dialog", { class: "pdf-preview-dialog", "aria-label": "Scanned page preview" });
-  // The Pages grid's preview: every page of the book, left out or not.
   const showPreview = async pid => {
-    const index = book.number(pid) - 1, list = book.allPages, leftOut = book.isLeftOut(pid);
+    const index = book.index[pid];
     const image = h("img", { class: "pdf-page-preview", alt: `Page ${index + 1} scan` });
     preview.replaceChildren(h("div", { class: "actions" },
-      h("button", { disabled: index === 0, onclick: () => showPreview(list[index - 1].id) }, "← Previous"),
-      h("button", { disabled: index === list.length - 1, onclick: () => showPreview(list[index + 1].id) }, "Next →"),
+      h("button", { disabled: index === 0, onclick: () => showPreview(book.pages[index - 1].id) }, "← Previous"),
+      h("button", { disabled: index === book.pages.length - 1, onclick: () => showPreview(book.pages[index + 1].id) }, "Next →"),
       h("button", { onclick: () => preview.close() }, "Close"),
-      leftOut ? null : h("button", { onclick: () => { preview.close(); app.openPage(pid, {}, "regions"); } }, "Open in Regions"),
-      pagesStage && book.writable ? h("button", { onclick: async () => { if (await changeLeftOut(!leftOut, [pid], true)) showPreview(pid); } }, leftOut ? "Include again" : "Leave out") : null),
-      h("h3", {}, `Page ${index + 1}${leftOut ? " · left out of the book" : ""}`), image);
+      h("button", { onclick: () => { preview.close(); app.openPage(pid, {}, "regions"); } }, "Open in Regions")), h("h3", {}, `Page ${index + 1}`), image);
     if (!preview.open) preview.showModal();
     image.src = await book.imageUrl(pid);
   };
-  for (const page of pagesStage ? book.allPages : book.pages) {
-    const state = stateOf(page.id);
+  for (const page of book.pages) {
+    const state = app.pageStates.get(page.id);
     if (!eligible(stage, state)) continue;
-    const checkbox = h("input", { type: "checkbox", "aria-label": `Select page ${book.number(page.id)}`, onclick: event => {
+    const checkbox = selecting ? h("input", { type: "checkbox", "aria-label": `Select page ${book.index[page.id] + 1}`, onclick: event => {
       const ids = event.shiftKey && lastSelected && visible.includes(lastSelected) ? visible.slice(
         Math.min(visible.indexOf(lastSelected), visible.indexOf(page.id)), Math.max(visible.indexOf(lastSelected), visible.indexOf(page.id)) + 1) : [page.id];
       for (const pid of ids) { if (checkbox.checked) selected.add(pid); else selected.delete(pid); }
       lastSelected = page.id;
       showSelection();
       applyFilters();
-    } });
-    const image = h("img", { alt: `Page ${book.number(page.id)}`, width: 120, height: 166 });
+    } }) : null;
+    const image = h("img", { alt: `Page ${book.index[page.id] + 1}`, width: 120, height: 166 });
     const states = h("div", { class: "stage-badges" }), flags = h("p", { class: "stage-flags" });
     const element = h("article", { class: "stage-card", dataset: { page: page.id } },
-      h("button", { class: "stage-thumbnail", "aria-label": `Open page ${book.number(page.id)}`, onclick: () => stage === "pages" ? showPreview(page.id) : app.openPage(page.id, {}, stage) }, image),
-      h("label", {}, checkbox, ` Page ${book.number(page.id)}${page.label ? ` · ${page.label}` : ""}`), states, flags);
+      h("button", { class: "stage-thumbnail", "aria-label": `Open page ${book.index[page.id] + 1}`, onclick: () => stage === "pages" ? showPreview(page.id) : app.openPage(page.id, {}, stage) }, image),
+      selecting ? h("label", {}, checkbox, ` Page ${book.index[page.id] + 1}${page.label ? ` · ${page.label}` : ""}`)
+        : h("p", { class: "stage-card-name" }, `Page ${book.index[page.id] + 1}${page.label ? ` · ${page.label}` : ""}`), states, flags);
     if (stage === "regions" && !state.doc && book.writable) element.append(h("button", { class: "mini start-manual", onclick: async event => {
       if (app.workflowBusy) return;
       const button = event.currentTarget;
@@ -192,18 +169,18 @@ export async function renderPages(el, app) {
     grid.append(element);
     refreshCard(page.id);
   }
-  const toolbar = h("div", { class: "stage-filters" }, h("label", {}, "Select pages ", selection),
+  const toolbar = h("div", { class: "stage-filters" }, ...selecting ? [h("label", {}, "Select pages ", selection),
     h("button", { onclick: () => {
       try {
-        const numbers = pageRange(selection.value, book.allPages.length);
+        const numbers = pageRange(selection.value, book.pages.length);
         selected.clear();
         for (const number of numbers) {
-          const pid = book.allPages[number - 1].id;
+          const pid = book.pages[number - 1].id;
           if (rows.has(pid)) selected.add(pid);
         }
         applyFilters();
       } catch (error) { message.textContent = error.message; }
-    } }, "Select range"), h("button", { onclick: () => { selected.clear(); selection.value = ""; applyFilters(); } }, "Clear selection"), stateFilter, filter,
+    } }, "Select range"), h("button", { onclick: () => { selected.clear(); selection.value = ""; applyFilters(); } }, "Clear selection")] : [], stateFilter, filter,
     ...(stage === "regions" ? [grouping] : []));
   const stageReview = h("div", { class: "actions stage-review" });
   const heading = h("h1", {}, TITLES[stage]);
@@ -255,7 +232,7 @@ export async function renderPages(el, app) {
     };
   }
   const container = h("div", { class: "stage-overview" }, heading,
-    h("p", { class: "hint" }, stage === "pages" ? `Browse the scans and see each page’s progress. ${book.writable ? "Leave out pages that are not part of the book, such as a library’s cover or blank pages: the other tabs, counts, estimates, Read and the exports then go without them. Nothing of theirs is deleted, and “Include again” brings them back. " : ""}In Regions, review the types and page assignments, then continue through Text and Read.`
+    h("p", { class: "hint" }, stage === "pages" ? "Browse the scans and see each page’s progress; open one for a larger view. In Regions, review the types and page assignments, then continue through Text and Read. A page that is not part of the book, such as a library’s cover or a blank page, is given no regions there (“No content on this page”)."
       : stage === "regions" ? "Find and review the page regions. Move reviewed pages on to Text together."
         : stage === "text" ? "Transcribe the pages moved on from Regions. Review the text beside the scans, then move pages on to Read."
           : "Complete units and links using the accepted transcription. Open pages to review their structure."),
@@ -275,40 +252,6 @@ export async function renderPages(el, app) {
     });
   });
   for (const row of rows.values()) observer.observe(row.element);
-  // Leaving pages out of the book, and including them again (Pages, in a book that can be changed). With no selection,
-  // the displayed pages are targeted, and leaving them all out is asked first; so is leaving out pages with work.
-  async function changeLeftOut(out, ids = targetIds(), explicit = !!selected.size) {
-    if (app.workflowBusy || busy) return false;
-    ids = ids.filter(pid => book.isLeftOut(pid) !== out);
-    if (!ids.length) return false;
-    if (out) {
-      const worked = await book.pagesWithWork(ids), lines = [];
-      if (!explicit) lines.push(`No pages are selected, so this leaves out every page shown: ${pages(ids.length)}.`);
-      if (worked.length) lines.push(`${worked.length === ids.length ? (ids.length === 1 ? "This page has" : `All ${ids.length} have`) : `${worked.length} of the ${ids.length} ${worked.length === 1 ? "has" : "have"}`} work in ${worked.length === 1 ? "it" : "them"} (regions, text or units). Nothing is deleted: it is kept with the book and comes back when ${worked.length === 1 ? "the page is" : "they are"} included again.`);
-      if (lines.length && !await confirmAction(`Leave out ${pages(ids.length)}?`, lines, `Leave out ${pages(ids.length)}`)) return false;
-    }
-    busy = app.workflowBusy = true;
-    refreshSummary();
-    try {
-      const changed = await book.leaveOut(ids, out);
-      for (const pid of changed) {
-        if (out) leftOutStates.set(pid, app.pageStates.get(pid) || { ...pageStages(await book.current(pid).catch(() => null), book.types), runErrors: {} });
-        else leftOutStates.delete(pid);
-      }
-      await app.pagesChanged();
-      for (const pid of rows.keys()) refreshCard(pid);
-      message.textContent = out ? `${pages(changed.length)} left out of the book. Nothing is deleted: “Include again” brings ${changed.length === 1 ? "it" : "them"} back.`
-        : `${pages(changed.length)} included again.`;
-      app.diskCopy?.checkpoint();
-      return true;
-    } catch (error) { message.textContent = error.message; return false; }
-    finally { busy = app.workflowBusy = false; if (active()) applyFilters(); }
-  }
-  if (pagesStage && book.writable) {
-    leaveButton = h("button", { onclick: () => changeLeftOut(true) }, "Leave out");
-    includeButton = h("button", { onclick: () => changeLeftOut(false) }, "Include again");
-    stageReview.append(leaveButton, includeButton);
-  }
   stateFilter.onchange = filter.onchange = applyFilters;
   grouping.onchange = applyFilters;
   applyFilters();
@@ -419,20 +362,22 @@ export async function renderPages(el, app) {
     const moved = [];
     try {
       for (const pid of targetIds()) {
-        if (!app.pageStates.get(pid).layers[owned]) continue;
+        if (!app.pageStates.get(pid).layers[owned] && !(forward && nothingToDo(pid))) continue;
         try { await movePage(book, pid, owned, forward, doc => app.check(doc)); count++; moved.push(pid); }
         catch (error) { failed++; message.textContent = error.message; }
         await app.refreshWorkflowPage(pid); refreshCard(pid);
       }
       message.textContent = `${count} ${count === 1 ? "page" : "pages"} ${forward ? "moved on" : "sent back"}${failed ? ` · ${failed} need correction first` : ""}.`;
-      if (forward && stage === "text" && moved.length) {
+      // Pages with no content need no completion.
+      const toComplete = moved.filter(pid => !noContent(app.pageStates.get(pid).doc));
+      if (forward && stage === "text" && toComplete.length) {
         const chosenStructurer = (await maker.options()).structurer, structurer = STRUCTURERS.find(item => item.id === chosenStructurer);
         const ledger = await book.readWork("work/reader-lab/ledger.json");
         const completion = pageCost(structurer, (ledger?.calls || []).filter(call => call.stage === "structure"));
-        message.append(` Completion ${completion.usd === null ? `cost: ${costBasis(completion)}` : `estimate ${dollars(completion.usd * moved.length)}`}. `, h("button", { onclick: () => {
-          app.pendingStageSelection = { stage: "read", ids: moved };
+        message.append(` Completion ${completion.usd === null ? `cost: ${costBasis(completion)}` : `estimate ${dollars(completion.usd * toComplete.length)}`}. `, h("button", { onclick: () => {
+          app.pendingStageSelection = { stage: "read", ids: toComplete };
           app.setMode("read&view=pages");
-        } }, `Review and complete these ${moved.length} pages`));
+        } }, `Review and complete these ${toComplete.length} pages`));
       }
     } finally { busyFields(false); applyFilters(); if (count) app.diskCopy?.checkpoint(); }
   };

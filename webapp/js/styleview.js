@@ -4,8 +4,7 @@
 // browser for a book opened by URL). Units' and line pieces' own styles are edited in the page view.
 
 import { h, esc } from "./render.js";
-import { prepare, bookHtml, fillFigures } from "./reader.js?v=20261112-leave-out-2";
-import { withoutLeftOutJoins } from "./workflow.js?v=20261112-leave-out-2";
+import { prepare, bookHtml, fillFigures } from "./reader.js?v=20261112-no-leave-out-1";
 import { baseCss } from "./style.js";
 
 const clone = x => JSON.parse(JSON.stringify(x));
@@ -171,7 +170,7 @@ export function renderStyle(el, app) {
     const i = book.index[startSel.value], n = +countSel.value;
     const docs = (await Promise.all(book.pages.slice(i, i + n).map(p => book.current(p.id)))).filter(Boolean);
     if (errorsOf().length) return;
-    const P = prepare(withoutLeftOutJoins(book, docs), tl, tidied(sheet));
+    const P = prepare(docs, tl, tidied(sheet));
     previewBody.innerHTML = bookHtml(P, { printed: true });
     previewBody.style.cssText = baseCss(sheet);
     fillFigures(previewBody, app, P);

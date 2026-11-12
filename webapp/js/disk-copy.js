@@ -1,6 +1,6 @@
 // A copy of a book outside this browser (webapp/README.md, "Where a book lives"). A book kept in the browser's own
 // storage is lost with that storage, so the app rewrites a .chaya.pdf that the user chose once: after each processing
-// run, after pages are moved on or left out, and at most every five minutes while there are changes. This module is the
+// run, after pages are moved on, and at most every five minutes while there are changes. This module is the
 // scheduling and permission logic only. Writing the file, asking for permission, checking the book's files, keeping
 // the record and the clock are given to it, so that it runs under Node in the tests; main.js connects it to the book,
 // the header and the dialogs.
@@ -130,7 +130,7 @@ export class DiskCopy {
     this.timer = null;
   }
 
-  // Write now if the disk copy lacks changes: after a processing run, after pages are moved on or left out.
+  // Write now if the disk copy lacks changes: after a processing run, after pages are moved on.
   checkpoint() {
     if (!this.state.stale) return Promise.resolve(this.state.kind === "current");
     this.cancel();

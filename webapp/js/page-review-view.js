@@ -1,10 +1,10 @@
 import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261112-leave-out-2";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-leave-out-2";
-import { settings } from "./store.js?v=20261112-leave-out-2";
-import { money } from "./reader-controls.js?v=20261112-leave-out-2";
-import { reviewTypeChange } from "./type-operations.js?v=20261112-leave-out-2";
-import { reviewPage } from "./review-view.js?v=20261112-leave-out-2";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261112-no-leave-out-1";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-no-leave-out-1";
+import { settings } from "./store.js?v=20261112-no-leave-out-1";
+import { money } from "./reader-controls.js?v=20261112-no-leave-out-1";
+import { reviewTypeChange } from "./type-operations.js?v=20261112-no-leave-out-1";
+import { reviewPage } from "./review-view.js?v=20261112-no-leave-out-1";
 import { runProgress } from "./run-progress.js";
 
 export async function reviewPageWithAI(app) {
@@ -81,7 +81,7 @@ export async function reviewPageWithAI(app) {
   } }, "Review this page");
   choice.onchange = showCredentials;
   const dialog = h("dialog", { class: "type-dialog page-review-dialog", "aria-label": "Review page with AI" },
-    h("h2", {}, `Review page ${book.number(pid)} with AI`),
+    h("h2", {}, `Review page ${book.index[pid] + 1} with AI`),
     h("p", {}, "The model receives this scan, its regions, the book’s type list and your instruction."),
     h("label", {}, "Model ", choice), h("label", {}, "Instruction for the model ", instruction), credentials,
     h("div", { class: "actions" }, run, close), progress.element, status, result);

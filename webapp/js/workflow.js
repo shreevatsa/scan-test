@@ -1,6 +1,6 @@
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
-import { layerState, accept, sendBack, noteEdit } from "./layers.js?v=20261110-finders-4";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261112-quiet-1";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261110-finders-4";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261112-no-leave-out-1";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -95,53 +95,59 @@ export function workflowAddress(mode, pid = null, selection = {}) {
   return `#${hash}${pid ? `&p=${encodeURIComponent(pid)}` : ""}${extra}`;
 }
 
-// The runs of pages not in `included`, numbered by their place in `pages` (for a book, its full page list), as
-// "Page 3" or "Pages 5–9". Pages for which `skip` is true are neither listed nor joined into a run.
-export function readingGaps(pages, included, skip = () => false) {
+export function readingGaps(pages, included) {
   const gaps = [];
   for (let index = 0; index < pages.length; index++) {
-    if (included.has(pages[index].id) || skip(pages[index])) continue;
+    if (included.has(pages[index].id)) continue;
     const start = index + 1;
-    while (index + 1 < pages.length && !included.has(pages[index + 1].id) && !skip(pages[index + 1])) index++;
+    while (index + 1 < pages.length && !included.has(pages[index + 1].id)) index++;
     gaps.push(start === index + 1 ? `Page ${start}` : `Pages ${start}–${index + 1}`);
   }
   return gaps;
 }
 
-// The documents, with the open ends removed where the page before or after in `pages` is a gap: by default a page
-// with no document here (not moved on to Read yet, or left out of the book), or the pages `gap` names. Units do not
-// join across a gap.
-export function readingDocuments(pages, docs, gap = null) {
+export function readingDocuments(pages, docs) {
   const included = new Set(docs.map(doc => doc.page.id));
-  const isGap = gap || (page => !included.has(page.id));
   return docs.map(doc => {
     const index = pages.findIndex(page => page.id === doc.page.id);
-    const gapBefore = index > 0 && isGap(pages[index - 1]);
-    const gapAfter = index + 1 < pages.length && isGap(pages[index + 1]);
-    if (!gapBefore && !gapAfter) return doc;
-    const next = structuredClone(doc);
-    for (const unit of next.units) if (unit.open) {
-      if (gapBefore) delete unit.open.start;
-      if (gapAfter) delete unit.open.end;
-      if (!Object.keys(unit.open).length) delete unit.open;
-    }
-    return next;
+    return closeEnds(doc, index > 0 && !included.has(pages[index - 1].id), index + 1 < pages.length && !included.has(pages[index + 1].id));
   });
 }
 
-// The documents of a book's included pages, in order, with no unit joined across a page left out of the book (for
-// assembling the book: Export, Problems and the flags).
-export function withoutLeftOutJoins(book, docs) {
-  return book.leftOut?.size ? readingDocuments(book.allPages, docs, page => book.isLeftOut(page.id)) : docs;
+// A page document whose units do not join the page before (`before`) or after (`after`): their open ends there removed.
+function closeEnds(doc, before, after) {
+  if (!before && !after) return doc;
+  const next = structuredClone(doc);
+  for (const unit of next.units) if (unit.open) {
+    if (before) delete unit.open.start;
+    if (after) delete unit.open.end;
+    if (!Object.keys(unit.open).length) delete unit.open;
+  }
+  return next;
+}
+
+// A page with no regions has no content: a library's cover, a blank page, a page that is not part of the book. It has
+// nothing to transcribe or complete, so Text and Read count it as done and their processing skips it.
+export const noContent = doc => !!doc && !doc.page.regions.length;
+
+// Page documents in page order, for assembling, with no unit joined across a page with no content.
+export function breakAtEmptyPages(docs) {
+  if (!docs.some(noContent)) return docs;
+  return docs.map((doc, index) => closeEnds(doc, index > 0 && noContent(docs[index - 1]), index + 1 < docs.length && noContent(docs[index + 1])));
 }
 
 export async function movePage(book, pid, layer, forward, check) {
   const change = (current, draft) => {
     if (!current) throw new Error("This page has no regions yet.");
-    const doc = draft ? noteEdit(current, draft) : current;
+    let doc = draft ? noteEdit(current, draft) : current;
     const [errors] = check(doc);
     if (forward && (errors.length || layer === "text" && pageStages(doc, book.types).missing))
       throw new Error(errors[0] || "Transcribe the missing line pieces before moving this page on.");
+    // A page with no content moves on from Text with an empty text layer, as transcribing it would give (with no call).
+    if (forward && layer === "text" && noContent(doc) && !layerState(doc, "text")) {
+      doc = structuredClone(doc);
+      doc.source = { ...doc.source, layers: { ...layerRecords(doc), text: { state: "model", types_revision: typeRevision(book.types.source?.revision) } } };
+    }
     return { doc: forward ? accept(doc, layer) : sendBack(doc, layer), valid: !errors.length };
   };
   if (book.writable) return book.updateStage(pid, (current, draft) => change(current, draft));

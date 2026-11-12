@@ -9,7 +9,7 @@ export async function joinFollowingUnit(app, pid, uid, expected = new Map()) {
   const book = app.book, current = await book.current(pid, { refresh: true }), place = ops.placeOf(current, uid);
   if (!place) throw new ops.EditError("Select a unit that belongs to a flow.");
   const across = place.index + 1 === place.list.length;
-  const next = across && book.neighbor(pid, 1), page = book.page(pid);
+  const next = across && book.pages[book.index[pid] + 1], page = book.page(pid);
   if (across && (!next || page.pdf_page && next.pdf_page && next.pdf_page !== page.pdf_page + 1)) throw new ops.EditError("There is no consecutive next page to join.");
   const check = (doc, types) => checkPage(app.validate, doc, types)[0];
   const ids = [...new Set([...expected.keys(), pid, ...(across ? [next.id] : [])])];
