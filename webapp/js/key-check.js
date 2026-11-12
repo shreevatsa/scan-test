@@ -1,4 +1,4 @@
-import { post } from "./pipeline/run.js?v=20261111-type-overview-4";
+import { post } from "./pipeline/run.js?v=20261112-leave-out-1";
 import { openaiText, geminiText } from "./pipeline/steps.js?v=20261110-reading-2";
 import { h } from "./render.js";
 

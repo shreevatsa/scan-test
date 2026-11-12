@@ -391,6 +391,11 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .stage-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
 .stage-badge { font-size: 11px; border-radius: 4px; padding: 2px 5px; background: #eee; }
 .stage-badge.accepted { background: #e2f0e4; color: #245b2b; }
+.stage-card.left-out { background: #f3f3f1; border-style: dashed; color: var(--muted); }
+.stage-card.left-out .stage-thumbnail img { opacity: .35; filter: grayscale(1); }
+.stage-card.left-out .stage-badge:not(.left-out-badge) { opacity: .6; }
+.stage-badge.left-out-badge { background: #555; color: #fff; }
+.reading-gaps.left-out-gaps { border-color: var(--line); background: #f6f6f4; }
 .stage-flags { font-size: 11px; margin: 7px 0 0; color: var(--warn); overflow-wrap: anywhere; }
 .r-stage-actions, .reading-gaps { margin: 16px 24px; }
 .reading-gaps { padding: 12px; border: 1px solid #e8c98a; background: #fffaf0; }

@@ -2,7 +2,7 @@ import { h } from "./render.js";
 import { checkPage } from "./schema.js?v=20261110-reading-2";
 import { REGION_CLASSES } from "./book-types.js?v=20261110-finders-4";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
-import { money } from "./reader-controls.js?v=20261111-type-overview-4";
+import { money } from "./reader-controls.js?v=20261112-leave-out-1";
 
 const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change printed class", remove: "Remove unused type" };
 const quantity = (n, name) => `${n} ${name}${n === 1 ? "" : "s"}`;
@@ -37,7 +37,7 @@ export async function reviewTypeChange(app, operations, { applied = () => {} } =
       }
       if (op.kind === "replace") content.append(h("p", {}, h("b", {}, "New type list"), " · ", Object.keys(plan.types.types).join(", ")));
     }
-    const numbers = ids => pageSelectionText(ids.map(pid => book.page(pid).pdf_page || book.index[pid] + 1), book.manifest.pdf?.page_count || book.pages.length);
+    const numbers = ids => pageSelectionText(ids.map(pid => book.page(pid).pdf_page || book.number(pid)), book.manifest.pdf?.page_count || book.allPages.length);
     if (plan.pages.length) content.append(h("p", {}, `Affected PDF pages ${numbers(plan.pages)}.`));
     if (operations.some(op => op.kind === "split")) content.append(h("p", {}, "Retype the appropriate regions on these pages or find their regions again."));
     if (operations.some(op => op.kind === "replace")) content.append(h("p", { class: "box warn" }, "This replaces the type list and clears the listed page documents. Their previous versions are retained in the revision history."));
@@ -46,7 +46,7 @@ export async function reviewTypeChange(app, operations, { applied = () => {} } =
     if (plan.complete.length) content.append(h("p", {}, `Complete provisional units on ${quantity(plan.complete.length, "page")} (${numbers(plan.complete)}). Existing transcription is reused.`));
     if (plan.manual.length) content.append(h("p", { class: "box warn" }, `Protected units need manual review on ${quantity(plan.manual.length, "page")} (${numbers(plan.manual)}).`));
     if (plan.invalid.length) content.append(h("details", {}, h("summary", {}, `${plan.invalid.length} page versions need repair`),
-      ...plan.invalid.map(item => h("p", {}, `Page ${book.index[item.page] + 1}, ${item.kind} · ${item.errors.join(" · ")}`))));
+      ...plan.invalid.map(item => h("p", {}, `Page ${book.number(item.page)}${book.isLeftOut(item.page) ? " (left out)" : ""}, ${item.kind} · ${item.errors.join(" · ")}`))));
     const ledger = await book.readWork("work/reader-lab/ledger.json"), choices = await book.getReaderOptions();
     let estimate = 0;
     for (const [stage, profile, count] of [["regions", "terra-regions", plan.find.length], ["structure", choices.structurer, plan.complete.length]]) {

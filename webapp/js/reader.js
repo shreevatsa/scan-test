@@ -8,9 +8,9 @@ import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible } from "./workflow.js?v=20261112-quiet-1";
+import { readingGaps, readingDocuments, eligible } from "./workflow.js?v=20261112-leave-out-1";
 import { layerState } from "./layers.js?v=20261110-finders-4";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261111-cross-page-carbon-2";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261112-leave-out-1";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -202,8 +202,10 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
   const all = await book.all((d, n) => { if (current()) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
   if (!current()) return;
   const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
-  const docs = readingDocuments(book.pages, accepted);
-  const gaps = readingGaps(book.pages, new Set(docs.map(doc => doc.page.id)));
+  // Units do not join across a page that is not here yet or is left out of the book (Pages), and both are marked.
+  const docs = readingDocuments(book.allPages, accepted);
+  const gaps = readingGaps(book.allPages, new Set(docs.map(doc => doc.page.id)), page => book.isLeftOut(page.id));
+  const leftOut = readingGaps(book.allPages, new Set(book.pages.map(page => page.id)));
   const P = prepare(docs, book.types, book.style);
   const issues = readingIssues(accepted, book.types, app.validate, P.warnings, P.unitCanonical);
   app.readerData = P;
@@ -221,7 +223,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
     h("label", {}, h("input", { type: "checkbox", checked: app.readerStructure, onchange: e => { app.readerStructure = e.target.checked; body.classList.toggle("structure", e.target.checked); } }), " show the units"),
     P.sheet ? h("label", { title: "fonts, sizes, alignment and spacing from the book's style sheet and each unit's style" },
       h("input", { type: "checkbox", checked: app.readerPrinted ? true : null, onchange: e => { app.readerPrinted = e.target.checked; renderReader(el, app, { keepPlace: true }).catch(error => app.toast(error.message, "bad")); } }), " as printed") : null,
-    h("span", { class: "meta" }, `${docs.length} pages · ${P.book.units.length} units · ${book.edits.size} pages corrected`),
+    h("span", { class: "meta" }, `${docs.length} pages · ${P.book.units.length} units · ${book.pages.filter(page => book.edits.has(page.id)).length} pages corrected`),
     issues.length ? h("details", { class: "warn" }, h("summary", {}, `${issues.length} reading problems`),
       ...issues.map(issue => h("p", {}, h("button", { class: "link", onclick: () => app.selectReadingIssue?.(issue) }, issue.message)))) : null,
     app.dirty ? h("div", { class: "warn" }, "The page open in the editor has changes that are not saved yet; they are not shown here.") : null);
@@ -230,6 +232,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
   const workspace = h("div", { class: "read-workspace" }, h("div", { class: "reading-main" }, tools, body), panel);
   el.replaceChildren(app.book.writable ? h("div", { class: "r-stage-actions" }, h("button", { onclick: () => app.setMode("read&view=pages") }, "Complete and review units and links")) : "",
     ...(gaps.length ? [h("p", { class: "reading-gaps" }, `${gaps.join(" · ")} ${gaps.length === 1 && !gaps[0].startsWith("Pages") ? "is" : "are"} not here yet. Move these pages on from Text to include them.`)] : []),
+    ...(leftOut.length ? [h("p", { class: "reading-gaps left-out-gaps" }, `${leftOut.join(" · ")} ${leftOut.length === 1 && !leftOut[0].startsWith("Pages") ? "is" : "are"} left out of the book (Pages), and nothing joins across ${leftOut.length === 1 && !leftOut[0].startsWith("Pages") ? "it" : "them"}.`)] : []),
     ...(P.provisionalPages.size ? [h("p", { class: "reading-gaps" }, `${P.provisionalPages.size} pages have provisional unit grouping. Complete units and links to review that grouping.`)] : []), workspace);
   wireSourcePreview(body, app, P);
   const leavePreview = app.onLeaveReader;

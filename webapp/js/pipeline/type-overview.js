@@ -1,6 +1,6 @@
-import { discoverySchema, discoveryPrompt, proposalTypes, TYPE_MODELS } from "./type-discovery.js?v=20261111-type-overview-4";
+import { discoverySchema, discoveryPrompt, proposalTypes, TYPE_MODELS } from "./type-discovery.js?v=20261112-leave-out-1";
 import { geminiReadingRequest } from "./readers.js";
-import { Maker, templates, jsonHash } from "./run.js?v=20261111-type-overview-4";
+import { Maker, templates, jsonHash } from "./run.js?v=20261112-leave-out-1";
 import { makeValidator } from "../schema.js";
 import { openaiCost } from "./steps.js";
 import { sha256hex } from "../chayapdf.js";

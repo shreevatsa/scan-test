@@ -194,7 +194,12 @@ export function planTypeRevision(current, snapshot, operations, { validate = () 
   const replace = operations.some(op => op.kind === "replace"), removed = new Set(operations.filter(op => op.kind === "remove").map(op => op.name));
   const names = new Set(replace ? Object.keys(current.types) : operations.flatMap(op => op.kind === "split" ? [op.from] : op.name ? [op.name] : []));
   const result = { types, style: structuredClone(snapshot.style), changes: [], pages: [], regions: 0, units: 0, find: [], complete: [], manual: [], invalid: [], revision };
+  // Pages left out of the book (book.json's left_out) are revised too, so that they are right when included again, but
+  // the follow-up work counted (and estimated) is only the included pages'.
+  const leftOut = new Set(snapshot.manifest?.left_out || []), included = snapshot.pages.filter(page => !leftOut.has(page.id));
   for (const [index, page] of snapshot.pages.entries()) {
+    const firstPage = leftOut.has(page.id) ? index === 0 : page.id === included[0]?.id;
+    const lastPage = leftOut.has(page.id) ? index === snapshot.pages.length - 1 : page.id === included.at(-1)?.id;
     const variants = [snapshot.models[page.id], snapshot.edits[page.id], snapshot.drafts[page.id]?.doc].filter(Boolean);
     if (replace && (snapshot.drafts[page.id] || variants.some(doc => ["regions", "text", "units"].some(layer => isProtected(doc, layer)))))
       throw new Error(`Page ${index + 1} has protected work. Use individual type operations for this book.`);
@@ -208,7 +213,7 @@ export function planTypeRevision(current, snapshot, operations, { validate = () 
     for (const [kind, before] of [["model", snapshot.models[page.id]], ["edit", snapshot.edits[page.id]], ["draft", snapshot.drafts[page.id]]]) {
       if (!before) continue;
       const doc = kind === "draft" ? before.doc : before;
-      const after = replace ? null : migrateTypeDocument(doc, types, logged, check, { firstPage: index === 0, lastPage: index === snapshot.pages.length - 1 });
+      const after = replace ? null : migrateTypeDocument(doc, types, logged, check, { firstPage, lastPage });
       const errors = after && check(after, types);
       if (errors?.length) result.invalid.push({ page: page.id, kind, errors });
       if (errors?.length && operations.some(op => ["rename", "merge"].includes(op.kind)) && !check(doc, current).length)
@@ -236,6 +241,7 @@ export function planTypeRevision(current, snapshot, operations, { validate = () 
     if (op.kind === "remove") delete result.style.types[op.name];
     if (op.kind === "replace") for (const name of Object.keys(result.style.types)) if (!Object.hasOwn(types.types, name)) delete result.style.types[name];
   }
+  for (const key of ["find", "complete", "manual"]) result[key] = result[key].filter(pid => !leftOut.has(pid));
   for (const key of ["pages", "find", "complete", "manual"]) result[key] = [...new Set(result[key])];
   return result;
 }

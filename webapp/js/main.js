@@ -2,34 +2,34 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-newbook-3";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-newbook-3";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-leave-out-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-leave-out-1";
 import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
 import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-cross-page-carbon-2";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-quiet-1";
-import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
-import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-quiet-1";
-import { typeSetup } from "./type-setup.js?v=20261112-newbook-3";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261112-leave-out-1";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-leave-out-1";
+import { renderStyle } from "./styleview.js?v=20261112-leave-out-1";
+import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-leave-out-1";
+import { typeSetup } from "./type-setup.js?v=20261112-leave-out-1";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
-import { Maker } from "./pipeline/run.js?v=20261111-type-overview-4";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags } from "./workflow.js?v=20261112-quiet-1";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261111-region-types-2";
+import { Maker } from "./pipeline/run.js?v=20261112-leave-out-1";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, withoutLeftOutJoins } from "./workflow.js?v=20261112-leave-out-1";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261112-leave-out-1";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
 import { orderedRegions } from "./flags.js?v=20261112-quiet-1";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261112-recipe-2";
-import { settings } from "./store.js?v=20261112-newbook-3";
-import { renderReaders } from "./readersview.js?v=20261112-newbook-3";
-import { renderStructures } from "./structuresview.js?v=20261112-newbook-3";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261112-newbook-3";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261112-leave-out-1";
+import { renderPages } from "./pagesview.js?v=20261112-leave-out-1";
+import { settings } from "./store.js?v=20261112-leave-out-1";
+import { renderReaders } from "./readersview.js?v=20261112-leave-out-1";
+import { renderStructures } from "./structuresview.js?v=20261112-leave-out-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-leave-out-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -111,7 +111,7 @@ class App {
           h("button", { class: "mini danger", onclick: async () => { await deleteBrowserBook(b.name); this.library(`“${m.title}” was deleted from this browser.`); } }, "delete"), " ",
           h("button", { class: "mini", onclick: () => this.library() }, "keep")) }, "delete…"));
       return h("div", { class: "row" }, h("button", { class: "link", onclick: () => this.openBrowserBook(b) }, m.title),
-        h("span", { class: "meta" }, ` ${m.pages.length} pages · ${m.pdf?.name || ""} · saved ${new Date(b.saved).toLocaleString()} · `),
+        h("span", { class: "meta" }, ` ${m.pages.length - (m.left_out?.length || 0)} pages${m.left_out?.length ? ` (${m.left_out.length} left out)` : ""} · ${m.pdf?.name || ""} · saved ${new Date(b.saved).toLocaleString()} · `),
         h("span", { class: copy.warn ? "warn" : "meta" }, copy.text), " ", actions);
     };
     this.root.replaceChildren(h("div", { class: "lib" },
@@ -319,7 +319,7 @@ class App {
     } catch (e) { if (e.name !== "AbortError") this.toast(`Could not choose the file: ${e.message}`, "bad"); return false; }
     this.toast(`Writing ${handle.name}…`);
     const written = await copy.choose(handle);
-    if (written) this.toast(`Wrote ${handle.name}. It is written again after each run, after moving pages on, and at most every five minutes while there are changes.`);
+    if (written) this.toast(`Wrote ${handle.name}. It is written again after each run, after moving pages on or leaving them out, and at most every five minutes while there are changes.`);
     return written;
   }
 
@@ -337,7 +337,7 @@ class App {
     el.className = `copy-status${label?.warn ? " warn" : ""}`;
     if (!label) { el.replaceChildren(); return; }
     const state = copy.state;
-    el.title = state.disk ? `${state.name}: written again after each processing run, after pages are moved on, and at most every five minutes while there are changes.` : "";
+    el.title = state.disk ? `${state.name}: written again after each processing run, after pages are moved on or left out, and at most every five minutes while there are changes.` : "";
     const actions = {
       choose: ["Keep a copy on disk…", () => this.chooseDiskCopy()],
       download: ["Download .chaya.pdf", () => this.saveChaya(this.book)],
@@ -386,7 +386,6 @@ class App {
     const description = h("textarea", { rows: 4, cols: 80, placeholder: "what the book is: its parts, languages and scripts, and how its pages are laid out" });
     for (const field of [title, bookId, description]) field.addEventListener("input", () => { field.dataset.edited = "1"; });
     const files = h("input", { type: "file", accept: "application/pdf,.pdf" });
-    const range = h("input", { size: 20, placeholder: "all, or such as 1-20, 25" });
     const info = h("span", { class: "meta" });
     const progress = h("div", { class: "meta" });
     let pdfDoc = null, pdfFile = null, pdfSha = null, opening = null, creating = false;
@@ -445,8 +444,9 @@ class App {
         if (errs.length) throw new Error(`the type list: ${errs[0]}`);
         if (!pdfFile) throw new Error("choose the book's PDF");
         if (!pdfDoc) throw new Error("the PDF is not open yet");
-        const { pageInfo, drawnSize, pageRange } = await import("./pipeline/pdf.js");
-        const numbers = pageRange(range.value, pdfDoc.numPages);
+        const { pageInfo, drawnSize } = await import("./pipeline/pdf.js");
+        // Every page of the PDF is in the book; pages that are not part of it are left out afterwards, in Pages.
+        const numbers = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
         // Each page's make-up and the size it is drawn at (its regions are measured in that size's pixels).
         const pages = [];
         for (const [i, n] of numbers.entries()) {
@@ -475,14 +475,13 @@ class App {
     const idDetails = h("details", { class: "book-id" }, h("summary", { class: "meta" }, "Book id (made from the file name; change it only if needed)"), h("label", {}, "Book id ", bookId));
     const bookFields = h("div", { class: "fields col" },
       pdfGiven ? h("label", {}, "PDF ", h("b", {}, pdfGiven.name), " ", info) : h("label", {}, "PDF ", files, " ", info),
-      h("details", { class: "book-range" }, h("summary", { class: "meta" }, "Only some pages?"), h("label", {}, "PDF pages to include ", range)),
       h("label", {}, "Title ", title),
       idDetails,
       full ? h("label", { class: "stack" }, "Description of the book, for the models ", description) : null);
     const formFields = h("fieldset", { class: "new-book-fields" }, bookFields, setup.element);
     const makeButton = h("button", { class: "primary", onclick: go }, "Make the book");
     this.root.replaceChildren(h("div", { class: "lib" }, h("h1", {}, "A new book"),
-      h("p", {}, "The book is kept in this browser, and its pages are drawn from the PDF. Next come Pages, then Regions (where the unit types are chosen), Text and Read."),
+      h("p", {}, "The book is kept in this browser, and its pages are drawn from the PDF. Every page of the PDF is in it: in Pages, leave out those that are not part of the book. Next come Regions (where the unit types are chosen), Text and Read."),
       formFields,
       h("div", { class: "actions" }, makeButton, " ",
         h("button", { onclick: () => this.library() }, "Cancel")), progress));
@@ -523,6 +522,8 @@ class App {
   }
 
   async refreshWorkflowPage(pid) {
+    // Only the pages in the book have states: a page left out is in the Pages grid alone.
+    if (!(pid in this.book.index)) { this.pageStates.delete(pid); return; }
     const book = this.book, current = await book.current(pid), draft = await book.draft(pid).catch(() => null);
     const [errors, warnings] = draft ? this.check(draft.doc) : current ? this.check(current) : [[], []];
     this.pageStates.set(pid, { ...pageStages(current, book.types, errors, warnings), runErrors: this.pageStates.get(pid)?.runErrors || {} });
@@ -534,8 +535,9 @@ class App {
     // In page order: the states are filled as pages finish loading, and assembly joins each page to the next.
     const docs = this.book.pages.map(page => this.pageStates.get(page.id)).filter(state => state?.valid && state.doc).map(state => state.doc);
     let warnings = [];
-    try { [, warnings] = assemble(docs, this.book.types); } catch { /* Page checks identify invalid trees. */ }
-    reviewPageStates(this.book.pages, this.pageStates, this.book.types, warnings);
+    try { [, warnings] = assemble(withoutLeftOutJoins(this.book, docs), this.book.types); } catch { /* Page checks identify invalid trees. */ }
+    // The full list: a page left out has no state, so it is no page's neighbor.
+    reviewPageStates(this.book.allPages, this.pageStates, this.book.types, warnings);
   }
 
   syncTypes() {
@@ -572,9 +574,9 @@ class App {
   }
 
   regionFlagContext(doc) {
-    const index = this.book.index[doc.page.id], page = this.book.pages[index];
+    const page = this.book.page(doc.page.id);
     const neighbor = delta => {
-      const other = this.book.pages[index + delta];
+      const other = this.book.neighbor(doc.page.id, delta);
       if (doc.source?.sample?.[`consecutive_${delta < 0 ? "previous" : "next"}`] === false) return null;
       return other && (!page.pdf_page || !other.pdf_page || other.pdf_page === page.pdf_page + delta) ? this.pageStates.get(other.id)?.doc : null;
     };
@@ -633,9 +635,9 @@ class App {
   layout() {
     const book = this.book;
     this.root.className = "book";
-    const pageSel = h("select", { class: "pagesel", onchange: e => this.openPage(e.target.value) },
-      ...book.pages.map(p => h("option", { value: p.id }, `${p.id.replace(/^.*-page-/, "")}${p.label ? ` (p. ${p.label})` : ""}${book.edits.has(p.id) ? " ✎" : ""}`)));
+    const pageSel = h("select", { class: "pagesel", onchange: e => this.openPage(e.target.value) });
     this.pageSel = pageSel;
+    this.renderPageSelect();
     this.status = h("span", { class: "status" });
     const modeBtn = (mode, text) => h("button", { class: "mode", dataset: { mode }, onclick: () => this.setMode(mode) }, text);
     const tabBtn = (stage, view, text) => h("button", { class: "tab", dataset: { stage, view }, onclick: () => this.setMode(`${stage}${view ? `&view=${view}` : ""}`) }, text);
@@ -662,6 +664,32 @@ class App {
     this.main = h("main", {});
     this.root.replaceChildren(this.header, this.main);
     this.updateWorkflowNavigation();
+    this.renderCopyStatus();
+  }
+
+  // The header's page list: the pages in the book (not those left out).
+  renderPageSelect() {
+    const book = this.book;
+    this.pageSel.replaceChildren(...book.pages.map(p => h("option", { value: p.id }, `${p.id.replace(/^.*-page-/, "")}${p.label ? ` (p. ${p.label})` : ""}${book.edits.has(p.id) ? " ✎" : ""}`)));
+    if (this.pid && this.pid in book.index) this.pageSel.value = this.pid;
+    for (const option of this.pageSel.options) {
+      const state = this.pageStates?.get(option.value);
+      option.hidden = !!this.stage && !!state && !eligible(this.stage, state);
+    }
+  }
+
+  // After pages are left out or included again (Pages): the page states, flags, tabs and page list follow the pages
+  // in the book. A page left out keeps its files; its state comes back when it is included again.
+  async pagesChanged() {
+    const book = this.book;
+    for (const pid of [...this.pageStates.keys()]) if (!(pid in book.index)) this.pageStates.delete(pid);
+    if (this.pid && !(this.pid in book.index)) { this.pid = null; this.doc = null; this.pageBuilt = false; }
+    this.workflowLoading = true;
+    try { for (const page of book.pages) if (!this.pageStates.has(page.id)) await this.refreshWorkflowPage(page.id); }
+    finally { this.workflowLoading = false; }
+    this.refreshWorkflowFlags();
+    this.updateWorkflowNavigation();
+    this.renderPageSelect();
     this.renderCopyStatus();
   }
 
@@ -1132,7 +1160,7 @@ class App {
     const el = this.main;
     el.replaceChildren(h("div", { class: "loading" }, "Checking every page…"));
     const docs = await this.book.all((d, n) => { el.firstChild.textContent = `Checking every page… ${d} of ${n}`; });
-    const P = prepare(docs, this.tl);
+    const P = prepare(withoutLeftOutJoins(this.book, docs), this.tl);
     const rows = docs.map(doc => {
       const pid = doc.page.id;
       const [errors, warnings] = this.check(doc);
@@ -1209,7 +1237,7 @@ class App {
       document.body.append(a); a.click(); a.remove();
     };
     const id = book.manifest.book_id;
-    const assembled = async () => prepare(await book.all(), this.tl, book.style);
+    const assembled = async () => prepare(withoutLeftOutJoins(book, await book.all()), this.tl, book.style);
     // Each figure unit's regions cut from their page images, as data: URLs (ornaments, being furniture, are not in the text).
     const figureCrops = async P => {
       const out = {};
@@ -1240,7 +1268,7 @@ class App {
       if (!copySection || this.book !== book) return;
       const copy = this.diskCopy, state = copy?.state;
       const label = state && copyLabel(state, { hasWork: true, canPick: !!window.showSaveFilePicker, time: shortTime });
-      const when = "after each processing run, after pages are moved on, and at most every five minutes while there are changes";
+      const when = "after each processing run, after pages are moved on or left out, and at most every five minutes while there are changes";
       copySection.replaceChildren(...[h("h3", {}, "Copies of this book"),
         h("p", { class: this.storage?.persisted === false ? "warn" : "meta" }, storageText(this.storage || {})),
         state?.disk ? [h("p", { class: label.warn ? "warn" : "" }, `${label.text}. The file ${state.name} is written again ${when}.`),

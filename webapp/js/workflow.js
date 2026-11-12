@@ -95,23 +95,29 @@ export function workflowAddress(mode, pid = null, selection = {}) {
   return `#${hash}${pid ? `&p=${encodeURIComponent(pid)}` : ""}${extra}`;
 }
 
-export function readingGaps(pages, included) {
+// The runs of pages not in `included`, numbered by their place in `pages` (for a book, its full page list), as
+// "Page 3" or "Pages 5–9". Pages for which `skip` is true are neither listed nor joined into a run.
+export function readingGaps(pages, included, skip = () => false) {
   const gaps = [];
   for (let index = 0; index < pages.length; index++) {
-    if (included.has(pages[index].id)) continue;
+    if (included.has(pages[index].id) || skip(pages[index])) continue;
     const start = index + 1;
-    while (index + 1 < pages.length && !included.has(pages[index + 1].id)) index++;
+    while (index + 1 < pages.length && !included.has(pages[index + 1].id) && !skip(pages[index + 1])) index++;
     gaps.push(start === index + 1 ? `Page ${start}` : `Pages ${start}–${index + 1}`);
   }
   return gaps;
 }
 
-export function readingDocuments(pages, docs) {
+// The documents, with the open ends removed where the page before or after in `pages` is a gap: by default a page
+// with no document here (not moved on to Read yet, or left out of the book), or the pages `gap` names. Units do not
+// join across a gap.
+export function readingDocuments(pages, docs, gap = null) {
   const included = new Set(docs.map(doc => doc.page.id));
+  const isGap = gap || (page => !included.has(page.id));
   return docs.map(doc => {
     const index = pages.findIndex(page => page.id === doc.page.id);
-    const gapBefore = index > 0 && !included.has(pages[index - 1].id);
-    const gapAfter = index + 1 < pages.length && !included.has(pages[index + 1].id);
+    const gapBefore = index > 0 && isGap(pages[index - 1]);
+    const gapAfter = index + 1 < pages.length && isGap(pages[index + 1]);
     if (!gapBefore && !gapAfter) return doc;
     const next = structuredClone(doc);
     for (const unit of next.units) if (unit.open) {
@@ -121,6 +127,12 @@ export function readingDocuments(pages, docs) {
     }
     return next;
   });
+}
+
+// The documents of a book's included pages, in order, with no unit joined across a page left out of the book (for
+// assembling the book: Export, Problems and the flags).
+export function withoutLeftOutJoins(book, docs) {
+  return book.leftOut?.size ? readingDocuments(book.allPages, docs, page => book.isLeftOut(page.id)) : docs;
 }
 
 export async function movePage(book, pid, layer, forward, check) {

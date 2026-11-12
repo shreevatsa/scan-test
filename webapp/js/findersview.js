@@ -3,10 +3,10 @@ import { regionPath } from "./pageimage.js?v=20261110-figure-region-2";
 import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
 import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { pageRange } from "./pipeline/pdf.js";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261111-type-overview-4";
-import { reviewPage } from "./review-view.js?v=20261111-cross-page-carbon-2";
-import { settings } from "./store.js?v=20261112-newbook-3";
-import { money, costEstimate } from "./reader-controls.js?v=20261111-type-overview-4";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-leave-out-1";
+import { reviewPage } from "./review-view.js?v=20261112-leave-out-1";
+import { settings } from "./store.js?v=20261112-leave-out-1";
+import { money, costEstimate } from "./reader-controls.js?v=20261112-leave-out-1";
 import { runProgress } from "./run-progress.js";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 
@@ -36,22 +36,23 @@ export async function renderFinders(el, app, { selected, onChoose, onBusy, onRev
   if (!active()) return;
   const checks = maker.credentials ||= new CredentialChecks(maker.keys);
   const candidates = new Set((saved.models || FINDERS.map(profile => profile.id)).filter(id => FINDERS.some(profile => profile.id === id)));
-  const selectedPages = () => pageSelectionText(selected().map(pid => book.index[pid] + 1), book.pages.length);
-  const samples = h("input", { value: selectedPages() || saved.pages || `1-${Math.min(3, book.pages.length)}`, "aria-label": "Region comparison sample pages" });
-  const inspect = h("select", { "aria-label": "Inspect region comparison page" }, ...book.pages.map((page, index) =>
-    h("option", { value: page.id, selected: page.id === saved.focus }, `Page ${index + 1}${page.label ? ` · ${page.label}` : ""}`)));
+  // Page numbers are places in the book's full page list; a left-out page is never a sample.
+  const selectedPages = () => pageSelectionText(selected().map(pid => book.number(pid)), book.allPages.length);
+  const samples = h("input", { value: selectedPages() || saved.pages || pageSelectionText(book.pages.slice(0, 3).map(page => book.number(page.id)), book.allPages.length), "aria-label": "Region comparison sample pages" });
+  const inspect = h("select", { "aria-label": "Inspect region comparison page" }, ...book.pages.map(page =>
+    h("option", { value: page.id, selected: page.id === saved.focus }, `Page ${book.number(page.id)}${page.label ? ` · ${page.label}` : ""}`)));
   const reference = h("select", { "aria-label": "Reference region finder" }, ...FINDERS.map(profile =>
     h("option", { value: profile.id, selected: profile.id === (saved.reference || "terra-regions") }, profile.label)));
   const languages = h("select", { "aria-label": "Region comparison OCR language pack" }, ...OCR_LANGUAGES.map(([id, name]) =>
     h("option", { value: id, selected: id === options.ocr_languages }, name)));
   const budget = h("input", { type: "number", min: 0.1, step: 0.5, value: saved.budget || 5, "aria-label": "Region comparison spend threshold" });
-  const pageCount = h("input", { type: "number", min: 1, step: 1, value: saved.page_count || book.manifest.pdf?.page_count || book.pages.length,
+  const pageCount = h("input", { type: "number", min: 1, step: 1, value: saved.page_count || book.projectionPages,
     "aria-label": "Book pages for region cost estimate" });
   const fresh = h("input", { type: "checkbox", "aria-label": "Request fresh region results" });
   const status = h("p", { role: "status" }), summary = h("div"), detail = h("div", { class: "finder-cards" });
   const progress = runProgress("Region finder comparison progress"), results = new Map(), credentials = h("div");
   let busy = false, stopped = false, refreshVersion = 0;
-  const pageIds = () => pageRange(samples.value, book.pages.length).map(number => book.pages[number - 1].id);
+  const pageIds = () => book.numbered(pageRange(samples.value, book.allPages.length)).map(page => page.id);
   const selectedModels = () => [...new Set([reference.value, ...candidates])].map(finderById);
   const saveSelection = () => book.writeWork("work/region-lab/selection.json", { pages: samples.value, models: [...candidates],
     focus: inspect.value, reference: reference.value, budget: budget.value, page_count: pageCount.value });
@@ -158,7 +159,7 @@ export async function renderFinders(el, app, { selected, onChoose, onBusy, onRev
       await book.saveReaderOptions({ ...await maker.options(), ocr_languages: languages.value });
       for (const profile of profiles) for (const pid of ids) {
         if (paused()) break;
-        status.textContent = `Finding regions on page ${book.index[pid] + 1} with ${profile.label}…`;
+        status.textContent = `Finding regions on page ${book.number(pid)} with ${profile.label}…`;
         try {
           const result = await maker.findRegions(pid, { finder: profile.id, force: fresh.checked, save: false, trial: true });
           progress.advance(result.cached ? "reused" : "completed");

@@ -115,7 +115,7 @@ An optional assembled document has `format: "book"`, `schema_version: "0.2"`, th
 
 ## Manifest and file map
 
-`book.json` lists source pages in the intended reading order. `pdf_page` is the one-based position in the original PDF. `pdf.page_count` counts the source PDF's pages, including when the manifest describes an excerpt. Width and height record each page's canonical raster dimensions. A page awaiting processing can have a document path whose file is still absent. Track that status in provenance.
+`book.json` lists source pages in the intended reading order. `pdf_page` is the one-based position in the original PDF. `pdf.page_count` counts the source PDF's pages, including when the manifest describes an excerpt. Width and height record each page's canonical raster dimensions. A page awaiting processing can have a document path whose file is still absent. Track that status in provenance. An optional `left_out` array names, in page order, pages left out of the book (the web app's Pages tab): keep their entries and files, but do not process, count or assemble them, and join no unit across one.
 
 ```json
 {
