@@ -1,6 +1,7 @@
 import { suggestionButton } from "./review-view.js?v=20261111-cross-page-carbon-2";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261111-region-types-2";
+import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261112-quiet-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261112-quiet-1";
 import { regionBoxes } from "./pageimage.js?v=20261110-figure-region-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
@@ -33,7 +34,8 @@ export async function renderPages(el, app) {
   if (selected.size) showSelection();
   const stateFilter = h("select", { "aria-label": "Page state" }, ...["all", "pending", "model", "edited", "provisional", "accepted"].map(value =>
     h("option", { value }, { all: "All states", pending: "Pending", model: "Ready to review", edited: "Edited", provisional: "Provisional", accepted: "Moved on" }[value])));
-  const filter = h("select", { "aria-label": "Page flags" }, ...[["all", "All pages"], ["flagged", "Flagged"], ["earlier", "Earlier type revision"], ["suggestion", "Has a suggestion"]].map(([value, label]) => h("option", { value }, label)));
+  const filter = h("select", { "aria-label": "Page flags" }, ...[["all", "All pages"], ["flagged", "Flagged"], ...stage === "regions" ? [["rareLayout", `Rare layouts (under ${RARE_LAYOUT} pages)`]] : [],
+    ["earlier", "Earlier type revision"], ["suggestion", "Has a suggestion"]].map(([value, label]) => h("option", { value }, label)));
   const grouping = h("select", { "aria-label": "Group pages by layout" }, h("option", { value: "order" }, "Page order"), h("option", { value: "layout" }, "Layout · rarest first"));
   if (overview?.filters) {
     stateFilter.value = overview.filters.state;
@@ -49,7 +51,8 @@ export async function renderPages(el, app) {
     const state = app.pageStates.get(pid);
     return state.layers[layer] && (layer !== "units" || state.layers.units.state !== "provisional");
   };
-  let estimate = null, runButton, moveButton, backButton, setupFinder, checks, profile;
+  let estimate = null, runButton, moveButton, backButton, checks, profile;
+  const processSummary = h("span", { class: "meta" });
   const include = h("input", { type: "checkbox", checked: pending?.reprocess, "aria-label": "Include pages already processed" });
   const fresh = h("input", { type: "checkbox", "aria-label": "Request fresh model results" });
   const estimateLabel = h("p", { class: "hint" });
@@ -64,7 +67,7 @@ export async function renderPages(el, app) {
       const ready = profile && checks?.status(profile)?.valid;
       const count = runnable().length;
       runButton.disabled = busy || !book.writable || !count || !ready;
-      if (setupFinder) setupFinder.hidden = !book.writable || !profile || !!ready;
+      processSummary.textContent = `${profile?.label || "Draw by hand"} · ${count} ${count === 1 ? "page" : "pages"} to process`;
       estimateLabel.textContent = `${count} ${count === 1 ? "page" : "pages"} to process · Estimated new work ${estimate === null ? "unavailable until a completed sample" : money(estimate * count, 2)}. Cached results may reduce new spend.`;
     }
     if (moveButton) moveButton.disabled = busy || !ids.some(pid => layerReady(pid));
@@ -89,7 +92,7 @@ export async function renderPages(el, app) {
       if (!eligible(stage, state) && selected.delete(pid)) removed = true;
       if (!row.element.hidden) visible.push(pid);
       if (!row.element.hidden && grouping.value === "layout" && state.layout !== lastLayout) {
-        grid.append(h("h3", { class: "layout-heading" }, `${state.layout || "No regions yet"} · ${state.layoutFrequency} pages`));
+        grid.append(h("h3", { class: "layout-heading" }, `${state.layout || "No regions yet"} · ${state.layoutFrequency} ${state.layoutFrequency === 1 ? "page" : "pages"}`));
         lastLayout = state.layout;
       }
       grid.append(row.element);
@@ -168,11 +171,22 @@ export async function renderPages(el, app) {
       } catch (error) { message.textContent = error.message; }
     } }, "Select range"), h("button", { onclick: () => { selected.clear(); selection.value = ""; applyFilters(); } }, "Clear selection"), stateFilter, filter,
     ...(stage === "regions" ? [grouping] : []));
-  const actions = h("section", { class: "stage-actions" });
+  const stageReview = h("div", { class: "actions stage-review" });
   const heading = h("h1", {}, TITLES[stage]);
   app.regionTypePanel = null;
-  const content = h("div", { class: "region-grid-content" }, toolbar, summary, message, empty, grid, preview);
-  let sections, finderSection, finderControls, finderSummary, comparison, comparisonContent;
+  const content = h("div", { class: "region-grid-content" }, toolbar, stageReview, summary, message, empty, grid, preview);
+  // Model choice, credentials and run controls are one section, open at first while pages wait for this stage's
+  // processing. A read-only book has none of them, only the way to an editable copy.
+  const processing = stage !== "pages" && book.writable;
+  const runArea = h("div");
+  app.processOpen ||= {};
+  const waiting = [...rows.keys()].filter(pid => !layerReady(pid)).length;
+  const processSection = processing ? h("details", { class: "region-section process-section",
+    open: app.routeView === "compare" || !!pending || (app.processOpen[stage] ?? waiting > 0) }, h("summary", {}, "Process pages", " ", processSummary), runArea) : null;
+  processSection?.addEventListener("toggle", () => { if (active()) app.processOpen[stage] = processSection.open; });
+  const readOnly = stage !== "pages" && !book.writable ? h("p", { class: "box read-only-line" }, "This book is read only here. ",
+    h("button", { class: "primary", onclick: () => app.continueBook(stage) }, "Make an editable copy"), " in this browser to process pages and move them on.") : null;
+  let comparison, comparisonContent;
   let setBusy = (area, value) => { app.workflowBusy = app.header.inert = value; };
   const loadOnOpen = (section, target, render) => {
     let loaded = false;
@@ -185,25 +199,14 @@ export async function renderPages(el, app) {
     section.addEventListener("toggle", load);
     load();
   };
-  if (overview) {
-    const view = app.routeView;
-    const fold = (key, label, open, meta, ...body) => {
-      const section = h("details", { class: key === "proposal" || key === "compare" ? "region-disclosure" : "region-section", open },
-        h("summary", {}, label, meta ? " " : null, meta), ...body);
-      section.addEventListener("toggle", () => { if (active()) overview[key] = section.open; });
-      return section;
-    };
-    finderControls = h("div");
-    finderSummary = h("span", { class: "meta" });
+  if (overview && processing) {
     comparisonContent = h("div");
-    comparison = fold("compare", "Compare finders", view === "compare" || overview.compare, null, comparisonContent);
-    finderSection = fold("finder", "Find regions", view === "compare" || overview.finder, finderSummary, finderControls, comparison);
-    content.insertBefore(actions, message);
-    const pages = fold("pages", "Page regions", overview.pages ?? true, h("span", { class: "meta" }, `${book.pages.length} pages`), content);
-    sections = [finderSection, pages];
+    comparison = h("details", { class: "region-disclosure", open: app.routeView === "compare" || overview.compare }, h("summary", {}, "Compare finders"), comparisonContent);
+    comparison.addEventListener("toggle", () => { if (active()) overview.compare = comparison.open; });
+    processSection.append(comparison);
     setBusy = (area, value) => {
       app.workflowBusy = app.header.inert = value;
-      for (const part of [finderControls, comparisonContent, content]) if (part !== area) part.inert = value;
+      for (const part of [runArea, comparisonContent, content]) if (part !== area) part.inert = value;
     };
   }
   const container = h("div", { class: "stage-overview" }, heading,
@@ -211,7 +214,7 @@ export async function renderPages(el, app) {
       : stage === "regions" ? "Find and review the page regions. Move reviewed pages on to Text together."
         : stage === "text" ? "Transcribe the pages moved on from Regions. Review the text beside the scans, then move pages on to Read."
           : "Complete units and links using the accepted transcription. Open pages to review their structure."),
-    ...(sections || [actions, content]));
+    processSection, readOnly, content);
   el.replaceChildren(container);
   const dispose = () => { observer?.disconnect(); for (const url of urls) URL.revokeObjectURL(url); preview.close(); };
   app.onLeaveGrid = dispose;
@@ -230,7 +233,7 @@ export async function renderPages(el, app) {
   stateFilter.onchange = filter.onchange = applyFilters;
   grouping.onchange = applyFilters;
   applyFilters();
-  if (stage === "pages") return;
+  if (!processing) return;
 
   const maker = await app.getMaker(), options = await maker.options();
   if (!active()) return;
@@ -243,7 +246,7 @@ export async function renderPages(el, app) {
     ...profiles.map(item => h("option", { value: item.id, selected: item.id === chosen }, item.label)),
     overview ? h("option", { value: "manual", selected: chosen === "manual" }, "Draw by hand") : null);
   const keyPanel = h("div");
-  const processControls = h("div");
+  const runControls = h("div");
   const manualHint = h("p", { class: "hint" }, "Open a page or choose Start by hand to draw its regions.");
   const languages = h("select", { "aria-label": "Region finder OCR language pack" },
     ...OCR_LANGUAGES.map(([id, name]) => h("option", { value: id, selected: id === options.ocr_languages }, name)));
@@ -252,8 +255,7 @@ export async function renderPages(el, app) {
     profile = profiles.find(item => item.id === select.value);
     if (overview) {
       overview.manual = !profile;
-      finderSummary.textContent = profile?.label || "Draw by hand";
-      processControls.hidden = !profile;
+      runControls.hidden = !profile;
       manualHint.hidden = !!profile;
       languageLabel.hidden = profile?.id !== "tesseract-regions";
     }
@@ -292,8 +294,8 @@ export async function renderPages(el, app) {
   const disabledFields = new Map();
   const busyFields = value => {
     busy = value;
-    setBusy(content, value);
-    if (value) for (const field of (overview ? content : container).querySelectorAll("button, input, select")) {
+    setBusy(runArea, value);
+    if (value) for (const field of container.querySelectorAll("button, input, select")) {
       disabledFields.set(field, field.disabled);
       field.disabled = true;
     } else {
@@ -359,26 +361,19 @@ export async function renderPages(el, app) {
   };
   if (stage === "regions" || stage === "text") moveButton = h("button", { class: "primary", onclick: () => move(layer, true) }, `Move on to ${stage === "regions" ? "Text" : "Read"}`);
   if (stage === "text" || stage === "read") backButton = h("button", { onclick: () => move(stage === "text" ? "regions" : "text", false) }, `Send back to ${stage === "text" ? "Regions" : "Text"}`);
+  const processingFields = h("div", { class: "fields" }, h("label", {}, include, " Include pages already processed"), h("label", {}, fresh, " Request fresh model results"),
+    h("label", {}, "Spend threshold $", threshold));
+  runControls.append(processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status);
   if (overview) {
-    finderControls.append(h("div", { class: "fields" }, h("label", {}, "Region finder ", select), languageLabel), manualHint, keyPanel);
-    setupFinder = h("button", { onclick: () => {
-      finderSection.open = true; comparison.open = false;
-      finderSection.scrollIntoView({ block: "start" });
-    } }, "Check finder key");
+    runArea.append(h("div", { class: "fields" }, h("label", {}, "Region finder ", select), languageLabel), manualHint, keyPanel, runControls);
     comparison.addEventListener("toggle", () => {
       keyPanel.hidden = comparison.open;
       if (!comparison.open && !app.workflowBusy) refreshModel().catch(error => { message.textContent = error.message; });
     });
     keyPanel.hidden = comparison.open;
-  } else actions.append(h("div", { class: "fields" }, h("label", {}, "Model ", select),
-    h("button", { onclick: () => app.setMode(stage === "text" ? "readers" : "structures") }, "Compare models")), keyPanel);
-  if (!book.writable) actions.append(h("p", {}, "Keep an editable copy to process pages. ", h("button", { onclick: () => app.continueBook(stage) }, "Make an editable copy")));
-  const processingFields = h("div", { class: "fields" }, h("label", {}, include, " Include pages already processed"), h("label", {}, fresh, " Request fresh model results"),
-    h("label", {}, "Spend threshold $", threshold));
-  if (overview) {
-    processControls.append(processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop, setupFinder), progress.element, status);
-    actions.append(processControls, h("div", { class: "actions" }, moveButton));
-  } else actions.append(processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop, moveButton, backButton), progress.element, status);
+  } else runArea.append(h("div", { class: "fields" }, h("label", {}, "Model ", select),
+    h("button", { onclick: () => app.setMode(stage === "text" ? "readers" : "structures") }, "Compare models")), keyPanel, runControls);
+  stageReview.append(...[moveButton, backButton].filter(Boolean));
   include.onchange = refreshSummary;
   await refreshModel();
   if (overview) loadOnOpen(comparison, comparisonContent, () => renderFinders(comparisonContent, app, {

@@ -1,5 +1,6 @@
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { regionTypePaths } from "./pipeline/provisional.js?v=20261110-finders-4";
+import { layerState } from "./layers.js?v=20261110-finders-4";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -7,11 +8,20 @@ export function orderedRegions(doc, types, furniture = true) {
     .sort((a, b) => (a.region.order ?? Infinity) - (b.region.order ?? Infinity) || a.index - b.index).map(value => value.region);
 }
 
+// A page's layout, for grouping pages and sorting the rarest first (it is not a flag): the kinds of printed content on
+// it, in the type list's order. How many regions of each there are, the order they come in and the page furniture
+// do not count, so that ordinary body pages fall into a few groups.
 export function layoutSignature(doc, types) {
   if (!doc) return "";
-  const names = orderedRegions(doc, types).map(region => region.type);
-  return names.filter((type, index) => type !== names[index - 1]).join(" → ") || "Blank page";
+  if (!doc.page.regions.length) return "Blank page";
+  const order = Object.keys(types.types), present = new Set(doc.page.regions.map(region => region.type));
+  const content = [...present].filter(type => types.types[type]?.role !== "furniture")
+    .sort((a, b) => (order.indexOf(a) + 1 || Infinity) - (order.indexOf(b) + 1 || Infinity) || a.localeCompare(b));
+  return content.join(" · ") || "Page furniture only";
 }
+
+// Layouts on fewer pages than this are offered as a filter in the page grids.
+export const RARE_LAYOUT = 3;
 
 export function layoutCounts(docs, types) {
   const counts = new Map();
@@ -33,7 +43,55 @@ function flowEdges(doc, types) {
   return edges;
 }
 
-export function regionFlags(doc, types, { errors = [], previous = null, next = null, frequency = null } = {}) {
+// The cells of a grid, every `step` pixels, inside a region's outline (its rings, filled even-odd).
+function outlineCells(rings, step = 4) {
+  const cells = new Set();
+  const key = (x, y) => Math.floor(y / step) * 1e6 + Math.floor(x / step);
+  for (const ring of rings || []) {
+    if (ring.length < 3) continue;
+    const ys = ring.map(point => point[1]), top = Math.min(...ys), bottom = Math.max(...ys);
+    for (let y = Math.floor(top / step) * step + step / 2; y < bottom; y += step) {
+      const xs = [];
+      ring.forEach(([ax, ay], k) => {
+        const [bx, by] = ring[(k + 1) % ring.length];
+        if ((ay <= y) !== (by <= y)) xs.push(ax + (y - ay) * (bx - ax) / (by - ay));
+      });
+      xs.sort((a, b) => a - b);
+      for (let k = 0; k + 1 < xs.length; k += 2)
+        for (let x = Math.ceil((xs[k] - step / 2) / step) * step + step / 2; x < xs[k + 1]; x += step) cells.add(key(x, y));
+    }
+  }
+  return cells;
+}
+
+// How much of the smaller of two boxes the other covers.
+function boxOverlap(a, b) {
+  if (!a || !b) return 0;
+  const area = box => Math.max(0, box[2] - box[0]) * Math.max(0, box[3] - box[1]);
+  const overlap = Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+  return overlap / Math.max(1, Math.min(area(a), area(b)));
+}
+
+// How much of the smaller of two regions the other covers: by their outlines where both have them (a region that
+// wraps around a neighbor, as a two-line footnote beside one-line footnotes, has a box over it but no shared ink),
+// else by their boxes.
+export function regionOverlap(a, b) {
+  if (a.polygons?.length && b.polygons?.length) {
+    const first = outlineCells(a.polygons), second = outlineCells(b.polygons);
+    if (first.size && second.size) {
+      let shared = 0;
+      for (const cell of first) if (second.has(cell)) shared++;
+      return shared / Math.min(first.size, second.size);
+    }
+  }
+  return boxOverlap(a.box, b.box);
+}
+
+// Units settled by completion or by hand decide a page break themselves (Read checks those joins), so the regions'
+// continuation flags are compared only while either page's units are still provisional.
+const unitsSettled = doc => { const units = layerState(doc, "units"); return !!units && units.state !== "provisional"; };
+
+export function regionFlags(doc, types, { errors = [], previous = null, next = null } = {}) {
   if (!doc) return [];
   const flags = [], add = (code, message, region = null, box = null) => flags.push({ code, message, region, box });
   const regions = doc.page.regions;
@@ -51,16 +109,13 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
   if (doc.source?.geometry_error) add("geometry", doc.source.geometry_error);
   if (doc.source?.type_review?.regions) add("type-revision", "Find regions again after the figure-class change");
   for (let i = 0; i < regions.length; i++) for (let j = i + 1; j < regions.length; j++) {
-    const a = regions[i].box, b = regions[j].box;
-    if (!a || !b) continue;
-    const area = box => Math.max(0, box[2] - box[0]) * Math.max(0, box[3] - box[1]);
-    const overlap = Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
-    if (overlap > 0.2 * Math.min(area(a), area(b))) add("overlap", `${regions[i].id} and ${regions[j].id} overlap by more than a fifth of the smaller box`, regions[i].id);
+    if (boxOverlap(regions[i].box, regions[j].box) > 0.2 && regionOverlap(regions[i], regions[j]) > 0.2)
+      add("overlap", `${regions[i].id} and ${regions[j].id} overlap by more than a fifth of the smaller region`, regions[i].id);
   }
   for (const error of errors) add("invalid", error);
   const current = flowEdges(doc, types);
   for (const [neighbor, side] of [[previous, "previous"], [next, "next"]]) {
-    if (!neighbor?.page.regions.length) continue;
+    if (!neighbor?.page.regions.length || unitsSettled(doc) && unitsSettled(neighbor)) continue;
     const other = flowEdges(neighbor, types);
     for (const flow of new Set([...current.keys(), ...other.keys()])) {
       const edge = current.get(flow), matching = other.get(flow);
@@ -70,7 +125,6 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
         add("continuation", `${flow} continuation does not match the ${side} page`, side === "previous" ? edge?.first.id : edge?.last.id);
     }
   }
-  if (frequency !== null && frequency < 3) add("rare-layout", `This layout occurs on ${frequency} ${frequency === 1 ? "page" : "pages"}`);
   return flags;
 }
 

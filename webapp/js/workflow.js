@@ -1,6 +1,6 @@
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { layerState, accept, sendBack, noteEdit } from "./layers.js?v=20261110-finders-4";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags } from "./flags.js?v=20261110-finders-4";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261112-quiet-1";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -31,7 +31,8 @@ export function reviewPageStates(pages, states, types, assemblyWarnings = []) {
     };
     state.layout = layoutSignature(state.doc, types);
     state.layoutFrequency = state.doc ? counts.get(state.layout) || 0 : pending;
-    state.regionFlags = regionFlags(state.doc, types, { errors: state.errors, previous: neighbor(-1), next: neighbor(1), frequency: state.layoutFrequency });
+    state.rareLayout = !!state.doc && state.layoutFrequency < RARE_LAYOUT;
+    state.regionFlags = regionFlags(state.doc, types, { errors: state.errors, previous: neighbor(-1), next: neighbor(1) });
     state.textFlags = textFlags(state.doc, types);
     state.readFlags = readFlags(state.doc, state.errors, state.warnings, assemblyWarnings.filter(message =>
       message.includes(`${page.id}#`) || message.includes(`page ${page.id},`)));
@@ -39,7 +40,15 @@ export function reviewPageStates(pages, states, types, assemblyWarnings = []) {
   });
 }
 
+// The stage a page waits at: the first whose layer has not been moved on, and Read once its text has been.
+export function currentStage(state) {
+  return !state.layers.regions?.accepted ? "regions" : !state.layers.text?.accepted ? "text" : "read";
+}
+
+// A page's flags at a stage. Pages shows each page's flags at the stage it waits at: a layer that was moved on was
+// accepted, and its stage still lists its flags.
 export function stageFlags(state, stage) {
+  if (stage === "pages") stage = currentStage(state);
   const flags = stage === "regions" ? (state.regionFlags || []).map(flag => flag.message)
     : stage === "text" ? [...state.errors, ...(state.textFlags || []).map(flag => flag.message)]
       : stage === "read" ? (state.readFlags || []).map(flag => flag.message) : state.flags;

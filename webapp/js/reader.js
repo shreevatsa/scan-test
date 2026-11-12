@@ -8,7 +8,7 @@ import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible } from "./workflow.js?v=20261111-region-types-2";
+import { readingGaps, readingDocuments, eligible } from "./workflow.js?v=20261112-quiet-1";
 import { layerState } from "./layers.js?v=20261110-finders-4";
 import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261111-cross-page-carbon-2";
 
@@ -228,7 +228,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
   draw();
   const panel = h("aside", { class: "read-panel", "aria-label": "Passage structure", hidden: true });
   const workspace = h("div", { class: "read-workspace" }, h("div", { class: "reading-main" }, tools, body), panel);
-  el.replaceChildren(h("div", { class: "r-stage-actions" }, h("button", { onclick: () => app.setMode("read&view=pages") }, "Complete and review units and links")),
+  el.replaceChildren(app.book.writable ? h("div", { class: "r-stage-actions" }, h("button", { onclick: () => app.setMode("read&view=pages") }, "Complete and review units and links")) : "",
     ...(gaps.length ? [h("p", { class: "reading-gaps" }, `${gaps.join(" · ")} ${gaps.length === 1 && !gaps[0].startsWith("Pages") ? "is" : "are"} not here yet. Move these pages on from Text to include them.`)] : []),
     ...(P.provisionalPages.size ? [h("p", { class: "reading-gaps" }, `${P.provisionalPages.size} pages have provisional unit grouping. Complete units and links to review that grouping.`)] : []), workspace);
   wireSourcePreview(body, app, P);

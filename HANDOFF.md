@@ -9,10 +9,11 @@ Turn a book's PDF into a digital book in which every unit (paragraph, verse, foo
 ## Where things stand
 
 - **The app works and is tested.** `webapp/` is plain HTML, CSS and JavaScript modules with no build step (about 13,000 lines in `webapp/js`). Tabs are Pages · Regions · Text · Read · Export, one per stage. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3).
-- **Tests:** `node --test webapp/test/*.test.mjs` (272 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11 pass).
+- **Tests:** `node --test webapp/test/*.test.mjs` (275 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11 pass).
 - **Running:** `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/. A book opens read only with `?book=/outputs/books/kale-1913.chaya.pdf`. The Tailscale HTTPS address for the user's other devices is in PRIVATE.md.
 - **Books that exist** (`outputs/books/`, not in git): Kale 1913 (252 pages) and Telang, both made by the older one-pass pipeline (method 052), and the vachana book made from a digital PDF's text layer (methods 058 and 062, private).
 - **Books are kept on disk as well as in the browser** (task 1, done 2026-11-12): a book in the browser can keep a `.chaya.pdf` on disk that the app rewrites after runs and moves and at most every five minutes while there are changes; paid runs wait for a copy; a book with unreadable files is not opened as if empty. `webapp/README.md`, "The copy on disk", describes it. Checked in Chrome with the file picker simulated; the real picker and a real file changing on disk still need one manual check by the user.
+- **Screens are quiet for reading and reviewing** (task 2, done 2026-11-12): a read-only book shows no processing controls, only "Make an editable copy"; each stage grid has its controls in a "Process pages" section that starts open only while pages wait; layout rarity is a filter, not a flag, and Pages shows each page's flags at the stage it waits at. Flags on Kale are now 16 pages in Regions (6.3%), 32 in Text (12.7%), 8 in Read and in Pages (3.2%), down from 104 in Regions and 114 in Pages (NOTEBOOK, "Rare review flags on Kale"). `webapp/tools/flag_counts.mjs` recounts them.
 - **No scanned book has gone through the staged workflow end to end.** This is the main gap. The user's 267-page private book was lost from browser storage on 2026-11-12 with about $3.86 of model work in it, and was started again; it now has 267 pages, the eleven draft types and nothing processed. A backup `.chaya.pdf` of that fresh state exists (PRIVATE.md says where).
 - **Least tested stage:** completion (units, line joins, note links), compared on two private pages only, with nobody having checked which model was right. Region finding is the best tested (0 / 0 / 0 on the nine reference pages) and the cheapest.
 - **Measured cost per page** on the private series: finding regions about $0.010, transcription $0.038 (Argon low), completion $0.032 (Argon high). About $21 for 267 pages.
@@ -20,15 +21,7 @@ Turn a book's PDF into a digital book in which every unit (paragraph, verse, foo
 
 ## What to do next, in order
 
-Each task is sized for one session. Finish, test and commit one before starting the next. Rules for all of them are under "Working rules". Task 1 (durable books) is done.
-
-### Task 2. Quiet screens for reading and reviewing
-
-1. A read-only book (`book.writable` false) shows no API key forms, spend thresholds, Find/Transcribe/Move buttons or "include pages already processed" options. One line with "Make an editable copy" replaces them.
-2. In Regions → By page and in Text, the page grid comes directly under the heading. Model choice, credentials and run controls go in one collapsed "Process pages" section, opened by default only when there are pages still to process at that stage.
-3. Flags must be rare to be useful (Kale shows 104 of 252 pages flagged in Regions and 114 in Pages, mostly "This layout occurs on 1 page", including ordinary body pages). In `webapp/js/flags.js` and the layout grouping it uses: make layout rarity a sort and filter aid and not a flag, and find out why ordinary pages get distinct layouts (the grouping key is probably too fine: it should not depend on region counts). Target: on Kale, under 15% of pages flagged at each stage, every flag naming something a person would act on. Record the before and after counts per flag kind in NOTEBOOK.md.
-
-Done when: tests updated, the Kale counts recorded, screenshots of each tab checked by eye.
+Each task is sized for one session. Finish, test and commit one before starting the next. Rules for all of them are under "Working rules". Tasks 1 (durable books) and 2 (quiet screens) are done.
 
 ### Task 3. One default recipe; comparisons out of the way
 

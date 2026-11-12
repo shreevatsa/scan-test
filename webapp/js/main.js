@@ -7,23 +7,23 @@ import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./di
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
 import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-cross-page-carbon-2";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261111-region-types-2";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-quiet-1";
 import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
-import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261111-region-types-2";
+import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-quiet-1";
 import { typeSetup } from "./type-setup.js?v=20261112-durability-1";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
 import { Maker } from "./pipeline/run.js?v=20261111-type-overview-4";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261111-region-types-2";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags } from "./workflow.js?v=20261112-quiet-1";
 import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261111-region-types-2";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
-import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=20261110-finders-4";
+import { orderedRegions } from "./flags.js?v=20261112-quiet-1";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261112-durability-1";
+import { renderPages } from "./pagesview.js?v=20261112-quiet-1";
 import { settings } from "./store.js?v=20261112-durability-1";
 import { renderReaders } from "./readersview.js?v=20261112-durability-1";
 import { renderStructures } from "./structuresview.js?v=20261112-durability-1";
@@ -511,6 +511,7 @@ class App {
   async openBook(book) {
     this.book = book;
     this.regionOverview = {};
+    this.processOpen = {};
     this.typeOverview = {};
     this.regionPageViews = new Map();
     this.workflowScroll = new Map();
@@ -547,7 +548,8 @@ class App {
   }
 
   refreshWorkflowFlags() {
-    const docs = [...this.pageStates.values()].filter(state => state.valid && state.doc).map(state => state.doc);
+    // In page order: the states are filled as pages finish loading, and assembly joins each page to the next.
+    const docs = this.book.pages.map(page => this.pageStates.get(page.id)).filter(state => state?.valid && state.doc).map(state => state.doc);
     let warnings = [];
     try { [, warnings] = assemble(docs, this.book.types); } catch { /* Page checks identify invalid trees. */ }
     reviewPageStates(this.book.pages, this.pageStates, this.book.types, warnings);
@@ -593,9 +595,7 @@ class App {
       if (doc.source?.sample?.[`consecutive_${delta < 0 ? "previous" : "next"}`] === false) return null;
       return other && (!page.pdf_page || !other.pdf_page || other.pdf_page === page.pdf_page + delta) ? this.pageStates.get(other.id)?.doc : null;
     };
-    const docs = [...this.pageStates.values()].map(state => state.doc).filter(value => value && value.page.id !== doc.page.id);
-    const frequency = layoutCounts([...docs, doc], this.tl).get(layoutSignature(doc, this.tl));
-    return { errors: this.check(doc)[0], previous: neighbor(-1), next: neighbor(1), frequency };
+    return { errors: this.check(doc)[0], previous: neighbor(-1), next: neighbor(1) };
   }
 
   async startByHand(pid) {
@@ -672,7 +672,7 @@ class App {
       h("span", { class: "undo" }, h("button", { title: "undo (⌘Z)", onclick: () => this.undo() }, "↶"), h("button", { title: "redo (⇧⌘Z)", onclick: () => this.redo() }, "↷")),
       h("span", { class: "page-stage-links" }, ...["regions", "text", "read"].map(stage => h("button", { class: "mini", dataset: { stage }, onclick: () => this.openPage(this.pid, {}, stage) }, `Open in ${stage === "read" ? "Read" : stage[0].toUpperCase() + stage.slice(1)}`)),
         h("button", { class: "mini", onclick: () => {
-          const ids = book.pages.filter(page => eligible(this.stage, this.pageStates.get(page.id)) && this.pageStates.get(page.id).flags.length).map(page => page.id);
+          const ids = book.pages.filter(page => eligible(this.stage, this.pageStates.get(page.id)) && stageFlags(this.pageStates.get(page.id), this.stage).length).map(page => page.id);
           const next = ids.find(pid => book.index[pid] > book.index[this.pid]) || ids[0];
           if (next) this.openPage(next);
         } }, "Next flagged page")), this.status, this.copyStatus = h("span", { class: "copy-status" }));
@@ -701,6 +701,8 @@ class App {
     const route = workflowRoute(location.hash, this.available, pid => this.pageStates.get(pid)), { stage } = route;
     let { mode } = route;
     if (route.pid && (!this.pageStates.has(route.pid) || !eligible(stage, this.pageStates.get(route.pid)))) mode = "grid";
+    // Comparisons call models: a read-only book shows its stage grid, which offers an editable copy.
+    if (!this.book.writable && ["readers", "structures"].includes(mode)) { mode = stage === "read" ? "read" : "grid"; route.view = ""; }
     this.onLeaveGrid?.(); this.onLeaveGrid = null;
     this.lastWorkflowUrl = location.href;
     this.stage = stage;
@@ -710,7 +712,7 @@ class App {
     this.header.dataset.view = mode;
     this.header.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === stage));
     this.header.querySelectorAll(".tab").forEach(b => {
-      b.hidden = b.dataset.stage !== stage;
+      b.hidden = b.dataset.stage !== stage || !this.book.writable && b.dataset.view === "compare";
       const view = stage === "regions" ? mode === "types" ? "types" : "pages" : route.view || "";
       b.classList.toggle("on", b.dataset.view === view);
       b.setAttribute("aria-pressed", String(b.classList.contains("on")));
@@ -844,7 +846,7 @@ class App {
       toolbar.querySelector('[title="insert a note marker at the caret"]')?.remove();
     }
     if (this.stage !== "regions") toolbar.querySelector(".draw")?.remove();
-    else toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"));
+    else if (this.book.writable) toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"));
     const textPane = h("div", { class: "textpane" });
     this.inspector = h("div", { class: "inspector" });
     this.problems = h("div", { class: "checks" });

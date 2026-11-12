@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { regionFlags, textFlags, readFlags, layoutSignature, layoutCounts } from "../js/flags.js";
+import { regionFlags, textFlags, readFlags, layoutSignature, layoutCounts, regionOverlap, RARE_LAYOUT } from "../js/flags.js";
 import { uncoveredLines } from "../js/local/regions.js";
 
 const types = { flows: { main: "Main", notes: "Notes" }, types: {
@@ -42,13 +42,26 @@ test("Regions flags overlap strictly above a fifth of the smaller box", () => {
   page.page.regions[1].box[0] = 79;
   assert.deepEqual(codes(page), ["overlap"]);
 });
+test("overlap is judged by outlines where both regions have them, so a region wrapping around its neighbor is not flagged", () => {
+  // Footnotes on one printed line, the last running on to a second line: its box covers the others, its outline does not.
+  const one = { ...region("r1", "paragraph", 1), box: [0, 0, 100, 20], polygons: [[[0, 0], [100, 0], [100, 20], [0, 20]]] };
+  const wrapped = { ...region("r2", "paragraph", 2), box: [0, 0, 300, 40],
+    polygons: [[[120, 0], [300, 0], [300, 40], [0, 40], [0, 22], [120, 22]]] };
+  assert.deepEqual(codes(doc([one, wrapped])), []);
+  assert.ok(regionOverlap(one, wrapped) < 0.01);
+  const covering = { ...wrapped, polygons: [[[0, 0], [300, 0], [300, 40], [0, 40]]] };
+  assert.deepEqual(codes(doc([one, covering])), ["overlap"]);
+  assert.ok(regionOverlap(one, covering) > 0.95);
+  assert.deepEqual(codes(doc([{ ...one, polygons: [] }, wrapped])), ["overlap"], "without both outlines the boxes decide");
+});
 test("Regions exposes schema errors and provisional or geometry failures", () => {
   const page = doc(); page.source.geometry_error = "Failed outline calculation";
   page.source.provisional_problems = ["A type has no flow"];
   assert.deepEqual(codes(page, { errors: ["Invalid page"] }), ["provisional", "geometry", "invalid"]);
 });
 test("continuation flags compare each flow with both neighbors and tolerate missing documents", () => {
-  const current = doc(), previous = doc(), next = doc();
+  const provisional = page => { page.source.layers = { units: { state: "provisional" } }; return page; };
+  const current = provisional(doc()), previous = provisional(doc()), next = provisional(doc());
   current.page.regions[0].source.continues_from_earlier = true;
   current.page.regions[0].source.continues_later = true;
   assert.deepEqual(codes(current, { previous, next }), ["continuation", "continuation"]);
@@ -56,15 +69,28 @@ test("continuation flags compare each flow with both neighbors and tolerate miss
   next.page.regions[0].source.continues_from_earlier = true;
   assert.deepEqual(codes(current, { previous, next }), []);
   assert.deepEqual(codes(current), []);
-  assert.deepEqual(codes(current, { next: doc([region("n1", "note")]) }), ["continuation"]);
+  assert.deepEqual(codes(current, { next: provisional(doc([region("n1", "note")])) }), ["continuation"]);
 });
-test("layout signatures collapse repeated types, respect order and count rare layouts", () => {
-  const page = doc([region("r3", "paragraph", 3), region("r1", "heading", 1), region("r2", "paragraph", 2)]);
-  assert.equal(layoutSignature(page, types), "heading → paragraph");
-  assert.equal(layoutCounts([page, page, null], types).get("heading → paragraph"), 2);
-  assert.deepEqual(codes(doc(), { frequency: 2 }), ["rare-layout"]);
-  assert.deepEqual(codes(doc(), { frequency: 3 }), []);
+test("once both pages' units are settled, Read checks the page break and Regions does not", () => {
+  const settled = page => { page.source.layers = { units: { state: "model" } }; return page; };
+  const current = settled(doc()), next = settled(doc([region("n1", "note")]));
+  current.page.regions[0].source.continues_later = true;
+  assert.deepEqual(codes(current, { next }), []);
+  next.source.layers.units.state = "provisional";
+  assert.deepEqual(codes(current, { next }), ["continuation"], "a provisional neighbor still depends on the regions' flags");
+  delete current.source.layers; delete next.source.layers;
+  assert.deepEqual(codes(current, { next }), [], "a legacy page's units are complete");
+});
+test("a layout is the kinds of content on a page, not their counts, order or furniture, and rarity is not a flag", () => {
+  const page = doc([region("r3", "paragraph", 3), region("r1", "heading", 1), region("r2", "paragraph", 2), region("r4", "footer", null)]);
+  assert.equal(layoutSignature(page, types), "heading · paragraph");
+  const alternating = doc([region("r1", "paragraph", 1), region("r2", "heading", 2), region("r3", "paragraph", 3), region("r4", "heading", 4)]);
+  assert.equal(layoutSignature(alternating, types), "heading · paragraph", "the same kinds in another order and number");
+  assert.equal(layoutCounts([page, alternating, null], types).get("heading · paragraph"), 2);
+  assert.equal(layoutSignature(doc([region("r1", "footer", null)]), types), "Page furniture only");
   assert.equal(layoutSignature(doc([]), types), "Blank page");
+  assert.equal(RARE_LAYOUT, 3);
+  assert.deepEqual(codes(doc(), { frequency: 1 }), []);
 });
 test("Text flags missing text, uncertainty, line mismatches and an earlier type revision", () => {
   const page = doc(); page.source.layers = { text: { state: "model", types_revision: 1 } };

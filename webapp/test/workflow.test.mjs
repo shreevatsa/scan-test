@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pageStages, availability, workflowRoute, workflowAddress, eligible, readingGaps, readingDocuments, movePage } from "../js/workflow.js";
+import { pageStages, availability, workflowRoute, workflowAddress, eligible, readingGaps, readingDocuments, movePage, reviewPageStates, stageFlags, currentStage } from "../js/workflow.js";
 import { accept, layerState } from "../js/layers.js";
 import { runBatch } from "../js/pipeline/batch.js";
 import { CredentialChecks } from "../js/key-check.js";
@@ -215,4 +215,27 @@ test("acceptance and sending back persist in edits, folder stages and a book PDF
     assert.equal(layerState(await folder.current("p1"), "regions").accepted, true);
     await assert.rejects(movePage(folder, "p1", "text", true, () => [["Invalid page"], []]), /Invalid page/);
   } finally { Object.assign(idb, originals); }
+});
+
+test("Pages shows each page's flags at the stage it waits at, and rare layouts are a filter, not a flag", () => {
+  const types = { types: { paragraph: { region: "paragraph", flow: "main" }, heading: { region: "heading", flow: "main" } } };
+  const uncertain = id => {
+    const doc = page(id);
+    doc.page.regions[0].source = { uncertain: true, transcription: { uncertain: true } };
+    return doc;
+  };
+  const docs = { p1: uncertain("p1"), p2: accept(uncertain("p2"), "regions"), p3: accept(accept(uncertain("p3"), "regions"), "text") };
+  docs.p3.page.regions[0].type = "heading";
+  const pages = ["p1", "p2", "p3"].map(id => ({ id }));
+  const states = new Map(pages.map(({ id }) => [id, { ...pageStages(docs[id], types), runErrors: {} }]));
+  reviewPageStates(pages, states, types);
+  assert.deepEqual(["p1", "p2", "p3"].map(id => currentStage(states.get(id))), ["regions", "text", "read"]);
+  assert.match(stageFlags(states.get("p1"), "pages")[0], /uncertain type or boundary/);
+  assert.match(stageFlags(states.get("p2"), "pages")[0], /uncertain transcription/);
+  assert.match(stageFlags(states.get("p3"), "pages")[0], /uncertain completion/);
+  assert.match(stageFlags(states.get("p3"), "regions")[0], /uncertain type or boundary/, "a stage still lists its own flags");
+  assert.deepEqual(["p1", "p2", "p3"].map(id => states.get(id).rareLayout), [true, true, true]);
+  assert.equal(states.get("p1").layout, "paragraph");
+  assert.equal(states.get("p1").layoutFrequency, 2);
+  assert.ok(["p1", "p2", "p3"].every(id => !states.get(id).regionFlags.some(flag => flag.code === "rare-layout")));
 });

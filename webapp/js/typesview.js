@@ -5,7 +5,7 @@
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261111-region-types-2";
+import { prepare } from "./reader.js?v=20261112-quiet-1";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261111-type-overview-4";
 import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261111-region-types-2";
@@ -22,7 +22,7 @@ export async function renderTypeOverview(el, app) {
   let loaded = false;
   const load = async () => {
     app.typeOverview.open = section.open;
-    if (!section.open || loaded || app.book !== book || app.routeToken !== token) return;
+    if (!section.open || !section.isConnected || loaded || app.book !== book || app.routeToken !== token) return;
     loaded = true;
     try {
       await renderTypeDiscovery(discovery, app, { selected: [...(app.regionOverview?.selected || [])], onBusy: value => {
@@ -46,7 +46,7 @@ export async function renderTypeOverview(el, app) {
   };
   schema.addEventListener("toggle", () => loadSchema().catch(error => app.toast(error.message, "bad")));
   el.replaceChildren(h("div", { class: "stage-overview type-overview" }, h("h1", {}, "Regions"),
-    ...(book.manifest.pdf || book.kind === "chaya" ? [section] : []), list, schema));
+    ...(book.writable && book.manifest.pdf ? [section] : []), list, schema));
   await renderTypeExamples(list, app, reviewPages);
   await loadSchema();
   await load();

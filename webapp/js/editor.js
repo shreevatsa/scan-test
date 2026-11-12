@@ -8,7 +8,7 @@ import { cp, cpLength, covered, removeKind, normalizeSpans } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261110-finders-4";
-import { orderedRegions, textFlags } from "./flags.js?v=20261110-finders-4";
+import { orderedRegions, textFlags } from "./flags.js?v=20261112-quiet-1";
 
 const END_CYCLE = { space: "hyphen", hyphen: "join", join: "line", line: "space" };
 const END_NAMES = { space: "a space", hyphen: "a hyphen to drop (the word goes on)", join: "nothing (the word goes on)", line: "a line break" };

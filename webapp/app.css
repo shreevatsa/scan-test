@@ -351,6 +351,11 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .regions-editor .region .fields { display: flex; flex-wrap: wrap; gap: 5px; }
 .regions-editor .region.sel { background: #edf3fd; }
 .region-grid-content { min-width: 0; }
+.process-section .actions, .process-section .fields { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.process-section .actions { margin: 10px 0; }
+.process-section input[type=number] { width: 6em; }
+.read-only-line { margin: 12px 0 16px; }
+.stage-review:not(:empty) { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 4px; }
 .region-coordinates { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
 .region-coordinates input { width: 5em; }
 .region-continuation { display: block; font-size: 12px; margin: 7px 0; }
