@@ -271,12 +271,11 @@ header .tabs button.on { border-color: var(--line); background: #fff; font-weigh
 header:not([data-view="page"]) .undo, header:not([data-view="page"]) .status { display: none; }
 header:not([data-view="page"]) .page-stage-links { display: none; }
 header .tabs:empty { display: none; }
-header[data-top="pages"] .tabs, header[data-top="regions"] .tabs, header[data-top="export"] .tabs { display: none; }
+header[data-top="pages"] .tabs, header[data-top="export"] .tabs { display: none; }
 main.page-empty { overflow: auto; }
 button:disabled { opacity: .45; cursor: default; }
 [hidden] { display: none !important; }
 main.grid, main.types { overflow: auto; }
-header[data-top="types"] .tabs { display: none; }
 .type-overview .typesview { max-width: none; padding: 12px 0 24px; }
 .type-overview label.stack { display: block; }
 .type-overview label.stack textarea { display: block; box-sizing: border-box; width: 100%; min-height: 5em; margin-top: 6px; }
@@ -382,6 +381,28 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 @media (max-width: 620px) { header { gap: 8px; } header .title { max-width: 70vw; } header .modes { display: flex; width: 100%; } header .tabs { flex-wrap: wrap; padding-left: 0; border-left: 0; } .stage-overview { padding: 16px 12px 40px; } .stage-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .stage-actions { padding: 10px; } }
 
 /* The type list view. */
+.type-browser { display: grid; grid-template-columns: 240px minmax(0, 1fr); align-items: start; gap: 28px; margin: 16px 0 24px; }
+.type-choices { display: flex; flex-direction: column; gap: 4px; position: sticky; top: 12px; max-height: calc(100dvh - 160px); overflow: auto; }
+.type-choices button { display: flex; align-items: center; gap: 8px; text-align: left; padding: 9px 10px; background: transparent; border-color: transparent; }
+.type-choices button.on { background: #eaf1fc; border-color: var(--accent); }
+.type-choices button > span:first-of-type { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.type-choices i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.type-choices .meta { white-space: nowrap; }
+.type-detail { min-width: 0; }
+.type-detail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.type-detail h2 { margin: 0; font-size: 22px; overflow-wrap: anywhere; }
+.type-detail .actions, .example-pager { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.type-rules { margin: 8px 0; }
+.type-examples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 20px 16px; }
+.type-examples figure { margin: 0; min-width: 0; }
+.type-example-open { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 70px; padding: 9px; background: #fff; }
+.type-example-crop { position: relative; }
+.type-example-crop svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.type-example-crop path { fill: none; stroke-width: 2; stroke-opacity: .65; vector-effect: non-scaling-stroke; }
+.type-examples figcaption { margin-top: 5px; font-size: 13px; }
+.example-pager { margin: 20px 0 0; font-size: 13px; }
+@media (max-width: 850px) { .type-browser { grid-template-columns: 190px minmax(0, 1fr); gap: 16px; } .type-examples { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .type-browser { display: block; } .type-choices { position: static; max-height: 200px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 10px; } }
 .typesview { max-width: 1100px; margin: 0 auto; padding: 12px 24px 60px; }
 .region-section .typesview, .type-list-dialog .typesview { max-width: none; padding: 0; }
 .typesview .tablewrap { overflow-x: auto; }

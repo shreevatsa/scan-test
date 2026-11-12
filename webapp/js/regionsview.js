@@ -7,7 +7,7 @@ import { REGION_CLASSES } from "./book-types.js?v=20261110-finders-4";
 import { typeSetup } from "./type-setup.js?v=20261111-type-overview-4";
 import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
 import { sha256hex } from "./chayapdf.js";
-import { reviewTypeChange } from "./type-operations.js?v=20261111-type-overview-4";
+import { reviewTypeChange, editTypeDialog } from "./type-operations.js?v=20261111-type-overview-4";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -100,7 +100,8 @@ export function regionTypesPanel(app, editTypes) {
     legend.replaceChildren(...[...pageCounts].map(([name, count]) => h("div", { class: "region-type-row", title: app.tl.types[name]?.description,
       onpointerenter: () => app.doc.page.regions.filter(region => region.type === name).forEach(region => app.hoverRegion(region.id, true)),
       onpointerleave: () => app.doc.page.regions.filter(region => region.type === name).forEach(region => app.hoverRegion(region.id, false)),
-    }, h("i", { style: `background:${app.colors[name] || "#888"}` }), h("span", {}, name),
+    }, h("i", { style: `background:${app.colors[name] || "#888"}` }),
+      h("button", { class: "link", onclick: () => app.setRegionView("types", name), "aria-label": `Review examples of ${name}` }, name),
       shortcuts.indexOf(name) >= 0 && shortcuts.indexOf(name) < 9 ? h("kbd", { title: `Type shortcut ${shortcuts.indexOf(name) + 1}` }, shortcuts.indexOf(name) + 1) : null,
       h("span", { class: "meta", "aria-label": `${count} ${count === 1 ? "region" : "regions"}` }, count))));
     if (!pageCounts.size) legend.append(h("p", { class: "hint" }, "Draw or find regions to see their types here."));
@@ -189,11 +190,14 @@ export function renderRegionInspector(el, app) {
   const box = region.box || ops.boxesOf({ page: { regions: [region] } })[0];
   const coords = box.map((value, index) => h("input", { type: "number", required: true, min: 0,
     max: index % 2 ? doc.page.height : doc.page.width, value, "aria-label": ["Left", "Top", "Right", "Bottom"][index] }));
-  el.append(h("h3", {}, `Region ${region.id}`), regionTypeSelect(app, region.type, type => app.retypeRegion(region.id, type)),
+  el.append(...[h("h3", {}, `Region ${region.id}`), regionTypeSelect(app, region.type, type => app.retypeRegion(region.id, type)),
+    app.tl.types[region.type]?.description ? h("p", { class: "desc" }, app.tl.types[region.type].description) : null,
+    h("div", { class: "actions" }, h("button", { onclick: () => app.setRegionView("types", region.type) }, "Examples of this type"),
+      app.book.writable ? h("button", { onclick: () => editTypeDialog(app, region.type) }, "Edit type…") : null),
     h("div", { class: "region-coordinates" }, ...coords), h("button", { onclick: () => {
       if (!coords.every(input => input.reportValidity())) return;
       if (app.edit(next => ops.setBox(next, region.id, coords.map(input => Number(input.value))))) app.recompute();
-    } }, "Set box"));
+    } }, "Set box")].filter(Boolean));
   for (const [flag, label] of [["continues_from_earlier", "Continued from the previous page"], ["continues_later", "Continues on the next page"]])
     el.append(h("label", { class: "region-continuation" }, h("input", { type: "checkbox", checked: !!region.source?.[flag], onchange: event => app.edit(next => {
       const target = ops.regionById(next, region.id); target.source = { ...target.source, [flag]: event.target.checked };

@@ -4,16 +4,18 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
-import { h } from "./render.js";
-import { prepare } from "./reader.js?v=20261111-type-overview-4";
+import { h, cropInto } from "./render.js";
+import { prepare } from "./reader.js?v=20261111-region-types-2";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261111-type-overview-4";
-import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261111-type-overview-4";
+import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261111-region-types-2";
 import { citedSamplePages } from "./type-revisions.js?v=20261110-finders-4";
+import { typeExampleIndex } from "./type-examples.js?v=20261111-region-types-2";
+import { regionPath } from "./pageimage.js?v=20261110-figure-region-2";
 
 export async function renderTypeOverview(el, app) {
   const book = app.book, token = app.routeToken;
-  const list = h("div"), discovery = h("div");
+  const list = h("div"), discovery = h("div"), fullList = h("div");
   app.typeOverview ||= {};
   const section = h("details", { class: "region-section", open: app.routeView === "proposal" || (app.typeOverview.open ?? !!book.types.source?.draft) },
     h("summary", {}, "Propose and compare unit types"), discovery);
@@ -29,15 +31,116 @@ export async function renderTypeOverview(el, app) {
     } catch (error) { discovery.replaceChildren(h("p", { class: "bad", role: "status" }, error.message)); loaded = false; }
   };
   section.addEventListener("toggle", load);
-  el.replaceChildren(h("div", { class: "stage-overview type-overview" }, h("h1", {}, "Unit types"),
-    h("p", { class: "hint" }, "Define the kinds of content in this book and how they fit together. Inspect the scans, compare proposals, then continue to Regions."),
-    ...(book.manifest.pdf || book.kind === "chaya" ? [section] : []), list,
-    h("button", { class: "primary", onclick: () => app.setMode("regions") }, "Continue to Regions")));
-  await renderTypes(list, app, { onReviewPages: ids => {
+  const reviewPages = ids => {
     app.pendingStageSelection = { stage: "regions", ids };
     app.setMode("regions");
-  } });
+  };
+  const schema = h("details", { class: "region-section", open: app.typeOverview.schema },
+    h("summary", {}, "Full schema and revision history"), fullList);
+  let schemaLoaded = false;
+  const loadSchema = async () => {
+    app.typeOverview.schema = schema.open;
+    if (!schema.open || schemaLoaded || app.routeToken !== token) return;
+    schemaLoaded = true;
+    await renderTypes(fullList, app, { onReviewPages: reviewPages });
+  };
+  schema.addEventListener("toggle", () => loadSchema().catch(error => app.toast(error.message, "bad")));
+  el.replaceChildren(h("div", { class: "stage-overview type-overview" }, h("h1", {}, "Regions"),
+    ...(book.manifest.pdf || book.kind === "chaya" ? [section] : []), list, schema));
+  await renderTypeExamples(list, app, reviewPages);
+  await loadSchema();
   await load();
+}
+
+async function renderTypeExamples(el, app, reviewPages) {
+  const book = app.book, types = app.tl, token = app.routeToken, state = app.typeOverview;
+  const docs = await book.all();
+  if (app.book !== book || app.routeToken !== token) return;
+  const index = typeExampleIndex(docs, types), names = Object.keys(types.types);
+  if (!names.length) {
+    el.replaceChildren(h("div", {}, h("p", {}, "Add a type to start assigning page regions."),
+      book.writable ? h("button", { onclick: () => newTypeDialog(app) }, "＋ Type") : null));
+    return;
+  }
+  if (!types.types[state.selected]) state.selected = names[0];
+  state.offsets ||= {};
+  const choices = h("nav", { class: "type-choices", "aria-label": "Unit types" });
+  const detail = h("section", { class: "type-detail", "aria-label": "Selected unit type" });
+  const cards = h("div", { class: "type-examples", "aria-label": "Region examples" });
+  const buttons = new Map(), loaded = new Map();
+  const active = () => app.book === book && app.routeToken === token;
+  const fit = () => {
+    for (const [button, { crop, url, example }] of loaded) cropInto(crop, url, example.page, example.box, Math.max(1, button.clientWidth - 20), 260);
+  };
+  const observer = new ResizeObserver(fit);
+  observer.observe(cards);
+  app.onLeaveGrid = () => observer.disconnect();
+  const draw = () => {
+    const name = state.selected, type = types.types[name], examples = index.get(name) || [];
+    const ids = [...new Set(examples.map(example => example.page.id))];
+    const size = 6, offset = Math.min(state.offsets[name] || 0, Math.max(0, Math.ceil(examples.length / size) - 1) * size);
+    state.offsets[name] = offset;
+    for (const [value, button] of buttons) {
+      button.classList.toggle("on", value === name);
+      button.setAttribute("aria-pressed", String(value === name));
+    }
+    const parents = Object.entries(types.types).filter(([, value]) => value.contains?.includes(name)).map(([parent]) => parent);
+    const jump = value => h("button", { class: "link", onclick: () => choose(value) }, value);
+    const previous = h("button", { disabled: !offset, onclick: () => { state.offsets[name] = offset - size; draw(); } }, "← Previous examples");
+    const next = h("button", { disabled: offset + size >= examples.length, onclick: () => { state.offsets[name] = offset + size; draw(); } }, "Next examples →");
+    detail.replaceChildren(...[h("div", { class: "type-detail-head" }, h("h2", {}, name),
+      book.writable ? h("button", { onclick: () => editTypeDialog(app, name) }, "Edit type…") : null),
+      type.description ? h("p", {}, type.description) : null,
+      h("p", { class: "meta" }, [type.region || "container", type.role === "furniture" ? "page furniture" : type.flow ? `${type.flow} flow` : "inside another unit", type.lang].filter(Boolean).join(" · ")),
+      parents.length ? h("p", { class: "type-rules" }, "May be inside ", ...parents.flatMap((value, i) => [i ? ", " : "", jump(value)])) : null,
+      type.contains?.length ? h("p", { class: "type-rules" }, "May contain ", ...type.contains.flatMap((value, i) => [i ? ", " : "", jump(value)])) : null,
+      h("div", { class: "actions" }, h("span", {}, `Saved assignments on ${ids.length} of ${docs.length} processed pages`),
+        ids.length ? h("button", { onclick: () => reviewPages(ids) }, "Show these pages") : null),
+      h("h3", {}, "Examples from the scans"),
+      examples.length ? h("p", { class: "hint" }, "Open an example to review its assignment on the full page.")
+        : h("p", { class: "hint" }, "This type has no saved region examples yet. Draw or find regions in By page to try it on the scans."), cards,
+      examples.length > size ? h("div", { class: "example-pager" }, previous, h("span", { role: "status" }, `${offset + 1}–${Math.min(offset + size, examples.length)} of ${examples.length} examples`), next) : null].filter(Boolean));
+    loaded.clear();
+    cards.replaceChildren();
+    for (const example of examples.slice(offset, offset + size)) {
+      const page = book.page(example.page.id), number = page.pdf_page || book.index[page.id] + 1;
+      const crop = h("div", { class: "type-example-crop" });
+      const button = h("button", { class: "type-example-open", "aria-label": `Open page ${number}, ${example.unit || example.regions[0].id}`, onclick: () => app.openPage(page.id, { region: example.regions[0].id }, "regions") }, crop);
+      const status = h("span", { class: "meta" }, "Preparing scan…");
+      cards.append(h("figure", {}, button, h("figcaption", {}, `PDF page ${number}${page.label ? ` · printed ${page.label}` : ""} · ${example.unit || example.regions[0].id}`,
+        h("span", { class: "meta" }, example.unit ? ` · ${example.regions.length} regions${example.provisional ? " · provisional grouping" : ""}` : "")), status));
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      const [x1, y1, x2, y2] = example.box;
+      svg.setAttribute("viewBox", `${x1} ${y1} ${x2 - x1} ${y2 - y1}`);
+      for (const region of example.regions) {
+        const path = document.createElementNS(svg.namespaceURI, "path");
+        path.setAttribute("d", regionPath(region, types.types[region.type]?.region));
+        path.setAttribute("stroke", app.colors[region.type] || "#888");
+        svg.append(path);
+      }
+      crop.append(svg);
+      book.imageUrl(page.id).then(url => {
+        if (!active() || !button.isConnected) return;
+        loaded.set(button, { crop, url, example }); fit(); status.remove();
+      }).catch(error => { if (active()) status.textContent = `Scan unavailable · ${error.message}`; });
+    }
+  };
+  const choose = name => {
+    if (!types.types[name]) return;
+    state.selected = name;
+    draw();
+  };
+  for (const name of names) {
+    const pages = new Set(index.get(name).map(example => example.page.id)).size;
+    const button = h("button", { onclick: () => choose(name), title: types.types[name].description || "" },
+      h("i", { style: `background:${app.colors[name] || "#888"}` }), h("span", {}, name), h("span", { class: "meta" }, `${pages} ${pages === 1 ? "page" : "pages"}`));
+    buttons.set(name, button); choices.append(button);
+  }
+  el.replaceChildren(h("div", { class: "stylebar" },
+    book.writable ? h("button", { onclick: () => newTypeDialog(app) }, "＋ Type") : null,
+    h("span", { class: "meta" }, `Revision ${typeRevision(types.source?.revision)}${types.source?.draft ? " · draft types" : ""}`)),
+    h("div", { class: "type-browser" }, choices, detail));
+  draw();
 }
 
 export async function renderTypes(el, app, { onAdded = () => app.route(), onReviewPages, onOpenPage = pid => app.openPage(pid, {}, "regions") } = {}) {

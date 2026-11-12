@@ -6,23 +6,23 @@ import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, del
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
 import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-cross-page-carbon-2";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261111-type-overview-4";
-import { renderStyle } from "./styleview.js?v=20261111-type-overview-4";
-import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261111-type-overview-4";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261111-region-types-2";
+import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
+import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261111-region-types-2";
 import { typeSetup } from "./type-setup.js?v=20261111-type-overview-4";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
 import { Maker } from "./pipeline/run.js?v=20261111-type-overview-4";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261111-type-overview-4";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261111-type-overview-4";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates } from "./workflow.js?v=20261111-region-types-2";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261111-region-types-2";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
 import { layoutSignature, layoutCounts, orderedRegions } from "./flags.js?v=20261110-finders-4";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261111-type-overview-4";
+import { renderPages } from "./pagesview.js?v=20261111-region-types-2";
 import { settings } from "./store.js?v=20261110-finders-4";
 import { renderReaders } from "./readersview.js?v=20261111-type-overview-4";
 import { renderStructures } from "./structuresview.js?v=20261111-type-overview-4";
@@ -309,6 +309,7 @@ class App {
     this.book = book;
     this.regionOverview = {};
     this.typeOverview = {};
+    this.regionPageViews = new Map();
     this.workflowScroll = new Map();
     this.lastTypeRevision = null;
     if (book.browser) history.replaceState(null, "", `${location.pathname}?local=${encodeURIComponent(book.where.name)}${location.hash}`);
@@ -367,6 +368,8 @@ class App {
     title.textContent = title.title = this.book.title;
     this.doc = null; this.pageBuilt = false; this.undoStack = []; this.redoStack = [];
     this.lastTypeRevision = plan;
+    const selectedType = this.typeOverview.selected;
+    if (selectedType && !this.tl.types[selectedType]) this.typeOverview.selected = this.tl.source?.aliases?.[selectedType];
     if (plan.types.source.revisions.at(-1).operations.some(operation => operation.kind === "replace")) {
       this.regionOverview.proposal = false;
       this.typeOverview.open = false;
@@ -455,8 +458,10 @@ class App {
         history.replaceState(null, "", location.pathname); this.library();
       } }, "⌂"),
       h("span", { class: "title", title: book.title }, book.title),
-      h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "types", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode === "types" ? "Unit types" : mode[0].toUpperCase() + mode.slice(1)))),
+      h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode[0].toUpperCase() + mode.slice(1)))),
       h("nav", { class: "tabs", "aria-label": "Stage views" },
+        h("button", { class: "tab", dataset: { stage: "regions", view: "pages" }, onclick: () => this.setRegionView("pages") }, "By page"),
+        h("button", { class: "tab", dataset: { stage: "regions", view: "types" }, onclick: () => this.setRegionView("types") }, "By type"),
         tabBtn("text", "", "Pages"), tabBtn("text", "compare", "Compare models"),
         tabBtn("read", "", "Read"), tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
       h("span", { class: "nav" }, h("button", { title: "previous page (Alt ←)", onclick: () => this.step(-1) }, "←"), pageSel, h("button", { title: "next page (Alt →)", onclick: () => this.step(1) }, "→")),
@@ -477,6 +482,12 @@ class App {
     if (this.workflowBusy || this.outlineBusy || this.maker?.processing) { history.replaceState(null, "", this.lastWorkflowUrl); return this.toast("Wait for the active operation before switching views."); }
     this.workflowScroll ||= new Map();
     if (this.stage) this.workflowScroll.set(`${this.stage}/${this.mode}`, this.main.scrollTop);
+    if (this.stage === "regions" && this.mode === "page" && this.pageBuilt && this.doc) {
+      const panes = [this.pageView.el, this.textPanel.el, this.main.querySelector(".lower"), this.regionTypePanel.element];
+      this.regionPageViews.set(this.pid, { selection: structuredClone(this.selection), fit: this.pageView.fit, zoom: this.pageView.zoom,
+        scroll: panes.map(pane => [pane.scrollLeft, pane.scrollTop]) });
+      this.regionOverview.pageAddress = workflowAddress("regions", this.pid, this.selection);
+    }
     const token = this.routeToken = (this.routeToken || 0) + 1;
     await this.flush();
     if (this.dirty) { history.replaceState(null, "", this.lastWorkflowUrl); return; }
@@ -493,13 +504,28 @@ class App {
     this.header.dataset.top = stage;
     this.header.dataset.view = mode;
     this.header.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === stage));
-    this.header.querySelectorAll(".tab").forEach(b => { b.hidden = b.dataset.stage !== stage; b.classList.toggle("on", b.dataset.view === (route.view || "")); });
+    this.header.querySelectorAll(".tab").forEach(b => {
+      b.hidden = b.dataset.stage !== stage;
+      const view = stage === "regions" ? mode === "types" ? "types" : "pages" : route.view || "";
+      b.classList.toggle("on", b.dataset.view === view);
+      b.setAttribute("aria-pressed", String(b.classList.contains("on")));
+    });
     this.header.querySelectorAll(".page-stage-links [data-stage]").forEach(button => { button.disabled = !route.pid || !eligible(button.dataset.stage, this.pageStates.get(route.pid)); });
     for (const option of this.pageSel.options) option.hidden = !eligible(stage, this.pageStates.get(option.value));
     if (this.onLeaveReader && mode !== "read") { this.onLeaveReader(); this.onLeaveReader = null; }
     if (mode === "page") {
       const sel = route.region ? { region: route.region } : route.unit ? { unit: route.unit } : null;
       await this.showPage(route.pid, sel);
+      if (token !== this.routeToken) return;
+      const saved = stage === "regions" && this.regionPageViews.get(route.pid);
+      if (saved && this.pageBuilt && (!sel || ops.canonical(sel) === ops.canonical(saved.selection))) {
+        this.select(saved.selection, { keepFocus: true });
+        this.pageView.setZoom(saved.zoom);
+        this.pageView.fit = saved.fit;
+        if (saved.fit === "height") this.pageView.fitHeight();
+        const panes = [this.pageView.el, this.textPanel.el, this.main.querySelector(".lower"), this.regionTypePanel.element];
+        panes.forEach((pane, index) => { [pane.scrollLeft, pane.scrollTop] = saved.scroll[index]; });
+      }
     } else {
       this.pageBuilt = false;
       this.main.className = mode;
@@ -512,12 +538,21 @@ class App {
       if (mode === "readers") renderReaders(this.main, this).catch(error => this.toast(error.message, "bad"));
       if (mode === "structures") renderStructures(this.main, this).catch(error => this.toast(error.message, "bad"));
     }
+    if (stage === "regions" && mode === "grid") this.regionOverview.pageAddress = workflowAddress("regions");
     if (mode !== "page" && token === this.routeToken) this.main.scrollTop = this.workflowScroll.get(`${stage}/${mode}`) || 0;
     if (route.locked) this.toast("Move pages on from the previous stage to open this tab.");
   }
 
   setMode(mode) {
     location.hash = workflowAddress(mode);
+  }
+
+  setRegionView(view, type) {
+    if (view === "types") {
+      const regionType = this.stage === "regions" && this.mode === "page" && this.doc?.page.regions.find(region => region.id === this.selection.region)?.type;
+      if (type || regionType) this.typeOverview.selected = type || regionType;
+      this.setMode("types");
+    } else location.hash = this.regionOverview.pageAddress || workflowAddress("regions");
   }
 
   openPage(pid, sel = {}, stage = ["regions", "text", "read"].includes(this.stage) ? this.stage : "regions") {
@@ -536,6 +571,7 @@ class App {
   // ---------------------------------------------------------------- page mode
 
   async showPage(pid, sel) {
+    const token = this.routeToken;
     const focusChanged = this.editorStage !== this.stage;
     if (focusChanged) this.pageBuilt = false;
     const changed = this.pid !== pid || !this.doc || focusChanged;
@@ -543,6 +579,7 @@ class App {
       await this.flush();
       this.pid = pid;
       const model = await this.book.model(pid);
+      if (token !== this.routeToken) return;
       if (!model) {
         this.pid = pid; this.doc = null; this.pageBuilt = false;
         this.main.className = "page-empty";
@@ -555,6 +592,7 @@ class App {
       }
       const saved = this.book.edits.get(pid);
       const draft = await this.book.draft(pid).catch(() => null);
+      if (token !== this.routeToken) return;
       this.modelDoc = model;
       this.savedDoc = saved || model;
       this.doc = ops.clone(draft ? draft.doc : this.savedDoc);
@@ -565,17 +603,19 @@ class App {
     }
     if (!this.pageBuilt) {
       this.editorStage = this.stage;
-      this.buildPageMode();
+      await this.buildPageMode();
+      if (token !== this.routeToken) return;
       this.pageBuilt = true;
     } else if (changed) {
       await this.refresh();
     }
+    if (token !== this.routeToken) return;
     if (this.dirty && this.check(this.doc)[0].length) this.toast("This page has changes that do not pass the checks yet; they are shown.", "warn");
     if (sel) this.select(sel);
     this.pageSel.value = pid;
   }
 
-  buildPageMode() {
+  async buildPageMode() {
     this.textPanel?.destroy?.();
     this.pageView?.destroy();
     this.main.className = "page";
@@ -619,7 +659,7 @@ class App {
     });
     if (fit === "height") this.pageView.fit = "height";
     this.textPanel = this.stage === "regions" ? new RegionsPanel(textPane, this) : new TextPanel(textPane, this);
-    this.refresh();
+    await this.refresh();
   }
 
   async refresh() {

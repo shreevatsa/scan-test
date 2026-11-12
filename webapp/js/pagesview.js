@@ -1,6 +1,6 @@
 import { suggestionButton } from "./review-view.js?v=20261111-cross-page-carbon-2";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261111-type-overview-4";
+import { eligible, STAGE_LAYER, movePage, stageFlags } from "./workflow.js?v=20261111-region-types-2";
 import { regionBoxes } from "./pageimage.js?v=20261110-figure-region-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
 import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
@@ -35,6 +35,11 @@ export async function renderPages(el, app) {
     h("option", { value }, { all: "All states", pending: "Pending", model: "Ready to review", edited: "Edited", provisional: "Provisional", accepted: "Moved on" }[value])));
   const filter = h("select", { "aria-label": "Page flags" }, ...[["all", "All pages"], ["flagged", "Flagged"], ["earlier", "Earlier type revision"], ["suggestion", "Has a suggestion"]].map(([value, label]) => h("option", { value }, label)));
   const grouping = h("select", { "aria-label": "Group pages by layout" }, h("option", { value: "order" }, "Page order"), h("option", { value: "layout" }, "Layout · rarest first"));
+  if (overview?.filters) {
+    stateFilter.value = overview.filters.state;
+    filter.value = overview.filters.flags;
+    grouping.value = overview.filters.grouping;
+  }
   const flagsFor = pid => stageFlags(app.pageStates.get(pid), stage);
   const summary = h("p", { class: "stage-selection", role: "status" });
   const message = h("p", { role: "status" });
@@ -66,6 +71,7 @@ export async function renderPages(el, app) {
     if (backButton) backButton.disabled = busy || !ids.some(pid => app.pageStates.get(pid).layers[stage === "text" ? "regions" : "text"]?.accepted);
   };
   const applyFilters = () => {
+    if (overview) overview.filters = { state: stateFilter.value, flags: filter.value, grouping: grouping.value };
     visible = [];
     let removed = false;
     const sorted = [...rows].sort(([a], [b]) => grouping.value === "layout"
@@ -194,15 +200,14 @@ export async function renderPages(el, app) {
     finderSection = fold("finder", "Find regions", view === "compare" || overview.finder, finderSummary, finderControls, comparison);
     content.insertBefore(actions, message);
     const pages = fold("pages", "Page regions", overview.pages ?? true, h("span", { class: "meta" }, `${book.pages.length} pages`), content);
-    sections = [h("p", { class: "hint" }, `${Object.keys(book.types.types).length} unit ${Object.keys(book.types.types).length === 1 ? "type" : "types"} · `,
-      h("button", { class: "link", onclick: () => app.setMode("types") }, "Review unit types")), finderSection, pages];
+    sections = [finderSection, pages];
     setBusy = (area, value) => {
       app.workflowBusy = app.header.inert = value;
       for (const part of [finderControls, comparisonContent, content]) if (part !== area) part.inert = value;
     };
   }
   const container = h("div", { class: "stage-overview" }, heading,
-    h("p", { class: "hint" }, stage === "pages" ? "Browse the scans and see each page’s progress. Review Unit types, then work through Regions, Text and Read."
+    h("p", { class: "hint" }, stage === "pages" ? "Browse the scans and see each page’s progress. In Regions, review the types and page assignments, then continue through Text and Read."
       : stage === "regions" ? "Find and review the page regions. Move reviewed pages on to Text together."
         : stage === "text" ? "Transcribe the pages moved on from Regions. Review the text beside the scans, then move pages on to Read."
           : "Complete units and links using the accepted transcription. Open pages to review their structure."),
