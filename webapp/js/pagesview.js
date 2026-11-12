@@ -1,6 +1,6 @@
 import { suggestionButton } from "./review-view.js?v=20261112-library-2";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent } from "./workflow.js?v=20261112-library-2";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261112-library-2";
 import { RARE_LAYOUT } from "./flags.js?v=20261112-library-2";
 import { regionBoxes } from "./pageimage.js?v=20261110-figure-region-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
@@ -185,7 +185,11 @@ export async function renderPages(el, app) {
   const stageReview = h("div", { class: "actions stage-review" });
   const heading = h("h1", {}, TITLES[stage]);
   app.regionTypePanel = null;
-  const content = h("div", { class: "region-grid-content" }, toolbar, stageReview, summary, message, empty, grid, preview);
+  // Pages is browsing only: the way on is Regions, said here as well as by the tab at the top.
+  const nextStep = stage === "pages" ? h("div", { class: "next-step" },
+    h("button", { class: "primary", onclick: () => { location.hash = workflowAddress("regions"); } }, "Continue to Regions →"),
+    h("span", { class: "meta" }, "Find each page’s regions and choose the book’s unit types.")) : null;
+  const content = h("div", { class: "region-grid-content" }, toolbar, stageReview, summary, message, empty, grid, nextStep, preview);
   // Model choice, credentials and run controls are one section, open at first while pages wait for this stage's
   // processing. A read-only book has none of them, only the way to an editable copy.
   const processing = stage !== "pages" && book.writable;
