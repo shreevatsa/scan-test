@@ -320,7 +320,6 @@ export class Book {
         if (pid in book.index) book.edits.set(pid, JSON.parse(await (await fh.getFile()).text()));
       }
     } catch (e) { console.warn("edits/ could not be read", e); }
-    if (!browser) await idb.put("handles", book.key, { handle, title: manifest.title, opened: Date.now() });
     return book;
   }
 
@@ -870,14 +869,6 @@ export class Book {
     return n;
   }
 }
-
-export async function recentFolders() {
-  const out = [];
-  for (const key of await idb.keys("handles")) out.push({ key, ...(await idb.get("handles", key)) });
-  return out.sort((a, b) => b.opened - a.opened);
-}
-
-export const forgetFolder = key => idb.del("handles", key);
 
 // ---------------------------------------------------------------- books in this browser
 

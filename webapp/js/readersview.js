@@ -9,7 +9,7 @@ import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
 import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261111-cross-page-carbon-2";
 import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261111-type-overview-4";
-import { settings } from "./store.js?v=20261112-durability-1";
+import { settings } from "./store.js?v=20261112-no-folders-1";
 import { runProgress } from "./run-progress.js";
 import { readingFits } from "./pipeline/partial-reading.js?v=20261110-partial-3";
 import { sha256hex } from "./chayapdf.js";

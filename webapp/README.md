@@ -165,7 +165,6 @@ Then, in the library:
 - **Books in this browser:** open one, download its `.chaya.pdf`, or delete it. Each row says when its copy on disk was written, or that it has none. Below the list the browser's answer on persistent storage and the space used are shown. A folder in the browser's storage without a readable `book.json` is listed with "restore…" and "delete…".
 - **Open a PDF by URL** (`?book=<url>`): a book's PDF on a server opens read only, such as `http://127.0.0.1:8765/webapp/?book=../outputs/books/kale-1913.chaya.pdf`. Corrections are kept in the browser (IndexedDB), and can be exported and imported, or saved with the book as a `.chaya.pdf`. A plain PDF starts a new book. Book folders are not opened by URL; a `.chaya.pdf` publishes a book.
 - A plain PDF can also supply `&proposal=<url>` to preload a saved unit-type proposal. Its source PDF hash, type rules, page evidence and call metadata are checked before review. Reviewing this saved result and creating the book require no API key. The user must approve the types. Saved call records and optional transcription/schema model choices are copied into the created book. The proposal review's **Saved proposal JSON** section provides the transferable package. Locally edited proposals take priority when reopening the same PDF.
-- **Book folders (the repository's tools):** in Chrome or Edge, a folder on disk can be opened and corrected in place.
 
 Keeping books in the browser, and the hashing that checks a `.chaya.pdf`'s original, need a secure context: `https`, or `localhost`. Served over plain `http` to another name (such as a Tailscale address), the app opens a `.chaya.pdf` read only, and says so in the library.
 
@@ -177,7 +176,7 @@ The app is static, so it can also be hosted anywhere (GitHub Pages and the like)
 
 ## Books
 
-A book is kept as a book folder. The PDF is the only input format (the user's decision, 2026-11-07): page images are to be made into a PDF first, for example with img2pdf.
+A book is a folder of files (in the browser's storage, or inside its `.chaya.pdf`; the app cannot open a folder from disk, only a `.chaya.pdf`, a PDF or a URL). The PDF is the only input format (the user's decision, 2026-11-07): page images are to be made into a PDF first, for example with img2pdf.
 
 ```
 book.json     {format: "book-folder", version: 1, book_id, title, types: "types.json", style: "style.json" (optional),
@@ -194,7 +193,6 @@ images/       page images: a cache of pages drawn from the PDF (or, in the repos
 
 **Where a book lives:**
 - **In the browser** (the usual place): the origin private file system, under `books/<name>/`, in any current browser. It is saved as you work. The address carries `?local=<name>`, so a reload reopens the book. The browser is asked for persistent storage (`navigator.storage.persist()`) when a book is made, imported or opened, and its answer is shown in the library and in Export. Storage can still be cleared, so a book worth keeping needs a copy on disk (below).
-- **On disk** (Chrome and Edge): a folder opened with the File System Access API, as the repository's tools make them.
 - **At a URL**, read only: a book's PDF.
 
 **The copy on disk** (`js/disk-copy.js`, Chrome and Edge): Export's "Keep a copy on disk…", or the same button in the book's header, asks once for a file with `showSaveFilePicker`. Its handle is kept in IndexedDB, and the book is written to it as a `.chaya.pdf` when a processing run or comparison finishes or stops, after pages are moved on or sent back, and at most every five minutes while there are changes. Leaving the book writes its last changes first. Export can write it now, choose another file or stop keeping it.
@@ -228,7 +226,7 @@ images/       page images: a cache of pages drawn from the PDF (or, in the repos
 | Kale, all 252 pages (method 052, run `book-002`) | `kale-1913-book-002` | `kale-1913.chaya.pdf`, 15.6 MB |
 | Telang, the 195 pages with text (methods 052 and 054) | `telang-dli-book-001` | `telang-dli.chaya.pdf`, 67 MB |
 
-  `kale-1913-formatting-test` and `telang-dli-formatting-test` hold the six pages of method 055's formatting test. A private book ("vachana", methods 056–062) is kept on the machine only, out of the repository.
+  The folders above and the private ones were checked against their `.chaya.pdf` on 2026-11-12 and hold exactly the same files; the `.chaya.pdf` is the book to open. `kale-1913-formatting-test`, `telang-dli-formatting-test` (method 055's formatting test) and `vachanamruta-059`, `-060`, `-061` (superseded by method 062) are older variants kept as folders only and are not openable in the app. A private book ("vachana", methods 056–062) is kept on the machine only, out of the repository.
 
 ## Code
 
@@ -243,7 +241,7 @@ images/       page images: a cache of pages drawn from the PDF (or, in the repos
 | `js/workflow.js`, `js/pagesview.js` | Stage availability, routing, transitions, page grids and previews |
 | `js/regionsview.js`, `js/book-types.js`, `js/flags.js` | Regions editing, atomic type additions and initial lists, stage review flags and layout grouping |
 | `js/key-check.js`, `js/pipeline/batch.js` | Credential tests and the shared stage processing loop |
-| `js/store.js` | Books: in the browser (origin private file system), on disk (File System Access API), at a URL, or from a `.chaya.pdf`; pages drawn from the PDF; saving as a `.chaya.pdf`; corrections, drafts, remembered folders and copy records in IndexedDB; unreadable-file checks and restoring |
+| `js/store.js` | Books: in the browser (origin private file system), at a URL, or from a `.chaya.pdf`; pages drawn from the PDF; saving as a `.chaya.pdf`; corrections, drafts and copy records in IndexedDB; unreadable-file checks and restoring |
 | `js/recipe.js` | The default recipe, each stage's one line and the cost estimate before a run |
 | `js/disk-copy.js` | The copy on disk: when to write it, permission, the header's label, the spending check and the storage report (the file writes injected, tested under Node) |
 | `js/chayapdf.js` | A book inside its PDF: writing and reading a `.chaya.pdf` (a small PDF parser for the catalog and cross-references; the original recovered and checked) |

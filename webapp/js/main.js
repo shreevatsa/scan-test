@@ -2,8 +2,8 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-durability-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-durability-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-no-folders-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-no-folders-1";
 import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
 import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
@@ -12,7 +12,7 @@ import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-c
 import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-quiet-1";
 import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
 import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-quiet-1";
-import { typeSetup } from "./type-setup.js?v=20261112-durability-1";
+import { typeSetup } from "./type-setup.js?v=20261112-no-folders-1";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
@@ -26,10 +26,10 @@ import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
 import { renderPages } from "./pagesview.js?v=20261112-recipe-2";
-import { settings } from "./store.js?v=20261112-durability-1";
-import { renderReaders } from "./readersview.js?v=20261112-durability-1";
-import { renderStructures } from "./structuresview.js?v=20261112-durability-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261112-durability-1";
+import { settings } from "./store.js?v=20261112-no-folders-1";
+import { renderReaders } from "./readersview.js?v=20261112-no-folders-1";
+import { renderStructures } from "./structuresview.js?v=20261112-no-folders-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-no-folders-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -87,7 +87,6 @@ class App {
     this.closeDiskCopy();
     this.root.className = "library";
     if (location.search) history.replaceState(null, "", location.pathname);
-    const recent = await recentFolders().catch(() => []);
     const mine = canKeepBooks() ? await browserBooks({ damaged: true }).catch(e => { console.warn(e); return []; }) : [];
     const copies = new Map(await Promise.all(mine.map(async b => [b.name, await copyRecords.get(`browser:${b.name}`) || {}])));
     const storage = canKeepBooks() ? await storagePersistence() : null;
@@ -132,19 +131,7 @@ class App {
         h("p", { class: storage?.persisted === false ? "warn" : "meta" }, storageText(storage || {})),
         h("p", { class: "meta" }, "Books are kept in this browser's own storage, which is lost if the browser clears this site's data. Give each book a copy on disk (in its header or Export), or download its .chaya.pdf.")) : null,
       h("div", { class: "byurl" }, h("h3", {}, "Open a PDF by URL (a book's PDF opens read only, with corrections kept in this browser; a plain PDF starts a new book)"), urlInput,
-        h("button", { onclick: () => { location.search = "?book=" + encodeURIComponent(urlInput.value.trim()); } }, "Open")),
-      h("details", {}, h("summary", {}, "Book folders (the repository's tools)"),
-        h("p", { html: "A book folder holds <code>book.json</code> (the list of pages), <code>source.pdf</code>, <code>types.json</code> (the book's unit types), " +
-          "<code>pages/</code> (one page document per page), <code>edits/</code> (your corrections) and, from the repository's tools, <code>images/</code>. " +
-          "<code>webapp/tools/make_book_folder.py</code> makes one from a transcription run, and <code>webapp/tools/make_chaya_pdf.mjs</code> turns one into a .chaya.pdf. " +
-          "In Chrome and Edge a folder on disk can be opened and corrected in place." }),
-        h("div", { class: "actions" }, h("button", { onclick: () => this.pickFolder() }, "Open a book folder…"),
-          "showDirectoryPicker" in window ? null : h("span", { class: "warn" }, " (this browser cannot open folders)")),
-        recent.length ? h("div", {}, h("h4", {}, "Recently opened folders"),
-          ...recent.map(r => h("div", { class: "row" },
-            h("button", { class: "link", onclick: () => this.reopen(r) }, r.title),
-            h("span", { class: "meta" }, ` ${r.handle.name} · ${new Date(r.opened).toLocaleString()} `),
-            h("button", { class: "mini", onclick: async () => { await forgetFolder(r.key); this.library(); } }, "forget")))) : null)));
+        h("button", { onclick: () => { location.search = "?book=" + encodeURIComponent(urlInput.value.trim()); } }, "Open"))));
   }
 
   // A book in this browser, opened only when the files it is known to have can be read: a book with a lost source PDF
@@ -494,20 +481,6 @@ class App {
       h("div", { class: "actions" }, makeButton, " ",
         h("button", { onclick: () => this.library() }, "Cancel")), progress));
     if (pdfGiven) usePdf(pdfGiven);
-  }
-
-  async pickFolder() {
-    try {
-      const handle = await window.showDirectoryPicker({ mode: "readwrite" });
-      await this.openBook(await Book.openFolder(handle));
-    } catch (e) { if (e.name !== "AbortError") this.library(`Could not open the folder: ${e.message}`); }
-  }
-
-  async reopen(r) {
-    try {
-      if ((await r.handle.requestPermission({ mode: "readwrite" })) !== "granted") return this.library("Permission to the folder was not given.");
-      await this.openBook(await Book.openFolder(r.handle));
-    } catch (e) { this.library(`Could not open the folder again: ${e.message}`); }
   }
 
   // ---------------------------------------------------------------- book
