@@ -2,8 +2,8 @@
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-no-folders-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-no-folders-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-library-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-library-1";
 import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
 import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
@@ -12,7 +12,7 @@ import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-c
 import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-quiet-1";
 import { renderStyle } from "./styleview.js?v=20261111-region-types-2";
 import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-quiet-1";
-import { typeSetup } from "./type-setup.js?v=20261112-no-folders-1";
+import { typeSetup } from "./type-setup.js?v=20261112-library-1";
 import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
@@ -26,10 +26,10 @@ import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
 import { renderPages } from "./pagesview.js?v=20261112-recipe-2";
-import { settings } from "./store.js?v=20261112-no-folders-1";
-import { renderReaders } from "./readersview.js?v=20261112-no-folders-1";
-import { renderStructures } from "./structuresview.js?v=20261112-no-folders-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261112-no-folders-1";
+import { settings } from "./store.js?v=20261112-library-1";
+import { renderReaders } from "./readersview.js?v=20261112-library-1";
+import { renderStructures } from "./structuresview.js?v=20261112-library-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261112-library-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -90,7 +90,8 @@ class App {
     const mine = canKeepBooks() ? await browserBooks({ damaged: true }).catch(e => { console.warn(e); return []; }) : [];
     const copies = new Map(await Promise.all(mine.map(async b => [b.name, await copyRecords.get(`browser:${b.name}`) || {}])));
     const storage = canKeepBooks() ? await storagePersistence() : null;
-    const urlInput = h("input", { placeholder: "URL of a book's PDF", size: 60 });
+    const openUrl = () => { const u = urlInput.value.trim(); if (u) location.search = "?book=" + encodeURIComponent(u); };
+    const urlInput = h("input", { placeholder: "URL of a PDF", size: 40, onkeydown: e => e.key === "Enter" && openUrl() });
     const pdfInput = h("input", { type: "file", accept: "application/pdf,.pdf", style: "display:none", onchange: e => e.target.files[0] && this.openPdfFile(e.target.files[0]) });
     const bookRow = b => {
       if (b.error) {
@@ -118,20 +119,18 @@ class App {
     };
     this.root.replaceChildren(h("div", { class: "lib" },
       h("h1", {}, "Books"),
-      h("p", {}, "Open a book's PDF to start: a scan or a digital PDF (page images can be made into one first, for example with img2pdf). ",
-        "Or open a .chaya.pdf, a book's PDF with the work on it inside, to go on with it. Books are kept in this browser as you work; ",
-        "download a book's .chaya.pdf to keep a copy, to move it to another computer or browser, or to share it."),
+      h("p", {}, "Open a scanned or digital PDF to start a book, or a .chaya.pdf (a PDF with its book inside) to go on with one."),
       message ? h("div", { class: "box warn" }, message) : null,
       canKeepBooks() ? null : h("div", { class: "box warn" }, "This page is not served over https (or from localhost), so the browser does not let it keep books: ",
         "a .chaya.pdf opens read only (corrections are kept in this browser), and new books cannot be made here."),
-      h("div", { class: "actions" }, pdfInput,
-        h("button", { class: "primary", onclick: () => pdfInput.click() }, "Open a PDF or a .chaya.pdf…")),
-      canKeepBooks() ? h("div", { class: "recent" }, h("h3", {}, "Books in this browser"),
-        mine.length ? mine.map(bookRow) : h("p", { class: "meta" }, "None yet."),
+      h("div", { class: "open" }, pdfInput,
+        h("button", { class: "primary", onclick: () => pdfInput.click() }, "Choose a PDF or .chaya.pdf…"),
+        h("span", { class: "meta" }, "or at a URL:"), urlInput, h("button", { onclick: openUrl }, "Open")),
+      h("p", { class: "meta" }, "A book's PDF at a URL opens read only, with corrections kept in this browser; a plain PDF starts a new book."),
+      canKeepBooks() && mine.length ? h("div", { class: "recent" }, h("h3", {}, "Books in this browser"),
+        mine.map(bookRow),
         h("p", { class: storage?.persisted === false ? "warn" : "meta" }, storageText(storage || {})),
-        h("p", { class: "meta" }, "Books are kept in this browser's own storage, which is lost if the browser clears this site's data. Give each book a copy on disk (in its header or Export), or download its .chaya.pdf.")) : null,
-      h("div", { class: "byurl" }, h("h3", {}, "Open a PDF by URL (a book's PDF opens read only, with corrections kept in this browser; a plain PDF starts a new book)"), urlInput,
-        h("button", { onclick: () => { location.search = "?book=" + encodeURIComponent(urlInput.value.trim()); } }, "Open"))));
+        h("p", { class: "meta" }, "Books are kept in this browser's own storage, which is lost if the browser clears this site's data. Give each book a copy on disk (in its header or Export), or download its .chaya.pdf.")) : null));
   }
 
   // A book in this browser, opened only when the files it is known to have can be read: a book with a lost source PDF

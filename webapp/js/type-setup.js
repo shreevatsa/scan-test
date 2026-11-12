@@ -1,7 +1,7 @@
 import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261111-type-overview-4";
 import { h } from "./render.js";
 import { checkTypes } from "./schema.js?v=20261110-reading-2";
-import { settings } from "./store.js?v=20261112-no-folders-1";
+import { settings } from "./store.js?v=20261112-library-1";
 import { money } from "./reader-controls.js?v=20261111-type-overview-4";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
 import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261111-type-overview-4";
