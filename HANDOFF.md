@@ -9,11 +9,12 @@ Turn a book's PDF into a digital book in which every unit (paragraph, verse, foo
 ## Where things stand
 
 - **The app works and is tested.** `webapp/` is plain HTML, CSS and JavaScript modules with no build step (about 13,000 lines in `webapp/js`). Tabs are Pages · Regions · Text · Read · Export, one per stage. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3).
-- **Tests:** `node --test webapp/test/*.test.mjs` (275 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11 pass).
+- **Tests:** `node --test webapp/test/*.test.mjs` (279 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (11 pass).
 - **Running:** `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/. A book opens read only with `?book=/outputs/books/kale-1913.chaya.pdf`. The Tailscale HTTPS address for the user's other devices is in PRIVATE.md.
 - **Books that exist** (`outputs/books/`, not in git): Kale 1913 (252 pages) and Telang, both made by the older one-pass pipeline (method 052), and the vachana book made from a digital PDF's text layer (methods 058 and 062, private).
 - **Books are kept on disk as well as in the browser** (task 1, done 2026-11-12): a book in the browser can keep a `.chaya.pdf` on disk that the app rewrites after runs and moves and at most every five minutes while there are changes; paid runs wait for a copy; a book with unreadable files is not opened as if empty. `webapp/README.md`, "The copy on disk", describes it. Checked in Chrome with the file picker simulated; the real picker and a real file changing on disk still need one manual check by the user.
 - **Screens are quiet for reading and reviewing** (task 2, done 2026-11-12): a read-only book shows no processing controls, only "Make an editable copy"; each stage grid has its controls in a "Process pages" section that starts open only while pages wait; layout rarity is a filter, not a flag, and Pages shows each page's flags at the stage it waits at. Flags on Kale are now 16 pages in Regions (6.3%), 32 in Text (12.7%), 8 in Read and in Pages (3.2%), down from 104 in Regions and 114 in Pages (NOTEBOOK, "Rare review flags on Kale"). `webapp/tools/flag_counts.mjs` recounts them.
+- **One default recipe** (task 3, done 2026-11-12): a new book starts with Terra regions (042 + 063), Argon low transcription and Argon high completion, saved in its `book.json` (`webapp/js/recipe.js`). Each stage's "Process pages" line names the model and its cost a page, with "Change" leading to the model list and that stage's comparison (no longer a header tab). Estimates use the book's own calls, else the measured figures below; other models without calls say they have no measured cost yet.
 - **No scanned book has gone through the staged workflow end to end.** This is the main gap. The user's 267-page private book was lost from browser storage on 2026-11-12 with about $3.86 of model work in it, and was started again; it now has 267 pages, the eleven draft types and nothing processed. A backup `.chaya.pdf` of that fresh state exists (PRIVATE.md says where).
 - **Least tested stage:** completion (units, line joins, note links), compared on two private pages only, with nobody having checked which model was right. Region finding is the best tested (0 / 0 / 0 on the nine reference pages) and the cheapest.
 - **Measured cost per page** on the private series: finding regions about $0.010, transcription $0.038 (Argon low), completion $0.032 (Argon high). About $21 for 267 pages.
@@ -21,14 +22,7 @@ Turn a book's PDF into a digital book in which every unit (paragraph, verse, foo
 
 ## What to do next, in order
 
-Each task is sized for one session. Finish, test and commit one before starting the next. Rules for all of them are under "Working rules". Tasks 1 (durable books) and 2 (quiet screens) are done.
-
-### Task 3. One default recipe; comparisons out of the way
-
-There are eight region finders, eleven transcription profiles and five completion profiles, each with comparison screens. Keep the code and the method records, and change what a new user meets:
-1. A new book starts with a recipe already chosen: Terra regions (042 + 063), Argon low transcription, Argon high completion. Each stage shows one line ("Regions with GPT-6.1 Terra · about $0.01 a page · Change").
-2. "Change" opens the model list and the comparison for that stage. The comparison views stay as they are, reachable only from there.
-3. The cost estimate before a run uses the measured per-page figures above until the book has its own samples, and no longer says "unavailable".
+Each task is sized for one session. Finish, test and commit one before starting the next. Rules for all of them are under "Working rules". Tasks 1 (durable books), 2 (quiet screens) and 3 (one default recipe) are done.
 
 ### Task 4. Take the 267-page book through every stage (with the user)
 

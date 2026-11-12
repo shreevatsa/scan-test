@@ -355,6 +355,11 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .process-section .actions { margin: 10px 0; }
 .process-section input[type=number] { width: 6em; }
 .read-only-line { margin: 12px 0 16px; }
+.process-section .recipe-line { margin: 12px 16px; font-weight: 600; }
+.process-section[open] > summary .meta { display: none; }
+.process-section .recipe-line .mini { font-weight: 400; margin-left: 6px; }
+.process-section .recipe-change { margin: 0 16px 12px; padding: 10px 12px; border-left: 3px solid var(--line); }
+.process-section .recipe-change > .region-disclosure { margin-top: 12px; }
 .stage-review:not(:empty) { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 4px; }
 .region-coordinates { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
 .region-coordinates input { width: 5em; }

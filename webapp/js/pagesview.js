@@ -11,7 +11,7 @@ import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261111-ty
 import { settings } from "./store.js?v=20261112-durability-1";
 import { runBatch } from "./pipeline/batch.js?v=20261110-partial-3";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261111-type-overview-4";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-recipe-2";
 import { renderFinders } from "./findersview.js?v=20261112-durability-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
@@ -51,8 +51,8 @@ export async function renderPages(el, app) {
     const state = app.pageStates.get(pid);
     return state.layers[layer] && (layer !== "units" || state.layers.units.state !== "provisional");
   };
-  let estimate = null, runButton, moveButton, backButton, checks, profile;
-  const processSummary = h("span", { class: "meta" });
+  let cost = pageCost(null), runButton, moveButton, backButton, checks, profile;
+  const processSummary = h("span", { class: "meta" }), recipeText = h("span");
   const include = h("input", { type: "checkbox", checked: pending?.reprocess, "aria-label": "Include pages already processed" });
   const fresh = h("input", { type: "checkbox", "aria-label": "Request fresh model results" });
   const estimateLabel = h("p", { class: "hint" });
@@ -67,8 +67,10 @@ export async function renderPages(el, app) {
       const ready = profile && checks?.status(profile)?.valid;
       const count = runnable().length;
       runButton.disabled = busy || !book.writable || !count || !ready;
-      processSummary.textContent = `${profile?.label || "Draw by hand"} · ${count} ${count === 1 ? "page" : "pages"} to process`;
-      estimateLabel.textContent = `${count} ${count === 1 ? "page" : "pages"} to process · Estimated new work ${estimate === null ? "unavailable until a completed sample" : money(estimate * count, 2)}. Cached results may reduce new spend.`;
+      processSummary.textContent = `${recipeLine(stage, profile, cost)} · ${count} ${count === 1 ? "page" : "pages"} to process`;
+      recipeText.textContent = recipeLine(stage, profile, cost);
+      recipeText.title = profile ? `Cost a page: ${costBasis(cost)}.` : "";
+      estimateLabel.textContent = runEstimate(count, cost);
     }
     if (moveButton) moveButton.disabled = busy || !ids.some(pid => layerReady(pid));
     if (backButton) backButton.disabled = busy || !ids.some(pid => app.pageStates.get(pid).layers[stage === "text" ? "regions" : "text"]?.accepted);
@@ -178,11 +180,22 @@ export async function renderPages(el, app) {
   // Model choice, credentials and run controls are one section, open at first while pages wait for this stage's
   // processing. A read-only book has none of them, only the way to an editable copy.
   const processing = stage !== "pages" && book.writable;
+  // The stage's one line names its model and cost a page; "Change" opens the model list and the comparison.
+  app.changeOpen ||= {};
+  const modelFields = h("div", { class: "fields" });
+  const changeArea = h("div", { class: "recipe-change", hidden: !(app.routeView === "compare" || app.changeOpen[stage]) }, modelFields);
+  const changeButton = h("button", { class: "mini", "aria-expanded": String(!changeArea.hidden), onclick: () => {
+    changeArea.hidden = !changeArea.hidden;
+    app.changeOpen[stage] = !changeArea.hidden;
+    changeButton.textContent = changeArea.hidden ? "Change" : "Close";
+    changeButton.setAttribute("aria-expanded", String(!changeArea.hidden));
+  } }, changeArea.hidden ? "Change" : "Close");
+  const recipeRow = h("p", { class: "recipe-line" }, recipeText, " ", changeButton);
   const runArea = h("div");
   app.processOpen ||= {};
   const waiting = [...rows.keys()].filter(pid => !layerReady(pid)).length;
   const processSection = processing ? h("details", { class: "region-section process-section",
-    open: app.routeView === "compare" || !!pending || (app.processOpen[stage] ?? waiting > 0) }, h("summary", {}, "Process pages", " ", processSummary), runArea) : null;
+    open: app.routeView === "compare" || !!pending || (app.processOpen[stage] ?? waiting > 0) }, h("summary", {}, "Process pages", " ", processSummary), recipeRow, changeArea, runArea) : null;
   processSection?.addEventListener("toggle", () => { if (active()) app.processOpen[stage] = processSection.open; });
   const readOnly = stage !== "pages" && !book.writable ? h("p", { class: "box read-only-line" }, "This book is read only here. ",
     h("button", { class: "primary", onclick: () => app.continueBook(stage) }, "Make an editable copy"), " in this browser to process pages and move them on.") : null;
@@ -203,10 +216,10 @@ export async function renderPages(el, app) {
     comparisonContent = h("div");
     comparison = h("details", { class: "region-disclosure", open: app.routeView === "compare" || overview.compare }, h("summary", {}, "Compare finders"), comparisonContent);
     comparison.addEventListener("toggle", () => { if (active()) overview.compare = comparison.open; });
-    processSection.append(comparison);
+    changeArea.append(comparison);
     setBusy = (area, value) => {
       app.workflowBusy = app.header.inert = value;
-      for (const part of [runArea, comparisonContent, content]) if (part !== area) part.inert = value;
+      for (const part of [recipeRow, modelFields, runArea, comparisonContent, content]) if (part !== area) part.inert = value;
     };
   }
   const container = h("div", { class: "stage-overview" }, heading,
@@ -259,11 +272,10 @@ export async function renderPages(el, app) {
       manualHint.hidden = !!profile;
       languageLabel.hidden = profile?.id !== "tesseract-regions";
     }
-    if (!profile) { keyPanel.replaceChildren(); refreshSummary(); return; }
+    if (!profile) { cost = pageCost(null); keyPanel.replaceChildren(); refreshSummary(); return; }
     keyPanel.replaceChildren(stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), refreshSummary));
     const ledger = await book.readWork("work/reader-lab/ledger.json");
-    const calls = (ledger?.calls || []).filter(call => call.stage === { regions: "regions", text: "reading", read: "structure" }[stage] && call.profile === profile.id && call.status === "completed" && !call.partial && Number.isFinite(call.cost_usd));
-    estimate = profile.provider === "local" ? 0 : calls.length ? calls.reduce((sum, call) => sum + call.cost_usd, 0) / calls.length : null;
+    cost = pageCost(profile, (ledger?.calls || []).filter(call => call.stage === { regions: "regions", text: "reading", read: "structure" }[stage]));
     refreshSummary();
   };
   const chooseFinder = async (id, language = languages.value) => {
@@ -348,11 +360,10 @@ export async function renderPages(el, app) {
       }
       message.textContent = `${count} ${count === 1 ? "page" : "pages"} ${forward ? "moved on" : "sent back"}${failed ? ` · ${failed} need correction first` : ""}.`;
       if (forward && stage === "text" && moved.length) {
-        const structurer = (await maker.options()).structurer;
+        const chosenStructurer = (await maker.options()).structurer, structurer = STRUCTURERS.find(item => item.id === chosenStructurer);
         const ledger = await book.readWork("work/reader-lab/ledger.json");
-        const calls = (ledger?.calls || []).filter(call => call.stage === "structure" && call.profile === structurer && Number.isFinite(call.cost_usd) && call.status === "completed");
-        const cost = calls.length ? money(calls.reduce((sum, call) => sum + call.cost_usd, 0) / calls.length * moved.length, 2) : "unavailable until a completed sample";
-        message.append(` Completion estimate ${cost}. `, h("button", { onclick: () => {
+        const completion = pageCost(structurer, (ledger?.calls || []).filter(call => call.stage === "structure"));
+        message.append(` Completion ${completion.usd === null ? `cost: ${costBasis(completion)}` : `estimate ${dollars(completion.usd * moved.length)}`}. `, h("button", { onclick: () => {
           app.pendingStageSelection = { stage: "read", ids: moved };
           app.setMode("read&view=pages");
         } }, `Review and complete these ${moved.length} pages`));
@@ -365,14 +376,18 @@ export async function renderPages(el, app) {
     h("label", {}, "Spend threshold $", threshold));
   runControls.append(processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status);
   if (overview) {
-    runArea.append(h("div", { class: "fields" }, h("label", {}, "Region finder ", select), languageLabel), manualHint, keyPanel, runControls);
+    modelFields.append(h("label", {}, "Region finder ", select), languageLabel);
+    runArea.append(manualHint, keyPanel, runControls);
     comparison.addEventListener("toggle", () => {
       keyPanel.hidden = comparison.open;
       if (!comparison.open && !app.workflowBusy) refreshModel().catch(error => { message.textContent = error.message; });
     });
     keyPanel.hidden = comparison.open;
-  } else runArea.append(h("div", { class: "fields" }, h("label", {}, "Model ", select),
-    h("button", { onclick: () => app.setMode(stage === "text" ? "readers" : "structures") }, "Compare models")), keyPanel, runControls);
+  } else {
+    modelFields.append(h("label", {}, "Model ", select),
+      h("button", { onclick: () => app.setMode(stage === "text" ? "readers" : "structures") }, stage === "text" ? "Compare transcription models" : "Compare completion models"));
+    runArea.append(keyPanel, runControls);
+  }
   stageReview.append(...[moveButton, backButton].filter(Boolean));
   include.onchange = refreshSummary;
   await refreshModel();

@@ -4,6 +4,8 @@
 import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261110-reading-2";
 import { Book, recentFolders, forgetFolder, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261112-durability-1";
 import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261112-durability-1";
+import { RECIPE } from "./recipe.js?v=20261112-recipe-2";
+import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
 import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261111-cross-page-carbon-2";
@@ -23,7 +25,7 @@ import { orderedRegions } from "./flags.js?v=20261112-quiet-1";
 import { assemble } from "./assemble.js?v=20261110-reading-2";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261110-finders-4";
-import { renderPages } from "./pagesview.js?v=20261112-quiet-1";
+import { renderPages } from "./pagesview.js?v=20261112-recipe-2";
 import { settings } from "./store.js?v=20261112-durability-1";
 import { renderReaders } from "./readersview.js?v=20261112-durability-1";
 import { renderStructures } from "./structuresview.js?v=20261112-durability-1";
@@ -467,6 +469,8 @@ class App {
         const dir = await newBrowserBookDir(id);
         const book = await Book.create(dir, { title: types.title, bookId: id, types, pages, browser: true,
           pdf: { file: pdfFile, sha256: pdfSha, pageCount: pdfDoc.numPages } });
+        // A new book starts with the recipe; a proposal's or an excerpt's model choices replace it.
+        if (!template) await book.saveReaderOptions(readerOptions(RECIPE, types));
         await setup.saveToBook(book);
         if (template) await book.saveReaderOptions(await template.getReaderOptions());
         progress.textContent = "Done.";
@@ -712,7 +716,8 @@ class App {
     this.header.dataset.view = mode;
     this.header.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === stage));
     this.header.querySelectorAll(".tab").forEach(b => {
-      b.hidden = b.dataset.stage !== stage || !this.book.writable && b.dataset.view === "compare";
+      // Comparisons are reached from a stage's "Change"; their tab shows only while one is open.
+      b.hidden = b.dataset.stage !== stage || b.dataset.view === "compare" && (route.view !== "compare" || !this.book.writable);
       const view = stage === "regions" ? mode === "types" ? "types" : "pages" : route.view || "";
       b.classList.toggle("on", b.dataset.view === view);
       b.setAttribute("aria-pressed", String(b.classList.contains("on")));
