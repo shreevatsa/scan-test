@@ -1,7 +1,7 @@
-import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261113-flags-4";
-import { layerView } from "./layers.js?v=20261113-flags-4";
-import { checkDocument } from "./schema.js?v=20261113-flags-4";
-import { assemble } from "./assemble.js?v=20261113-flags-4";
+import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261113-flags-5";
+import { layerView } from "./layers.js?v=20261113-flags-5";
+import { checkDocument } from "./schema.js?v=20261113-flags-5";
+import { assemble } from "./assemble.js?v=20261113-flags-5";
 
 export function editorFocus(stage) { return stage === "text" ? "text" : stage === "read" ? "units" : stage === "regions" ? "regions" : "all"; }
 

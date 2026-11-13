@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { Maker } from "../js/pipeline/run.js";
 import { revisedTypeList } from "../js/type-revisions.js";
-import { PAGE_REVIEW_MODELS, pageReviewSchema, pageReviewPrompt, checkPageReview, typeAdditions, pendingTypeAdditions, requestPageReview, latestPageReview, pageReviewRegions } from "../js/pipeline/page-review.js";
+import { PAGE_REVIEW_MODELS, pageReviewSchema, pageReviewPrompt, checkPageReview, typeAdditions, pendingTypeAdditions, alreadyInBook, requestPageReview, latestPageReview, pageReviewRegions } from "../js/pipeline/page-review.js";
 import { pageReviewSchema as frozenSchema, pageReviewPrompt as frozenPrompt } from "../../methods/087-terra-page-region-review/snapshot/js/pipeline/page-review.js";
 
 const types = { format: "types", schema_version: "0.3", book_id: "review", title: "Review fixture", languages: ["en"],
@@ -63,7 +63,8 @@ test("type additions are reviewed individually and matching applied types are re
   assert.deepEqual(revised.types.reference_entry, types.types.reference_entry);
   assert.deepEqual(pendingTypeAdditions(record, revised), []);
   revised.types.toc_entry.description = "A different interpretation";
-  assert.throws(() => pendingTypeAdditions(record, revised), /differs/);
+  assert.deepEqual(pendingTypeAdditions(record, revised), [], "a type the book already has is used, not an error");
+  assert.deepEqual(alreadyInBook(record, revised), [{ name: "toc_entry", as: "toc_entry" }]);
   assert.equal(types.types.toc_entry, undefined);
 });
 

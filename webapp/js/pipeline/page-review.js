@@ -1,11 +1,10 @@
-import { canonical } from "../ops.js?v=20261113-flags-4";
-import { makeValidator } from "../schema.js?v=20261113-flags-4";
-import { REGION_CLASSES } from "../book-types.js?v=20261113-flags-4";
-import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261113-flags-4";
-import { finderById } from "./finders.js?v=20261113-flags-4";
-import { finderRequest } from "./finder-requests.js?v=20261113-flags-4";
-import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261113-flags-4";
-import { templates, jsonHash } from "./run.js?v=20261113-flags-4";
+import { makeValidator } from "../schema.js?v=20261113-flags-5";
+import { REGION_CLASSES } from "../book-types.js?v=20261113-flags-5";
+import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261113-flags-5";
+import { finderById } from "./finders.js?v=20261113-flags-5";
+import { finderRequest } from "./finder-requests.js?v=20261113-flags-5";
+import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261113-flags-5";
+import { templates, jsonHash } from "./run.js?v=20261113-flags-5";
 import { sha256hex } from "../chayapdf.js";
 
 export const PAGE_REVIEW_MODELS = [
@@ -55,16 +54,17 @@ export function checkPageReview(proposal, types, width, height) {
   return proposal;
 }
 
+// The proposed types that are not in the book yet. A proposed name that already is a type of the book (or an old name
+// of one) is not an addition: the book's own type is used, whatever definition the model gave it (see `alreadyInBook`).
 export function pendingTypeAdditions(record, current) {
-  const all = typeAdditions(record.parsed), expected = all.length ? revisedTypeList(record.input_types, checkable(all)) : record.input_types;
-  return all.filter(operation => {
-    const name = resolveTypeName(operation.name, current), present = current.types[name];
-    if (!present) return true;
-    const parent = operation.parent && resolveTypeName(operation.parent, current);
-    if (canonical(present) !== canonical(expected.types[operation.name]) || parent && !current.types[parent]?.contains?.includes(name))
-      throw new Error(`The proposed type ${operation.name} differs from the current type list. Review its definition in Edit type list or request a new proposal.`);
-    return false;
-  }).map(operation => ({ ...operation, parent: operation.parent && resolveTypeName(operation.parent, current) }));
+  return typeAdditions(record.parsed).filter(operation => !current.types[resolveTypeName(operation.name, current)])
+    .map(operation => ({ ...operation, parent: operation.parent && resolveTypeName(operation.parent, current) }));
+}
+
+// Proposed types the book already has: [{ name, as }] (`as` is the current name when the proposed one is an old name).
+export function alreadyInBook(record, current) {
+  return typeAdditions(record.parsed).map(operation => ({ name: operation.name, as: resolveTypeName(operation.name, current) }))
+    .filter(entry => current.types[entry.as]);
 }
 
 export function pageReviewPrompt({ types, page, width, height, regions, instruction }) {

@@ -1,13 +1,13 @@
 import { h, cropInto, bbox, esc } from "./render.js";
-import { regionPath } from "./pageimage.js?v=20261113-flags-4";
-import { clone } from "./ops.js?v=20261113-flags-4";
+import { regionPath } from "./pageimage.js?v=20261113-flags-5";
+import { clone } from "./ops.js?v=20261113-flags-5";
 import { parseLine, TAGS } from "./inline.js";
 import { markedText } from "./pipeline/split.js";
 import { transcriptionHtml } from "./transcription-diff.js";
-import { renderStructureComparison } from "./structure-visual.js?v=20261113-flags-4";
-import { checkDocument } from "./schema.js?v=20261113-flags-4";
-import { assignmentOf, reviewCandidate, saveReview, settle } from "./review.js?v=20261113-flags-4";
-import { partialTextScope } from "./pipeline/partial-reading.js?v=20261113-flags-4";
+import { renderStructureComparison } from "./structure-visual.js?v=20261113-flags-5";
+import { checkDocument } from "./schema.js?v=20261113-flags-5";
+import { assignmentOf, reviewCandidate, saveReview, settle } from "./review.js?v=20261113-flags-5";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261113-flags-5";
 
 const titles = { regions: "Page regions", text: "Transcription", units: "Units and links" };
 

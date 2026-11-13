@@ -1,8 +1,8 @@
-import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261113-flags-4";
-import { canonical } from "./ops.js?v=20261113-flags-4";
-import { isProtected, layerRecords, layerState } from "./layers.js?v=20261113-flags-4";
-import { provisionalUnits } from "./pipeline/provisional.js?v=20261113-flags-4";
-import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261113-flags-4";
+import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261113-flags-5";
+import { canonical } from "./ops.js?v=20261113-flags-5";
+import { isProtected, layerRecords, layerState } from "./layers.js?v=20261113-flags-5";
+import { provisionalUnits } from "./pipeline/provisional.js?v=20261113-flags-5";
+import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261113-flags-5";
 
 export function citedSamplePages(question, samples) {
   const cited = new Set();

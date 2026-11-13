@@ -1,11 +1,11 @@
 import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261113-flags-4";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261113-flags-4";
-import { settings } from "./store.js?v=20261113-flags-4";
-import { money } from "./reader-controls.js?v=20261113-flags-4";
-import { reviewTypeChange } from "./type-operations.js?v=20261113-flags-4";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-4";
-import { reviewPage } from "./review-view.js?v=20261113-flags-4";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261113-flags-5";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261113-flags-5";
+import { settings } from "./store.js?v=20261113-flags-5";
+import { money } from "./reader-controls.js?v=20261113-flags-5";
+import { reviewTypeChange } from "./type-operations.js?v=20261113-flags-5";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-5";
+import { reviewPage } from "./review-view.js?v=20261113-flags-5";
 import { runProgress } from "./run-progress.js";
 
 export async function reviewPageWithAI(app) {
@@ -47,7 +47,9 @@ export async function reviewPageWithAI(app) {
     // A proposed type whose class is the escape class "other" needs the user to choose how it is printed.
     const classes = {}, needClass = pending.filter(operation => operation.region === "other");
     const refreshAdd = () => { addTypes.disabled = !book.writable || !pending.length || needClass.some(operation => !classes[operation.name]); };
-    if (record.parsed.new_types.length) result.append(h("h3", {}, "Proposed types"), ...record.parsed.new_types.map(type =>
+    for (const entry of alreadyInBook(record, book.types)) result.append(h("p", { class: "hint" },
+      `${entry.name} is already a type of this book${entry.as !== entry.name ? ` (as ${entry.as})` : ""}: the book's own definition is used.`));
+    if (pending.length) result.append(h("h3", {}, "Proposed types"), ...pending.map(type =>
       h("section", { class: "box" }, h("b", {}, type.name), h("span", { class: "meta" }, ` · ${type.region === "other" ? "class to choose" : type.region}${type.furniture ? " · furniture" : type.parent ? ` · inside ${type.parent}` : ` · ${type.flow} flow`}`),
         h("p", {}, type.description),
         type.region === "other" && needClass.some(operation => operation.name === type.name) ? h("label", {}, "Printed as ", h("select", { "aria-label": `Printed class of ${type.name}`, onchange: event => { classes[type.name] = event.target.value; refreshAdd(); } },

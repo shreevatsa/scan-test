@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261113-flags-4";
+import { canonical } from "../ops.js?v=20261113-flags-5";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {
