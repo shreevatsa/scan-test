@@ -90,6 +90,8 @@ main.read, main.check, main.export, main.style, main.types { overflow: auto; }
 .pv-reg.furn { stroke-dasharray: 6 5; }
 g.hl .pv-reg { fill-opacity: .22; stroke-opacity: 1; stroke-width: 4; }
 g.sel .pv-reg { fill-opacity: .14; stroke-width: 4; stroke-opacity: 1; }
+.pv-regbox { display: none; fill: none; stroke-width: 2; stroke-dasharray: 7 4; vector-effect: non-scaling-stroke; pointer-events: none; }
+g:hover > .pv-regbox, g.hl > .pv-regbox, g.sel > .pv-regbox { display: block; }
 .pv-ln { fill: none; stroke: none; pointer-events: visibleFill; }
 .pv-ln.hl { fill: #ffd400; fill-opacity: .35; stroke: #e6a800; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .pv-boxrect { fill: none; stroke: #111; stroke-width: 1.5; stroke-dasharray: 5 4; vector-effect: non-scaling-stroke; pointer-events: none; }

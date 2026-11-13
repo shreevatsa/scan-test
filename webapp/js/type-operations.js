@@ -1,8 +1,8 @@
 import { h } from "./render.js";
-import { checkPage } from "./schema.js?v=20261112-dim-range-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261112-dim-range-1";
-import { pageSelectionText } from "./page-browser.js?v=20261112-dim-range-1";
-import { money } from "./reader-controls.js?v=20261112-dim-range-1";
+import { checkPage } from "./schema.js?v=20261112-hover-box-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261112-hover-box-1";
+import { pageSelectionText } from "./page-browser.js?v=20261112-hover-box-1";
+import { money } from "./reader-controls.js?v=20261112-hover-box-1";
 
 const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change printed class", remove: "Remove unused type" };
 const quantity = (n, name) => `${n} ${name}${n === 1 ? "" : "s"}`;

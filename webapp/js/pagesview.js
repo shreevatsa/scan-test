@@ -1,19 +1,19 @@
-import { suggestionButton } from "./review-view.js?v=20261112-dim-range-1";
+import { suggestionButton } from "./review-view.js?v=20261112-hover-box-1";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261112-dim-range-1";
-import { RARE_LAYOUT } from "./flags.js?v=20261112-dim-range-1";
-import { regionBoxes } from "./pageimage.js?v=20261112-dim-range-1";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261112-hover-box-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261112-hover-box-1";
+import { regionBoxes } from "./pageimage.js?v=20261112-hover-box-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261112-dim-range-1";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261112-dim-range-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261112-dim-range-1";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-dim-range-1";
-import { settings } from "./store.js?v=20261112-dim-range-1";
-import { runBatch } from "./pipeline/batch.js?v=20261112-dim-range-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261112-hover-box-1";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261112-hover-box-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261112-hover-box-1";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-hover-box-1";
+import { settings } from "./store.js?v=20261112-hover-box-1";
+import { runBatch } from "./pipeline/batch.js?v=20261112-hover-box-1";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-dim-range-1";
-import { renderFinders } from "./findersview.js?v=20261112-dim-range-1";
-import { money } from "./reader-controls.js?v=20261112-dim-range-1";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-hover-box-1";
+import { renderFinders } from "./findersview.js?v=20261112-hover-box-1";
+import { money } from "./reader-controls.js?v=20261112-hover-box-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -168,7 +168,8 @@ export async function renderPages(el, app) {
       for (const pid of ids) { if (checkbox.checked) selected.add(pid); else selected.delete(pid); }
       lastSelected = page.id;
       showSelection();
-      applyFilters();
+      for (const [pid, row] of rows) if (row.checkbox) row.checkbox.checked = selected.has(pid);
+      refreshSummary();
     } }) : null;
     const image = h("img", { alt: `Page ${book.index[page.id] + 1}`, width: 120, height: 166 });
     const states = h("div", { class: "stage-badges" }), flags = h("p", { class: "stage-flags" });
@@ -176,7 +177,7 @@ export async function renderPages(el, app) {
     const skipButton = stage === "pages" && book.writable ? h("button", { class: "skip-toggle", onclick: async () => {
       try { await book.setSkipped([page.id], !book.isSkipped(page.id)); } catch (error) { message.textContent = error.message; return; }
       refreshCard(page.id);
-      applyFilters();
+      if (filter.value === "dimmed") applyFilters(); else refreshSummary();
       app.diskCopy?.checkpoint();
     } }) : null;
     const element = h("article", { class: "stage-card", dataset: { page: page.id } }, skipButton,

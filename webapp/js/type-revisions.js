@@ -1,8 +1,8 @@
-import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261112-dim-range-1";
-import { canonical } from "./ops.js?v=20261112-dim-range-1";
-import { isProtected, layerRecords, layerState } from "./layers.js?v=20261112-dim-range-1";
-import { provisionalUnits } from "./pipeline/provisional.js?v=20261112-dim-range-1";
-import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261112-dim-range-1";
+import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261112-hover-box-1";
+import { canonical } from "./ops.js?v=20261112-hover-box-1";
+import { isProtected, layerRecords, layerState } from "./layers.js?v=20261112-hover-box-1";
+import { provisionalUnits } from "./pipeline/provisional.js?v=20261112-hover-box-1";
+import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261112-hover-box-1";
 
 export function citedSamplePages(question, samples) {
   const cited = new Set();

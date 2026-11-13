@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261112-dim-range-1";
+import { typeRevision } from "../schema.js?v=20261112-hover-box-1";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {

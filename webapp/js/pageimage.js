@@ -116,6 +116,10 @@ export class PageView {
       const title = svgEl("title"); title.textContent = `${r.id} · ${r.type}`; g.append(title);
       const p = svgEl("path", { d: regionPath(r, this.types?.types[r.type]?.region), class: "pv-reg" + (this.furniture.has(r.type) ? " furn" : ""), stroke: col, fill: col });
       g.append(p);
+      // The region's whole box, drawn only while the region is hovered, selected or highlighted: the filled outline above
+      // follows the ink that was found, which can be only part of what the finder boxed.
+      const wide = r.box || r.model_box;
+      if (wide) g.append(svgEl("rect", { x: wide[0], y: wide[1], width: wide[2] - wide[0], height: wide[3] - wide[1], class: "pv-regbox", stroke: col }));
       (r.lines || []).forEach((L, i) => {
         if (L.polygons) g.append(svgEl("path", { d: pathD(L.polygons), class: "pv-ln", "data-line": `${r.id}:${i}` }));
       });
