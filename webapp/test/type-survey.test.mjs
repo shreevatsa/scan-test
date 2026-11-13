@@ -147,7 +147,7 @@ test("adding a proposed type is one type-list revision; rename, a second parent 
   const twoParents = revisedTypeList(more, additionOperations({ ...container, name: "gloss", region: "note", contains: [], parents: ["section", "canto"], flow: "" }, more));
   assert.ok(twoParents.types.section.contains.includes("gloss") && twoParents.types.canto.contains.includes("gloss"));
   assert.equal(twoParents.source.revisions.at(-1).operations.length, 2);
-  const furniture = revisedTypeList(current, additionOperations({ name: "ornament", description: "An ornament.", region: "other", furniture: true, contains: [], parents: ["section"], flow: "main" }, current));
+  const furniture = revisedTypeList(current, additionOperations({ name: "ornament", description: "An ornament.", region: "figure", furniture: true, contains: [], parents: ["section"], flow: "main" }, current));
   assert.equal(furniture.types.ornament.role, "furniture"); assert.equal(furniture.types.ornament.flow, undefined);
   assert.throws(() => additionOperations({ ...additionChoice(first.proposal), parents: [], flow: "" }, current), /where the type belongs/);
   assert.throws(() => revisedTypeList(current, additionOperations({ ...additionChoice(first.proposal), name: "verse" }, current)), /already/);

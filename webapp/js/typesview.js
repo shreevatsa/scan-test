@@ -5,15 +5,16 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261113-description-1";
-import { typeRevision } from "./schema.js?v=20261113-description-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-description-1";
-import { newTypeDialog } from "./regionsview.js?v=20261113-description-1";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-description-1";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-description-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-description-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-description-1";
-import { regionPath } from "./pageimage.js?v=20261113-description-1";
+import { prepare } from "./reader.js?v=20261113-types-tidy-1";
+import { typeRevision } from "./schema.js?v=20261113-types-tidy-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-types-tidy-1";
+import { newTypeDialog } from "./regionsview.js?v=20261113-types-tidy-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-types-tidy-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-types-tidy-1";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-types-tidy-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-types-tidy-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-types-tidy-1";
+import { regionPath } from "./pageimage.js?v=20261113-types-tidy-1";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -48,7 +49,7 @@ export async function renderTypeView(el, app) {
   el.replaceChildren(h("div", { class: "type-overview" }, tree, list, details));
   const examples = await renderTypeExamples(list, app, reviewPages);
   if (app.book !== book || app.routeToken !== token) return () => {};
-  await renderTypeTree(tree, app, { onSelect: name => { examples?.choose(name); list.scrollIntoView({ block: "nearest" }); } });
+  await renderTypeTree(tree, app, { removeUnused: true, onSelect: name => { examples?.choose(name); list.scrollIntoView({ block: "nearest" }); } });
   await renderBookDetails(details, app, { onReviewPages: reviewPages });
   return () => examples?.dispose();
 }
@@ -91,6 +92,7 @@ async function renderTypeExamples(el, app, reviewPages) {
     detail.replaceChildren(...[h("div", { class: "type-detail-head" }, h("h2", {}, name),
       book.writable ? h("button", { onclick: () => editTypeDialog(app, name) }, "Edit type…") : null),
       type.description ? h("p", {}, type.description) : null,
+      type.region === "other" ? h("p", { class: "bad" }, "This type needs a class: ", h("button", { class: "link", onclick: () => editTypeDialog(app, name, "class") }, "choose how it is printed")) : null,
       h("p", { class: "meta" }, [type.region || "container", type.role === "furniture" ? "page furniture" : type.flow ? `${type.flow} flow` : "inside another unit", type.lang].filter(Boolean).join(" · ")),
       parents.length ? h("p", { class: "type-rules" }, "May be inside ", ...parents.flatMap((value, i) => [i ? ", " : "", jump(value)])) : null,
       type.contains?.length ? h("p", { class: "type-rules" }, "May contain ", ...type.contains.flatMap((value, i) => [i ? ", " : "", jump(value)])) : null,
@@ -146,7 +148,7 @@ async function renderTypeExamples(el, app, reviewPages) {
 
 // What may contain what, from each reading flow's top-level types down, with how many units of each type the book has.
 // A type name selects that type (onSelect), or opens its edit form where nothing selects.
-export async function renderTypeTree(el, app, { onSelect } = {}) {
+export async function renderTypeTree(el, app, { onSelect, removeUnused = false } = {}) {
   const { book, tl } = app;
   const types = tl.types || {};
   const badges = [];
@@ -161,13 +163,16 @@ export async function renderTypeTree(el, app, { onSelect } = {}) {
     const act = onSelect ? () => onSelect(value) : book.writable ? () => editTypeDialog(app, value) : null;
     return act ? h("button", { class: "link tname", title: description || "", onclick: act }, value) : h("span", { class: "tname", title: description || "" }, value);
   };
+  // "other" is the region finder's escape class, not one a type should have: marked, with a link to the class operation.
+  const needsClass = type => types[type]?.region === "other"
+    ? h("span", { class: "needs-class" }, " ", book.writable ? h("button", { class: "link", onclick: () => editTypeDialog(app, type, "class") }, "needs a class") : "needs a class") : "";
   const node = (type, path, within) => {
     const t = types[type];
     if (!t) return h("li", {}, h("span", { class: "tname bad" }, type), " (not in the type list)");
     const kids = t.contains || [];
     const again = path.includes(type);
     return h("li", {}, name(type, t.description), " ",
-      h("span", { class: "rclass" }, t.region ? `printed as ${t.region}` : "container"), " ", badge(type, within),
+      h("span", { class: "rclass" }, t.region ? `printed as ${t.region}` : "container"), needsClass(type), " ", badge(type, within),
       kids.length && !again ? h("ul", {}, ...kids.map(k => node(k, [...path, type], type))) : again ? h("span", { class: "meta" }, " (as above)") : null);
   };
   const flows = Object.entries(tl.flows || {}).map(([flow, desc]) => {
@@ -178,10 +183,13 @@ export async function renderTypeTree(el, app, { onSelect } = {}) {
   const furniture = Object.entries(types).filter(([, t]) => t.role === "furniture");
   el.replaceChildren(h("h3", {}, "What may contain what"), ...flows,
     furniture.length ? h("div", { class: "flowtree" }, h("h4", {}, "page furniture", h("span", { class: "meta" }, " — belongs to the page, not to the text")),
-      h("ul", { class: "ttree" }, ...furniture.map(([n, t]) => h("li", {}, name(n, t.description), " ", h("span", { class: "rclass" }, `printed as ${t.region}`), " ", badge(n))))) : null);
+      h("ul", { class: "ttree" }, ...furniture.map(([n, t]) => h("li", {}, name(n, t.description), " ", h("span", { class: "rclass" }, `printed as ${t.region}`), needsClass(n), " ", badge(n))))) : null);
 
   const docs = await book.all();
+  const generic = await fetch(new URL("../types/generic.json", import.meta.url)).then(response => response.ok ? response.json() : null).catch(() => null);
+  const proposals = pendingItems(await readPendingProposals(book).catch(() => ({ items: [] })), "new_type");
   if (!el.isConnected || app.book !== book || app.tl !== tl) return;
+  const unused = unusedDraftTypes(tl, generic, docs, proposals);
   const P = prepare(docs, tl);
   const n = {}, at = {};
   const add = (obj, k) => { obj[k] = (obj[k] || 0) + 1; };
@@ -196,6 +204,16 @@ export async function renderTypeTree(el, app, { onSelect } = {}) {
     const k = within ? at[`${within}>${type}`] || 0 : n[type] || 0;
     b.textContent = types[type]?.role === "furniture" ? `${k} on the pages` : within.startsWith("flow:") ? `${k} in the book` : `${k} here`;
     b.classList.toggle("zero", !k);
+    const row = b.closest("li");
+    if (row && unused.names.includes(type) && !row.querySelector(":scope > .unused-draft-note")) {
+      row.classList.add("unused-draft");
+      b.after(h("span", { class: "meta unused-draft-note" }, " · unused draft type"));
+    }
+  }
+  if (removeUnused && book.writable && unused.names.length && docs.some(doc => doc?.page?.regions?.length)) {
+    el.prepend(h("div", { class: "actions" }, h("button", { onclick: () => reviewTypeChange(app, unused.names.map(name => ({ kind: "remove", name })),
+      { applied: () => app.route() }).catch(error => app.toast(error.message, "bad")) }, `Remove unused draft types (${unused.names.length})`),
+      h("span", { class: "meta" }, `${unused.names.join(", ")}: used on no page and not in a proposal.`)));
   }
 }
 

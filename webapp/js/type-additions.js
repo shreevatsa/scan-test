@@ -2,6 +2,7 @@
 // work records until a person adds or dismisses each. Nothing here changes the type list: adding goes through the
 // type-list revision operations (an "add", and "rules" for a second parent or a flow), and an edited definition through
 // the "description" operation. Each item records its source, so several sources can add to the one list.
+import { REGION_CLASSES } from "./book-types.js?v=20261113-types-tidy-1";
 export const PENDING_PATH = "work/type-proposals/pending.json";
 const empty = () => ({ format: "pending-type-proposals", version: 1, items: [] });
 
@@ -49,8 +50,27 @@ export async function decideProposal(store, id, decision, at = new Date().toISOS
 }
 
 // The form's starting values for a proposed type.
+// "other" is the region finder's escape class for regions that fit no type, not a class a type may have.
+export const isRealClass = region => region === "container" || (REGION_CLASSES.includes(region) && region !== "other");
+
+// What a survey found, as text with links to where it went: strings and { link: "proposals" | "questions", text }.
+export function surveyOutcome(items) {
+  const count = kind => items.filter(item => item.kind === kind).length;
+  const types = count("new_type"), edits = count("definition_edit"), questions = count("question"), description = count("book_description");
+  const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+  const parts = [];
+  if (!types && !edits && !description) parts.push("Nothing new: no new types or definition edits.");
+  else {
+    if (types) parts.push({ link: "proposals", text: `${plural(types, "proposed type")}` }, " — review them in Proposed types.");
+    const rest = [edits ? plural(edits, "suggested definition edit") : "", description ? "a proposed book description" : ""].filter(Boolean);
+    if (rest.length) parts.push(` ${types ? "Also " : "Found "}${rest.join(" and ")}${types ? "" : ", in Proposed types"}.`);
+  }
+  if (questions) parts.push(" ", { link: "questions", text: plural(questions, "question") }, " — see Questions to review.");
+  return parts;
+}
+
 export function additionChoice(proposal) {
-  return { name: proposal.name, description: proposal.description, region: proposal.region, furniture: !!proposal.furniture,
+  return { name: proposal.name, description: proposal.description, region: isRealClass(proposal.region) ? proposal.region : "", furniture: !!proposal.furniture,
     contains: [...(proposal.contains || [])], parents: [...(proposal.parents || [])], flow: proposal.flow || "" };
 }
 
@@ -60,6 +80,7 @@ export function additionOperations(choice, current) {
   const name = choice.name.trim(), furniture = !!choice.furniture, container = choice.region === "container";
   const parents = furniture ? [] : [...new Set(choice.parents)];
   const flow = furniture ? "" : choice.flow || "";
+  if (!isRealClass(choice.region)) throw new Error("Choose how this type is printed: heading, paragraph, …");
   for (const parent of parents) if (!current.types[parent]) throw new Error(`Unknown parent type ${parent}.`);
   if (!furniture && !parents.length && !flow) throw new Error("Choose where the type belongs: a type that may contain it, or a reading flow.");
   const operations = [{ kind: "add", name, description: choice.description || "", region: choice.region, furniture,

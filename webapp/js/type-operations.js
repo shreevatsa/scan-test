@@ -1,8 +1,8 @@
 import { h } from "./render.js";
-import { checkPage } from "./schema.js?v=20261113-description-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-description-1";
-import { pageSelectionText } from "./page-browser.js?v=20261113-description-1";
-import { money } from "./reader-controls.js?v=20261113-description-1";
+import { checkPage } from "./schema.js?v=20261113-types-tidy-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-types-tidy-1";
+import { pageSelectionText } from "./page-browser.js?v=20261113-types-tidy-1";
+import { money } from "./reader-controls.js?v=20261113-types-tidy-1";
 
 const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change printed class", remove: "Remove unused type" };
 const quantity = (n, name) => `${n} ${name}${n === 1 ? "" : "s"}`;
@@ -76,7 +76,7 @@ export async function reviewTypeChange(app, operations, { applied = () => {} } =
   return plan;
 }
 
-export function editTypeDialog(app, name) {
+export function editTypeDialog(app, name, firstKind = "") {
   const type = app.tl.types[name];
   const operation = h("select", { "aria-label": "Type-list operation" }, ...Object.entries(labels).filter(([kind]) => (type.region || !["split", "class"].includes(kind)) && (type.role !== "furniture" || kind !== "rules"))
     .map(([kind, label]) => h("option", { value: kind }, label)));
@@ -111,13 +111,14 @@ export function editTypeDialog(app, name) {
       fields.append(h("label", {}, "Top level of ", flow), h("fieldset", {}, h("legend", {}, "May contain"), ...choices.map(({ child, box }) => h("label", { class: "type-child-choice" }, box, " ", child))));
       collect = () => ({ kind, name, flow: flow.value, contains: choices.filter(value => value.box.checked).map(value => value.child) });
     } else if (kind === "class") {
-      const region = h("select", { "aria-label": "Printed region class" }, ...REGION_CLASSES.map(value => h("option", { value, selected: value === type.region }, value)));
+      const region = h("select", { "aria-label": "Printed region class" }, ...REGION_CLASSES.filter(value => value !== "other" || type.region === "other").map(value => h("option", { value, selected: value === type.region }, value)));
       fields.append(h("label", {}, "Printed as ", region)); collect = () => ({ kind, name, region: region.value });
     } else {
       fields.append(h("p", {}, "The preview checks all model pages, saved corrections and drafts for uses of this type."));
       collect = () => ({ kind, name });
     }
   };
+  if (firstKind && [...operation.options].some(option => option.value === firstKind)) operation.value = firstKind;
   operation.onchange = draw; draw();
   const form = h("form", { onsubmit: async event => {
     event.preventDefault();

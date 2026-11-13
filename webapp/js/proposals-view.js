@@ -5,10 +5,10 @@
 // the others are listed with links, to be given the type by hand.
 import { h } from "./render.js";
 import { readPendingProposals, pendingItems, decideProposal, additionChoice, additionOperations, proposalAssignments,
-  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261113-description-1";
-import { reviewTypeChange } from "./type-operations.js?v=20261113-description-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-description-1";
-import { isProtected, LAYERS } from "./layers.js?v=20261113-description-1";
+  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261113-types-tidy-1";
+import { reviewTypeChange } from "./type-operations.js?v=20261113-types-tidy-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-types-tidy-1";
+import { isProtected, LAYERS } from "./layers.js?v=20261113-types-tidy-1";
 
 const where = type => type.furniture ? "Page furniture"
   : [type.parents.length ? `Inside ${type.parents.join(", ")}` : "", type.flow ? `Top level of ${type.flow}` : ""].filter(Boolean).join(" · ");
@@ -69,8 +69,11 @@ export function proposalsBox(app) {
     const choice = additionChoice(item.proposal), types = app.tl.types;
     const name = h("input", { value: choice.name, "aria-label": `Name for ${choice.name}` });
     const description = h("textarea", { rows: 3, "aria-label": `Definition of ${choice.name}` }, choice.description);
-    const region = h("select", { "aria-label": `Printed as, for ${choice.name}` }, ...["container", ...REGION_CLASSES].map(value =>
+    // "other" is the region finder's escape class, not one a type may have: the choice starts empty unless the proposal names a real class.
+    const region = h("select", { "aria-label": `Printed as, for ${choice.name}` }, h("option", { value: "", selected: !choice.region }, "(choose)"),
+      ...["container", ...REGION_CLASSES.filter(value => value !== "other")].map(value =>
       h("option", { value, selected: value === choice.region }, value === "container" ? "container (groups other units)" : value)));
+    const classHint = h("p", { class: "hint" }, "Choose how it is printed: heading, paragraph, …");
     const furniture = h("input", { type: "checkbox", checked: choice.furniture, "aria-label": "Page furniture" });
     const textTypes = Object.entries(types).filter(([, type]) => type.role !== "furniture");
     const box = (entries, checked, label) => entries.map(([other]) => ({ other, input: h("input", { type: "checkbox", checked: checked.includes(other), "aria-label": `${label} ${other}` }) }));
@@ -81,11 +84,12 @@ export function proposalsBox(app) {
     const childField = h("fieldset", {}, h("legend", {}, "May contain"), ...children.map(({ other, input }) => h("label", { class: "type-child-choice" }, input, " ", other)));
     const placeField = h("div", {}, h("fieldset", {}, h("legend", {}, "May appear inside"), ...parents.map(({ other, input }) => h("label", { class: "type-child-choice" }, input, " ", other))),
       h("label", {}, "Top level of ", flow));
-    const refreshFields = () => { childField.hidden = region.value !== "container"; placeField.hidden = furniture.checked; };
-    region.onchange = furniture.onchange = refreshFields; refreshFields();
+    let add;
+    const refreshFields = () => { childField.hidden = region.value !== "container"; placeField.hidden = furniture.checked; classHint.hidden = !!region.value; if (add) add.disabled = !book.writable || !region.value; };
+    region.onchange = furniture.onchange = refreshFields;
     const same = h("select", { "aria-label": "Same as existing type" }, ...Object.keys(types).map(other => h("option", { value: other }, other)));
     const note = h("p", { role: "status", class: "bad" });
-    const add = h("button", { class: "primary", disabled: !book.writable, onclick: async () => {
+    add = h("button", { class: "primary", disabled: !book.writable, onclick: async () => {
       const chosen = { name: name.value.trim(), description: description.value.trim(), region: region.value, furniture: furniture.checked,
         contains: children.filter(value => value.input.checked).map(value => value.other),
         parents: parents.filter(value => value.input.checked).map(value => value.other), flow: flow.value };
@@ -96,8 +100,9 @@ export function proposalsBox(app) {
         } });
       } catch (error) { note.textContent = error.message; }
     } }, "Preview adding this type");
+    refreshFields();
     return h("div", { class: "fields col proposal-form" }, h("label", {}, "Name ", name), h("label", {}, "Definition ", description),
-      h("label", {}, "Printed as ", region), h("label", {}, furniture, " Page furniture"), childField, placeField,
+      h("label", {}, "Printed as ", region), classHint, h("label", {}, furniture, " Page furniture"), childField, placeField,
       h("div", { class: "actions" }, add), note,
       h("div", { class: "actions" }, h("label", {}, "Same as existing type ", same),
         h("button", { disabled: !book.writable, onclick: () => decide(item, { status: "dismissed", same_as: same.value }) }, "Use this type")));

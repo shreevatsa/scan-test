@@ -1,11 +1,11 @@
-import { suggestionButton } from "./review-view.js?v=20261113-description-1";
-import { typeRevision } from "./schema.js?v=20261113-description-1";
+import { suggestionButton } from "./review-view.js?v=20261113-types-tidy-1";
+import { typeRevision } from "./schema.js?v=20261113-types-tidy-1";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261113-description-1";
-import { orderedRegions, regionFlags } from "./flags.js?v=20261113-description-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-description-1";
-import { editTypeDialog } from "./type-operations.js?v=20261113-description-1";
-import { normalizeTypeName } from "./type-additions.js?v=20261113-description-1";
+import * as ops from "./ops.js?v=20261113-types-tidy-1";
+import { orderedRegions, regionFlags } from "./flags.js?v=20261113-types-tidy-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-types-tidy-1";
+import { editTypeDialog } from "./type-operations.js?v=20261113-types-tidy-1";
+import { normalizeTypeName } from "./type-additions.js?v=20261113-types-tidy-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -27,7 +27,7 @@ export function newTypeDialog(app, use = () => {}, printedOnly = false) {
   const previous = selected && app.tl.types[selected.type];
   const name = h("input", { required: true, "aria-label": "New type name", placeholder: "verse_translation" });
   const description = h("textarea", { rows: 3, "aria-label": "New type description" });
-  const category = h("select", { "aria-label": "Printed region class" }, ...(printedOnly ? REGION_CLASSES : ["container", ...REGION_CLASSES]).map(value =>
+  const category = h("select", { "aria-label": "Printed region class" }, ...(printedOnly ? REGION_CLASSES : ["container", ...REGION_CLASSES]).filter(value => value !== "other").map(value =>
     h("option", { value, selected: value === (previous?.region || "paragraph") }, value)));
   const furniture = h("input", { type: "checkbox", checked: previous?.role === "furniture", "aria-label": "Page furniture" });
   const childChoices = Object.entries(app.tl.types).filter(([, type]) => type.role !== "furniture").map(([child], index) => ({

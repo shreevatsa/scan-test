@@ -2,16 +2,16 @@
 // are proposed additions, kept as pending proposals until each is added (through the type-list revision operations)
 // or dismissed; they are reviewed in the Proposed types box (proposals-view.js). Up to twelve pages are sent as page images (method 095), more as contact sheets (method 096).
 import { h } from "./render.js";
-import { money } from "./reader-controls.js?v=20261113-description-1";
-import { settings } from "./store.js?v=20261113-description-1";
+import { money } from "./reader-controls.js?v=20261113-types-tidy-1";
+import { settings } from "./store.js?v=20261113-types-tidy-1";
 import { sha256hex } from "./chayapdf.js";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { samplePages } from "./pipeline/type-discovery.js?v=20261113-description-1";
-import { renderContactSheets, sheetBatches } from "./pipeline/contact-sheets.js?v=20261113-description-1";
-import { SURVEY_MODELS, SURVEY_PAGE_IMAGE_LIMIT, surveyForm, surveyProfile, runSurvey } from "./pipeline/type-survey.js?v=20261113-description-1";
-import { surveyItems, addPendingProposals } from "./type-additions.js?v=20261113-description-1";
-import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261113-description-1";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261113-description-1";
+import { samplePages } from "./pipeline/type-discovery.js?v=20261113-types-tidy-1";
+import { renderContactSheets, sheetBatches } from "./pipeline/contact-sheets.js?v=20261113-types-tidy-1";
+import { SURVEY_MODELS, SURVEY_PAGE_IMAGE_LIMIT, surveyForm, surveyProfile, runSurvey } from "./pipeline/type-survey.js?v=20261113-types-tidy-1";
+import { surveyItems, addPendingProposals, surveyOutcome } from "./type-additions.js?v=20261113-types-tidy-1";
+import { pageSelectionText } from "./page-browser.js?v=20261113-types-tidy-1";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261113-types-tidy-1";
 
 export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, credentialsBox = null, onProposals = () => {} }) {
   const book = app.book, token = app.routeToken;
@@ -31,8 +31,6 @@ export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, 
   const pages = h("input", { size: 30, "aria-label": "Survey PDF pages", placeholder: "1-3, 80, 266-267, or all" });
   pages.value = selected.length ? pageSelectionText(selected.map(pid => book.page(pid).pdf_page || book.index[pid] + 1), count)
     : pageSelectionText(samplePages(count), count);
-  const browser = pageBrowser({ pages, render: drawPage });
-  browser.usePdf({ doc, sha });
   const model = h("select", { "aria-label": "Survey model" }, ...SURVEY_MODELS.map(profile => h("option", { value: profile.id }, profile.label)));
   const plan = h("p", { class: "meta survey-plan" });
   const status = h("p", { role: "status" });
@@ -94,12 +92,12 @@ export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, 
         progress: step => { status.textContent = `${chosen.label} · ${step.cached ? "reusing" : "surveying"} ${step.total > 1 ? `request ${step.index} of ${step.total}, ` : ""}PDF pages ${pageSelectionText(step.pages, count)}${form === "sheets" ? " · up to 5 minutes" : ""}…`; } });
       const items = surveyItems(result);
       await addPendingProposals(book, items);
-      const n = kind => items.filter(item => item.kind === kind).length;
-      status.textContent = `Survey saved: ${n("new_type")} proposed ${n("new_type") === 1 ? "type" : "types"}, ${n("definition_edit")} definition ${n("definition_edit") === 1 ? "edit" : "edits"}, ${n("question")} ${n("question") === 1 ? "question" : "questions"}. Estimated cost ${money(result.cost_usd)}, ${result.seconds.toFixed(0)} s.`;
+      status.replaceChildren(...surveyOutcome(items).map(part => typeof part === "string" ? part : h("button", { class: "link", onclick: () => goTo(part.link) }, part.text)),
+        ` Estimated cost ${money(result.cost_usd)}, ${result.seconds.toFixed(0)} s.`);
     } catch (error) {
       status.textContent = `The survey did not finish. ${error.message}${error.record ? ` Estimated attempt cost ${money(error.record.cost_usd)}. The attempt is saved.` : ""}`;
     } finally {
-      lock(false); app.diskCopy?.checkpoint();
+      lock(false); app.diskCopy?.checkpoint(); showAttempts();
       await onProposals();
     }
   } }, "Survey these pages");
@@ -107,20 +105,33 @@ export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, 
 
   pages.addEventListener("input", () => { describePlan(); showCredentials(); });
   model.addEventListener("change", showCredentials);
-  const attempts = h("details", {}, h("summary", {}, "Saved survey attempts"));
-  attempts.addEventListener("toggle", async () => {
-    if (!attempts.open) return;
-    const ledger = await book.readWork("work/reader-lab/ledger.json");
+  // Shown only while an attempt is unresolved (its charge unknown), which is what the retry checkbox is for; the costs of
+  // finished calls are in the ledger and in the result line.
+  const attempts = h("details", { open: true, hidden: true });
+  const showAttempts = async () => {
+    const ledger = await book.readWork("work/reader-lab/ledger.json").catch(() => null);
+    const unresolved = (ledger?.calls || []).filter(call => call.stage === "type-survey" && call.cost_usd == null);
+    attempts.hidden = !unresolved.length;
+    if (!unresolved.length) { retry.checked = false; attempts.replaceChildren(); return; }
     attempts.replaceChildren(h("summary", {}, "Saved survey attempts"),
-      ...(ledger?.calls || []).filter(call => call.stage === "type-survey").map(call =>
-        h("p", {}, `${call.profile} · ${call.status} · ${money(call.cost_usd)} · ${call.seconds == null ? "duration unavailable" : `${call.seconds.toFixed(1)} s`}`)),
+      ...unresolved.map(call => h("p", {}, `${call.profile} · ${call.status} · cost unknown · ${call.seconds == null ? "duration unavailable" : `${call.seconds.toFixed(1)} s`}`)),
       h("label", {}, retry, " Allow a new call after an unresolved attempt"),
       h("p", { class: "hint" }, "An interrupted call may have been charged. Retrying keeps the earlier attempt and can add another charge."));
-  });
+  };
+  // Where a result went: the Proposed types box, or the questions in By type.
+  const goTo = async link => {
+    if (link === "proposals") { document.querySelector(".proposals-section")?.scrollIntoView({ block: "start" }); return; }
+    await app.setRegionView("types");
+    for (let tries = 0; tries < 40; tries++) {
+      const target = document.querySelector(".survey-questions");
+      if (target?.children.length) { target.scrollIntoView({ block: "start" }); return; }
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+  };
   el.replaceChildren(h("div", { class: "survey" },
     h("p", { class: "hint" }, "Send chosen pages and the book’s current type list to a model. It proposes only additions: new types with where they belong and their evidence pages, clearer definitions, and possible duplicates as questions. Nothing changes until you add a proposal in the Proposed types box."),
     h("div", { class: "survey-controls" }, h("div", { class: "fields col" }, h("label", {}, "PDF pages ", pages), plan),
-      browser.element, h("label", {}, "Propose types with ", model), credentials,
+      h("label", {}, "Propose types with ", model), credentials,
       h("div", { class: "actions" }, run, stop)), status, attempts));
-  showCredentials();
+  showCredentials(); showAttempts();
 }

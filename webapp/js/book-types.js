@@ -1,5 +1,5 @@
-import { checkTypes, typeRevision } from "./schema.js?v=20261113-description-1";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-description-1";
+import { checkTypes, typeRevision } from "./schema.js?v=20261113-types-tidy-1";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-types-tidy-1";
 
 export const REGION_CLASSES = ["verse", "paragraph", "heading", "lead_in", "list_item", "formula", "note", "table", "figure", "caption", "running_header", "page_number", "other"];
 
@@ -15,7 +15,7 @@ export function addBookType(current, { name, description = "", region, furniture
   if (!/^[\p{L}\p{N}_][\p{L}\p{N}\p{M}_.-]*$/u.test(name) || ["__proto__", "constructor", "prototype"].includes(name))
     throw new Error("Use letters, digits, underscores, dots or dashes for the type name.");
   if (Object.hasOwn(current.types, name) || Object.hasOwn(current.source?.aliases || {}, name) || current.source?.retired_types?.includes(name)) throw new Error(`The type ${name} already exists or is reserved by an earlier revision.`);
-  if (!REGION_CLASSES.includes(region) && region !== "container") throw new Error("Choose how this type is printed.");
+  if ((!REGION_CLASSES.includes(region) || region === "other") && region !== "container") throw new Error("Choose how this type is printed.");
   if (region === "container" && furniture) throw new Error("A container belongs to a reading flow.");
   if (region === "container" && !contains.length) throw new Error("Choose at least one child type for this container.");
   const next = structuredClone(current), definition = region === "container" ? { description: description.trim(), contains: [...new Set(contains)] } : { description: description.trim(), region };
