@@ -1,0 +1,236 @@
+{
+ "created_at_utc": "2026-11-13T02:04:00.168517+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/gopinath-1896-page-123.png",
+  "sha256": "0361671dc5c57360331f210f9f4cbe771cb1cd77b6c5ab870ee1628d8264a47b"
+ },
+ "reference": {
+  "path": "references/gopinath-1896-page-123",
+  "status": "version 3, revised by Claude on 2026-11-04: version 2, which the user reviewed and confirmed, with one more component rule. The closing quotation mark of note (b) had been labeled note-cf-a, through the line finder; not yet re-reviewed by the user",
+  "labels_png_sha256": "f47edb4f81574bedf7dc005bd5eb8e452c5b66f6c31f89b042a25c03a34a5bc4",
+  "spec_sha256": "e2aee331e436efdb6056070adab4ab6b3a4ba7b37119a7e44f3e3d16372e8fd6"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "093",
+   "path": "outputs/gopinath-1896-page-123/093-paper-relative-ink-threshold/regression-001/regions.json",
+   "sha256": "450d11358ca4e8047ae9d685fd11b90a07b86c05d54085b5bc94eb69acd9b7e3",
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "passages": {
+    "verse-54": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "hindi-translation-54": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "bhavartha-heading-54": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "bhavartha-54": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "english-translation-54": {
+     "matched_region_id": 6,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "note-source": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "note-cf-a": {
+     "matched_region_id": 8,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "note-cf-b": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    },
+    "note-cf-c": {
+     "matched_region_id": 10,
+     "region_kind": "polygon",
+     "own_left_out": 0,
+     "other_included": {},
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 0
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-54",
+     "lower": "hindi-translation-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "hindi-translation-54",
+     "lower": "bhavartha-heading-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-heading-54",
+     "lower": "bhavartha-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "bhavartha-54",
+     "lower": "english-translation-54",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    }
+   ],
+   "ownership": {
+    "reference_ink_owned_elsewhere_or_unassigned": 0,
+    "beyond_reading_order_splits": 0,
+    "passages": {
+     "running-header": {
+      "main_owner_value": 1,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "verse-54": {
+      "main_owner_value": 2,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "hindi-translation-54": {
+      "main_owner_value": 3,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "bhavartha-heading-54": {
+      "main_owner_value": 4,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "bhavartha-54": {
+      "main_owner_value": 5,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "english-translation-54": {
+      "main_owner_value": 6,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "note-source": {
+      "main_owner_value": 7,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "note-cf-a": {
+      "main_owner_value": 8,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "note-cf-b": {
+      "main_owner_value": 9,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     },
+     "note-cf-c": {
+      "main_owner_value": 10,
+      "pixels_owned_elsewhere_or_unassigned": 0,
+      "split_owner_values": [],
+      "split_in_reading_order": false,
+      "beyond_reading_order_splits": 0
+     }
+    },
+    "ownership_png_sha256": "cc6388e99a9941d7bcb500b3beea0d351474f0aeaa8e85a510f37495a0cb1871"
+   }
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}
