@@ -1,24 +1,24 @@
-import { typeRevision } from "../schema.js?v=20261110-reading-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261112-library-2";
+import { typeRevision } from "../schema.js?v=20261112-join-2";
+import { mappedTypeNames } from "../type-revisions.js?v=20261112-join-2";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261110-reading-2";
-import * as I from "./images.js?v=20261110-reading-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261111-carbon-high-5";
+import * as S from "./steps.js?v=20261112-join-2";
+import * as I from "./images.js?v=20261112-join-2";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261112-join-2";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261110-finders-4";
-import { classifyBlocks } from "../local/blocks.js?v=20261110-finders-4";
-import { finderById, finderPath } from "./finders.js?v=20261111-cross-page-carbon-2";
-import { finderRequest } from "./finder-requests.js?v=20261111-carbon-high-5";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261110-partial-3";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261110-finders-4";
+import { localReading, localLayout } from "./ocr.js?v=20261112-join-2";
+import { classifyBlocks } from "../local/blocks.js?v=20261112-join-2";
+import { finderById, finderPath } from "./finders.js?v=20261112-join-2";
+import { finderRequest } from "./finder-requests.js?v=20261112-join-2";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261112-join-2";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261112-join-2";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261110-finders-4";
-import { layerState, noteEdit } from "../layers.js?v=20261110-finders-4";
-import { provisionalDocument } from "./provisional.js?v=20261110-finders-4";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261110-partial-3";
+import { canonical } from "../ops.js?v=20261112-join-2";
+import { layerState, noteEdit } from "../layers.js?v=20261112-join-2";
+import { provisionalDocument } from "./provisional.js?v=20261112-join-2";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261112-join-2";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

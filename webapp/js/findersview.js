@@ -1,14 +1,14 @@
 import { h, esc } from "./render.js";
-import { regionPath } from "./pageimage.js?v=20261110-figure-region-2";
-import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261111-cross-page-carbon-2";
-import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261111-carbon-high-5";
+import { regionPath } from "./pageimage.js?v=20261112-join-2";
+import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261112-join-2";
+import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261112-join-2";
 import { pageRange } from "./pipeline/pdf.js";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-library-2";
-import { reviewPage } from "./review-view.js?v=20261112-library-2";
-import { settings } from "./store.js?v=20261112-library-2";
-import { money, costEstimate } from "./reader-controls.js?v=20261112-library-2";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-join-2";
+import { reviewPage } from "./review-view.js?v=20261112-join-2";
+import { settings } from "./store.js?v=20261112-join-2";
+import { money, costEstimate } from "./reader-controls.js?v=20261112-join-2";
 import { runProgress } from "./run-progress.js";
-import { pageSelectionText } from "./page-browser.js?v=20261110-reading-2";
+import { pageSelectionText } from "./page-browser.js?v=20261112-join-2";
 
 function scanCard(record, profile, image, reference, onChoose, onReview) {
   const paths = record.regions.map(region => {
