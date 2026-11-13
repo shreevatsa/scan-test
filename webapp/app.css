@@ -415,7 +415,7 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 @media (max-width: 620px) { header { gap: 8px; } header .title { max-width: 70vw; } header .modes { display: flex; width: 100%; } header .tabs { flex-wrap: wrap; padding-left: 0; border-left: 0; } .stage-overview { padding: 16px 12px 40px; } .stage-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .stage-actions { padding: 10px; } }
 
 /* The type list view. */
-.type-browser { display: grid; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); align-items: start; gap: 28px; margin: 16px 0 24px; }
+.type-browser { display: grid; grid-template-columns: minmax(300px, 520px) minmax(0, 1fr); align-items: start; gap: 28px; margin: 16px 0 24px; }
 .type-detail { min-width: 0; }
 .type-detail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .type-detail h2 { margin: 0; font-size: 22px; overflow-wrap: anywhere; }

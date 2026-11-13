@@ -1,11 +1,11 @@
-import { suggestionButton } from "./review-view.js?v=20261113-type-tree-3";
-import { typeRevision } from "./schema.js?v=20261113-type-tree-3";
+import { suggestionButton } from "./review-view.js?v=20261113-type-tree-4";
+import { typeRevision } from "./schema.js?v=20261113-type-tree-4";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261113-type-tree-3";
-import { orderedRegions, regionFlags } from "./flags.js?v=20261113-type-tree-3";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-type-tree-3";
-import { editTypeDialog } from "./type-operations.js?v=20261113-type-tree-3";
-import { normalizeTypeName } from "./type-additions.js?v=20261113-type-tree-3";
+import * as ops from "./ops.js?v=20261113-type-tree-4";
+import { orderedRegions, regionFlags } from "./flags.js?v=20261113-type-tree-4";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-type-tree-4";
+import { editTypeDialog } from "./type-operations.js?v=20261113-type-tree-4";
+import { normalizeTypeName } from "./type-additions.js?v=20261113-type-tree-4";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {

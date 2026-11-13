@@ -5,17 +5,17 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261113-type-tree-3";
-import { prepare } from "./reader.js?v=20261113-type-tree-3";
-import { typeRevision } from "./schema.js?v=20261113-type-tree-3";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-type-tree-3";
-import { newTypeDialog } from "./regionsview.js?v=20261113-type-tree-3";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-type-tree-3";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-type-tree-3";
-import { unusedDraftTypes } from "./draft-types.js?v=20261113-type-tree-3";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-type-tree-3";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-type-tree-3";
-import { regionPath } from "./pageimage.js?v=20261113-type-tree-3";
+import { typeForest } from "./type-tree.js?v=20261113-type-tree-4";
+import { prepare } from "./reader.js?v=20261113-type-tree-4";
+import { typeRevision } from "./schema.js?v=20261113-type-tree-4";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-type-tree-4";
+import { newTypeDialog } from "./regionsview.js?v=20261113-type-tree-4";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-type-tree-4";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-type-tree-4";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-type-tree-4";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-type-tree-4";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-type-tree-4";
+import { regionPath } from "./pageimage.js?v=20261113-type-tree-4";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -159,11 +159,14 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false, 
   const draw = (counts, unusedNames = []) => {
     const nodeEl = r => {
       const unused = unusedNames.includes(r.name);
-      const notes = [r.kind === "container" ? "container" : "", r.printedAs ? `printed as ${r.printedAs}` : "", ...r.notes].filter(Boolean).join(" · ");
+      // A type used nowhere is one muted line: its name and "unused draft type" (its places and zero counts say nothing more).
+      const quiet = unused && r.zero;
+      const notes = [r.kind === "container" ? "container" : "", r.printedAs ? `printed as ${r.printedAs}` : "",
+        ...(quiet ? r.notes.filter(note => !note.startsWith("also ")) : r.notes)].filter(Boolean).join(" · ");
       return h("li", { class: `tnode${unused ? " unused-draft" : ""}`, "data-type": r.name },
         h("div", { class: "trow" }, h("i", { class: "dot", style: `background:${app.colors?.[r.name] || "#888"}` }), name(r.name, types[r.name]?.description),
           notes ? h("span", { class: "rclass" }, notes) : null, needsClass(r.name),
-          h("span", { class: `count${r.zero ? " zero" : ""}` }, r.count),
+          quiet ? null : h("span", { class: `count${r.zero ? " zero" : ""}` }, r.count),
           unused ? h("span", { class: "meta unused-draft-note" }, "unused draft type") : null),
         r.children.length ? h("ul", {}, ...r.children.map(nodeEl)) : null);
     };

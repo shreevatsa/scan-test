@@ -1,35 +1,35 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261113-type-tree-3";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261113-type-tree-3";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261113-type-tree-3";
-import { RECIPE } from "./recipe.js?v=20261113-type-tree-3";
-import { readerOptions } from "./pipeline/readers.js?v=20261113-type-tree-3";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261113-type-tree-4";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261113-type-tree-4";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261113-type-tree-4";
+import { RECIPE } from "./recipe.js?v=20261113-type-tree-4";
+import { readerOptions } from "./pipeline/readers.js?v=20261113-type-tree-4";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { PageView } from "./pageimage.js?v=20261113-type-tree-3";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261113-type-tree-3";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261113-type-tree-3";
-import { renderStyle } from "./styleview.js?v=20261113-type-tree-3";
-import { openTypeList } from "./typesview.js?v=20261113-type-tree-3";
-import { typeSetup } from "./type-setup.js?v=20261113-type-tree-3";
+import { PageView } from "./pageimage.js?v=20261113-type-tree-4";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261113-type-tree-4";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261113-type-tree-4";
+import { renderStyle } from "./styleview.js?v=20261113-type-tree-4";
+import { openTypeList } from "./typesview.js?v=20261113-type-tree-4";
+import { typeSetup } from "./type-setup.js?v=20261113-type-tree-4";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261113-type-tree-3";
-import { EditError } from "./ops.js?v=20261113-type-tree-3";
-import { Maker } from "./pipeline/run.js?v=20261113-type-tree-3";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261113-type-tree-3";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261113-type-tree-3";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261113-type-tree-3";
-import { layerState, noteEdit } from "./layers.js?v=20261113-type-tree-3";
-import { orderedRegions } from "./flags.js?v=20261113-type-tree-3";
-import { assemble } from "./assemble.js?v=20261113-type-tree-3";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261113-type-tree-3";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261113-type-tree-3";
-import { renderPages } from "./pagesview.js?v=20261113-type-tree-3";
-import { settings } from "./store.js?v=20261113-type-tree-3";
-import { renderReaders } from "./readersview.js?v=20261113-type-tree-3";
-import { renderStructures } from "./structuresview.js?v=20261113-type-tree-3";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261113-type-tree-3";
+import * as ops from "./ops.js?v=20261113-type-tree-4";
+import { EditError } from "./ops.js?v=20261113-type-tree-4";
+import { Maker } from "./pipeline/run.js?v=20261113-type-tree-4";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261113-type-tree-4";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261113-type-tree-4";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261113-type-tree-4";
+import { layerState, noteEdit } from "./layers.js?v=20261113-type-tree-4";
+import { orderedRegions } from "./flags.js?v=20261113-type-tree-4";
+import { assemble } from "./assemble.js?v=20261113-type-tree-4";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261113-type-tree-4";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261113-type-tree-4";
+import { renderPages } from "./pagesview.js?v=20261113-type-tree-4";
+import { settings } from "./store.js?v=20261113-type-tree-4";
+import { renderReaders } from "./readersview.js?v=20261113-type-tree-4";
+import { renderStructures } from "./structuresview.js?v=20261113-type-tree-4";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261113-type-tree-4";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -1099,7 +1099,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261113-type-tree-3", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261113-type-tree-4", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
