@@ -5,7 +5,7 @@
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261112-library-2";
+import { prepare } from "./reader.js?v=20261112-join-1";
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261112-library-2";
 import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261112-library-2";

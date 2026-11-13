@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { readChaya } from "../js/chayapdf.js";
 import { makeValidator, checkPage } from "../js/schema.js";
 import { assemble } from "../js/assemble.js";
-import { pageStages, reviewPageStates, stageFlags, currentStage, breakAtEmptyPages } from "../js/workflow.js";
+import { pageStages, reviewPageStates, stageFlags, currentStage } from "../js/workflow.js";
 
 const [path, ...options] = process.argv.slice(2);
 if (!path) { console.error("usage: node webapp/tools/flag_counts.mjs BOOK.chaya.pdf [--pages]"); process.exit(2); }
@@ -20,7 +20,7 @@ for (const page of manifest.pages) {
   states.set(page.id, { ...pageStages(doc, types, errors, warnings), runErrors: {} });
 }
 let warnings = [];
-try { [, warnings] = assemble(breakAtEmptyPages([...states.values()].filter(state => state.valid && state.doc).map(state => state.doc)), types); } catch { /* invalid trees are flagged per page */ }
+try { [, warnings] = assemble(manifest.pages.map(page => states.get(page.id)).map(state => (state.valid && state.doc) || null), types); } catch { /* invalid trees are flagged per page */ }
 reviewPageStates(manifest.pages, states, types, warnings);
 
 const kinds = { regions: "regionFlags", text: "textFlags", read: "readFlags" };

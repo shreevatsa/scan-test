@@ -3,6 +3,7 @@
 
   py_reference.py check BOOK_FOLDER       every page document, and broken copies of a few, with book.py's check
   py_reference.py assemble BOOK_FOLDER    the book assembled by book.py (units, flows, relations, warnings)
+  py_reference.py assemble-cases          the same for each {types, docs} case read from stdin (a null doc is a gap)
   py_reference.py parse                   parse_line and formatted_runs on the JSON cases read from stdin
 
 Output is JSON on stdout. Local only.
@@ -101,6 +102,12 @@ def main():
         json.dump(dict(units=book["units"], flows=book["flows"], relations=book["relations"], warnings=warnings,
                        schema_version=book["schema_version"], errors=bk.validate(book) or bk.check_document(book, tl)[0]),
                   sys.stdout, ensure_ascii=False)
+    elif cmd == "assemble-cases":
+        out = []
+        for case in json.load(sys.stdin):
+            book, warnings = bk.assemble(case["docs"], case["types"])
+            out.append(dict(units=book["units"], flows=book["flows"], warnings=warnings))
+        json.dump(out, sys.stdout, ensure_ascii=False)
     elif cmd == "gray":
         # The page as method 043 reads it: PIL's grayscale conversion, row-major bytes.
         from PIL import Image

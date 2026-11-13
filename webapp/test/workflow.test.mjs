@@ -6,6 +6,7 @@ import { runBatch } from "../js/pipeline/batch.js";
 import { CredentialChecks } from "../js/key-check.js";
 import { Book, idb } from "../js/store.js";
 import { writeChaya, sha256hex } from "../js/chayapdf.js";
+import { assemble } from "../js/assemble.js";
 
 const types = { types: { paragraph: { region: "paragraph", flow: "main" } } };
 const page = (id = "p1") => ({ page: { id, regions: [{ id: "r1", type: "paragraph", lines: [{ line: 1, polygons: [[[0, 0], [10, 0], [10, 10]]], text: "Printed" }] }] },
@@ -51,8 +52,11 @@ test("reading gaps are named and units never join across pages awaiting acceptan
   assert.deepEqual(readingGaps(pages, new Set(["p1", "p3"])), ["Page 2", "Page 4"]);
   assert.deepEqual(readingGaps(pages, new Set(["p1"])), ["Pages 2–4"]);
   const out = readingDocuments(pages, docs);
-  assert.deepEqual(out[0].units[0].open, { start: true });
-  assert.equal(out[1].units[0].open, undefined);
+  assert.deepEqual(out, [docs[0], null, docs[1], null], "the pages in order, a gap where a page is not moved on");
+  const [book, warnings] = assemble(out.map(doc => doc && { ...doc, flows: { main: ["u1"] } }), { flows: { main: "Main" }, ...types });
+  assert.deepEqual(warnings, [], "a gap is like the end of the book before it and its start after it");
+  assert.deepEqual(book.units.map(unit => unit.id), ["p1#u1", "p3#u1"], "nothing joins across it");
+  assert.deepEqual(book.pages.map(page => page.id), ["p1", "p3"]);
   assert.deepEqual(docs, snapshot);
 });
 

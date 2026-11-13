@@ -9,7 +9,7 @@ import { readerOptions } from "./pipeline/readers.js?v=20261111-carbon-high-5";
 import { readChaya, sha256hex } from "./chayapdf.js";
 import { PageView } from "./pageimage.js?v=20261110-figure-region-2";
 import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261112-library-2";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-library-2";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261112-join-1";
 import { renderStyle } from "./styleview.js?v=20261112-library-2";
 import { openTypeList, renderTypeOverview } from "./typesview.js?v=20261112-library-2";
 import { typeSetup } from "./type-setup.js?v=20261112-library-2";
@@ -17,12 +17,12 @@ import { h, typeColors, esc } from "./render.js";
 import * as ops from "./ops.js?v=20261110-finders-4";
 import { EditError } from "./ops.js?v=20261110-finders-4";
 import { Maker } from "./pipeline/run.js?v=20261112-library-2";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, breakAtEmptyPages } from "./workflow.js?v=20261112-library-2";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261112-join-1";
 import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261112-library-2";
 import { rebuildProvisional } from "./pipeline/provisional.js?v=20261110-finders-4";
 import { layerState, noteEdit } from "./layers.js?v=20261110-finders-4";
-import { orderedRegions } from "./flags.js?v=20261112-library-2";
-import { assemble } from "./assemble.js?v=20261110-reading-2";
+import { orderedRegions } from "./flags.js?v=20261112-join-1";
+import { assemble } from "./assemble.js?v=20261112-join-1";
 import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261110-finders-4";
 import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261112-library-2";
 import { renderPages } from "./pagesview.js?v=20261112-library-2";
@@ -533,10 +533,10 @@ class App {
   }
 
   refreshWorkflowFlags() {
-    // In page order: the states are filled as pages finish loading, and assembly joins each page to the next.
-    const docs = this.book.pages.map(page => this.pageStates.get(page.id)).filter(state => state?.valid && state.doc).map(state => state.doc);
+    // In page order, as Read assembles them: a page with no document yet or an invalid one is a gap nothing joins across.
+    const docs = this.book.pages.map(page => this.pageStates.get(page.id)).map(state => (state?.valid && state.doc) || null);
     let warnings = [];
-    try { [, warnings] = assemble(breakAtEmptyPages(docs), this.book.types); } catch { /* Page checks identify invalid trees. */ }
+    try { [, warnings] = assemble(docs, this.book.types); } catch { /* Page checks identify invalid trees. */ }
     reviewPageStates(this.book.pages, this.pageStates, this.book.types, warnings);
   }
 
@@ -574,13 +574,8 @@ class App {
   }
 
   regionFlagContext(doc) {
-    const index = this.book.index[doc.page.id], page = this.book.pages[index];
-    const neighbor = delta => {
-      const other = this.book.pages[index + delta];
-      if (doc.source?.sample?.[`consecutive_${delta < 0 ? "previous" : "next"}`] === false) return null;
-      return other && (!page.pdf_page || !other.pdf_page || other.pdf_page === page.pdf_page + delta) ? this.pageStates.get(other.id)?.doc : null;
-    };
-    return { errors: this.check(doc)[0], previous: neighbor(-1), next: neighbor(1) };
+    const index = this.book.index[doc.page.id], docOf = id => (id === doc.page.id ? doc : this.pageStates.get(id)?.doc || null);
+    return { errors: this.check(doc)[0], previous: pageWalker(this.book.pages, index, docOf, -1), next: pageWalker(this.book.pages, index, docOf, 1), cache: new WeakMap() };
   }
 
   async startByHand(pid) {
@@ -609,9 +604,9 @@ class App {
   }
 
   // "No content on this page" (Regions): every region removed, as one editing step that undo restores, and the page
-  // moved on to Text. A page with no regions has nothing to transcribe or complete, and no unit joins across it; this
-  // is how a page that is not part of the book (a library's cover, a blank page) is kept. Asked first when the page
-  // has regions with text or a person's edits.
+  // moved on to Text. A page with no regions has nothing to transcribe or complete, and units join across it as across
+  // any page with no unit of their type (assemble.js); this is how a page that is not part of the book (a library's
+  // cover, a blank page) is kept. Asked first when the page has regions with text or a person's edits.
   async markNoContent() {
     if (this.stage !== "regions" || !this.doc || !this.book.writable) return;
     if (this.workflowBusy || this.outlineBusy) return this.toast("Wait for the current edit to finish.");
@@ -1194,7 +1189,8 @@ class App {
     const el = this.main;
     el.replaceChildren(h("div", { class: "loading" }, "Checking every page…"));
     const docs = await this.book.all((d, n) => { el.firstChild.textContent = `Checking every page… ${d} of ${n}`; });
-    const P = prepare(docs, this.tl);
+    // In page order, with a page that has no document yet as a gap that nothing joins across.
+    const P = prepare(readingDocuments(this.book.pages, docs), this.tl);
     const rows = docs.map(doc => {
       const pid = doc.page.id;
       const [errors, warnings] = this.check(doc);
@@ -1212,7 +1208,7 @@ class App {
     const link = pid => h("button", { class: "link", onclick: () => this.openPage(pid) }, pid.replace(/^.*-page-/, "page "));
     el.replaceChildren(h("div", { class: "checkview" },
       h("h2", {}, "Problems"),
-      h("p", { class: "hint" }, "What the checks find across the book. Each page document is checked against the schema and the book's type list whenever it changes (the same rules as schema/book.py check): a page that fails is marked ✗ here, and its corrections are kept as a draft until it passes. Across pages: units marked as going on at a page break that do not join the next page, and printed page numbers out of sequence. The table also shows the pages you corrected (✎) and the notes the transcription model left."),
+      h("p", { class: "hint" }, "What the checks find across the book. Each page document is checked against the schema and the book's type list whenever it changes (the same rules as schema/book.py check): a page that fails is marked ✗ here, and its corrections are kept as a draft until it passes. Across pages: units marked as going on at a page break that do not join a later page (past blank pages and plates, which have no unit of their type), and printed page numbers out of sequence. The table also shows the pages you corrected (✎) and the notes the transcription model left."),
       h("p", {}, `${rows.length} pages: ${bad.length} not passing the checks, ${edited.length} corrected by you, ${Object.keys(flagged).length} with a printed page number out of sequence (and ${Object.keys(unprinted).length} printing none, which is often right, as on a chapter's first page), `,
         `${P.warnings.length} page breaks where units do not join.`),
       P.warnings.length ? h("details", { open: true }, h("summary", {}, "Units that do not join across a page break"), ...P.warnings.map(w => h("div", { class: "row" }, w))) : null,
@@ -1271,7 +1267,7 @@ class App {
       document.body.append(a); a.click(); a.remove();
     };
     const id = book.manifest.book_id;
-    const assembled = async () => prepare(await book.all(), this.tl, book.style);
+    const assembled = async () => prepare(readingDocuments(book.pages, await book.all()), this.tl, book.style);
     // Each figure unit's regions cut from their page images, as data: URLs (ornaments, being furniture, are not in the text).
     const figureCrops = async P => {
       const out = {};

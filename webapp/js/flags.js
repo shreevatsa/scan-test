@@ -32,15 +32,20 @@ export function layoutCounts(docs, types) {
   return counts;
 }
 
-function flowEdges(doc, types) {
-  const paths = regionTypePaths(types), edges = new Map();
+// A page's regions in each flow, in reading order, furniture left out. `cache` (a WeakMap) keeps them for a document
+// that does not change while it is used.
+function flowRegions(doc, types, cache = null) {
+  const kept = cache?.get(doc);
+  if (kept?.types === types) return kept.lists;
+  const paths = regionTypePaths(types), lists = new Map();
   for (const region of orderedRegions(doc, types, false)) {
     const path = paths.get(region.type), flow = path && types.types[path[0]].flow;
     if (!flow) continue;
-    if (!edges.has(flow)) edges.set(flow, { first: region, last: region });
-    edges.get(flow).last = region;
+    if (!lists.has(flow)) lists.set(flow, []);
+    lists.get(flow).push(region);
   }
-  return edges;
+  cache?.set(doc, { types, lists });
+  return lists;
 }
 
 // The cells of a grid, every `step` pixels, inside a region's outline (its rings, filled even-odd).
@@ -91,7 +96,10 @@ export function regionOverlap(a, b) {
 // continuation flags are compared only while either page's units are still provisional.
 const unitsSettled = doc => { const units = layerState(doc, "units"); return !!units && units.state !== "provisional"; };
 
-export function regionFlags(doc, types, { errors = [], previous = null, next = null } = {}) {
+// `previous` and `next` are the pages around this one, for its continuation flags: each a page document (or null), or a
+// function that takes a test of the pages to look past and returns the nearest page that fails it, or null where the
+// book does not go on (workflow.js pageWalker).
+export function regionFlags(doc, types, { errors = [], previous = null, next = null, cache = null } = {}) {
   if (!doc) return [];
   const flags = [], add = (code, message, region = null, box = null) => flags.push({ code, message, region, box });
   const regions = doc.page.regions;
@@ -113,20 +121,67 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
       add("overlap", `${regions[i].id} and ${regions[j].id} overlap by more than a fifth of the smaller region`, regions[i].id);
   }
   for (const error of errors) add("invalid", error);
-  const current = flowEdges(doc, types);
   // A page with no regions (no content) has no continuation to compare, on either side of it.
-  for (const [neighbor, side] of [[previous, "previous"], [next, "next"]]) {
-    if (!regions.length || !neighbor?.page.regions.length || unitsSettled(doc) && unitsSettled(neighbor)) continue;
-    const other = flowEdges(neighbor, types);
-    for (const flow of new Set([...current.keys(), ...other.keys()])) {
-      const edge = current.get(flow), matching = other.get(flow);
-      const before = side === "previous" ? matching?.last : edge?.last;
-      const after = side === "previous" ? edge?.first : matching?.first;
-      if (!!before?.source?.continues_later !== !!after?.source?.continues_from_earlier)
-        add("continuation", `${flow} continuation does not match the ${side} page`, side === "previous" ? edge?.first.id : edge?.last.id);
-    }
+  if (regions.length) for (const [flow, list] of flowRegions(doc, types, cache)) {
+    for (const [code, message, region] of continuationFlags(flow, list, doc, types, previous, next, cache)) add(code, message, region);
   }
   return flags;
+}
+
+// The continuation flags of a page's regions in one flow (`list`), by the rule assembly follows (assemble.js), with
+// each region taken as a unit. A page's open ends in a flow are those its provisional units get (provisional.js): its
+// first region there if marked as going on from earlier, its last if marked as going on later (a marked pair inside the
+// page joins there). An open end continues in the open start of a later page, if of its type, past pages with no region
+// of that type in the flow and no open end there (a blank page, a plate and its caption). Such a page between is not
+// flagged; the pages on either side are flagged where their marks do not match. An open start with nothing open to
+// join is flagged as assembly reports it: where the flow has regions before it, its earlier side being the nearest
+// page with a region of its type or an open end, else the nearest with regions. A neighbor given as a document is the
+// only page looked at.
+function continuationFlags(flow, list, doc, types, previous, next, cache) {
+  const out = [], inFlow = page => flowRegions(page, types, cache).get(flow) || [];
+  const walk = value => (typeof value === "function" ? value : () => (value?.page.regions.length ? value : null));
+  const back = walk(previous), ahead = walk(next);
+  const startOf = regions => (regions[0]?.source?.continues_from_earlier ? regions[0] : null);
+  const endOf = regions => (regions.at(-1)?.source?.continues_later ? regions.at(-1) : null);
+  const plain = regions => !startOf(regions) && !endOf(regions);
+  const has = (regions, type) => regions.some(region => region.type === type);
+  const between = (regions, type) => plain(regions) && !has(regions, type);
+  const settled = other => !other || unitsSettled(doc) && unitsSettled(other);
+  const start = startOf(list), last = list[list.length - 1];
+
+  // Back past pages with no open end in the flow to the nearest page with one (null where the book does not go on before).
+  const passed = [];
+  const found = back(page => { if (!plain(inFlow(page))) return false; passed.push(page); return true; });
+  // The region open at its end that reaches this page: that page's last, if it goes on and no page passed has its type.
+  const end = found && endOf(inFlow(found));
+  const carry = end && !passed.some(page => has(inFlow(page), end.type)) ? end : null;
+  // This page sits between that region and its continuation.
+  const passes = !!carry && between(list, carry.type);
+  let earlier = null, before = false;
+  if (carry) [earlier, before] = [found, start ? start.type !== carry.type : !passes];
+  else if (start) {
+    earlier = passed.find(page => has(inFlow(page), start.type)) || found || passed.find(page => inFlow(page).length) || null;
+    before = !!earlier;
+  }
+  if (before && !settled(earlier)) out.push(["continuation", `${flow} continuation does not match the previous page`, (start || list[0]).id]);
+
+  // Ahead, unless this page is between: where its last region goes on, the nearest page past pages between; where it
+  // does not, the nearest page with an open end, if its open start has this page as its earlier side.
+  if (!passes) {
+    let page = null, after = false;
+    if (endOf(list)) {
+      page = ahead(other => between(inFlow(other), last.type));
+      after = !!page && startOf(inFlow(page))?.type !== last.type;
+    } else {
+      const skipped = [];
+      page = ahead(other => { if (!plain(inFlow(other))) return false; skipped.push(other); return true; });
+      const later = page && startOf(inFlow(page));
+      after = !!later && !skipped.some(other => has(inFlow(other), later.type)) && (!between(list, later.type)
+        || !skipped.some(other => inFlow(other).length) && !back(other => between(inFlow(other), later.type)));
+    }
+    if (after && !settled(page)) out.push(["continuation", `${flow} continuation does not match the next page`, last.id]);
+  }
+  return out;
 }
 
 export function textFlags(doc, types) {

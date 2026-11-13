@@ -309,9 +309,31 @@ def check_file(path, types_path=None):
 # ---------------------------------------------------------------- assembly
 
 def assemble(page_docs, tl):
-    """Join page documents, in page order, into one book document. Returns (book, warnings)."""
+    """Join page documents, in page order, into one book document. Returns (book, warnings).
+
+    A unit open at its end joins the unit open at its start on a later page of its flow, level by level, when the two
+    have the same type and every page between has no unit of that type there and no open end of its own (a blank page,
+    a plate with its caption, a page whose units are all of other types). The pages between keep their units, after the
+    joined one. A None in page_docs is a page that is not there: nothing joins across it, as at the start or end of the
+    book."""
     units, start_open, end_open, merged_into, warnings = {}, {}, {}, {}, []
     flows = {f: [] for f in tl["flows"]}
+    # Per flow, since the start or the last page that is not there: carry, the unit open at its end that a later page
+    # may continue, and since, each page with units there (the last of them, as on the page, their types, whether one
+    # is open at either end), which names the earlier side of an open start that has nothing to join.
+    carry, since = {}, {}
+    # Per unit joined across pages: its child open at its end that a later page may continue (the same rule, a level down).
+    inner = {}
+
+    def type_of(uid):
+        return units[uid]["type"]
+
+    def flagged(uid):
+        return bool(start_open[uid] or end_open[uid])
+
+    def open_last(children):
+        uid = children[-1].get("unit") if children else None
+        return uid if uid and end_open[uid] else None
 
     def final(uid):
         while uid in merged_into:
@@ -319,25 +341,41 @@ def assemble(page_docs, tl):
         return uid
 
     def merge(a, b):
-        """Append unit b (open at its start, on the later page) to unit a (open at its end)."""
-        A, B = units[a], units.pop(b)
+        """Append unit b (open at its start, on a later page) to unit a (open at its end)."""
+        A, B = units[a], units[b]
+        open_ = inner[a] if a in inner else open_last(A["children"])
+        del units[b]
         merged_into[b] = a
         kids = B["children"]
-        last, first = A["children"][-1], kids[0]
-        if "unit" in last and end_open[last["unit"]] or "unit" in first and start_open[first["unit"]]:
-            la, fb = last.get("unit"), first.get("unit")
-            if la and fb and end_open[la] and start_open[fb] and units[la]["type"] == units[fb]["type"]:
-                merge(la, fb)
-                kids = kids[1:]
-            else:
-                warnings.append(f"{a} + {b}: inner open ends do not match ({la}, {fb})")
+        first = kids[0].get("unit") if kids else None
+        # B's page sits between open_ and its continuation: B goes on, and its children are units of other types with
+        # no open end of their own.
+        passes = bool(open_) and bool(end_open[b]) and all(
+            "unit" in k and not flagged(k["unit"]) and type_of(k["unit"]) != type_of(open_) for k in kids)
+        carried = open_ if passes else open_last(kids)
+        if open_ and first and start_open[first] and type_of(open_) == type_of(first):
+            merge(open_, first)
+            if carried == first:
+                carried = open_
+            kids = kids[1:]
+        elif open_ and not passes:
+            warnings.append(f"{a} + {b}: inner open ends do not match ({open_}, {first})")
+        elif first and start_open[first]:
+            earlier = next((k for k in reversed(A["children"])
+                            if k.get("unit") and (flagged(k["unit"]) or type_of(k["unit"]) == type_of(first))),
+                           A["children"][-1] if A["children"] else {})
+            warnings.append(f"{a} + {b}: inner open ends do not match ({earlier.get('unit')}, {first})")
         A["children"] += kids
         end_open[a] = end_open[b]
+        inner[a] = carried
         for k in ("number", "label", "lang"):
             if k in B and k not in A:
                 A[k] = B[k]
 
     for pd in page_docs:
+        if pd is None:
+            carry, since = {}, {}
+            continue
         pid = pd["page"]["id"]
         bid = lambda local: f"{pid}#{local}"
         for u in pd["units"]:
@@ -347,23 +385,39 @@ def assemble(page_docs, tl):
             units[nu["id"]] = nu
             start_open[nu["id"]] = u.get("open", {}).get("start", False)
             end_open[nu["id"]] = u.get("open", {}).get("end", False)
-        for flow, tops in pd["flows"].items():
-            tops = [bid(t) for t in tops]
-            prev = flows[flow][-1] if flows[flow] else None
-            starts = [t for t in tops if start_open[t]]
-            if prev and end_open[prev] and starts and units[prev]["type"] == units[starts[0]]["type"]:
-                merge(prev, starts[0])
+        for flow, tops0 in pd["flows"].items():
+            tops = [bid(t) for t in tops0]
+            listed, pages = flows.setdefault(flow, []), since.setdefault(flow, [])
+            open_, starts = carry.get(flow), [t for t in tops if start_open[t]]
+            kinds, marked = {type_of(t) for t in tops}, any(flagged(t) for t in tops)
+            # This page sits between open_ and its continuation: no unit of its type here and no open end of its own.
+            passes = bool(open_) and not marked and type_of(open_) not in kinds
+            last = open_ if passes else (tops[-1] if tops else None)
+            if open_ and starts and type_of(open_) == type_of(starts[0]):
+                merge(open_, starts[0])
+                if last == starts[0]:
+                    last = open_
                 tops.remove(starts[0])
-            elif prev and end_open[prev] or starts and prev:
-                warnings.append(f"page {pid}, flow {flow}: open ends do not match ({prev}, {starts})")
-            flows[flow] += tops
+            elif open_ and not passes:
+                warnings.append(f"page {pid}, flow {flow}: open ends do not match ({open_}, [{', '.join(starts)}])")
+            elif starts and pages:
+                # Nothing open to join: the earlier side is the latest page with a unit of its type or an open end,
+                # else the latest page with units in the flow.
+                kind = type_of(starts[0])
+                earlier = next((p for p in reversed(pages) if p["marked"] or kind in p["kinds"]), pages[-1])
+                warnings.append(f"page {pid}, flow {flow}: open ends do not match ({earlier['last']}, [{', '.join(starts)}])")
+            listed += tops
+            if tops0:
+                pages.append(dict(last=bid(tops0[-1]), kinds=kinds, marked=marked))
+            carry[flow] = last if last and end_open[last] else None
     # Units still open at the edges of the page range keep their open flags.
     for uid, u in units.items():
         flags = {k: v for k, v in (("start", start_open[uid]), ("end", end_open[uid])) if v}
         if flags:
             u["open"] = flags
+    present = [pd for pd in page_docs if pd is not None]
     relations = []
-    for pd in page_docs:
+    for pd in present:
         pid = pd["page"]["id"]
         for rel in pd.get("relations", []):
             rel = copy.deepcopy(rel)
@@ -371,11 +425,11 @@ def assemble(page_docs, tl):
                 if "unit" in rel[side]:
                     rel[side]["unit"] = final(f"{pid}#{rel[side]['unit']}")
             relations.append(rel)
-    version = max((pd.get("schema_version", "0.1") for pd in page_docs), default="0.1")
-    book = dict(format="book", schema_version=version, types=tl, pages=[pd["page"] for pd in page_docs],
+    version = max((pd.get("schema_version", "0.1") for pd in present), default="0.1")
+    book = dict(format="book", schema_version=version, types=tl, pages=[pd["page"] for pd in present],
                 units=list(units.values()), flows=flows, relations=relations,
-                source=dict(assembled_by="schema/book.py", pages=[pd["page"]["id"] for pd in page_docs],
-                            page_sources=[pd.get("source", {}) for pd in page_docs],
+                source=dict(assembled_by="schema/book.py", pages=[pd["page"]["id"] for pd in present],
+                            page_sources=[pd.get("source", {}) for pd in present],
                             code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()))
     return book, warnings
 

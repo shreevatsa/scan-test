@@ -122,6 +122,119 @@ class Tests(unittest.TestCase):
             self.assertEqual(bk.validate(doc) + bk.check_document(doc, doc["types"])[0], [], book_path)
 
 
+PLAIN = {
+    "format": "types", "schema_version": "0.1", "book_id": "toy", "title": "Toy book", "flows": {"main": "text"},
+    "types": {
+        "paragraph": {"description": "prose", "region": "paragraph", "flow": "main"},
+        "verse": {"description": "a verse", "region": "verse", "flow": "main"},
+        "figure": {"description": "an illustration", "region": "figure", "flow": "main"},
+        "caption": {"description": "a caption", "region": "caption", "flow": "main"},
+        "page_number": {"description": "folio", "role": "furniture", "region": "page_number"},
+    },
+}
+CHAPTERS = copy.deepcopy(PLAIN)
+CHAPTERS["types"] = {"chapter": {"description": "a chapter", "contains": ["paragraph", "verse", "figure", "caption"], "flow": "main"},
+                     **{k: {kk: vv for kk, vv in v.items() if kk != "flow"} for k, v in PLAIN["types"].items()}}
+
+
+def plain_page(n, *units, chapter=None):
+    """Page n with one region per unit, (type, open) in reading order; with chapter=open, inside a chapter."""
+    pid = f"p{n}"
+    regions = [(f"r{i + 1}", t) for i, (t, _) in enumerate(units)]
+    us = [dict(id=f"u{i + 1}", type=t, children=[{"region": f"{pid}#r{i + 1}"}], **({"open": o} if o else {}))
+          for i, (t, o) in enumerate(units)]
+    tops = [u["id"] for u in us]
+    if chapter is not None and us:
+        us.insert(0, dict(id="c", type="chapter", children=[{"unit": t} for t in tops], **({"open": chapter} if chapter else {})))
+        tops = ["c"]
+    return page(pid, regions, us, {"main": tops} if tops else {})
+
+
+END, START, BOTH = {"end": True}, {"start": True}, {"start": True, "end": True}
+PLATE = (("figure", None), ("caption", None))
+
+
+class PageJoinTests(unittest.TestCase):
+    """A unit open at its end joins the unit of its type open at its start on a later page, past pages with no unit of
+    that type in the flow and no open end of their own (blank pages, plates). The same cases as webapp/test/page-joins."""
+
+    def assemble(self, docs, tl=PLAIN):
+        for d in docs:
+            if d is not None:
+                self.assertEqual(bk.validate(d) + bk.check_document(d, tl)[0], [], d["page"]["id"])
+        book, warnings = bk.assemble(docs, tl)
+        return {u["id"]: u for u in book["units"]}, book["flows"]["main"], warnings
+
+    def test_blank_page(self):
+        for blank in (plain_page(2), dict(plain_page(2), flows={"main": []})):
+            units, flow, warnings = self.assemble([plain_page(1, ("paragraph", END)), blank, plain_page(3, ("paragraph", START))])
+            self.assertEqual(warnings, [])
+            self.assertEqual(flow, ["p1#u1"])
+            self.assertEqual(units["p1#u1"]["children"], [{"region": "p1#r1"}, {"region": "p3#r1"}])
+            self.assertNotIn("open", units["p1#u1"])
+
+    def test_plate_keeps_its_figure_after_the_paragraph(self):
+        for plate in (PLATE[:1], PLATE):
+            units, flow, warnings = self.assemble([plain_page(1, ("paragraph", END)), plain_page(2, *plate), plain_page(3, ("paragraph", START))])
+            self.assertEqual(warnings, [])
+            self.assertEqual(flow, ["p1#u1", *(f"p2#u{i + 1}" for i in range(len(plate)))])
+            self.assertEqual([c["region"] for c in units["p1#u1"]["children"]], ["p1#r1", "p3#r1"])
+
+    def test_chain_across_a_plate_and_a_blank_page(self):
+        units, flow, warnings = self.assemble([plain_page(1, ("paragraph", END)), plain_page(2, ("paragraph", BOTH)),
+                                               plain_page(3, *PLATE), plain_page(4), plain_page(5, ("paragraph", START))])
+        self.assertEqual(warnings, [])
+        self.assertEqual(flow, ["p1#u1", "p3#u1", "p3#u2"])
+        self.assertEqual([c["region"] for c in units["p1#u1"]["children"]], ["p1#r1", "p2#r1", "p5#r1"])
+
+    def test_a_page_with_its_own_paragraph_stops_the_join(self):
+        units, flow, warnings = self.assemble([plain_page(1, ("paragraph", END)), plain_page(2, ("figure", None), ("paragraph", None)),
+                                               plain_page(3, ("paragraph", START))])
+        self.assertEqual(flow, ["p1#u1", "p2#u1", "p2#u2", "p3#u1"])
+        self.assertEqual(warnings, ["page p2, flow main: open ends do not match (p1#u1, [])",
+                                    "page p3, flow main: open ends do not match (p2#u2, [p3#u1])"])
+
+    def test_other_types(self):
+        # A verse goes on past a page of prose (no verse there); the prose stays after it in the flow.
+        units, flow, warnings = self.assemble([plain_page(1, ("paragraph", None), ("verse", END)), plain_page(2, ("paragraph", None)),
+                                               plain_page(3, ("verse", START), ("paragraph", None))])
+        self.assertEqual(warnings, [])
+        self.assertEqual(flow, ["p1#u1", "p1#u2", "p2#u1", "p3#u2"])
+        # A paragraph and a verse do not join, across a plate as on adjacent pages.
+        units, flow, warnings = self.assemble([plain_page(1, ("paragraph", END)), plain_page(2, *PLATE), plain_page(3, ("verse", START))])
+        self.assertEqual(warnings, ["page p3, flow main: open ends do not match (p1#u1, [p3#u1])"])
+        # Prose going on from page 2 to 3 is page 2's own open end: the verse stops there.
+        units, flow, warnings = self.assemble([plain_page(1, ("verse", END)), plain_page(2, ("paragraph", END)), plain_page(3, ("paragraph", START))])
+        self.assertEqual(warnings, ["page p2, flow main: open ends do not match (p1#u1, [])"])
+        self.assertEqual(flow, ["p1#u1", "p2#u1"])
+
+    def test_open_start_with_nothing_to_join(self):
+        # The earlier side named is the nearest page with a unit of its type, not the plate between.
+        _, _, warnings = self.assemble([plain_page(1, ("paragraph", None)), plain_page(2, *PLATE), plain_page(3, ("paragraph", START))])
+        self.assertEqual(warnings, ["page p3, flow main: open ends do not match (p1#u1, [p3#u1])"])
+        _, _, warnings = self.assemble([plain_page(1, ("verse", None)), plain_page(2, ("paragraph", START))])
+        self.assertEqual(warnings, ["page p2, flow main: open ends do not match (p1#u1, [p2#u1])"])
+        _, _, warnings = self.assemble([None, plain_page(2, ("paragraph", START))])
+        self.assertEqual(warnings, [])
+
+    def test_nothing_joins_across_a_page_not_there(self):
+        units, flow, warnings = self.assemble([plain_page(1, ("paragraph", END)), None, plain_page(3, ("paragraph", START))])
+        self.assertEqual(warnings, [])
+        self.assertEqual(flow, ["p1#u1", "p3#u1"])
+        self.assertEqual((units["p1#u1"]["open"], units["p3#u1"]["open"]), (END, START))
+
+    def test_in_chapters(self):
+        units, flow, warnings = self.assemble([plain_page(1, ("paragraph", END), chapter=END), plain_page(2, *PLATE, chapter=BOTH),
+                                               plain_page(3, ("paragraph", START), chapter=START)], CHAPTERS)
+        self.assertEqual(warnings, [])
+        self.assertEqual(flow, ["p1#c"])
+        self.assertEqual(units["p1#c"]["children"], [{"unit": "p1#u1"}, {"unit": "p2#u1"}, {"unit": "p2#u2"}])
+        self.assertEqual([c["region"] for c in units["p1#u1"]["children"]], ["p1#r1", "p3#r1"])
+        _, _, warnings = self.assemble([plain_page(1, ("paragraph", None), chapter=END), plain_page(2, *PLATE, chapter=BOTH),
+                                        plain_page(3, ("paragraph", START), chapter=START)], CHAPTERS)
+        self.assertEqual(warnings, ["p1#c + p3#c: inner open ends do not match (p1#u1, p3#u1)"])
+
+
 class InlineTests(unittest.TestCase):
     """Schema 0.2: inline spans, note markers and anchors (schema/inline.py and the checks in book.py)."""
 

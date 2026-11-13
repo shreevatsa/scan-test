@@ -4,11 +4,11 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261110-reading-2";
+import { assemble } from "./assemble.js?v=20261112-join-1";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, breakAtEmptyPages, noContent } from "./workflow.js?v=20261112-library-2";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261112-join-1";
 import { layerState } from "./layers.js?v=20261110-finders-4";
 import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261112-library-2";
 
@@ -22,9 +22,11 @@ function dropHyphen(L) {
 
 const SEP = { space: " ", hyphen: "", join: "", line: "<br>" };
 
-export function prepare(docs, tl, sheet = null) {
-  const merged = {};
-  const [book, warnings] = assemble(breakAtEmptyPages(docs), tl, {}, { onMerge: (a, b) => { merged[b] = a; } });
+// The book assembled from page documents in page order (null where a page is not there, which nothing joins across),
+// with what Read needs to show it.
+export function prepare(pageDocs, tl, sheet = null) {
+  const merged = {}, docs = pageDocs.filter(Boolean);
+  const [book, warnings] = assemble(pageDocs, tl, {}, { onMerge: (a, b) => { merged[b] = a; } });
   const unitCanonical = {}, unitFragments = {};
   for (const doc of docs) for (const unit of doc.units) {
     const id = `${doc.page.id}#${unit.id}`;
@@ -202,9 +204,8 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
   const all = await book.all((d, n) => { if (current()) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
   if (!current()) return;
   const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
-  const docs = readingDocuments(book.pages, accepted);
-  const gaps = readingGaps(book.pages, new Set(docs.map(doc => doc.page.id)));
-  const P = prepare(docs, book.types, book.style);
+  const gaps = readingGaps(book.pages, new Set(accepted.map(doc => doc.page.id)));
+  const P = prepare(readingDocuments(book.pages, accepted), book.types, book.style);
   const issues = readingIssues(accepted, book.types, app.validate, P.warnings, P.unitCanonical);
   app.readerData = P;
   if (app.readerPrinted === undefined) app.readerPrinted = !!book.style;
@@ -221,7 +222,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
     h("label", {}, h("input", { type: "checkbox", checked: app.readerStructure, onchange: e => { app.readerStructure = e.target.checked; body.classList.toggle("structure", e.target.checked); } }), " show the units"),
     P.sheet ? h("label", { title: "fonts, sizes, alignment and spacing from the book's style sheet and each unit's style" },
       h("input", { type: "checkbox", checked: app.readerPrinted ? true : null, onchange: e => { app.readerPrinted = e.target.checked; renderReader(el, app, { keepPlace: true }).catch(error => app.toast(error.message, "bad")); } }), " as printed") : null,
-    h("span", { class: "meta" }, `${docs.length} pages · ${P.book.units.length} units · ${book.edits.size} pages corrected`),
+    h("span", { class: "meta" }, `${accepted.length} pages · ${P.book.units.length} units · ${book.edits.size} pages corrected`),
     issues.length ? h("details", { class: "warn" }, h("summary", {}, `${issues.length} reading problems`),
       ...issues.map(issue => h("p", {}, h("button", { class: "link", onclick: () => app.selectReadingIssue?.(issue) }, issue.message)))) : null,
     app.dirty ? h("div", { class: "warn" }, "The page open in the editor has changes that are not saved yet; they are not shown here.") : null);

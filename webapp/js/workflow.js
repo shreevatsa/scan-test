@@ -1,6 +1,6 @@
 import { typeRevision } from "./schema.js?v=20261110-reading-2";
 import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261110-finders-4";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261112-library-2";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261112-join-1";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -20,19 +20,15 @@ export function pageStages(doc, types, errors = [], warnings = []) {
 export function reviewPageStates(pages, states, types, assemblyWarnings = []) {
   const counts = layoutCounts([...states.values()].map(state => state.doc), types);
   const pending = [...states.values()].filter(state => !state.doc).length;
+  const docOf = id => states.get(id)?.doc || null, cache = new WeakMap();
   pages.forEach((page, index) => {
     const state = states.get(page.id);
     if (!state) return;
-    const neighbor = delta => {
-      const other = pages[index + delta];
-      if (!other || page.pdf_page && other.pdf_page && other.pdf_page !== page.pdf_page + delta) return null;
-      if (state.doc?.source?.sample?.[`consecutive_${delta < 0 ? "previous" : "next"}`] === false) return null;
-      return states.get(other.id)?.doc || null;
-    };
     state.layout = layoutSignature(state.doc, types);
     state.layoutFrequency = state.doc ? counts.get(state.layout) || 0 : pending;
     state.rareLayout = !!state.doc && state.layoutFrequency < RARE_LAYOUT;
-    state.regionFlags = regionFlags(state.doc, types, { errors: state.errors, previous: neighbor(-1), next: neighbor(1) });
+    state.regionFlags = regionFlags(state.doc, types, { errors: state.errors, cache,
+      previous: pageWalker(pages, index, docOf, -1), next: pageWalker(pages, index, docOf, 1) });
     state.textFlags = textFlags(state.doc, types);
     state.readFlags = readFlags(state.doc, state.errors, state.warnings, assemblyWarnings.filter(message =>
       message.includes(`${page.id}#`) || message.includes(`page ${page.id},`)));
@@ -106,34 +102,33 @@ export function readingGaps(pages, included) {
   return gaps;
 }
 
+// The book's pages in order, each its document where it is in `docs` and null where it is not: what Read assembles (the
+// pages moved on to Read), and Problems and Export (the pages with a document). Assembly joins nothing across a null,
+// so a page not moved on yet (or with no document yet) is a gap that no unit crosses.
 export function readingDocuments(pages, docs) {
-  const included = new Set(docs.map(doc => doc.page.id));
-  return docs.map(doc => {
-    const index = pages.findIndex(page => page.id === doc.page.id);
-    return closeEnds(doc, index > 0 && !included.has(pages[index - 1].id), index + 1 < pages.length && !included.has(pages[index + 1].id));
-  });
-}
-
-// A page document whose units do not join the page before (`before`) or after (`after`): their open ends there removed.
-function closeEnds(doc, before, after) {
-  if (!before && !after) return doc;
-  const next = structuredClone(doc);
-  for (const unit of next.units) if (unit.open) {
-    if (before) delete unit.open.start;
-    if (after) delete unit.open.end;
-    if (!Object.keys(unit.open).length) delete unit.open;
-  }
-  return next;
+  const byId = new Map(docs.map(doc => [doc.page.id, doc]));
+  return pages.map(page => byId.get(page.id) || null);
 }
 
 // A page with no regions has no content: a library's cover, a blank page, a page that is not part of the book. It has
-// nothing to transcribe or complete, so Text and Read count it as done and their processing skips it.
+// nothing to transcribe or complete, so Text and Read count it as done and their processing skips it. Units join across
+// it as across any page with no unit of their type (webapp/js/assemble.js).
 export const noContent = doc => !!doc && !doc.page.regions.length;
 
-// Page documents in page order, for assembling, with no unit joined across a page with no content.
-export function breakAtEmptyPages(docs) {
-  if (!docs.some(noContent)) return docs;
-  return docs.map((doc, index) => closeEnds(doc, index > 0 && noContent(docs[index - 1]), index + 1 < docs.length && noContent(docs[index + 1])));
+// The pages before (delta -1) or after (delta 1) the page at `index`, for comparing continuations: a function that takes
+// a test of the pages to look past and returns the nearest page's document that fails it, or null where the book does
+// not go on (its first or last page, a page with no document yet, a gap in the PDF's page numbers, a break between
+// sample pages). docOf(id) gives a page's document.
+export function pageWalker(pages, index, docOf, delta) {
+  return (lookPast = () => false) => {
+    for (let k = index; ; k += delta) {
+      const here = pages[k], other = pages[k + delta];
+      if (!other || here.pdf_page && other.pdf_page && other.pdf_page !== here.pdf_page + delta) return null;
+      if (docOf(here.id)?.source?.sample?.[`consecutive_${delta < 0 ? "previous" : "next"}`] === false) return null;
+      const doc = docOf(other.id);
+      if (!doc || !lookPast(doc)) return doc || null;
+    }
+  };
 }
 
 export async function movePage(book, pid, layer, forward, check) {

@@ -1,6 +1,7 @@
 // A page with no content: no regions, as "No content on this page" in Regions leaves it (a library's cover, a blank
 // page, a page that is not part of the book). It is valid, moves on to Text and to Read with no model call, counts as
-// done there, shows nothing in Read, and no unit joins across it. Run from the repository root:
+// done there, shows nothing in Read, and units join across it as across any page with no unit of their type
+// (page-joins.test.mjs has the rule's other cases). Run from the repository root:
 //   node --test webapp/test/*.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -8,7 +9,7 @@ import { readFileSync } from "node:fs";
 import { Book, idb } from "../js/store.js";
 import { Maker } from "../js/pipeline/run.js";
 import { runBatch } from "../js/pipeline/batch.js";
-import { movePage, eligible, pageStages, reviewPageStates, readingDocuments, readingGaps, noContent, breakAtEmptyPages, stageFlags } from "../js/workflow.js";
+import { movePage, eligible, pageStages, reviewPageStates, readingDocuments, readingGaps, noContent, stageFlags } from "../js/workflow.js";
 import { prepare, bookHtml } from "../js/reader.js";
 import { assemble } from "../js/assemble.js";
 import { accept, layerState, noteEdit } from "../js/layers.js";
@@ -163,45 +164,46 @@ test("transcribing or completing a page with no content calls no model and costs
   assert.deepEqual(check(await book.current(id(2))), [[], []]);
 }));
 
-test("Read shows nothing for a page with no content, joins no unit across it and reports no problem", withMemoryIdb(async () => {
+test("Read shows nothing for a page with no content, joins the paragraph across it and reports no problem", withMemoryIdb(async () => {
   const { book } = await threePages();
-  const docs = await book.all();
-  const joined = assemble(docs, types)[0].units;
-  assert.equal(joined.length, 1, "before: page 1's paragraph goes on through page 3");
-
   await markNoContent(book, id(2));
   await movePage(book, id(2), "text", true, check);
   const all = await book.all();
   assert.deepEqual(all.map(doc => doc.page.id), [1, 2, 3].map(id));
-  // Read: every page moved on, so there is no gap to name, and no unit joins across the empty page.
+  // Read: every page moved on, so there is no gap to name, and the paragraph goes on across the empty page.
   const read = readingDocuments(book.pages, all);
-  assert.deepEqual(readingGaps(book.pages, new Set(read.map(doc => doc.page.id))), []);
+  assert.deepEqual(readingGaps(book.pages, new Set(all.map(doc => doc.page.id))), []);
   const P = prepare(read, types);
   assert.deepEqual(P.warnings, [], "no page break where units do not join");
-  assert.equal(P.book.units.length, 2, "page 1's and page 3's paragraphs stay apart");
-  assert.ok(!P.book.units.some(unit => unit.children.some(child => child.region.startsWith(id(1))) && unit.children.some(child => child.region.startsWith(id(3)))));
+  assert.equal(P.book.units.length, 1, "page 1's and page 3's paragraphs are one");
+  assert.deepEqual(P.book.units[0].children.map(child => child.region), [`${id(1)}#r1`, `${id(3)}#r1`]);
+  assert.deepEqual(P.book.units[0].open, { start: true, end: true }, "it still goes on from before page 1 and after page 3");
   assert.deepEqual([...P.provisionalPages], [], "the empty page's units are not waiting for completion");
   const html = bookHtml(P);
+  assert.equal(html.match(/<p class="r-para/g).length, 1, "one passage");
   assert.ok(html.includes(id(1)) && html.includes(id(3)));
   assert.ok(!html.includes(id(2)), "nothing of the empty page is shown");
   // Problems and the flags assemble the same way: no warning, and no flag on the pages either side.
   const states = new Map(all.map(doc => [doc.page.id, { ...pageStages(doc, types, ...check(doc)), runErrors: {} }]));
-  const [, warnings] = assemble(breakAtEmptyPages(all), types);
+  const [, warnings] = assemble(all, types);
   assert.deepEqual(warnings, []);
   reviewPageStates(book.pages, states, types, warnings);
   for (const n of [1, 2, 3]) assert.deepEqual(stageFlags(states.get(id(n)), "read"), [], `page ${n} has no Read flag`);
+  for (const n of [1, 2, 3]) assert.deepEqual(states.get(id(n)).regionFlags.filter(flag => flag.code === "continuation"), [], `page ${n} has no continuation flag`);
   for (const doc of all) assert.deepEqual(check(doc), [[], []], `${doc.page.id} passes the checks with no warning`);
 }));
 
-test("units join only between pages with content: an empty page breaks a join, and other pages are left alone", () => {
+test("a page with no content needs no document change for units to join across it", () => {
   const docs = [1, 2, 3].map(n => page(id(n)));
-  assert.equal(breakAtEmptyPages(docs), docs, "with no empty page, the same documents");
   const empty = structuredClone(docs[1]);
   for (const region of [...empty.page.regions]) ops.deleteRegion(empty, region.id);
+  rebuildProvisional(empty, types);
+  assert.equal(noContent(empty), true);
   const list = [docs[0], empty, docs[2]], snapshot = structuredClone(list);
-  const out = breakAtEmptyPages(list);
-  assert.deepEqual(out[0].units[0].open, { start: true }, "page 1's paragraph still continues the page before it");
-  assert.deepEqual(out[2].units[0].open, { end: true }, "page 3's still goes on to the next");
+  const [joined, warnings] = assemble(list, types);
+  assert.deepEqual(warnings, []);
+  assert.deepEqual(joined.units.map(unit => unit.id), [`${id(1)}#u1`]);
+  assert.deepEqual(joined.flows.main, [`${id(1)}#u1`]);
   assert.deepEqual(list, snapshot, "the documents given are not changed");
   assert.equal(noContent(null), false, "a page with no document yet is not a page with no content");
 });
