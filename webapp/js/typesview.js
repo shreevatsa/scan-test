@@ -5,17 +5,17 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { typeTreeRows } from "./type-tree.js?v=20261113-type-tree-2";
-import { prepare } from "./reader.js?v=20261113-type-tree-2";
-import { typeRevision } from "./schema.js?v=20261113-type-tree-2";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-type-tree-2";
-import { newTypeDialog } from "./regionsview.js?v=20261113-type-tree-2";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-type-tree-2";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-type-tree-2";
-import { unusedDraftTypes } from "./draft-types.js?v=20261113-type-tree-2";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-type-tree-2";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-type-tree-2";
-import { regionPath } from "./pageimage.js?v=20261113-type-tree-2";
+import { typeForest } from "./type-tree.js?v=20261113-type-tree-3";
+import { prepare } from "./reader.js?v=20261113-type-tree-3";
+import { typeRevision } from "./schema.js?v=20261113-type-tree-3";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-type-tree-3";
+import { newTypeDialog } from "./regionsview.js?v=20261113-type-tree-3";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-type-tree-3";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-type-tree-3";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-type-tree-3";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-type-tree-3";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-type-tree-3";
+import { regionPath } from "./pageimage.js?v=20261113-type-tree-3";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -42,20 +42,31 @@ export function surveyBox(app, { credentialsBox, onBusy, selected, onProposals }
 export async function renderTypeView(el, app) {
   const book = app.book, token = app.routeToken;
   app.typeOverview ||= {};
-  const tree = h("div"), list = h("div"), details = h("div");
+  const tree = h("div", { class: "type-side" }), detail = h("section", { class: "type-detail", "aria-label": "Selected unit type" }), details = h("div");
   const reviewPages = ids => {
     app.pendingStageSelection = { stage: "regions", ids };
     app.setMode("regions");
   };
-  el.replaceChildren(h("div", { class: "type-overview" }, tree, list, details));
-  const examples = await renderTypeExamples(list, app, reviewPages);
+  const mark = name => {
+    for (const row of tree.querySelectorAll("[data-type]")) {
+      const on = row.dataset.type === name;
+      row.classList.toggle("on", on);
+      if (on) row.setAttribute("aria-current", "true"); else row.removeAttribute("aria-current");
+    }
+  };
+  const browser = h("div", { class: "type-browser" }, tree, detail);
+  el.replaceChildren(h("div", { class: "type-overview" }, browser, details));
+  const examples = await renderTypeExamples(detail, app, reviewPages, mark);
   if (app.book !== book || app.routeToken !== token) return () => {};
-  await renderTypeTree(tree, app, { removeUnused: true, onSelect: name => { examples?.choose(name); list.scrollIntoView({ block: "nearest" }); } });
+  if (!examples) { browser.replaceWith(detail); } else
+  await renderTypeTree(tree, app, { removeUnused: true, selected: () => app.typeOverview.selected, onSelect: examples.choose,
+    bar: h("div", { class: "stylebar" }, book.writable ? h("button", { onclick: () => newTypeDialog(app) }, "＋ Type") : null,
+      h("span", { class: "meta" }, `Revision ${typeRevision(app.tl.source?.revision)}${app.tl.source?.draft ? " · draft types" : ""}`)) });
   await renderBookDetails(details, app, { onReviewPages: reviewPages });
   return () => examples?.dispose();
 }
 
-async function renderTypeExamples(el, app, reviewPages) {
+async function renderTypeExamples(el, app, reviewPages, mark) {
   const book = app.book, types = app.tl, token = app.routeToken, state = app.typeOverview;
   const docs = await book.all();
   if (app.book !== book || app.routeToken !== token) return;
@@ -67,10 +78,9 @@ async function renderTypeExamples(el, app, reviewPages) {
   }
   if (!types.types[state.selected]) state.selected = names[0];
   state.offsets ||= {};
-  const choices = h("nav", { class: "type-choices", "aria-label": "Unit types" });
-  const detail = h("section", { class: "type-detail", "aria-label": "Selected unit type" });
+  const detail = el;
   const cards = h("div", { class: "type-examples", "aria-label": "Region examples" });
-  const buttons = new Map(), loaded = new Map();
+  const loaded = new Map();
   const active = () => app.book === book && app.routeToken === token;
   const fit = () => {
     for (const [button, { crop, url, example }] of loaded) cropInto(crop, url, example.page, example.box, Math.max(1, button.clientWidth - 20), 260);
@@ -82,10 +92,7 @@ async function renderTypeExamples(el, app, reviewPages) {
     const ids = [...new Set(examples.map(example => example.page.id))];
     const size = 6, offset = Math.min(state.offsets[name] || 0, Math.max(0, Math.ceil(examples.length / size) - 1) * size);
     state.offsets[name] = offset;
-    for (const [value, button] of buttons) {
-      button.classList.toggle("on", value === name);
-      button.setAttribute("aria-pressed", String(value === name));
-    }
+    mark(name);
     const parents = Object.entries(types.types).filter(([, value]) => value.contains?.includes(name)).map(([parent]) => parent);
     const jump = value => h("button", { class: "link", onclick: () => choose(value) }, value);
     const previous = h("button", { disabled: !offset, onclick: () => { state.offsets[name] = offset - size; draw(); } }, "← Previous examples");
@@ -133,23 +140,13 @@ async function renderTypeExamples(el, app, reviewPages) {
     state.selected = name;
     draw();
   };
-  for (const name of names) {
-    const pages = new Set(index.get(name).map(example => example.page.id)).size;
-    const button = h("button", { onclick: () => choose(name), title: types.types[name].description || "" },
-      h("i", { style: `background:${app.colors[name] || "#888"}` }), h("span", {}, name), h("span", { class: "meta" }, `${pages} ${pages === 1 ? "page" : "pages"}`));
-    buttons.set(name, button); choices.append(button);
-  }
-  el.replaceChildren(h("div", { class: "stylebar" },
-    book.writable ? h("button", { onclick: () => newTypeDialog(app) }, "＋ Type") : null,
-    h("span", { class: "meta" }, `Revision ${typeRevision(types.source?.revision)}${types.source?.draft ? " · draft types" : ""}`)),
-    h("div", { class: "type-browser" }, choices, detail));
   draw();
   return { choose, dispose: () => observer.disconnect() };
 }
 
 // What may contain what: each type once per reading flow (type-tree.js), with how many units of it the book has.
 // A type name selects that type (onSelect), or opens its edit form where nothing selects.
-export async function renderTypeTree(el, app, { onSelect, removeUnused = false } = {}) {
+export async function renderTypeTree(el, app, { onSelect, removeUnused = false, selected = null, bar = null } = {}) {
   const { book, tl } = app;
   const types = tl.types || {};
   const name = (value, description) => {
@@ -160,24 +157,34 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false }
   const needsClass = type => types[type]?.region === "other"
     ? h("span", { class: "needs-class" }, " ", book.writable ? h("button", { class: "link", onclick: () => editTypeDialog(app, type, "class") }, "needs a class") : "needs a class") : "";
   const draw = (counts, unusedNames = []) => {
-    const rowEl = r => {
-      const info = [r.kind === "container" ? `container · may hold: ${r.holdsShown.join(", ")}${r.holdsMore ? ", …" : ""}` : "",
-        r.printedAs ? `printed as ${r.printedAs}` : "", r.where].filter(Boolean).join(" · ");
+    const nodeEl = r => {
       const unused = unusedNames.includes(r.name);
-      return h("li", { class: `trow${unused ? " unused-draft" : ""}` }, name(r.name, types[r.name]?.description), " ",
-        h("span", { class: "rclass" }, info), needsClass(r.name), " ",
-        h("span", { class: `count${r.zero ? " zero" : ""}` }, r.count),
-        unused ? h("span", { class: "meta unused-draft-note" }, " · unused draft type") : null);
+      const notes = [r.kind === "container" ? "container" : "", r.printedAs ? `printed as ${r.printedAs}` : "", ...r.notes].filter(Boolean).join(" · ");
+      return h("li", { class: `tnode${unused ? " unused-draft" : ""}`, "data-type": r.name },
+        h("div", { class: "trow" }, h("i", { class: "dot", style: `background:${app.colors?.[r.name] || "#888"}` }), name(r.name, types[r.name]?.description),
+          notes ? h("span", { class: "rclass" }, notes) : null, needsClass(r.name),
+          h("span", { class: `count${r.zero ? " zero" : ""}` }, r.count),
+          unused ? h("span", { class: "meta unused-draft-note" }, "unused draft type") : null),
+        r.children.length ? h("ul", {}, ...r.children.map(nodeEl)) : null);
     };
-    const { flows, furniture } = typeTreeRows(tl, counts);
+    const root = (title, description, nodes) => h("div", { class: "flowtree" }, h("h4", {}, title, description ? h("span", { class: "meta" }, ` — ${description}`) : null),
+      nodes.length ? h("ul", { class: "ttree" }, ...nodes.map(nodeEl)) : h("p", { class: "meta" }, "No type stands here."));
+    const { flows, furniture, unplaced } = typeForest(tl, counts);
     el.querySelector(":scope > .type-tree-body")?.remove();
     el.append(h("div", { class: "type-tree-body" },
-      ...flows.map(f => h("div", { class: "flowtree" }, h("h4", {}, `flow ${f.flow}`, h("span", { class: "meta" }, ` — ${f.description}`)),
-        f.rows.length ? h("ul", { class: "ttree" }, ...f.rows.map(rowEl)) : h("p", { class: "meta" }, "No type stands in this flow."))),
-      furniture.length ? h("div", { class: "flowtree" }, h("h4", {}, "page furniture", h("span", { class: "meta" }, " — belongs to the page, not to the text")),
-        h("ul", { class: "ttree" }, ...furniture.map(rowEl))) : null));
+      ...flows.map(f => root(`flow ${f.flow}`, f.description, f.nodes)),
+      furniture.length ? root("page furniture", "belongs to the page, not to the text", furniture) : null,
+      unplaced.length ? root("not in any flow", "no flow and no container holds these", unplaced) : null));
+    if (selected) markSelected(selected());
   };
-  el.replaceChildren(h("h3", {}, "What may contain what"));
+  const markSelected = value => {
+    for (const row of el.querySelectorAll("[data-type]")) {
+      const on = row.dataset.type === value;
+      row.classList.toggle("on", on);
+      if (on) row.setAttribute("aria-current", "true"); else row.removeAttribute("aria-current");
+    }
+  };
+  el.replaceChildren(h("h3", {}, "What may contain what"), ...(bar ? [bar] : []));
   draw(null);
 
   const docs = await book.all();

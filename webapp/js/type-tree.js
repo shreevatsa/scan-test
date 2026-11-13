@@ -1,63 +1,75 @@
-// "What may contain what" as rows: each type listed once per reading flow, in type-list order, containers first.
-// Pure (type list + counts -> rows) so that it can be tested without the DOM. counts = { n, at }: n[type] is the
-// number of units of a type (regions, for page furniture); at["<parent>>type"] the number held directly in a
-// container, at["flow:<flow>>type"] the number at a flow's top level. With counts null the counts read "…".
+// "What may contain what" as one tree per flow: each type appears exactly once, under the first container (in type-list
+// order) that may hold it, else directly under its flow (or under page furniture). Pure (type list + counts -> forest)
+// so that it can be tested without the DOM. counts = { n, at }: n[type] is the number of units of a type (regions, for
+// page furniture); at["<parent>>type"] the number held directly in a container, at["flow:<flow>>type"] the number at a
+// flow's top level. With counts null the counts read "…".
 
 const plural = name => /(ss|x|ch|sh)$/.test(name) ? `${name}es` : name.endsWith("s") ? name : /[^aeiou]y$/.test(name) ? `${name.slice(0, -1)}ies` : `${name}s`;
-const HOLD_SHOWN = 4;
 
-// The flow a type belongs to: its own top-level flow, else that of a container that may hold it.
-function flowOf(types, name, seen = new Set()) {
-  const t = types[name];
-  if (!t || seen.has(name)) return null;
-  if (t.flow) return t.flow;
-  seen.add(name);
-  for (const [other, o] of Object.entries(types)) if ((o.contains || []).includes(name)) {
-    const f = flowOf(types, other, seen);
-    if (f) return f;
+// The first container (list order, never the type itself) holding each type, with cycles among containers cut: where
+// containers hold each other, the one earliest in the list loses its parent, so that it becomes the parent of the others.
+function primaryParents(types) {
+  const names = Object.keys(types), order = new Map(names.map((n, i) => [n, i]));
+  const parent = {};
+  for (const n of names) {
+    const holder = names.find(o => o !== n && !types[o].region && (types[o].contains || []).includes(n));
+    if (holder) parent[n] = holder;
+  }
+  for (const start of names) {
+    const path = [];
+    let at = start;
+    while (at && parent[at] && !path.includes(at)) { path.push(at); at = parent[at]; }
+    if (at && path.includes(at)) {
+      const cycle = path.slice(path.indexOf(at));
+      delete parent[cycle.reduce((a, b) => order.get(b) < order.get(a) ? b : a)];
+    }
+  }
+  return parent;
+}
+
+// The flow of a type without a flow of its own: that of the nearest ancestor with one.
+function flowAbove(types, parent, name) {
+  for (let at = name, seen = new Set(); at && !seen.has(at); at = parent[at]) {
+    seen.add(at);
+    if (types[at].flow) return types[at].flow;
   }
   return null;
 }
 
-function row(types, name, flow, counts) {
-  const t = types[name];
-  const container = !t.region;
-  const holders = Object.entries(types).filter(([, o]) => (o.contains || []).includes(name)).map(([o]) => o);
-  const top = t.flow === flow;
-  const places = [...(top ? [{ label: "at top level", count: `flow:${flow}>${name}`, short: "at top level" }] : []),
-    ...holders.map(o => ({ label: `in a ${o}`, count: `${o}>${name}`, short: `in ${plural(o)}`, container: o }))];
-  const num = key => counts ? String(counts.at[key] || 0) : "…";
-  const zero = value => counts && value === 0;
-  const total = counts ? counts.n[name] || 0 : null;
-  let where = "", count;
-  if (container) {
-    count = counts ? String(total) : "…";
-  } else if (places.length > 1) {
-    const inLabels = places.filter(p => p.container).map(p => p.container);
-    const or = inLabels.length > 1 ? `${inLabels.slice(0, -1).join(", ")} or ${inLabels.at(-1)}` : inLabels.join("");
-    where = [...(top ? ["at top level"] : []), or ? `in a ${or}` : ""].filter(Boolean).join(" or ");
-    count = places.map(p => `${num(p.count)} ${p.short}`).join(" · ");
-  } else {
-    // One place: said only when it is not the flow's top level.
-    if (!top && places.length) where = places[0].label;
-    count = counts ? String(total) : "…";
-  }
-  return { name, flow, kind: container ? "container" : "type", printedAs: t.region && t.region !== name ? t.region : "",
-    holds: container ? (t.contains || []) : [], holdsShown: container ? (t.contains || []).slice(0, HOLD_SHOWN) : [],
-    holdsMore: container && (t.contains || []).length > HOLD_SHOWN, where, count,
-    zero: counts ? (container ? total === 0 : places.every(p => !counts.at[p.count])) : false, needsClass: t.region === "other" };
-}
-
-// -> { flows: [{ flow, description, rows }], furniture: [rows] }
-export function typeTreeRows(tl, counts = null) {
+// -> { flows: [{ flow, description, nodes }], furniture: [nodes], unplaced: [nodes] }; a node is { name, kind
+// ("container" | "type" | "furniture"), printedAs, notes: [text], count, zero, needsClass, children: [nodes] }.
+export function typeForest(tl, counts = null) {
   const types = tl.types || {};
-  const flows = Object.entries(tl.flows || {}).map(([flow, description]) => {
-    const names = Object.keys(types).filter(n => types[n].role !== "furniture" && flowOf(types, n) === flow);
-    const rows = [...names.filter(n => !types[n].region), ...names.filter(n => types[n].region)].map(n => row(types, n, flow, counts));
-    return { flow, description, rows };
-  });
-  const furniture = Object.entries(types).filter(([, t]) => t.role === "furniture").map(([name, t]) => ({
-    name, flow: null, kind: "furniture", printedAs: t.region && t.region !== name ? t.region : "", holds: [], holdsShown: [], holdsMore: false, where: "",
-    count: counts ? `${counts.n[name] || 0} on the pages` : "…", zero: !!counts && !(counts.n[name] || 0), needsClass: t.region === "other" }));
-  return { flows, furniture };
+  const names = Object.keys(types), parent = primaryParents(types);
+  const num = key => counts ? String(counts.at[key] || 0) : "…";
+  const node = name => {
+    const t = types[name], container = !t.region, furniture = t.role === "furniture";
+    const flow = t.flow, p = parent[name];
+    const holders = names.filter(o => (types[o].contains || []).includes(name));
+    const places = [...(flow && !furniture ? [{ count: `flow:${flow}>${name}`, short: "at top level", note: "at top level" }] : []),
+      ...holders.map(o => ({ count: `${o}>${name}`, short: `in ${plural(o)}`, note: o.endsWith("s") ? `in ${o}` : `in a ${o}`, holder: o }))];
+    const notes = [];
+    const also = places.filter(x => x.holder ? x.holder !== p && x.holder !== name : !!p).map(x => x.note);
+    if (also.length) notes.push(`also ${also.join(", ")}`);
+    if ((t.contains || []).includes(name)) notes.push("may contain itself");
+    const total = counts ? counts.n[name] || 0 : null;
+    let count, zero;
+    if (furniture) { count = counts ? `${total} on the pages` : "…"; zero = !!counts && !total; }
+    else if (!container && places.length > 1) {
+      count = places.map(x => `${num(x.count)} ${x.short}`).join(" · ");
+      zero = !!counts && places.every(x => !counts.at[x.count]);
+    } else { count = counts ? String(total) : "…"; zero = !!counts && !total; }
+    return { name, kind: furniture ? "furniture" : container ? "container" : "type", printedAs: t.region && t.region !== name ? t.region : "",
+      notes, count, zero, needsClass: t.region === "other", children: [] };
+  };
+  const nodes = Object.fromEntries(names.map(n => [n, node(n)]));
+  const flowRoots = Object.fromEntries(Object.keys(tl.flows || {}).map(f => [f, []]));
+  const furniture = [], unplaced = [];
+  for (const n of names) {
+    if (parent[n]) { nodes[parent[n]].children.push(nodes[n]); continue; }
+    const t = types[n], flow = t.flow || flowAbove(types, parent, n) || names.map(o => types[o].flow && (types[o].contains || []).includes(n) ? types[o].flow : null).find(Boolean);
+    if (t.role === "furniture") furniture.push(nodes[n]);
+    else (flowRoots[flow] || unplaced).push(nodes[n]);
+  }
+  return { flows: Object.entries(tl.flows || {}).map(([flow, description]) => ({ flow, description, nodes: flowRoots[flow] })), furniture, unplaced };
 }

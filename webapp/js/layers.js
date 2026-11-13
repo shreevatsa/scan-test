@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261113-type-tree-2";
-import { typeRevision } from "./schema.js?v=20261113-type-tree-2";
+import { canonical } from "./ops.js?v=20261113-type-tree-3";
+import { typeRevision } from "./schema.js?v=20261113-type-tree-3";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));
