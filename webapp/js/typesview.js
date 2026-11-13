@@ -5,17 +5,17 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { typeTreeRows } from "./type-tree.js?v=20261113-type-tree-1";
-import { prepare } from "./reader.js?v=20261113-type-tree-1";
-import { typeRevision } from "./schema.js?v=20261113-type-tree-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-type-tree-1";
-import { newTypeDialog } from "./regionsview.js?v=20261113-type-tree-1";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-type-tree-1";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-type-tree-1";
-import { unusedDraftTypes } from "./draft-types.js?v=20261113-type-tree-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-type-tree-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-type-tree-1";
-import { regionPath } from "./pageimage.js?v=20261113-type-tree-1";
+import { typeTreeRows } from "./type-tree.js?v=20261113-type-tree-2";
+import { prepare } from "./reader.js?v=20261113-type-tree-2";
+import { typeRevision } from "./schema.js?v=20261113-type-tree-2";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-type-tree-2";
+import { newTypeDialog } from "./regionsview.js?v=20261113-type-tree-2";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-type-tree-2";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-type-tree-2";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-type-tree-2";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-type-tree-2";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-type-tree-2";
+import { regionPath } from "./pageimage.js?v=20261113-type-tree-2";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -240,9 +240,8 @@ export function renderBookDetails(el, app, { onAdded = () => app.route(), onRevi
   }).catch(error => surveyQuestions.replaceChildren(h("p", { class: "bad" }, error.message)));
   el.replaceChildren(h("div", { class: "typesview book-details" },
     h("div", { class: "stylebar" }, download,
-      book.writable ? h("button", { onclick: () => editBookTypesDialog(app) }, "Edit book details") : null,
-      book.writable ? h("button", { onclick: () => newTypeDialog(app, onAdded) }, "＋ Type") : null),
-    h("p", { class: "hint" }, `Revision ${typeRevision(tl.source?.revision)}. The type list defines this book’s units, containment, reading flows and transcription conventions. Preview a change to see its reach before applying it.`),
+      book.writable ? h("button", { onclick: () => editBookTypesDialog(app) }, "Edit book details") : null),
+    h("p", { class: "hint" }, `The type list defines this book’s units, containment, reading flows and transcription conventions. Preview a change to see its reach before applying it.`),
     app.lastTypeRevision ? h("p", { class: "box" }, `Revision ${app.lastTypeRevision.revision} saved. `,
       app.lastTypeRevision.pages.length && onReviewPages ? h("button", { onclick: () => onReviewPages(app.lastTypeRevision.pages) },
         `Review ${app.lastTypeRevision.pages.length} affected ${app.lastTypeRevision.pages.length === 1 ? "page" : "pages"}`) : null) : null,
