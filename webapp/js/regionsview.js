@@ -1,11 +1,12 @@
-import { suggestionButton } from "./review-view.js?v=20261113-flags-5";
-import { typeRevision } from "./schema.js?v=20261113-flags-5";
+import { suggestionButton } from "./review-view.js?v=20261113-class-words-1";
+import { typeRevision } from "./schema.js?v=20261113-class-words-1";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261113-flags-5";
-import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261113-flags-5";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-5";
-import { editTypeDialog } from "./type-operations.js?v=20261113-flags-5";
-import { normalizeTypeName } from "./type-additions.js?v=20261113-flags-5";
+import * as ops from "./ops.js?v=20261113-class-words-1";
+import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261113-class-words-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-class-words-1";
+import { classSelect } from "./class-labels.js?v=20261113-class-words-1";
+import { editTypeDialog } from "./type-operations.js?v=20261113-class-words-1";
+import { normalizeTypeName } from "./type-additions.js?v=20261113-class-words-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -27,8 +28,7 @@ export function newTypeDialog(app, use = () => {}, printedOnly = false) {
   const previous = selected && app.tl.types[selected.type];
   const name = h("input", { required: true, "aria-label": "New type name", placeholder: "verse_translation" });
   const description = h("textarea", { rows: 3, "aria-label": "New type description" });
-  const category = h("select", { "aria-label": "Printed region class" }, ...(printedOnly ? REGION_CLASSES : ["container", ...REGION_CLASSES]).filter(value => value !== "other").map(value =>
-    h("option", { value, selected: value === (previous?.region || "paragraph") }, value)));
+  const { select: category, el: categoryField } = classSelect((printedOnly ? REGION_CLASSES : ["container", ...REGION_CLASSES]).filter(value => value !== "other"), previous?.region || "paragraph", "Draw regions like");
   const furniture = h("input", { type: "checkbox", checked: previous?.role === "furniture", "aria-label": "Page furniture" });
   const childChoices = Object.entries(app.tl.types).filter(([, type]) => type.role !== "furniture").map(([child], index) => ({
     child, box: h("input", { type: "checkbox", checked: index === 0, "aria-label": `May contain ${child}` })
@@ -46,7 +46,7 @@ export function newTypeDialog(app, use = () => {}, printedOnly = false) {
   const close = h("button", { type: "button", onclick: () => dialog.close() }, "Cancel");
   const save = h("button", { type: "submit", class: "primary" }, "Add type");
   const fields = h("fieldset", {}, h("label", {}, "Name ", name), h("label", {}, "Description ", description),
-    h("label", {}, "Printed as ", category), children, h("label", {}, furniture, " Page furniture"),
+    h("label", {}, "Draw regions like: ", categoryField), children, h("label", {}, furniture, " Page furniture"),
     h("label", {}, "Place in the book ", location));
   furniture.onchange = () => { location.disabled = furniture.checked; };
   category.onchange = () => {

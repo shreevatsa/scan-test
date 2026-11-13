@@ -5,10 +5,11 @@
 // the others are listed with links, to be given the type by hand.
 import { h } from "./render.js";
 import { readPendingProposals, pendingItems, decideProposal, additionChoice, additionOperations, proposalAssignments,
-  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261113-flags-5";
-import { reviewTypeChange } from "./type-operations.js?v=20261113-flags-5";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-5";
-import { isProtected, LAYERS } from "./layers.js?v=20261113-flags-5";
+  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261113-class-words-1";
+import { reviewTypeChange } from "./type-operations.js?v=20261113-class-words-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-class-words-1";
+import { classPicker, classShort, defaultClass } from "./class-labels.js?v=20261113-class-words-1";
+import { isProtected, LAYERS } from "./layers.js?v=20261113-class-words-1";
 
 const where = type => type.furniture ? "Page furniture"
   : [type.parents.length ? `Inside ${type.parents.join(", ")}` : "", type.flow ? `Top level of ${type.flow}` : ""].filter(Boolean).join(" · ");
@@ -69,11 +70,9 @@ export function proposalsBox(app) {
     const choice = additionChoice(item.proposal), types = app.tl.types;
     const name = h("input", { value: choice.name, "aria-label": `Name for ${choice.name}` });
     const description = h("textarea", { rows: 3, "aria-label": `Definition of ${choice.name}` }, choice.description);
-    // "other" is the region finder's escape class, not one a type may have: the choice starts empty unless the proposal names a real class.
-    const region = h("select", { "aria-label": `Printed as, for ${choice.name}` }, h("option", { value: "", selected: !choice.region }, "(choose)"),
-      ...["container", ...REGION_CLASSES.filter(value => value !== "other")].map(value =>
-      h("option", { value, selected: value === choice.region }, value === "container" ? "container (groups other units)" : value)));
-    const classHint = h("p", { class: "hint" }, "Choose how it is printed: heading, paragraph, …");
+    // The model's class is kept; "other" or none becomes paragraph with a note (the Add operation never receives "other").
+    const classChoices = ["container", ...REGION_CLASSES.filter(value => value !== "other")];
+    const { el: classField, select: region } = classPicker(classChoices, choice.region, choice.classNote, `Draw regions like, for ${choice.name}`, () => refreshFields());
     const furniture = h("input", { type: "checkbox", checked: choice.furniture, "aria-label": "Page furniture" });
     const textTypes = Object.entries(types).filter(([, type]) => type.role !== "furniture");
     const box = (entries, checked, label) => entries.map(([other]) => ({ other, input: h("input", { type: "checkbox", checked: checked.includes(other), "aria-label": `${label} ${other}` }) }));
@@ -85,8 +84,8 @@ export function proposalsBox(app) {
     const placeField = h("div", {}, h("fieldset", {}, h("legend", {}, "May appear inside"), ...parents.map(({ other, input }) => h("label", { class: "type-child-choice" }, input, " ", other))),
       h("label", {}, "Top level of ", flow));
     let add;
-    const refreshFields = () => { childField.hidden = region.value !== "container"; placeField.hidden = furniture.checked; classHint.hidden = !!region.value; if (add) add.disabled = !book.writable || !region.value; };
-    region.onchange = furniture.onchange = refreshFields;
+    const refreshFields = () => { childField.hidden = region.value !== "container"; placeField.hidden = furniture.checked; };
+    furniture.onchange = refreshFields;
     const same = h("select", { "aria-label": "Same as existing type" }, ...Object.keys(types).map(other => h("option", { value: other }, other)));
     const note = h("p", { role: "status", class: "bad" });
     add = h("button", { class: "primary", disabled: !book.writable, onclick: async () => {
@@ -102,7 +101,7 @@ export function proposalsBox(app) {
     } }, "Preview adding this type");
     refreshFields();
     return h("div", { class: "fields col proposal-form" }, h("label", {}, "Name ", name), h("label", {}, "Definition ", description),
-      h("label", {}, "Printed as ", region), classHint, h("label", {}, furniture, " Page furniture"), childField, placeField,
+      classField, h("label", {}, furniture, " Page furniture"), childField, placeField,
       h("div", { class: "actions" }, add), note,
       h("div", { class: "actions" }, h("label", {}, "Same as existing type ", same),
         h("button", { disabled: !book.writable, onclick: () => decide(item, { status: "dismissed", same_as: same.value }) }, "Use this type")));
@@ -115,7 +114,7 @@ export function proposalsBox(app) {
     const form = additionForm(item);
     form.hidden = true;
     return h("article", { class: "type-card proposal-card", "aria-label": `Proposed type ${type.name}` },
-      h("h4", {}, type.name, " ", h("span", { class: "meta" }, type.furniture ? `${type.region} · furniture` : type.region)),
+      h("h4", {}, type.name, " ", h("span", { class: "meta" }, `draw regions like ${classShort(defaultClass(type.region).region)}${type.furniture ? " · furniture" : ""}`)),
       h("p", {}, type.description || h("span", { class: "meta" }, "No definition was given.")),
       where(type) ? h("p", { class: "meta" }, where(type)) : null,
       evidence.pdf_pages.length ? h("p", { class: "type-evidence" }, "Survey evidence: PDF pages ",

@@ -4,7 +4,7 @@
 
 // ---------------------------------------------------------------- the region call (method 042)
 
-const CLASS_RULES = {
+export const CLASS_RULES = {
   verse: "Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.",
   paragraph: "One region per paragraph, including one continued from the previous page or onto the next.",
   heading: "",

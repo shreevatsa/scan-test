@@ -1,10 +1,11 @@
 import { h } from "./render.js";
-import { checkPage } from "./schema.js?v=20261113-flags-5";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-5";
-import { pageSelectionText } from "./page-browser.js?v=20261113-flags-5";
-import { money } from "./reader-controls.js?v=20261113-flags-5";
+import { checkPage } from "./schema.js?v=20261113-class-words-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-class-words-1";
+import { classSelect } from "./class-labels.js?v=20261113-class-words-1";
+import { pageSelectionText } from "./page-browser.js?v=20261113-class-words-1";
+import { money } from "./reader-controls.js?v=20261113-class-words-1";
 
-const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change printed class", remove: "Remove unused type" };
+const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change how regions are drawn", remove: "Remove unused type" };
 const quantity = (n, name) => `${n} ${name}${n === 1 ? "" : "s"}`;
 
 export async function reviewTypeChange(app, operations, { applied = () => {} } = {}) {
@@ -99,7 +100,7 @@ export function editTypeDialog(app, name, firstKind = "") {
       const newName = h("input", { required: true, "aria-label": "New type name" });
       const description = h("textarea", { rows: 3, "aria-label": "New type description" });
       const parent = Object.entries(app.tl.types).find(([, value]) => value.contains?.includes(name))?.[0];
-      fields.append(h("label", {}, "New type name ", newName), h("label", {}, "Description ", description), h("p", {}, `The second type starts with ${name}’s printed class and place in the book. Choose which regions use it after saving.`));
+      fields.append(h("label", {}, "New type name ", newName), h("label", {}, "Description ", description), h("p", {}, `The second type starts with how ${name}’s regions are drawn and its place in the book. Choose which regions use it after saving.`));
       collect = () => ({ kind, from: name, name: newName.value.trim(), description: description.value, region: type.region, furniture: type.role === "furniture", parent, flow: type.flow });
     } else if (kind === "rules") {
       const flow = h("select", { "aria-label": "Top-level reading flow" }, h("option", { value: "" }, "Inside another unit"),
@@ -111,8 +112,8 @@ export function editTypeDialog(app, name, firstKind = "") {
       fields.append(h("label", {}, "Top level of ", flow), h("fieldset", {}, h("legend", {}, "May contain"), ...choices.map(({ child, box }) => h("label", { class: "type-child-choice" }, box, " ", child))));
       collect = () => ({ kind, name, flow: flow.value, contains: choices.filter(value => value.box.checked).map(value => value.child) });
     } else if (kind === "class") {
-      const region = h("select", { "aria-label": "Printed region class" }, ...REGION_CLASSES.filter(value => value !== "other" || type.region === "other").map(value => h("option", { value, selected: value === type.region }, value)));
-      fields.append(h("label", {}, "Printed as ", region)); collect = () => ({ kind, name, region: region.value });
+      const { select: region, el: regionField } = classSelect(REGION_CLASSES.filter(value => value !== "other" || type.region === "other"), type.region, "Draw regions like");
+      fields.append(h("label", {}, "Draw regions like: ", regionField)); collect = () => ({ kind, name, region: region.value });
     } else {
       fields.append(h("p", {}, "The preview checks all model pages, saved corrections and drafts for uses of this type."));
       collect = () => ({ kind, name });

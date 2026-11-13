@@ -1,8 +1,8 @@
-import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261113-flags-5";
-import { canonical } from "./ops.js?v=20261113-flags-5";
-import { isProtected, layerRecords, layerState } from "./layers.js?v=20261113-flags-5";
-import { provisionalUnits } from "./pipeline/provisional.js?v=20261113-flags-5";
-import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261113-flags-5";
+import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261113-class-words-1";
+import { canonical } from "./ops.js?v=20261113-class-words-1";
+import { isProtected, layerRecords, layerState } from "./layers.js?v=20261113-class-words-1";
+import { provisionalUnits } from "./pipeline/provisional.js?v=20261113-class-words-1";
+import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261113-class-words-1";
 
 export function citedSamplePages(question, samples) {
   const cited = new Set();
@@ -92,7 +92,7 @@ export function revisedTypeList(current, operations, at = new Date().toISOString
       case "class": {
         const type = definition(next, name);
         op.before = structuredClone(type);
-        if (!REGION_CLASSES.includes(op.region) || op.region === "other" || !type.region) throw new Error("Choose a printed class for a printed type.");
+        if (!REGION_CLASSES.includes(op.region) || op.region === "other" || !type.region) throw new Error("Choose how regions of a printed type are drawn.");
         type.region = op.region;
         break;
       }

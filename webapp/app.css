@@ -630,3 +630,5 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .uncovered-row:hover, .uncovered-row:focus-within { background: var(--hl); }
 .uncovered-row .line-crop { max-width: 100%; background: #fff; border: 1px solid #ddd; justify-self: start; }
 .uncovered-row .actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.class-rule { color: #777; font-size: .9em; margin: .2em 0; }
+.class-picker { margin: .4em 0; }

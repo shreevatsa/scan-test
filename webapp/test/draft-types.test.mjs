@@ -58,10 +58,12 @@ test("the survey result line says where things went", () => {
 test("a type may not have class other: the form needs a real class", () => {
   assert.ok(!isRealClass("other") && !isRealClass("") && !isRealClass(undefined) && isRealClass("heading") && isRealClass("container"));
   const proposal = { name: "ornament", description: "x", region: "other", parents: ["section"], contains: [] };
-  assert.equal(additionChoice(proposal).region, "");
+  assert.equal(additionChoice(proposal).region, "paragraph");
   assert.equal(additionChoice({ ...proposal, region: "figure" }).region, "figure");
   const tl = start();
-  assert.throws(() => additionOperations({ ...additionChoice(proposal), parents: ["section"] }, tl), /Choose how this type is printed/);
+  assert.equal(additionOperations(additionChoice(proposal), tl)[0].region, "paragraph", "the default is paragraph, never other");
+  assert.match(additionChoice(proposal).classNote, /No class fitted/);
+  assert.throws(() => additionOperations({ ...additionChoice(proposal), region: "other", parents: ["section"] }, tl), /Choose how this type is printed/);
   assert.throws(() => addBookType(tl, { name: "ornament", region: "other", parent: "section" }), /how this type is printed/);
   assert.ok(additionOperations({ ...additionChoice(proposal), region: "figure" }, tl).length);
 });

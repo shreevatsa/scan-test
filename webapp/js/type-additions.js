@@ -2,7 +2,8 @@
 // work records until a person adds or dismisses each. Nothing here changes the type list: adding goes through the
 // type-list revision operations (an "add", and "rules" for a second parent or a flow), and an edited definition through
 // the "description" operation. Each item records its source, so several sources can add to the one list.
-import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-5";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-class-words-1";
+import { defaultClass } from "./class-labels.js?v=20261113-class-words-1";
 export const PENDING_PATH = "work/type-proposals/pending.json";
 const empty = () => ({ format: "pending-type-proposals", version: 1, items: [] });
 
@@ -70,7 +71,7 @@ export function surveyOutcome(items) {
 }
 
 export function additionChoice(proposal) {
-  return { name: proposal.name, description: proposal.description, region: isRealClass(proposal.region) ? proposal.region : "", furniture: !!proposal.furniture,
+  return { name: proposal.name, description: proposal.description, region: defaultClass(proposal.region).region, classNote: defaultClass(proposal.region).note, furniture: !!proposal.furniture,
     contains: [...(proposal.contains || [])], parents: [...(proposal.parents || [])], flow: proposal.flow || "" };
 }
 

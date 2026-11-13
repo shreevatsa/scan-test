@@ -4,18 +4,19 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
+import { classLabel, classNote } from "./class-labels.js?v=20261113-class-words-1";
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261113-flags-5";
-import { prepare } from "./reader.js?v=20261113-flags-5";
-import { typeRevision } from "./schema.js?v=20261113-flags-5";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-flags-5";
-import { newTypeDialog } from "./regionsview.js?v=20261113-flags-5";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-flags-5";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-flags-5";
-import { unusedDraftTypes } from "./draft-types.js?v=20261113-flags-5";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-flags-5";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-flags-5";
-import { regionPath } from "./pageimage.js?v=20261113-flags-5";
+import { typeForest } from "./type-tree.js?v=20261113-class-words-1";
+import { prepare } from "./reader.js?v=20261113-class-words-1";
+import { typeRevision } from "./schema.js?v=20261113-class-words-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-class-words-1";
+import { newTypeDialog } from "./regionsview.js?v=20261113-class-words-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-class-words-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-class-words-1";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-class-words-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-class-words-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-class-words-1";
+import { regionPath } from "./pageimage.js?v=20261113-class-words-1";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -100,8 +101,8 @@ async function renderTypeExamples(el, app, reviewPages, mark) {
     detail.replaceChildren(...[h("div", { class: "type-detail-head" }, h("h2", {}, name),
       book.writable ? h("button", { onclick: () => editTypeDialog(app, name) }, "Edit type…") : null),
       type.description ? h("p", {}, type.description) : null,
-      type.region === "other" ? h("p", { class: "bad" }, "This type needs a class: ", h("button", { class: "link", onclick: () => editTypeDialog(app, name, "class") }, "choose how it is printed")) : null,
-      h("p", { class: "meta" }, [type.region || "container", type.role === "furniture" ? "page furniture" : type.flow ? `${type.flow} flow` : "inside another unit", type.lang].filter(Boolean).join(" · ")),
+      type.region === "other" ? h("p", { class: "bad" }, "This type has no region rule yet: ", h("button", { class: "link", onclick: () => editTypeDialog(app, name, "class") }, "choose how its regions are drawn")) : null,
+      h("p", { class: "meta" }, [type.region ? `draw regions like ${classLabel(type.region)}` : "container", type.role === "furniture" ? "page furniture" : type.flow ? `${type.flow} flow` : "inside another unit", type.lang].filter(Boolean).join(" · ")),
       parents.length ? h("p", { class: "type-rules" }, "May be inside ", ...parents.flatMap((value, i) => [i ? ", " : "", jump(value)])) : null,
       type.contains?.length ? h("p", { class: "type-rules" }, "May contain ", ...type.contains.flatMap((value, i) => [i ? ", " : "", jump(value)])) : null,
       h("div", { class: "actions" }, h("span", {}, `Saved assignments on ${ids.length} of ${docs.length} processed pages`),
@@ -155,13 +156,13 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false, 
   };
   // "other" is the region finder's escape class, not one a type should have: marked, with a link to the class operation.
   const needsClass = type => types[type]?.region === "other"
-    ? h("span", { class: "needs-class" }, " ", book.writable ? h("button", { class: "link", onclick: () => editTypeDialog(app, type, "class") }, "needs a class") : "needs a class") : "";
+    ? h("span", { class: "needs-class" }, " ", book.writable ? h("button", { class: "link", onclick: () => editTypeDialog(app, type, "class") }, "no region rule yet") : "no region rule yet") : "";
   const draw = (counts, unusedNames = []) => {
     const nodeEl = r => {
       const unused = unusedNames.includes(r.name);
       // A type used nowhere is one muted line: its name and "unused draft type" (or "unused"), without a count.
       const quiet = r.zero && r.kind !== "container" && r.kind !== "furniture" && !!counts;
-      const notes = [r.kind === "container" ? "container" : "", r.printedAs ? `printed as ${r.printedAs}` : "", ...r.notes].filter(Boolean).join(" · ");
+      const notes = [r.kind === "container" ? "container" : "", r.printedAs ? classNote(r.printedAs) : "", ...r.notes].filter(Boolean).join(" · ");
       return h("li", { class: `tnode${quiet || (unused && r.zero) ? " unused-draft" : ""}${r.multi ? " multi" : ""}`, "data-type": r.name },
         h("div", { class: "trow" }, h("i", { class: "dot", style: `background:${app.colors?.[r.name] || "#888"}` }), name(r.name, types[r.name]?.description),
           r.multi ? h("span", { class: "also-mark", title: "This type is used in more than one place", "aria-hidden": "true" }, "⇄") : null,
