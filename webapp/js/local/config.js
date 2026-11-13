@@ -1,4 +1,4 @@
-// Method 043's ownership and legacy line settings, with method 063's fragment-band grouping and method 093's paper-relative weak ink threshold.
+// Method 043's ownership and legacy line settings, with method 063's fragment-band grouping, method 093's paper-relative weak ink threshold and method 094's illumination flattening.
 export const OWNERSHIP = {
  "name": "GPT-6.1 Terra without reasoning, book types from the type list with continuation flags + line ownership with band-chained short glyphs, ink on no line and rule pieces, polygon regions",
  "base_method_id": "042-gpt-6.1-terra-none-book-types-continuations",
@@ -60,6 +60,11 @@ export const LINES = {
  ...LEGACY_LINES,
  "paper_percentile": 0.9,
  "weak_minimum_gap": 20,
+ "flatten_percentile": 0.9,
+ "flatten_floor": 0.55,
+ "flatten_block_divisor": 40,
+ "flatten_minimum_block": 24,
+ "flatten_sample_step": 2,
  "fragment_maximum_height_ratio": 0.9,
  "fragment_maximum_component_ratio": 0.5,
  "fragment_band_padding_char": 0.3

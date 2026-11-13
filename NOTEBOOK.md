@@ -5128,3 +5128,43 @@ Five of the 7 Ramayana-manjari leaves failed before and none after (leaf 17 gain
 The nine public reference pages (Kale 106, Hertel 152, Dutt 17F chapter 1 page 2, Telang 108, Cole 3, Ten Princes 30, Nītiśataka 1896 page 123, Nītiśataka 1914 page 258, Vavilla 34) were run as regression-001 with the saved method 042 regions and scored with method 043's evaluator, as for method 063. Every page scores 0 other-passage ink included, 0 own ink left out and 0 separator ink included, and the line counts equal 063's (41, 85, 31, 30, 25, 30, 59, 29, 24 by page in the order Cole, Dutt, Nītiśataka 1896, Nītiśataka 1914, Hertel, Kale, Ten Princes, Telang, Vavilla). Seven pages' saved region records are identical to 063's apart from method name, settings and timestamps. Hertel 152 (paper level 236) and Ten Princes 30 differ slightly in outlines and component counts because their paper is not pure white (the character height estimate changes by one pixel), with the same lines. The summary is [outputs/surveys/093-paper-relative-ink-threshold/regression-001/summary.json](outputs/surveys/093-paper-relative-ink-threshold/regression-001/summary.json).
 
 New tests: `webapp/test/paper-threshold.test.mjs` (a synthetic page with paper 170 and text 110 fails `too_little_text` under the old rule and gives six lines under the new one; a white-paper page gives identical components and lines under both; the paper level equals its numpy-style definition on a small array). `node --test webapp/test/*.test.mjs` passes 308 and `schema/test_book.py` passes 19.
+
+
+## Illumination flattened before the ink threshold — method 094, 2026-11-12
+
+[Method 094](methods/094-illumination-flattened-ink/README.md) changes one thing in method 093's local step: the gray image is replaced by a flattened one before the ink mask is made. `paper` is 093's paper level of the original gray; the block size is `B = max(24, round(min(W, H) / 40))`; each block's background is the 0.9 quantile of its gray values (every second pixel in both directions), at least `0.55 * paper`; the block grid is smoothed with a 3x3 mean over the existing blocks and interpolated bilinearly; `flat = min(255, floor(gray / L * 255 + 0.5))`. The settings are `flatten_percentile` 0.9, `flatten_floor` 0.55, `flatten_block_divisor` 40, `flatten_minimum_block` 24 and `flatten_sample_step` 2 in the line config, and flattening applies only when they are present, so methods 063 and 093 and `LEGACY_LINES` are unchanged. Everything after (weak threshold from the paper level of the flat image, specks, components, roles, lines, ownership) is method 093. The browser port is `flattenGray` in `webapp/js/local/ink.js` (float64, round half up) with `LINES` in `webapp/js/local/config.js`; new results record `094-illumination-flattened-ink`, saved documents are unchanged. Zero API calls.
+
+The cause: on the Toronto scan of Ramayana-manjari (archive.org `ramayanamamjari00ksemuoft`, PDF pages 18 and 20) a dark band runs down the right edge and the right ends of the footnote lines touch it, so the mask joins them into one large component. Test pages (archive.org): that scan's leaves 14 to 20, one middle page from each of twelve other scans, and Kale 1913 page 5. The browser analysis was run in headless Chrome with a fresh profile, once with the committed `LINES` minus the `flatten_*` settings (method 093) and once with `LINES`.
+
+| Page | 093 | 094 |
+|---|---|---|
+| leaf 14 | ok, 23 lines | ok, 23 |
+| leaf 15 | ok, 27 | ok, 27 |
+| leaf 16 | ok, 27 | ok, 27 |
+| leaf 17 | ok, 28 | ok, 28 |
+| leaf 18 | ok, 27 | ok, 27 |
+| leaf 19 | ok, 28 | ok, 29 |
+| leaf 20 | ok, 27 | ok, 27 |
+| item 1 | ok, 28 | ok, 27 |
+| item 2 | ok, 27 | ok, 27 |
+| item 3 | ok, 30 | ok, 31 |
+| item 4 | ok, 28 | ok, 28 |
+| item 5 | ok, 31 | ok, 31 |
+| item 6 | ok, 30 | ok, 29 |
+| item 7 | ok, 30 | ok, 31 |
+| item 8 | ok, 28 | ok, 28 |
+| item 9 | ok, 27 | ok, 27 |
+| item 10 | ok, 28 | ok, 28 |
+| item 11 | ok, 27 | ok, 27 |
+| item 12 | ok, 28 | ok, 28 |
+| Kale 1913 page 5 | ok, 28 | ok, 28 |
+
+All 20 pages are `ok` under both; line counts are within one (five pages differ by one). Pixels in text-role components, bottom fifth of the page and rightmost 12 percent of its width: leaf 17 (PDF page 18) 125,500 and 2,474 under 093, 123,270 and 8,144 under 094 (the right edge rises 3.3 times); leaf 19 (PDF page 20) 145,611 and 21,939 under 093, 127,182 and 10,185 under 094. On leaf 19 the numbers fall, not rise: under 093 the band specks next to the line ends were text-role pixels, smudged onto the line end, and under 094 they are dropped. The kept (black) and dropped (red) pictures show it. Leaf 17 under 093: the first footnote line ends in a red block after "विजयः" (the word "सुराष्ट्रो" is missing), the second footnote line's last words are a smudge, and the rule above the footnotes is red from the middle to the right; under 094 "सुराष्ट्रो", "रामायणे" and "४. 'श्वाति'" are black and the rule is green across. Leaf 19: under 093 the first footnote line ends in a black smudge over "देवाधिकार-" and a red speckled band; under 094 the word is clean and the band is red specks only. The footnote lines' faint last words (a second line of faint ink) were not kept in either.
+
+A limit found with the synthetic test: the background estimate is floored at 0.55 of the paper level, so a band darker than that is divided by the floor, not by itself (paper 215, band 90: flattened band 194, which is below the weak threshold 203 that results when the band pulls the Otsu threshold up to 155, so the band is still weak ink); the synthetic page in the test therefore uses a band of 110, and a darker band would need a lower floor.
+
+Timing (median of three runs of the whole `analyzePage`, headless Chrome, `img-11`, 3271 x 5064): 912 ms under 093, 925 ms under 094, 13 ms added; other pages add -80 to +190 ms, which is noise in this measurement. No speed-up was needed.
+
+The nine public reference pages were run as regression-001 with the saved method 042 regions and method 043's evaluator, as for method 093. Every page scores 0 other-passage ink included, 0 own ink left out and 0 separator ink included. Line counts equal 093's (and 063's) on eight pages (41, 85, 31, 30, 25, 30, 29, 24 for Cole, Dutt, Nītiśataka 1896, Nītiśataka 1914, Hertel, Kale, Telang, Vavilla) and Ten Princes 30 has 60 lines instead of 59. Region records are identical to 093's apart from method name, settings and timestamps on seven pages (white paper, where the flattening gives back the input); Hertel 152 (paper 236) and Ten Princes 30 differ in outlines and pixel counts because their paper is not pure white and the thresholds move (Ten Princes strong and weak thresholds 182 and 213.5 under 093, 193 and 224 under 094). The summary is [outputs/surveys/094-illumination-flattened-ink/regression-001/summary.json](outputs/surveys/094-illumination-flattened-ink/regression-001/summary.json).
+
+New tests: `webapp/test/flatten.test.mjs` (the flattening equals Python's result on the fixture `methods/094-illumination-flattened-ink/flatten-fixture.json`, also checked by `methods/094-illumination-flattened-ink/test_flatten.py`; pure white paper comes out byte-identical with the same components and lines; near-white noisy paper moves at most 1 level; a page with paper 215, text 40 and a 150-column band of 110 along the right edge keeps no text in the band columns under 093 and keeps it under 094). `paper-threshold.test.mjs` now strips the `flatten_*` settings to test 093's rule. `node --test webapp/test/*.test.mjs` passes 312 and `schema/test_book.py` passes 19.

@@ -87,8 +87,53 @@ export function paperLevel(gray, fraction) {
   return 255;
 }
 
+// Method 094: divide the gray image by a smooth estimate of the local paper brightness (geometry.flatten_gray).
+// float64 throughout and round half up, so the bytes equal the Python implementation's.
+export function flattenGray(gray, W, H, cfg) {
+  const paper = paperLevel(gray, cfg.paper_percentile);
+  const B = Math.max(cfg.flatten_minimum_block, Math.floor(Math.min(W, H) / cfg.flatten_block_divisor + 0.5));
+  const bw = Math.ceil(W / B), bh = Math.ceil(H / B), step = cfg.flatten_sample_step;
+  const floor = cfg.flatten_floor * paper, bg = new Float64Array(bw * bh);
+  const hist = new Uint32Array(256);
+  for (let by = 0; by < bh; by++) for (let bx = 0; bx < bw; bx++) {
+    hist.fill(0); let n = 0;
+    const ye = Math.min(H, (by + 1) * B), xe = Math.min(W, (bx + 1) * B);
+    for (let y = by * B; y < ye; y += step) for (let x = bx * B; x < xe; x += step) { hist[gray[y * W + x]]++; n++; }
+    const need = cfg.flatten_percentile * n;
+    let t = 0, v = 0;
+    for (; v < 255; v++) { t += hist[v]; if (t >= need) break; }
+    bg[by * bw + bx] = Math.max(v, floor);
+  }
+  const sm = new Float64Array(bg.length);
+  for (let by = 0; by < bh; by++) for (let bx = 0; bx < bw; bx++) {
+    let t = 0, n = 0;
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      const yy = by + dy, xx = bx + dx;
+      if (yy >= 0 && yy < bh && xx >= 0 && xx < bw) { t += bg[yy * bw + xx]; n++; }
+    }
+    sm[by * bw + bx] = t / n;
+  }
+  const xi0 = new Int32Array(W), xi1 = new Int32Array(W), xt = new Float64Array(W);
+  for (let x = 0; x < W; x++) {
+    const fx = Math.min(bw - 1, Math.max(0, x / B - 0.5)), x0 = Math.floor(fx);
+    xi0[x] = x0; xi1[x] = Math.min(bw - 1, x0 + 1); xt[x] = fx - x0;
+  }
+  const flat = new Uint8Array(W * H);
+  for (let y = 0; y < H; y++) {
+    const fy = Math.min(bh - 1, Math.max(0, y / B - 0.5)), y0 = Math.floor(fy), y1 = Math.min(bh - 1, y0 + 1), ty = fy - y0;
+    const r0 = y0 * bw, r1 = y1 * bw;
+    for (let x = 0; x < W; x++) {
+      const tx = xt[x], a = xi0[x], b = xi1[x];
+      const L = (sm[r0 + a] * (1 - tx) + sm[r0 + b] * tx) * (1 - ty) + (sm[r1 + a] * (1 - tx) + sm[r1 + b] * tx) * ty;
+      flat[y * W + x] = Math.min(255, Math.floor(gray[y * W + x] / L * 255 + 0.5));
+    }
+  }
+  return flat;
+}
+
 // Hysteresis ink mask and components with roles (geometry.ink_components).
 export function inkComponents(gray, W, H, cfg) {
+  if (cfg.flatten_percentile !== undefined) gray = flattenGray(gray, W, H, cfg);
   const strong = Math.min(otsu(gray), cfg.maximum_strong_threshold);
   // Method 093: with paper settings the weak threshold lies between strong ink and the page's paper level.
   const weakT = cfg.paper_percentile === undefined ? (strong + 255) / 2

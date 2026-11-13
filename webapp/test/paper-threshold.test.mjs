@@ -1,7 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { inkComponents, segmentLines, paperLevel, analyzePage } from "../js/local/ink.js";
-import { LINES, LEGACY_LINES } from "../js/local/config.js";
+import { LINES as LINES_094, LEGACY_LINES } from "../js/local/config.js";
+
+// Method 093's settings: the current ones without method 094's illumination flattening.
+const LINES = Object.fromEntries(Object.entries(LINES_094).filter(([k]) => !k.startsWith("flatten_")));
 
 // Rows of glyph-like rectangles on a flat paper level.
 function page(paper, ink) {

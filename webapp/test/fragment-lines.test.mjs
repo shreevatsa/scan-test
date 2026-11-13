@@ -5,8 +5,8 @@ import { inkComponents, segmentLines } from "../js/local/ink.js";
 import { LINES, LEGACY_LINES } from "../js/local/config.js";
 import { applyGeometry, clone } from "../js/ops.js";
 
-test("fragment-band settings match method 093", () => {
-  const path = new URL("../../methods/093-paper-relative-ink-threshold/line-config.json", import.meta.url);
+test("fragment-band settings match method 094", () => {
+  const path = new URL("../../methods/094-illumination-flattened-ink/line-config.json", import.meta.url);
   assert.deepEqual(LINES, JSON.parse(readFileSync(path, "utf8")));
 });
 
