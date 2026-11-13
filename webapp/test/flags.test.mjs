@@ -132,13 +132,21 @@ test("An uncovered line is described by where it is, not by its number", () => {
 });
 test("Ignored lines raise no flag, restoring brings it back, and ignoring counts as a regions edit", () => {
   const model = doc(); model.source.uncovered_lines = [{ line_id: 5, box: [4, 5, 70, 15] }, { line_id: 6, box: [4, 200, 70, 215] }];
-  const edited = structuredClone(model); ops.ignoreLine(edited, 5);
+  const edited = structuredClone(model); ops.ignoreLine(edited, { line_id: 5, box: [4, 5, 70, 15] });
   assert.deepEqual(regionFlags(edited, types).map(flag => flag.line_id), [6]);
   assert.notEqual(layerView(model, "regions"), layerView(edited, "regions"));
   assert.equal(noteEdit(model, edited, { focus: "regions" }).source.layers.regions.state, "edited");
-  const back = structuredClone(edited); ops.restoreLine(back, 5);
+  const back = structuredClone(edited); ops.restoreLine(back, { line_id: 5, box: [4, 5, 70, 15] });
   assert.deepEqual(regionFlags(back, types).map(flag => flag.line_id), [5, 6]);
   assert.equal(layerView(model, "regions"), layerView(back, "regions"));
+});
+test("An ignored line stays ignored when a later analysis numbers the lines differently", () => {
+  const model = doc(); model.source.uncovered_lines = [{ line_id: 5, box: [4, 5, 70, 15] }];
+  const edited = structuredClone(model); ops.ignoreLine(edited, { line_id: 5, box: [4, 5, 70, 15] });
+  const again = structuredClone(edited); again.source.uncovered_lines = [{ line_id: 9, box: [5, 6, 72, 16] }, { line_id: 10, box: [4, 200, 70, 215] }];
+  assert.deepEqual(regionFlags(again, types).map(flag => flag.line_id), [10], "the same place, a new id: still ignored");
+  const old = structuredClone(model); old.source.ignored_lines = [5];
+  assert.deepEqual(regionFlags(old, types).map(flag => flag.line_id), [], "a plain id still works");
 });
 test("A region added over the line removes its flag; a continuation flag names the neighbouring page", () => {
   const page = doc(); page.source.uncovered_lines = [{ line_id: 5, box: [4, 500, 70, 515] }];

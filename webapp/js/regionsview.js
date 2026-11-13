@@ -1,11 +1,11 @@
-import { suggestionButton } from "./review-view.js?v=20261113-flags-1";
-import { typeRevision } from "./schema.js?v=20261113-flags-1";
+import { suggestionButton } from "./review-view.js?v=20261113-flags-2";
+import { typeRevision } from "./schema.js?v=20261113-flags-2";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261113-flags-1";
-import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261113-flags-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-1";
-import { editTypeDialog } from "./type-operations.js?v=20261113-flags-1";
-import { normalizeTypeName } from "./type-additions.js?v=20261113-flags-1";
+import * as ops from "./ops.js?v=20261113-flags-2";
+import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261113-flags-2";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-2";
+import { editTypeDialog } from "./type-operations.js?v=20261113-flags-2";
+import { normalizeTypeName } from "./type-additions.js?v=20261113-flags-2";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -137,7 +137,7 @@ function uncoveredRow(app, flag) {
     onclick: () => app.pageView.markLine({ pinned: box }) },
     crop, h("div", { class: "uncovered-text" }, flag.message),
     h("div", { class: "actions" }, type, h("button", { class: "add-line-region", onclick: () => { if (type.value) app.addRegionOverLine(flag.line_id, type.value); else app.toast("Choose the region's type first.", "warn"); } }, "Add a region"),
-      h("button", { class: "ignore-line", onclick: () => { app.pageView.markLine({ hover: null, pinned: null }); app.edit(doc => ops.ignoreLine(doc, flag.line_id)); } }, "Ignore")));
+      h("button", { class: "ignore-line", onclick: () => { app.pageView.markLine({ hover: null, pinned: null }); app.edit(doc => ops.ignoreLine(doc, { line_id: flag.line_id, box: flag.box })); } }, "Ignore")));
   return row;
 }
 
@@ -186,8 +186,8 @@ export class RegionsPanel {
         ...flags.map(flag => flag.code === "uncovered" ? uncoveredRow(app, flag) : h("p", {}, h("button", { class: "link", onclick: () => flag.region && app.select({ region: flag.region }) }, flag.message),
           flag.page && app.book.index[flag.page] !== undefined ? [" ", h("button", { class: "link open-neighbor", onclick: () => app.openPage(flag.page) }, `Open page ${app.book.index[flag.page] + 1}`)] : null)))] : []),
       ...(ignored.length ? [h("details", { class: "region-ignored-lines" }, h("summary", {}, `Ignored lines (${ignored.length})`),
-        ...ignored.map(id => { const line = (app.doc.source?.uncovered_lines || []).find(value => value.line_id === id);
-          return h("p", {}, `A printed line ${linePosition(line?.box, app.doc.page) || "outside all regions"} `, h("button", { onclick: () => app.edit(doc => ops.restoreLine(doc, id)) }, "Restore")); }))] : []),
+        ...ignored.map(entry => { const box = typeof entry === "number" ? (app.doc.source?.uncovered_lines || []).find(value => value.line_id === entry)?.box : entry.box;
+          return h("p", {}, `A printed line ${linePosition(box, app.doc.page) || "outside all regions"} `, h("button", { onclick: () => app.edit(doc => ops.restoreLine(doc, entry)) }, "Restore")); }))] : []),
       ...cards, ...omitted);
     this.el.scrollTop = scroll;
     this.markSelection();

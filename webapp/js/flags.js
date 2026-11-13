@@ -1,6 +1,6 @@
-import { typeRevision } from "./schema.js?v=20261113-flags-1";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-flags-1";
-import { layerState } from "./layers.js?v=20261113-flags-1";
+import { typeRevision } from "./schema.js?v=20261113-flags-2";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-flags-2";
+import { layerState } from "./layers.js?v=20261113-flags-2";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -113,7 +113,19 @@ export function uncoveredMessage(box, page) {
   return `A printed line outside all regions${where ? `, ${where}` : ""}`;
 }
 
-export function ignoredLines(doc) { return new Set(doc?.source?.ignored_lines || []); }
+// Ignored lines are {line_id, box} (a plain id is also accepted). A line is ignored when one of them lies over it, so a
+// page analysed again, with its lines numbered differently, keeps what the user ignored.
+export function ignoredLines(doc) { return [...(doc?.source?.ignored_lines || [])]; }
+export function lineIgnored(ignored, line) {
+  return ignored.some(entry => typeof entry === "number" ? entry === line.line_id
+    : entry.box && line.box ? boxShare(entry.box, line.box) >= 0.5 : entry.line_id === line.line_id);
+}
+// The share of the smaller box that the two boxes have in common.
+function boxShare(a, b) {
+  const w = Math.min(a[2], b[2]) - Math.max(a[0], b[0]), h = Math.min(a[3], b[3]) - Math.max(a[1], b[1]);
+  if (w <= 0 || h <= 0) return 0;
+  return w * h / Math.min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]));
+}
 
 export function regionFlags(doc, types, { errors = [], previous = null, next = null, cache = null } = {}) {
   if (!doc) return [];
@@ -130,7 +142,7 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
   for (const skipped of doc.source?.regions_skipped || []) add("no-ink", `Region ${skipped.region_id} was left out (${skipped.status || "no ink"})`);
   const ignored = ignoredLines(doc);
   for (const line of doc.source?.uncovered_lines || []) {
-    if (ignored.has(line.line_id)) continue;
+    if (lineIgnored(ignored, line)) continue;
     add("uncovered", uncoveredMessage(line.box, doc.page), null, line.box, { line_id: line.line_id });
   }
   for (const problem of doc.source?.provisional_problems || []) add("provisional", problem);

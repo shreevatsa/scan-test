@@ -6,7 +6,7 @@
 // is checked with schema.js before it is saved.
 
 import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261113-flags-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261113-flags-2";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };
@@ -866,16 +866,22 @@ export function markEdited(doc, base) {
 }
 
 // Ignore a printed line the analysis found outside all regions (a stain, a rule, a printer's mark), or bring its flag back.
-export function ignoreLine(doc, lineId) {
-  const ids = new Set(doc.source?.ignored_lines || []);
-  ids.add(lineId);
-  doc.source = { ...(doc.source || {}), ignored_lines: [...ids].sort((a, b) => a - b) };
+// The ignored line is kept as {line_id, box}: a later analysis (another method, another threshold) may number the page's
+// lines differently, so it is matched by where it lies (flags.js `lineIgnored`), the id being only a hint.
+export function ignoreLine(doc, line) {
+  const entry = typeof line === "number" ? { line_id: line } : { line_id: line.line_id, box: line.box };
+  const kept = (doc.source?.ignored_lines || []).filter(value => !sameIgnored(value, entry));
+  kept.push(entry);
+  doc.source = { ...(doc.source || {}), ignored_lines: kept };
 }
-export function restoreLine(doc, lineId) {
-  const ids = (doc.source?.ignored_lines || []).filter(id => id !== lineId);
+export function restoreLine(doc, line) {
+  const entry = typeof line === "number" ? { line_id: line } : line;
+  const kept = (doc.source?.ignored_lines || []).filter(value => !sameIgnored(value, entry));
   doc.source = { ...(doc.source || {}) };
-  if (ids.length) doc.source.ignored_lines = ids; else delete doc.source.ignored_lines;
+  if (kept.length) doc.source.ignored_lines = kept; else delete doc.source.ignored_lines;
 }
+const sameIgnored = (a, b) => (typeof a === "number" ? { line_id: a } : a).line_id === (typeof b === "number" ? { line_id: b } : b).line_id
+  && JSON.stringify(a.box ?? null) === JSON.stringify(b.box ?? null);
 
 // Add a region of `type` over a printed line found outside all regions; the line stops being uncovered at once (the
 // outlines are recomputed afterwards).
