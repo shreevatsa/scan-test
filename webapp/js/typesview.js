@@ -5,16 +5,16 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261113-types-tidy-1";
-import { typeRevision } from "./schema.js?v=20261113-types-tidy-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-types-tidy-1";
-import { newTypeDialog } from "./regionsview.js?v=20261113-types-tidy-1";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-types-tidy-1";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-types-tidy-1";
-import { unusedDraftTypes } from "./draft-types.js?v=20261113-types-tidy-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-types-tidy-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-types-tidy-1";
-import { regionPath } from "./pageimage.js?v=20261113-types-tidy-1";
+import { prepare } from "./reader.js?v=20261113-types-tidy-2";
+import { typeRevision } from "./schema.js?v=20261113-types-tidy-2";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-types-tidy-2";
+import { newTypeDialog } from "./regionsview.js?v=20261113-types-tidy-2";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-types-tidy-2";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-types-tidy-2";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-types-tidy-2";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-types-tidy-2";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-types-tidy-2";
+import { regionPath } from "./pageimage.js?v=20261113-types-tidy-2";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -210,7 +210,13 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false }
       b.after(h("span", { class: "meta unused-draft-note" }, " · unused draft type"));
     }
   }
-  if (removeUnused && book.writable && unused.names.length && docs.some(doc => doc?.page?.regions?.length)) {
+  // Removing is offered only once regions are found on at least half of the pages not dimmed: before that, an unused
+  // type may just not have been met yet.
+  const found = docs.filter(doc => doc?.page?.regions?.length).length;
+  const pages = book.pages.filter(page => !book.isSkipped?.(page.id)).length;
+  if (removeUnused && book.writable && unused.names.length && found && found * 2 < pages)
+    el.prepend(h("p", { class: "meta" }, `${unused.names.length} draft types are unused so far. Removing them is offered once regions are found on at least half the pages (now ${found} of ${pages}).`));
+  if (removeUnused && book.writable && unused.names.length && found && found * 2 >= pages) {
     el.prepend(h("div", { class: "actions" }, h("button", { onclick: () => reviewTypeChange(app, unused.names.map(name => ({ kind: "remove", name })),
       { applied: () => app.route() }).catch(error => app.toast(error.message, "bad")) }, `Remove unused draft types (${unused.names.length})`),
       h("span", { class: "meta" }, `${unused.names.join(", ")}: used on no page and not in a proposal.`)));

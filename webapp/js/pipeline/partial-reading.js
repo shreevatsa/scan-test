@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261113-types-tidy-1";
+import { canonical } from "../ops.js?v=20261113-types-tidy-2";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {
