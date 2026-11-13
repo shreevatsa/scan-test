@@ -4,9 +4,9 @@
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
 
 import { analyzePage } from "./ink.js";
-import { regionsFromBoxes } from "./regions.js?v=20261112-hover-box-1";
+import { regionsFromBoxes } from "./regions.js?v=20261112-paper-1";
 import { LINES, OWNERSHIP } from "./config.js";
-import { lineBlocks } from "./blocks.js?v=20261112-hover-box-1";
+import { lineBlocks } from "./blocks.js?v=20261112-paper-1";
 
 const cache = new Map();
 
@@ -35,14 +35,14 @@ onmessage = async e => {
     }
     const a = cache.get(key);
     if (boxes === null && a.status !== "ok") {
-      postMessage({ id, geometry: [], blocks: [], uncovered: [], method: "063-fragment-band-lines", charH: a.charH,
+      postMessage({ id, geometry: [], blocks: [], uncovered: [], method: "093-paper-relative-ink-threshold", charH: a.charH,
         angle: 0, warnings: [`Local line analysis found too little text (${a.status}). Check the scan for omitted material.`], seconds: (performance.now() - t0) / 1000 });
       return;
     }
     if (a.status !== "ok") throw new Error(`the page's line analysis failed (${a.status})`);
     const blocks = boxes === null ? lineBlocks(a) : null;
     const { geometry, uncovered } = regionsFromBoxes(a, blocks ? blocks.map(block => block.box) : boxes, OWNERSHIP);
-    postMessage({ id, geometry, uncovered, blocks, method: "063-fragment-band-lines", charH: a.charH, angle: a.angle, lines: a.seg.lines.length, seconds: (performance.now() - t0) / 1000 });
+    postMessage({ id, geometry, uncovered, blocks, method: "093-paper-relative-ink-threshold", charH: a.charH, angle: a.angle, lines: a.seg.lines.length, seconds: (performance.now() - t0) / 1000 });
   } catch (err) {
     postMessage({ id, error: err.message });
   }

@@ -5092,3 +5092,39 @@ Kale 1913 (252 pages) and Telang (195): identical. Kale 2142 units, 2 warnings (
 Regions continuation flags, which do not run on these books (their units are settled), were compared by marking every page's units provisional: Kale 45 pages (52 flags) before and after; Telang 44 pages (56 flags), the same flags, two pages listing them in another order. A first version of the new flags took a page's first region marked "continues from earlier" anywhere on the page as its open start, and flagged 69 Kale pages (94 flags): Kale's footnotes have pairs marked as continuing within one page. The flags now use a page's first and last regions in the flow, as the provisional units do.
 
 In headless Chrome with a fresh profile and every non-local request blocked (none was attempted): a book made from `Kale-1913-pp21-272.pdf` with "Start the book", pages 1 to 6 started by hand, page 2 emptied with "No content on this page", page 5 a plate (running header, figure, caption, page number), paragraphs typed on pages 1, 3, 4 and 6 with the continuation boxes ticked, all moved on to Read. Read: 6 pages, 4 units, the paragraph across page 2 one passage, the paragraph across page 5 one passage followed by the plate's figure and caption, no reading problems; Problems "0 page breaks where units do not join"; no continuation or Read flags on the six pages. All 302 app tests and 19 schema tests pass.
+
+
+## Weak ink threshold relative to the paper level — method 093, 2026-11-12
+
+[Method 093](methods/093-paper-relative-ink-threshold/README.md) changes one thing in method 063's local step: the weak ink threshold, which was `(strong + 255) / 2` with `strong = min(otsu, 200)`, becomes `(strong + max(strong + 20, paper)) / 2`, where `paper` is the smallest gray value v with at least 0.9 of all pixels at or below v (histogram over all pixels). The settings are `paper_percentile` 0.9 and `weak_minimum_gap` 20 in the line config, and the rule applies only when they are present, so method 063 and the browser's legacy settings keep the old threshold. The browser port (`paperLevel` in `webapp/js/local/ink.js`, `LINES` in `webapp/js/local/config.js`) now records `093-paper-relative-ink-threshold` as the local method of new results; saved documents that say 063 are unchanged. Zero API calls.
+
+The cause: on scans with darker paper (brightness about 190 to 210 of 255) the old weak threshold lies inside the paper, the ink mask leaks across the page into one big component and the page fails with `too_little_text`. The test pages are from archive.org: the University of Toronto scan of Ramayana-manjari (`ramayanamamjari00ksemuoft`) leaves 14 to 20 (PDF pages 15 to 21, 7 pages), one middle page from each of twelve other archive.org scans (items 1 to 12), and Kale 1913 page 5. The analysis was run in headless Chrome with a fresh profile, once with the current `LINES` minus the two new settings (the old rule, with fragment-band joining as in 063) and once with the new `LINES`.
+
+| Page | Paper level | Old rule | New rule |
+|---|---|---|---|
+| Ramayana-manjari leaf 14 | 192 | too_little_text | ok, 23 lines |
+| leaf 15 | 211 | ok, 27 | ok, 27 |
+| leaf 16 | 201 | too_little_text | ok, 27 |
+| leaf 17 | 206 | ok, 16 | ok, 28 |
+| leaf 18 | 198 | too_little_text | ok, 27 |
+| leaf 19 | 205 | too_little_text | ok, 28 |
+| leaf 20 | 201 | too_little_text | ok, 27 |
+| other item 1 | 214 | ok, 26 | ok, 28 |
+| item 2 | 255 | ok, 27 | ok, 27 |
+| item 3 | 232 | ok, 30 | ok, 30 |
+| item 4 | 255 | ok, 28 | ok, 28 |
+| item 5 | 230 | ok, 31 | ok, 31 |
+| item 6 | 231 | ok, 28 | ok, 30 |
+| item 7 | 233 | ok, 28 | ok, 30 |
+| item 8 | 255 | ok, 28 | ok, 28 |
+| item 9 | 255 | ok, 27 | ok, 27 |
+| item 10 | 255 | ok, 28 | ok, 28 |
+| item 11 | 233 | ok, 27 | ok, 27 |
+| item 12 | 233 | ok, 28 | ok, 28 |
+| Kale 1913 page 5 | 255 | ok, 28 | ok, 28 |
+
+Five of the 7 Ramayana-manjari leaves failed before and none after (leaf 17 gained 12 lines it had been missing). On the other items the line counts are the same on 9 of 12 and 2 higher on items 1, 6 and 7; wherever the paper level is 255 the two rules are the same formula and give the same counts. All 21 pages here, including Hertel 152, give `ok` with 23 to 31 lines. The Python and browser paper levels agree by definition, but the browser decodes images itself, so a one-unit difference in the Otsu threshold between OpenCV and the browser (Hertel 152: weak threshold 186.5 in Python, 187 in the browser) is not caused by this rule.
+
+The nine public reference pages (Kale 106, Hertel 152, Dutt 17F chapter 1 page 2, Telang 108, Cole 3, Ten Princes 30, Nītiśataka 1896 page 123, Nītiśataka 1914 page 258, Vavilla 34) were run as regression-001 with the saved method 042 regions and scored with method 043's evaluator, as for method 063. Every page scores 0 other-passage ink included, 0 own ink left out and 0 separator ink included, and the line counts equal 063's (41, 85, 31, 30, 25, 30, 59, 29, 24 by page in the order Cole, Dutt, Nītiśataka 1896, Nītiśataka 1914, Hertel, Kale, Ten Princes, Telang, Vavilla). Seven pages' saved region records are identical to 063's apart from method name, settings and timestamps. Hertel 152 (paper level 236) and Ten Princes 30 differ slightly in outlines and component counts because their paper is not pure white (the character height estimate changes by one pixel), with the same lines. The summary is [outputs/surveys/093-paper-relative-ink-threshold/regression-001/summary.json](outputs/surveys/093-paper-relative-ink-threshold/regression-001/summary.json).
+
+New tests: `webapp/test/paper-threshold.test.mjs` (a synthetic page with paper 170 and text 110 fails `too_little_text` under the old rule and gives six lines under the new one; a white-paper page gives identical components and lines under both; the paper level equals its numpy-style definition on a small array). `node --test webapp/test/*.test.mjs` passes 308 and `schema/test_book.py` passes 19.

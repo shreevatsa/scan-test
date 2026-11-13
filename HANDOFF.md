@@ -9,7 +9,7 @@ Turn a book's PDF into a digital book in which every unit (paragraph, verse, foo
 ## Where things stand
 
 - **The app works and is tested.** `webapp/` is plain HTML, CSS and JavaScript modules with no build step (about 13,000 lines in `webapp/js`). Tabs are Pages · Regions · Text · Read · Export, one per stage. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3).
-- **Tests:** `node --test webapp/test/*.test.mjs` (305 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
+- **Tests:** `node --test webapp/test/*.test.mjs` (308 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
 - **Running:** `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/. A book opens read only with `?book=/outputs/books/kale-1913.chaya.pdf`. The Tailscale HTTPS address for the user's other devices is in PRIVATE.md.
 - **Books that exist** (`outputs/books/`, not in git): Kale 1913 (252 pages) and Telang, both made by the older one-pass pipeline (method 052), and the vachana book made from a digital PDF's text layer (methods 058 and 062, private).
 - **Books are kept on disk as well as in the browser** (task 1, done 2026-11-12): a book in the browser can keep a `.chaya.pdf` on disk that the app rewrites after runs and moves and at most every five minutes while there are changes; paid runs wait for a copy; a book with unreadable files is not opened as if empty. `webapp/README.md`, "The copy on disk", describes it. Checked in Chrome with the file picker simulated; the real picker and a real file changing on disk still need one manual check by the user.
@@ -30,7 +30,7 @@ This needs the user's browser, keys and spending approval; an agent does not sta
 
 ### Task 5. Experiments that shrink completion
 
-New method IDs from 093, with NOTEBOOK entries and recorded costs. In this order:
+New method IDs from 094, with NOTEBOOK entries and recorded costs. In this order:
 1. **A narrow completion call:** with units fixed by the local rule (`provisionalUnits`) and the user's region types, ask only for line ends, unit numbers and labels, and note links. Expect lower cost and fewer invalid results than 070 and 073–076.
 2. **Container starts from region finding:** one extra field per region naming the container that begins there, the tree built locally, compared with trees a person corrected.
 3. **Line joins by rule** on transcribed scans (the digital book's rule was about 87% right).
@@ -65,7 +65,7 @@ Details are in the archived handoff under "Data model"; these are the rules code
 ## Working rules
 
 - **Private material stays out of git and out of this file:** the private books' names, pages, results and personal URLs go in `PRIVATE.md` and `private/` (both local; `.git/info/exclude` lists the rest). Read PRIVATE.md at the start of a session on this machine.
-- **Methods:** code and README under `methods/<id>-<name>/`. A changed prompt, model, setting or recipe gets a new ID (next unused: 093); a repeated request gets a new `run-NNN` directory. Saved requests, responses and prior method code are immutable.
+- **Methods:** code and README under `methods/<id>-<name>/`. A changed prompt, model, setting or recipe gets a new ID (next unused: 094); a repeated request gets a new `run-NNN` directory. Saved requests, responses and prior method code are immutable.
 - **NOTEBOOK.md** records actual tests only (settings, observations, costs, images), newest last, one physical line per paragraph. Plans and conclusions go here.
 - **Python:** `uv run --offline python`. **Keys:** from the environment or the `llm` key store (`openai`, `gemini`); never printed or written to files.
 - **Spending:** no paid model call without the user's approval for that run; record every charge.

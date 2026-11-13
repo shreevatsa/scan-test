@@ -76,10 +76,23 @@ export function components(mask, W, H) {
   return { count, labels, x0, y0, x1, y1, area };
 }
 
+// The paper level: the smallest gray value v with at least `fraction` of all pixels at or below v
+// (numpy: argmax(cumsum(bincount(gray, minlength=256)) >= fraction * gray.size)).
+export function paperLevel(gray, fraction) {
+  const hist = new Uint32Array(256);
+  for (let i = 0; i < gray.length; i++) hist[gray[i]]++;
+  const need = fraction * gray.length;
+  let sum = 0;
+  for (let v = 0; v < 256; v++) { sum += hist[v]; if (sum >= need) return v; }
+  return 255;
+}
+
 // Hysteresis ink mask and components with roles (geometry.ink_components).
 export function inkComponents(gray, W, H, cfg) {
   const strong = Math.min(otsu(gray), cfg.maximum_strong_threshold);
-  const weakT = (strong + 255) / 2;
+  // Method 093: with paper settings the weak threshold lies between strong ink and the page's paper level.
+  const weakT = cfg.paper_percentile === undefined ? (strong + 255) / 2
+    : (strong + Math.max(strong + cfg.weak_minimum_gap, paperLevel(gray, cfg.paper_percentile))) / 2;
   const weak = new Uint8Array(W * H);
   for (let i = 0; i < gray.length; i++) weak[i] = gray[i] < weakT ? 1 : 0;
   const c = components(weak, W, H);

@@ -1,4 +1,4 @@
-import { suggestionButton } from "./review-view.js?v=20261112-hover-box-1";
+import { suggestionButton } from "./review-view.js?v=20261112-paper-1";
 // The text side of the page editor: the page's units in reading order, each region's line pieces as editable
 // lines (one region is one editing host, so a selection can run across its lines), and an inspector for the
 // selected unit, region or note marker. Text typed into a line is read back from the DOM into text and spans; every
@@ -6,9 +6,9 @@ import { suggestionButton } from "./review-view.js?v=20261112-hover-box-1";
 
 import { cp, cpLength, covered, removeKind, normalizeSpans } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261112-hover-box-1";
-import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261112-hover-box-1";
-import { orderedRegions, textFlags } from "./flags.js?v=20261112-hover-box-1";
+import * as ops from "./ops.js?v=20261112-paper-1";
+import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261112-paper-1";
+import { orderedRegions, textFlags } from "./flags.js?v=20261112-paper-1";
 
 const END_CYCLE = { space: "hyphen", hyphen: "join", join: "line", line: "space" };
 const END_NAMES = { space: "a space", hyphen: "a hyphen to drop (the word goes on)", join: "nothing (the word goes on)", line: "a line break" };

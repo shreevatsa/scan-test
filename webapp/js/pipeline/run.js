@@ -1,24 +1,24 @@
-import { typeRevision } from "../schema.js?v=20261112-hover-box-1";
-import { mappedTypeNames } from "../type-revisions.js?v=20261112-hover-box-1";
+import { typeRevision } from "../schema.js?v=20261112-paper-1";
+import { mappedTypeNames } from "../type-revisions.js?v=20261112-paper-1";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261112-hover-box-1";
-import * as I from "./images.js?v=20261112-hover-box-1";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261112-hover-box-1";
+import * as S from "./steps.js?v=20261112-paper-1";
+import * as I from "./images.js?v=20261112-paper-1";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261112-paper-1";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261112-hover-box-1";
-import { classifyBlocks } from "../local/blocks.js?v=20261112-hover-box-1";
-import { finderById, finderPath } from "./finders.js?v=20261112-hover-box-1";
-import { finderRequest } from "./finder-requests.js?v=20261112-hover-box-1";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261112-hover-box-1";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261112-hover-box-1";
+import { localReading, localLayout } from "./ocr.js?v=20261112-paper-1";
+import { classifyBlocks } from "../local/blocks.js?v=20261112-paper-1";
+import { finderById, finderPath } from "./finders.js?v=20261112-paper-1";
+import { finderRequest } from "./finder-requests.js?v=20261112-paper-1";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261112-paper-1";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261112-paper-1";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261112-hover-box-1";
-import { layerState, noteEdit } from "../layers.js?v=20261112-hover-box-1";
-import { provisionalDocument } from "./provisional.js?v=20261112-hover-box-1";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261112-hover-box-1";
+import { canonical } from "../ops.js?v=20261112-paper-1";
+import { layerState, noteEdit } from "../layers.js?v=20261112-paper-1";
+import { provisionalDocument } from "./provisional.js?v=20261112-paper-1";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261112-paper-1";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -203,7 +203,7 @@ export class Maker {
         parsed => S.scaleRegions(parsed, W, H, tl), profile.provider === "openai"
           ? (usage, body) => S.openaiCost(usage, profile.pricing || t.regionPricing, body.service_tier) : null);
       ({ regions, warnings } = call.parsed);
-      const empty = { geometry: [], charH: 0, angle: 0, method: "063-fragment-band-lines" };
+      const empty = { geometry: [], charH: 0, angle: 0, method: "093-paper-relative-ink-threshold" };
       res = this.outlines ? await this.outlines(pid, await this.book.imageUrl(pid), regions.map(region => region.box)) : empty;
       if (!regions.length && res.error) res = empty;
       if (res.error) throw new Error(res.error);

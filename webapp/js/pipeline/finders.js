@@ -1,6 +1,6 @@
 // Each additional finder is evaluated on the public passage references before being offered here.
-import { canonical } from "../ops.js?v=20261112-hover-box-1";
-import { argonRates, flashRates } from "./model-prices.js?v=20261112-hover-box-1";
+import { canonical } from "../ops.js?v=20261112-paper-1";
+import { argonRates, flashRates } from "./model-prices.js?v=20261112-paper-1";
 export const FINDERS = [
   { id: "terra-regions", label: "GPT-6.1 Terra · reasoning off", provider: "openai", model: "gpt-6.1-terra", reasoning: "none", method: "042+063" },
   { id: "local-blocks", label: "Line blocks · free on this device", provider: "local", model: "line-blocks-v1", method: "079-local-line-block-regions" },

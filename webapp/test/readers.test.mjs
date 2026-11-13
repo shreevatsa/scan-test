@@ -554,7 +554,7 @@ test("local finder trials retain independent results and preserve current page w
     analyses++;
     assert.equal(boxes, null);
     return { blocks: [{ box: [0, 0, 101, 21], column: 0, line_count: 1, text_height: 20 }],
-      geometry: [{ rings: polygon(), lines: [{ line_id: 10, rings: polygon() }] }], charH: 15, angle: 0, method: "063-fragment-band-lines" };
+      geometry: [{ rings: polygon(), lines: [{ line_id: 10, rings: polygon() }] }], charH: 15, angle: 0, method: "093-paper-relative-ink-threshold" };
   };
   const original = JSON.stringify(await maker.regions("p1"));
   const trial = await maker.findRegions("p1", { finder: "local-blocks", save: false, trial: true, force: false });
@@ -581,7 +581,7 @@ test("Tesseract finder caches depend on language and type definitions", async ()
   const { maker, book, calls } = fixture();
   let recognitions = 0;
   maker.layout = async () => { recognitions++; return { blocks: [] }; };
-  maker.outlines = async () => ({ geometry: [], charH: 15, angle: 0, method: "063-fragment-band-lines" });
+  maker.outlines = async () => ({ geometry: [], charH: 15, angle: 0, method: "093-paper-relative-ink-threshold" });
   await book.saveReaderOptions({ finder: "tesseract-regions", ocr_languages: "eng" });
   await maker.findRegions("p1", { force: false, save: false, trial: true });
   await maker.findRegions("p1", { force: false, save: false, trial: true });

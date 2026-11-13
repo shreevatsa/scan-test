@@ -1,10 +1,10 @@
-import { discoverySchema, discoveryPrompt, proposalTypes, TYPE_MODELS } from "./type-discovery.js?v=20261112-hover-box-1";
-import { geminiReadingRequest } from "./readers.js?v=20261112-hover-box-1";
-import { Maker, templates, jsonHash } from "./run.js?v=20261112-hover-box-1";
-import { makeValidator } from "../schema.js?v=20261112-hover-box-1";
-import { openaiCost } from "./steps.js?v=20261112-hover-box-1";
+import { discoverySchema, discoveryPrompt, proposalTypes, TYPE_MODELS } from "./type-discovery.js?v=20261112-paper-1";
+import { geminiReadingRequest } from "./readers.js?v=20261112-paper-1";
+import { Maker, templates, jsonHash } from "./run.js?v=20261112-paper-1";
+import { makeValidator } from "../schema.js?v=20261112-paper-1";
+import { openaiCost } from "./steps.js?v=20261112-paper-1";
 import { sha256hex } from "../chayapdf.js";
-import { mergeTypeProposals } from "../type-draft.js?v=20261112-hover-box-1";
+import { mergeTypeProposals } from "../type-draft.js?v=20261112-paper-1";
 
 export const OVERVIEW_RECIPE = { version: 1, columns: 4, rows: 5, cell_width: 256, cell_height: 384,
   padding: 8, label_height: 24, mime_type: "image/jpeg", quality: 0.85, max_sheets: 16, max_payload_bytes: 12000000 };
