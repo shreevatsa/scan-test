@@ -260,6 +260,7 @@ main.page-empty { overflow: auto; }
 .styleview { padding: 12px 24px 60px; }
 .stylebar { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .stylebar h2 { margin: 0 8px 0 0; }
+.stylebar h3 { margin: 12px 8px 8px 0; }
 .stylebar .status.ok { color: var(--ok, #2a7a2a); } .stylebar .status.warn { color: #a66a00; } .stylebar .status.bad { color: var(--bad, #b00); }
 .stylecols { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
 .styleedit section { margin-bottom: 18px; }

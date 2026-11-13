@@ -5,17 +5,17 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261113-type-tree-4";
-import { prepare } from "./reader.js?v=20261113-type-tree-4";
-import { typeRevision } from "./schema.js?v=20261113-type-tree-4";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-type-tree-4";
-import { newTypeDialog } from "./regionsview.js?v=20261113-type-tree-4";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-type-tree-4";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-type-tree-4";
-import { unusedDraftTypes } from "./draft-types.js?v=20261113-type-tree-4";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-type-tree-4";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-type-tree-4";
-import { regionPath } from "./pageimage.js?v=20261113-type-tree-4";
+import { typeForest } from "./type-tree.js?v=20261113-keycache-1";
+import { prepare } from "./reader.js?v=20261113-keycache-1";
+import { typeRevision } from "./schema.js?v=20261113-keycache-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-keycache-1";
+import { newTypeDialog } from "./regionsview.js?v=20261113-keycache-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-keycache-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-keycache-1";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-keycache-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-keycache-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-keycache-1";
+import { regionPath } from "./pageimage.js?v=20261113-keycache-1";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -249,19 +249,19 @@ export function renderBookDetails(el, app, { onAdded = () => app.route(), onRevi
     }));
   }).catch(error => surveyQuestions.replaceChildren(h("p", { class: "bad" }, error.message)));
   el.replaceChildren(h("div", { class: "typesview book-details" },
-    h("div", { class: "stylebar" }, download,
-      book.writable ? h("button", { onclick: () => editBookTypesDialog(app) }, "Edit book details") : null),
-    h("p", { class: "hint" }, `The type list defines this book’s units, containment, reading flows and transcription conventions. Preview a change to see its reach before applying it.`),
     app.lastTypeRevision ? h("p", { class: "box" }, `Revision ${app.lastTypeRevision.revision} saved. `,
       app.lastTypeRevision.pages.length && onReviewPages ? h("button", { onclick: () => onReviewPages(app.lastTypeRevision.pages) },
         `Review ${app.lastTypeRevision.pages.length} affected ${app.lastTypeRevision.pages.length === 1 ? "page" : "pages"}`) : null) : null,
-    h("h3", {}, "Book details"),
+    h("div", { class: "stylebar" }, h("h3", {}, "Book details"),
+      book.writable ? h("button", { onclick: () => editBookTypesDialog(app) }, "Edit book details") : null),
     h("p", {}, h("b", {}, tl.title || tl.book_id)),
     tl.description ? h("p", {}, tl.description) : h("p", { class: "hint" }, "No description yet. Describe the book (its parts, languages and layout) with Edit book details; every model call uses it."),
     (tl.languages || []).length ? h("p", { class: "meta" }, `Languages: ${tl.languages.join(", ")}`) : null,
     Object.keys(tl.relations || {}).length ? [h("h4", {}, "Relations"), list(tl.relations, ([n, d]) => h("li", {}, h("b", {}, n), ` — ${d}`))] : null,
     Object.keys(tl.inline || {}).length ? [h("h4", {}, "Inline kinds"), list(tl.inline, ([n, d]) => h("li", {}, h("b", {}, n), d.formatting ? ` (printed ${d.formatting})` : "", ` — ${d.description}`))] : null,
     (tl.conventions || []).length ? [h("h4", {}, "Transcription conventions"), h("ul", {}, ...tl.conventions.map(c => h("li", {}, c)))] : null,
+    h("div", { class: "stylebar" }, download,
+      h("span", { class: "meta" }, "The type list defines this book’s units, containment, reading flows and transcription conventions. Preview a change to see its reach before applying it.")),
     tl.source?.discovery?.questions?.length ? [h("h3", {}, "Questions to review"), ...tl.source.discovery.questions.map(question => {
       const decision = tl.source.discovery.resolved_questions?.[question];
       const answer = h("textarea", { rows: 2, "aria-label": `Review decision for ${question}` }, decision?.answer || "");
