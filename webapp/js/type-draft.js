@@ -1,4 +1,4 @@
-import { canonical } from "./ops.js?v=20261112-flat-1";
+import { canonical } from "./ops.js?v=20261112-regions-layout-1";
 
 export function mergeTypeProposals(results) {
   if (!results.length) throw new Error("At least one type proposal is needed.");

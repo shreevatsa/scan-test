@@ -1,5 +1,5 @@
-import { post } from "./pipeline/run.js?v=20261112-flat-1";
-import { openaiText, geminiText } from "./pipeline/steps.js?v=20261112-flat-1";
+import { post } from "./pipeline/run.js?v=20261112-regions-layout-1";
+import { openaiText, geminiText } from "./pipeline/steps.js?v=20261112-regions-layout-1";
 import { h } from "./render.js";
 
 // Generated blank PNG. Credential checks never contain a book page.
@@ -63,7 +63,7 @@ export class CredentialChecks {
   }
 }
 
-export function stageKeyControls(checks, profile, save, changed = () => {}) {
+export function stageKeyControls(checks, profile, save, changed = () => {}, label = "API credential") {
   if (profile.provider === "local") return h("p", { class: "hint" }, "Runs on this device with zero API cost.");
   const keys = checks.keys, provider = profile.provider;
   const status = h("p", { class: "hint", role: "status" });
@@ -104,8 +104,50 @@ export function stageKeyControls(checks, profile, save, changed = () => {}) {
     if (checks.status(profile)?.valid) panel.open = false;
   } }, "Check key");
   refresh();
-  const panel = h("details", { class: "stage-keys", open: !checks.status(profile)?.valid }, h("summary", {}, "API credential ", state),
+  const panel = h("details", { class: "stage-keys", open: !checks.status(profile)?.valid }, h("summary", {}, `${label} `, state),
     fields, h("p", {}, button), status, h("p", { class: "hint" },
       "The check makes a small billable test request with no book content. OAuth tokens are held for this session. Keys are saved in this browser."));
   return panel;
+}
+
+const PROVIDER_NAMES = { openai: "OpenAI", gemini: "Gemini", vision: "Google Cloud Vision" };
+
+// The Regions tab's one credentials box: a key field, its "Check key" and its state for each provider that any model in
+// use needs (the selected region finder, and the unit-type survey's model once that box has been opened). `bind` gives
+// it the book's CredentialChecks; `onChange` is told whenever a key or a check result changes.
+export function credentialsBox(save) {
+  let checks = null, finder = null, survey = [], shown = null;
+  const listeners = new Set(), body = h("div");
+  const element = h("section", { class: "box credentials-box", "aria-label": "API credentials" }, h("h2", {}, "API credentials"), body);
+  const notify = () => { for (const listener of listeners) listener(); };
+  const render = () => {
+    if (!checks) { body.replaceChildren(h("p", { class: "hint" }, "Loading…")); return; }
+    const profiles = providerGroups(finder, survey);
+    const signature = JSON.stringify([...profiles].map(([provider, list]) => [provider, list.map(profile => profile.id)]));
+    if (signature === shown) return;
+    shown = signature;
+    if (!profiles.size) { body.replaceChildren(h("p", { class: "hint" }, "No API key is needed for the selected finder.")); return; }
+    body.replaceChildren(...[...profiles].map(([provider, list]) => stageKeyControls(checks.group(list), list[0], save, notify,
+      `${PROVIDER_NAMES[provider] || provider} key · ${[...new Set(list.map(profile => profile.label))].join(", ")}`)));
+  };
+  render();
+  return {
+    element,
+    get checks() { return checks; },
+    bind(value) { checks = value; shown = null; render(); },
+    setFinder(profile) { finder = profile || null; render(); },
+    setSurvey(profiles) { survey = profiles || []; render(); },
+    onChange(listener) { listeners.add(listener); },
+  };
+}
+
+// The models that need a key, grouped by provider (a local model needs none).
+export function providerGroups(finder, survey) {
+  const groups = new Map();
+  for (const profile of [finder, ...survey || []]) {
+    if (!profile || profile.provider === "local") continue;
+    if (!groups.has(profile.provider)) groups.set(profile.provider, []);
+    if (!groups.get(profile.provider).some(other => other.id === profile.id)) groups.get(profile.provider).push(profile);
+  }
+  return groups;
 }

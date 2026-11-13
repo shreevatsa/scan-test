@@ -1,16 +1,16 @@
-import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261112-flat-1";
+import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261112-regions-layout-1";
 import { h } from "./render.js";
-import { checkTypes } from "./schema.js?v=20261112-flat-1";
-import { settings } from "./store.js?v=20261112-flat-1";
-import { money } from "./reader-controls.js?v=20261112-flat-1";
+import { checkTypes } from "./schema.js?v=20261112-regions-layout-1";
+import { settings } from "./store.js?v=20261112-regions-layout-1";
+import { money } from "./reader-controls.js?v=20261112-regions-layout-1";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261112-flat-1";
-import { OVERVIEW_MODELS, renderContactSheets, discoverOverview } from "./pipeline/type-overview.js?v=20261112-flat-1";
-import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261112-flat-1";
-import { readerById, structurerById } from "./pipeline/readers.js?v=20261112-flat-1";
-import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261112-flat-1";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-flat-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261112-flat-1";
+import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261112-regions-layout-1";
+import { OVERVIEW_MODELS, renderContactSheets, discoverOverview } from "./pipeline/type-overview.js?v=20261112-regions-layout-1";
+import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261112-regions-layout-1";
+import { readerById, structurerById } from "./pipeline/readers.js?v=20261112-regions-layout-1";
+import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261112-regions-layout-1";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-regions-layout-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261112-regions-layout-1";
 
 function overviewInventory(overview, types, openPage) {
   const uncertain = overview.inventory.filter(item => item.uncertain).map(item => item.page);
@@ -28,7 +28,7 @@ function overviewInventory(overview, types, openPage) {
     uncertain.length ? h("details", {}, h("summary", {}, `Inspect ${uncertain.length} uncertain pages`), ...links(uncertain)) : null);
 }
 
-export function typeSetup({ app, title, bookId, description, index, template, book = null, initialSource = "starter", proposalUrl = null, onBusy }) {
+export function typeSetup({ app, title, bookId, description, index, template, book = null, initialSource = "starter", proposalUrl = null, credentialsBox = null, onBusy }) {
   let pdf = null, store = null, result = null, busy = false;
   let rendering = Promise.resolve();
   const drawPage = (doc, page, dpi) => {
@@ -392,6 +392,7 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
     stop.hidden = coverage.value !== "overview";
   };
   changeCoverage();
+  credentialsBox?.onChange(() => { if (!busy) generate.disabled = !credentialsReady(); });
   const showCredentials = async () => {
     const token = ++credentialsToken, profiles = selectedProfiles();
     if (book) {
@@ -399,7 +400,8 @@ export function typeSetup({ app, title, bookId, description, index, template, bo
       checks = maker.credentials ||= new CredentialChecks(maker.keys);
     } else for (const profile of profiles) checks.keys[profile.provider] = await settings.get(`key:${profile.provider}`) || "";
     if (token !== credentialsToken) return;
-    credentials.replaceChildren(...profiles.map(profile => stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), () => {
+    if (credentialsBox) credentialsBox.setSurvey(profiles);
+    else credentials.replaceChildren(...profiles.map(profile => stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), () => {
       if (!busy) generate.disabled = !credentialsReady();
     })));
     generate.disabled = !credentialsReady();

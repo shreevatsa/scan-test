@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261112-flat-1";
-import { typeRevision } from "./schema.js?v=20261112-flat-1";
+import { canonical } from "./ops.js?v=20261112-regions-layout-1";
+import { typeRevision } from "./schema.js?v=20261112-regions-layout-1";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));

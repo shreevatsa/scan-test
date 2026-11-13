@@ -1,13 +1,13 @@
-import { suggestionButton } from "./review-view.js?v=20261112-flat-1";
-import { typeRevision } from "./schema.js?v=20261112-flat-1";
+import { suggestionButton } from "./review-view.js?v=20261112-regions-layout-1";
+import { typeRevision } from "./schema.js?v=20261112-regions-layout-1";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261112-flat-1";
-import { orderedRegions, regionFlags } from "./flags.js?v=20261112-flat-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261112-flat-1";
-import { typeSetup } from "./type-setup.js?v=20261112-flat-1";
-import { pageSelectionText } from "./page-browser.js?v=20261112-flat-1";
+import * as ops from "./ops.js?v=20261112-regions-layout-1";
+import { orderedRegions, regionFlags } from "./flags.js?v=20261112-regions-layout-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261112-regions-layout-1";
+import { typeSetup } from "./type-setup.js?v=20261112-regions-layout-1";
+import { pageSelectionText } from "./page-browser.js?v=20261112-regions-layout-1";
 import { sha256hex } from "./chayapdf.js";
-import { reviewTypeChange, editTypeDialog } from "./type-operations.js?v=20261112-flat-1";
+import { reviewTypeChange, editTypeDialog } from "./type-operations.js?v=20261112-regions-layout-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -215,17 +215,16 @@ export function renderRegionInspector(el, app) {
   } }, "Delete region")));
 }
 
-export async function renderTypeDiscovery(el, app, { selected, onBusy }) {
+export async function renderTypeDiscovery(el, app, { selected, onBusy, credentialsBox }) {
   const book = app.book, token = app.routeToken;
   el.replaceChildren(h("p", { class: "loading" }, "Opening the source PDF for type discovery…"));
   const index = await (await fetch(new URL("../types/index.json", import.meta.url))).json();
   const title = h("input", { value: book.title, dataset: { edited: "1" } });
   const bookId = h("input", { value: book.manifest.book_id, dataset: { edited: "1" } });
-  const description = h("textarea", { rows: 3, "aria-label": "Description of this book" }, book.types.description || "");
-  description.addEventListener("input", () => { description.dataset.edited = "1"; });
-  const setup = typeSetup({ app, title, bookId, description, index, book, initialSource: "discover", onBusy: value => {
+  // The book's description has one home (Regions → By type → Book details); a proposal request sends it as it is there.
+  const description = h("textarea", { hidden: true, dataset: { edited: "1" } }, book.types.description || "");
+  const setup = typeSetup({ app, title, bookId, description, index, book, initialSource: "discover", credentialsBox, onBusy: value => {
     onBusy(value);
-    description.disabled = value;
     apply.disabled = value || !book.writable;
   } });
   const pdf = await book.pdf();
@@ -247,6 +246,6 @@ export async function renderTypeDiscovery(el, app, { selected, onBusy }) {
   } }, "Preview replacing the type list");
   el.replaceChildren(h("div", {},
     h("p", { class: "hint" }, "Review the proposal before replacing the list. You can replace the list while the book’s page layers are unprotected."),
-    h("label", { class: "stack" }, "Description of the book ", description), setup.element, status,
+    h("p", { class: "hint" }, "The request includes the book’s description; change it under Book details in By type."), setup.element, status,
     h("div", { class: "actions" }, apply)));
 }

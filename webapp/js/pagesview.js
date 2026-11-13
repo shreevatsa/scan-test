@@ -1,19 +1,21 @@
-import { suggestionButton } from "./review-view.js?v=20261112-flat-1";
+import { suggestionButton } from "./review-view.js?v=20261112-regions-layout-1";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261112-flat-1";
-import { RARE_LAYOUT } from "./flags.js?v=20261112-flat-1";
-import { regionBoxes } from "./pageimage.js?v=20261112-flat-1";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261112-regions-layout-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261112-regions-layout-1";
+import { regionBoxes } from "./pageimage.js?v=20261112-regions-layout-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261112-flat-1";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261112-flat-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261112-flat-1";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-flat-1";
-import { settings } from "./store.js?v=20261112-flat-1";
-import { runBatch } from "./pipeline/batch.js?v=20261112-flat-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261112-regions-layout-1";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261112-regions-layout-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261112-regions-layout-1";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261112-regions-layout-1";
+import { settings } from "./store.js?v=20261112-regions-layout-1";
+import { runBatch } from "./pipeline/batch.js?v=20261112-regions-layout-1";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-flat-1";
-import { renderFinders } from "./findersview.js?v=20261112-flat-1";
-import { money } from "./reader-controls.js?v=20261112-flat-1";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-regions-layout-1";
+import { renderFinders } from "./findersview.js?v=20261112-regions-layout-1";
+import { money } from "./reader-controls.js?v=20261112-regions-layout-1";
+import { findTargets } from "./find-targets.js?v=20261112-regions-layout-1";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261112-regions-layout-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -22,8 +24,10 @@ const stateLabel = state => !state ? "Pending" : state.accepted ? "Moved on" : s
 export async function renderPages(el, app) {
   const book = app.book, stage = app.stage, layer = STAGE_LAYER[stage];
   const overview = stage === "regions" ? app.regionOverview : null;
+  // Regions shows its page grid (By page) or its type view (By type) below the same boxes.
+  const view = stage === "regions" && app.mode === "types" ? "types" : "pages";
   const token = app.routeToken;
-  const active = () => app.book === book && app.stage === stage && app.mode === "grid" && app.routeToken === token;
+  const active = () => app.book === book && app.stage === stage && (app.mode === "grid" || app.mode === "types") && app.routeToken === token;
   const pending = app.pendingStageSelection?.stage === stage ? app.pendingStageSelection : null;
   // Pages has nothing that acts on a selection, so its grid has no selection controls; the stage grids do.
   const selecting = stage !== "pages";
@@ -51,7 +55,8 @@ export async function renderPages(el, app) {
   const empty = h("p", { class: "hint", hidden: true });
   // Pages dimmed on Pages (marked not interesting) are left out of what runs and moves default to, but a page named in
   // the selection is always used.
-  const targetIds = () => (selected.size ? [...selected] : visible.filter(pid => !book.isSkipped(pid))).filter(pid => eligible(stage, app.pageStates.get(pid)));
+  const targetIds = () => findTargets({ selected: [...selected], view, shown: visible, all: [...rows.keys()],
+    isSkipped: pid => book.isSkipped(pid), eligible: pid => eligible(stage, app.pageStates.get(pid)) });
   // A page with no content (no regions) has nothing to transcribe or complete: Text and Read count it as done, and
   // their runs and estimates leave it out.
   const nothingToDo = pid => (layer === "text" || layer === "units") && noContent(app.pageStates.get(pid).doc);
@@ -69,9 +74,11 @@ export async function renderPages(el, app) {
     const ids = targetIds(), flagged = ids.filter(pid => flagsFor(pid).length).length;
     const hidden = ids.filter(pid => !visible.includes(pid)).length;
     const dimmed = selected.size ? 0 : visible.filter(pid => book.isSkipped(pid)).length;
-    const scope = selected.size ? `${ids.length} selected${hidden ? ` (${hidden} hidden by filters)` : ""}`
-      : `All ${ids.length} displayed pages targeted${dimmed ? ` (${dimmed} dimmed ${dimmed === 1 ? "page" : "pages"} skipped)` : ""}`;
-    summary.textContent = selecting ? `${scope} · ${flagged} flagged · ${visible.length} shown`
+    const skippedNote = n => n ? ` (${n} dimmed ${n === 1 ? "page" : "pages"} skipped)` : "";
+    const scope = selected.size ? `${ids.length} selected${hidden && view === "pages" ? ` (${hidden} hidden by filters)` : ""}`
+      : view === "types" ? `All ${ids.length} pages of the book targeted${skippedNote([...rows.keys()].filter(pid => book.isSkipped(pid) && eligible(stage, app.pageStates.get(pid))).length)}`
+        : `All ${ids.length} displayed pages targeted${skippedNote(dimmed)}`;
+    summary.textContent = selecting ? `${scope} · ${flagged} flagged${view === "pages" ? ` · ${visible.length} shown` : ""}`
       : `${visible.length} of ${rows.size} pages shown · ${flagged} flagged${book.skipped.size ? ` · ${book.skipped.size} dimmed` : ""}`;
     if (runButton) {
       const ready = profile && checks?.status(profile)?.valid;
@@ -223,7 +230,11 @@ export async function renderPages(el, app) {
   const nextStep = stage === "pages" ? h("div", { class: "next-step" },
     h("button", { class: "primary", onclick: () => { location.hash = workflowAddress("regions"); } }, "Continue to Regions →"),
     h("span", { class: "meta" }, "Find each page’s regions and choose the book’s unit types.")) : null;
-  const content = h("div", { class: "region-grid-content" }, toolbar, stageReview, summary, message, empty, grid, nextStep, preview);
+  // In Regions the count of pages a run will use and its messages sit in the Find regions box, which both views share.
+  const boxed = stage === "regions" && book.writable;
+  const creds = boxed ? credentialsBox((id, value) => settings.set(`key:${id}`, value)) : null;
+  const content = h("div", { class: "region-grid-content" }, toolbar, stageReview, ...boxed ? [] : [summary, message], empty, grid, nextStep, preview);
+  const typeContent = h("div", { class: "region-type-content" });
   // Model choice, credentials and run controls are one section, open at first while pages wait for this stage's
   // processing. A read-only book has none of them, only the way to an editable copy.
   const processing = stage !== "pages" && book.writable;
@@ -242,7 +253,7 @@ export async function renderPages(el, app) {
   app.processOpen ||= {};
   const waiting = [...rows.keys()].filter(pid => !layerReady(pid)).length;
   const processSection = processing ? h("details", { class: "region-section process-section",
-    open: app.routeView === "compare" || !!pending || (app.processOpen[stage] ?? waiting > 0) }, h("summary", {}, "Process pages", " ", processSummary), recipeRow, changeArea, runArea) : null;
+    open: app.routeView === "compare" || !!pending || (app.processOpen[stage] ?? waiting > 0) }, h("summary", {}, stage === "regions" ? "Find regions" : "Process pages", " ", processSummary), recipeRow, changeArea, runArea) : null;
   processSection?.addEventListener("toggle", () => { if (active()) app.processOpen[stage] = processSection.open; });
   const readOnly = stage !== "pages" && !book.writable ? h("p", { class: "box read-only-line" }, "This book is read only here. ",
     h("button", { class: "primary", onclick: () => app.continueBook(stage) }, "Make an editable copy"), " in this browser to process pages and move them on.") : null;
@@ -266,15 +277,21 @@ export async function renderPages(el, app) {
     changeArea.append(comparison);
     setBusy = (area, value) => {
       app.workflowBusy = app.header.inert = value;
-      for (const part of [recipeRow, modelFields, runArea, comparisonContent, content]) if (part !== area) part.inert = value;
+      for (const part of [recipeRow, modelFields, runArea, comparisonContent, content, typeContent, survey?.element, creds?.element]) if (part && part !== area) part.inert = value;
     };
   }
+  const survey = boxed && book.manifest.pdf ? surveyBox(app, { credentialsBox: creds, selected: () => [...selected], onBusy: value => {
+    app.workflowBusy = app.header.inert = content.inert = typeContent.inert = processSection.inert = value;
+  } }) : null;
+  const switcher = stage === "regions" ? h("nav", { class: "view-switch", "aria-label": "Regions view" },
+    ...[["pages", "By page"], ["types", "By type"]].map(([value, label]) => h("button", { class: value === view ? "on" : "", "aria-pressed": String(value === view),
+      onclick: () => { if (value !== view) app.setRegionView(value); } }, label))) : null;
   const container = h("div", { class: "stage-overview" }, heading,
     h("p", { class: "hint" }, stage === "pages" ? "Browse the scans and see each page’s progress; open one for a larger view. In Regions, review the types and page assignments, then continue through Text and Read. A page that is not part of the book, such as a library’s cover or a blank page, is given no regions there (“No content on this page”)."
       : stage === "regions" ? "Find and review the page regions. Move reviewed pages on to Text together."
         : stage === "text" ? "Transcribe the pages moved on from Regions. Review the text beside the scans, then move pages on to Read."
           : "Complete units and links using the accepted transcription. Open pages to review their structure."),
-    processSection, readOnly, content);
+    creds?.element, survey?.element, processSection, readOnly, switcher, view === "types" ? typeContent : content);
   el.replaceChildren(container);
   const dispose = () => { observer?.disconnect(); for (const url of urls) URL.revokeObjectURL(url); preview.close(); };
   app.onLeaveGrid = dispose;
@@ -293,11 +310,19 @@ export async function renderPages(el, app) {
   stateFilter.onchange = filter.onchange = applyFilters;
   grouping.onchange = applyFilters;
   applyFilters();
+  if (view === "types") {
+    try {
+      const stopTypes = await renderTypeView(typeContent, app);
+      if (active()) { const previous = app.onLeaveGrid; app.onLeaveGrid = () => { previous?.(); stopTypes(); }; } else stopTypes();
+    } catch (error) { typeContent.replaceChildren(h("p", { class: "bad", role: "status" }, error.message)); }
+  }
   if (!processing) return;
 
   const maker = await app.getMaker(), options = await maker.options();
   if (!active()) return;
   checks = maker.credentials ||= new CredentialChecks(maker.keys);
+  creds?.bind(checks);
+  creds?.onChange(refreshSummary);
   const profiles = stage === "regions" ? FINDERS
     : stage === "text" ? READERS : STRUCTURERS;
   const chosen = overview?.manual ? "manual" : stage === "regions" ? finderById(options.finder).id : stage === "text" ? options.reader : options.structurer;
@@ -319,8 +344,9 @@ export async function renderPages(el, app) {
       manualHint.hidden = !!profile;
       languageLabel.hidden = profile?.id !== "tesseract-regions";
     }
+    creds?.setFinder(profile);
     if (!profile) { cost = pageCost(null); keyPanel.replaceChildren(); refreshSummary(); return; }
-    keyPanel.replaceChildren(stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), refreshSummary));
+    if (!creds) keyPanel.replaceChildren(stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), refreshSummary));
     const ledger = await book.readWork("work/reader-lab/ledger.json");
     cost = pageCost(profile, (ledger?.calls || []).filter(call => call.stage === { regions: "regions", text: "reading", read: "structure" }[stage]));
     refreshSummary();
@@ -430,16 +456,15 @@ export async function renderPages(el, app) {
       h("label", { title: "Normally a request already made for the same page and settings is reused for free. Tick to send a new request, which is charged again." },
         fresh, " Ignore saved model results (charged again)")));
   runControls.append(h("div", { class: "fields selection-row" }, ...selectionControls),
-    h("p", { class: "hint" }, "Type a range such as 1-50, 62 and press Enter, or tick pages in the grid below. A range, or none selected (every page shown), leaves out dimmed pages. Tick a dimmed page to include it."),
-    processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status);
+    h("p", { class: "hint" }, view === "types" ? "Type a range such as 1-50, 62 and press Enter. With none, every page of the book is used. A range, or none selected, leaves out dimmed pages."
+      : "Type a range such as 1-50, 62 and press Enter, or tick pages in the grid below. A range, or none selected (every page shown), leaves out dimmed pages. Tick a dimmed page to include it."),
+    ...boxed ? [summary] : [], processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status, ...boxed ? [message] : []);
   if (overview) {
     modelFields.append(h("label", {}, "Region finder ", select), languageLabel);
-    runArea.append(manualHint, keyPanel, runControls);
+    runArea.append(manualHint, runControls);
     comparison.addEventListener("toggle", () => {
-      keyPanel.hidden = comparison.open;
       if (!comparison.open && !app.workflowBusy) refreshModel().catch(error => { message.textContent = error.message; });
     });
-    keyPanel.hidden = comparison.open;
   } else {
     modelFields.append(h("label", {}, "Model ", select),
       h("button", { onclick: () => app.setMode(stage === "text" ? "readers" : "structures") }, stage === "text" ? "Compare transcription models" : "Compare completion models"));
@@ -453,6 +478,7 @@ export async function renderPages(el, app) {
   }
   include.onchange = refreshSummary;
   await refreshModel();
+  survey?.load();
   if (overview) loadOnOpen(comparison, comparisonContent, () => renderFinders(comparisonContent, app, {
     selected: () => [...selected], onCredentialsChanged: refreshSummary,
     onChoose: async (id, language) => {

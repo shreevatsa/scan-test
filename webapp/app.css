@@ -603,3 +603,14 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .finder-overlay svg { width: 100%; height: 100%; }
 .finder-overlay path { fill-opacity: .08; stroke-width: 3; }
 .finder-overlay text { font: 24px sans-serif; stroke: white; stroke-width: 3; paint-order: stroke; }
+
+/* Regions tab: the boxes, then the By page | By type switch */
+.credentials-box { margin: 12px 0; padding: 4px 16px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.credentials-box h2 { margin: 8px 0; font-size: 1.05em; }
+.credentials-box .stage-keys { margin: 6px 0; }
+.view-switch { display: flex; gap: 0; margin: 16px 0 8px; }
+.view-switch button { border-radius: 0; padding: 6px 16px; }
+.view-switch button:first-child { border-radius: 6px 0 0 6px; }
+.view-switch button:last-child { border-radius: 0 6px 6px 0; margin-left: -1px; }
+.view-switch button.on { background: var(--accent, #234); color: #fff; }
+.book-details h4 { margin: 12px 0 4px; }
