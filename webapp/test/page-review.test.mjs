@@ -122,3 +122,14 @@ test("region previews require reviewed types, preserve work and reject a changed
   book.imageBlob = async () => new Blob(["different scan"], { type: "image/png" });
   await assert.rejects(pageReviewRegions(maker, "p1", record), /scan has changed/);
 });
+
+test("a proposed type with the escape class \"other\" does not fail the response; its additions wait for a chosen class", () => {
+  const other = structuredClone(proposal); other.new_types[0].region = "other";
+  assert.doesNotThrow(() => checkPageReview(other, types, 100, 100), "the paid response is accepted");
+  const record = { parsed: other, input_types: types };
+  const pending = pendingTypeAdditions(record, types);
+  assert.equal(pending.length, 1);
+  assert.equal(pending[0].region, "other", "the choice is left to the user");
+  assert.throws(() => revisedTypeList(types, pending), /Choose how this type is printed/, "adding it as it is is refused");
+  assert.doesNotThrow(() => revisedTypeList(types, [{ ...pending[0], region: "heading" }]), "with a class chosen it is added");
+});

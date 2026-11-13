@@ -1,11 +1,11 @@
-import { canonical } from "../ops.js?v=20261113-flags-2";
-import { makeValidator } from "../schema.js?v=20261113-flags-2";
-import { REGION_CLASSES } from "../book-types.js?v=20261113-flags-2";
-import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261113-flags-2";
-import { finderById } from "./finders.js?v=20261113-flags-2";
-import { finderRequest } from "./finder-requests.js?v=20261113-flags-2";
-import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261113-flags-2";
-import { templates, jsonHash } from "./run.js?v=20261113-flags-2";
+import { canonical } from "../ops.js?v=20261113-flags-4";
+import { makeValidator } from "../schema.js?v=20261113-flags-4";
+import { REGION_CLASSES } from "../book-types.js?v=20261113-flags-4";
+import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261113-flags-4";
+import { finderById } from "./finders.js?v=20261113-flags-4";
+import { finderRequest } from "./finder-requests.js?v=20261113-flags-4";
+import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261113-flags-4";
+import { templates, jsonHash } from "./run.js?v=20261113-flags-4";
 import { sha256hex } from "../chayapdf.js";
 
 export const PAGE_REVIEW_MODELS = [
@@ -36,6 +36,11 @@ export function typeAdditions(proposal) {
   return proposal.new_types.map(type => ({ kind: "add", ...type, parent: type.parent || null, flow: type.flow || null }));
 }
 
+// The model may name the escape class "other" for a type it proposes. That is not a class a type may have (adding it asks
+// the user to choose one), but it must not make the whole response fail after it was paid for: for checking the layout a
+// stand-in class is used, and the review screen asks which class the type should have.
+const checkable = additions => additions.map(operation => operation.region === "other" ? { ...operation, region: "paragraph" } : operation);
+
 export function checkPageReview(proposal, types, width, height) {
   if (![width, height].every(value => Number.isSafeInteger(value) && value > 0)) throw new Error("The page needs valid image dimensions.");
   const errors = makeValidator(pageReviewSchema(types))(proposal);
@@ -44,14 +49,14 @@ export function checkPageReview(proposal, types, width, height) {
     if (type.furniture ? type.parent || type.flow : !!type.parent === !!type.flow)
       throw new Error(`Choose one parent or flow for ${type.name}, with neither for furniture.`);
   }
-  const additions = typeAdditions(proposal);
+  const additions = checkable(typeAdditions(proposal));
   const proposed = additions.length ? revisedTypeList(types, additions) : types;
   scaleRegions({ regions: proposal.regions }, width, height, proposed);
   return proposal;
 }
 
 export function pendingTypeAdditions(record, current) {
-  const all = typeAdditions(record.parsed), expected = all.length ? revisedTypeList(record.input_types, all) : record.input_types;
+  const all = typeAdditions(record.parsed), expected = all.length ? revisedTypeList(record.input_types, checkable(all)) : record.input_types;
   return all.filter(operation => {
     const name = resolveTypeName(operation.name, current), present = current.types[name];
     if (!present) return true;

@@ -1,10 +1,11 @@
 import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261113-flags-2";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261113-flags-2";
-import { settings } from "./store.js?v=20261113-flags-2";
-import { money } from "./reader-controls.js?v=20261113-flags-2";
-import { reviewTypeChange } from "./type-operations.js?v=20261113-flags-2";
-import { reviewPage } from "./review-view.js?v=20261113-flags-2";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, pageReviewRegions } from "./pipeline/page-review.js?v=20261113-flags-4";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261113-flags-4";
+import { settings } from "./store.js?v=20261113-flags-4";
+import { money } from "./reader-controls.js?v=20261113-flags-4";
+import { reviewTypeChange } from "./type-operations.js?v=20261113-flags-4";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-4";
+import { reviewPage } from "./review-view.js?v=20261113-flags-4";
 import { runProgress } from "./run-progress.js";
 
 export async function reviewPageWithAI(app) {
@@ -43,11 +44,16 @@ export async function reviewPageWithAI(app) {
     let pending;
     try { pending = pendingTypeAdditions(record, book.types); }
     catch (error) { result.append(h("p", { class: "bad" }, error.message)); return; }
+    // A proposed type whose class is the escape class "other" needs the user to choose how it is printed.
+    const classes = {}, needClass = pending.filter(operation => operation.region === "other");
+    const refreshAdd = () => { addTypes.disabled = !book.writable || !pending.length || needClass.some(operation => !classes[operation.name]); };
     if (record.parsed.new_types.length) result.append(h("h3", {}, "Proposed types"), ...record.parsed.new_types.map(type =>
-      h("section", { class: "box" }, h("b", {}, type.name), h("span", { class: "meta" }, ` · ${type.region}${type.furniture ? " · furniture" : type.parent ? ` · inside ${type.parent}` : ` · ${type.flow} flow`}`),
-        h("p", {}, type.description))));
-    const addTypes = h("button", { disabled: !book.writable || !pending.length, onclick: async () => {
-      try { await reviewTypeChange(app, pending, { applied: renderResult }); }
+      h("section", { class: "box" }, h("b", {}, type.name), h("span", { class: "meta" }, ` · ${type.region === "other" ? "class to choose" : type.region}${type.furniture ? " · furniture" : type.parent ? ` · inside ${type.parent}` : ` · ${type.flow} flow`}`),
+        h("p", {}, type.description),
+        type.region === "other" && needClass.some(operation => operation.name === type.name) ? h("label", {}, "Printed as ", h("select", { "aria-label": `Printed class of ${type.name}`, onchange: event => { classes[type.name] = event.target.value; refreshAdd(); } },
+          h("option", { value: "" }, "(choose)"), ...REGION_CLASSES.filter(value => value !== "other").map(value => h("option", { value }, value)))) : null)));
+    const addTypes = h("button", { disabled: !book.writable || !pending.length || needClass.length > 0, onclick: async () => {
+      try { await reviewTypeChange(app, pending.map(operation => operation.region === "other" ? { ...operation, region: classes[operation.name] } : operation), { applied: renderResult }); }
       catch (error) { status.textContent = error.message; }
     } }, pending.length ? `Review ${pending.length} type ${pending.length === 1 ? "addition" : "additions"}` : "Proposed types are available in the book");
     const regions = h("button", { disabled: !book.writable || !!pending.length, onclick: async () => {
@@ -76,7 +82,12 @@ export async function reviewPageWithAI(app) {
       record = await requestPageReview(maker, pid, selectedProfile(), instruction.value.trim());
       progress.advance("completed"); outcome = "Finished";
       status.textContent = "Review saved. Read the response and preview any changes below.";
-    } catch (error) { progress.advance("failed"); status.textContent = error.message; }
+    } catch (error) {
+      progress.advance("failed");
+      // Say what failed and whether it cost anything: the call is recorded before its answer is checked.
+      status.textContent = `The review failed: ${error.message}`;
+      status.className = "bad";
+    }
     finally { progress.finish(outcome); lock(false); app.diskCopy?.checkpoint(); }
   } }, "Review this page");
   choice.onchange = showCredentials;

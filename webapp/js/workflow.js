@@ -1,6 +1,6 @@
-import { typeRevision } from "./schema.js?v=20261113-flags-2";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261113-flags-2";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261113-flags-2";
+import { typeRevision } from "./schema.js?v=20261113-flags-4";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261113-flags-4";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261113-flags-4";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
