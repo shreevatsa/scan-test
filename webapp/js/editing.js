@@ -1,7 +1,7 @@
-import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261112-join-2";
-import { layerView } from "./layers.js?v=20261112-join-2";
-import { checkDocument } from "./schema.js?v=20261112-join-2";
-import { assemble } from "./assemble.js?v=20261112-join-2";
+import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261112-hand-join-1";
+import { layerView } from "./layers.js?v=20261112-hand-join-1";
+import { checkDocument } from "./schema.js?v=20261112-hand-join-1";
+import { assemble } from "./assemble.js?v=20261112-hand-join-1";
 
 export function editorFocus(stage) { return stage === "text" ? "text" : stage === "read" ? "units" : stage === "regions" ? "regions" : "all"; }
 
@@ -115,6 +115,23 @@ export function nextPageUnit(left, right, uid) {
     if (!next || next.type !== unit.type) throw new EditError(`The next page does not continue this ${unit.type}.`);
     if (index === path.length - 1) return next.id;
     next = right.units.find(value => value.id === next.children[0]?.unit);
+  }
+}
+
+// The page that a unit open at the end of its page continues on, for joining by hand. As in assemble.js, pages with no
+// top-level unit of its type in its flow and no open end of their own (a blank page, a plate) are looked past. Returns
+// the page's id; null where the book does not go on (its last page, a gap in the PDF's page numbers, a break between
+// sample pages); "missing" when a page on the way has no document yet. docOf(id) gives a page's document, or a promise.
+export async function joinPartnerId(pages, index, left, uid, docOf) {
+  const path = unitPath(left, uid), flow = placeOf(left, path[0].id).flow, type = path[0].type;
+  const lookPast = doc => !(doc.flows[flow] || []).some(id => doc.units.find(unit => unit.id === id)?.type === type) && !doc.units.some(unit => unit.open);
+  for (let k = index; ; k++) {
+    const here = pages[k], other = pages[k + 1];
+    if (!other || here.pdf_page && other.pdf_page && other.pdf_page !== here.pdf_page + 1) return null;
+    if ((k === index ? left : await docOf(here.id))?.source?.sample?.consecutive_next === false) return null;
+    const doc = await docOf(other.id);
+    if (!doc) return "missing";
+    if (!lookPast(doc)) return other.id;
   }
 }
 

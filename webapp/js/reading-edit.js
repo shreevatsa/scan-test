@@ -1,16 +1,19 @@
-import * as ops from "./ops.js?v=20261112-join-2";
-import { assertJoinMetadata, joinPageUnits } from "./editing.js?v=20261112-join-2";
-import { layerState } from "./layers.js?v=20261112-join-2";
-import { checkPage } from "./schema.js?v=20261112-join-2";
+import * as ops from "./ops.js?v=20261112-hand-join-1";
+import { assertJoinMetadata, joinPageUnits, joinPartnerId } from "./editing.js?v=20261112-hand-join-1";
+import { layerState } from "./layers.js?v=20261112-hand-join-1";
+import { checkPage } from "./schema.js?v=20261112-hand-join-1";
 
-export { unitSnapshot } from "./editing.js?v=20261112-join-2";
+export { unitSnapshot } from "./editing.js?v=20261112-hand-join-1";
 
 export async function joinFollowingUnit(app, pid, uid, expected = new Map()) {
   const book = app.book, current = await book.current(pid, { refresh: true }), place = ops.placeOf(current, uid);
   if (!place) throw new ops.EditError("Select a unit that belongs to a flow.");
   const across = place.index + 1 === place.list.length;
-  const next = across && book.pages[book.index[pid] + 1], page = book.page(pid);
-  if (across && (!next || page.pdf_page && next.pdf_page && next.pdf_page !== page.pdf_page + 1)) throw new ops.EditError("There is no consecutive next page to join.");
+  // The page that continues the unit: the next one, or past pages with none of its kind of unit (a blank page, a plate).
+  const partner = across ? await joinPartnerId(book.pages, book.index[pid], current, uid, id => book.current(id)) : null;
+  if (across && !partner) throw new ops.EditError("There is no consecutive next page to join.");
+  if (partner === "missing") throw new ops.EditError("Move both pages on from Text before joining them.");
+  const next = across && book.page(partner);
   const check = (doc, types) => checkPage(app.validate, doc, types)[0];
   const ids = [...new Set([...expected.keys(), pid, ...(across ? [next.id] : [])])];
   return book.editPages(ids, (docs, types) => {

@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261112-join-2";
+import { canonical } from "../ops.js?v=20261112-hand-join-1";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {

@@ -1,5 +1,5 @@
-import { post } from "./pipeline/run.js?v=20261112-join-2";
-import { openaiText, geminiText } from "./pipeline/steps.js?v=20261112-join-2";
+import { post } from "./pipeline/run.js?v=20261112-hand-join-1";
+import { openaiText, geminiText } from "./pipeline/steps.js?v=20261112-hand-join-1";
 import { h } from "./render.js";
 
 // Generated blank PNG. Credential checks never contain a book page.
@@ -67,8 +67,12 @@ export function stageKeyControls(checks, profile, save, changed = () => {}) {
   if (profile.provider === "local") return h("p", { class: "hint" }, "Runs on this device with zero API cost.");
   const keys = checks.keys, provider = profile.provider;
   const status = h("p", { class: "hint", role: "status" });
+  // The summary says whether the credential has checked out, so the panel can stay closed.
+  const state = h("span", { class: "key-state" });
   const refresh = () => {
     const result = checks.status(profile);
+    state.className = `key-state ${result?.valid ? "ok" : result ? "bad" : "hint"}`;
+    state.textContent = result?.valid ? "✓ checked" : result ? "✗ not accepted" : "not checked";
     status.className = result?.valid ? "ok" : result ? "bad" : "hint";
     status.textContent = result?.message || "Check this credential to enable processing.";
     changed();
@@ -100,7 +104,7 @@ export function stageKeyControls(checks, profile, save, changed = () => {}) {
     if (checks.status(profile)?.valid) panel.open = false;
   } }, "Check key");
   refresh();
-  const panel = h("details", { class: "stage-keys", open: !checks.status(profile)?.valid }, h("summary", {}, "API credential"),
+  const panel = h("details", { class: "stage-keys", open: !checks.status(profile)?.valid }, h("summary", {}, "API credential ", state),
     fields, h("p", {}, button), status, h("p", { class: "hint" },
       "The check makes a small billable test request with no book content. OAuth tokens are held for this session. Keys are saved in this browser."));
   return panel;

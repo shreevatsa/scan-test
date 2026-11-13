@@ -5,13 +5,13 @@
 // contain what, from each flow's top level, and as a table with how many units of each type the book has.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261112-join-2";
-import { typeRevision } from "./schema.js?v=20261112-join-2";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261112-join-2";
-import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261112-join-2";
-import { citedSamplePages } from "./type-revisions.js?v=20261112-join-2";
-import { typeExampleIndex } from "./type-examples.js?v=20261112-join-2";
-import { regionPath } from "./pageimage.js?v=20261112-join-2";
+import { prepare } from "./reader.js?v=20261112-hand-join-1";
+import { typeRevision } from "./schema.js?v=20261112-hand-join-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261112-hand-join-1";
+import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261112-hand-join-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261112-hand-join-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261112-hand-join-1";
+import { regionPath } from "./pageimage.js?v=20261112-hand-join-1";
 
 export async function renderTypeOverview(el, app) {
   const book = app.book, token = app.routeToken;

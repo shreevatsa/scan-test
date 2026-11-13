@@ -308,6 +308,7 @@ main.grid, main.types { overflow: auto; }
 .stage-actions input[type=number] { width: 6em; }
 .stage-keys { margin: 12px 0; }
 .stage-keys summary { cursor: pointer; }
+.key-state { margin-left: 8px; font-size: 13px; }
 .stage-keys input { max-width: min(400px, 65vw); }
 .stage-selection { font-size: 13px; color: var(--muted); }
 .stage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 18px; }
@@ -374,6 +375,7 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .run-options { margin: 6px 0; }
 .stage-keys[open] { margin: 10px 0; padding: 10px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
 .stage-keys summary { cursor: pointer; }
+.key-state { margin-left: 8px; font-size: 13px; }
 .selection-row { align-items: center; }
 .run-options label { display: block; margin: 4px 0; }
 .stage-review:not(:empty) { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 4px; }

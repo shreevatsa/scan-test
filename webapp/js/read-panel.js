@@ -1,10 +1,10 @@
-import { suggestionButton } from "./review-view.js?v=20261112-join-2";
+import { suggestionButton } from "./review-view.js?v=20261112-hand-join-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261112-join-2";
-import { applyUnitAction, applyUnitChanges, assertJoinMetadata, nextPageUnit, unitPath, unitRegionIds, unitSnapshot } from "./editing.js?v=20261112-join-2";
-import { joinFollowingUnit } from "./reading-edit.js?v=20261112-join-2";
-import { renderInspector } from "./editor.js?v=20261112-join-2";
-import { checkPage } from "./schema.js?v=20261112-join-2";
+import * as ops from "./ops.js?v=20261112-hand-join-1";
+import { applyUnitAction, applyUnitChanges, assertJoinMetadata, joinPartnerId, nextPageUnit, unitPath, unitRegionIds, unitSnapshot } from "./editing.js?v=20261112-hand-join-1";
+import { joinFollowingUnit } from "./reading-edit.js?v=20261112-hand-join-1";
+import { renderInspector } from "./editor.js?v=20261112-hand-join-1";
+import { checkPage } from "./schema.js?v=20261112-hand-join-1";
 
 const nameOf = unit => [unit.type, unit.number, unit.label].filter(Boolean).join(" · ");
 
@@ -112,10 +112,12 @@ export async function wireReadingPanel({ app, body, panel, workspace, docs, P, i
       },
       joinNext: id => {
         const pieces = P.unitFragments[P.unitCanonical[`${doc.page.id}#${id}`]] || [{ page: doc.page.id, unit: id }], last = pieces.at(-1);
-        save(() => {
+        save(async () => {
           const left = byPage.get(last.page), place = ops.placeOf(left, last.unit), sibling = place?.list[place.index + 1];
-          const right = sibling ? left : byPage.get(book.pages[book.index[last.page] + 1]?.id);
-          if (!right) throw new ops.EditError("Move the next page on from Text before joining it.");
+          // Across a page break the partner is the next page, or the first later page with a unit of its kind (past a blank page or a plate).
+          const partner = sibling ? null : await joinPartnerId(book.pages, book.index[last.page], left, last.unit, pid => byPage.get(pid));
+          const right = sibling ? left : partner && partner !== "missing" ? byPage.get(partner) : null;
+          if (!right) throw new ops.EditError(partner === null && !sibling ? "There is no consecutive next page to join." : "Move the next page on from Text before joining it.");
           const next = sibling ? typeof sibling === "string" ? sibling : sibling.unit : nextPageUnit(left, right, last.unit);
           if (!next) throw new ops.EditError("The next item is a region. Join its unit from the page editor.");
           const a = sibling ? [ops.unitById(left, last.unit)] : unitPath(left, last.unit);

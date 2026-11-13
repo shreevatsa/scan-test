@@ -1,4 +1,4 @@
-import { canonical } from "./ops.js?v=20261112-join-2";
+import { canonical } from "./ops.js?v=20261112-hand-join-1";
 
 export function mergeTypeProposals(results) {
   if (!results.length) throw new Error("At least one type proposal is needed.");
