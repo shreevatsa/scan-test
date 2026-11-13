@@ -5,17 +5,17 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261113-keycache-1";
-import { prepare } from "./reader.js?v=20261113-keycache-1";
-import { typeRevision } from "./schema.js?v=20261113-keycache-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-keycache-1";
-import { newTypeDialog } from "./regionsview.js?v=20261113-keycache-1";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-keycache-1";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-keycache-1";
-import { unusedDraftTypes } from "./draft-types.js?v=20261113-keycache-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-keycache-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-keycache-1";
-import { regionPath } from "./pageimage.js?v=20261113-keycache-1";
+import { typeForest } from "./type-tree.js?v=20261113-usage-tree-1";
+import { prepare } from "./reader.js?v=20261113-usage-tree-1";
+import { typeRevision } from "./schema.js?v=20261113-usage-tree-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-usage-tree-1";
+import { newTypeDialog } from "./regionsview.js?v=20261113-usage-tree-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-usage-tree-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-usage-tree-1";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-usage-tree-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-usage-tree-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-usage-tree-1";
+import { regionPath } from "./pageimage.js?v=20261113-usage-tree-1";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -159,15 +159,15 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false, 
   const draw = (counts, unusedNames = []) => {
     const nodeEl = r => {
       const unused = unusedNames.includes(r.name);
-      // A type used nowhere is one muted line: its name and "unused draft type" (its places and zero counts say nothing more).
-      const quiet = unused && r.zero;
-      const notes = [r.kind === "container" ? "container" : "", r.printedAs ? `printed as ${r.printedAs}` : "",
-        ...(quiet ? r.notes.filter(note => !note.startsWith("also ")) : r.notes)].filter(Boolean).join(" · ");
-      return h("li", { class: `tnode${unused ? " unused-draft" : ""}`, "data-type": r.name },
+      // A type used nowhere is one muted line: its name and "unused draft type" (or "unused"), without a count.
+      const quiet = r.zero && r.kind !== "container" && r.kind !== "furniture" && !!counts;
+      const notes = [r.kind === "container" ? "container" : "", r.printedAs ? `printed as ${r.printedAs}` : "", ...r.notes].filter(Boolean).join(" · ");
+      return h("li", { class: `tnode${quiet || (unused && r.zero) ? " unused-draft" : ""}${r.multi ? " multi" : ""}`, "data-type": r.name },
         h("div", { class: "trow" }, h("i", { class: "dot", style: `background:${app.colors?.[r.name] || "#888"}` }), name(r.name, types[r.name]?.description),
+          r.multi ? h("span", { class: "also-mark", title: "This type is used in more than one place", "aria-hidden": "true" }, "⇄") : null,
           notes ? h("span", { class: "rclass" }, notes) : null, needsClass(r.name),
           quiet ? null : h("span", { class: `count${r.zero ? " zero" : ""}` }, r.count),
-          unused ? h("span", { class: "meta unused-draft-note" }, "unused draft type") : null),
+          (quiet || (unused && r.zero)) ? h("span", { class: "meta unused-draft-note" }, unused ? "unused draft type" : "unused") : null),
         r.children.length ? h("ul", {}, ...r.children.map(nodeEl)) : null);
     };
     const root = (title, description, nodes) => h("div", { class: "flowtree" }, h("h4", {}, title, description ? h("span", { class: "meta" }, ` — ${description}`) : null),
@@ -180,6 +180,13 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false, 
       unplaced.length ? root("not in any flow", "no flow and no container holds these", unplaced) : null));
     if (selected) markSelected(selected());
   };
+  // All appearances of a type light up together (hover or keyboard focus), as the selected type's do.
+  const light = value => { for (const row of el.querySelectorAll("[data-type]")) row.classList.toggle("same", !!value && row.dataset.type === value); };
+  const typeOf = event => event.target.closest?.("[data-type]")?.dataset.type;
+  el.addEventListener("mouseover", event => light(typeOf(event)));
+  el.addEventListener("mouseleave", () => light(null));
+  el.addEventListener("focusin", event => light(typeOf(event)));
+  el.addEventListener("focusout", () => light(null));
   const markSelected = value => {
     for (const row of el.querySelectorAll("[data-type]")) {
       const on = row.dataset.type === value;
