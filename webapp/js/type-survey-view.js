@@ -2,16 +2,16 @@
 // are proposed additions, kept as pending proposals until each is added (through the type-list revision operations)
 // or dismissed; they are reviewed in the Proposed types box (proposals-view.js). Up to twelve pages are sent as page images (method 095), more as contact sheets (method 096).
 import { h } from "./render.js";
-import { money } from "./reader-controls.js?v=20261113-finder-types-1";
-import { settings } from "./store.js?v=20261113-finder-types-1";
+import { money } from "./reader-controls.js?v=20261113-description-1";
+import { settings } from "./store.js?v=20261113-description-1";
 import { sha256hex } from "./chayapdf.js";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { samplePages } from "./pipeline/type-discovery.js?v=20261113-finder-types-1";
-import { renderContactSheets, sheetBatches } from "./pipeline/contact-sheets.js?v=20261113-finder-types-1";
-import { SURVEY_MODELS, SURVEY_PAGE_IMAGE_LIMIT, surveyForm, surveyProfile, runSurvey } from "./pipeline/type-survey.js?v=20261113-finder-types-1";
-import { surveyItems, addPendingProposals } from "./type-additions.js?v=20261113-finder-types-1";
-import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261113-finder-types-1";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261113-finder-types-1";
+import { samplePages } from "./pipeline/type-discovery.js?v=20261113-description-1";
+import { renderContactSheets, sheetBatches } from "./pipeline/contact-sheets.js?v=20261113-description-1";
+import { SURVEY_MODELS, SURVEY_PAGE_IMAGE_LIMIT, surveyForm, surveyProfile, runSurvey } from "./pipeline/type-survey.js?v=20261113-description-1";
+import { surveyItems, addPendingProposals } from "./type-additions.js?v=20261113-description-1";
+import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261113-description-1";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261113-description-1";
 
 export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, credentialsBox = null, onProposals = () => {} }) {
   const book = app.book, token = app.routeToken;
@@ -42,7 +42,7 @@ export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, 
     if (!pages.value.trim()) throw new Error("Choose the PDF pages to survey, for example 1-3, 80, 266-267, or all.");
     return pageRange(pages.value, count);
   };
-  const profile = () => { let n = 1; try { n = selectedPages().length; } catch {} return surveyProfile(model.value, surveyForm(n)); };
+  const profile = () => { let n = 1; try { n = selectedPages().length; } catch {} return surveyProfile(model.value, surveyForm(n), book.types); };
   const ready = () => !busy && !!checks.status(profile())?.valid && book.writable;
   const describePlan = () => {
     try {
@@ -84,7 +84,7 @@ export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, 
     let list;
     try { list = selectedPages(); } catch (error) { status.textContent = error.message; return; }
     if (!await app.confirmSpending()) return;
-    const form = surveyForm(list.length), chosen = surveyProfile(model.value, form);
+    const form = surveyForm(list.length), chosen = surveyProfile(model.value, form, book.types);
     stopped = false; lock(true);
     try {
       const input = form === "pages" ? await pageImages(list)

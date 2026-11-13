@@ -5,15 +5,15 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261113-finder-types-1";
-import { typeRevision } from "./schema.js?v=20261113-finder-types-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-finder-types-1";
-import { newTypeDialog } from "./regionsview.js?v=20261113-finder-types-1";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-finder-types-1";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-finder-types-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-finder-types-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-finder-types-1";
-import { regionPath } from "./pageimage.js?v=20261113-finder-types-1";
+import { prepare } from "./reader.js?v=20261113-description-1";
+import { typeRevision } from "./schema.js?v=20261113-description-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-description-1";
+import { newTypeDialog } from "./regionsview.js?v=20261113-description-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-description-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-description-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-description-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-description-1";
+import { regionPath } from "./pageimage.js?v=20261113-description-1";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.

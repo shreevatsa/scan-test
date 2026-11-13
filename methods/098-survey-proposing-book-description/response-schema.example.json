@@ -1,0 +1,145 @@
+{
+  "type": "object",
+  "properties": {
+    "proposed_description": {
+      "type": "string"
+    },
+    "new_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string",
+            "enum": [
+              "container",
+              "verse",
+              "paragraph",
+              "heading",
+              "lead_in",
+              "list_item",
+              "formula",
+              "note",
+              "table",
+              "figure",
+              "caption",
+              "running_header",
+              "page_number",
+              "other"
+            ]
+          },
+          "furniture": {
+            "type": "boolean"
+          },
+          "contains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "parents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "flow": {
+            "type": "string",
+            "enum": [
+              "",
+              "main",
+              "notes"
+            ]
+          },
+          "evidence_pages": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "region",
+          "furniture",
+          "contains",
+          "parents",
+          "flow",
+          "evidence_pages",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "definition_edits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "possible_duplicates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "question": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "types",
+          "question"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "proposed_description",
+    "new_types",
+    "definition_edits",
+    "possible_duplicates",
+    "questions"
+  ],
+  "additionalProperties": false
+}

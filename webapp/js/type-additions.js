@@ -10,6 +10,7 @@ export function surveyItems(run) {
   const source = { kind: "survey", method: run.method, run: run.id, model: run.profile.label, pages: run.pages, at_utc: run.finished_at_utc };
   const item = (kind, key, proposal) => ({ id: `${run.id}:${kind}:${key}`, kind, status: "pending", source, proposal });
   return [
+    ...run.result.proposed_description?.trim() ? [item("book_description", "description", { description: run.result.proposed_description.trim() })] : [],
     ...run.result.new_types.map(type => item("new_type", type.name, type)),
     ...run.result.definition_edits.map(edit => item("definition_edit", edit.name, edit)),
     ...run.result.possible_duplicates.map((group, index) => item("question", `duplicate-${index + 1}`, { question: group.question, types: group.types, duplicate: true })),

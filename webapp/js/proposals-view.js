@@ -5,10 +5,10 @@
 // the others are listed with links, to be given the type by hand.
 import { h } from "./render.js";
 import { readPendingProposals, pendingItems, decideProposal, additionChoice, additionOperations, proposalAssignments,
-  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261113-finder-types-1";
-import { reviewTypeChange } from "./type-operations.js?v=20261113-finder-types-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-finder-types-1";
-import { isProtected, LAYERS } from "./layers.js?v=20261113-finder-types-1";
+  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261113-description-1";
+import { reviewTypeChange } from "./type-operations.js?v=20261113-description-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-description-1";
+import { isProtected, LAYERS } from "./layers.js?v=20261113-description-1";
 
 const where = type => type.furniture ? "Page furniture"
   : [type.parents.length ? `Inside ${type.parents.join(", ")}` : "", type.flow ? `Top level of ${type.flow}` : ""].filter(Boolean).join(" · ");
@@ -124,6 +124,21 @@ export function proposalsBox(app) {
       h("div", { class: "actions" }, h("button", { class: "primary", disabled: !book.writable, onclick: () => { form.hidden = !form.hidden; } }, "Add…"),
         h("button", { disabled: !book.writable, onclick: () => decide(item, { status: "dismissed" }) }, "Dismiss")), form);
   };
+  // A proposed description of the book: editable, then written through the book-details operation (as Edit book details does).
+  const descriptionCard = item => {
+    const text = h("textarea", { rows: 5, "aria-label": "Proposed book description" }, item.proposal.description);
+    const note = h("p", { role: "status", class: "bad" });
+    return h("article", { class: "type-card proposal-card", "aria-label": "Proposed book description" },
+      h("h4", {}, "Proposed book description"),
+      h("p", { class: "hint" }, app.tl.description?.trim() ? "The book already has a description; using this one replaces it." : "The book has no description yet. Model calls use it, so edit it until it is right."),
+      h("label", {}, "Description ", text), note, h("p", { class: "meta" }, sourceText(item.source)),
+      h("div", { class: "actions" }, h("button", { class: "primary", disabled: !book.writable, onclick: async () => {
+        const value = text.value.trim();
+        if (!value) { note.textContent = "The description is empty."; return; }
+        try { await reviewTypeChange(app, [{ kind: "metadata", description: value }], { applied: () => decide(item, { status: "applied", description: value }) }); }
+        catch (error) { note.textContent = error.message; }
+      } }, "Use"), h("button", { disabled: !book.writable, onclick: () => decide(item, { status: "dismissed" }) }, "Dismiss")));
+  };
   const editCard = item => {
     const edit = item.proposal, current = app.tl.types[edit.name];
     return h("article", { class: "type-card proposal-card", "aria-label": `Suggested definition of ${edit.name}` },
@@ -140,7 +155,7 @@ export function proposalsBox(app) {
     const record = await readPendingProposals(book);
     const assignments = proposalAssignments(record, app.tl);
     app.proposalAssignments = assignments;
-    const types = pendingItems(record, "new_type"), edits = pendingItems(record, "definition_edit"), questions = pendingItems(record, "question");
+    const types = pendingItems(record, "new_type"), descriptions = pendingItems(record, "book_description"), edits = pendingItems(record, "definition_edit"), questions = pendingItems(record, "question");
     // Pages a person protects that still have regions waiting for a type that now exists.
     const waiting = [];
     if (assignments.size) for (const page of book.pages) {
@@ -150,9 +165,10 @@ export function proposalsBox(app) {
     const decided = record.items.filter(item => item.status !== "pending" && item.kind !== "question");
     summary.replaceChildren(`Proposed types (${types.length})`, edits.length ? h("span", { class: "meta" }, plural(edits.length, "definition edit")) : "");
     showMessage();
-    section.hidden = !types.length && !edits.length && !waiting.length && app.proposalMessage?.book !== book;
+    section.hidden = !types.length && !descriptions.length && !edits.length && !waiting.length && app.proposalMessage?.book !== book;
     list.replaceChildren(...[
       types.length ? h("p", { class: "hint" }, "Types proposed by surveys and by Find regions. Regions of a proposed type stay unassigned (hatched) until the type is added; then they get it on every page you have not edited or moved on.") : null,
+      ...descriptions.map(descriptionCard),
       ...types.map(typeCard),
       edits.length ? h("h4", {}, "Suggested definition edits") : null, ...edits.map(editCard),
       waiting.length ? h("div", { class: "box" }, h("p", {}, `${plural(waiting.length, "moved-on page")} ${waiting.length === 1 ? "has" : "have"} regions waiting for an added type: `),
@@ -160,7 +176,7 @@ export function proposalsBox(app) {
       questions.length ? h("p", { class: "box" }, `${plural(questions.length, "question")} from surveys ${questions.length === 1 ? "is" : "are"} in Questions to review. `,
         h("button", { onclick: () => app.setRegionView("types") }, "Open By type")) : null,
       decided.length ? h("details", {}, h("summary", {}, `${decided.length} decided`), h("ul", {}, ...decided.map(item => h("li", {},
-        `${item.proposal.name} · ${item.status}${item.decision?.as && item.decision.as !== item.proposal.name ? ` as ${item.decision.as}` : ""}${item.decision?.same_as ? ` (same as ${item.decision.same_as})` : ""}`)))) : null].filter(Boolean));
+        `${item.proposal.name || "Book description"} · ${item.status}${item.decision?.as && item.decision.as !== item.proposal.name ? ` as ${item.decision.as}` : ""}${item.decision?.same_as ? ` (same as ${item.decision.same_as})` : ""}`)))) : null].filter(Boolean));
   }
   app.proposalsBoxRefresh = () => refresh().catch(error => { section.hidden = false; status.textContent = error.message; });
   return { element: section, refresh: () => refresh().catch(error => { section.hidden = false; status.textContent = error.message; }) };

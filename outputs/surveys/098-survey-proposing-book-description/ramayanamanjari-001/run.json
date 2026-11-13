@@ -1,0 +1,73 @@
+{
+ "format": "type-survey-run",
+ "version": 1,
+ "id": "b345c012-4621-4002-a0db-b57195a9b49e",
+ "method": "098-survey-proposing-book-description",
+ "form": "pages",
+ "profile": {
+  "id": "terra-survey",
+  "label": "GPT-6.1 Terra · reasoning off",
+  "model": "gpt-6.1-terra"
+ },
+ "pdf_sha256": "85ee74d2c2e09393280441e9cf30a172b32ce758bc7542f5cb5932570e269756",
+ "pages": [
+  7,
+  9,
+  11,
+  16,
+  17,
+  150,
+  380,
+  527
+ ],
+ "page_count": 532,
+ "types_revision": 1,
+ "started_at_utc": "2026-11-13T06:57:19.185Z",
+ "finished_at_utc": "2026-11-13T06:57:29.272Z",
+ "calls": [
+  {
+   "path": "work/reader-calls/setup/type-survey-9e7a5354-a5cc-4015-b6ad-3105e7857865.json",
+   "pages": [
+    7,
+    9,
+    11,
+    16,
+    17,
+    150,
+    380,
+    527
+   ],
+   "cached": false,
+   "cost_usd": 0.01162425,
+   "seconds": 9.927,
+   "response_id": "resp_09dd989b19fb9cf2016af6b4d199d887d182915c7673d0098d"
+  }
+ ],
+ "cost_usd": 0.01162425,
+ "seconds": 9.927,
+ "result": {
+  "new_types": [
+   {
+    "name": "colophon",
+    "description": "A closing statement identifying and marking the end of a textual division, rather than a heading introducing the following text.",
+    "region": "other",
+    "furniture": false,
+    "contains": [],
+    "parents": [
+     "section"
+    ],
+    "flow": "main",
+    "evidence_pages": [
+     380
+    ],
+    "evidence": "The right-aligned इतिअतिकायवधः ॥ ३२ ॥ closes the preceding episode before the next verse."
+   }
+  ],
+  "definition_edits": [],
+  "possible_duplicates": [],
+  "questions": [
+   "On PDF page 380, does the numbered closing statement इतिअतिकायवधः mark a separately structured episode, and should the following verses begin a new section?"
+  ],
+  "proposed_description": "An edition of Kṣemendra's Rāmāyaṇamañjarī, identified on the title pages as edited by Bhavadatta Śāstrī and Kāśīnāth Pāṇḍuraṅg Parab and published in Bombay in 1903. The sampled pages include English and Sanskrit title pages, a two-column Sanskrit table of contents, and Sanskrit verse in Devanagari. The verse pages have a single text column, numbered stanzas, running headers and page numbers, and occasional numbered textual notes at the foot of the page. The samples do not establish all of the book's parts."
+ }
+}

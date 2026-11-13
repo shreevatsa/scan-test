@@ -211,3 +211,61 @@ test("pending proposals persist through the book's work files and a .chaya.pdf r
   assert.deepEqual(back, record);
   assert.equal(pendingItems(back, "new_type").length, 2);
 });
+
+// ---------------------------------------------------------------- method 098: a proposed book description
+const bare = { ...types, description: "  " };
+const describing = (extra = {}) => ({ proposed_description: "A Sanskrit poem in verse with a Sanskrit commentary, in Devanagari, two columns.", ...result(), ...extra });
+
+test("a survey asks for a book description only while the description is empty, and then uses method 098", () => {
+  for (const form of ["pages", "sheets"]) {
+    const kept = surveyPrompt({ types, pages: [1, 3, 5], pageCount: 40, form });
+    assert.ok(!kept.includes("proposed_description"));
+    assert.equal(surveyProfile("terra-survey", form, types).method, form === "pages" ? "095-additive-page-image-type-survey" : "096-additive-contact-sheet-type-survey");
+    for (const empty of [bare, { ...types, description: "" }, { ...types, description: undefined }]) {
+      assert.match(surveyPrompt({ types: empty, pages: [1, 3, 5], pageCount: 40, form }), /proposed_description: the user has not described the book/);
+      assert.equal(surveyProfile("terra-survey", form, empty).method, "098-survey-proposing-book-description");
+    }
+  }
+  assert.equal(surveyProfile("terra-survey", "pages").method, "095-additive-page-image-type-survey");
+  assert.equal(surveyProfile("argon-survey", "sheets", bare).request_timeout_ms, 300000);
+  assert.ok(!("proposed_description" in surveySchema(schema, types).properties));
+  const format = surveySchema(schema, bare);
+  assert.equal(format.properties.proposed_description.type, "string"); assert.ok(format.required.includes("proposed_description"));
+});
+
+test("the response check for 098 needs a description exactly when one was asked for", () => {
+  const ctx = { schema, types: bare, pages: [1, 3, 5] };
+  assert.ok(checkSurvey(describing(), ctx));
+  assert.throws(() => checkSurvey(result(), ctx));
+  assert.throws(() => checkSurvey(describing({ proposed_description: "   " }), ctx), /no proposed book description/);
+  assert.throws(() => checkSurvey(describing({ proposed_description: 3 }), ctx));
+  assert.throws(() => checkSurvey(describing(), context));
+  assert.ok(checkSurvey(result(), context));
+});
+
+test("a proposed description is a pending item with its source, taken or dismissed once, and persists", async () => {
+  const run = { id: "run-9", method: "098-survey-proposing-book-description", profile: { label: "GPT-6.1 Terra · reasoning off" }, pages: [1, 3], finished_at_utc: "t0",
+    result: mergeSurveyResults([describing({ new_types: [], definition_edits: [], possible_duplicates: [], questions: [] })]) };
+  assert.match(run.result.proposed_description, /Sanskrit poem/);
+  const items = surveyItems(run);
+  assert.deepEqual(items.map(item => item.kind), ["book_description"]);
+  assert.equal(items[0].source.method, "098-survey-proposing-book-description");
+  assert.deepEqual(surveyItems({ ...run, result: { ...run.result, proposed_description: undefined } }), []);
+  const { book, files } = stored();
+  await addPendingProposals(book, items); await addPendingProposals(book, items);
+  let record = await readPendingProposals(book);
+  assert.equal(pendingItems(record, "book_description").length, 1);
+  assert.equal(pendingItems(record, "new_type").length, 0);
+  // Use goes through the book-details operation: a metadata revision that changes only the description.
+  const next = revisedTypeList(book.types, [{ kind: "metadata", description: "Edited description." }]);
+  assert.equal(next.description, "Edited description."); assert.equal(next.title, book.types.title);
+  await decideProposal(book, items[0].id, { status: "applied", description: "Edited description." }, "t1");
+  await assert.rejects(decideProposal(book, items[0].id, { status: "dismissed" }), /already decided/);
+  record = await readPendingProposals(stored(files).book);
+  assert.equal(record.items[0].status, "applied"); assert.equal(record.items[0].decision.description, "Edited description.");
+  assert.equal(pendingItems(record, "book_description").length, 0);
+  const other = stored();
+  await addPendingProposals(other.book, items);
+  await decideProposal(other.book, items[0].id, { status: "dismissed" });
+  assert.equal((await readPendingProposals(stored(other.files).book)).items[0].status, "dismissed");
+});

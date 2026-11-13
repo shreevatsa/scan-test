@@ -2,14 +2,17 @@
 // where they belong and their evidence pages, optional clearer definitions of existing types, and possible duplicates
 // among existing types as questions. Up to twelve pages go as full page images (method 095), more as labelled contact
 // sheets in batches (method 096). Each response is schema-checked, then checked against the current list.
-import { makeValidator, typeRevision } from "../schema.js?v=20261113-finder-types-1";
-import { structurerById, geminiReadingRequest } from "./readers.js?v=20261113-finder-types-1";
-import { Maker, templates, jsonHash } from "./run.js?v=20261113-finder-types-1";
-import { openaiCost } from "./steps.js?v=20261113-finder-types-1";
-import { CONTACT_SHEET_RECIPE, sheetBatches } from "./contact-sheets.js?v=20261113-finder-types-1";
+import { makeValidator, typeRevision } from "../schema.js?v=20261113-description-1";
+import { structurerById, geminiReadingRequest } from "./readers.js?v=20261113-description-1";
+import { Maker, templates, jsonHash } from "./run.js?v=20261113-description-1";
+import { openaiCost } from "./steps.js?v=20261113-description-1";
+import { CONTACT_SHEET_RECIPE, sheetBatches } from "./contact-sheets.js?v=20261113-description-1";
 
 export const SURVEY_PAGE_IMAGE_LIMIT = 12;
 export const SURVEY_METHODS = { pages: "095-additive-page-image-type-survey", sheets: "096-additive-contact-sheet-type-survey" };
+// Method 098 is 095/096 plus a proposed book description; it is used only while the book's description is empty.
+export const DESCRIBING_METHOD = "098-survey-proposing-book-description";
+export const needsDescription = types => !String(types?.description || "").trim();
 export const SURVEY_MODELS = [
   { ...structurerById("terra-structure"), id: "terra-survey" },
   { ...structurerById("argon-structure"), id: "argon-survey", label: "Gemini 4 Argon · low thinking", thinking: "low" },
@@ -18,10 +21,10 @@ export const PAGE_IMAGE_RENDERING = "PNG at 150 dpi, capped at the scan's own re
 
 export const surveyForm = count => count <= SURVEY_PAGE_IMAGE_LIMIT ? "pages" : "sheets";
 
-export function surveyProfile(modelId, form) {
+export function surveyProfile(modelId, form, types = null) {
   const model = SURVEY_MODELS.find(profile => profile.id === modelId) || SURVEY_MODELS[0];
   // The user allowed five minutes for a contact-sheet request (as for 091 and 092); page images keep the ordinary deadline.
-  return { ...model, method: SURVEY_METHODS[form], ...(form === "sheets" ? { request_timeout_ms: 300000 } : {}) };
+  return { ...model, method: types && needsDescription(types) ? DESCRIBING_METHOD : SURVEY_METHODS[form], ...(form === "sheets" ? { request_timeout_ms: 300000 } : {}) };
 }
 
 const text = { type: "string" };
@@ -30,6 +33,7 @@ const object = properties => ({ type: "object", properties, required: Object.key
 
 export function surveySchema(schema, types) {
   return object({
+    ...(needsDescription(types) ? { proposed_description: text } : {}),
     new_types: { type: "array", items: object({
       name: text, description: text,
       region: { type: "string", enum: ["container", ...schema.$defs.type_def.properties.region.enum] },
@@ -64,7 +68,8 @@ The list is being built step by step and stays as it is. Do not restate it, rena
 new_types: semantic unit types visible on these pages that no existing type covers. Propose a type only for a distinction a reader of the book needs, such as a different role in the text, not for a typographic variant of an existing type. Return an empty list when the existing types suffice. For each: a lowercase ASCII snake_case name not used by an existing type; a definition that tells it apart from the existing types; region, a neutral printed region class, or "container" for a unit that groups other units such as a chapter or a verse with its commentary; for a container, contains lists the existing non-furniture types it may hold, and a printed type has empty contains; parents lists existing types that have children and may contain the new type, and flow names an existing reading flow in which it may stand at top level (give at least one of the two); page furniture (running headers, page numbers, unlabelled ornaments) has furniture true, empty parents, empty flow and empty contains, and other types have furniture false; evidence_pages lists the supplied PDF pages on which it appears, and evidence a short visible example or explanation.
 definition_edits: optional clearer definitions for existing types, only where these pages show a definition to be misleading or incomplete. Give the existing name, the complete new definition and the reason.
 possible_duplicates: groups of two or more existing types that may be the same thing in this book, each with a question for the user that cites PDF pages. These are questions only; nothing is merged.
-questions: other uncertain distinctions for the user, citing PDF pages. Sampling may miss parts of the book.
+questions: other uncertain distinctions for the user, citing PDF pages. Sampling may miss parts of the book.${needsDescription(types) ? `
+proposed_description: the user has not described the book, so describe it for later model calls: what the book is, its parts, its languages and scripts, and how its pages are laid out (columns, running headers, notes, page numbers), in a few plain sentences, only from what these pages show. Say so where sampled pages leave something uncertain.` : ""}
 Return JSON matching the supplied schema.`;
 }
 
@@ -106,6 +111,7 @@ export function checkSurvey(value, { schema, types, pages }) {
         throw new Error(`${which} names ${parent} as a parent, which is not an existing type that holds other units.`);
     }
   }
+  if (needsDescription(types) && !value.proposed_description.trim()) throw new Error("The response has no proposed book description.");
   for (const edit of value.definition_edits) {
     if (!has(edit.name)) throw new Error(`The definition edit names ${edit.name}, which is not in the type list.`);
     if (!edit.description.trim()) throw new Error(`The definition edit for ${edit.name} is empty.`);
@@ -120,6 +126,7 @@ export function checkSurvey(value, { schema, types, pages }) {
 export function mergeSurveyResults(results) {
   const merged = { new_types: [], definition_edits: [], possible_duplicates: [], questions: [] }, byName = new Map(), groups = new Set();
   for (const result of results) {
+    if (result.proposed_description?.trim() && merged.proposed_description === undefined) merged.proposed_description = result.proposed_description;
     for (const type of result.new_types) {
       const seen = byName.get(type.name);
       if (!seen) { const copy = structuredClone(type); byName.set(type.name, copy); merged.new_types.push(copy); continue; }

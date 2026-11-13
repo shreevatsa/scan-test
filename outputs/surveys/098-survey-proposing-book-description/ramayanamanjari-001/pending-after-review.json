@@ -1,0 +1,98 @@
+{
+ "format": "pending-type-proposals",
+ "version": 1,
+ "items": [
+  {
+   "id": "b345c012-4621-4002-a0db-b57195a9b49e:book_description:description",
+   "kind": "book_description",
+   "status": "applied",
+   "source": {
+    "kind": "survey",
+    "method": "098-survey-proposing-book-description",
+    "run": "b345c012-4621-4002-a0db-b57195a9b49e",
+    "model": "GPT-6.1 Terra · reasoning off",
+    "pages": [
+     7,
+     9,
+     11,
+     16,
+     17,
+     150,
+     380,
+     527
+    ],
+    "at_utc": "2026-11-13T06:57:29.272Z"
+   },
+   "proposal": {
+    "description": "An edition of Kṣemendra's Rāmāyaṇamañjarī, identified on the title pages as edited by Bhavadatta Śāstrī and Kāśīnāth Pāṇḍuraṅg Parab and published in Bombay in 1903. The sampled pages include English and Sanskrit title pages, a two-column Sanskrit table of contents, and Sanskrit verse in Devanagari. The verse pages have a single text column, numbered stanzas, running headers and page numbers, and occasional numbered textual notes at the foot of the page. The samples do not establish all of the book's parts."
+   },
+   "decision": {
+    "description": "An edition of Kṣemendra's Rāmāyaṇamañjarī, identified on the title pages as edited by Bhavadatta Śāstrī and Kāśīnāth Pāṇḍuraṅg Parab and published in Bombay in 1903. The sampled pages include English and Sanskrit title pages, a two-column Sanskrit table of contents, and Sanskrit verse in Devanagari. The verse pages have a single text column, numbered stanzas, running headers and page numbers, and occasional numbered textual notes at the foot of the page. The samples do not establish all of the book's parts.",
+    "at_utc": "2026-11-13T06:57:33.569Z"
+   }
+  },
+  {
+   "id": "b345c012-4621-4002-a0db-b57195a9b49e:new_type:colophon",
+   "kind": "new_type",
+   "status": "pending",
+   "source": {
+    "kind": "survey",
+    "method": "098-survey-proposing-book-description",
+    "run": "b345c012-4621-4002-a0db-b57195a9b49e",
+    "model": "GPT-6.1 Terra · reasoning off",
+    "pages": [
+     7,
+     9,
+     11,
+     16,
+     17,
+     150,
+     380,
+     527
+    ],
+    "at_utc": "2026-11-13T06:57:29.272Z"
+   },
+   "proposal": {
+    "name": "colophon",
+    "description": "A closing statement identifying and marking the end of a textual division, rather than a heading introducing the following text.",
+    "region": "other",
+    "furniture": false,
+    "contains": [],
+    "parents": [
+     "section"
+    ],
+    "flow": "main",
+    "evidence_pages": [
+     380
+    ],
+    "evidence": "The right-aligned इतिअतिकायवधः ॥ ३२ ॥ closes the preceding episode before the next verse."
+   }
+  },
+  {
+   "id": "b345c012-4621-4002-a0db-b57195a9b49e:question:question-1",
+   "kind": "question",
+   "status": "pending",
+   "source": {
+    "kind": "survey",
+    "method": "098-survey-proposing-book-description",
+    "run": "b345c012-4621-4002-a0db-b57195a9b49e",
+    "model": "GPT-6.1 Terra · reasoning off",
+    "pages": [
+     7,
+     9,
+     11,
+     16,
+     17,
+     150,
+     380,
+     527
+    ],
+    "at_utc": "2026-11-13T06:57:29.272Z"
+   },
+   "proposal": {
+    "question": "On PDF page 380, does the numbered closing statement इतिअतिकायवधः mark a separately structured episode, and should the following verses begin a new section?",
+    "types": []
+   }
+  }
+ ]
+}
