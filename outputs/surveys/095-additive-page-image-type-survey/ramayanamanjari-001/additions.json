@@ -1,0 +1,56 @@
+{
+ "new_types": [
+  {
+   "name": "publication_statement",
+   "description": "A title-page statement identifying the printer or publisher, place or date of publication, price, or publication rights, distinct from the book title and its credits.",
+   "region": "paragraph",
+   "furniture": false,
+   "contains": [],
+   "parents": [
+    "section"
+   ],
+   "flow": "main",
+   "evidence_pages": [
+    7,
+    9
+   ],
+   "evidence": "Page 7 gives the publisher, Bombay, 1903 and the price; page 9 gives corresponding publication details and a rights statement."
+  },
+  {
+   "name": "title_page_credit",
+   "description": "A title-page statement naming the author, editor or other contributor, including associated qualifications or affiliations, distinct from the title and publication statement.",
+   "region": "paragraph",
+   "furniture": false,
+   "contains": [],
+   "parents": [
+    "section"
+   ],
+   "flow": "main",
+   "evidence_pages": [
+    7,
+    9
+   ],
+   "evidence": "Page 7 names Kshemendra and the editors under 'EDITED BY'; page 9 gives corresponding Sanskrit credits."
+  },
+  {
+   "name": "section_end_marker",
+   "description": "A brief concluding label marking the end of a named episode or subdivision, rather than a heading introducing what follows.",
+   "region": "other",
+   "furniture": false,
+   "contains": [],
+   "parents": [
+    "section"
+   ],
+   "flow": "main",
+   "evidence_pages": [
+    380
+   ],
+   "evidence": "The numbered line 'इत्यतिकायवधः ॥ ३२ ॥' follows verse १५० and precedes verse १५१."
+  }
+ ],
+ "definition_edits": [],
+ "possible_duplicates": [],
+ "questions": [
+  "On PDF page 380, should the numbered episode-ending label be treated as the conclusion of a section, or as a heading for the following text?"
+ ]
+}

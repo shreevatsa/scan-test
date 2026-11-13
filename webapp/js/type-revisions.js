@@ -1,8 +1,8 @@
-import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261112-regions-layout-1";
-import { canonical } from "./ops.js?v=20261112-regions-layout-1";
-import { isProtected, layerRecords, layerState } from "./layers.js?v=20261112-regions-layout-1";
-import { provisionalUnits } from "./pipeline/provisional.js?v=20261112-regions-layout-1";
-import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261112-regions-layout-1";
+import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261113-survey-1";
+import { canonical } from "./ops.js?v=20261113-survey-1";
+import { isProtected, layerRecords, layerState } from "./layers.js?v=20261113-survey-1";
+import { provisionalUnits } from "./pipeline/provisional.js?v=20261113-survey-1";
+import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261113-survey-1";
 
 export function citedSamplePages(question, samples) {
   const cited = new Set();
@@ -104,13 +104,6 @@ export function revisedTypeList(current, operations, at = new Date().toISOString
         next.source ||= {};
         next.source.retired_types = [...new Set([...(next.source.retired_types || []), name])];
         break;
-      case "replace":
-        next = structuredClone(op.types);
-        next.book_id = current.book_id;
-        delete next.source?.draft;
-        delete next.source?.aliases;
-        delete next.source?.retired_types;
-        break;
       case "resolve_question": {
         if (!next.source?.discovery) throw new Error("This type list has no discovery questions.");
         if (!op.answer?.trim()) throw new Error("Record the review decision before resolving the question.");
@@ -126,7 +119,6 @@ export function revisedTypeList(current, operations, at = new Date().toISOString
   const n = typeRevision(current.source?.revision) + 1;
   next.source = { ...next.source, ...(typeof current.source?.revision === "string" ? { legacy_revision: current.source.revision } : {}),
     revision: n, revisions: [...(current.source?.revisions || []), { n, at_utc: at, by: "user", operations: log }] };
-  if (operations.some(op => op.kind === "replace")) next.source.region_reset_revision = n;
   return next;
 }
 
@@ -191,29 +183,26 @@ export function planTypeRevision(current, snapshot, operations, { validate = () 
   const validation = validate(types);
   if (validation.length) throw new Error(validation[0]);
   const logged = types.source.revisions.at(-1).operations;
-  const replace = operations.some(op => op.kind === "replace"), removed = new Set(operations.filter(op => op.kind === "remove").map(op => op.name));
-  const names = new Set(replace ? Object.keys(current.types) : operations.flatMap(op => op.kind === "split" ? [op.from] : op.name ? [op.name] : []));
+  const removed = new Set(operations.filter(op => op.kind === "remove").map(op => op.name));
+  const names = new Set(operations.flatMap(op => op.kind === "split" ? [op.from] : op.name ? [op.name] : []));
   const result = { types, style: structuredClone(snapshot.style), changes: [], pages: [], regions: 0, units: 0, find: [], complete: [], manual: [], invalid: [], revision };
   for (const [index, page] of snapshot.pages.entries()) {
     const variants = [snapshot.models[page.id], snapshot.edits[page.id], snapshot.drafts[page.id]?.doc].filter(Boolean);
-    if (replace && (snapshot.drafts[page.id] || variants.some(doc => ["regions", "text", "units"].some(layer => isProtected(doc, layer)))))
-      throw new Error(`Page ${index + 1} has protected work. Use individual type operations for this book.`);
     if (variants.some(doc => { const found = usage(doc, removed); return found.regions || found.units; }))
       throw new Error(`Page ${index + 1} still uses a type to be removed. Merge that type first.`);
     const effective = snapshot.drafts[page.id]?.doc || snapshot.edits[page.id] || snapshot.models[page.id];
     const counts = usage(effective, names);
-    if (counts.regions || counts.units || replace && effective) result.pages.push(page.id);
+    if (counts.regions || counts.units) result.pages.push(page.id);
     result.regions += counts.regions; result.units += counts.units;
-    if (replace && effective) result.find.push(page.id);
     for (const [kind, before] of [["model", snapshot.models[page.id]], ["edit", snapshot.edits[page.id]], ["draft", snapshot.drafts[page.id]]]) {
       if (!before) continue;
       const doc = kind === "draft" ? before.doc : before;
-      const after = replace ? null : migrateTypeDocument(doc, types, logged, check, { firstPage: index === 0, lastPage: index === snapshot.pages.length - 1 });
-      const errors = after && check(after, types);
-      if (errors?.length) result.invalid.push({ page: page.id, kind, errors });
-      if (errors?.length && operations.some(op => ["rename", "merge"].includes(op.kind)) && !check(doc, current).length)
+      const after = migrateTypeDocument(doc, types, logged, check, { firstPage: index === 0, lastPage: index === snapshot.pages.length - 1 });
+      const errors = check(after, types);
+      if (errors.length) result.invalid.push({ page: page.id, kind, errors });
+      if (errors.length && operations.some(op => ["rename", "merge"].includes(op.kind)) && !check(doc, current).length)
         throw new Error(`Page ${index + 1} cannot use this merge or rename. ${errors[0]}`);
-      const value = kind === "draft" && after ? { ...before, doc: after } : after;
+      const value = kind === "draft" ? { ...before, doc: after } : after;
       if (canonical(before) !== canonical(value)) {
         result.changes.push({ page: page.id, kind, before, after: value });
         result.pages.push(page.id);
@@ -234,7 +223,6 @@ export function planTypeRevision(current, snapshot, operations, { validate = () 
       delete result.style.types[op.name];
     }
     if (op.kind === "remove") delete result.style.types[op.name];
-    if (op.kind === "replace") for (const name of Object.keys(result.style.types)) if (!Object.hasOwn(types.types, name)) delete result.style.types[name];
   }
   for (const key of ["pages", "find", "complete", "manual"]) result[key] = [...new Set(result[key])];
   return result;

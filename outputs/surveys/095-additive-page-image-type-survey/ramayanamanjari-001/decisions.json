@@ -1,0 +1,109 @@
+[
+ {
+  "id": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893:new_type:publication_statement",
+  "kind": "new_type",
+  "status": "dismissed",
+  "source": {
+   "kind": "survey",
+   "method": "095-additive-page-image-type-survey",
+   "run": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893",
+   "model": "GPT-6.1 Terra · reasoning off",
+   "pages": [
+    7,
+    9,
+    11,
+    16,
+    17,
+    150,
+    380,
+    527
+   ],
+   "at_utc": "2026-11-13T05:20:35.577Z"
+  },
+  "decision": {
+   "same_as": "publication_statement",
+   "at_utc": "2026-11-13T05:24:31.001Z"
+  },
+  "name": "publication_statement",
+  "question": null
+ },
+ {
+  "id": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893:new_type:title_page_credit",
+  "kind": "new_type",
+  "status": "dismissed",
+  "source": {
+   "kind": "survey",
+   "method": "095-additive-page-image-type-survey",
+   "run": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893",
+   "model": "GPT-6.1 Terra · reasoning off",
+   "pages": [
+    7,
+    9,
+    11,
+    16,
+    17,
+    150,
+    380,
+    527
+   ],
+   "at_utc": "2026-11-13T05:20:35.577Z"
+  },
+  "decision": {
+   "at_utc": "2026-11-13T05:24:32.542Z"
+  },
+  "name": "title_page_credit",
+  "question": null
+ },
+ {
+  "id": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893:new_type:section_end_marker",
+  "kind": "new_type",
+  "status": "dismissed",
+  "source": {
+   "kind": "survey",
+   "method": "095-additive-page-image-type-survey",
+   "run": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893",
+   "model": "GPT-6.1 Terra · reasoning off",
+   "pages": [
+    7,
+    9,
+    11,
+    16,
+    17,
+    150,
+    380,
+    527
+   ],
+   "at_utc": "2026-11-13T05:20:35.577Z"
+  },
+  "decision": {
+   "same_as": "colophon",
+   "at_utc": "2026-11-13T05:24:17.573Z"
+  },
+  "name": "section_end_marker",
+  "question": null
+ },
+ {
+  "id": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893:question:question-1",
+  "kind": "question",
+  "status": "pending",
+  "source": {
+   "kind": "survey",
+   "method": "095-additive-page-image-type-survey",
+   "run": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893",
+   "model": "GPT-6.1 Terra · reasoning off",
+   "pages": [
+    7,
+    9,
+    11,
+    16,
+    17,
+    150,
+    380,
+    527
+   ],
+   "at_utc": "2026-11-13T05:20:35.577Z"
+  },
+  "name": null,
+  "question": "On PDF page 380, should the numbered episode-ending label be treated as the conclusion of a section, or as a heading for the following text?"
+ }
+]

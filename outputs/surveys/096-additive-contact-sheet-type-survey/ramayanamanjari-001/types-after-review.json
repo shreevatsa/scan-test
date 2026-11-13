@@ -1,0 +1,185 @@
+{
+ "format": "types",
+ "schema_version": "0.2",
+ "book_id": "ramayanamamjari00ksemuoft",
+ "title": "Ramayana-manjari of Kshemendra",
+ "description": "Kṣemendra's Rāmāyaṇamañjarī, a Sanskrit poem in Devanagari, printed in the Kāvyamālā series: English and Sanskrit title pages, a table of contents, then the poem in numbered verses with a running header, a page number and footnotes at the foot of most pages.",
+ "flows": {
+  "main": "The book's running text, in reading order.",
+  "notes": "Footnotes and endnotes."
+ },
+ "types": {
+  "section": {
+   "description": "A part, chapter or section of the book, extending across pages and holding its contents and any smaller sections. It may begin with a heading or be identified by a closing statement rather than an opening heading.",
+   "contains": [
+    "section",
+    "heading",
+    "paragraph",
+    "verse",
+    "list_item",
+    "table",
+    "figure",
+    "caption",
+    "colophon",
+    "publication_statement"
+   ],
+   "flow": "main"
+  },
+  "heading": {
+   "description": "A title or heading: of the book, a part, a chapter or a section.",
+   "region": "heading",
+   "flow": "main"
+  },
+  "paragraph": {
+   "description": "A paragraph of prose, or a block quotation. A paragraph continued from the previous page or onto the next is one unit.",
+   "region": "paragraph",
+   "flow": "main"
+  },
+  "verse": {
+   "description": "A verse or stanza, with its number or end mark if it has one.",
+   "region": "verse",
+   "flow": "main",
+   "numbered": true
+  },
+  "list_item": {
+   "description": "An entry of a list, a table of contents or an index.",
+   "region": "list_item",
+   "flow": "main"
+  },
+  "table": {
+   "description": "A table, with its headings.",
+   "region": "table",
+   "flow": "main"
+  },
+  "figure": {
+   "description": "An illustration, without its caption.",
+   "region": "figure",
+   "flow": "main"
+  },
+  "caption": {
+   "description": "The caption of an illustration or table.",
+   "region": "caption",
+   "flow": "main"
+  },
+  "footnote": {
+   "description": "A footnote or endnote, with its number or sign.",
+   "region": "note",
+   "flow": "notes",
+   "numbered": true
+  },
+  "running_header": {
+   "description": "A running header or footer: the book's or chapter's title repeated at the top or bottom of the page.",
+   "role": "furniture",
+   "region": "running_header"
+  },
+  "page_number": {
+   "description": "The printed page number.",
+   "role": "furniture",
+   "region": "page_number"
+  },
+  "colophon": {
+   "description": "A closing statement identifying the end of a work or major division, distinct from a heading that introduces a division and from a numbered verse.",
+   "region": "paragraph",
+   "flow": "main"
+  },
+  "publication_statement": {
+   "description": "A title-page or copyright-page statement identifying the edition, editor, publisher, printer, place, date or rights; distinct from the title itself.",
+   "region": "paragraph",
+   "flow": "main"
+  }
+ },
+ "relations": {
+  "note": "A note marker in the text points to its note."
+ },
+ "conventions": [
+  "Unicode NFC.",
+  "Lines as printed; a hyphen at a line end is kept.",
+  "A table row is one line, with its cells separated by \" | \"."
+ ],
+ "source": {
+  "written_by": "Claude, 2026-11-06, as the web app's default type list for a new book; not yet reviewed by the user",
+  "draft": true,
+  "revision": 5,
+  "revisions": [
+   {
+    "n": 2,
+    "at_utc": "2026-11-13T05:19:28.440Z",
+    "by": "user",
+    "operations": [
+     {
+      "kind": "metadata",
+      "title": "Ramayana-manjari of Kshemendra",
+      "description": "Kṣemendra's Rāmāyaṇamañjarī, a Sanskrit poem in Devanagari, printed in the Kāvyamālā series: English and Sanskrit title pages, a table of contents, then the poem in numbered verses with a running header, a page number and footnotes at the foot of most pages.",
+      "languages": [],
+      "conventions": [
+       "Unicode NFC.",
+       "Lines as printed; a hyphen at a line end is kept.",
+       "A table row is one line, with its cells separated by \" | \"."
+      ]
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "at_utc": "2026-11-13T05:24:05.093Z",
+    "by": "user",
+    "operations": [
+     {
+      "kind": "add",
+      "name": "colophon",
+      "description": "A closing statement identifying the end of a work or major division, distinct from a heading that introduces a division and from a numbered verse.",
+      "region": "paragraph",
+      "furniture": false,
+      "parent": "section"
+     },
+     {
+      "kind": "rules",
+      "name": "colophon",
+      "flow": "main",
+      "before": {
+       "description": "A closing statement identifying the end of a work or major division, distinct from a heading that introduces a division and from a numbered verse.",
+       "region": "paragraph"
+      }
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "at_utc": "2026-11-13T05:24:19.548Z",
+    "by": "user",
+    "operations": [
+     {
+      "kind": "add",
+      "name": "publication_statement",
+      "description": "A title-page or copyright-page statement identifying the edition, editor, publisher, printer, place, date or rights; distinct from the title itself.",
+      "region": "paragraph",
+      "furniture": false,
+      "parent": "section"
+     },
+     {
+      "kind": "rules",
+      "name": "publication_statement",
+      "flow": "main",
+      "before": {
+       "description": "A title-page or copyright-page statement identifying the edition, editor, publisher, printer, place, date or rights; distinct from the title itself.",
+       "region": "paragraph"
+      }
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "at_utc": "2026-11-13T05:24:34.488Z",
+    "by": "user",
+    "operations": [
+     {
+      "kind": "description",
+      "name": "section",
+      "description": "A part, chapter or section of the book, extending across pages and holding its contents and any smaller sections. It may begin with a heading or be identified by a closing statement rather than an opening heading."
+     }
+    ]
+   }
+  ]
+ },
+ "languages": []
+}

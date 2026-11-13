@@ -5,16 +5,18 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261112-regions-layout-1";
-import { typeRevision } from "./schema.js?v=20261112-regions-layout-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261112-regions-layout-1";
-import { newTypeDialog, renderTypeDiscovery } from "./regionsview.js?v=20261112-regions-layout-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261112-regions-layout-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261112-regions-layout-1";
-import { regionPath } from "./pageimage.js?v=20261112-regions-layout-1";
+import { prepare } from "./reader.js?v=20261113-survey-1";
+import { typeRevision } from "./schema.js?v=20261113-survey-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-survey-1";
+import { newTypeDialog } from "./regionsview.js?v=20261113-survey-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-survey-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-survey-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-survey-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-survey-1";
+import { regionPath } from "./pageimage.js?v=20261113-survey-1";
 
-// The optional survey box of the Regions tab: the type-discovery interface, closed until opened, which loads the
-// source PDF only then.
+// The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
+// then.
 export function surveyBox(app, { credentialsBox, onBusy, selected }) {
   const book = app.book, token = app.routeToken;
   app.typeOverview ||= {};
@@ -26,7 +28,7 @@ export function surveyBox(app, { credentialsBox, onBusy, selected }) {
     app.typeOverview.open = section.open;
     if (!section.open || !section.isConnected || loaded || app.book !== book || app.routeToken !== token) return;
     loaded = true;
-    try { await renderTypeDiscovery(discovery, app, { selected: selected(), credentialsBox, onBusy }); }
+    try { await renderSurvey(discovery, app, { selected: selected(), credentialsBox, onBusy }); }
     catch (error) { discovery.replaceChildren(h("p", { class: "bad", role: "status" }, error.message)); loaded = false; }
   };
   section.addEventListener("toggle", load);
@@ -206,6 +208,27 @@ export function renderBookDetails(el, app, { onAdded = () => app.route(), onRevi
     const a = h("a", { href: URL.createObjectURL(new Blob([JSON.stringify(tl, null, 1) + "\n"], { type: "application/json" })), download: "types.json" });
     document.body.append(a); a.click(); a.remove();
   } }, "Download types.json");
+  // Questions from surveys of pages (possible duplicates and other distinctions), kept with the pending proposals.
+  const surveyQuestions = h("div", { class: "survey-questions" });
+  readPendingProposals(book).then(record => {
+    const questions = pendingItems(record, "question");
+    if (!questions.length || app.book !== book) return;
+    const decide = (item, decision) => decideProposal(book, item.id, decision).then(() => renderBookDetails(el, app, { onAdded, onReviewPages, onOpenPage }))
+      .catch(error => app.toast(error.message, "bad"));
+    surveyQuestions.replaceChildren(...(tl.source?.discovery?.questions?.length ? [] : [h("h3", {}, "Questions to review")]), ...questions.map(item => {
+      const answer = h("textarea", { rows: 2, "aria-label": `Review decision for ${item.proposal.question}` });
+      return h("section", { class: "box" }, h("p", {}, item.proposal.question),
+        h("p", { class: "meta" }, `${item.proposal.duplicate ? "Possible duplicate · " : ""}From a survey by ${item.source.model ?? item.source.kind}`),
+        ...citedSamplePages(item.proposal.question, item.source.pages || []).map(number => h("button", { onclick: () => {
+          const page = book.pages.find(page => page.pdf_page === number); if (page) onOpenPage(page.id);
+        } }, `Page ${number}`)),
+        ...item.proposal.types.filter(name => tl.types[name]).map(name => book.writable ? h("button", { onclick: () => editTypeDialog(app, name) }, `Edit ${name}…`) : null),
+        book.writable ? [answer, h("div", { class: "actions" }, h("button", { onclick: () => {
+          if (!answer.value.trim()) { app.toast("Write the decision first.", "bad"); return; }
+          decide(item, { status: "answered", answer: answer.value.trim() });
+        } }, "Record decision"), h("button", { onclick: () => decide(item, { status: "dismissed" }) }, "Dismiss"))] : null);
+    }));
+  }).catch(error => surveyQuestions.replaceChildren(h("p", { class: "bad" }, error.message)));
   el.replaceChildren(h("div", { class: "typesview book-details" },
     h("div", { class: "stylebar" }, download,
       book.writable ? h("button", { onclick: () => editBookTypesDialog(app) }, "Edit book details") : null,
@@ -229,7 +252,7 @@ export function renderBookDetails(el, app, { onAdded = () => app.route(), onRevi
         const page = book.pages.find(page => page.pdf_page === number); if (page) onOpenPage(page.id);
       } }, `Page ${number}`)), decision ? h("p", { class: "ok" }, `Resolved · ${decision.answer}`) : null,
       book.writable ? [answer, h("button", { onclick: () => reviewTypeChange(app, [{ kind: "resolve_question", question, answer: answer.value }]).catch(error => app.toast(error.message, "bad")) }, "Preview review decision")] : null);
-    })] : null));
+    })] : null, surveyQuestions));
 }
 
 // The type list as a dialog: the tree (a type name opens its edit form) and the book's details.

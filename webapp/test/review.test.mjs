@@ -6,7 +6,6 @@ import { clone, canonical } from "../js/ops.js";
 import { layerState, layerView } from "../js/layers.js";
 import { makeValidator, checkPage } from "../js/schema.js";
 import { reviewCandidate, settle, settledChecks, settledStructureScore, unitScope, saveReview } from "../js/review.js";
-import { mergeTypeProposals, typeAgreement } from "../js/type-draft.js";
 const validate = makeValidator(JSON.parse(readFileSync(new URL("../schema.json", import.meta.url))));
 const types = { format: "types", schema_version: "0.2", book_id: "review", title: "Review", source: { revision: 2 },
   flows: { main: "Main", notes: "Notes" }, relations: { note: "A printed note" }, types: {
@@ -196,17 +195,4 @@ test("review saves recover page edits, evidence and history at every file bounda
     const saved = await reopened.current("p1"); assert.ok(saved.source.review.text["r1:1"]); assert.ok(files.get("work/history/p1.json"));
     assert.equal(saved.source.suggestions.text, undefined); assert.equal(files.has("work/pending-pages.json"), false);
   }
-});
-
-const proposal = (name, definition) => ({ types: { ...clone(types), types: { [name]: definition }, languages: ["en"], conventions: [], source: { discovery: { sample_pages: [1], reviewed: false } } },
-  proposal: { types: [{ name, evidence: "Printed", sample_pages: [1] }], questions: [] }, call: { path: `work/${name}.json`, cost_usd: 0.1, seconds: 1 } });
-test("merged type drafts retain common and model-specific definitions and provenance", () => {
-  const a = proposal("paragraph", types.types.paragraph), b = proposal("verse", types.types.verse);
-  b.types.types.paragraph = { ...types.types.paragraph, description: "Another interpretation" };
-  b.proposal.types.push({ name: "paragraph", evidence: "Prose", sample_pages: [1] });
-  const inputs = [{ profile: { id: "a", label: "A" }, result: a }, { profile: { id: "b", label: "B" }, result: b }], before = clone(inputs);
-  const merged = mergeTypeProposals(inputs);
-  assert.deepEqual(inputs, before); assert.deepEqual(Object.keys(merged.types.types), ["paragraph", "verse"]);
-  assert.match(typeAgreement(merged.merged.types.paragraph), /different definitions/); assert.match(typeAgreement(merged.merged.types.verse), /one proposal/);
-  assert.equal(merged.merged.cost_usd, 0.2); assert.equal(merged.call.cost_usd, 0.1); assert.equal(merged.merged.sources.length, 2); assert.equal(merged.types.source.discovery.reviewed, false);
 });

@@ -1,0 +1,54 @@
+{
+ "new_types": [
+  {
+   "name": "publication_statement",
+   "description": "A title-page or copyright-page statement identifying the edition, editor, publisher, printer, place, date or rights; distinct from the title itself.",
+   "region": "paragraph",
+   "furniture": false,
+   "contains": [],
+   "parents": [
+    "section"
+   ],
+   "flow": "main",
+   "evidence_pages": [
+    7,
+    8,
+    9
+   ],
+   "evidence": "The English and Sanskrit title pages contain editorial and publication credits; the English title-page verso carries a rights statement."
+  },
+  {
+   "name": "section_colophon",
+   "description": "A closing statement identifying the end of a work or major division, distinct from a heading that introduces a division and from a numbered verse.",
+   "region": "paragraph",
+   "furniture": false,
+   "contains": [],
+   "parents": [
+    "section"
+   ],
+   "flow": "main",
+   "evidence_pages": [
+    94,
+    185,
+    250
+   ],
+   "evidence": "Short standalone lines occur between the end of one numbered verse sequence and the start of another."
+  }
+ ],
+ "definition_edits": [
+  {
+   "name": "section",
+   "description": "A part, chapter or section of the book, extending across pages and holding its contents and any smaller sections. It may begin with a heading or be identified by a closing statement rather than an opening heading.",
+   "reason": "Major verse sequences appear to end with a closing line before the next sequence begins, as on PDF pages 94, 185 and 250."
+  }
+ ],
+ "possible_duplicates": [],
+ "questions": [
+  "On PDF pages 94, 185 and 250, do the standalone lines close major divisions, and are they separate from the adjacent verses?",
+  "On PDF pages 44, 51–53 and 68, are the short parenthesized lines between verses independent labels or notes, or do they belong to the adjacent verses?",
+  "On PDF pages 11–14, are all entries in the two-column front-matter list table-of-contents entries, or does it also serve as an index?",
+  "On PDF pages 323, 325 and 423, are the short, right-aligned lines between verse groups section-ending statements, and should they be distinguished from headings or verses?",
+  "On PDF page 525, is the final centered line a separate colophon, or part of the preceding verse?",
+  "Does PDF page 530 contain publisher advertisements that should be distinguished from ordinary headings and paragraphs? The small print is not clear enough to establish its purpose."
+ ]
+}

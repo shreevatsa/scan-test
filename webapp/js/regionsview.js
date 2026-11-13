@@ -1,13 +1,10 @@
-import { suggestionButton } from "./review-view.js?v=20261112-regions-layout-1";
-import { typeRevision } from "./schema.js?v=20261112-regions-layout-1";
+import { suggestionButton } from "./review-view.js?v=20261113-survey-1";
+import { typeRevision } from "./schema.js?v=20261113-survey-1";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261112-regions-layout-1";
-import { orderedRegions, regionFlags } from "./flags.js?v=20261112-regions-layout-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261112-regions-layout-1";
-import { typeSetup } from "./type-setup.js?v=20261112-regions-layout-1";
-import { pageSelectionText } from "./page-browser.js?v=20261112-regions-layout-1";
-import { sha256hex } from "./chayapdf.js";
-import { reviewTypeChange, editTypeDialog } from "./type-operations.js?v=20261112-regions-layout-1";
+import * as ops from "./ops.js?v=20261113-survey-1";
+import { orderedRegions, regionFlags } from "./flags.js?v=20261113-survey-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-survey-1";
+import { editTypeDialog } from "./type-operations.js?v=20261113-survey-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -213,39 +210,4 @@ export function renderRegionInspector(el, app) {
   h("button", { class: "danger", onclick: () => {
     if (app.edit(next => { ops.deleteRegion(next, region.id); app.selection = {}; })) app.recompute();
   } }, "Delete region")));
-}
-
-export async function renderTypeDiscovery(el, app, { selected, onBusy, credentialsBox }) {
-  const book = app.book, token = app.routeToken;
-  el.replaceChildren(h("p", { class: "loading" }, "Opening the source PDF for type discovery…"));
-  const index = await (await fetch(new URL("../types/index.json", import.meta.url))).json();
-  const title = h("input", { value: book.title, dataset: { edited: "1" } });
-  const bookId = h("input", { value: book.manifest.book_id, dataset: { edited: "1" } });
-  // The book's description has one home (Regions → By type → Book details); a proposal request sends it as it is there.
-  const description = h("textarea", { hidden: true, dataset: { edited: "1" } }, book.types.description || "");
-  const setup = typeSetup({ app, title, bookId, description, index, book, initialSource: "discover", credentialsBox, onBusy: value => {
-    onBusy(value);
-    apply.disabled = value || !book.writable;
-  } });
-  const pdf = await book.pdf();
-  const sha = book.manifest.pdf?.sha256 || await sha256hex(await book.originalPdf());
-  await setup.usePdf({ doc: pdf, sha });
-  if (app.book !== book || app.routeToken !== token) return;
-  if (selected.length) {
-    const field = setup.element.querySelector('[aria-label="Sample PDF pages"]');
-    field.value = pageSelectionText(selected.map(pid => book.page(pid).pdf_page || book.index[pid] + 1), pdf.numPages);
-    field.dispatchEvent(new Event("input", { bubbles: true }));
-  }
-  const status = h("p", { role: "status" });
-  const apply = h("button", { class: "primary", disabled: !book.writable, onclick: async () => {
-    apply.disabled = true;
-    try {
-      await reviewTypeChange(app, [{ kind: "replace", types: await setup.loadTypes() }]);
-    } catch (error) { status.textContent = error.message; }
-    finally { apply.disabled = !book.writable; }
-  } }, "Preview replacing the type list");
-  el.replaceChildren(h("div", {},
-    h("p", { class: "hint" }, "Review the proposal before replacing the list. You can replace the list while the book’s page layers are unprotected."),
-    h("p", { class: "hint" }, "The request includes the book’s description; change it under Book details in By type."), setup.element, status,
-    h("div", { class: "actions" }, apply)));
 }

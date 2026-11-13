@@ -1,0 +1,34 @@
+{
+  "method": "095-additive-page-image-type-survey",
+  "stage": "type-survey",
+  "form": "pages",
+  "profiles": [
+    {
+      "id": "terra-survey",
+      "label": "GPT-6.1 Terra · reasoning off",
+      "provider": "openai",
+      "model": "gpt-6.1-terra",
+      "reasoning": "none",
+      "method": "095-additive-page-image-type-survey"
+    },
+    {
+      "id": "argon-survey",
+      "label": "Gemini 4 Argon · low thinking",
+      "provider": "gemini",
+      "model": "gemini-4-argon",
+      "thinking": "low",
+      "method": "095-additive-page-image-type-survey"
+    }
+  ],
+  "default_profile": "terra-survey",
+  "source_snapshot": "095-additive-page-image-type-survey/snapshot",
+  "page_limit": 12,
+  "rendering": "PNG at 150 dpi, capped at the scan's own resolution",
+  "image_detail": "original (OpenAI), high resolution (Gemini)",
+  "max_output_tokens": 16384,
+  "store": false,
+  "copied_from": [
+    "077-gpt-6-1-terra-unit-types",
+    "078-gemini-4-argon-high-unit-types"
+  ]
+}

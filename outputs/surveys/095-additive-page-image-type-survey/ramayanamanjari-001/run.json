@@ -1,0 +1,104 @@
+{
+ "format": "type-survey-run",
+ "version": 1,
+ "id": "622c2bd0-7d79-4dd4-aba9-b5d1cb29f893",
+ "method": "095-additive-page-image-type-survey",
+ "form": "pages",
+ "profile": {
+  "id": "terra-survey",
+  "label": "GPT-6.1 Terra · reasoning off",
+  "model": "gpt-6.1-terra"
+ },
+ "pdf_sha256": "85ee74d2c2e09393280441e9cf30a172b32ce758bc7542f5cb5932570e269756",
+ "pages": [
+  7,
+  9,
+  11,
+  16,
+  17,
+  150,
+  380,
+  527
+ ],
+ "page_count": 532,
+ "types_revision": 2,
+ "started_at_utc": "2026-11-13T05:20:26.643Z",
+ "finished_at_utc": "2026-11-13T05:20:35.577Z",
+ "calls": [
+  {
+   "path": "work/reader-calls/setup/type-survey-d482a493-b7a3-413a-b352-82125296a0c4.json",
+   "pages": [
+    7,
+    9,
+    11,
+    16,
+    17,
+    150,
+    380,
+    527
+   ],
+   "cached": false,
+   "cost_usd": 0.01220675,
+   "seconds": 8.749199999809266,
+   "response_id": "resp_02da92d9bb07dfe2016af69e1cf84c87d1a739319eb418a898"
+  }
+ ],
+ "cost_usd": 0.01220675,
+ "seconds": 8.749199999809266,
+ "result": {
+  "new_types": [
+   {
+    "name": "publication_statement",
+    "description": "A title-page statement identifying the printer or publisher, place or date of publication, price, or publication rights, distinct from the book title and its credits.",
+    "region": "paragraph",
+    "furniture": false,
+    "contains": [],
+    "parents": [
+     "section"
+    ],
+    "flow": "main",
+    "evidence_pages": [
+     7,
+     9
+    ],
+    "evidence": "Page 7 gives the publisher, Bombay, 1903 and the price; page 9 gives corresponding publication details and a rights statement."
+   },
+   {
+    "name": "title_page_credit",
+    "description": "A title-page statement naming the author, editor or other contributor, including associated qualifications or affiliations, distinct from the title and publication statement.",
+    "region": "paragraph",
+    "furniture": false,
+    "contains": [],
+    "parents": [
+     "section"
+    ],
+    "flow": "main",
+    "evidence_pages": [
+     7,
+     9
+    ],
+    "evidence": "Page 7 names Kshemendra and the editors under 'EDITED BY'; page 9 gives corresponding Sanskrit credits."
+   },
+   {
+    "name": "section_end_marker",
+    "description": "A brief concluding label marking the end of a named episode or subdivision, rather than a heading introducing what follows.",
+    "region": "other",
+    "furniture": false,
+    "contains": [],
+    "parents": [
+     "section"
+    ],
+    "flow": "main",
+    "evidence_pages": [
+     380
+    ],
+    "evidence": "The numbered line 'इत्यतिकायवधः ॥ ३२ ॥' follows verse १५० and precedes verse १५१."
+   }
+  ],
+  "definition_edits": [],
+  "possible_duplicates": [],
+  "questions": [
+   "On PDF page 380, should the numbered episode-ending label be treated as the conclusion of a section, or as a heading for the following text?"
+  ]
+ }
+}

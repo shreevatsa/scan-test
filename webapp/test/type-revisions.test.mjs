@@ -112,14 +112,6 @@ test("unused types can be removed while uses in drafts prevent removal", () => {
   assert.throws(() => planTypeRevision(types, before, [{ kind: "remove", name: "paragraph" }], options), /Merge that type first/);
 });
 
-test("whole-list replacement clears unprotected documents and refuses any protected work", () => {
-  const plan = planTypeRevision(types, snapshot(), [{ kind: "replace", types }], options);
-  assert.equal(plan.changes[0].after, null); assert.deepEqual(plan.find, ["p1"]); assert.equal(plan.types.source.region_reset_revision, 2);
-  assert.equal(plan.regions, 1); assert.equal(plan.units, 2);
-  const before = snapshot(); before.models.p1.source.layers.text.accepted_at_utc = "reviewed";
-  assert.throws(() => planTypeRevision(types, before, [{ kind: "replace", types }], options), /protected work/);
-});
-
 test("old work names resolve through chained aliases without changing provider envelopes or raw records", () => {
   const a = revisedTypeList(types, [{ kind: "rename", name: "paragraph", to: "prose" }]);
   const b = revisedTypeList(a, [{ kind: "rename", name: "prose", to: "text" }]);
@@ -197,15 +189,6 @@ test("an older editor saves renamed types consistently while preserving its new 
   const saved = files.get("edits/p1.json");
   assert.equal(saved.page.regions[0].type, "prose"); assert.equal(saved.page.regions[0].lines[0].text, "A new correction");
   assert.deepEqual(check(saved, book.types), []);
-});
-
-test("replacing unprotected pages clears cached documents and preserves the original work and history", async () => {
-  const { book, files } = stored(), operations = [{ kind: "replace", types }];
-  await book.model("p1");
-  const preview = await book.previewTypes(operations, options);
-  await book.saveTypes(preview.types, operations, { ...options, expected: preview.token });
-  assert.equal(await book.current("p1"), null); assert.equal(files.has("pages/p1.json"), false);
-  assert.equal(files.has("work/p1.regions.json"), true); assert.equal(files.has("work/type-revisions/2.json"), true);
 });
 
 test("recovery migrates a newer draft and preserves the original manifest in history", async () => {

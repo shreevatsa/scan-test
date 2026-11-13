@@ -58,6 +58,14 @@ code { font-size: 12.5px; background: #eee; padding: 0 3px; border-radius: 3px; 
 .type-card p { margin: 8px 0; }
 .type-card .type-evidence { font-size: 13px; color: #555; }
 .type-card details { margin-top: 8px; }
+.proposal-card .type-evidence .link { margin-right: 6px; }
+.proposal-form { border-top: 1px solid var(--line); margin-top: 10px; padding-top: 8px; }
+.proposal-form [hidden] { display: none !important; }
+.proposal-form textarea, .proposal-form input:not([type]) { width: 100%; max-width: 650px; font: inherit; }
+.proposal-form fieldset { border: 1px solid var(--line); border-radius: 6px; margin: 6px 0; }
+.survey-plan { margin: 4px 0 8px; }
+.survey-section .fields.col, .survey-section .proposal-form { align-items: flex-start; text-align: left; }
+.survey-questions textarea { display: block; width: 100%; max-width: 650px; margin: 8px 0; }
 .type-questions { background: #fff3cd; padding: 2px 14px; margin: 14px 0; }
 .type-json { display: block; width: 100%; margin: 8px 0; font: 12px monospace; }
 .lib .recent { margin-top: 24px; }
@@ -291,15 +299,6 @@ main.grid, main.types { overflow: auto; }
 .type-overview .typesview { max-width: none; padding: 12px 0 24px; }
 .type-overview label.stack { display: block; }
 .type-overview label.stack textarea { display: block; box-sizing: border-box; width: 100%; min-height: 5em; margin-top: 6px; }
-.contact-sheets { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-top: 12px; }
-.contact-sheets figure { margin: 0; }
-.contact-sheet-open { padding: 0; background: white; width: 100%; }
-.contact-sheet-open img { width: 100%; display: block; }
-.contact-sheets figcaption { font-size: 13px; color: var(--muted); }
-.contact-sheet-dialog { width: min(1100px, 95vw); max-height: 95vh; overflow: auto; }
-.contact-sheet-dialog img { display: block; max-width: 100%; margin: 12px auto; }
-.overview-inventory { margin: 16px 0; }
-.overview-inventory td .link { margin-right: 8px; }
 .stage-overview { max-width: 1380px; margin: 0 auto; padding: 24px 28px 70px; }
 .stage-overview h1 { margin: 0 0 6px; font-size: 28px; }
 .stage-actions { margin: 18px 0; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
@@ -396,7 +395,7 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .revision-dialog { width: min(760px, 95vw); max-height: 90vh; overflow: auto; }
 .revision-detail { white-space: pre-wrap; overflow-wrap: anywhere; }
 .type-dialog input:not([type=checkbox]), .type-dialog select { max-width: 100%; }
-.type-dialog .type-child-choice { display: inline-flex; gap: 5px; margin: 5px 12px 5px 0; }
+.type-dialog .type-child-choice, .proposal-form .type-child-choice { display: inline-flex; gap: 5px; margin: 5px 12px 5px 0; }
 .typetable th .mini { display: block; margin-top: 5px; }
 .type-questions textarea { display: block; width: 100%; max-width: 650px; margin: 8px 0; }
 @media (max-width: 850px) { .region-type-list { max-height: 150px; } main.page.regions-editor { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .regions-editor > .region-types { grid-column: 1 / -1; max-height: 180px; } .regions-editor .side { min-width: 0; } }

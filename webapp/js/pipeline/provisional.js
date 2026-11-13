@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261112-regions-layout-1";
+import { typeRevision } from "../schema.js?v=20261113-survey-1";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {

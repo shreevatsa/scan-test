@@ -1,8 +1,8 @@
 import { h } from "./render.js";
-import { checkPage } from "./schema.js?v=20261112-regions-layout-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261112-regions-layout-1";
-import { pageSelectionText } from "./page-browser.js?v=20261112-regions-layout-1";
-import { money } from "./reader-controls.js?v=20261112-regions-layout-1";
+import { checkPage } from "./schema.js?v=20261113-survey-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-survey-1";
+import { pageSelectionText } from "./page-browser.js?v=20261113-survey-1";
+import { money } from "./reader-controls.js?v=20261113-survey-1";
 
 const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change printed class", remove: "Remove unused type" };
 const quantity = (n, name) => `${n} ${name}${n === 1 ? "" : "s"}`;
@@ -25,7 +25,7 @@ export async function reviewTypeChange(app, operations, { applied = () => {} } =
   try {
     plan = await book.previewTypes(operations, options);
     if (!dialog.open) return;
-    content.replaceChildren(h("p", {}, `Revision ${plan.revision} · ${operations.map(op => labels[op.kind] || { add: "Add type", metadata: "Book details and conventions", replace: "Replace the whole list", resolve_question: "Record a review decision" }[op.kind]).join(", ")}`),
+    content.replaceChildren(h("p", {}, `Revision ${plan.revision} · ${operations.map(op => labels[op.kind] || { add: "Add type", metadata: "Book details and conventions", resolve_question: "Record a review decision" }[op.kind]).join(", ")}`),
       h("p", {}, `${quantity(plan.regions, "region")} and ${quantity(plan.units, "unit")} on ${quantity(plan.pages.length, "page")} use the affected types.`),
       h("p", {}, `${quantity(plan.changes.filter(change => change.kind === "model").length, "model page")}, ${quantity(plan.changes.filter(change => change.kind === "edit").length, "saved correction")} and ${quantity(plan.changes.filter(change => change.kind === "draft").length, "draft")} will be updated.`));
     for (const op of operations) {
@@ -35,12 +35,10 @@ export async function reviewTypeChange(app, operations, { applied = () => {} } =
         const value = Array.isArray(op[field]) ? op[field].join("\n") : op[field];
         content.append(h("p", { class: "revision-detail" }, h("b", {}, label), " · ", value || (field === "flow" ? "Inside another unit" : "(empty)")));
       }
-      if (op.kind === "replace") content.append(h("p", {}, h("b", {}, "New type list"), " · ", Object.keys(plan.types.types).join(", ")));
     }
     const numbers = ids => pageSelectionText(ids.map(pid => book.page(pid).pdf_page || book.index[pid] + 1), book.manifest.pdf?.page_count || book.pages.length);
     if (plan.pages.length) content.append(h("p", {}, `Affected PDF pages ${numbers(plan.pages)}.`));
     if (operations.some(op => op.kind === "split")) content.append(h("p", {}, "Retype the appropriate regions on these pages or find their regions again."));
-    if (operations.some(op => op.kind === "replace")) content.append(h("p", { class: "box warn" }, "This replaces the type list and clears the listed page documents. Their previous versions are retained in the revision history."));
     if (operations.some(op => op.kind === "merge")) content.append(h("p", {}, "Merged uses take the target type’s existing style when one is defined."));
     if (plan.find.length) content.append(h("p", {}, `Find regions again on ${quantity(plan.find.length, "page")} (${numbers(plan.find)}).`));
     if (plan.complete.length) content.append(h("p", {}, `Complete provisional units on ${quantity(plan.complete.length, "page")} (${numbers(plan.complete)}). Existing transcription is reused.`));

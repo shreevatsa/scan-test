@@ -1,0 +1,48 @@
+{
+  "method": "096-additive-contact-sheet-type-survey",
+  "stage": "type-survey",
+  "form": "sheets",
+  "profiles": [
+    {
+      "id": "terra-survey",
+      "label": "GPT-6.1 Terra · reasoning off",
+      "provider": "openai",
+      "model": "gpt-6.1-terra",
+      "reasoning": "none",
+      "method": "096-additive-contact-sheet-type-survey",
+      "request_timeout_ms": 300000
+    },
+    {
+      "id": "argon-survey",
+      "label": "Gemini 4 Argon · low thinking",
+      "provider": "gemini",
+      "model": "gemini-4-argon",
+      "thinking": "low",
+      "method": "096-additive-contact-sheet-type-survey",
+      "request_timeout_ms": 300000
+    }
+  ],
+  "default_profile": "terra-survey",
+  "source_snapshot": "095-additive-page-image-type-survey/snapshot",
+  "more_than_pages": 12,
+  "recipe": {
+    "version": 1,
+    "columns": 4,
+    "rows": 5,
+    "cell_width": 256,
+    "cell_height": 384,
+    "padding": 8,
+    "label_height": 24,
+    "mime_type": "image/jpeg",
+    "quality": 0.85,
+    "max_sheets": 16,
+    "max_payload_bytes": 12000000
+  },
+  "image_detail": "original (OpenAI), high resolution (Gemini)",
+  "max_output_tokens": 16384,
+  "store": false,
+  "copied_from": [
+    "091-terra-contact-sheet-unit-types",
+    "092-argon-low-contact-sheet-unit-types"
+  ]
+}
