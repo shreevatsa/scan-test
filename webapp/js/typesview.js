@@ -5,16 +5,17 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261113-types-tidy-2";
-import { typeRevision } from "./schema.js?v=20261113-types-tidy-2";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-types-tidy-2";
-import { newTypeDialog } from "./regionsview.js?v=20261113-types-tidy-2";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-types-tidy-2";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-types-tidy-2";
-import { unusedDraftTypes } from "./draft-types.js?v=20261113-types-tidy-2";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-types-tidy-2";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-types-tidy-2";
-import { regionPath } from "./pageimage.js?v=20261113-types-tidy-2";
+import { typeTreeRows } from "./type-tree.js?v=20261113-type-tree-1";
+import { prepare } from "./reader.js?v=20261113-type-tree-1";
+import { typeRevision } from "./schema.js?v=20261113-type-tree-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-type-tree-1";
+import { newTypeDialog } from "./regionsview.js?v=20261113-type-tree-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-type-tree-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-type-tree-1";
+import { unusedDraftTypes } from "./draft-types.js?v=20261113-type-tree-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-type-tree-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-type-tree-1";
+import { regionPath } from "./pageimage.js?v=20261113-type-tree-1";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -146,19 +147,11 @@ async function renderTypeExamples(el, app, reviewPages) {
   return { choose, dispose: () => observer.disconnect() };
 }
 
-// What may contain what, from each reading flow's top-level types down, with how many units of each type the book has.
+// What may contain what: each type once per reading flow (type-tree.js), with how many units of it the book has.
 // A type name selects that type (onSelect), or opens its edit form where nothing selects.
 export async function renderTypeTree(el, app, { onSelect, removeUnused = false } = {}) {
   const { book, tl } = app;
   const types = tl.types || {};
-  const badges = [];
-  // A count to fill in once the book is assembled: of a type in one place of the tree (within: the parent type, or
-  // flow:<name> at a flow's top level).
-  const badge = (name, within = "") => {
-    const b = h("span", { class: "count", dataset: { type: name, within } }, "…");
-    badges.push(b);
-    return b;
-  };
   const name = (value, description) => {
     const act = onSelect ? () => onSelect(value) : book.writable ? () => editTypeDialog(app, value) : null;
     return act ? h("button", { class: "link tname", title: description || "", onclick: act }, value) : h("span", { class: "tname", title: description || "" }, value);
@@ -166,24 +159,26 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false }
   // "other" is the region finder's escape class, not one a type should have: marked, with a link to the class operation.
   const needsClass = type => types[type]?.region === "other"
     ? h("span", { class: "needs-class" }, " ", book.writable ? h("button", { class: "link", onclick: () => editTypeDialog(app, type, "class") }, "needs a class") : "needs a class") : "";
-  const node = (type, path, within) => {
-    const t = types[type];
-    if (!t) return h("li", {}, h("span", { class: "tname bad" }, type), " (not in the type list)");
-    const kids = t.contains || [];
-    const again = path.includes(type);
-    return h("li", {}, name(type, t.description), " ",
-      h("span", { class: "rclass" }, t.region ? `printed as ${t.region}` : "container"), needsClass(type), " ", badge(type, within),
-      kids.length && !again ? h("ul", {}, ...kids.map(k => node(k, [...path, type], type))) : again ? h("span", { class: "meta" }, " (as above)") : null);
+  const draw = (counts, unusedNames = []) => {
+    const rowEl = r => {
+      const info = [r.kind === "container" ? `container · may hold: ${r.holdsShown.join(", ")}${r.holdsMore ? ", …" : ""}` : "",
+        r.printedAs ? `printed as ${r.printedAs}` : "", r.where].filter(Boolean).join(" · ");
+      const unused = unusedNames.includes(r.name);
+      return h("li", { class: `trow${unused ? " unused-draft" : ""}` }, name(r.name, types[r.name]?.description), " ",
+        h("span", { class: "rclass" }, info), needsClass(r.name), " ",
+        h("span", { class: `count${r.zero ? " zero" : ""}` }, r.count),
+        unused ? h("span", { class: "meta unused-draft-note" }, " · unused draft type") : null);
+    };
+    const { flows, furniture } = typeTreeRows(tl, counts);
+    el.querySelector(":scope > .type-tree-body")?.remove();
+    el.append(h("div", { class: "type-tree-body" },
+      ...flows.map(f => h("div", { class: "flowtree" }, h("h4", {}, `flow ${f.flow}`, h("span", { class: "meta" }, ` — ${f.description}`)),
+        f.rows.length ? h("ul", { class: "ttree" }, ...f.rows.map(rowEl)) : h("p", { class: "meta" }, "No type stands in this flow."))),
+      furniture.length ? h("div", { class: "flowtree" }, h("h4", {}, "page furniture", h("span", { class: "meta" }, " — belongs to the page, not to the text")),
+        h("ul", { class: "ttree" }, ...furniture.map(rowEl))) : null));
   };
-  const flows = Object.entries(tl.flows || {}).map(([flow, desc]) => {
-    const tops = Object.entries(types).filter(([, t]) => t.flow === flow).map(([n]) => n);
-    return h("div", { class: "flowtree" }, h("h4", {}, `flow ${flow}`, h("span", { class: "meta" }, ` — ${desc}`)),
-      tops.length ? h("ul", { class: "ttree" }, ...tops.map(n => node(n, [], `flow:${flow}`))) : h("p", { class: "meta" }, "No type stands at its top level."));
-  });
-  const furniture = Object.entries(types).filter(([, t]) => t.role === "furniture");
-  el.replaceChildren(h("h3", {}, "What may contain what"), ...flows,
-    furniture.length ? h("div", { class: "flowtree" }, h("h4", {}, "page furniture", h("span", { class: "meta" }, " — belongs to the page, not to the text")),
-      h("ul", { class: "ttree" }, ...furniture.map(([n, t]) => h("li", {}, name(n, t.description), " ", h("span", { class: "rclass" }, `printed as ${t.region}`), needsClass(n), " ", badge(n))))) : null);
+  el.replaceChildren(h("h3", {}, "What may contain what"));
+  draw(null);
 
   const docs = await book.all();
   const generic = await fetch(new URL("../types/generic.json", import.meta.url)).then(response => response.ok ? response.json() : null).catch(() => null);
@@ -199,17 +194,7 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false }
   }
   for (const [flow, tops] of Object.entries(P.book.flows)) for (const uid of tops) if (P.units[uid]) add(at, `flow:${flow}>${P.units[uid].type}`);
   for (const p of P.book.pages) for (const r of p.regions) if (types[r.type]?.role === "furniture") add(n, r.type);
-  for (const b of badges) {
-    const { type, within } = b.dataset;
-    const k = within ? at[`${within}>${type}`] || 0 : n[type] || 0;
-    b.textContent = types[type]?.role === "furniture" ? `${k} on the pages` : within.startsWith("flow:") ? `${k} in the book` : `${k} here`;
-    b.classList.toggle("zero", !k);
-    const row = b.closest("li");
-    if (row && unused.names.includes(type) && !row.querySelector(":scope > .unused-draft-note")) {
-      row.classList.add("unused-draft");
-      b.after(h("span", { class: "meta unused-draft-note" }, " · unused draft type"));
-    }
-  }
+  draw({ n, at }, unused.names);
   // Removing is offered only once regions are found on at least half of the pages not dimmed: before that, an unused
   // type may just not have been met yet.
   const found = docs.filter(doc => doc?.page?.regions?.length).length;

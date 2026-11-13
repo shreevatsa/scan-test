@@ -9,7 +9,7 @@ Turn a book's PDF into a digital book in which every unit (paragraph, verse, foo
 ## Where things stand
 
 - **The app works and is tested.** `webapp/` is plain HTML, CSS and JavaScript modules with no build step (about 13,000 lines in `webapp/js`). Tabs are Pages · Regions · Text · Read · Export, one per stage. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3).
-- **Tests:** `node --test webapp/test/*.test.mjs` (329 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
+- **Tests:** `node --test webapp/test/*.test.mjs` (332 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
 - **Running:** `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/. A book opens read only with `?book=/outputs/books/kale-1913.chaya.pdf`. The Tailscale HTTPS address for the user's other devices is in PRIVATE.md.
 - **Books that exist** (`outputs/books/`, not in git): Kale 1913 (252 pages) and Telang, both made by the older one-pass pipeline (method 052), and the vachana book made from a digital PDF's text layer (methods 058 and 062, private).
 - **Books are kept on disk as well as in the browser** (task 1, done 2026-11-12): a book in the browser can keep a `.chaya.pdf` on disk that the app rewrites after runs and moves and at most every five minutes while there are changes; paid runs wait for a copy; a book with unreadable files is not opened as if empty. `webapp/README.md`, "The copy on disk", describes it. Checked in Chrome with the file picker simulated; the real picker and a real file changing on disk still need one manual check by the user.
