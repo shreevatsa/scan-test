@@ -1,19 +1,19 @@
-import { suggestionButton } from "./review-view.js?v=20261112-hand-join-1";
+import { suggestionButton } from "./review-view.js?v=20261112-dim-range-1";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261112-hand-join-1";
-import { RARE_LAYOUT } from "./flags.js?v=20261112-hand-join-1";
-import { regionBoxes } from "./pageimage.js?v=20261112-hand-join-1";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261112-dim-range-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261112-dim-range-1";
+import { regionBoxes } from "./pageimage.js?v=20261112-dim-range-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261112-hand-join-1";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261112-hand-join-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261112-hand-join-1";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-hand-join-1";
-import { settings } from "./store.js?v=20261112-hand-join-1";
-import { runBatch } from "./pipeline/batch.js?v=20261112-hand-join-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261112-dim-range-1";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261112-dim-range-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261112-dim-range-1";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261112-dim-range-1";
+import { settings } from "./store.js?v=20261112-dim-range-1";
+import { runBatch } from "./pipeline/batch.js?v=20261112-dim-range-1";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-hand-join-1";
-import { renderFinders } from "./findersview.js?v=20261112-hand-join-1";
-import { money } from "./reader-controls.js?v=20261112-hand-join-1";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261112-dim-range-1";
+import { renderFinders } from "./findersview.js?v=20261112-dim-range-1";
+import { money } from "./reader-controls.js?v=20261112-dim-range-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -85,7 +85,14 @@ export async function renderPages(el, app) {
     if (moveButton) moveButton.disabled = busy || !ids.some(pid => layerReady(pid));
     if (backButton) backButton.disabled = busy || !ids.some(pid => app.pageStates.get(pid).layers[stage === "text" ? "regions" : "text"]?.accepted);
   };
+  // The element that scrolls the grid: re-placing the cards must not send it back to the top.
+  const scrollParent = () => {
+    for (let node = grid.parentElement; node; node = node.parentElement)
+      if (node.scrollHeight > node.clientHeight && /auto|scroll/.test(getComputedStyle(node).overflowY)) return node;
+    return document.scrollingElement;
+  };
   const applyFilters = () => {
+    const scroller = scrollParent(), top = scroller?.scrollTop;
     if (overview) overview.filters = { state: stateFilter.value, flags: filter.value, grouping: grouping.value };
     visible = [];
     let removed = false;
@@ -115,6 +122,7 @@ export async function renderPages(el, app) {
     empty.textContent = [...rows.keys()].some(pid => eligible(stage, app.pageStates.get(pid)))
       ? "No pages match these filters." : "Move pages on from the previous stage to include them here.";
     refreshSummary();
+    if (scroller && top) scroller.scrollTop = top;
   };
   const refreshCard = pid => {
     const row = rows.get(pid), state = app.pageStates.get(pid);
@@ -192,11 +200,13 @@ export async function renderPages(el, app) {
     try {
       const numbers = selection.value.trim() ? pageRange(selection.value, book.pages.length) : [];
       selected.clear();
+      let dimmed = 0;
       for (const number of numbers) {
         const pid = book.pages[number - 1].id;
-        if (rows.has(pid)) selected.add(pid);
+        if (!rows.has(pid)) continue;
+        if (book.isSkipped(pid)) dimmed++; else selected.add(pid);
       }
-      message.textContent = "";
+      message.textContent = dimmed ? `${dimmed} dimmed ${dimmed === 1 ? "page" : "pages"} in the range left out. Tick a dimmed page in the grid to include it.` : "";
       applyFilters();
     } catch (error) { message.textContent = error.message; }
   };
@@ -419,7 +429,7 @@ export async function renderPages(el, app) {
       h("label", { title: "Normally a request already made for the same page and settings is reused for free. Tick to send a new request, which is charged again." },
         fresh, " Ignore saved model results (charged again)")));
   runControls.append(h("div", { class: "fields selection-row" }, ...selectionControls),
-    h("p", { class: "hint" }, "Type a range such as 1-50, 62 and press Enter, or tick pages in the grid below. With none selected, every page shown is used, except dimmed ones."),
+    h("p", { class: "hint" }, "Type a range such as 1-50, 62 and press Enter, or tick pages in the grid below. A range, or none selected (every page shown), leaves out dimmed pages. Tick a dimmed page to include it."),
     processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status);
   if (overview) {
     modelFields.append(h("label", {}, "Region finder ", select), languageLabel);

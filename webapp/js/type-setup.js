@@ -1,16 +1,16 @@
-import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261112-hand-join-1";
+import { mergeTypeProposals, typeAgreement } from "./type-draft.js?v=20261112-dim-range-1";
 import { h } from "./render.js";
-import { checkTypes } from "./schema.js?v=20261112-hand-join-1";
-import { settings } from "./store.js?v=20261112-hand-join-1";
-import { money } from "./reader-controls.js?v=20261112-hand-join-1";
+import { checkTypes } from "./schema.js?v=20261112-dim-range-1";
+import { settings } from "./store.js?v=20261112-dim-range-1";
+import { money } from "./reader-controls.js?v=20261112-dim-range-1";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261112-hand-join-1";
-import { OVERVIEW_MODELS, renderContactSheets, discoverOverview } from "./pipeline/type-overview.js?v=20261112-hand-join-1";
-import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261112-hand-join-1";
-import { readerById, structurerById } from "./pipeline/readers.js?v=20261112-hand-join-1";
-import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261112-hand-join-1";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-hand-join-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261112-hand-join-1";
+import { TYPE_MODELS, samplePages, discoveryStore, discoverTypes } from "./pipeline/type-discovery.js?v=20261112-dim-range-1";
+import { OVERVIEW_MODELS, renderContactSheets, discoverOverview } from "./pipeline/type-overview.js?v=20261112-dim-range-1";
+import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261112-dim-range-1";
+import { readerById, structurerById } from "./pipeline/readers.js?v=20261112-dim-range-1";
+import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261112-dim-range-1";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261112-dim-range-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261112-dim-range-1";
 
 function overviewInventory(overview, types, openPage) {
   const uncertain = overview.inventory.filter(item => item.uncertain).map(item => item.page);

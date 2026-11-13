@@ -1,9 +1,9 @@
 // Book-specific unit types proposed from rendered sample pages, before page processing starts.
-import { FORMATTING, makeValidator, checkTypes } from "../schema.js?v=20261112-hand-join-1";
-import { structurerById, geminiReadingRequest } from "./readers.js?v=20261112-hand-join-1";
-import { Maker, templates } from "./run.js?v=20261112-hand-join-1";
-import { openaiCost } from "./steps.js?v=20261112-hand-join-1";
-import { settings, idb } from "../store.js?v=20261112-hand-join-1";
+import { FORMATTING, makeValidator, checkTypes } from "../schema.js?v=20261112-dim-range-1";
+import { structurerById, geminiReadingRequest } from "./readers.js?v=20261112-dim-range-1";
+import { Maker, templates } from "./run.js?v=20261112-dim-range-1";
+import { openaiCost } from "./steps.js?v=20261112-dim-range-1";
+import { settings, idb } from "../store.js?v=20261112-dim-range-1";
 
 export const TYPE_MODELS = [
   { ...structurerById("terra-structure"), id: "terra-types", method: "077-gpt-6-1-terra-unit-types" },
