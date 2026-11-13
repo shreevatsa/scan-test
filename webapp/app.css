@@ -625,3 +625,8 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .ttree li.unused-draft > .trow { opacity: .6; }
 .ttree li.unused-draft > .trow .tname { font-style: italic; }
 .needs-class { color: #b3261e; font-size: .9em; }
+.pv-linebox { fill: rgba(255, 200, 0, .12); stroke: #c44; stroke-width: 2; stroke-dasharray: 6 4; vector-effect: non-scaling-stroke; pointer-events: none; }
+.uncovered-row { display: grid; gap: 4px; padding: 6px; margin: 4px 0; border: 1px solid var(--line, #ccc); border-radius: 4px; cursor: pointer; }
+.uncovered-row:hover, .uncovered-row:focus-within { background: var(--hl); }
+.uncovered-row .line-crop { max-width: 100%; background: #fff; border: 1px solid #ddd; justify-self: start; }
+.uncovered-row .actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }

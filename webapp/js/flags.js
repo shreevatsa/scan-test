@@ -1,6 +1,6 @@
-import { typeRevision } from "./schema.js?v=20261113-usage-tree-2";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-usage-tree-2";
-import { layerState } from "./layers.js?v=20261113-usage-tree-2";
+import { typeRevision } from "./schema.js?v=20261113-flags-1";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-flags-1";
+import { layerState } from "./layers.js?v=20261113-flags-1";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -99,9 +99,25 @@ const unitsSettled = doc => { const units = layerState(doc, "units"); return !!u
 // `previous` and `next` are the pages around this one, for its continuation flags: each a page document (or null), or a
 // function that takes a test of the pages to look past and returns the nearest page that fails it, or null where the
 // book does not go on (workflow.js pageWalker).
+// Where on the page a printed line is, in words: the third of the page it is in, and a side if the line is clearly to
+// one side (narrower than most of the page and centred in the left or right two fifths).
+export function linePosition(box, page) {
+  if (!box || !page?.width || !page?.height) return "";
+  const cx = (box[0] + box[2]) / 2 / page.width, cy = (box[1] + box[3]) / 2 / page.height, narrow = (box[2] - box[0]) / page.width < 0.6;
+  const band = cy < 1 / 3 ? "top" : cy < 2 / 3 ? "middle" : "bottom", side = narrow && cx < 0.4 ? "left" : narrow && cx > 0.6 ? "right" : "";
+  return `near the ${band} of the page${side ? `, on the ${side}` : ""}`;
+}
+
+export function uncoveredMessage(box, page) {
+  const where = linePosition(box, page);
+  return `A printed line outside all regions${where ? `, ${where}` : ""}`;
+}
+
+export function ignoredLines(doc) { return new Set(doc?.source?.ignored_lines || []); }
+
 export function regionFlags(doc, types, { errors = [], previous = null, next = null, cache = null } = {}) {
   if (!doc) return [];
-  const flags = [], add = (code, message, region = null, box = null) => flags.push({ code, message, region, box });
+  const flags = [], add = (code, message, region = null, box = null, extra = {}) => flags.push({ code, message, region, box, ...extra });
   const regions = doc.page.regions;
   for (const region of regions) {
     if (region.source?.uncertain) add("uncertain", `${region.id} has an uncertain type or boundary`, region.id);
@@ -112,7 +128,11 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
   for (const omitted of doc.source?.omitted_regions || []) add("omitted", `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`, omitted.region, omitted.box);
   for (const warning of doc.source?.warnings || []) add("region-warning", String(warning));
   for (const skipped of doc.source?.regions_skipped || []) add("no-ink", `Region ${skipped.region_id} was left out (${skipped.status || "no ink"})`);
-  for (const line of doc.source?.uncovered_lines || []) add("uncovered", `Printed line ${line.line_id} is outside all regions`, null, line.box);
+  const ignored = ignoredLines(doc);
+  for (const line of doc.source?.uncovered_lines || []) {
+    if (ignored.has(line.line_id)) continue;
+    add("uncovered", uncoveredMessage(line.box, doc.page), null, line.box, { line_id: line.line_id });
+  }
   for (const problem of doc.source?.provisional_problems || []) add("provisional", problem);
   if (doc.source?.geometry_error) add("geometry", doc.source.geometry_error);
   if (doc.source?.type_review?.regions) add("type-revision", "Find regions again after the figure-class change");
@@ -123,7 +143,7 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
   for (const error of errors) add("invalid", error);
   // A page with no regions (no content) has no continuation to compare, on either side of it.
   if (regions.length) for (const [flow, list] of flowRegions(doc, types, cache)) {
-    for (const [code, message, region] of continuationFlags(flow, list, doc, types, previous, next, cache)) add(code, message, region);
+    for (const [code, message, region, neighbor] of continuationFlags(flow, list, doc, types, previous, next, cache)) add(code, message, region, null, { page: neighbor });
   }
   return flags;
 }
@@ -163,7 +183,7 @@ function continuationFlags(flow, list, doc, types, previous, next, cache) {
     earlier = passed.find(page => has(inFlow(page), start.type)) || found || passed.find(page => inFlow(page).length) || null;
     before = !!earlier;
   }
-  if (before && !settled(earlier)) out.push(["continuation", `${flow} continuation does not match the previous page`, (start || list[0]).id]);
+  if (before && !settled(earlier)) out.push(["continuation", `${flow} continuation does not match the previous page`, (start || list[0]).id, earlier?.page.id]);
 
   // Ahead, unless this page is between: where its last region goes on, the nearest page past pages between; where it
   // does not, the nearest page with an open end, if its open start has this page as its earlier side.
@@ -179,7 +199,7 @@ function continuationFlags(flow, list, doc, types, previous, next, cache) {
       after = !!later && !skipped.some(other => has(inFlow(other), later.type)) && (!between(list, later.type)
         || !skipped.some(other => inFlow(other).length) && !back(other => between(inFlow(other), later.type)));
     }
-    if (after && !settled(page)) out.push(["continuation", `${flow} continuation does not match the next page`, last.id]);
+    if (after && !settled(page)) out.push(["continuation", `${flow} continuation does not match the next page`, last.id, page?.page.id]);
   }
   return out;
 }

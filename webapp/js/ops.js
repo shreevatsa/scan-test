@@ -6,7 +6,7 @@
 // is checked with schema.js before it is saved.
 
 import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261113-usage-tree-2";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261113-flags-1";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };
@@ -863,4 +863,26 @@ export function joinLines(lines, newline = "\n") {
 export function markEdited(doc, base) {
   doc.source = { ...(doc.source || {}), edited: { by: "the user, in the web app", at_utc: new Date().toISOString(), base: base || null } };
   return doc;
+}
+
+// Ignore a printed line the analysis found outside all regions (a stain, a rule, a printer's mark), or bring its flag back.
+export function ignoreLine(doc, lineId) {
+  const ids = new Set(doc.source?.ignored_lines || []);
+  ids.add(lineId);
+  doc.source = { ...(doc.source || {}), ignored_lines: [...ids].sort((a, b) => a - b) };
+}
+export function restoreLine(doc, lineId) {
+  const ids = (doc.source?.ignored_lines || []).filter(id => id !== lineId);
+  doc.source = { ...(doc.source || {}) };
+  if (ids.length) doc.source.ignored_lines = ids; else delete doc.source.ignored_lines;
+}
+
+// Add a region of `type` over a printed line found outside all regions; the line stops being uncovered at once (the
+// outlines are recomputed afterwards).
+export function coverLine(doc, tl, lineId, type) {
+  const line = (doc.source?.uncovered_lines || []).find(value => value.line_id === lineId);
+  if (!line?.box) fail("that printed line is no longer listed");
+  const rid = addRegion(doc, tl, type, line.box.map(Math.round));
+  doc.source = { ...doc.source, uncovered_lines: doc.source.uncovered_lines.filter(value => value !== line) };
+  return rid;
 }

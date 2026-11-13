@@ -116,3 +116,38 @@ test("the worker reports only whole unclaimed lines after final ownership", () =
   owner[1] = 0;
   assert.deepEqual(uncoveredLines(comp, prep, decisions, owner), []);
 });
+
+import { linePosition, uncoveredMessage } from "../js/flags.js";
+import * as ops from "../js/ops.js";
+import { layerView, noteEdit } from "../js/layers.js";
+
+test("An uncovered line is described by where it is, not by its number", () => {
+  const page = { width: 1000, height: 1500 };
+  assert.equal(uncoveredMessage([100, 50, 900, 100], page), "A printed line outside all regions, near the top of the page");
+  assert.equal(uncoveredMessage([100, 700, 300, 740], page), "A printed line outside all regions, near the middle of the page, on the left");
+  assert.equal(linePosition([650, 1300, 900, 1340], page), "near the bottom of the page, on the right");
+  assert.equal(uncoveredMessage([0, 0, 1, 1], null), "A printed line outside all regions");
+  const flagged = doc(); flagged.page.width = 100; flagged.page.height = 300; flagged.source.uncovered_lines = [{ line_id: 5, box: [4, 5, 90, 15] }];
+  assert.equal(regionFlags(flagged, types)[0].message, "A printed line outside all regions, near the top of the page");
+});
+test("Ignored lines raise no flag, restoring brings it back, and ignoring counts as a regions edit", () => {
+  const model = doc(); model.source.uncovered_lines = [{ line_id: 5, box: [4, 5, 70, 15] }, { line_id: 6, box: [4, 200, 70, 215] }];
+  const edited = structuredClone(model); ops.ignoreLine(edited, 5);
+  assert.deepEqual(regionFlags(edited, types).map(flag => flag.line_id), [6]);
+  assert.notEqual(layerView(model, "regions"), layerView(edited, "regions"));
+  assert.equal(noteEdit(model, edited, { focus: "regions" }).source.layers.regions.state, "edited");
+  const back = structuredClone(edited); ops.restoreLine(back, 5);
+  assert.deepEqual(regionFlags(back, types).map(flag => flag.line_id), [5, 6]);
+  assert.equal(layerView(model, "regions"), layerView(back, "regions"));
+});
+test("A region added over the line removes its flag; a continuation flag names the neighbouring page", () => {
+  const page = doc(); page.source.uncovered_lines = [{ line_id: 5, box: [4, 500, 70, 515] }];
+  assert.deepEqual(codes(page), ["uncovered"]);
+  page.source.layers = { units: { state: "provisional" } }; page.units = []; page.flows = {};
+  const rid = ops.coverLine(page, types, 5, "paragraph");
+  assert.deepEqual(codes(page), []);
+  assert.deepEqual(page.page.regions.find(value => value.id === rid).box, [4, 500, 70, 515]);
+  const provisional = (id, marks) => { const value = doc(); value.page.id = id; value.source.layers = { units: { state: "provisional" } }; Object.assign(value.page.regions[0].source, marks); return value; };
+  const here = provisional("p1", { continues_later: true }), other = provisional("p2", {});
+  assert.equal(regionFlags(here, types, { next: other }).find(flag => flag.code === "continuation").page, "p2");
+});

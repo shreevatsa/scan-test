@@ -1,11 +1,11 @@
-import { suggestionButton } from "./review-view.js?v=20261113-usage-tree-2";
-import { typeRevision } from "./schema.js?v=20261113-usage-tree-2";
+import { suggestionButton } from "./review-view.js?v=20261113-flags-1";
+import { typeRevision } from "./schema.js?v=20261113-flags-1";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261113-usage-tree-2";
-import { orderedRegions, regionFlags } from "./flags.js?v=20261113-usage-tree-2";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-usage-tree-2";
-import { editTypeDialog } from "./type-operations.js?v=20261113-usage-tree-2";
-import { normalizeTypeName } from "./type-additions.js?v=20261113-usage-tree-2";
+import * as ops from "./ops.js?v=20261113-flags-1";
+import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261113-flags-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-flags-1";
+import { editTypeDialog } from "./type-operations.js?v=20261113-flags-1";
+import { normalizeTypeName } from "./type-additions.js?v=20261113-flags-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -114,6 +114,33 @@ export function regionTypesPanel(app, editTypes) {
   return { element, refresh };
 }
 
+// A printed line the local analysis found outside every region: a crop of it from the scan, where it is, and what to do.
+function uncoveredRow(app, flag) {
+  const box = flag.box, type = h("select", { "aria-label": "Type of the new region" }, h("option", { value: "", selected: true, disabled: true }, "Type…"),
+    ...Object.entries(app.tl.types).filter(([, value]) => value.region).map(([name, value]) => h("option", { value: name }, `${name}${value.role === "furniture" ? " (furniture)" : ""}`)));
+  const crop = h("canvas", { class: "line-crop", "aria-label": "The line, cut from the scan" });
+  const src = app.pageView?.img?.src, { width: W, height: H } = app.doc.page;
+  if (box && src) {
+    const image = new Image();
+    image.onload = () => {
+      const k = image.naturalWidth / W, pad = Math.max(8, (box[3] - box[1]) * 0.4);
+      const x = Math.max(0, box[0] - pad), y = Math.max(0, box[1] - pad), w = Math.min(W, box[2] + pad) - x, hh = Math.min(H, box[3] + pad) - y;
+      const scale = Math.min(1, 320 / w);
+      crop.width = Math.max(1, Math.round(w * scale)); crop.height = Math.max(1, Math.round(hh * scale));
+      crop.getContext("2d").drawImage(image, x * k, y * k, w * k, hh * k, 0, 0, crop.width, crop.height);
+    };
+    image.src = src;
+  }
+  const show = on => { app.pageView.markLine({ hover: on ? box : null }); if (on && box) app.pageView.revealBox(box); };
+  const row = h("div", { class: "uncovered-row", tabindex: 0, role: "group", "aria-label": flag.message,
+    onpointerenter: () => show(true), onpointerleave: () => show(false), onfocusin: () => show(true), onfocusout: () => show(false),
+    onclick: () => app.pageView.markLine({ pinned: box }) },
+    crop, h("div", { class: "uncovered-text" }, flag.message),
+    h("div", { class: "actions" }, type, h("button", { class: "add-line-region", onclick: () => { if (type.value) app.addRegionOverLine(flag.line_id, type.value); else app.toast("Choose the region's type first.", "warn"); } }, "Add a region"),
+      h("button", { class: "ignore-line", onclick: () => { app.pageView.markLine({ hover: null, pinned: null }); app.edit(doc => ops.ignoreLine(doc, flag.line_id)); } }, "Ignore")));
+  return row;
+}
+
 export class RegionsPanel {
   constructor(el, app) {
     this.el = el; this.app = app; this.lastSel = null;
@@ -152,9 +179,15 @@ export class RegionsPanel {
         h("button", { onclick: () => app.select({ omitted: index }) }, "Give it a type"));
     });
     const flags = regionFlags(app.doc, app.tl, app.regionFlagContext(app.doc));
+    const uncovered = flags.some(flag => flag.code === "uncovered");
+    const ignored = [...ignoredLines(app.doc)];
     this.el.replaceChildren(
-      ...(flags.length ? [h("details", { class: "region-review-flags" }, h("summary", {}, `${flags.length} review flags`),
-        ...flags.map(flag => h("p", {}, h("button", { class: "link", onclick: () => flag.region && app.select({ region: flag.region }) }, flag.message))))] : []),
+      ...(flags.length ? [h("details", { class: "region-review-flags", open: uncovered || this.flagsOpen }, h("summary", {}, `${flags.length} review flag${flags.length === 1 ? "" : "s"}`),
+        ...flags.map(flag => flag.code === "uncovered" ? uncoveredRow(app, flag) : h("p", {}, h("button", { class: "link", onclick: () => flag.region && app.select({ region: flag.region }) }, flag.message),
+          flag.page && app.book.index[flag.page] !== undefined ? [" ", h("button", { class: "link open-neighbor", onclick: () => app.openPage(flag.page) }, `Open page ${app.book.index[flag.page] + 1}`)] : null)))] : []),
+      ...(ignored.length ? [h("details", { class: "region-ignored-lines" }, h("summary", {}, `Ignored lines (${ignored.length})`),
+        ...ignored.map(id => { const line = (app.doc.source?.uncovered_lines || []).find(value => value.line_id === id);
+          return h("p", {}, `A printed line ${linePosition(line?.box, app.doc.page) || "outside all regions"} `, h("button", { onclick: () => app.edit(doc => ops.restoreLine(doc, id)) }, "Restore")); }))] : []),
       ...cards, ...omitted);
     this.el.scrollTop = scroll;
     this.markSelection();

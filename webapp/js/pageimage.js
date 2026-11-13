@@ -146,7 +146,31 @@ export class PageView {
     }
     this.boxLayer = svgEl("g", { class: "pv-box" });
     svg.append(this.boxLayer);
+    this.lineLayer = svgEl("g", { class: "pv-linebox-layer" });
+    svg.append(this.lineLayer);
+    this.drawLineBox();
     this.select(this.selected);
+  }
+
+  // A printed line outside all regions: a dashed outline of its box, while hovered (`hover`) or kept after a click
+  // (`pinned`). Passing null for `hover` falls back to the kept one.
+  markLine({ hover, pinned } = {}) {
+    if (hover !== undefined) this.hoverBox = hover;
+    if (pinned !== undefined) this.pinnedBox = pinned;
+    this.drawLineBox();
+  }
+
+  drawLineBox() {
+    if (!this.lineLayer) return;
+    this.lineLayer.replaceChildren();
+    const box = this.hoverBox || this.pinnedBox;
+    if (!box) return;
+    this.lineLayer.append(svgEl("rect", { x: box[0] - 4, y: box[1] - 4, width: box[2] - box[0] + 8, height: box[3] - box[1] + 8, class: "pv-linebox" }));
+  }
+
+  revealBox(box) {
+    const scale = this.wrap.offsetHeight / this.doc.page.height, top = box[1] * scale - 40;
+    if (top < this.el.scrollTop || top > this.el.scrollTop + this.el.clientHeight - 80) this.el.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
   }
 
   select(rid) {

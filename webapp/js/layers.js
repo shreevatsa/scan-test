@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261113-usage-tree-2";
-import { typeRevision } from "./schema.js?v=20261113-usage-tree-2";
+import { canonical } from "./ops.js?v=20261113-flags-1";
+import { typeRevision } from "./schema.js?v=20261113-flags-1";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));
@@ -11,7 +11,7 @@ export function layerView(doc, layer) {
     case "regions":
       return canonical(regions.map(region => ({ ...fields(region, ["id", "type", "polygons", "box", "order"]),
         continues_from_earlier: Boolean(region.source?.continues_from_earlier), continues_later: Boolean(region.source?.continues_later),
-        lines: (region.lines || []).map(line => fields(line, ["line", "polygons"])) })));
+        lines: (region.lines || []).map(line => fields(line, ["line", "polygons"])) })).concat(doc?.source?.ignored_lines?.length ? [{ ignored_lines: [...doc.source.ignored_lines].sort((a, b) => a - b) }] : []));
     case "text":
       return canonical({ label: doc?.page?.label ?? null, regions: regions.map(region => ({ id: region.id,
         lines: (region.lines || []).map(line => ({ line: line.line, text: line.text ?? null,
