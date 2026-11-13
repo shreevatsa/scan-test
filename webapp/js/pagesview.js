@@ -59,8 +59,8 @@ export async function renderPages(el, app) {
   };
   let cost = pageCost(null), runButton, moveButton, backButton, checks, profile;
   const processSummary = h("span", { class: "meta" }), recipeText = h("span");
-  const include = h("input", { type: "checkbox", checked: pending?.reprocess, "aria-label": "Include pages already processed" });
-  const fresh = h("input", { type: "checkbox", "aria-label": "Request fresh model results" });
+  const include = h("input", { type: "checkbox", checked: pending?.reprocess, "aria-label": "Also redo pages that already have a result" });
+  const fresh = h("input", { type: "checkbox", "aria-label": "Ignore saved model results" });
   const estimateLabel = h("p", { class: "hint" });
   const runnable = () => targetIds().filter(pid => !nothingToDo(pid) && (include.checked || !layerReady(pid)));
   const refreshSummary = () => {
@@ -387,9 +387,16 @@ export async function renderPages(el, app) {
   };
   if (stage === "regions" || stage === "text") moveButton = h("button", { class: "primary", onclick: () => move(layer, true) }, `Move on to ${stage === "regions" ? "Text" : "Read"}`);
   if (stage === "text" || stage === "read") backButton = h("button", { onclick: () => move(stage === "text" ? "regions" : "text", false) }, `Send back to ${stage === "text" ? "Regions" : "Text"}`);
-  const processingFields = h("div", { class: "fields" }, h("label", {}, include, " Include pages already processed"), h("label", {}, fresh, " Request fresh model results"),
-    h("label", {}, "Spend threshold $", threshold));
-  runControls.append(processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status);
+  const already = { regions: "have regions", text: "are already transcribed", read: "are already completed" }[stage];
+  const processingFields = h("div", { class: "fields col" }, h("label", {}, "Spend threshold $", threshold),
+    h("details", { class: "run-options", open: !!include.checked },
+      h("summary", { class: "meta" }, "Redo options"),
+      h("label", { title: "Normally pages that already have a result for this stage are skipped. A page you edited or moved on is never overwritten: a new result is offered as a suggestion." },
+        include, ` Also redo pages that ${already}`),
+      h("label", { title: "Normally a request already made for the same page and settings is reused for free. Tick to send a new request, which is charged again." },
+        fresh, " Ignore saved model results (charged again)")));
+  runControls.append(processingFields,
+    h("p", { class: "hint" }, `Runs on the pages selected in the grid below, or on every page shown when none are selected.`), estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status);
   if (overview) {
     modelFields.append(h("label", {}, "Region finder ", select), languageLabel);
     runArea.append(manualHint, keyPanel, runControls);
@@ -403,7 +410,12 @@ export async function renderPages(el, app) {
       h("button", { onclick: () => app.setMode(stage === "text" ? "readers" : "structures") }, stage === "text" ? "Compare transcription models" : "Compare completion models"));
     runArea.append(keyPanel, runControls);
   }
-  stageReview.append(...[moveButton, backButton].filter(Boolean));
+  // The way on is at the bottom of the page, as on Pages, and says which pages it applies to.
+  if (moveButton || backButton) {
+    const next = stage === "regions" ? "Text" : "Read", verb = { regions: "Find regions", text: "Transcribe", read: "Complete" }[stage];
+    content.append(h("div", { class: "next-step" }, ...[backButton, moveButton].filter(Boolean),
+      h("span", { class: "meta" }, `${verb}, ${moveButton ? `Move on to ${next}` : ""}${moveButton && backButton ? " and " : ""}${backButton ? "Send back" : ""} apply to the selected pages, or to every page shown when none are selected.`)));
+  }
   include.onchange = refreshSummary;
   await refreshModel();
   if (overview) loadOnOpen(comparison, comparisonContent, () => renderFinders(comparisonContent, app, {

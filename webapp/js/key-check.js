@@ -97,9 +97,11 @@ export function stageKeyControls(checks, profile, save, changed = () => {}) {
     await request;
     button.disabled = false;
     refresh();
+    if (checks.status(profile)?.valid) panel.open = false;
   } }, "Check key");
   refresh();
-  return h("details", { class: "stage-keys", open: !checks.status(profile)?.valid }, h("summary", {}, "API credential"),
+  const panel = h("details", { class: "stage-keys", open: !checks.status(profile)?.valid }, h("summary", {}, "API credential"),
     fields, h("p", {}, button), status, h("p", { class: "hint" },
       "The check makes a small billable test request with no book content. OAuth tokens are held for this session. Keys are saved in this browser."));
+  return panel;
 }
