@@ -1,10 +1,11 @@
-import { suggestionButton } from "./review-view.js?v=20261113-survey-1";
-import { typeRevision } from "./schema.js?v=20261113-survey-1";
+import { suggestionButton } from "./review-view.js?v=20261113-finder-types-1";
+import { typeRevision } from "./schema.js?v=20261113-finder-types-1";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261113-survey-1";
-import { orderedRegions, regionFlags } from "./flags.js?v=20261113-survey-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-survey-1";
-import { editTypeDialog } from "./type-operations.js?v=20261113-survey-1";
+import * as ops from "./ops.js?v=20261113-finder-types-1";
+import { orderedRegions, regionFlags } from "./flags.js?v=20261113-finder-types-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-finder-types-1";
+import { editTypeDialog } from "./type-operations.js?v=20261113-finder-types-1";
+import { normalizeTypeName } from "./type-additions.js?v=20261113-finder-types-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -142,8 +143,14 @@ export class RegionsPanel {
       if (text.childNodes.length) card.append(text);
       return card;
     });
-    const omitted = (app.doc.source?.omitted_regions || []).map((region, index) => h("p", { class: "box warn" },
-      `${region.region} · unassigned type `, h("button", { onclick: () => app.select({ omitted: index }) }, "Give it a type")));
+    // A region of a proposed type (method 097) names it; once the proposal is a type, one button gives it that type.
+    const omitted = (app.doc.source?.omitted_regions || []).map((region, index) => {
+      const target = region.proposed_type && (app.proposalAssignments?.get(normalizeTypeName(region.proposed_type)) ||
+        Object.keys(app.tl.types).find(name => normalizeTypeName(name) === normalizeTypeName(region.proposed_type)));
+      return h("p", { class: "box warn" }, `${region.region} · unassigned type${region.proposed_type ? ` · proposed: ${region.proposed_type}` : ""} `,
+        target && app.tl.types[target] ? h("button", { onclick: () => app.recoverOmitted(index, target) }, `Make it ${target}`) : null, " ",
+        h("button", { onclick: () => app.select({ omitted: index }) }, "Give it a type"));
+    });
     const flags = regionFlags(app.doc, app.tl, app.regionFlagContext(app.doc));
     this.el.replaceChildren(
       ...(flags.length ? [h("details", { class: "region-review-flags" }, h("summary", {}, `${flags.length} review flags`),

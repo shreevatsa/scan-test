@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261113-survey-1";
+import { typeRevision } from "../schema.js?v=20261113-finder-types-1";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
@@ -101,7 +101,7 @@ export function provisionalDocument(pid, page, types, record, boundary = {}) {
   const regions = [], omitted = [];
   for (const { rid, region, line_ids: lineIds } of sent) {
     if (!types.types[region.type]) {
-      omitted.push({ region: rid, type: region.type, box: structuredClone(region.model_box) });
+      omitted.push({ region: rid, type: region.type, box: structuredClone(region.model_box), ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) });
       continue;
     }
     const lines = new Map(region.lines.map(line => [line.line_id, line.polygons]));
@@ -109,7 +109,8 @@ export function provisionalDocument(pid, page, types, record, boundary = {}) {
       order: region.reading_order, lines: lineIds.map(line => ({ line, polygons: structuredClone(lines.get(line)) })),
       source: { region_id: region.region_id, method_type: region.type, region_class: region.region_class, keep: region.keep,
         uncertain: region.uncertain, continues_from_earlier: Boolean(region.continues_from_earlier),
-        continues_later: Boolean(region.continues_later), model_box: structuredClone(region.model_box) } });
+        continues_later: Boolean(region.continues_later), model_box: structuredClone(region.model_box),
+        ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) } });
   }
   const { units, flows, problems } = provisionalUnits(pid, regions, types, boundary);
   const revision = typeRevision(types.source?.revision);

@@ -1,6 +1,6 @@
-import { typeRevision } from "./schema.js?v=20261113-survey-1";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-survey-1";
-import { layerState } from "./layers.js?v=20261113-survey-1";
+import { typeRevision } from "./schema.js?v=20261113-finder-types-1";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-finder-types-1";
+import { layerState } from "./layers.js?v=20261113-finder-types-1";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -109,7 +109,7 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
     if (types.types[region.type]?.role !== "furniture" && !Number.isFinite(region.order)) add("missing-order", `${region.id} has no reading order`, region.id);
     if (region.source?.no_ink) add("no-ink", `${region.id} has no detected ink`, region.id, region.box);
   }
-  for (const omitted of doc.source?.omitted_regions || []) add("omitted", `${omitted.region} needs a type`, omitted.region, omitted.box);
+  for (const omitted of doc.source?.omitted_regions || []) add("omitted", `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`, omitted.region, omitted.box);
   for (const warning of doc.source?.warnings || []) add("region-warning", String(warning));
   for (const skipped of doc.source?.regions_skipped || []) add("no-ink", `Region ${skipped.region_id} was left out (${skipped.status || "no ink"})`);
   for (const line of doc.source?.uncovered_lines || []) add("uncovered", `Printed line ${line.line_id} is outside all regions`, null, line.box);

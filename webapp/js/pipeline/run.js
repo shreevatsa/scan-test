@@ -1,26 +1,41 @@
-import { typeRevision } from "../schema.js?v=20261113-survey-1";
-import { mappedTypeNames } from "../type-revisions.js?v=20261113-survey-1";
+import { typeRevision } from "../schema.js?v=20261113-finder-types-1";
+import { mappedTypeNames } from "../type-revisions.js?v=20261113-finder-types-1";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261113-survey-1";
-import * as I from "./images.js?v=20261113-survey-1";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261113-survey-1";
+import * as S from "./steps.js?v=20261113-finder-types-1";
+import * as I from "./images.js?v=20261113-finder-types-1";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261113-finder-types-1";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261113-survey-1";
-import { classifyBlocks } from "../local/blocks.js?v=20261113-survey-1";
-import { finderById, finderPath } from "./finders.js?v=20261113-survey-1";
-import { finderRequest } from "./finder-requests.js?v=20261113-survey-1";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261113-survey-1";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261113-survey-1";
+import { localReading, localLayout } from "./ocr.js?v=20261113-finder-types-1";
+import { classifyBlocks } from "../local/blocks.js?v=20261113-finder-types-1";
+import { finderById, finderPath } from "./finders.js?v=20261113-finder-types-1";
+import { finderRequest } from "./finder-requests.js?v=20261113-finder-types-1";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261113-finder-types-1";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261113-finder-types-1";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261113-survey-1";
-import { layerState, noteEdit } from "../layers.js?v=20261113-survey-1";
-import { provisionalDocument } from "./provisional.js?v=20261113-survey-1";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261113-survey-1";
+import { canonical } from "../ops.js?v=20261113-finder-types-1";
+import { layerState, noteEdit } from "../layers.js?v=20261113-finder-types-1";
+import { provisionalDocument } from "./provisional.js?v=20261113-finder-types-1";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261113-finder-types-1";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261113-finder-types-1";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261113-finder-types-1";
+import { isProtected, LAYERS } from "../layers.js?v=20261113-finder-types-1";
 
 export const REQUEST_TIMEOUT_MS = 75000;
+
+// A finder record with each region of a proposed type that has since been added (or assigned to an existing type)
+// given that type. Others keep type other and their proposed_type, and the page keeps them unassigned.
+export function assignedRecord(record, assignments, types) {
+  if (!assignments?.size || !record.regions.some(region => region.proposed_type)) return record;
+  const out = structuredClone(record);
+  for (const region of out.regions) {
+    const type = region.proposed_type && assignments.get(normalizeTypeName(region.proposed_type));
+    if (type && types.types[type]) { region.type = type; region.region_class = types.types[type].region || region.region_class; }
+  }
+  return out;
+}
 
 let TEMPLATES = null;
 export async function templates() {
@@ -28,6 +43,7 @@ export async function templates() {
     const get = async (name, json) => { const r = await fetch(new URL(`../../pipeline/${name}`, import.meta.url)); return json ? r.json() : r.text(); };
     TEMPLATES = { regionPrompt: await get("regions-prompt-template.txt"), regionSchema: await get("regions-schema-template.json", true),
                   transcriptionPrompt: await get("transcription-prompt-template.txt"),
+                  proposingPrompt: await get("regions-proposals-prompt-template.txt"), proposingSchema: await get("regions-proposals-schema-template.json", true),
                   regionPricing: await get("regions-pricing.json", true), transcriptionPricing: await get("transcription-pricing.json", true) };
   }
   return TEMPLATES;
@@ -118,10 +134,11 @@ export class Maker {
     return out;
   }
 
-  provisional(pid, record, imageHash) {
+  // assignments: normalized proposed type names to the types they became (type-additions.js proposalAssignments).
+  provisional(pid, record, imageHash, assignments = null) {
     const p = this.book.page(pid);
     return provisionalDocument(pid, { image: (p.image || `${pid}.png`).split("/").pop(), image_sha256: imageHash,
-      width: record.width, height: record.height }, this.book.types, record,
+      width: record.width, height: record.height }, this.book.types, assignedRecord(record, assignments, this.book.types),
       { firstPage: this.book.index[pid] === 0, lastPage: this.book.index[pid] === this.book.pages.length - 1 });
   }
 
@@ -155,8 +172,31 @@ export class Maker {
       if (previousPath !== path && !await this.book.readWork(previousPath)) await this.book.writeWork(previousPath, previous);
     }
     await this.book.writeWork(this.workPath(pid), record);
+    let assignments = null;
+    if (record.type_proposals?.length || record.regions.some(region => region.proposed_type)) {
+      await recordFinderProposals(this.book, record, { pdfPage: this.book.page(pid)?.pdf_page ?? null });
+      assignments = proposalAssignments(await readPendingProposals(this.book), this.book.types);
+    }
     if (save) await this.saveMerged(pid, "regions", path, current => mergeRegions(current,
-      mappedTypeNames(this.provisional(pid, record, imageHash), this.book.types), this.check));
+      mappedTypeNames(this.provisional(pid, record, imageHash, assignments), this.book.types), this.check));
+  }
+
+  // After a proposed type is added (or found to be an existing type): the page's unassigned regions that carry the
+  // proposed name get the type, by rebuilding the page from its finder record, unless a person's work protects the
+  // page. Returns "assigned", "protected" or "none".
+  async assignProposedRegions(pid, assignments) {
+    const current = await this.book.current(pid, { refresh: true });
+    const waiting = (current?.source?.omitted_regions || []).filter(region => region.proposed_type && assignments.has(normalizeTypeName(region.proposed_type)));
+    if (!waiting.length) return "none";
+    if (LAYERS.some(layer => isProtected(current, layer)) || await this.book.draft(pid)) return "protected";
+    const record = await this.regions(pid);
+    if (!record?.regions.some(region => region.proposed_type && assignments.has(normalizeTypeName(region.proposed_type)))) return "none";
+    const imageHash = record.image_sha256 || current.page.image_sha256;
+    const out = await this.saveMerged(pid, "regions", finderPath(pid, record.profile?.id || "terra-regions"), latest => {
+      if (LAYERS.some(layer => isProtected(latest, layer))) return { doc: latest, taken: [], suggestion: false };
+      return mergeRegions(latest, mappedTypeNames(this.provisional(pid, record, imageHash, assignments), this.book.types), this.check);
+    });
+    return out?.taken?.includes("regions") ? "assigned" : "protected";
   }
 
   async findRegions(pid, { save = this.book.writable, force = true, finder, trial = false } = {}) {
@@ -178,7 +218,7 @@ export class Maker {
     const W = bitmap.width, H = bitmap.height;
     bitmap.close?.();
     const started = performance.now();
-    let regions, warnings, res, regionCall;
+    let regions, warnings, res, regionCall, typeProposals = null;
     if (profile.provider === "local") {
       if (!this.outlines) throw new Error("Local region finding needs the page's line analysis.");
       let blocks;
@@ -198,11 +238,16 @@ export class Maker {
       this.onCost(0);
     } else {
       const t = await templates();
-      const payload = finderRequest(profile, P.regionPrompt(tl, t.regionPrompt), P.regionSchema(tl, t.regionSchema), await dataUrlOf(file));
+      // Method 097 reads the pending proposals now, at request time, so a page sees what earlier pages proposed.
+      const pending = profile.proposals ? await readPendingProposals(this.book) : null;
+      const payload = profile.proposals
+        ? finderRequest(profile, proposingPrompt(tl, t.proposingPrompt, pending), proposingSchema(tl, t.proposingSchema, pending), await dataUrlOf(file))
+        : finderRequest(profile, P.regionPrompt(tl, t.regionPrompt), P.regionSchema(tl, t.regionSchema), await dataUrlOf(file));
       const call = await this.callJSON(pid, "regions", profile, payload,
-        parsed => S.scaleRegions(parsed, W, H, tl), profile.provider === "openai"
+        parsed => profile.proposals ? scaleProposingRegions(parsed, W, H, tl, pending) : S.scaleRegions(parsed, W, H, tl), profile.provider === "openai"
           ? (usage, body) => S.openaiCost(usage, profile.pricing || t.regionPricing, body.service_tier) : null);
       ({ regions, warnings } = call.parsed);
+      if (profile.proposals) typeProposals = call.parsed.proposals;
       const empty = { geometry: [], charH: 0, angle: 0, method: "094-illumination-flattened-ink" };
       res = this.outlines ? await this.outlines(pid, await this.book.imageUrl(pid), regions.map(region => region.box)) : empty;
       if (!regions.length && res.error) res = empty;
@@ -213,7 +258,7 @@ export class Maker {
     const out = { format: "page-regions", page: pid, profile, fingerprint, types_revision: typeRevision(tl.source?.revision),
       width: W, height: H, image_sha256: imageHash, char_h: res.charH, page_angle_deg: res.angle, local_method: res.method,
       regions: S.regionRecords(regions, res.geometry), uncovered_lines: res.uncovered || [], warnings,
-      region_call: regionCall, made_at_utc: new Date().toISOString() };
+      region_call: regionCall, made_at_utc: new Date().toISOString(), ...(typeProposals ? { type_proposals: typeProposals } : {}) };
     await this.retainRegions(pid, out, { save, trial, imageHash });
     return out;
   }

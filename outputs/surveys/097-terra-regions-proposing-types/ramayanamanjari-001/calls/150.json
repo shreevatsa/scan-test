@@ -1,0 +1,764 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "2a6701d3-8e16-49df-bd53-88bf7f54bfad",
+ "page": "ramayanamamjari00ksemuoft-page-150",
+ "stage": "regions",
+ "profile": {
+  "id": "terra-proposals",
+  "label": "GPT-6.1 Terra · reasoning off · proposes new types",
+  "provider": "openai",
+  "model": "gpt-6.1-terra",
+  "reasoning": "none",
+  "method": "097-terra-regions-proposing-types",
+  "proposals": true
+ },
+ "started_at_utc": "2026-11-13T05:55:35.890Z",
+ "request_sha256": "5b262a54fa8f00559bac8b2aa52a5aefcfb383cd7b22bfd5368ae45f3a7c40c0",
+ "request": {
+  "model": "gpt-6.1-terra",
+  "input": [
+   {
+    "role": "user",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Rāmāyaṇamañjarī (Kāvyamālā). Kṣemendra's Rāmāyaṇamañjarī, a Sanskrit poem in Devanagari, printed in the Kāvyamālā series: English and Sanskrit title pages, a table of contents, then the poem in numbered verses with a running header, a page number and footnotes at the foot of most pages.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A title or heading: of the book, a part, a chapter or a section.\n- paragraph: A paragraph of prose, or a block quotation. A paragraph continued from the previous page or onto the next is one unit. One region per paragraph, including one continued from the previous page or onto the next.\n- verse: A verse or stanza, with its number or end mark if it has one. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- list_item: An entry of a list, a table of contents or an index. One region per entry.\n- table: A table, with its headings. One region per table, including any rotated text in it.\n- figure: An illustration, without its caption. One region per illustration, without its caption.\n- caption: The caption of an illustration or table. One region per caption.\n- footnote: A footnote or endnote, with its number or sign. Include its marker. Separate neighboring notes even when they share a printed line.\n- running_header: A running header or footer: the book's or chapter's title repeated at the top or bottom of the page. Page furniture, keep=false.\n- page_number: The printed page number. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nProposed types, not yet accepted into the list. Use one of them for a region that fits it and fits none of the types above:\n- editor_credit (printed as paragraph): A title-page statement naming the editor or editors and their qualifications.\n- publication_statement (printed as paragraph): A title-page statement identifying the printer, publisher, place, or date of publication.\n- price (printed as paragraph): A title-page statement giving the sale price of the book.\n- verse_group_marker (printed as note): A parenthetical marker identifying a linked group of verses.\n- section_closing (printed as paragraph): A prose colophon marking the completion of a section of the poem.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- section: A part, chapter or section of the book, from its heading to the next heading of the same level. It goes on across pages and holds everything in it, including smaller sections.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- New types: if a region is a text unit that fits none of the types above nor a proposed type, do not force it into the nearest type. Give it type other and name a new type in its proposed_type, and define that type once in new_types: a name in the style of the book's type names above, a one-line definition that would let someone recognize the unit on other pages, and the region class it is printed as (one of verse, paragraph, heading, lead_in, list_item, formula, note, table, figure, caption, running_header, page_number). Use one name for every region of that kind on this page. Propose a type only for a kind of unit a reader would want kept apart throughout the book, never for one that differs from a listed type only by its place on this page, and never for a larger unit listed above. Leave proposed_type empty for every other region, and for marks that are not text units (printer's signature marks, catchwords, stray marks), which stay other.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"new_types\":[{\"name\":\"\",\"definition\":\"\",\"region_class\":\"\"}],\n\"regions\":[{\"type\":\"heading|paragraph|verse|list_item|table|figure|caption|footnote|running_header|page_number|other|editor_credit|publication_statement|price|verse_group_marker|section_closing\",\"proposed_type\":\"\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+     },
+     {
+      "type": "input_image",
+      "image_url": "<image rebuilt from the book's source>",
+      "detail": "original"
+     }
+    ]
+   }
+  ],
+  "reasoning": {
+   "effort": "none"
+  },
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "name": "page_regions",
+    "strict": true,
+    "schema": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "new_types",
+      "regions"
+     ],
+     "properties": {
+      "new_types": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "name",
+         "definition",
+         "region_class"
+        ],
+        "properties": {
+         "name": {
+          "type": "string"
+         },
+         "definition": {
+          "type": "string"
+         },
+         "region_class": {
+          "type": "string",
+          "enum": [
+           "verse",
+           "paragraph",
+           "heading",
+           "lead_in",
+           "list_item",
+           "formula",
+           "note",
+           "table",
+           "figure",
+           "caption",
+           "running_header",
+           "page_number"
+          ]
+         }
+        }
+       }
+      },
+      "regions": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "type",
+         "proposed_type",
+         "box_1000",
+         "keep",
+         "reading_order",
+         "uncertain",
+         "continues_from_earlier",
+         "continues_later"
+        ],
+        "properties": {
+         "type": {
+          "type": "string",
+          "enum": [
+           "heading",
+           "paragraph",
+           "verse",
+           "list_item",
+           "table",
+           "figure",
+           "caption",
+           "footnote",
+           "running_header",
+           "page_number",
+           "other",
+           "editor_credit",
+           "publication_statement",
+           "price",
+           "verse_group_marker",
+           "section_closing"
+          ]
+         },
+         "proposed_type": {
+          "type": "string"
+         },
+         "box_1000": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+         },
+         "keep": {
+          "type": "boolean"
+         },
+         "reading_order": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 1
+         },
+         "uncertain": {
+          "type": "boolean"
+         },
+         "continues_from_earlier": {
+          "type": "boolean"
+         },
+         "continues_later": {
+          "type": "boolean"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "max_output_tokens": 16384,
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "id": "resp_08c8415e1c52d850016af6a6586d2c87d1b97e6aece8304fbf",
+  "object": "response",
+  "created_at": 1794549336,
+  "status": "completed",
+  "access_programs": {
+   "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+   "payer": "developer"
+  },
+  "completed_at": 1794549347,
+  "error": null,
+  "frequency_penalty": 0,
+  "image": {
+   "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "input_transformations": [],
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+   {
+    "id": "msg_08c8415e1c52d850016af6a659d7b087d1a590df7d4071afc6",
+    "type": "message",
+    "status": "completed",
+    "content": [
+     {
+      "type": "output_text",
+      "annotations": [],
+      "logprobs": [],
+      "text": "{\"new_types\":[],\"regions\":[{\"type\":\"page_number\",\"proposed_type\":\"\",\"box_1000\":[105,44,181,68],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"running_header\",\"proposed_type\":\"\",\"box_1000\":[471,44,631,67],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[241,87,876,148],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[241,151,924,210],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[241,212,900,272],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[241,275,946,333],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[241,336,915,394],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[241,399,906,456],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[240,459,890,518],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[238,522,899,580],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[238,585,889,641],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[237,646,854,704],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[238,708,887,768],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[237,770,886,829],\"keep\":true,\"reading_order\":12,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[238,832,925,890],\"keep\":true,\"reading_order\":13,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"footnote\",\"proposed_type\":\"\",\"box_1000\":[138,901,341,923],\"keep\":true,\"reading_order\":14,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}"
+     }
+    ],
+    "phase": "final_answer",
+    "role": "assistant"
+   }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+   "context": "all_turns",
+   "effort": "none",
+   "mode": "standard",
+   "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1,
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "description": null,
+    "name": "page_regions",
+    "schema": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "new_types",
+      "regions"
+     ],
+     "properties": {
+      "new_types": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "name",
+         "definition",
+         "region_class"
+        ],
+        "properties": {
+         "name": {
+          "type": "string"
+         },
+         "definition": {
+          "type": "string"
+         },
+         "region_class": {
+          "type": "string",
+          "enum": [
+           "verse",
+           "paragraph",
+           "heading",
+           "lead_in",
+           "list_item",
+           "formula",
+           "note",
+           "table",
+           "figure",
+           "caption",
+           "running_header",
+           "page_number"
+          ]
+         }
+        }
+       }
+      },
+      "regions": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "type",
+         "proposed_type",
+         "box_1000",
+         "keep",
+         "reading_order",
+         "uncertain",
+         "continues_from_earlier",
+         "continues_later"
+        ],
+        "properties": {
+         "type": {
+          "type": "string",
+          "enum": [
+           "heading",
+           "paragraph",
+           "verse",
+           "list_item",
+           "table",
+           "figure",
+           "caption",
+           "footnote",
+           "running_header",
+           "page_number",
+           "other",
+           "editor_credit",
+           "publication_statement",
+           "price",
+           "verse_group_marker",
+           "section_closing"
+          ]
+         },
+         "proposed_type": {
+          "type": "string"
+         },
+         "box_1000": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+         },
+         "keep": {
+          "type": "boolean"
+         },
+         "reading_order": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 1
+         },
+         "uncertain": {
+          "type": "boolean"
+         },
+         "continues_from_earlier": {
+          "type": "boolean"
+         },
+         "continues_later": {
+          "type": "boolean"
+         }
+        }
+       }
+      }
+     }
+    },
+    "strict": true
+   },
+   "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+   "image_gen": {
+    "input_tokens": 0,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 0
+    },
+    "output_tokens": 0,
+    "output_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 0
+    },
+    "total_tokens": 0
+   },
+   "web_search": {
+    "num_requests": 0
+   }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+   "input_tokens": 2409,
+   "input_tokens_details": {
+    "cache_write_tokens": 2406,
+    "cached_tokens": 0
+   },
+   "output_tokens": 836,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 3245
+  },
+  "user": null,
+  "metadata": {}
+ },
+ "seconds": 11.358900000095367,
+ "usage": {
+  "input_tokens": 2409,
+  "input_tokens_details": {
+   "cache_write_tokens": 2406,
+   "cached_tokens": 0
+  },
+  "output_tokens": 836,
+  "output_tokens_details": {
+   "reasoning_tokens": 0
+  },
+  "total_tokens": 3245
+ },
+ "cost_usd": 0.0071905,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     105,
+     44,
+     181,
+     68
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     65.205,
+     46.772,
+     112.401,
+     72.284
+    ]
+   },
+   {
+    "type": "running_header",
+    "box_1000": [
+     471,
+     44,
+     631,
+     67
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "running_header",
+    "box": [
+     292.491,
+     46.772,
+     391.851,
+     71.221
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     241,
+     87,
+     876,
+     148
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "verse",
+    "box": [
+     149.661,
+     92.481,
+     543.996,
+     157.324
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     241,
+     151,
+     924,
+     210
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "verse",
+    "box": [
+     149.661,
+     160.513,
+     573.804,
+     223.23
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     241,
+     212,
+     900,
+     272
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "verse",
+    "box": [
+     149.661,
+     225.356,
+     558.9,
+     289.136
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     241,
+     275,
+     946,
+     333
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "verse",
+    "box": [
+     149.661,
+     292.325,
+     587.466,
+     353.979
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     241,
+     336,
+     915,
+     394
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "verse",
+    "box": [
+     149.661,
+     357.168,
+     568.215,
+     418.822
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     241,
+     399,
+     906,
+     456
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "verse",
+    "box": [
+     149.661,
+     424.137,
+     562.626,
+     484.728
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     240,
+     459,
+     890,
+     518
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 9,
+    "region_class": "verse",
+    "box": [
+     149.04,
+     487.917,
+     552.69,
+     550.634
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     238,
+     522,
+     899,
+     580
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 10,
+    "region_class": "verse",
+    "box": [
+     147.798,
+     554.886,
+     558.279,
+     616.54
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     238,
+     585,
+     889,
+     641
+    ],
+    "keep": true,
+    "reading_order": 9,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 11,
+    "region_class": "verse",
+    "box": [
+     147.798,
+     621.855,
+     552.069,
+     681.383
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     237,
+     646,
+     854,
+     704
+    ],
+    "keep": true,
+    "reading_order": 10,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 12,
+    "region_class": "verse",
+    "box": [
+     147.177,
+     686.698,
+     530.334,
+     748.352
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     238,
+     708,
+     887,
+     768
+    ],
+    "keep": true,
+    "reading_order": 11,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 13,
+    "region_class": "verse",
+    "box": [
+     147.798,
+     752.604,
+     550.827,
+     816.384
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     237,
+     770,
+     886,
+     829
+    ],
+    "keep": true,
+    "reading_order": 12,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 14,
+    "region_class": "verse",
+    "box": [
+     147.177,
+     818.51,
+     550.206,
+     881.227
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     238,
+     832,
+     925,
+     890
+    ],
+    "keep": true,
+    "reading_order": 13,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 15,
+    "region_class": "verse",
+    "box": [
+     147.798,
+     884.416,
+     574.425,
+     946.07
+    ]
+   },
+   {
+    "type": "footnote",
+    "box_1000": [
+     138,
+     901,
+     341,
+     923
+    ],
+    "keep": true,
+    "reading_order": 14,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 16,
+    "region_class": "note",
+    "box": [
+     85.698,
+     957.763,
+     211.761,
+     981.149
+    ]
+   }
+  ],
+  "warnings": [],
+  "proposals": []
+ }
+}

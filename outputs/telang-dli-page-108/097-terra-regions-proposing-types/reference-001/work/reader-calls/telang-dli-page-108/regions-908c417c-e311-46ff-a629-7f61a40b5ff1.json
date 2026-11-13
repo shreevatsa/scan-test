@@ -1,0 +1,604 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "908c417c-e311-46ff-a629-7f61a40b5ff1",
+ "page": "telang-dli-page-108",
+ "stage": "regions",
+ "profile": {
+  "id": "terra-proposals",
+  "label": "GPT-6.1 Terra · reasoning off · proposes new types",
+  "provider": "openai",
+  "model": "gpt-6.1-terra",
+  "reasoning": "none",
+  "method": "097-terra-regions-proposing-types",
+  "proposals": true
+ },
+ "started_at_utc": "2026-11-13T05:42:27.478Z",
+ "request_sha256": "cc8237acdf9331e7922664f017f7534c64cb4ea124c5ca2b6e8494a949cee5c9",
+ "request": {
+  "model": "gpt-6.1-terra",
+  "input": [
+   {
+    "role": "user",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Telang's edition of Bhartṛhari's śatakas (Digital Library of India scan). The scan of the Digital Library of India begins and ends with the library's cover, labels and barcode pages. The book has an English preface and introduction with footnotes; a critical notice describing the sources; addenda et corrigenda; an index of stanzas in tables printed sideways; the Sanskrit text of the Nītiśataka and the Vairāgyaśataka, in sections, with a critical apparatus of variant readings below a rule on each page; and English notes on the stanzas.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A title or heading: of a part, of a śataka, or of a section, such as अथ दुर्जनप्रशंसा ।\n- paragraph: A paragraph of the English preface, introduction or critical notice, such as one describing an edition, C. The Bombay Oblong edition, …; or a line introducing corrections in the addenda et corrigenda. One region per paragraph, including one continued from the previous page or onto the next.\n- corrigendum: One correction of the addenda et corrigenda, such as P. 6. (Text) line 1 from bottom, for … read …, with its page reference. One region per entry.\n- table: One index table, with its column heads (the sigla of editions and manuscripts) and, in each row, the first words of a stanza and its numbers. The tables are printed sideways; the page images of the index have been turned upright. One region per table, including any rotated text in it.\n- lead_in: A short Sanskrit line of its own that introduces the next stanza, such as साहंकारं पुरुषमुद्दिश्याह । It often ends in a dash or colon.\n- verse: One Sanskrit stanza with its number in Devanagari digits, such as ॥ २९ ॥. Its lines are set alternately flush and indented. A stanza can begin at the foot of one page and end at the top of the next. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- apparatus_entry: The variant readings of one stanza, below the rule: the stanza's Roman numeral, such as XXVIII., then readings for its quarters (a) to (d) with the sigla of the sources, such as K. Bo. M. An entry can run onto the next page; the apparatus at the top of that page then continues it without a numeral, for example from (c). Include its marker. Separate neighboring notes even when they share a printed line.\n- stanza_note: The English note on one stanza, beginning with its number, such as St. XXXIII.—, and often ending with the name of the metre, such as —Anushṭubh. A note can run across pages. One region per paragraph, including one continued from the previous page or onto the next.\n- footnote: A footnote below the rule in the preface, introduction, critical notice or notes, marked *, †, ‡, §, ¶ or ‖; or a note printed below an index table, such as N. B.—The numbers marked * refer to the Miscellaneous Stanzas…. Include its marker. Separate neighboring notes even when they share a printed line.\n- page_number: The page number at the head of the page: Devanagari digits in brackets on text pages, such as [ ७२ ]; roman numerals in the introduction; Arabic digits in the notes. Page furniture, keep=false.\n- running_header: The running title beside the page number, such as NOTES. Page furniture, keep=false.\n- scan_matter: Matter of the scan, not of the book: the library's covers and labels (NOT TO BE ISSUED OUT OF THE LIBRARY.), stamps, barcodes and accession numbers, and the note Digitized with financial assistance from the Government of Maharashtra. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- introduction: The English preface and introduction, with page numbers in roman numerals.\n- critical_notice: The critical notice after the introduction, headed CRITICAL NOTICE., describing the printed editions and manuscripts used and their sigla.\n- corrigenda: The pages headed ADDENDA ET CORRIGENDA., a list of corrections, with short lines introducing groups of them, such as In Index No. I. the following corrections should be made.\n- index: The index of stanzas: tables giving each stanza's number in other editions and manuscripts, with the headings INDEX. and INDEX No. 2.\n- shataka: The Sanskrit text of one śataka, with its title and sections, ending with its miscellaneous stanzas: one unit from its title to the next śataka or the notes, going on across the heading MISCELLANEOUS.\n- section: A group of stanzas on one theme, with its heading, such as अथ दुर्जनप्रशंसा ।. The miscellaneous stanzas at the end of a śataka, headed MISCELLANEOUS., are its last section: the śataka goes on across that heading.\n- notes: The English notes on the stanzas, after the text: one unit for the notes on both śatakas and their miscellaneous stanzas. Its headings, such as NOTES., MISCELLANEOUS., VAIRĀGYAS'ATAKA. and MISCELLANEOUS STANZAS., are inside it, and it goes on across them.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- New types: if a region is a text unit that fits none of the types above, do not force it into the nearest type. Give it type other and name a new type in its proposed_type, and define that type once in new_types: a name in the style of the book's type names above, a one-line definition that would let someone recognize the unit on other pages, and the region class it is printed as (one of verse, paragraph, heading, lead_in, list_item, formula, note, table, figure, caption, running_header, page_number). Use one name for every region of that kind on this page. Propose a type only for a kind of unit a reader would want kept apart throughout the book, never for one that differs from a listed type only by its place on this page, and never for a larger unit listed above. Leave proposed_type empty for every other region, and for marks that are not text units (printer's signature marks, catchwords, stray marks), which stay other.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"new_types\":[{\"name\":\"\",\"definition\":\"\",\"region_class\":\"\"}],\n\"regions\":[{\"type\":\"heading|paragraph|corrigendum|table|lead_in|verse|apparatus_entry|stanza_note|footnote|page_number|running_header|scan_matter|other\",\"proposed_type\":\"\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+     },
+     {
+      "type": "input_image",
+      "image_url": "<image rebuilt from the book's source>",
+      "detail": "original"
+     }
+    ]
+   }
+  ],
+  "reasoning": {
+   "effort": "none"
+  },
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "name": "page_regions",
+    "strict": true,
+    "schema": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "new_types",
+      "regions"
+     ],
+     "properties": {
+      "new_types": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "name",
+         "definition",
+         "region_class"
+        ],
+        "properties": {
+         "name": {
+          "type": "string"
+         },
+         "definition": {
+          "type": "string"
+         },
+         "region_class": {
+          "type": "string",
+          "enum": [
+           "verse",
+           "paragraph",
+           "heading",
+           "lead_in",
+           "list_item",
+           "formula",
+           "note",
+           "table",
+           "figure",
+           "caption",
+           "running_header",
+           "page_number"
+          ]
+         }
+        }
+       }
+      },
+      "regions": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "type",
+         "proposed_type",
+         "box_1000",
+         "keep",
+         "reading_order",
+         "uncertain",
+         "continues_from_earlier",
+         "continues_later"
+        ],
+        "properties": {
+         "type": {
+          "type": "string",
+          "enum": [
+           "heading",
+           "paragraph",
+           "corrigendum",
+           "table",
+           "lead_in",
+           "verse",
+           "apparatus_entry",
+           "stanza_note",
+           "footnote",
+           "page_number",
+           "running_header",
+           "scan_matter",
+           "other"
+          ]
+         },
+         "proposed_type": {
+          "type": "string"
+         },
+         "box_1000": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+         },
+         "keep": {
+          "type": "boolean"
+         },
+         "reading_order": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 1
+         },
+         "uncertain": {
+          "type": "boolean"
+         },
+         "continues_from_earlier": {
+          "type": "boolean"
+         },
+         "continues_later": {
+          "type": "boolean"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "max_output_tokens": 16384,
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "id": "resp_040a10a29cc59403016af6a3442ed087d18c579fba0cc8efc4",
+  "object": "response",
+  "created_at": 1794548548,
+  "status": "completed",
+  "access_programs": {
+   "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+   "payer": "developer"
+  },
+  "completed_at": 1794548555,
+  "error": null,
+  "frequency_penalty": 0,
+  "image": {
+   "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "input_transformations": [],
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+   {
+    "id": "msg_040a10a29cc59403016af6a346126087d195f7d391d841c941",
+    "type": "message",
+    "status": "completed",
+    "content": [
+     {
+      "type": "output_text",
+      "annotations": [],
+      "logprobs": [],
+      "text": "{\"new_types\":[],\"regions\":[{\"type\":\"page_number\",\"proposed_type\":\"\",\"box_1000\":[449,108,565,133],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[174,155,753,214],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[174,215,844,329],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[169,332,788,452],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"verse\",\"proposed_type\":\"\",\"box_1000\":[162,451,780,510],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"apparatus_entry\",\"proposed_type\":\"\",\"box_1000\":[125,533,886,578],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"apparatus_entry\",\"proposed_type\":\"\",\"box_1000\":[116,579,889,759],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"apparatus_entry\",\"proposed_type\":\"\",\"box_1000\":[115,761,881,849],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"apparatus_entry\",\"proposed_type\":\"\",\"box_1000\":[115,851,878,896],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true}]}"
+     }
+    ],
+    "phase": "final_answer",
+    "role": "assistant"
+   }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+   "context": "all_turns",
+   "effort": "none",
+   "mode": "standard",
+   "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1,
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "description": null,
+    "name": "page_regions",
+    "schema": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "new_types",
+      "regions"
+     ],
+     "properties": {
+      "new_types": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "name",
+         "definition",
+         "region_class"
+        ],
+        "properties": {
+         "name": {
+          "type": "string"
+         },
+         "definition": {
+          "type": "string"
+         },
+         "region_class": {
+          "type": "string",
+          "enum": [
+           "verse",
+           "paragraph",
+           "heading",
+           "lead_in",
+           "list_item",
+           "formula",
+           "note",
+           "table",
+           "figure",
+           "caption",
+           "running_header",
+           "page_number"
+          ]
+         }
+        }
+       }
+      },
+      "regions": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "type",
+         "proposed_type",
+         "box_1000",
+         "keep",
+         "reading_order",
+         "uncertain",
+         "continues_from_earlier",
+         "continues_later"
+        ],
+        "properties": {
+         "type": {
+          "type": "string",
+          "enum": [
+           "heading",
+           "paragraph",
+           "corrigendum",
+           "table",
+           "lead_in",
+           "verse",
+           "apparatus_entry",
+           "stanza_note",
+           "footnote",
+           "page_number",
+           "running_header",
+           "scan_matter",
+           "other"
+          ]
+         },
+         "proposed_type": {
+          "type": "string"
+         },
+         "box_1000": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+         },
+         "keep": {
+          "type": "boolean"
+         },
+         "reading_order": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 1
+         },
+         "uncertain": {
+          "type": "boolean"
+         },
+         "continues_from_earlier": {
+          "type": "boolean"
+         },
+         "continues_later": {
+          "type": "boolean"
+         }
+        }
+       }
+      }
+     }
+    },
+    "strict": true
+   },
+   "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+   "image_gen": {
+    "input_tokens": 0,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 0
+    },
+    "output_tokens": 0,
+    "output_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 0
+    },
+    "total_tokens": 0
+   },
+   "web_search": {
+    "num_requests": 0
+   }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+   "input_tokens": 6644,
+   "input_tokens_details": {
+    "cache_write_tokens": 6641,
+    "cached_tokens": 0
+   },
+   "output_tokens": 485,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 7129
+  },
+  "user": null,
+  "metadata": {}
+ },
+ "seconds": 8.165718458,
+ "usage": {
+  "input_tokens": 6644,
+  "input_tokens_details": {
+   "cache_write_tokens": 6641,
+   "cached_tokens": 0
+  },
+  "output_tokens": 485,
+  "output_tokens_details": {
+   "reasoning_tokens": 0
+  },
+  "total_tokens": 7129
+ },
+ "cost_usd": 0.01072925,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     449,
+     108,
+     565,
+     133
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     673.5,
+     270,
+     847.5,
+     332.5
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     174,
+     155,
+     753,
+     214
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "verse",
+    "box": [
+     261,
+     387.5,
+     1129.5,
+     535
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     174,
+     215,
+     844,
+     329
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "verse",
+    "box": [
+     261,
+     537.5,
+     1266,
+     822.5
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     169,
+     332,
+     788,
+     452
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "verse",
+    "box": [
+     253.5,
+     830,
+     1182,
+     1130
+    ]
+   },
+   {
+    "type": "verse",
+    "box_1000": [
+     162,
+     451,
+     780,
+     510
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": true,
+    "region_id": 5,
+    "region_class": "verse",
+    "box": [
+     243,
+     1127.5,
+     1170,
+     1275
+    ]
+   },
+   {
+    "type": "apparatus_entry",
+    "box_1000": [
+     125,
+     533,
+     886,
+     578
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "note",
+    "box": [
+     187.5,
+     1332.5,
+     1329,
+     1445
+    ]
+   },
+   {
+    "type": "apparatus_entry",
+    "box_1000": [
+     116,
+     579,
+     889,
+     759
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "note",
+    "box": [
+     174,
+     1447.5,
+     1333.5,
+     1897.5
+    ]
+   },
+   {
+    "type": "apparatus_entry",
+    "box_1000": [
+     115,
+     761,
+     881,
+     849
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "note",
+    "box": [
+     172.5,
+     1902.5,
+     1321.5,
+     2122.5
+    ]
+   },
+   {
+    "type": "apparatus_entry",
+    "box_1000": [
+     115,
+     851,
+     878,
+     896
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": true,
+    "region_id": 9,
+    "region_class": "note",
+    "box": [
+     172.5,
+     2127.5,
+     1317,
+     2240
+    ]
+   }
+  ],
+  "warnings": [],
+  "proposals": []
+ }
+}

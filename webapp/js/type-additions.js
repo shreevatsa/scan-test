@@ -68,3 +68,71 @@ export function additionOperations(choice, current) {
   if (parents.length && flow) operations.push({ kind: "rules", name, flow });
   return operations;
 }
+
+// ---------------------------------------------------------------- proposals from the region finder (method 097)
+
+// Names are compared without case and separators, so "Colophon", "colophon_line" and "colophon-line" are one name
+// apart from "colophonline" only in spelling.
+export const normalizeTypeName = name => String(name || "").normalize("NFC").toLowerCase().replace(/[\s_.\-–—]+/gu, "");
+// A proposed name in the form the type list accepts: spaces become underscores, other punctuation is dropped.
+export const typeNameStyle = name => String(name || "").normalize("NFC").trim().replace(/\s+/gu, "_")
+  .replace(/[^\p{L}\p{N}\p{M}_.-]/gu, "").replace(/^[^\p{L}\p{N}_]+/u, "");
+export const itemNames = item => [item.proposal.name, ...(item.proposal.aliases || [])];
+
+// Records what one region-finder result proposed. A proposal whose name matches a pending new type (from any source)
+// is merged into it, adding its evidence; one matching a dismissed proposal adds its evidence there without reopening
+// it; one matching a type already added (or assigned to an existing type) adds nothing; any other becomes a new
+// pending item. Recording the same result twice adds nothing.
+export async function recordFinderProposals(store, record, { pdfPage = null } = {}) {
+  const proposals = record.type_proposals || [];
+  if (!proposals.length) return null;
+  const run = record.region_call?.path || `${record.page}@${record.made_at_utc}`;
+  const at = record.made_at_utc || new Date().toISOString();
+  return store.updateWork(PENDING_PATH, old => {
+    const out = old?.format === "pending-type-proposals" ? structuredClone(old) : empty();
+    for (const proposal of proposals) {
+      const key = normalizeTypeName(proposal.name);
+      const entry = { kind: "finder", method: record.profile?.method || "", run, page: record.page, ...(pdfPage ? { pdf_page: pdfPage } : {}),
+        regions: [...proposal.regions], at_utc: at };
+      const matches = out.items.filter(item => item.kind === "new_type" && itemNames(item).some(name => normalizeTypeName(name) === key));
+      const target = matches.find(item => item.status === "pending") || matches.find(item => item.status === "dismissed" && !item.decision?.same_as);
+      if (target) {
+        target.evidence ||= [];
+        if (!target.evidence.some(value => value.run === run && value.page === entry.page)) target.evidence.push(entry);
+        if (!itemNames(target).includes(proposal.name)) (target.proposal.aliases ||= []).push(proposal.name);
+        continue;
+      }
+      if (matches.length) continue;
+      out.items.push({ id: `finder:${run}:${key}`, kind: "new_type", status: "pending",
+        source: { kind: "finder", method: entry.method, run, model: record.profile?.label || "", page: record.page, ...(pdfPage ? { pdf_page: pdfPage } : {}), regions: [...proposal.regions], at_utc: at },
+        proposal: { name: proposal.name, description: proposal.definition, region: proposal.region_class, furniture: !!proposal.furniture,
+          contains: [], parents: [], flow: "", evidence_pages: [], evidence: "" },
+        evidence: [entry] });
+    }
+    return out;
+  });
+}
+
+// Where each proposed name now goes: a type added from the proposal (under its chosen name), or the existing type it
+// was found to be the same as. Keys are normalized proposed names.
+export function proposalAssignments(record, types) {
+  const out = new Map();
+  for (const item of record?.items || []) {
+    if (item.kind !== "new_type") continue;
+    const target = item.status === "added" ? item.decision?.as || item.proposal.name : item.status === "dismissed" ? item.decision?.same_as : null;
+    if (!target || !types.types[target]) continue;
+    for (const name of itemNames(item)) out.set(normalizeTypeName(name), target);
+  }
+  return out;
+}
+
+// The unassigned regions of a page that carry a proposed name in `keys` (normalized names).
+export const waitingRegions = (doc, keys) => (doc?.source?.omitted_regions || [])
+  .map((region, index) => ({ ...region, index })).filter(region => region.proposed_type && keys.has(normalizeTypeName(region.proposed_type)));
+
+// The evidence pages of a proposal: PDF pages from a survey, and page ids from the region finder.
+export function proposalEvidence(item) {
+  const finder = item.evidence || [];
+  const pages = [...new Set(finder.map(value => value.page))];
+  return { pdf_pages: [...(item.proposal.evidence_pages || [])], pages, regions: finder.reduce((n, value) => n + value.regions.length, 0) };
+}

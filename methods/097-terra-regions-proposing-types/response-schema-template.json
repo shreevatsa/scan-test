@@ -1,0 +1,93 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "new_types",
+    "regions"
+  ],
+  "properties": {
+    "new_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "definition",
+          "region_class"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "region_class": {
+            "type": "string",
+            "enum": [
+              "<<the region classes>>"
+            ]
+          }
+        }
+      }
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "proposed_type",
+          "box_1000",
+          "keep",
+          "reading_order",
+          "uncertain",
+          "continues_from_earlier",
+          "continues_later"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "<<generated from the book's type list>>"
+            ]
+          },
+          "proposed_type": {
+            "type": "string"
+          },
+          "box_1000": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "keep": {
+            "type": "boolean"
+          },
+          "reading_order": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "uncertain": {
+            "type": "boolean"
+          },
+          "continues_from_earlier": {
+            "type": "boolean"
+          },
+          "continues_later": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

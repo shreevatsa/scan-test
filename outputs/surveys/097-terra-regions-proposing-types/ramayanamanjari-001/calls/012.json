@@ -1,0 +1,1574 @@
+{
+ "format": "reader-call",
+ "version": 1,
+ "id": "a0176507-9491-41ac-88a8-b64a971360a7",
+ "page": "ramayanamamjari00ksemuoft-page-012",
+ "stage": "regions",
+ "profile": {
+  "id": "terra-proposals",
+  "label": "GPT-6.1 Terra · reasoning off · proposes new types",
+  "provider": "openai",
+  "model": "gpt-6.1-terra",
+  "reasoning": "none",
+  "method": "097-terra-regions-proposing-types",
+  "proposals": true
+ },
+ "started_at_utc": "2026-11-13T05:53:07.679Z",
+ "request_sha256": "b8ba30332324103d82141a72a6e2d1e54c879086f13ab26f173570c94b40b608",
+ "request": {
+  "model": "gpt-6.1-terra",
+  "input": [
+   {
+    "role": "user",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Rāmāyaṇamañjarī (Kāvyamālā). Kṣemendra's Rāmāyaṇamañjarī, a Sanskrit poem in Devanagari, printed in the Kāvyamālā series: English and Sanskrit title pages, a table of contents, then the poem in numbered verses with a running header, a page number and footnotes at the foot of most pages.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: A title or heading: of the book, a part, a chapter or a section.\n- paragraph: A paragraph of prose, or a block quotation. A paragraph continued from the previous page or onto the next is one unit. One region per paragraph, including one continued from the previous page or onto the next.\n- verse: A verse or stanza, with its number or end mark if it has one. Include all its lines and its number or end mark. Never one region per line, and never two verses in one region, even when consecutive verses are set with no space between them. If other material interrupts a verse, each printed part is its own region.\n- list_item: An entry of a list, a table of contents or an index. One region per entry.\n- table: A table, with its headings. One region per table, including any rotated text in it.\n- figure: An illustration, without its caption. One region per illustration, without its caption.\n- caption: The caption of an illustration or table. One region per caption.\n- footnote: A footnote or endnote, with its number or sign. Include its marker. Separate neighboring notes even when they share a printed line.\n- running_header: A running header or footer: the book's or chapter's title repeated at the top or bottom of the page. Page furniture, keep=false.\n- page_number: The printed page number. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nProposed types, not yet accepted into the list. Use one of them for a region that fits it and fits none of the types above:\n- editor_credit (printed as paragraph): A title-page statement naming the editor or editors and their qualifications.\n- publication_statement (printed as paragraph): A title-page statement identifying the printer, publisher, place, or date of publication.\n- price (printed as paragraph): A title-page statement giving the sale price of the book.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- section: A part, chapter or section of the book, from its heading to the next heading of the same level. It goes on across pages and holds everything in it, including smaller sections.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- New types: if a region is a text unit that fits none of the types above nor a proposed type, do not force it into the nearest type. Give it type other and name a new type in its proposed_type, and define that type once in new_types: a name in the style of the book's type names above, a one-line definition that would let someone recognize the unit on other pages, and the region class it is printed as (one of verse, paragraph, heading, lead_in, list_item, formula, note, table, figure, caption, running_header, page_number). Use one name for every region of that kind on this page. Propose a type only for a kind of unit a reader would want kept apart throughout the book, never for one that differs from a listed type only by its place on this page, and never for a larger unit listed above. Leave proposed_type empty for every other region, and for marks that are not text units (printer's signature marks, catchwords, stray marks), which stay other.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"new_types\":[{\"name\":\"\",\"definition\":\"\",\"region_class\":\"\"}],\n\"regions\":[{\"type\":\"heading|paragraph|verse|list_item|table|figure|caption|footnote|running_header|page_number|other|editor_credit|publication_statement|price\",\"proposed_type\":\"\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n"
+     },
+     {
+      "type": "input_image",
+      "image_url": "<image rebuilt from the book's source>",
+      "detail": "original"
+     }
+    ]
+   }
+  ],
+  "reasoning": {
+   "effort": "none"
+  },
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "name": "page_regions",
+    "strict": true,
+    "schema": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "new_types",
+      "regions"
+     ],
+     "properties": {
+      "new_types": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "name",
+         "definition",
+         "region_class"
+        ],
+        "properties": {
+         "name": {
+          "type": "string"
+         },
+         "definition": {
+          "type": "string"
+         },
+         "region_class": {
+          "type": "string",
+          "enum": [
+           "verse",
+           "paragraph",
+           "heading",
+           "lead_in",
+           "list_item",
+           "formula",
+           "note",
+           "table",
+           "figure",
+           "caption",
+           "running_header",
+           "page_number"
+          ]
+         }
+        }
+       }
+      },
+      "regions": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "type",
+         "proposed_type",
+         "box_1000",
+         "keep",
+         "reading_order",
+         "uncertain",
+         "continues_from_earlier",
+         "continues_later"
+        ],
+        "properties": {
+         "type": {
+          "type": "string",
+          "enum": [
+           "heading",
+           "paragraph",
+           "verse",
+           "list_item",
+           "table",
+           "figure",
+           "caption",
+           "footnote",
+           "running_header",
+           "page_number",
+           "other",
+           "editor_credit",
+           "publication_statement",
+           "price"
+          ]
+         },
+         "proposed_type": {
+          "type": "string"
+         },
+         "box_1000": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+         },
+         "keep": {
+          "type": "boolean"
+         },
+         "reading_order": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 1
+         },
+         "uncertain": {
+          "type": "boolean"
+         },
+         "continues_from_earlier": {
+          "type": "boolean"
+         },
+         "continues_later": {
+          "type": "boolean"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "max_output_tokens": 16384,
+  "store": false
+ },
+ "status": "completed",
+ "response": {
+  "id": "resp_0d429211f5c8d3ae016af6a5c408b887d182298144a2a5dfa9",
+  "object": "response",
+  "created_at": 1794549188,
+  "status": "completed",
+  "access_programs": {
+   "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+   "payer": "developer"
+  },
+  "completed_at": 1794549220,
+  "error": null,
+  "frequency_penalty": 0,
+  "image": {
+   "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "input_transformations": [],
+  "instructions": null,
+  "max_output_tokens": 16384,
+  "max_tool_calls": null,
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "output": [
+   {
+    "id": "msg_0d429211f5c8d3ae016af6a5c56c1887d1a3cabac123d741e6",
+    "type": "message",
+    "status": "completed",
+    "content": [
+     {
+      "type": "output_text",
+      "annotations": [],
+      "logprobs": [],
+      "text": "{\"new_types\":[],\"regions\":[{\"type\":\"page_number\",\"proposed_type\":\"\",\"box_1000\":[458,63,486,87],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"other\",\"proposed_type\":\"\",\"box_1000\":[390,112,470,134],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"other\",\"proposed_type\":\"\",\"box_1000\":[826,102,909,125],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[45,139,459,172],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[46,172,462,205],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[47,204,465,237],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[50,237,467,269],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[52,269,469,302],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[53,301,473,334],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[57,333,477,365],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[59,365,480,398],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[62,397,482,430],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[64,429,486,464],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[66,463,488,494],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[67,495,489,526],\"keep\":true,\"reading_order\":12,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[70,526,491,560],\"keep\":true,\"reading_order\":13,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[73,559,496,592],\"keep\":true,\"reading_order\":14,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[75,591,496,625],\"keep\":true,\"reading_order\":15,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[77,624,500,659],\"keep\":true,\"reading_order\":16,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[81,657,503,693],\"keep\":true,\"reading_order\":17,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[83,690,504,726],\"keep\":true,\"reading_order\":18,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[88,724,510,760],\"keep\":true,\"reading_order\":19,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[90,757,512,791],\"keep\":true,\"reading_order\":20,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[93,790,516,824],\"keep\":true,\"reading_order\":21,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[96,823,519,857],\"keep\":true,\"reading_order\":22,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[98,856,522,889],\"keep\":true,\"reading_order\":23,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[98,888,524,921],\"keep\":true,\"reading_order\":24,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[98,919,526,956],\"keep\":true,\"reading_order\":25,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[489,129,904,162],\"keep\":true,\"reading_order\":26,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[490,162,909,194],\"keep\":true,\"reading_order\":27,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[493,194,912,225],\"keep\":true,\"reading_order\":28,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[495,226,915,258],\"keep\":true,\"reading_order\":29,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[498,259,919,292],\"keep\":true,\"reading_order\":30,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[500,292,921,325],\"keep\":true,\"reading_order\":31,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[504,325,925,358],\"keep\":true,\"reading_order\":32,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[505,357,929,390],\"keep\":true,\"reading_order\":33,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[508,389,933,423],\"keep\":true,\"reading_order\":34,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[512,422,935,455],\"keep\":true,\"reading_order\":35,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[515,455,935,488],\"keep\":true,\"reading_order\":36,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[516,487,938,520],\"keep\":true,\"reading_order\":37,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[519,520,941,553],\"keep\":true,\"reading_order\":38,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[518,553,943,587],\"keep\":true,\"reading_order\":39,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[519,585,945,621],\"keep\":true,\"reading_order\":40,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[523,620,949,652],\"keep\":true,\"reading_order\":41,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[526,652,950,687],\"keep\":true,\"reading_order\":42,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[528,687,953,719],\"keep\":true,\"reading_order\":43,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[530,718,956,752],\"keep\":true,\"reading_order\":44,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[533,751,956,784],\"keep\":true,\"reading_order\":45,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[535,783,959,816],\"keep\":true,\"reading_order\":46,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[537,815,962,848],\"keep\":true,\"reading_order\":47,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[539,847,960,882],\"keep\":true,\"reading_order\":48,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[539,880,961,914],\"keep\":true,\"reading_order\":49,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"list_item\",\"proposed_type\":\"\",\"box_1000\":[542,913,965,948],\"keep\":true,\"reading_order\":50,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}"
+     }
+    ],
+    "phase": "final_answer",
+    "role": "assistant"
+   }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+   "context": "all_turns",
+   "effort": "none",
+   "mode": "standard",
+   "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1,
+  "text": {
+   "format": {
+    "type": "json_schema",
+    "description": null,
+    "name": "page_regions",
+    "schema": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "new_types",
+      "regions"
+     ],
+     "properties": {
+      "new_types": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "name",
+         "definition",
+         "region_class"
+        ],
+        "properties": {
+         "name": {
+          "type": "string"
+         },
+         "definition": {
+          "type": "string"
+         },
+         "region_class": {
+          "type": "string",
+          "enum": [
+           "verse",
+           "paragraph",
+           "heading",
+           "lead_in",
+           "list_item",
+           "formula",
+           "note",
+           "table",
+           "figure",
+           "caption",
+           "running_header",
+           "page_number"
+          ]
+         }
+        }
+       }
+      },
+      "regions": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "type",
+         "proposed_type",
+         "box_1000",
+         "keep",
+         "reading_order",
+         "uncertain",
+         "continues_from_earlier",
+         "continues_later"
+        ],
+        "properties": {
+         "type": {
+          "type": "string",
+          "enum": [
+           "heading",
+           "paragraph",
+           "verse",
+           "list_item",
+           "table",
+           "figure",
+           "caption",
+           "footnote",
+           "running_header",
+           "page_number",
+           "other",
+           "editor_credit",
+           "publication_statement",
+           "price"
+          ]
+         },
+         "proposed_type": {
+          "type": "string"
+         },
+         "box_1000": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+         },
+         "keep": {
+          "type": "boolean"
+         },
+         "reading_order": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "minimum": 1
+         },
+         "uncertain": {
+          "type": "boolean"
+         },
+         "continues_from_earlier": {
+          "type": "boolean"
+         },
+         "continues_later": {
+          "type": "boolean"
+         }
+        }
+       }
+      }
+     }
+    },
+    "strict": true
+   },
+   "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+   "image_gen": {
+    "input_tokens": 0,
+    "input_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 0
+    },
+    "output_tokens": 0,
+    "output_tokens_details": {
+     "image_tokens": 0,
+     "text_tokens": 0
+    },
+    "total_tokens": 0
+   },
+   "web_search": {
+    "num_requests": 0
+   }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+   "input_tokens": 2326,
+   "input_tokens_details": {
+    "cache_write_tokens": 2323,
+    "cached_tokens": 0
+   },
+   "output_tokens": 2771,
+   "output_tokens_details": {
+    "reasoning_tokens": 0
+   },
+   "total_tokens": 5097
+  },
+  "user": null,
+  "metadata": {}
+ },
+ "seconds": 32.599700000286106,
+ "usage": {
+  "input_tokens": 2326,
+  "input_tokens_details": {
+   "cache_write_tokens": 2323,
+   "cached_tokens": 0
+  },
+  "output_tokens": 2771,
+  "output_tokens_details": {
+   "reasoning_tokens": 0
+  },
+  "total_tokens": 5097
+ },
+ "cost_usd": 0.01676175,
+ "parsed": {
+  "regions": [
+   {
+    "type": "page_number",
+    "box_1000": [
+     458,
+     63,
+     486,
+     87
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 1,
+    "region_class": "page_number",
+    "box": [
+     284.418,
+     66.402,
+     301.806,
+     91.698
+    ]
+   },
+   {
+    "type": "other",
+    "box_1000": [
+     390,
+     112,
+     470,
+     134
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 2,
+    "region_class": "other",
+    "box": [
+     242.19,
+     118.048,
+     291.87,
+     141.236
+    ]
+   },
+   {
+    "type": "other",
+    "box_1000": [
+     826,
+     102,
+     909,
+     125
+    ],
+    "keep": false,
+    "reading_order": null,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 3,
+    "region_class": "other",
+    "box": [
+     512.946,
+     107.508,
+     564.489,
+     131.75
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     45,
+     139,
+     459,
+     172
+    ],
+    "keep": true,
+    "reading_order": 1,
+    "uncertain": false,
+    "continues_from_earlier": true,
+    "continues_later": false,
+    "region_id": 4,
+    "region_class": "list_item",
+    "box": [
+     27.945,
+     146.506,
+     285.039,
+     181.288
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     46,
+     172,
+     462,
+     205
+    ],
+    "keep": true,
+    "reading_order": 2,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 5,
+    "region_class": "list_item",
+    "box": [
+     28.566,
+     181.288,
+     286.902,
+     216.07
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     47,
+     204,
+     465,
+     237
+    ],
+    "keep": true,
+    "reading_order": 3,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 6,
+    "region_class": "list_item",
+    "box": [
+     29.187,
+     215.016,
+     288.765,
+     249.798
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     50,
+     237,
+     467,
+     269
+    ],
+    "keep": true,
+    "reading_order": 4,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 7,
+    "region_class": "list_item",
+    "box": [
+     31.05,
+     249.798,
+     290.007,
+     283.526
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     52,
+     269,
+     469,
+     302
+    ],
+    "keep": true,
+    "reading_order": 5,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 8,
+    "region_class": "list_item",
+    "box": [
+     32.292,
+     283.526,
+     291.249,
+     318.308
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     53,
+     301,
+     473,
+     334
+    ],
+    "keep": true,
+    "reading_order": 6,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 9,
+    "region_class": "list_item",
+    "box": [
+     32.913,
+     317.254,
+     293.733,
+     352.036
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     57,
+     333,
+     477,
+     365
+    ],
+    "keep": true,
+    "reading_order": 7,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 10,
+    "region_class": "list_item",
+    "box": [
+     35.397,
+     350.982,
+     296.217,
+     384.71
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     59,
+     365,
+     480,
+     398
+    ],
+    "keep": true,
+    "reading_order": 8,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 11,
+    "region_class": "list_item",
+    "box": [
+     36.639,
+     384.71,
+     298.08,
+     419.492
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     62,
+     397,
+     482,
+     430
+    ],
+    "keep": true,
+    "reading_order": 9,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 12,
+    "region_class": "list_item",
+    "box": [
+     38.502,
+     418.438,
+     299.322,
+     453.22
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     64,
+     429,
+     486,
+     464
+    ],
+    "keep": true,
+    "reading_order": 10,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 13,
+    "region_class": "list_item",
+    "box": [
+     39.744,
+     452.166,
+     301.806,
+     489.056
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     66,
+     463,
+     488,
+     494
+    ],
+    "keep": true,
+    "reading_order": 11,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 14,
+    "region_class": "list_item",
+    "box": [
+     40.986,
+     488.002,
+     303.048,
+     520.676
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     67,
+     495,
+     489,
+     526
+    ],
+    "keep": true,
+    "reading_order": 12,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 15,
+    "region_class": "list_item",
+    "box": [
+     41.607,
+     521.73,
+     303.669,
+     554.404
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     70,
+     526,
+     491,
+     560
+    ],
+    "keep": true,
+    "reading_order": 13,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 16,
+    "region_class": "list_item",
+    "box": [
+     43.47,
+     554.404,
+     304.911,
+     590.24
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     73,
+     559,
+     496,
+     592
+    ],
+    "keep": true,
+    "reading_order": 14,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 17,
+    "region_class": "list_item",
+    "box": [
+     45.333,
+     589.186,
+     308.016,
+     623.968
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     75,
+     591,
+     496,
+     625
+    ],
+    "keep": true,
+    "reading_order": 15,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 18,
+    "region_class": "list_item",
+    "box": [
+     46.575,
+     622.914,
+     308.016,
+     658.75
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     77,
+     624,
+     500,
+     659
+    ],
+    "keep": true,
+    "reading_order": 16,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 19,
+    "region_class": "list_item",
+    "box": [
+     47.817,
+     657.696,
+     310.5,
+     694.586
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     81,
+     657,
+     503,
+     693
+    ],
+    "keep": true,
+    "reading_order": 17,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 20,
+    "region_class": "list_item",
+    "box": [
+     50.301,
+     692.478,
+     312.363,
+     730.422
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     83,
+     690,
+     504,
+     726
+    ],
+    "keep": true,
+    "reading_order": 18,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 21,
+    "region_class": "list_item",
+    "box": [
+     51.543,
+     727.26,
+     312.984,
+     765.204
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     88,
+     724,
+     510,
+     760
+    ],
+    "keep": true,
+    "reading_order": 19,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 22,
+    "region_class": "list_item",
+    "box": [
+     54.648,
+     763.096,
+     316.71,
+     801.04
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     90,
+     757,
+     512,
+     791
+    ],
+    "keep": true,
+    "reading_order": 20,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 23,
+    "region_class": "list_item",
+    "box": [
+     55.89,
+     797.878,
+     317.952,
+     833.714
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     93,
+     790,
+     516,
+     824
+    ],
+    "keep": true,
+    "reading_order": 21,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 24,
+    "region_class": "list_item",
+    "box": [
+     57.753,
+     832.66,
+     320.436,
+     868.496
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     96,
+     823,
+     519,
+     857
+    ],
+    "keep": true,
+    "reading_order": 22,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 25,
+    "region_class": "list_item",
+    "box": [
+     59.616,
+     867.442,
+     322.299,
+     903.278
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     98,
+     856,
+     522,
+     889
+    ],
+    "keep": true,
+    "reading_order": 23,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 26,
+    "region_class": "list_item",
+    "box": [
+     60.858,
+     902.224,
+     324.162,
+     937.006
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     98,
+     888,
+     524,
+     921
+    ],
+    "keep": true,
+    "reading_order": 24,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 27,
+    "region_class": "list_item",
+    "box": [
+     60.858,
+     935.952,
+     325.404,
+     970.734
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     98,
+     919,
+     526,
+     956
+    ],
+    "keep": true,
+    "reading_order": 25,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 28,
+    "region_class": "list_item",
+    "box": [
+     60.858,
+     968.626,
+     326.646,
+     1007.624
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     489,
+     129,
+     904,
+     162
+    ],
+    "keep": true,
+    "reading_order": 26,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 29,
+    "region_class": "list_item",
+    "box": [
+     303.669,
+     135.966,
+     561.384,
+     170.748
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     490,
+     162,
+     909,
+     194
+    ],
+    "keep": true,
+    "reading_order": 27,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 30,
+    "region_class": "list_item",
+    "box": [
+     304.29,
+     170.748,
+     564.489,
+     204.476
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     493,
+     194,
+     912,
+     225
+    ],
+    "keep": true,
+    "reading_order": 28,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 31,
+    "region_class": "list_item",
+    "box": [
+     306.153,
+     204.476,
+     566.352,
+     237.15
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     495,
+     226,
+     915,
+     258
+    ],
+    "keep": true,
+    "reading_order": 29,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 32,
+    "region_class": "list_item",
+    "box": [
+     307.395,
+     238.204,
+     568.215,
+     271.932
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     498,
+     259,
+     919,
+     292
+    ],
+    "keep": true,
+    "reading_order": 30,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 33,
+    "region_class": "list_item",
+    "box": [
+     309.258,
+     272.986,
+     570.699,
+     307.768
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     500,
+     292,
+     921,
+     325
+    ],
+    "keep": true,
+    "reading_order": 31,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 34,
+    "region_class": "list_item",
+    "box": [
+     310.5,
+     307.768,
+     571.941,
+     342.55
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     504,
+     325,
+     925,
+     358
+    ],
+    "keep": true,
+    "reading_order": 32,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 35,
+    "region_class": "list_item",
+    "box": [
+     312.984,
+     342.55,
+     574.425,
+     377.332
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     505,
+     357,
+     929,
+     390
+    ],
+    "keep": true,
+    "reading_order": 33,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 36,
+    "region_class": "list_item",
+    "box": [
+     313.605,
+     376.278,
+     576.909,
+     411.06
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     508,
+     389,
+     933,
+     423
+    ],
+    "keep": true,
+    "reading_order": 34,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 37,
+    "region_class": "list_item",
+    "box": [
+     315.468,
+     410.006,
+     579.393,
+     445.842
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     512,
+     422,
+     935,
+     455
+    ],
+    "keep": true,
+    "reading_order": 35,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 38,
+    "region_class": "list_item",
+    "box": [
+     317.952,
+     444.788,
+     580.635,
+     479.57
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     515,
+     455,
+     935,
+     488
+    ],
+    "keep": true,
+    "reading_order": 36,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 39,
+    "region_class": "list_item",
+    "box": [
+     319.815,
+     479.57,
+     580.635,
+     514.352
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     516,
+     487,
+     938,
+     520
+    ],
+    "keep": true,
+    "reading_order": 37,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 40,
+    "region_class": "list_item",
+    "box": [
+     320.436,
+     513.298,
+     582.498,
+     548.08
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     519,
+     520,
+     941,
+     553
+    ],
+    "keep": true,
+    "reading_order": 38,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 41,
+    "region_class": "list_item",
+    "box": [
+     322.299,
+     548.08,
+     584.361,
+     582.862
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     518,
+     553,
+     943,
+     587
+    ],
+    "keep": true,
+    "reading_order": 39,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 42,
+    "region_class": "list_item",
+    "box": [
+     321.678,
+     582.862,
+     585.603,
+     618.698
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     519,
+     585,
+     945,
+     621
+    ],
+    "keep": true,
+    "reading_order": 40,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 43,
+    "region_class": "list_item",
+    "box": [
+     322.299,
+     616.59,
+     586.845,
+     654.534
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     523,
+     620,
+     949,
+     652
+    ],
+    "keep": true,
+    "reading_order": 41,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 44,
+    "region_class": "list_item",
+    "box": [
+     324.783,
+     653.48,
+     589.329,
+     687.208
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     526,
+     652,
+     950,
+     687
+    ],
+    "keep": true,
+    "reading_order": 42,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 45,
+    "region_class": "list_item",
+    "box": [
+     326.646,
+     687.208,
+     589.95,
+     724.098
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     528,
+     687,
+     953,
+     719
+    ],
+    "keep": true,
+    "reading_order": 43,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 46,
+    "region_class": "list_item",
+    "box": [
+     327.888,
+     724.098,
+     591.813,
+     757.826
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     530,
+     718,
+     956,
+     752
+    ],
+    "keep": true,
+    "reading_order": 44,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 47,
+    "region_class": "list_item",
+    "box": [
+     329.13,
+     756.772,
+     593.676,
+     792.608
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     533,
+     751,
+     956,
+     784
+    ],
+    "keep": true,
+    "reading_order": 45,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 48,
+    "region_class": "list_item",
+    "box": [
+     330.993,
+     791.554,
+     593.676,
+     826.336
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     535,
+     783,
+     959,
+     816
+    ],
+    "keep": true,
+    "reading_order": 46,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 49,
+    "region_class": "list_item",
+    "box": [
+     332.235,
+     825.282,
+     595.539,
+     860.064
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     537,
+     815,
+     962,
+     848
+    ],
+    "keep": true,
+    "reading_order": 47,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 50,
+    "region_class": "list_item",
+    "box": [
+     333.477,
+     859.01,
+     597.402,
+     893.792
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     539,
+     847,
+     960,
+     882
+    ],
+    "keep": true,
+    "reading_order": 48,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 51,
+    "region_class": "list_item",
+    "box": [
+     334.719,
+     892.738,
+     596.16,
+     929.628
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     539,
+     880,
+     961,
+     914
+    ],
+    "keep": true,
+    "reading_order": 49,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 52,
+    "region_class": "list_item",
+    "box": [
+     334.719,
+     927.52,
+     596.781,
+     963.356
+    ]
+   },
+   {
+    "type": "list_item",
+    "box_1000": [
+     542,
+     913,
+     965,
+     948
+    ],
+    "keep": true,
+    "reading_order": 50,
+    "uncertain": false,
+    "continues_from_earlier": false,
+    "continues_later": false,
+    "region_id": 53,
+    "region_class": "list_item",
+    "box": [
+     336.582,
+     962.302,
+     599.265,
+     999.192
+    ]
+   }
+  ],
+  "warnings": [],
+  "proposals": []
+ }
+}

@@ -5,19 +5,19 @@
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
 import { h, cropInto } from "./render.js";
-import { prepare } from "./reader.js?v=20261113-survey-1";
-import { typeRevision } from "./schema.js?v=20261113-survey-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-survey-1";
-import { newTypeDialog } from "./regionsview.js?v=20261113-survey-1";
-import { renderSurvey } from "./type-survey-view.js?v=20261113-survey-1";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-survey-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261113-survey-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261113-survey-1";
-import { regionPath } from "./pageimage.js?v=20261113-survey-1";
+import { prepare } from "./reader.js?v=20261113-finder-types-1";
+import { typeRevision } from "./schema.js?v=20261113-finder-types-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261113-finder-types-1";
+import { newTypeDialog } from "./regionsview.js?v=20261113-finder-types-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261113-finder-types-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261113-finder-types-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261113-finder-types-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261113-finder-types-1";
+import { regionPath } from "./pageimage.js?v=20261113-finder-types-1";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
-export function surveyBox(app, { credentialsBox, onBusy, selected }) {
+export function surveyBox(app, { credentialsBox, onBusy, selected, onProposals }) {
   const book = app.book, token = app.routeToken;
   app.typeOverview ||= {};
   const discovery = h("div");
@@ -28,7 +28,7 @@ export function surveyBox(app, { credentialsBox, onBusy, selected }) {
     app.typeOverview.open = section.open;
     if (!section.open || !section.isConnected || loaded || app.book !== book || app.routeToken !== token) return;
     loaded = true;
-    try { await renderSurvey(discovery, app, { selected: selected(), credentialsBox, onBusy }); }
+    try { await renderSurvey(discovery, app, { selected: selected(), credentialsBox, onBusy, onProposals }); }
     catch (error) { discovery.replaceChildren(h("p", { class: "bad", role: "status" }, error.message)); loaded = false; }
   };
   section.addEventListener("toggle", load);

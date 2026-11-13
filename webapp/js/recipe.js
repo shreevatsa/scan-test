@@ -1,13 +1,15 @@
 // The recipe a book starts with, and what each stage says about its model and cost (webapp/README.md, "Processing a
 // book"). Comparisons found the recipe; a book uses it unless someone chooses "Change".
 
-// Region finding with GPT-6.1 Terra (methods 042 and 063), transcription with Gemini 4 Argon at low thinking, and
-// completion with Gemini 4 Argon at high thinking.
-export const RECIPE = { finder: "terra-regions", reader: "argon-low", structurer: "argon-structure" };
+// Region finding with GPT-6.1 Terra, proposing new types (method 097: 042's request with the pending proposals, and
+// the current local step), transcription with Gemini 4 Argon at low thinking, and completion with Gemini 4 Argon at
+// high thinking. Books that saved no finder (before the recipe) keep 042 (finderById's default).
+export const RECIPE = { finder: "terra-proposals", reader: "argon-low", structurer: "argon-structure" };
 
 // Measured cost per page on a 267-page scanned book (the private series, HANDOFF.md, 2026-11-12), used for a model
 // until the book has its own completed calls.
-export const MEASURED_PAGE_COST = { "terra-regions": 0.010, "argon-low": 0.038, "argon-structure": 0.032 };
+// For 097, 042's figure times 1.14, the ratio of their costs on the same 25 public pages (NOTEBOOK, 2026-11-13).
+export const MEASURED_PAGE_COST = { "terra-regions": 0.010, "terra-proposals": 0.011, "argon-low": 0.038, "argon-structure": 0.032 };
 export const MEASURED_BASIS = "measured on a 267-page scanned book";
 
 const STAGE_NAMES = { regions: "Regions", text: "Text", read: "Units and links" };

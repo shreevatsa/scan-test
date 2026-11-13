@@ -78,6 +78,7 @@ export function regionRecords(regions, geometry) {
       model_box: src.box, status: g.rings.length ? "ok" : "no_ink", polygons: g.rings, bounds,
       lines: g.lines.map(L => ({ line_id: L.line_id, ink_pixels: L.ink_pixels, polygons: L.rings,
         ...(L.previous_line_ids ? { previous_line_ids: L.previous_line_ids } : {}) })),
+      ...(src.proposed_type ? { proposed_type: src.proposed_type } : {}),
     };
   });
 }

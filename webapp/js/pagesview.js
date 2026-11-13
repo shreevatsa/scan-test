@@ -1,21 +1,22 @@
-import { suggestionButton } from "./review-view.js?v=20261113-survey-1";
+import { suggestionButton } from "./review-view.js?v=20261113-finder-types-1";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261113-survey-1";
-import { RARE_LAYOUT } from "./flags.js?v=20261113-survey-1";
-import { regionBoxes } from "./pageimage.js?v=20261113-survey-1";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261113-finder-types-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261113-finder-types-1";
+import { regionBoxes } from "./pageimage.js?v=20261113-finder-types-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261113-survey-1";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261113-survey-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261113-survey-1";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261113-survey-1";
-import { settings } from "./store.js?v=20261113-survey-1";
-import { runBatch } from "./pipeline/batch.js?v=20261113-survey-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261113-finder-types-1";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261113-finder-types-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261113-finder-types-1";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261113-finder-types-1";
+import { settings } from "./store.js?v=20261113-finder-types-1";
+import { runBatch } from "./pipeline/batch.js?v=20261113-finder-types-1";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261113-survey-1";
-import { renderFinders } from "./findersview.js?v=20261113-survey-1";
-import { money } from "./reader-controls.js?v=20261113-survey-1";
-import { findTargets } from "./find-targets.js?v=20261113-survey-1";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261113-survey-1";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261113-finder-types-1";
+import { renderFinders } from "./findersview.js?v=20261113-finder-types-1";
+import { money } from "./reader-controls.js?v=20261113-finder-types-1";
+import { findTargets } from "./find-targets.js?v=20261113-finder-types-1";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261113-finder-types-1";
+import { proposalsBox } from "./proposals-view.js?v=20261113-finder-types-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -232,6 +233,9 @@ export async function renderPages(el, app) {
     h("span", { class: "meta" }, "Find each page’s regions and choose the book’s unit types.")) : null;
   // In Regions the count of pages a run will use and its messages sit in the Find regions box, which both views share.
   const boxed = stage === "regions" && book.writable;
+  // Proposed types from surveys and from Find regions (method 097), shown only while some wait.
+  const proposals = boxed ? proposalsBox(app) : null;
+  proposals?.refresh();
   const creds = boxed ? credentialsBox((id, value) => settings.set(`key:${id}`, value)) : null;
   const content = h("div", { class: "region-grid-content" }, toolbar, stageReview, ...boxed ? [] : [summary, message], empty, grid, nextStep, preview);
   const typeContent = h("div", { class: "region-type-content" });
@@ -277,12 +281,13 @@ export async function renderPages(el, app) {
     changeArea.append(comparison);
     setBusy = (area, value) => {
       app.workflowBusy = app.header.inert = value;
-      for (const part of [recipeRow, modelFields, runArea, comparisonContent, content, typeContent, survey?.element, creds?.element]) if (part && part !== area) part.inert = value;
+      for (const part of [recipeRow, modelFields, runArea, comparisonContent, content, typeContent, survey?.element, proposals?.element, creds?.element]) if (part && part !== area) part.inert = value;
     };
   }
   const survey = boxed && book.manifest.pdf ? surveyBox(app, { credentialsBox: creds, selected: () => [...selected], onBusy: value => {
     app.workflowBusy = app.header.inert = content.inert = typeContent.inert = processSection.inert = value;
-  } }) : null;
+    if (proposals) proposals.element.inert = value;
+  }, onProposals: () => proposals?.refresh() }) : null;
   const switcher = stage === "regions" ? h("nav", { class: "view-switch", "aria-label": "Regions view" },
     ...[["pages", "By page"], ["types", "By type"]].map(([value, label]) => h("button", { class: value === view ? "on" : "", "aria-pressed": String(value === view),
       onclick: () => { if (value !== view) app.setRegionView(value); } }, label))) : null;
@@ -291,7 +296,7 @@ export async function renderPages(el, app) {
       : stage === "regions" ? "Find and review the page regions. Move reviewed pages on to Text together."
         : stage === "text" ? "Transcribe the pages moved on from Regions. Review the text beside the scans, then move pages on to Read."
           : "Complete units and links using the accepted transcription. Open pages to review their structure."),
-    creds?.element, survey?.element, processSection, readOnly, switcher, view === "types" ? typeContent : content);
+    creds?.element, survey?.element, proposals?.element, processSection, readOnly, switcher, view === "types" ? typeContent : content);
   el.replaceChildren(container);
   const dispose = () => { observer?.disconnect(); for (const url of urls) URL.revokeObjectURL(url); preview.close(); };
   app.onLeaveGrid = dispose;
@@ -417,7 +422,7 @@ export async function renderPages(el, app) {
       progress.finish(out.paused ? "Stopped" : "Finished");
       message.textContent = `${out.processed} ${out.processed === 1 ? "page" : "pages"} processed · ${out.failed} failed · ${money(out.spend)} new spend${out.unknown ? " · Stopped because a call’s cost is unavailable" : ""}`;
     } catch (error) { progress.finish("Stopped"); message.textContent = error.message; }
-    finally { busyFields(false); for (const pid of rows.keys()) refreshCard(pid); app.diskCopy?.checkpoint(); await refreshModel(); applyFilters(); }
+    finally { busyFields(false); for (const pid of rows.keys()) refreshCard(pid); app.diskCopy?.checkpoint(); await refreshModel(); applyFilters(); await proposals?.refresh(); }
   } }, ACTIONS[stage]);
   const move = async (owned, forward) => {
     if (app.workflowBusy) return;

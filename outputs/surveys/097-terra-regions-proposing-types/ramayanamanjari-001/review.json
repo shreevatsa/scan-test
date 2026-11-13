@@ -1,0 +1,19 @@
+{
+ "date": "2026-11-13",
+ "where": "Regions -> Proposed types box, throwaway headless Chrome profile",
+ "before_review": "page 325 (PDF) moved on to Text so that its regions layer is protected",
+ "decisions": [
+  {"proposal": "section_closing", "action": "Add with rename", "as": "colophon", "inside": "section", "type_revision": 3,
+   "result": "8 regions on 7 pages (94, 185 x2, 250, 323, 380, 423, 525) got type colophon; the box message was lost when the tab redrew (fixed, see verse_group_marker)"},
+  {"proposal": "publication_statement", "action": "Same as existing type", "same_as": "paragraph",
+   "result": "4 regions on 2 pages now have type paragraph (pages 7 and 9)"},
+  {"proposal": "verse_group_marker", "action": "Add with rename", "as": "verse_group_label", "inside": "section", "type_revision": 4,
+   "result": "assigned on 44, 51 and 250; page 325 listed as a moved-on page with regions waiting (its page editor offers 'Make it verse_group_label'). Page 250 was rebuilt with only this proposal's name, which put its colophon back to unassigned; fixed (pages are rebuilt with every decided name), and page 250 repaired with the fixed rebuild"},
+  {"proposal": "editor_credit", "action": "Add with rename", "as": "title_credit", "inside": "section", "type_revision": 5,
+   "result": "Box message after the redraw: '2 regions on 2 pages now have type title_credit.'"}
+ ],
+ "left_pending": ["price"],
+ "after": {"7": "title_credit, paragraph x2; waiting: price", "9": "title_credit, paragraph x3; waiting: price", "12": "2 plain other",
+  "44": "verse_group_label", "51": "verse_group_label", "94": "colophon", "95": "1 plain other", "185": "colophon x2",
+  "250": "verse_group_label, colophon", "323": "colophon", "325": "waiting: verse_group_marker (protected)", "380": "colophon", "423": "colophon", "525": "colophon"}
+}

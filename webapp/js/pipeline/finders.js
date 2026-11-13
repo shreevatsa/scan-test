@@ -1,8 +1,10 @@
 // Each additional finder is evaluated on the public passage references before being offered here.
-import { canonical } from "../ops.js?v=20261113-survey-1";
-import { argonRates, flashRates } from "./model-prices.js?v=20261113-survey-1";
+import { canonical } from "../ops.js?v=20261113-finder-types-1";
+import { argonRates, flashRates } from "./model-prices.js?v=20261113-finder-types-1";
 export const FINDERS = [
   { id: "terra-regions", label: "GPT-6.1 Terra · reasoning off", provider: "openai", model: "gpt-6.1-terra", reasoning: "none", method: "042+063" },
+  { id: "terra-proposals", label: "GPT-6.1 Terra · reasoning off · proposes new types", provider: "openai", model: "gpt-6.1-terra", reasoning: "none",
+    method: "097-terra-regions-proposing-types", proposals: true },
   { id: "local-blocks", label: "Line blocks · free on this device", provider: "local", model: "line-blocks-v1", method: "079-local-line-block-regions" },
   { id: "tesseract-regions", label: "Tesseract paragraphs · free on this device", provider: "local", model: "tesseract.js-6.0.1", method: "080-tesseract-paragraph-regions" },
   { id: "astra-regions", label: "GPT-6 Astra · low reasoning", provider: "openai", model: "gpt-6-astra", reasoning: "low", method: "081-gpt-6-astra-low-book-regions",

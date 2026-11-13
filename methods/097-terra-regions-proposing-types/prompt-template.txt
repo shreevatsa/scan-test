@@ -1,0 +1,28 @@
+Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.
+
+The book: <<BOOK>>
+
+Return JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,
+with the origin at the top-left. Give each region a type, a keep flag, and
+reading_order among content regions. Furniture regions may have null order.
+
+Make each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:
+<<TYPES>>
+
+<<PENDING>><<LARGER_UNITS>>
+- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.
+- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.
+<<NESTING>>
+- Continuation: give each region two flags.
+  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.
+  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.
+  Both are false for a unit that is complete in its region, and for page furniture.
+- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.
+- New types: if a region is a text unit that fits none of the types above<<PENDING_TOO>>, do not force it into the nearest type. Give it type other and name a new type in its proposed_type, and define that type once in new_types: a name in the style of the book's type names above, a one-line definition that would let someone recognize the unit on other pages, and the region class it is printed as (one of <<CLASSES>>). Use one name for every region of that kind on this page. Propose a type only for a kind of unit a reader would want kept apart throughout the book, never for one that differs from a listed type only by its place on this page, and never for a larger unit listed above. Leave proposed_type empty for every other region, and for marks that are not text units (printer's signature marks, catchwords, stray marks), which stay other.
+- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.
+- Do not transcribe, translate, or regenerate the text. Only propose regions.
+
+Schema:
+{"new_types":[{"name":"","definition":"","region_class":""}],
+"regions":[{"type":"<<TYPE_ENUM>>","proposed_type":"",
+"box_1000":[0,0,1000,1000],"keep":true,"reading_order":1,"uncertain":false,"continues_from_earlier":false,"continues_later":false}]}

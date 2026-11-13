@@ -140,7 +140,7 @@ export class PageView {
     for (const [index, omitted] of (doc.source?.omitted_regions || []).entries()) if (omitted.box) {
       const [x1, y1, x2, y2] = omitted.box;
       const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-omitted", fill: "url(#pv-omitted-hatch)", "data-omitted": index });
-      const title = svgEl("title"); title.textContent = `${omitted.region} needs a type`; rect.append(title);
+      const title = svgEl("title"); title.textContent = `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`; rect.append(title);
       rect.addEventListener("click", event => { event.stopPropagation(); this.cb.onSelectOmitted?.(index); });
       svg.append(rect);
     }

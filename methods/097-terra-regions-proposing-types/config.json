@@ -1,0 +1,18 @@
+{
+  "id": "terra-proposals",
+  "label": "GPT-6.1 Terra · reasoning off · proposes new types",
+  "provider": "openai",
+  "model": "gpt-6.1-terra",
+  "reasoning": "none",
+  "method": "097-terra-regions-proposing-types",
+  "base_method": "042-gpt-6.1-terra-none-book-types-continuations",
+  "prompt": "Method 042 book-types-continuations-v1 with the book's pending proposed types and new-type proposals (prompt-template.txt)",
+  "response_schema": "response-schema-template.json (method 042's regions with proposed_type, plus new_types)",
+  "local_outlines": "094-illumination-flattened-ink",
+  "coordinate_format": "xyxy_1000",
+  "image_detail": "original",
+  "max_output_tokens": 16384,
+  "store": false,
+  "pricing": "webapp/pipeline/regions-pricing.json (Terra), as for 042",
+  "runtime_snapshot": "snapshot/"
+}
