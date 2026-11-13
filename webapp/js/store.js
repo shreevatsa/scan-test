@@ -127,6 +127,21 @@ export class Book {
   // The book's pages, always those of the manifest as last read or written (so they are never stale after book.json is
   // read again), and each page's place in them.
   get pages() { return this.manifest.pages; }
+  // Pages marked "not interesting": dimmed in the grids and left out of what a stage's runs and moves default to. Only
+  // a default (never the page list, counts, Read or exports), kept in book.json so it survives a reload and a .chaya.pdf.
+  get skipped() { return new Set(this.manifest.skipped || []); }
+  isSkipped(pid) { return (this.manifest.skipped || []).includes(pid); }
+  async setSkipped(ids, skip) {
+    if (!this.writable) throw new Error("This book is read only here: make an editable copy to dim pages.");
+    await this.pageWrite(async () => {
+      this.manifest = await this.readJson("book.json") || this.manifest;
+      const set = new Set(this.manifest.skipped || []);
+      for (const pid of ids) if (pid in this.index) { if (skip) set.add(pid); else set.delete(pid); }
+      const list = this.pages.map(page => page.id).filter(pid => set.has(pid));
+      if (list.length) this.manifest.skipped = list; else delete this.manifest.skipped;
+      await this.writeFile("book.json", pretty(this.manifest));
+    });
+  }
   get index() {
     if (this.indexed?.pages !== this.manifest.pages) this.indexed = { pages: this.manifest.pages, index: Object.fromEntries(this.manifest.pages.map((p, i) => [p.id, i])) };
     return this.indexed.index;

@@ -37,7 +37,7 @@ export async function renderPages(el, app) {
   if (selected.size) showSelection();
   const stateFilter = h("select", { "aria-label": "Page state" }, ...["all", "pending", "model", "edited", "provisional", "accepted"].map(value =>
     h("option", { value }, { all: "All states", pending: "Pending", model: "Ready to review", edited: "Edited", provisional: "Provisional", accepted: "Moved on" }[value])));
-  const filter = h("select", { "aria-label": "Page flags" }, ...[["all", "All pages"], ["flagged", "Flagged"], ...stage === "regions" ? [["rareLayout", `Rare layouts (under ${RARE_LAYOUT} pages)`]] : [],
+  const filter = h("select", { "aria-label": "Page flags" }, ...[["all", "All pages"], ["flagged", "Flagged"], ["dimmed", "Dimmed"], ...stage === "regions" ? [["rareLayout", `Rare layouts (under ${RARE_LAYOUT} pages)`]] : [],
     ["earlier", "Earlier type revision"], ["suggestion", "Has a suggestion"]].map(([value, label]) => h("option", { value }, label)));
   const grouping = h("select", { "aria-label": "Group pages by layout" }, h("option", { value: "order" }, "Page order"), h("option", { value: "layout" }, "Layout · rarest first"));
   if (overview?.filters) {
@@ -49,7 +49,9 @@ export async function renderPages(el, app) {
   const summary = h("p", { class: "stage-selection", role: "status" });
   const message = h("p", { role: "status" });
   const empty = h("p", { class: "hint", hidden: true });
-  const targetIds = () => (selected.size ? [...selected] : visible).filter(pid => eligible(stage, app.pageStates.get(pid)));
+  // Pages dimmed on Pages (marked not interesting) are left out of what runs and moves default to, but a page named in
+  // the selection is always used.
+  const targetIds = () => (selected.size ? [...selected] : visible.filter(pid => !book.isSkipped(pid))).filter(pid => eligible(stage, app.pageStates.get(pid)));
   // A page with no content (no regions) has nothing to transcribe or complete: Text and Read count it as done, and
   // their runs and estimates leave it out.
   const nothingToDo = pid => (layer === "text" || layer === "units") && noContent(app.pageStates.get(pid).doc);
@@ -66,9 +68,11 @@ export async function renderPages(el, app) {
   const refreshSummary = () => {
     const ids = targetIds(), flagged = ids.filter(pid => flagsFor(pid).length).length;
     const hidden = ids.filter(pid => !visible.includes(pid)).length;
-    const scope = selected.size ? `${ids.length} selected${hidden ? ` (${hidden} hidden by filters)` : ""}` : `All ${ids.length} displayed pages targeted`;
+    const dimmed = selected.size ? 0 : visible.filter(pid => book.isSkipped(pid)).length;
+    const scope = selected.size ? `${ids.length} selected${hidden ? ` (${hidden} hidden by filters)` : ""}`
+      : `All ${ids.length} displayed pages targeted${dimmed ? ` (${dimmed} dimmed ${dimmed === 1 ? "page" : "pages"} skipped)` : ""}`;
     summary.textContent = selecting ? `${scope} · ${flagged} flagged · ${visible.length} shown`
-      : `${visible.length} of ${rows.size} pages shown · ${flagged} flagged`;
+      : `${visible.length} of ${rows.size} pages shown · ${flagged} flagged${book.skipped.size ? ` · ${book.skipped.size} dimmed` : ""}`;
     if (runButton) {
       const ready = profile && checks?.status(profile)?.valid;
       const count = runnable().length;
@@ -95,7 +99,7 @@ export async function renderPages(el, app) {
       const layers = stage === "pages" ? Object.values(state.layers) : [owned];
       const matchesState = stateFilter.value === "all" || layers.some(value => stateFilter.value === "pending" ? !value || value.state === "provisional"
         : stateFilter.value === "accepted" ? value?.accepted : value?.state === stateFilter.value && !value.accepted);
-      const matchesFlag = filter.value === "all" || (filter.value === "flagged" ? flagsFor(pid).length : state[filter.value]);
+      const matchesFlag = filter.value === "all" || (filter.value === "flagged" ? flagsFor(pid).length : filter.value === "dimmed" ? book.isSkipped(pid) : state[filter.value]);
       row.element.hidden = !eligible(stage, state) || !matchesState || !matchesFlag;
       if (!eligible(stage, state) && selected.delete(pid)) removed = true;
       if (!row.element.hidden) visible.push(pid);
@@ -122,6 +126,12 @@ export async function renderPages(el, app) {
     const flags = flagsFor(pid);
     row.flags.textContent = flags.length ? `${flags.length} ${flags.length === 1 ? "flag" : "flags"} · ${flags[0]}` : "";
     row.element.classList.toggle("has-flags", !!flags.length);
+    row.element.classList.toggle("skipped", book.isSkipped(pid));
+    if (row.skipButton) {
+      row.skipButton.textContent = book.isSkipped(pid) ? "↺" : "×";
+      row.skipButton.title = book.isSkipped(pid) ? "Not interesting: bring this page back" : "Not interesting: dim this page and leave it out when pages are processed";
+      row.skipButton.setAttribute("aria-label", `${book.isSkipped(pid) ? "Bring back" : "Dim"} page ${book.index[pid] + 1}`);
+    }
     row.flags.title = flags.join("\n");
     row.element.querySelector(".suggestion-actions")?.remove();
     row.element.append(suggestionButton(app, pid, layer));
@@ -154,7 +164,14 @@ export async function renderPages(el, app) {
     } }) : null;
     const image = h("img", { alt: `Page ${book.index[page.id] + 1}`, width: 120, height: 166 });
     const states = h("div", { class: "stage-badges" }), flags = h("p", { class: "stage-flags" });
-    const element = h("article", { class: "stage-card", dataset: { page: page.id } },
+    // Pages only: a small × dims the page (and ↺ brings it back). Dimming is just a default for runs and moves.
+    const skipButton = stage === "pages" && book.writable ? h("button", { class: "skip-toggle", onclick: async () => {
+      try { await book.setSkipped([page.id], !book.isSkipped(page.id)); } catch (error) { message.textContent = error.message; return; }
+      refreshCard(page.id);
+      applyFilters();
+      app.diskCopy?.checkpoint();
+    } }) : null;
+    const element = h("article", { class: "stage-card", dataset: { page: page.id } }, skipButton,
       h("button", { class: "stage-thumbnail", "aria-label": `Open page ${book.index[page.id] + 1}`, onclick: () => stage === "pages" ? showPreview(page.id) : app.openPage(page.id, {}, stage) }, image),
       selecting ? h("label", {}, checkbox, ` Page ${book.index[page.id] + 1}${page.label ? ` · ${page.label}` : ""}`)
         : h("p", { class: "stage-card-name" }, `Page ${book.index[page.id] + 1}${page.label ? ` · ${page.label}` : ""}`), states, flags);
@@ -165,22 +182,28 @@ export async function renderPages(el, app) {
       try { await app.startByHand(page.id); } catch (error) { app.toast(error.message, "bad"); }
       finally { button.disabled = false; button.textContent = "Start by hand"; }
     } }, "Start by hand"));
-    rows.set(page.id, { element, checkbox, image, states, flags });
+    rows.set(page.id, { element, checkbox, image, states, flags, skipButton });
     grid.append(element);
     refreshCard(page.id);
   }
-  const toolbar = h("div", { class: "stage-filters" }, ...selecting ? [h("label", {}, "Select pages ", selection),
-    h("button", { onclick: () => {
-      try {
-        const numbers = pageRange(selection.value, book.pages.length);
-        selected.clear();
-        for (const number of numbers) {
-          const pid = book.pages[number - 1].id;
-          if (rows.has(pid)) selected.add(pid);
-        }
-        applyFilters();
-      } catch (error) { message.textContent = error.message; }
-    } }, "Select range"), h("button", { onclick: () => { selected.clear(); selection.value = ""; applyFilters(); } }, "Clear selection")] : [], stateFilter, filter,
+  // The pages a run applies to are chosen in the Process pages box, above the run button, where a book can be processed;
+  // elsewhere (a read-only book) the same controls sit with the filters.
+  const applyRange = () => {
+    try {
+      const numbers = selection.value.trim() ? pageRange(selection.value, book.pages.length) : [];
+      selected.clear();
+      for (const number of numbers) {
+        const pid = book.pages[number - 1].id;
+        if (rows.has(pid)) selected.add(pid);
+      }
+      message.textContent = "";
+      applyFilters();
+    } catch (error) { message.textContent = error.message; }
+  };
+  selection.onchange = applyRange;
+  const selectionControls = selecting ? [h("label", {}, "Select pages ", selection)] : [];
+  const selectionInBox = selecting && book.writable;
+  const toolbar = h("div", { class: "stage-filters" }, ...selectionInBox ? [] : selectionControls, stateFilter, filter,
     ...(stage === "regions" ? [grouping] : []));
   const stageReview = h("div", { class: "actions stage-review" });
   const heading = h("h1", {}, TITLES[stage]);
@@ -388,15 +411,16 @@ export async function renderPages(el, app) {
   if (stage === "regions" || stage === "text") moveButton = h("button", { class: "primary", onclick: () => move(layer, true) }, `Move on to ${stage === "regions" ? "Text" : "Read"}`);
   if (stage === "text" || stage === "read") backButton = h("button", { onclick: () => move(stage === "text" ? "regions" : "text", false) }, `Send back to ${stage === "text" ? "Regions" : "Text"}`);
   const already = { regions: "have regions", text: "are already transcribed", read: "are already completed" }[stage];
-  const processingFields = h("div", { class: "fields col" }, h("label", {}, "Spend threshold $", threshold),
+  const processingFields = h("div", { class: "run-fields" }, h("label", {}, "Spend threshold $", threshold),
     h("details", { class: "run-options", open: !!include.checked },
       h("summary", { class: "meta" }, "Redo options"),
       h("label", { title: "Normally pages that already have a result for this stage are skipped. A page you edited or moved on is never overwritten: a new result is offered as a suggestion." },
         include, ` Also redo pages that ${already}`),
       h("label", { title: "Normally a request already made for the same page and settings is reused for free. Tick to send a new request, which is charged again." },
         fresh, " Ignore saved model results (charged again)")));
-  runControls.append(processingFields,
-    h("p", { class: "hint" }, `Runs on the pages selected in the grid below, or on every page shown when none are selected.`), estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status);
+  runControls.append(h("div", { class: "fields selection-row" }, ...selectionControls),
+    h("p", { class: "hint" }, "Type a range such as 1-50, 62 and press Enter, or tick pages in the grid below. With none selected, every page shown is used, except dimmed ones."),
+    processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status);
   if (overview) {
     modelFields.append(h("label", {}, "Region finder ", select), languageLabel);
     runArea.append(manualHint, keyPanel, runControls);
@@ -414,7 +438,7 @@ export async function renderPages(el, app) {
   if (moveButton || backButton) {
     const next = stage === "regions" ? "Text" : "Read", verb = { regions: "Find regions", text: "Transcribe", read: "Complete" }[stage];
     content.append(h("div", { class: "next-step" }, ...[backButton, moveButton].filter(Boolean),
-      h("span", { class: "meta" }, `${verb}, ${moveButton ? `Move on to ${next}` : ""}${moveButton && backButton ? " and " : ""}${backButton ? "Send back" : ""} apply to the selected pages, or to every page shown when none are selected.`)));
+      h("span", { class: "meta" }, `${verb}, ${moveButton ? `Move on to ${next}` : ""}${moveButton && backButton ? " and " : ""}${backButton ? "Send back" : ""} apply to the selected pages, or to every page shown that is not dimmed when none are selected.`)));
   }
   include.onchange = refreshSummary;
   await refreshModel();

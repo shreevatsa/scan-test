@@ -365,8 +365,16 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .process-section .recipe-line .mini { font-weight: 400; margin-left: 6px; }
 .process-section .recipe-change { margin: 0 16px 12px; padding: 10px 12px; border-left: 3px solid var(--line); }
 .process-section .recipe-change > .region-disclosure { margin-top: 12px; }
-.next-step { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 18px; padding: 12px 0; background: var(--bg); border-top: 1px solid var(--line); }
+.next-step { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 18px; padding: 12px 0; background: var(--bg); border-top: 1px solid var(--line); }
+.stage-card { position: relative; }
+.skip-toggle { position: absolute; top: 6px; right: 6px; z-index: 1; width: 24px; height: 24px; padding: 0; line-height: 1; border-radius: 50%; border: 1px solid var(--line); background: rgba(255,255,255,.92); color: var(--muted); cursor: pointer; }
+.skip-toggle:hover { color: var(--ink); background: #fff; }
+.stage-card.skipped .stage-thumbnail, .stage-card.skipped .stage-badges, .stage-card.skipped .stage-flags { opacity: .35; }
+.run-fields label { display: block; margin: 4px 0; }
 .run-options { margin: 6px 0; }
+.stage-keys[open] { margin: 10px 0; padding: 10px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+.stage-keys summary { cursor: pointer; }
+.selection-row { align-items: center; }
 .run-options label { display: block; margin: 4px 0; }
 .stage-review:not(:empty) { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 4px; }
 .region-coordinates { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
