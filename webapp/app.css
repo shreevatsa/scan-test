@@ -626,6 +626,13 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .ttree li.unused-draft > .trow .tname { font-style: italic; }
 .needs-class { color: #b3261e; font-size: .9em; }
 .pv-linebox { fill: rgba(255, 200, 0, .12); stroke: #c44; stroke-width: 2; stroke-dasharray: 6 4; vector-effect: non-scaling-stroke; pointer-events: none; }
+.flag-list { list-style: none; margin: 6px 0; padding: 0; display: grid; gap: 6px; }
+.flag-item { display: flex; gap: 8px; align-items: baseline; padding: 6px 10px; border: 1px solid var(--line, #ccc); border-left: 3px solid #d9a441; border-radius: 4px; background: #fff; }
+.flag-item.flag-region-warning, .flag-item.flag-provisional { border-left-color: #6f9bd8; }
+.flag-item > .uncovered-row { flex: 1; border: none; padding: 0; margin: 0; }
+.flag-item:has(> .uncovered-row) { padding: 6px; }
+.flag-mark { flex: none; color: #a66a00; }
+.flag-item.flag-region-warning .flag-mark, .flag-item.flag-provisional .flag-mark { color: #3b6bb5; }
 .uncovered-row { display: grid; gap: 4px; padding: 6px; margin: 4px 0; border: 1px solid var(--line, #ccc); border-radius: 4px; cursor: pointer; }
 .uncovered-row:hover, .uncovered-row:focus-within { background: var(--hl); }
 .uncovered-row .line-crop { max-width: 100%; background: #fff; border: 1px solid #ddd; justify-self: start; }

@@ -3,7 +3,7 @@
 // regions are cut; a figure has no text lines. The user sees "Draw regions like: …", a short label and the rule in
 // plain words. The rule wording is the first sentence of CLASS_RULES, so the two cannot drift apart.
 import { h } from "./render.js";
-import { CLASS_RULES } from "./pipeline/prompts.js?v=20261113-noink-3";
+import { CLASS_RULES } from "./pipeline/prompts.js?v=20261113-flaglist-1";
 
 export const CLASS_LABELS = {
   verse: "verse (one region per verse, with its number)",
