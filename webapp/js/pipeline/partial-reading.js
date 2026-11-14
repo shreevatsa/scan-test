@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261113-moveon-2";
+import { canonical } from "../ops.js?v=20261113-examples-1";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {

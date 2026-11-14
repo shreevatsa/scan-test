@@ -1,36 +1,37 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261113-moveon-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261113-moveon-2";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261113-moveon-2";
-import { RECIPE } from "./recipe.js?v=20261113-moveon-2";
-import { readerOptions } from "./pipeline/readers.js?v=20261113-moveon-2";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261113-examples-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261113-examples-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261113-examples-1";
+import { RECIPE } from "./recipe.js?v=20261113-examples-1";
+import { readerOptions } from "./pipeline/readers.js?v=20261113-examples-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { PageView } from "./pageimage.js?v=20261113-moveon-2";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261113-moveon-2";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261113-moveon-2";
-import { renderStyle } from "./styleview.js?v=20261113-moveon-2";
-import { openTypeList } from "./typesview.js?v=20261113-moveon-2";
-import { typeSetup } from "./type-setup.js?v=20261113-moveon-2";
+import { PageView } from "./pageimage.js?v=20261113-examples-1";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261113-examples-1";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261113-examples-1";
+import { renderStyle } from "./styleview.js?v=20261113-examples-1";
+import { openTypeList } from "./typesview.js?v=20261113-examples-1";
+import { typeSetup } from "./type-setup.js?v=20261113-examples-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261113-moveon-2";
-import { EditError } from "./ops.js?v=20261113-moveon-2";
-import { Maker, post } from "./pipeline/run.js?v=20261113-moveon-2";
-import { CredentialChecks } from "./key-check.js?v=20261113-moveon-2";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261113-moveon-2";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261113-moveon-2";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261113-moveon-2";
-import { layerState, noteEdit } from "./layers.js?v=20261113-moveon-2";
-import { orderedRegions } from "./flags.js?v=20261113-moveon-2";
-import { assemble } from "./assemble.js?v=20261113-moveon-2";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261113-moveon-2";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261113-moveon-2";
-import { renderPages } from "./pagesview.js?v=20261113-moveon-2";
-import { settings } from "./store.js?v=20261113-moveon-2";
-import { renderReaders } from "./readersview.js?v=20261113-moveon-2";
-import { renderStructures } from "./structuresview.js?v=20261113-moveon-2";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261113-moveon-2";
+import * as ops from "./ops.js?v=20261113-examples-1";
+import { EditError } from "./ops.js?v=20261113-examples-1";
+import { Maker, post } from "./pipeline/run.js?v=20261113-examples-1";
+import { CredentialChecks } from "./key-check.js?v=20261113-examples-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261113-examples-1";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261113-examples-1";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261113-examples-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261113-examples-1";
+import { layerState, noteEdit } from "./layers.js?v=20261113-examples-1";
+import { orderedRegions } from "./flags.js?v=20261113-examples-1";
+import { assemble } from "./assemble.js?v=20261113-examples-1";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261113-examples-1";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261113-examples-1";
+import { renderPages } from "./pagesview.js?v=20261113-examples-1";
+import { settings } from "./store.js?v=20261113-examples-1";
+import { renderReaders } from "./readersview.js?v=20261113-examples-1";
+import { renderStructures } from "./structuresview.js?v=20261113-examples-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261113-examples-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -88,6 +89,7 @@ class App {
     const mine = canKeepBooks() ? await browserBooks({ damaged: true }).catch(e => { console.warn(e); return []; }) : [];
     const copies = new Map(await Promise.all(mine.map(async b => [b.name, await copyRecords.get(`browser:${b.name}`) || {}])));
     const storage = canKeepBooks() ? await storagePersistence() : null;
+    const examples = await loadExamples(import.meta.url).catch(() => []);
     const openUrl = () => { const u = urlInput.value.trim(); if (u) location.search = "?book=" + encodeURIComponent(u); };
     const urlInput = h("input", { placeholder: "URL of a PDF", size: 40, onkeydown: e => e.key === "Enter" && openUrl() });
     const pdfInput = h("input", { type: "file", accept: "application/pdf,.pdf", style: "display:none", onchange: e => e.target.files[0] && this.openPdfFile(e.target.files[0]) });
@@ -129,7 +131,12 @@ class App {
       canKeepBooks() && mine.length ? h("div", { class: "recent" }, h("h3", {}, "Books in this browser"),
         mine.map(bookRow),
         h("p", { class: storage?.persisted === false ? "warn" : "meta" }, storageText(storage || {})),
-        h("p", { class: "meta" }, "Books are kept in this browser's own storage, which is lost if the browser clears this site's data. Give each book a copy on disk (in its header or Export), or download its .chaya.pdf.")) : null));
+        h("p", { class: "meta" }, "Books are kept in this browser's own storage, which is lost if the browser clears this site's data. Give each book a copy on disk (in its header or Export), or download its .chaya.pdf.")) : null,
+      examples.length ? h("div", { class: "examples" }, h("h3", {}, "Examples"),
+        h("p", { class: "meta" }, "Open one to read it, correct it or see how a finished book looks. It opens as a copy in this browser; nothing is uploaded."),
+        h("div", { class: "example-list" }, ...examples.map(example => h("a", { class: "example", href: exampleHref(example) },
+          h("b", {}, example.title), h("span", { class: "blurb" }, example.blurb),
+          h("span", { class: "meta" }, `${example.pages} pages${exampleSize(example) ? ` · ${exampleSize(example)}` : ""}`))))) : null));
   }
 
   // A book in this browser, opened only when the files it is known to have can be read: a book with a lost source PDF
@@ -1106,7 +1113,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261113-moveon-2", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261113-examples-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
