@@ -5,9 +5,9 @@
 // never regions of an unknown type: they come back as type other with a proposed_type, which the page keeps as an
 // unassigned region until the type is added (type-additions.js).
 import { regionPrompt, regionSchema, regionTypeEnum, regionTypes } from "./prompts.js";
-import { scaleRegions } from "./steps.js?v=20261113-noink-2";
-import { REGION_CLASSES } from "../book-types.js?v=20261113-noink-2";
-import { normalizeTypeName, typeNameStyle, pendingItems } from "../type-additions.js?v=20261113-noink-2";
+import { scaleRegions } from "./steps.js?v=20261113-noink-3";
+import { REGION_CLASSES } from "../book-types.js?v=20261113-noink-3";
+import { normalizeTypeName, typeNameStyle, pendingItems } from "../type-additions.js?v=20261113-noink-3";
 
 const OTHER = "other";
 

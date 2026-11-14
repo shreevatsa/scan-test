@@ -1,13 +1,15 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261113-noink-2";
-import { canonical } from "../ops.js?v=20261113-noink-2";
-import { checkDocument, typeRevision } from "../schema.js?v=20261113-noink-2";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261113-noink-3";
+import { canonical } from "../ops.js?v=20261113-noink-3";
+import { checkDocument, typeRevision } from "../schema.js?v=20261113-noink-3";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261113-noink-2";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261113-noink-2";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261113-noink-3";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261113-noink-3";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
-    regions: doc.page.regions.map(region => ({ id: region.id, polygons: region.polygons,
+    // A region with no ink (outlined by its box, nothing to read) takes no part in reading, as in a reading's own record.
+    regions: doc.page.regions.filter(region => !(region.source?.no_ink && !(region.lines || []).some(line => line.polygons?.length)))
+      .map(region => ({ id: region.id, polygons: region.polygons,
       lines: (region.lines || []).filter(line => line.polygons?.length).map(line => ({ line: line.line, polygons: line.polygons })) }))
       .sort((a, b) => a.id.localeCompare(b.id)) });
 }

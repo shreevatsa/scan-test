@@ -85,7 +85,13 @@ test("empty pages, figures, omitted types and missing ink retain their stage and
   valid(doc);
   assert.equal(doc.source.omitted_regions[0].type, "other");
   assert.deepEqual(doc.source.omitted_regions[0].box, [10, 40, 111, 61]);
-  assert.equal(doc.source.regions_skipped[0].region_id, 2);
+  // A region with no ink is kept, outlined by its box and marked, not dropped: the person sees it and decides.
+  const kept = doc.page.regions.find(value => value.source.region_id === 2);
+  assert.ok(kept, "the region with no ink stays on the page");
+  assert.equal(kept.source.no_ink, true);
+  assert.deepEqual(kept.lines, []);
+  assert.equal(kept.polygons.length, 1);
+  assert.deepEqual(doc.source.regions_skipped, []);
 });
 
 test("provisional grouping uses reachable containers, starts sections at headings and joins interrupted units", () => {
@@ -352,4 +358,19 @@ test("completion fills empty note links while retaining a person's existing dest
   valid(merged.doc);
   assert.deepEqual(merged.doc.relations, current.relations);
   assert.equal(merged.suggestion, true);
+});
+
+test("a kept region with no ink passes the stages: nothing is read from it, and it is flagged", async () => {
+  const { regionFlags } = await import("../js/flags.js");
+  const { pageStages } = await import("../js/workflow.js");
+  const withBlank = { ...record(), regions: [region(1, "heading"), region(2, "page_number", { status: "no_ink", polygons: [], lines: [] }), region(3, "footnote")] };
+  const doc = provisionalDocument(pid, page, types, withBlank, { firstPage: true, lastPage: true });
+  valid(doc);
+  assert.equal(doc.page.regions.map(r => r.id).join(), "r1,r2,r3", "kept in the finder's order");
+  assert.ok(regionFlags(doc, types).some(flag => flag.code === "no-ink" && flag.region === "r2"), "the person is told");
+  const transcribed = mergeText(doc, { profile: { id: "argon-low" }, image_sha256: page.image_sha256, regions_record: withBlank, parsed: { regions: doc.page.regions.filter(r => r.lines.length).map(r => ({
+    id: r.id, uncertain: false, note: null, lines: r.lines.map((line, index) => ({ n: index + 1, text: "Text" })) })) } }, types).doc;
+  valid(transcribed);
+  assert.equal(pageStages(transcribed, types).missing, 0, "no lines are missing text");
+  assert.deepEqual(transcribed.page.regions.map(r => r.lines.map(line => line.text)), [["Text"], [], ["Text"]], "the others were read; the empty one was not");
 });

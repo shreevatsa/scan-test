@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261113-noink-2";
+import { typeRevision } from "../schema.js?v=20261113-noink-3";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
@@ -98,7 +98,11 @@ export function rebuildProvisional(doc, types, boundary = {}) {
 
 export function provisionalDocument(pid, page, types, record, boundary = {}) {
   const { sent, skipped } = selectPageRegions(record.regions);
-  const regions = [], omitted = [];
+  const regions = [], omitted = [], kept = new Set();
+  const sourceOf = region => ({ region_id: region.region_id, method_type: region.type, region_class: region.region_class, keep: region.keep,
+    uncertain: region.uncertain, continues_from_earlier: Boolean(region.continues_from_earlier),
+    continues_later: Boolean(region.continues_later), model_box: structuredClone(region.model_box),
+    ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) });
   for (const { rid, region, line_ids: lineIds } of sent) {
     if (!types.types[region.type]) {
       omitted.push({ region: rid, type: region.type, box: structuredClone(region.model_box), ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) });
@@ -106,17 +110,27 @@ export function provisionalDocument(pid, page, types, record, boundary = {}) {
     }
     const lines = new Map(region.lines.map(line => [line.line_id, line.polygons]));
     regions.push({ id: rid, type: region.type, polygons: structuredClone(region.polygons), box: region.model_box.map(Math.round),
-      order: region.reading_order, lines: lineIds.map(line => ({ line, polygons: structuredClone(lines.get(line)) })),
-      source: { region_id: region.region_id, method_type: region.type, region_class: region.region_class, keep: region.keep,
-        uncertain: region.uncertain, continues_from_earlier: Boolean(region.continues_from_earlier),
-        continues_later: Boolean(region.continues_later), model_box: structuredClone(region.model_box),
-        ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) } });
+      order: region.reading_order, lines: lineIds.map(line => ({ line, polygons: structuredClone(lines.get(line)) })), source: sourceOf(region) });
   }
+  // A region the finder drew where the scan has no ink is kept, outlined by its box and marked, as the editor does for a
+  // region drawn by hand over blank paper: the person sees it in the list and on the scan and decides (delete it, retype
+  // it, or keep it, a page number for instance). It has no line pieces, so nothing is read from it.
+  for (const entry of skipped) {
+    const region = entry.status === "no_ink" && entry.model_box ? record.regions.find(r => r.region_id === entry.region_id) : null;
+    if (!region || !types.types[region.type]) continue;
+    const [x1, y1, x2, y2] = region.model_box.map(Math.round);
+    regions.push({ id: region.document_region_id || `r${region.region_id}`, type: region.type, polygons: [[[x1, y1], [x2, y1], [x2, y2], [x1, y2]]],
+      box: [x1, y1, x2, y2], order: region.reading_order, lines: [],
+      source: { ...sourceOf(region), no_ink: true, outline: "the box (no ink in it)" } });
+    kept.add(entry.region_id);
+  }
+  const position = new Map(record.regions.map((r, index) => [r.document_region_id || `r${r.region_id}`, index]));
+  regions.sort((a, b) => (position.get(a.id) ?? 0) - (position.get(b.id) ?? 0));
   const { units, flows, problems } = provisionalUnits(pid, regions, types, boundary);
   const revision = typeRevision(types.source?.revision);
   const source = { method: "provisional-regions-v1", char_h: record.char_h ?? record.line_analysis?.char_h ?? 0,
     page_angle_deg: record.page_angle_deg ?? record.line_analysis?.page_angle_deg ?? 0,
-    regions_skipped: structuredClone(skipped), omitted_regions: omitted,
+    regions_skipped: structuredClone(skipped.filter(entry => !kept.has(entry.region_id))), omitted_regions: omitted,
     uncovered_lines: structuredClone(record.uncovered_lines || []),
     warnings: structuredClone(record.warnings || []), problems: [...(record.problems || []), ...problems], provisional_problems: problems,
     layers: { regions: { state: "model", made_by: record.profile?.method || "042+063", types_revision: typeRevision(record.types_revision) }, units: { state: "provisional", types_revision: revision } } };

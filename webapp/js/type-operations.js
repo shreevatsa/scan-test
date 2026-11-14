@@ -1,9 +1,9 @@
 import { h } from "./render.js";
-import { checkPage } from "./schema.js?v=20261113-noink-2";
-import { REGION_CLASSES } from "./book-types.js?v=20261113-noink-2";
-import { classSelect } from "./class-labels.js?v=20261113-noink-2";
-import { pageSelectionText } from "./page-browser.js?v=20261113-noink-2";
-import { money } from "./reader-controls.js?v=20261113-noink-2";
+import { checkPage } from "./schema.js?v=20261113-noink-3";
+import { REGION_CLASSES } from "./book-types.js?v=20261113-noink-3";
+import { classSelect } from "./class-labels.js?v=20261113-noink-3";
+import { pageSelectionText } from "./page-browser.js?v=20261113-noink-3";
+import { money } from "./reader-controls.js?v=20261113-noink-3";
 
 const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change how regions are drawn", remove: "Remove unused type" };
 const quantity = (n, name) => `${n} ${name}${n === 1 ? "" : "s"}`;
