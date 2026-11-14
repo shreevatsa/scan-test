@@ -1,22 +1,22 @@
-import { suggestionButton } from "./review-view.js?v=20261113-moveon-1";
+import { suggestionButton } from "./review-view.js?v=20261113-moveon-2";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261113-moveon-1";
-import { RARE_LAYOUT } from "./flags.js?v=20261113-moveon-1";
-import { regionBoxes } from "./pageimage.js?v=20261113-moveon-1";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261113-moveon-2";
+import { RARE_LAYOUT } from "./flags.js?v=20261113-moveon-2";
+import { regionBoxes } from "./pageimage.js?v=20261113-moveon-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261113-moveon-1";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261113-moveon-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261113-moveon-1";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261113-moveon-1";
-import { settings } from "./store.js?v=20261113-moveon-1";
-import { runBatch } from "./pipeline/batch.js?v=20261113-moveon-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261113-moveon-2";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261113-moveon-2";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261113-moveon-2";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261113-moveon-2";
+import { settings } from "./store.js?v=20261113-moveon-2";
+import { runBatch } from "./pipeline/batch.js?v=20261113-moveon-2";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261113-moveon-1";
-import { renderFinders } from "./findersview.js?v=20261113-moveon-1";
-import { money } from "./reader-controls.js?v=20261113-moveon-1";
-import { findTargets } from "./find-targets.js?v=20261113-moveon-1";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261113-moveon-1";
-import { proposalsBox } from "./proposals-view.js?v=20261113-moveon-1";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261113-moveon-2";
+import { renderFinders } from "./findersview.js?v=20261113-moveon-2";
+import { money } from "./reader-controls.js?v=20261113-moveon-2";
+import { findTargets } from "./find-targets.js?v=20261113-moveon-2";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261113-moveon-2";
+import { proposalsBox } from "./proposals-view.js?v=20261113-moveon-2";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -454,6 +454,12 @@ export async function renderPages(el, app) {
           app.pendingStageSelection = { stage: "read", ids: toComplete };
           app.setMode("read&view=pages");
         } }, `Review and complete these ${toComplete.length} pages`));
+      }
+      // Moving pages on takes the person to the next stage, where they now are; when some could not move, they stay to see why.
+      if (forward && count && !failed) {
+        if (stage === "regions") location.hash = workflowAddress("text");
+        else if (stage === "text" && toComplete.length) { app.pendingStageSelection = { stage: "read", ids: toComplete }; app.setMode("read&view=pages"); }
+        else location.hash = workflowAddress(stage === "text" ? "read" : "text");
       }
     } finally { busyFields(false); applyFilters(); if (count) app.diskCopy?.checkpoint(); }
   };
