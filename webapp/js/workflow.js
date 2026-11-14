@@ -1,6 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261114-failures-2";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261114-failures-2";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261114-failures-2";
+import { typeRevision } from "./schema.js?v=20261114-reset-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261114-reset-1";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261114-reset-1";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261114-reset-1";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -129,6 +130,24 @@ export function pageWalker(pages, index, docOf, delta) {
       if (!doc || !lookPast(doc)) return doc || null;
     }
   };
+}
+
+// Put a page's units back to the grouping made from its regions, as it was before completion: the model's units, line
+// ends and links go (they stay in the work records), and the layer is provisional again. A pure function of the document.
+export function groupingReset(doc, types, boundary = {}) {
+  const next = structuredClone(doc);
+  for (const region of next.page.regions) for (const line of region.lines || []) delete line.end;
+  next.relations = [];
+  next.source = { ...next.source, layers: { ...layerRecords(next), units: { state: "provisional", types_revision: typeRevision(types.source?.revision) } } };
+  return rebuildProvisional(next, types, boundary);
+}
+
+export async function resetGrouping(book, pid, check) {
+  const boundary = { firstPage: book.index[pid] === 0, lastPage: book.index[pid] === book.pages.length - 1 };
+  return book.updateStage(pid, current => {
+    const doc = groupingReset(current, book.types, boundary), [errors] = check(doc);
+    return { doc, valid: !errors.length };
+  });
 }
 
 export async function movePage(book, pid, layer, forward, check) {

@@ -1,22 +1,22 @@
-import { suggestionButton } from "./review-view.js?v=20261114-failures-2";
+import { suggestionButton } from "./review-view.js?v=20261114-reset-1";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261114-failures-2";
-import { RARE_LAYOUT } from "./flags.js?v=20261114-failures-2";
-import { regionBoxes } from "./pageimage.js?v=20261114-failures-2";
+import { eligible, STAGE_LAYER, movePage, resetGrouping, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261114-reset-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261114-reset-1";
+import { regionBoxes } from "./pageimage.js?v=20261114-reset-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261114-failures-2";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261114-failures-2";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261114-failures-2";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261114-failures-2";
-import { settings } from "./store.js?v=20261114-failures-2";
-import { runBatch } from "./pipeline/batch.js?v=20261114-failures-2";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261114-reset-1";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261114-reset-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261114-reset-1";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261114-reset-1";
+import { settings } from "./store.js?v=20261114-reset-1";
+import { runBatch } from "./pipeline/batch.js?v=20261114-reset-1";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261114-failures-2";
-import { renderFinders } from "./findersview.js?v=20261114-failures-2";
-import { money } from "./reader-controls.js?v=20261114-failures-2";
-import { findTargets } from "./find-targets.js?v=20261114-failures-2";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261114-failures-2";
-import { proposalsBox } from "./proposals-view.js?v=20261114-failures-2";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261114-reset-1";
+import { renderFinders } from "./findersview.js?v=20261114-reset-1";
+import { money } from "./reader-controls.js?v=20261114-reset-1";
+import { findTargets } from "./find-targets.js?v=20261114-reset-1";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261114-reset-1";
+import { proposalsBox } from "./proposals-view.js?v=20261114-reset-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -470,6 +470,24 @@ export async function renderPages(el, app) {
       }
     } finally { busyFields(false); applyFilters(); if (count) app.diskCopy?.checkpoint(); }
   };
+  // Units: pages whose grouping a model made (not accepted, not the person's) can go back to the grouping made from their regions.
+  let resetButton = null;
+  if (stage === "read" && book.writable) resetButton = h("button", { title: "Put the pages shown (or selected) back to the grouping made from their regions, as before completion", onclick: async () => {
+    if (app.workflowBusy) return;
+    const ids = targetIds().filter(pid => { const units = app.pageStates.get(pid).layers.units; return units && units.state === "model" && !units.accepted; });
+    if (!ids.length) { if (barNote) barNote.textContent = "No page shown has completed grouping that could go back."; return; }
+    if (!window.confirm(`Put ${ids.length} ${ids.length === 1 ? "page" : "pages"} back to the grouping made from their regions?\n\nThe model's units, line joins and links on them are removed (the saved model result stays in the book's records). Pages you have edited or moved on are not touched.`)) return;
+    busyFields(true);
+    let done = 0, failed = 0;
+    try {
+      for (const [index, pid] of ids.entries()) {
+        if (barNote) barNote.textContent = `Putting grouping back: page ${index + 1} of ${ids.length}…`;
+        try { await resetGrouping(book, pid, doc => app.check(doc)); done++; } catch (error) { failed++; message.textContent = error.message; }
+        await app.refreshWorkflowPage(pid); refreshCard(pid);
+      }
+      if (barNote) barNote.replaceChildren(h("b", { class: "ok" }, `✓ ${done} ${done === 1 ? "page" : "pages"} back to the provisional grouping.`), failed ? ` ${failed} could not be reset.` : "");
+    } finally { busyFields(false); applyFilters(); if (done) app.diskCopy?.checkpoint(); }
+  } }, "Back to provisional grouping");
   if (stage === "regions" || stage === "text") moveButton = h("button", { class: "primary", onclick: () => move(layer, true) }, `Move on to ${stage === "regions" ? "Text" : "Read"}`);
   if (stage === "text" || stage === "read") backButton = h("button", { onclick: () => move(stage === "text" ? "regions" : "text", false) }, `Send back to ${stage === "text" ? "Regions" : "Text"}`);
   const already = { regions: "have regions", text: "are already transcribed", read: "are already completed" }[stage];
@@ -496,11 +514,11 @@ export async function renderPages(el, app) {
     runArea.append(keyPanel, runControls);
   }
   // The way on is at the bottom of the page, as on Pages, and says which pages it applies to.
-  if (moveButton || backButton) {
+  if (moveButton || backButton || resetButton) {
     const next = stage === "regions" ? "Text" : "Read", verb = { regions: "Find regions", text: "Transcribe", read: "Complete" }[stage];
     barHint = `${verb}, ${moveButton ? `Move on to ${next}` : ""}${moveButton && backButton ? " and " : ""}${backButton ? "Send back" : ""} apply to the selected pages, or to every page shown that is not dimmed when none are selected.`;
     barNote = h("span", { class: "meta bar-note" });
-    content.append(h("div", { class: "next-step" }, ...[backButton, moveButton].filter(Boolean), barNote));
+    content.append(h("div", { class: "next-step" }, ...[resetButton, backButton, moveButton].filter(Boolean), barNote));
     barNote.textContent = barHint;
   }
   include.onchange = refreshSummary;

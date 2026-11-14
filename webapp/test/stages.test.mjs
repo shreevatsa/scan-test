@@ -374,3 +374,23 @@ test("a kept region with no ink passes the stages: nothing is read from it, and 
   assert.equal(pageStages(transcribed, types).missing, 0, "no lines are missing text");
   assert.deepEqual(transcribed.page.regions.map(r => r.lines.map(line => line.text)), [["Text"], [], ["Text"]], "the others were read; the empty one was not");
 });
+
+test("putting a page's grouping back removes the model's units, line ends and links, and keeps regions and text", async () => {
+  const { groupingReset } = await import("../js/workflow.js");
+  const before = provisional();
+  const completedDoc = structuredClone(before);
+  for (const r of completedDoc.page.regions) for (const line of r.lines) { line.text = `Text ${r.id}`; line.end = "hyphen"; }
+  completedDoc.source.layers.text = { state: "model", made_by: "argon-low", types_revision: 3 };
+  completedDoc.source.layers.units = { state: "model", made_by: "flash-structure", types_revision: 3 };
+  completedDoc.units = [{ id: "sec-1", type: "article", open: { start: true, end: true }, children: completedDoc.units.map(unit => ({ unit: unit.id })) }, ...completedDoc.units];
+  completedDoc.flows = { main: ["sec-1"], notes: completedDoc.flows.notes || [] };
+  completedDoc.relations = [{ type: "note", from: { unit: "u1" }, to: { unit: "u1" } }];
+  const reset = groupingReset(completedDoc, types, { firstPage: true, lastPage: true });
+  valid(reset);
+  assert.equal(layerState(reset, "units").state, "provisional");
+  assert.equal(layerState(reset, "text").state, "model", "the text is kept");
+  assert.deepEqual(reset.units.map(unit => unit.type), before.units.map(unit => unit.type), "the grouping made from the regions is back");
+  assert.deepEqual(reset.relations, []);
+  assert.ok(reset.page.regions.every(r => r.lines.every(line => !("end" in line) && line.text)), "line ends are gone, text stays");
+  assert.ok(!reset.units.some(unit => unit.id === "sec-1"), "the model's section is gone");
+});
