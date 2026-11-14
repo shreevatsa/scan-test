@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261114-reset-1";
+import { assemble } from "./assemble.js?v=20261114-sections-1";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261114-reset-1";
-import { layerState } from "./layers.js?v=20261114-reset-1";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261114-reset-1";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261114-sections-1";
+import { layerState } from "./layers.js?v=20261114-sections-1";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261114-sections-1";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -204,7 +204,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
   const all = await book.all((d, n) => { if (current()) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
   if (!current()) return;
   const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
-  const gaps = readingGaps(book.pages, new Set(accepted.map(doc => doc.page.id)));
+  const gaps = readingGaps(book.pages, new Set([...accepted.map(doc => doc.page.id), ...book.pages.filter(page => book.isSkipped?.(page.id)).map(page => page.id)]));   // a dimmed page is left out on purpose, so it is no gap
   const P = prepare(readingDocuments(book.pages, accepted), book.types, book.style);
   const issues = readingIssues(accepted, book.types, app.validate, P.warnings, P.unitCanonical);
   app.readerData = P;
