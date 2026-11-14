@@ -1,22 +1,22 @@
-import { suggestionButton } from "./review-view.js?v=20261113-flaglist-1";
+import { suggestionButton } from "./review-view.js?v=20261113-moveon-1";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261113-flaglist-1";
-import { RARE_LAYOUT } from "./flags.js?v=20261113-flaglist-1";
-import { regionBoxes } from "./pageimage.js?v=20261113-flaglist-1";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261113-moveon-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261113-moveon-1";
+import { regionBoxes } from "./pageimage.js?v=20261113-moveon-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261113-flaglist-1";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261113-flaglist-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261113-flaglist-1";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261113-flaglist-1";
-import { settings } from "./store.js?v=20261113-flaglist-1";
-import { runBatch } from "./pipeline/batch.js?v=20261113-flaglist-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261113-moveon-1";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261113-moveon-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261113-moveon-1";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261113-moveon-1";
+import { settings } from "./store.js?v=20261113-moveon-1";
+import { runBatch } from "./pipeline/batch.js?v=20261113-moveon-1";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261113-flaglist-1";
-import { renderFinders } from "./findersview.js?v=20261113-flaglist-1";
-import { money } from "./reader-controls.js?v=20261113-flaglist-1";
-import { findTargets } from "./find-targets.js?v=20261113-flaglist-1";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261113-flaglist-1";
-import { proposalsBox } from "./proposals-view.js?v=20261113-flaglist-1";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261113-moveon-1";
+import { renderFinders } from "./findersview.js?v=20261113-moveon-1";
+import { money } from "./reader-controls.js?v=20261113-moveon-1";
+import { findTargets } from "./find-targets.js?v=20261113-moveon-1";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261113-moveon-1";
+import { proposalsBox } from "./proposals-view.js?v=20261113-moveon-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -65,7 +65,7 @@ export async function renderPages(el, app) {
     const state = app.pageStates.get(pid);
     return nothingToDo(pid) || state.layers[layer] && (layer !== "units" || state.layers.units.state !== "provisional");
   };
-  let cost = pageCost(null), runButton, moveButton, backButton, checks, profile;
+  let cost = pageCost(null), runButton, moveButton, backButton, checks, profile, barNote = null, barHint = "";
   const processSummary = h("span", { class: "meta" }), recipeText = h("span");
   const include = h("input", { type: "checkbox", checked: pending?.reprocess, "aria-label": "Also redo pages that already have a result" });
   const fresh = h("input", { type: "checkbox", "aria-label": "Ignore saved model results" });
@@ -427,16 +427,23 @@ export async function renderPages(el, app) {
   const move = async (owned, forward) => {
     if (app.workflowBusy) return;
     busyFields(true);
-    let count = 0, failed = 0;
+    let count = 0, failed = 0, firstError = "";
     const moved = [];
+    // Moving many pages takes a while: the bar at the bottom of the screen says how far it is, and then what happened.
+    const targets = targetIds().filter(pid => app.pageStates.get(pid).layers[owned] || forward && nothingToDo(pid));
+    const where = forward ? (stage === "regions" ? "Text" : "Read") : (stage === "text" ? "Regions" : "Text");
+    const note = (...parts) => { if (barNote) barNote.replaceChildren(...parts.flat().filter(part => part !== null && part !== "")); };
     try {
-      for (const pid of targetIds()) {
-        if (!app.pageStates.get(pid).layers[owned] && !(forward && nothingToDo(pid))) continue;
+      for (const [index, pid] of targets.entries()) {
+        note(`${forward ? "Moving on" : "Sending back"}: page ${index + 1} of ${targets.length}…`);
         try { await movePage(book, pid, owned, forward, doc => app.check(doc)); count++; moved.push(pid); }
-        catch (error) { failed++; message.textContent = error.message; }
+        catch (error) { failed++; firstError ||= error.message; message.textContent = error.message; }
         await app.refreshWorkflowPage(pid); refreshCard(pid);
       }
       message.textContent = `${count} ${count === 1 ? "page" : "pages"} ${forward ? "moved on" : "sent back"}${failed ? ` · ${failed} need correction first` : ""}.`;
+      note(h("b", { class: count ? "ok" : "" }, `${count ? "✓ " : ""}${count} ${count === 1 ? "page" : "pages"} ${forward ? "moved on to" : "sent back to"} ${where}.`),
+        failed ? ` ${failed} could not move: ${firstError}` : "", count ? [" ", h("button", { class: "primary", onclick: () => { location.hash = workflowAddress(forward ? (stage === "regions" ? "text" : "read") : (stage === "text" ? "regions" : "text")); } }, `Go to ${where} →`)] : null,
+        !targets.length ? "Nothing to move: no page shown has results for this stage yet." : null);
       // Pages with no content need no completion.
       const toComplete = moved.filter(pid => !noContent(app.pageStates.get(pid).doc));
       if (forward && stage === "text" && toComplete.length) {
@@ -478,8 +485,10 @@ export async function renderPages(el, app) {
   // The way on is at the bottom of the page, as on Pages, and says which pages it applies to.
   if (moveButton || backButton) {
     const next = stage === "regions" ? "Text" : "Read", verb = { regions: "Find regions", text: "Transcribe", read: "Complete" }[stage];
-    content.append(h("div", { class: "next-step" }, ...[backButton, moveButton].filter(Boolean),
-      h("span", { class: "meta" }, `${verb}, ${moveButton ? `Move on to ${next}` : ""}${moveButton && backButton ? " and " : ""}${backButton ? "Send back" : ""} apply to the selected pages, or to every page shown that is not dimmed when none are selected.`)));
+    barHint = `${verb}, ${moveButton ? `Move on to ${next}` : ""}${moveButton && backButton ? " and " : ""}${backButton ? "Send back" : ""} apply to the selected pages, or to every page shown that is not dimmed when none are selected.`;
+    barNote = h("span", { class: "meta bar-note" });
+    content.append(h("div", { class: "next-step" }, ...[backButton, moveButton].filter(Boolean), barNote));
+    barNote.textContent = barHint;
   }
   include.onchange = refreshSummary;
   await refreshModel();

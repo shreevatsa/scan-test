@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261113-flaglist-1";
+import { typeRevision } from "../schema.js?v=20261113-moveon-1";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {

@@ -1,8 +1,8 @@
 // A whole proposed type list (methods 077, 078, 091 and 092, whose request code is kept in their snapshots): its
 // response contract and its conversion to types.json, used to check and review a saved proposal for a new book
 // (a plain-PDF link with &proposal=). Surveys of an existing book only add to its list (pipeline/type-survey.js).
-import { FORMATTING, makeValidator, checkTypes } from "../schema.js?v=20261113-flaglist-1";
-import { settings, idb } from "../store.js?v=20261113-flaglist-1";
+import { FORMATTING, makeValidator, checkTypes } from "../schema.js?v=20261113-moveon-1";
+import { settings, idb } from "../store.js?v=20261113-moveon-1";
 
 export function samplePages(count) {
   const middle = Math.ceil(count / 2);
