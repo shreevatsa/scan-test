@@ -161,10 +161,13 @@ test("A region added over the line removes its flag; a continuation flag names t
 });
 
 test("A region left out for want of ink says where the model drew it, when that is known", () => {
-  const page = doc(); page.page.width = 100; page.page.height = 300;
+  const page = doc(); page.page.width = 100; page.page.height = 300; page.page.regions = [];
   page.source.regions_skipped = [{ region_id: 1, type: "verse", status: "no_ink", model_box: [5, 10, 60, 30] }, { region_id: 2, type: "verse", status: "no_ink" }];
   const flags = regionFlags(page, types).filter(flag => flag.code === "no-ink");
   assert.equal(flags[0].message, "Region 1 (verse) was left out: no ink was found inside its box");
   assert.deepEqual(flags[0].box, [5, 10, 60, 30]);
   assert.equal(flags[1].box, null, "a record made before the box was kept has none");
+  const drawn = structuredClone(page); drawn.page.regions = [{ id: "r17", type: "verse", box: [4, 8, 62, 33], polygons: [], lines: [] }];
+  assert.deepEqual(regionFlags(drawn, types).filter(flag => flag.code === "no-ink" && flag.message.startsWith("Region 1 ")), [],
+    "a region drawn over the same place replaces the left-out one");
 });

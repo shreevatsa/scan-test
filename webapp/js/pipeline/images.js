@@ -5,7 +5,7 @@
 // - context: the first or last line pieces of a neighboring page's region, cut out the same way, with no strip.
 // Returned as PNG data URLs.
 
-import { linePieces } from "./steps.js?v=20261113-noink-1";
+import { linePieces } from "./steps.js?v=20261113-noink-2";
 
 const PALETTE = [[220, 50, 47], [38, 139, 210], [133, 153, 0], [211, 54, 130], [42, 161, 152], [203, 75, 22], [108, 113, 196], [181, 137, 0], [0, 128, 64], [160, 80, 0]];
 const rgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;

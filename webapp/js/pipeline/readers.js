@@ -1,7 +1,7 @@
 // Transcription and schema-assignment profiles. Token prices are paid-tier USD per million.
-import { finderById } from "./finders.js?v=20261113-noink-1";
+import { finderById } from "./finders.js?v=20261113-noink-2";
 // Source fetched 2026-11-08: https://ai.google.dev/gemini-api/docs/pricing
-import { carbonRates, argonRates, flashRates } from "./model-prices.js?v=20261113-noink-1";
+import { carbonRates, argonRates, flashRates } from "./model-prices.js?v=20261113-noink-2";
 
 export const READERS = [
   { id: "argon-low", label: "Gemini 4 Argon · low thinking", provider: "gemini", model: "gemini-4-argon", thinking: "low", rates: argonRates, formatting: true },

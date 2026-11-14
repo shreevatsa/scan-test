@@ -1,6 +1,6 @@
-import { typeRevision } from "./schema.js?v=20261113-noink-1";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-noink-1";
-import { layerState } from "./layers.js?v=20261113-noink-1";
+import { typeRevision } from "./schema.js?v=20261113-noink-2";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261113-noink-2";
+import { layerState } from "./layers.js?v=20261113-noink-2";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -140,6 +140,8 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
   for (const omitted of doc.source?.omitted_regions || []) add("omitted", `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`, omitted.region, omitted.box);
   for (const warning of doc.source?.warnings || []) add("region-warning", String(warning));
   for (const skipped of doc.source?.regions_skipped || []) {
+    // A region the person has since drawn over the same place replaces it: nothing is left to report.
+    if (skipped.model_box && regions.some(region => region.box && boxShare(region.box, skipped.model_box) >= 0.5)) continue;
     const what = skipped.status === "no_ink" || !skipped.status ? "no ink was found inside its box" : skipped.status;
     add("no-ink", `Region ${skipped.region_id}${skipped.type ? ` (${skipped.type})` : ""} was left out: ${what}`, null, skipped.model_box || null);
   }
