@@ -10,7 +10,8 @@ export function selectPageRegions(records) {
     const figure = r.region_class === "figure";
     const lines = figure ? [] : r.lines.filter(L => L.polygons?.length);
     if (r.status !== "ok" || !r.polygons?.length || (!figure && !lines.length)) {
-      skipped.push({ region_id: r.region_id, type: r.type, status: r.status });
+      // The model's box is kept so that the review can show where the region was.
+      skipped.push({ region_id: r.region_id, type: r.type, status: r.status, ...(r.model_box ? { model_box: r.model_box } : {}) });
       continue;
     }
     sent.push({ rid: r.document_region_id || `r${r.region_id}`, region: r, line_ids: lines.map(L => L.line_id) });
