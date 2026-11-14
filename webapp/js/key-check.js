@@ -91,7 +91,7 @@ export class CredentialChecks {
       result = { valid: false, message };
     }
     this.results.set(id, result);
-    this.remember(profile, result.valid).catch(() => {});
+    this.saved = this.remember(profile, result.valid).catch(() => {});   // not awaited: a check does not wait for storage
     return result;
   }
 }

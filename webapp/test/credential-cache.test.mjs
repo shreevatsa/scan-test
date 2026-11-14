@@ -16,7 +16,7 @@ test("a successful check is remembered for the same key and model, never storing
   assert.equal(first.status(terra), undefined, "nothing yet");
   const result = await first.check(terra);
   assert.equal(result.valid, true);
-  await new Promise(resolve => setTimeout(resolve, 20));
+  await first.saved;
   assert.equal(cache.records.length, 1);
   assert.ok(!JSON.stringify(cache.records).includes("sk-secret"), "only a digest is stored");
 
@@ -30,8 +30,7 @@ test("a successful check is remembered for the same key and model, never storing
 test("a different key, or a changed model, is not covered by the saved check", async () => {
   const cache = memory();
   const first = new CredentialChecks({ openai: "sk-one" }, okOpenAI, cache);
-  await first.ready; await first.check(terra);
-  await new Promise(resolve => setTimeout(resolve, 20));
+  await first.ready; await first.check(terra); await first.saved;
   const other = new CredentialChecks({ openai: "sk-two" }, okOpenAI, cache); await other.ready;
   assert.equal(other.status(terra), undefined);
   const same = new CredentialChecks({ openai: "sk-one" }, okOpenAI, cache); await same.ready;
@@ -41,15 +40,14 @@ test("a different key, or a changed model, is not covered by the saved check", a
 test("a failed check removes the saved success; without a cache nothing is kept", async () => {
   const cache = memory();
   const first = new CredentialChecks({ openai: "sk-one" }, okOpenAI, cache);
-  await first.ready; await first.check(terra);
-  await new Promise(resolve => setTimeout(resolve, 20));
+  await first.ready; await first.check(terra); await first.saved;
   assert.equal(cache.records.length, 1);
   const again = new CredentialChecks({ openai: "sk-one" }, async () => { throw new Error("401"); }, cache);
   await again.ready;
   assert.equal(again.status(terra)?.valid, true, "loaded from the cache");
   const failed = await again.check(terra);
   assert.equal(failed.valid, false);
-  await new Promise(resolve => setTimeout(resolve, 20));
+  await again.saved;
   assert.equal(cache.records.length, 0, "the stale success is gone");
   const plain = new CredentialChecks({ openai: "sk-one" }, okOpenAI);
   await plain.ready; await plain.check(terra);
