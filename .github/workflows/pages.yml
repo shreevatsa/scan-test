@@ -29,6 +29,15 @@ jobs:
           mkdir _site
           cp -r webapp _site/webapp
           echo '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=webapp/"><a href="webapp/">webapp/</a>' > _site/index.html
+      # The example books of the front page are the assets of the release tagged "examples" (kept out of git history).
+      # With no such release the site simply has no examples.
+      - name: Fetch the example books
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p _site/webapp/examples
+          gh release download examples --repo "$GITHUB_REPOSITORY" --pattern '*.chaya.pdf' --dir _site/webapp/examples || echo "No examples release yet."
+          ls -la _site/webapp/examples
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
