@@ -1,22 +1,22 @@
-import { suggestionButton } from "./review-view.js?v=20261113-examples-1";
+import { suggestionButton } from "./review-view.js?v=20261114-failures-2";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261113-examples-1";
-import { RARE_LAYOUT } from "./flags.js?v=20261113-examples-1";
-import { regionBoxes } from "./pageimage.js?v=20261113-examples-1";
+import { eligible, STAGE_LAYER, movePage, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261114-failures-2";
+import { RARE_LAYOUT } from "./flags.js?v=20261114-failures-2";
+import { regionBoxes } from "./pageimage.js?v=20261114-failures-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261113-examples-1";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261113-examples-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261113-examples-1";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261113-examples-1";
-import { settings } from "./store.js?v=20261113-examples-1";
-import { runBatch } from "./pipeline/batch.js?v=20261113-examples-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261114-failures-2";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261114-failures-2";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261114-failures-2";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261114-failures-2";
+import { settings } from "./store.js?v=20261114-failures-2";
+import { runBatch } from "./pipeline/batch.js?v=20261114-failures-2";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261113-examples-1";
-import { renderFinders } from "./findersview.js?v=20261113-examples-1";
-import { money } from "./reader-controls.js?v=20261113-examples-1";
-import { findTargets } from "./find-targets.js?v=20261113-examples-1";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261113-examples-1";
-import { proposalsBox } from "./proposals-view.js?v=20261113-examples-1";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261114-failures-2";
+import { renderFinders } from "./findersview.js?v=20261114-failures-2";
+import { money } from "./reader-controls.js?v=20261114-failures-2";
+import { findTargets } from "./find-targets.js?v=20261114-failures-2";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261114-failures-2";
+import { proposalsBox } from "./proposals-view.js?v=20261114-failures-2";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -399,7 +399,7 @@ export async function renderPages(el, app) {
     if (app.workflowBusy || !profile || !checks.status(profile)?.valid) return;
     if (profile.provider !== "local" && !await app.confirmSpending()) return;
     if (app.workflowBusy || !active()) return;
-    const ids = runnable();
+    const ids = runnable(), failures = [];
     stopped = false;
     busyFields(true);
     progress.start(ids.length);
@@ -415,12 +415,19 @@ export async function renderPages(el, app) {
           progress.advance(error ? "failed" : value.cached ? "reused" : "completed");
           await app.refreshWorkflowPage(pid);
           const state = app.pageStates.get(pid);
-          if (error) state.runErrors[stage] = error.message; else delete state.runErrors[stage];
+          if (error) { state.runErrors[stage] = error.message; failures.push({ pid, message: error.message }); } else delete state.runErrors[stage];
           refreshCard(pid);
           rows.get(pid).flags.classList.toggle("bad", !!error);
         } });
       progress.finish(out.paused ? "Stopped" : "Finished");
-      message.textContent = `${out.processed} ${out.processed === 1 ? "page" : "pages"} processed · ${out.failed} failed · ${money(out.spend)} new spend${out.unknown ? " · Stopped because a call’s cost is unavailable" : ""}`;
+      const summary = `${out.processed} ${out.processed === 1 ? "page" : "pages"} processed · ${out.failed} failed · ${money(out.spend)} new spend${out.unknown ? " · Stopped because a call’s cost is unavailable" : ""}`;
+      // Say what failed, page by page, next to the progress it belongs to: a failed page keeps what it had, and the
+      // reason is also its own flag on the card.
+      const outcome = () => [h("p", {}, summary), ...failures.map(failure => h("p", { class: "run-failure bad" },
+        `Page ${book.index[failure.pid] + 1}: ${failure.message} `, h("button", { class: "link", onclick: () => app.openPage(failure.pid, {}, stage) }, "Open the page"))),
+        failures.length ? h("p", { class: "meta" }, "A call that fails after the model answered is still charged. The page keeps its earlier state, so nothing was lost; run it again, choose another model, or correct the page by hand.") : null].filter(Boolean);
+      status.replaceChildren(...outcome());
+      message.textContent = summary;
     } catch (error) { progress.finish("Stopped"); message.textContent = error.message; }
     finally { busyFields(false); for (const pid of rows.keys()) refreshCard(pid); app.diskCopy?.checkpoint(); await refreshModel(); applyFilters(); await proposals?.refresh(); }
   } }, ACTIONS[stage]);
