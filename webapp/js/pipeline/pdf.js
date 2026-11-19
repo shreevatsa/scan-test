@@ -63,10 +63,16 @@ export async function pageInfo(doc, n) {
   const text = await page.getTextContent({ includeMarkedContent: false });
   let chars = 0;
   for (const it of text.items) chars += (it.str || "").replace(/\s/g, "").length;
-  const scan = images.reduce((b, im) => (!b || im.coverage > b.coverage ? im : b), null);
+  const scan = scanImage(images);
   page.cleanup();
-  return { size_points: [base.width, base.height], images, text_characters: chars,
-           kind: scan && scan.coverage >= 0.5 ? "scan" : "digital", scan_image: scan && scan.coverage >= 0.5 ? scan : null };
+  return { size_points: [base.width, base.height], images, text_characters: chars, kind: scan ? "scan" : "digital", scan_image: scan };
+}
+
+// The scan among a page's images: of those covering at least half of the page, the one with the most pixels per inch.
+// A scan from archive.org is often two images over the whole page, a coarse colour background and the text as a sharp
+// black-and-white layer; the text's resolution is the scan's (inputs/render_pages.py likewise takes the largest image).
+export function scanImage(images) {
+  return images.filter(im => im.coverage >= 0.5).reduce((b, im) => (!b || (im.dpi || 0) > (b.dpi || 0) ? im : b), null);
 }
 
 // Page n (from 1) as a PNG blob, with how it was rendered: a scanned page at 300 dpi, or at the scan's own resolution

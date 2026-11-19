@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pageRange } from "../js/pipeline/pdf.js";
+import { pageRange, scanImage } from "../js/pipeline/pdf.js";
 import { pageSelectionText } from "../js/page-browser.js";
 
 test("the page-range forms accept all pages and preserve explicit ranges", () => {
@@ -21,4 +21,12 @@ test("thumbnail choices round-trip through the sample page field, including all 
   const selected = all.filter(page => page !== 25);
   assert.equal(pageSelectionText(selected, 267), "1-24, 26-267");
   assert.deepEqual(pageRange(pageSelectionText(selected, 267), 267), selected);
+});
+
+test("the scan is the sharpest image covering the page, not the first: an archive.org page's text layer, not its background", () => {
+  const background = { pixels: [617, 1048], coverage: 1, dpi: 133.3 }, text = { pixels: [1852, 3146], coverage: 1, dpi: 400.1 };
+  assert.equal(scanImage([background, text]), text);
+  assert.equal(scanImage([text, background]), text);
+  assert.equal(scanImage([{ pixels: [3000, 600], coverage: 0.2, dpi: 900 }, background]), background, "a small picture is not the scan");
+  assert.equal(scanImage([{ pixels: [300, 300], coverage: 0.1, dpi: 300 }]), null);
 });
