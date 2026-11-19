@@ -1,37 +1,38 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261114-sections-1";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261114-sections-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261114-sections-1";
-import { RECIPE } from "./recipe.js?v=20261114-sections-1";
-import { readerOptions } from "./pipeline/readers.js?v=20261114-sections-1";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261119-notes-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261119-notes-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261119-notes-1";
+import { RECIPE } from "./recipe.js?v=20261119-notes-1";
+import { readerOptions } from "./pipeline/readers.js?v=20261119-notes-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { PageView } from "./pageimage.js?v=20261114-sections-1";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261114-sections-1";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261114-sections-1";
-import { renderStyle } from "./styleview.js?v=20261114-sections-1";
-import { openTypeList } from "./typesview.js?v=20261114-sections-1";
-import { typeSetup } from "./type-setup.js?v=20261114-sections-1";
+import { PageView } from "./pageimage.js?v=20261119-notes-1";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261119-notes-1";
+import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261119-notes-1";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261119-notes-1";
+import { renderStyle } from "./styleview.js?v=20261119-notes-1";
+import { openTypeList } from "./typesview.js?v=20261119-notes-1";
+import { typeSetup } from "./type-setup.js?v=20261119-notes-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261114-sections-1";
-import { EditError } from "./ops.js?v=20261114-sections-1";
-import { Maker, post } from "./pipeline/run.js?v=20261114-sections-1";
-import { CredentialChecks } from "./key-check.js?v=20261114-sections-1";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261114-sections-1";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261114-sections-1";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261114-sections-1";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261114-sections-1";
-import { layerState, noteEdit } from "./layers.js?v=20261114-sections-1";
-import { orderedRegions } from "./flags.js?v=20261114-sections-1";
-import { assemble } from "./assemble.js?v=20261114-sections-1";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261114-sections-1";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261114-sections-1";
-import { renderPages } from "./pagesview.js?v=20261114-sections-1";
-import { settings } from "./store.js?v=20261114-sections-1";
-import { renderReaders } from "./readersview.js?v=20261114-sections-1";
-import { renderStructures } from "./structuresview.js?v=20261114-sections-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261114-sections-1";
+import * as ops from "./ops.js?v=20261119-notes-1";
+import { EditError } from "./ops.js?v=20261119-notes-1";
+import { Maker, post } from "./pipeline/run.js?v=20261119-notes-1";
+import { CredentialChecks } from "./key-check.js?v=20261119-notes-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261119-notes-1";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261119-notes-1";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261119-notes-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-notes-1";
+import { layerState, noteEdit } from "./layers.js?v=20261119-notes-1";
+import { orderedRegions } from "./flags.js?v=20261119-notes-1";
+import { assemble } from "./assemble.js?v=20261119-notes-1";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261119-notes-1";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261119-notes-1";
+import { renderPages } from "./pagesview.js?v=20261119-notes-1";
+import { settings } from "./store.js?v=20261119-notes-1";
+import { renderReaders } from "./readersview.js?v=20261119-notes-1";
+import { renderStructures } from "./structuresview.js?v=20261119-notes-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261119-notes-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -1113,7 +1114,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261114-sections-1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261119-notes-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
@@ -1211,13 +1212,22 @@ class App {
       if (a !== null && b !== null && a + 2 === b && nums[i] !== a + 1) (nums[i] === null ? unprinted : flagged)[rows[i].pid] = String(a + 1);
     }
     const bad = rows.filter(r => r.errors.length), edited = rows.filter(r => r.edited);
+    // Note markers that point to no note, and notes no marker points to, page by page.
+    const { noteTypes, mainTypes } = noteTypesOf(this.tl);
+    const notes = docs.map(doc => ({ pid: doc.page.id, ...noteProblems(doc, noteTypes, mainTypes) })).filter(row => row.markers.length || row.notes.length);
+    const unlinkedNotes = notes.reduce((n, row) => n + row.notes.length, 0), unlinkedMarkers = notes.reduce((n, row) => n + row.markers.length, 0);
     const link = pid => h("button", { class: "link", onclick: () => this.openPage(pid) }, pid.replace(/^.*-page-/, "page "));
     el.replaceChildren(h("div", { class: "checkview" },
       h("h2", {}, "Problems"),
-      h("p", { class: "hint" }, "What the checks find across the book. Each page document is checked against the schema and the book's type list whenever it changes (the same rules as schema/book.py check): a page that fails is marked ✗ here, and its corrections are kept as a draft until it passes. Across pages: units marked as going on at a page break that do not join a later page (past blank pages and plates, which have no unit of their type), and printed page numbers out of sequence. The table also shows the pages you corrected (✎) and the notes the transcription model left."),
+      h("p", { class: "hint" }, "What the checks find across the book. Each page document is checked against the schema and the book's type list whenever it changes (the same rules as schema/book.py check): a page that fails is marked ✗ here, and its corrections are kept as a draft until it passes. Across pages: units marked as going on at a page break that do not join a later page (past blank pages and plates, which have no unit of their type), printed page numbers out of sequence, and notes and note markers that are not linked. The table also shows the pages you corrected (✎) and the notes the transcription model left."),
       h("p", {}, `${rows.length} pages: ${bad.length} not passing the checks, ${edited.length} corrected by you, ${Object.keys(flagged).length} with a printed page number out of sequence (and ${Object.keys(unprinted).length} printing none, which is often right, as on a chapter's first page), `,
-        `${P.warnings.length} page breaks where units do not join.`),
+        `${P.warnings.length} page breaks where units do not join, ${unlinkedNotes} notes with no marker in the text and ${unlinkedMarkers} note markers with no note.`),
       P.warnings.length ? h("details", { open: true }, h("summary", {}, "Units that do not join across a page break"), ...P.warnings.map(w => h("div", { class: "row" }, w))) : null,
+      notes.length ? h("details", {}, h("summary", {}, `Notes and their markers (${notes.length} pages)`),
+        h("p", { class: "hint" }, "A note is linked to the marker in the text with the same printed number on its page. A note with no marker is often one whose marker the transcription missed; a marker with no note may be misread."),
+        ...notes.map(row => h("div", { class: "row" }, link(row.pid),
+          row.notes.length ? ` notes ${row.notes.join(", ")} have no marker` : "", row.notes.length && row.markers.length ? ";" : "",
+          row.markers.length ? ` markers ${row.markers.join(", ")} have no note` : ""))) : null,
       Object.keys(flagged).length ? h("details", { open: true }, h("summary", {}, "Printed page numbers out of sequence"),
         ...Object.entries(flagged).map(([pid, exp]) => h("div", { class: "row" }, link(pid), ` reads ${rows.find(r => r.pid === pid).label || "nothing"}; its neighbors suggest ${exp}`))) : null,
       Object.keys(unprinted).length ? h("details", {}, h("summary", {}, `Pages with no printed number (${Object.keys(unprinted).length}), with the number their neighbors imply`),
