@@ -1,19 +1,19 @@
-import { reviewPage } from "./review-view.js?v=20261119-book-6";
-import { settledChecks } from "./review.js?v=20261119-book-6";
+import { reviewPage } from "./review-view.js?v=20261119-book-7";
+import { settledChecks } from "./review.js?v=20261119-book-7";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261119-book-6";
-import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261119-book-6";
-import { finderById } from "./pipeline/finders.js?v=20261119-book-6";
-import { CredentialChecks } from "./key-check.js?v=20261119-book-6";
+import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261119-book-7";
+import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261119-book-7";
+import { finderById } from "./pipeline/finders.js?v=20261119-book-7";
+import { CredentialChecks } from "./key-check.js?v=20261119-book-7";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
-import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261119-book-6";
-import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261119-book-6";
-import { settings } from "./store.js?v=20261119-book-6";
+import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261119-book-7";
+import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261119-book-7";
+import { settings } from "./store.js?v=20261119-book-7";
 import { runProgress } from "./run-progress.js";
-import { readingFits } from "./pipeline/partial-reading.js?v=20261119-book-6";
+import { readingFits } from "./pipeline/partial-reading.js?v=20261119-book-7";
 import { sha256hex } from "./chayapdf.js";
-import { layerState } from "./layers.js?v=20261119-book-6";
+import { layerState } from "./layers.js?v=20261119-book-7";
 
 export async function renderReaders(el, app) {
   const token = Symbol();
