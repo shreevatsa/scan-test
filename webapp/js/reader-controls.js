@@ -1,7 +1,7 @@
 import { h } from "./render.js";
-import { READERS, STRUCTURERS, OCR_LANGUAGES, readerOptions, readerById, structurerById } from "./pipeline/readers.js?v=20261119-book-5";
-import { finderById } from "./pipeline/finders.js?v=20261119-book-5";
-import { stageKeyControls } from "./key-check.js?v=20261119-book-5";
+import { READERS, STRUCTURERS, OCR_LANGUAGES, readerOptions, readerById, structurerById } from "./pipeline/readers.js?v=20261119-book-6";
+import { finderById } from "./pipeline/finders.js?v=20261119-book-6";
+import { stageKeyControls } from "./key-check.js?v=20261119-book-6";
 
 export const money = (value, digits = 4) => Number.isFinite(value) ? `$${value.toFixed(digits)}` : "—";
 

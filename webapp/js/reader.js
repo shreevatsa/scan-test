@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261119-book-5";
+import { assemble } from "./assemble.js?v=20261119-book-6";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-5";
-import { layerState } from "./layers.js?v=20261119-book-5";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-5";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-6";
+import { layerState } from "./layers.js?v=20261119-book-6";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-6";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -459,6 +459,9 @@ export const BOOK_CSS = `
 .bookview .reader:not(.printed) .r-verse { margin: .8em 0 .8em 1.5em; }
 .bookview .reader:not(.printed) .r-para { margin: .5em 0; }
 .bookview .reader:not(.printed) .r-heading { text-align: center; margin: 1.4em 0 .5em; }
+/* A heading that ends its section (a closing line: "इति … ॥ १२ ॥") belongs to what it closes: close to the text above,
+   a wider gap after. (A negative top margin, since it collapses with the verse's bottom margin.) */
+.bookview .reader .r-unit > .r-heading:last-child { margin: -.3em 0 1.9em; }
 .bookview .r-flow[data-flow]:not([data-flow="main"]) { display: none; }
 .bookview .r-mk { cursor: pointer; }
 .bookview .sidenote { float: right; clear: right; width: var(--note); margin: .15em calc(-1 * (var(--note) + var(--gap))) .6em 0; font-size: 13.5px; line-height: 1.45; color: #555; text-align: left; text-indent: 0; }

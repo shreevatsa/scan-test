@@ -1,12 +1,12 @@
-import { suggestionButton } from "./review-view.js?v=20261119-book-5";
-import { typeRevision } from "./schema.js?v=20261119-book-5";
+import { suggestionButton } from "./review-view.js?v=20261119-book-6";
+import { typeRevision } from "./schema.js?v=20261119-book-6";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261119-book-5";
-import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261119-book-5";
-import { REGION_CLASSES } from "./book-types.js?v=20261119-book-5";
-import { classSelect } from "./class-labels.js?v=20261119-book-5";
-import { editTypeDialog } from "./type-operations.js?v=20261119-book-5";
-import { normalizeTypeName } from "./type-additions.js?v=20261119-book-5";
+import * as ops from "./ops.js?v=20261119-book-6";
+import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261119-book-6";
+import { REGION_CLASSES } from "./book-types.js?v=20261119-book-6";
+import { classSelect } from "./class-labels.js?v=20261119-book-6";
+import { editTypeDialog } from "./type-operations.js?v=20261119-book-6";
+import { normalizeTypeName } from "./type-additions.js?v=20261119-book-6";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {

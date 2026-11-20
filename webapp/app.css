@@ -189,6 +189,7 @@ g:hover > .pv-regbox, g.hl > .pv-regbox, g.sel > .pv-regbox { display: block; }
 .reader { max-width: 46em; margin: 0 auto; padding: 20px 28px 120px; font: 18px/1.65 Georgia, "Times New Roman", serif; }
 .reader :lang(sa), .reader [lang|="sa"] { font-family: var(--deva); }
 .reader h2, .reader h3, .reader h4, .reader h5, .reader h6 { font-weight: 600; text-align: center; margin: 1.4em 0 .5em; }
+.reader .r-unit > .r-heading:last-child { margin: -.3em 0 1.9em; }   /* a closing line ends its section */
 .r-flowname { border-top: 1px solid var(--line); padding-top: 1em; }
 .r-para { margin: .5em 0; text-align: justify; hyphens: auto; }
 .r-verse { margin: .8em 0 .8em 1.5em; }
