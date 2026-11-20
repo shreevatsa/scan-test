@@ -19,4 +19,6 @@ Then, all by rule with no model ([outputs](../../outputs/surveys/100-hydrogen-lo
    `--part-closing='कथासारे' --part-heading='काण्ड' --part-after='योध्याप्रत्यागमनम्' --division-closing='किष्किन्धापर्व|संपूर्णं युद्धकाण्डम्' --part-labels='बालकाण्डम्,अयोध्याकाण्डम्,अरण्यकाण्डम्,किष्किन्धाकाण्डम्,सुन्दरकाण्डम्,युद्धकाण्डम्,उत्तरकाण्डम्'`
 5. `chaya_notes.mjs`: 623 of 711 notes linked to their markers (191 before); 88 notes without a marker, 4 markers without a note.
 
-The app opens the result with no page failing its checks and no page break where units do not join.
+6. [front_matter.mjs](front_matter.mjs), by hand: each of the four title pages (PDF 3, 7, 8, 9) one `title_page` unit (a new container, set centred by the reader) holding its statements — series, title, author, editors, imprint — each one unit of its printed lines; saved as corrections (`edits/`). The sections tool also no longer wraps the stretch after a part's last episode closing (PDF 94, 304–305) as an unnamed episode.
+
+The app opens the result with no page failing its checks and no page break where units do not join. `webapp/tools/chaya_html.mjs` writes it as one web page in the Book view's layout.

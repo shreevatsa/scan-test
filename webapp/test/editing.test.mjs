@@ -64,14 +64,15 @@ test("joining rejects a non-final unit, incompatible continuation and conflictin
   assert.throws(() => joinPageUnits(a, b, types, "u3", check), /different label/);
 });
 
-test("provisional verse transcriptions read with spaces until units are completed", () => {
+test("a verse keeps its lines before units are completed; other provisional line ends read as spaces", () => {
   const doc = page(); doc.units[1].type = doc.page.regions[0].type = "verse";
   doc.source.layers.units = { state: "provisional", types_revision: 1 };
+  assert.match(bookHtml(prepare([doc], types)), /continued<br>text/);
+  doc.units[1].type = doc.page.regions[0].type = "paragraph";
+  doc.page.regions[0].lines[0].end = "line";
   const provisional = prepare([doc], types);
   assert.match(bookText(provisional), /continued text/);
   assert.ok(!bookHtml(provisional).includes("continued<br>text"));
-  doc.source.layers.units.state = "model";
-  assert.match(bookHtml(prepare([doc], types)), /continued<br>text/);
 });
 
 test("focused text saves preserve newer grouping and independent text corrections", () => {

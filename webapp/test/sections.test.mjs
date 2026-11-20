@@ -55,3 +55,11 @@ test("the book's own closing after the last part stays outside the parts, and a 
   assert.deepEqual(items.map(i => i.part), [0, 0, 0, 1, 1, 1, 1, 1, null], "the heading starts part 1; the book's last line is in no part");
   assert.equal(items.at(-1).episode, null);
 });
+
+test("a stretch after the last episode's closing and before the part's closing is not an episode", () => {
+  const a = page("a", ["verse", "section_closing", "verse", "section_closing"]);
+  a.units.find(u => u.id === "u2").text = "इति प्रथमः ॥ १ ॥"; a.units.find(u => u.id === "u4").text = "रामायणकथासारे समाप्तः";
+  run([a]);
+  const part = tree(a, a.flows.main[0]);
+  assert.deepEqual(part[2].map(x => Array.isArray(x) ? x[0] : x), ["section", "verse", "section_closing"]);
+});

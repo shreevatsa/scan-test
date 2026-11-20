@@ -68,7 +68,7 @@ export function sectionKeys(pages, { closing, partClosing, partHeading = null, p
   // Names: each episode from its closing line.
   const names = new Map();
   for (const item of list) if (item.closing && item.episode !== null) names.set(item.episode, closingName(item.text));
-  for (const item of list) if (item.episode !== null) item.episodeName = names.get(item.episode) || {};
+  for (const item of list) if (item.episode !== null) { item.episodeName = names.get(item.episode) || {}; item.episodeClosed = names.has(item.episode); }
   list.parts = parts;
   return list;
 }
@@ -96,7 +96,8 @@ export function groupPage(doc, items, previous, next, { partLabels = [], parts =
     const partItems = here.slice(i, j + 1), partChildren = [];
     for (let a = 0; a < partItems.length;) {
       const item = partItems[a];
-      if (item.episode === null) { partChildren.push(item.id); a++; continue; }
+      // A stretch with no closing line of its own (the end of a part, before its closing) is not an episode.
+      if (item.episode === null || item.episodeClosed === false) { partChildren.push(item.id); a++; continue; }
       let b = a; while (b + 1 < partItems.length && partItems[b + 1].episode === item.episode) b++;
       const run = partItems.slice(a, b + 1);
       const open = { start: run[0] === here[0] && sameAs(previous, run[0], "episode") && previous.part === run[0].part, end: run.at(-1) === here.at(-1) && sameAs(next, run.at(-1), "episode") && next.part === run.at(-1).part };

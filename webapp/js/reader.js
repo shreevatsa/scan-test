@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261119-book-1";
+import { assemble } from "./assemble.js?v=20261119-book-2";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-1";
-import { layerState } from "./layers.js?v=20261119-book-1";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-1";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-2";
+import { layerState } from "./layers.js?v=20261119-book-2";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-2";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -166,7 +166,8 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
       out += pageMark(pid) + `<span class="r-reg" data-ref="${esc(ref)}">`;
       lines.forEach((L, i) => {
         const last = k === refs.length - 1 && i === lines.length - 1;
-        const end = P.provisionalPages?.has(pid) ? "space" : L.end || (cls === "verse" ? "line" : "space");
+        // A verse's lines are its lines; other line ends of a provisional grouping are not known yet, so spaces.
+        const end = P.provisionalPages?.has(pid) && cls !== "verse" ? "space" : L.end || (cls === "verse" ? "line" : "space");
         const shown = end === "hyphen" && !last ? dropHyphen(L) : L;
         if (cls === "table") { out += `<span class="r-row">${lineHtml(shown.text || "", shown.spans || [], marker(pid))}</span>`; return; }
         const text = lineHtml(shown.text || "", shown.spans || [], marker(pid));
@@ -351,7 +352,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
 export function bookToc(P) {
   const { book, units } = P;
   const tops = book.flows.main || [];
-  const name = unit => `${unit.number ? `<span class="num">${esc(unit.number)}</span> ` : ""}${esc(unit.label || unit.number || "…")}`;
+  const name = unit => `<span class="num">${esc(unit.number || "")}</span>${esc(unit.label || unit.number || "…")}`;
   const link = (uid, html, cls = "") => `<a href="#u-${safeId(uid)}"${cls ? ` class="${cls}"` : ""}>${html}</a>`;
   const first = tops.findIndex(uid => units[uid]?.type === "section");
   let out = "";
@@ -426,7 +427,9 @@ export const BOOK_CSS = `
 .bv-toc summary { cursor: pointer; font-weight: 600; list-style-position: outside; }
 .bv-toc summary a { display: inline; }
 .bv-toc a.ep { padding-left: 1.2em; }
-.bv-toc .num { color: #999; display: inline-block; min-width: 1.4em; }
+.bv-toc .num { color: #999; display: inline-block; min-width: 1.8em; }
+.r-title_page { text-align: center; margin: 1.5em 0 4em; }
+.r-title_page .r-para, .r-title_page .r-heading { text-align: center; margin: .6em 0; }
 .bookview .reader { grid-column: 2; max-width: none; margin: 0; padding: 1.5rem 0 10rem; }
 .bookview .reader:not(.printed) { font-size: 18px; line-height: 1.65; }
 .bookview .reader:not(.printed) .r-verse { margin: .8em 0 .8em 1.5em; }
