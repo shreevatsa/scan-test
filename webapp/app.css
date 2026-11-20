@@ -92,7 +92,7 @@ header .copy-status { font-size: 13px; }
 header .copy-status.warn { color: var(--warn); font-weight: 600; }
 main { flex: 1; min-height: 0; }
 main.page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-main.read, main.check, main.export, main.style, main.types { overflow: auto; }
+main.read, main.plain, main.check, main.export, main.style, main.types { overflow: auto; }
 
 /* page image */
 .imgpane { overflow: auto; background: #d8d8d4; position: relative; }

@@ -38,3 +38,17 @@ test("an episode's name and number come from its closing line, through sandhi", 
   assert.deepEqual(closingName("इतीक्ष्वाकुवंशकथनम् ॥ १२ ॥"), { label: "इक्ष्वाकुवंशकथनम्", number: "१२" });
   assert.deepEqual(closingName("(इति सीताविवाहः समाप्तः ।)"), { label: "सीताविवाहः" });
 });
+
+test("a printed contents line splits into its title and page; other lines are not taken for one", async () => {
+  const { tocLine } = await import("../js/reader.js");
+  assert.deepEqual(tocLine("भरतपर्वसमाप्तिः.... .... १०५"), { title: "भरतपर्वसमाप्तिः", page: "१०५" });
+  assert.deepEqual(tocLine("ताटकावधः .... .... ७"), { title: "ताटकावधः", page: "७" });
+  assert.equal(tocLine("पृष्ठम् ।"), null);
+  assert.equal(tocLine("स्फीतोऽभूदङ्गविषयो विषयः सर्वसंपदाम् ॥ १२१ ॥"), null);
+});
+
+test("the Book view has its own address under Read", async () => {
+  const { workflowRoute, workflowAddress } = await import("../js/workflow.js");
+  assert.equal(workflowRoute("#read&view=book", { read: true }).mode, "plain");
+  assert.equal(workflowAddress("plain"), "#read&view=book");
+});

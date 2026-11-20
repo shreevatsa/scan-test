@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261119-scan-1";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-scan-1";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261119-scan-1";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261119-scan-1";
+import { typeRevision } from "./schema.js?v=20261119-book-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-book-1";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261119-book-1";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261119-book-1";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -78,7 +78,7 @@ export function workflowRoute(value, ready, pageState = () => null) {
   if (locked) return { stage: "pages", mode: "grid", locked };
   const pid = hash.get("p");
   const views = { "regions/types": "types", "regions/proposal": "types", "text/compare": "readers", "read/compare": "structures",
-    "read/problems": "check", "read/style": "style" };
+    "read/problems": "check", "read/style": "style", "read/book": "plain" };
   const mode = pid && !view ? "page" : views[`${stage}/${view}`] ||
     (stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");
   return { stage, mode, pid, view, region: hash.get("r"), unit: hash.get("u"), locked: false };
@@ -86,7 +86,7 @@ export function workflowRoute(value, ready, pageState = () => null) {
 
 export function workflowAddress(mode, pid = null, selection = {}) {
   const aliases = { readers: "text&view=compare", structures: "read&view=compare",
-    check: "read&view=problems", style: "read&view=style", make: "regions", book: "regions", page: "read", types: "regions&view=types" };
+    check: "read&view=problems", style: "read&view=style", plain: "read&view=book", make: "regions", book: "regions", page: "read", types: "regions&view=types" };
   const hash = aliases[mode] || mode;
   const extra = selection.region ? `&r=${encodeURIComponent(selection.region)}` : selection.unit ? `&u=${encodeURIComponent(selection.unit)}` : "";
   return `#${hash}${pid ? `&p=${encodeURIComponent(pid)}` : ""}${extra}`;

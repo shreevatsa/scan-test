@@ -1,38 +1,38 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261119-scan-1";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261119-scan-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261119-scan-1";
-import { RECIPE } from "./recipe.js?v=20261119-scan-1";
-import { readerOptions } from "./pipeline/readers.js?v=20261119-scan-1";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261119-book-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261119-book-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261119-book-1";
+import { RECIPE } from "./recipe.js?v=20261119-book-1";
+import { readerOptions } from "./pipeline/readers.js?v=20261119-book-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { PageView } from "./pageimage.js?v=20261119-scan-1";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261119-scan-1";
-import { renderReader, prepare, bookText, bookDocument } from "./reader.js?v=20261119-scan-1";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261119-scan-1";
-import { renderStyle } from "./styleview.js?v=20261119-scan-1";
-import { openTypeList } from "./typesview.js?v=20261119-scan-1";
-import { typeSetup } from "./type-setup.js?v=20261119-scan-1";
+import { PageView } from "./pageimage.js?v=20261119-book-1";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261119-book-1";
+import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261119-book-1";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261119-book-1";
+import { renderStyle } from "./styleview.js?v=20261119-book-1";
+import { openTypeList } from "./typesview.js?v=20261119-book-1";
+import { typeSetup } from "./type-setup.js?v=20261119-book-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261119-scan-1";
-import { EditError } from "./ops.js?v=20261119-scan-1";
-import { Maker, post } from "./pipeline/run.js?v=20261119-scan-1";
-import { CredentialChecks } from "./key-check.js?v=20261119-scan-1";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261119-scan-1";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261119-scan-1";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261119-scan-1";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-scan-1";
-import { layerState, noteEdit } from "./layers.js?v=20261119-scan-1";
-import { orderedRegions } from "./flags.js?v=20261119-scan-1";
-import { assemble } from "./assemble.js?v=20261119-scan-1";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261119-scan-1";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261119-scan-1";
-import { renderPages } from "./pagesview.js?v=20261119-scan-1";
-import { settings } from "./store.js?v=20261119-scan-1";
-import { renderReaders } from "./readersview.js?v=20261119-scan-1";
-import { renderStructures } from "./structuresview.js?v=20261119-scan-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261119-scan-1";
+import * as ops from "./ops.js?v=20261119-book-1";
+import { EditError } from "./ops.js?v=20261119-book-1";
+import { Maker, post } from "./pipeline/run.js?v=20261119-book-1";
+import { CredentialChecks } from "./key-check.js?v=20261119-book-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261119-book-1";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261119-book-1";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261119-book-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-book-1";
+import { layerState, noteEdit } from "./layers.js?v=20261119-book-1";
+import { orderedRegions } from "./flags.js?v=20261119-book-1";
+import { assemble } from "./assemble.js?v=20261119-book-1";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261119-book-1";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261119-book-1";
+import { renderPages } from "./pagesview.js?v=20261119-book-1";
+import { settings } from "./store.js?v=20261119-book-1";
+import { renderReaders } from "./readersview.js?v=20261119-book-1";
+import { renderStructures } from "./structuresview.js?v=20261119-book-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261119-book-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -60,7 +60,13 @@ class App {
     const params = new URLSearchParams(location.search);
     if (params.get("book")) {
       try {
-        const file = await Book.fetchPdf(params.get("book"));
+        // A large book takes a while to come over a slow link: say how much has come.
+        const status = document.querySelector("#app > p"), name = params.get("book").split("/").pop();
+        const mb = n => (n / 1048576).toFixed(n < 10485760 ? 1 : 0);
+        const file = await Book.fetchPdf(params.get("book"), (got, total) => {
+          if (status) status.textContent = `Downloading ${name}… ${mb(got)}${total ? ` of ${mb(total)}` : ""} MB`;
+        });
+        if (status) status.textContent = `Opening ${name}…`;
         if (!params.has("proposal")) history.replaceState(null, "", location.pathname);
         this.openPdfFile(file, params.get("proposal"));
       } catch (e) { this.library(`Could not open ${params.get("book")}: ${e.message}`); }
@@ -713,7 +719,7 @@ class App {
       h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode[0].toUpperCase() + mode.slice(1)))),
       h("nav", { class: "tabs", "aria-label": "Stage views" },
         tabBtn("text", "", "Pages"), tabBtn("text", "compare", "Compare models"),
-        tabBtn("read", "", "Read"), tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
+        tabBtn("read", "", "Read"), tabBtn("read", "book", "Book view"), tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
       h("span", { class: "nav" }, h("button", { title: "previous page (Alt ←)", onclick: () => this.step(-1) }, "←"), pageSel, h("button", { title: "next page (Alt →)", onclick: () => this.step(1) }, "→")),
       h("span", { class: "undo" }, h("button", { title: "undo (⌘Z)", onclick: () => this.undo() }, "↶"), h("button", { title: "redo (⇧⌘Z)", onclick: () => this.redo() }, "↷")),
       h("span", { class: "page-stage-links" }, ...["regions", "text", "read"].map(stage => h("button", { class: "mini", dataset: { stage }, onclick: () => this.openPage(this.pid, {}, stage) }, `Open in ${stage === "read" ? "Read" : stage[0].toUpperCase() + stage.slice(1)}`)),
@@ -785,6 +791,7 @@ class App {
       this.main.className = mode;
       if (mode === "grid" || mode === "types") await renderPages(this.main, this);
       if (mode === "read") await renderReader(this.main, this);
+      if (mode === "plain") await renderBookView(this.main, this);
       if (mode === "style") renderStyle(this.main, this);
       if (mode === "check") this.renderCheck();
       if (mode === "export") this.renderExport();
@@ -1114,7 +1121,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261119-scan-1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261119-book-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

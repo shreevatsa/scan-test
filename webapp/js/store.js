@@ -7,12 +7,12 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit } from "./layers.js?v=20261119-scan-1";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261119-scan-1";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261119-scan-1";
-import { canonical } from "./ops.js?v=20261119-scan-1";
-import { checkDocument, typeRevision } from "./schema.js?v=20261119-scan-1";
-import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261119-scan-1";
+import { LAYERS, isProtected, noteEdit } from "./layers.js?v=20261119-book-1";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261119-book-1";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261119-book-1";
+import { canonical } from "./ops.js?v=20261119-book-1";
+import { checkDocument, typeRevision } from "./schema.js?v=20261119-book-1";
+import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261119-book-1";
 
 const bookWrites = new Map();
 
@@ -364,12 +364,23 @@ export class Book {
   }
 
   // A PDF at a URL, as a File: opened by the app exactly as a PDF chosen from disk is.
-  static async fetchPdf(url) {
+  // With onProgress(received, total), it is told as the bytes come (total is 0 where the server does not say).
+  static async fetchPdf(url, onProgress = null) {
     url = new URL(url, location.href).href;
     const r = await fetch(url);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const name = decodeURIComponent(new URL(url).pathname.split("/").pop() || "book.pdf");
-    return new File([await r.arrayBuffer()], name, { type: "application/pdf" });
+    if (!onProgress || !r.body?.getReader) return new File([await r.arrayBuffer()], name, { type: "application/pdf" });
+    const total = Number(r.headers.get("content-length")) || 0, reader = r.body.getReader(), parts = [];
+    let received = 0, told = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      parts.push(value); received += value.length;
+      if (received - told > 262144) { told = received; onProgress(received, total); }
+    }
+    onProgress(received, total);
+    return new File(parts, name, { type: "application/pdf" });
   }
 
   page(pid) { return this.pages[this.index[pid]]; }

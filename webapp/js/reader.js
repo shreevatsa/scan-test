@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261119-scan-1";
+import { assemble } from "./assemble.js?v=20261119-book-1";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-scan-1";
-import { layerState } from "./layers.js?v=20261119-scan-1";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-scan-1";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-1";
+import { layerState } from "./layers.js?v=20261119-book-1";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-1";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -21,6 +21,83 @@ function dropHyphen(L) {
 }
 
 const SEP = { space: " ", hyphen: "", join: "", line: "<br>" };
+
+export const safeId = value => String(value).replace(/[^A-Za-z0-9_-]/g, "_");
+const DEV_DIGITS = "०१२३४५६७८९";
+const asciiDigits = value => [...String(value)].map(c => DEV_DIGITS.includes(c) ? DEV_DIGITS.indexOf(c) : c).join("");
+const bareLetters = value => String(value).normalize("NFC").replace(/[^\p{L}\p{M}]/gu, "");
+function editDistance(a, b) {
+  a = [...a]; b = [...b];
+  let row = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const next = [i];
+    for (let j = 1; j <= b.length; j++) next[j] = Math.min(row[j] + 1, next[j - 1] + 1, row[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    row = next;
+  }
+  return row[b.length];
+}
+
+// A printed contents line: a title, dots, and a page number.
+export function tocLine(text) {
+  const match = /^\s*(.+?)[\s.…·]*[.…·]{2,}[\s.…·]*([०-९0-9]{1,4})\s*$/u.exec(text || "");
+  return match && bareLetters(match[1]) ? { title: match[1].replace(/[\s.…·]+$/u, ""), page: match[2] } : null;
+}
+
+// Where a contents line points: the named section (an episode or part labelled from its closing line or heading) whose
+// name is the title, or nearly (the one starting on or near the printed page if several are close), else the page that
+// prints that number.
+function tocTargets(P) {
+  const firstPage = uid => {
+    for (let unit = P.units[uid]; unit;) {
+      const child = unit.children?.[0];
+      if (!child) return null;
+      if (child.region) return P.regions[child.region]?.page;
+      unit = P.units[child.unit];
+    }
+    return null;
+  };
+  const named = Object.values(P.units).filter(unit => unit.type === "section" && unit.label)
+    .map(unit => ({ uid: unit.id, name: bareLetters(unit.label), page: Number(asciiDigits(firstPage(unit.id)?.label || "")) || null }));
+  const byLabel = new Map();
+  for (const page of P.book.pages) if (page.label && !byLabel.has(asciiDigits(page.label))) byLabel.set(asciiDigits(page.label), page.id);
+  return {
+    find({ title, page }) {
+      const name = bareLetters(title), at = Number(asciiDigits(page));
+      const near = unit => unit.page === null || Math.abs(unit.page - at) <= 2;
+      const scored = named.filter(near).map(unit => ({ unit, d: editDistance(name, unit.name) / Math.max(name.length, unit.name.length, 1) }))
+        .sort((a, b) => a.d - b.d);
+      if (scored[0] && scored[0].d <= 0.35) return `u-${safeId(scored[0].unit.uid)}`;
+      const pid = byLabel.get(asciiDigits(page));
+      return pid ? `pb-${safeId(pid)}` : null;
+    },
+  };
+}
+
+// The notes for the plain rendering: each note's text, and the notes no marker points to, by the page they start on.
+function plainNotes(P) {
+  const { book, units, regions, markersOf } = P;
+  const text = uid => {
+    const out = [];
+    const walk = unit => { for (const child of unit?.children || []) {
+      if (child.region) { const R = regions[child.region]; if (R) out.push((R.region.lines || []).map(L => lineHtml(L.text || "", (L.spans || []).filter(s => s.kind !== "note_marker"), () => "")).join(" ")); }
+      else walk(units[child.unit]);
+    } };
+    walk(units[uid]);
+    return out.join(" ");
+  };
+  const unlinked = new Map();
+  for (const [flow, tops] of Object.entries(book.flows)) {
+    if (flow === "main") continue;
+    for (const uid of tops) {
+      if ((markersOf[uid] || []).length) continue;
+      let unit = units[uid], ref = null;
+      while (unit && !ref) { const child = unit.children?.[0]; if (!child) break; if (child.region) ref = child.region; else unit = units[child.unit]; }
+      const pid = ref && regions[ref]?.page.id;
+      if (pid) { if (!unlinked.has(pid)) unlinked.set(pid, []); unlinked.get(pid).push(uid); }
+    }
+  }
+  return { text, unlinked };
+}
 
 // The book assembled from page documents in page order (null where a page is not there, which nothing joins across),
 // with what Read needs to show it.
@@ -53,20 +130,28 @@ export function prepare(pageDocs, tl, sheet = null) {
 // as wide as the text allows (they wrap to one under the other where it is narrow). With `printed`, each unit and
 // line piece is styled as the book prints it, from P.sheet (the book's style sheet) and its own style. With
 // `figureSrc(ref)`, figures are <img> elements with that source (for a standalone export), not crops filled in later.
-export function bookHtml(P, { printed = false, figureSrc = null } = {}) {
+export function bookHtml(P, { printed = false, figureSrc = null, plain = false } = {}) {
   const { book, tl, units, regions, noteOf, markersOf } = P;
   const sheet = printed ? P.sheet || null : null;
   const styleAttr = s => (s ? ` style="${esc(s)}"` : "");
-  let lastPage = null;
+  // Plain (the Book view and the HTML export): no page numbers in the text, only anchors; each note beside its marker,
+  // and a note no marker points to beside the start of its page.
+  const notes = plain ? plainNotes(P) : null;
+  const sidenote = (uid, cls = "") => `<span class="sidenote${cls}" id="sn-${safeId(uid)}">${notes.text(uid)}</span>`;
+  const toc = tocTargets(P);
+  let lastPage = null, flowNow = "main";
   const pageMark = pid => {
     if (pid === lastPage) return "";
     lastPage = pid;
+    if (plain) return flowNow !== "main" ? "" : `<span class="r-pbanchor" id="pb-${safeId(pid)}"></span>` + (notes.unlinked.get(pid) || []).map(uid => sidenote(uid, " unlinked")).join("");
     const p = P.pages[pid];
     const scan = pid.replace(/^.*-page-0*/, "");
     return `<a class="r-pb" data-page="${esc(pid)}" title="scan page ${esc(scan)} (${esc(pid)}): open it">${p.label ? "p. " + esc(p.label) : "scan " + esc(scan)}</a>`;
   };
   const marker = pid => sp => {
     const a = `${pid}#${sp.id}`, note = noteOf[a];
+    if (plain) return note ? `<a class="r-mk" href="#sn-${safeId(note)}" data-sign="${esc(sp.marker)}" title="note ${esc(sp.marker)}"></a>${sidenote(note)}`
+      : `<span class="r-mk none" data-sign="${esc(sp.marker)}"></span>`;
     return note ? `<a class="r-mk" id="mk-${esc(a)}" href="#note-${esc(note)}" data-sign="${esc(sp.marker)}" title="note ${esc(sp.marker)}"></a>`
       : `<span class="r-mk none" id="mk-${esc(a)}" data-sign="${esc(sp.marker)}" title="a note marker not linked to a note"></span>`;
   };
@@ -136,7 +221,8 @@ export function bookHtml(P, { printed = false, figureSrc = null } = {}) {
     const lang = u.lang || t.lang;
     const own = sheet ? unitStyle(sheet, u.type, u.style) : null;
     const st = own ? css(sheet, own) : "";
-    const attrs = `data-uid="${esc(uid)}" data-label="${esc(label(u))}"${lang ? ` lang="${esc(lang)}"` : ""}`;
+    const anchor = cls !== "note" && (depth === 0 || u.type === "section") ? ` id="u-${safeId(uid)}"` : "";
+    const attrs = `data-uid="${esc(uid)}" data-label="${esc(label(u))}"${lang ? ` lang="${esc(lang)}"` : ""}${anchor}`;
     const back = (markersOf[uid] || []).map(a => `<a class="r-back" href="#mk-${esc(a)}" title="back to the marker">↩</a>`).join("");
     const mixed = u.children.some(c => c.unit);
     if (!cls || mixed) {
@@ -171,6 +257,15 @@ export function bookHtml(P, { printed = false, figureSrc = null } = {}) {
       return `<figure class="r-figure" ${attrs}${styleAttr(st)}>${pics}${u.label ? `<figcaption>${esc(u.label)}</figcaption>` : ""}</figure>`;
     }
     if (cls === "heading") return `<h${Math.min(2 + depth, 6)} class="r-heading" ${attrs}${styleAttr(st)}>${regionsText(refs, cls)}</h${Math.min(2 + depth, 6)}>`;
+    // A line of a printed table of contents ("title .... page"): the title, a dotted leader and the page, linked to
+    // the section it names or else to its page.
+    const entry = cls === "list_item" && tocLine(refs.flatMap(ref => (regions[ref]?.region.lines || []).map(L => L.text || "")).join(" "));
+    if (entry) {
+      const target = toc.find(entry);
+      const pages = refs.map(ref => regions[ref] && pageMark(regions[ref].page.id)).join("");
+      const title = target ? `<a href="#${target}">${esc(entry.title)}</a>` : esc(entry.title);
+      return `<p class="r-tocline" ${attrs}>${pages}<span class="r-toctitle">${title}</span><span class="r-leader"></span><span class="r-tocpage">${esc(entry.page)}</span></p>`;
+    }
     if (cls === "verse") return `<div class="r-verse" ${attrs}${styleAttr(st)}>${regionsText(refs, cls)}</div>`;
     if (cls === "table") return `<div class="r-tablewrap" ${attrs}${styleAttr(st)}>${tableHtml(refs)}</div>`;
     if (cls === "note") return `<div class="r-note" id="note-${esc(uid)}" ${attrs}${styleAttr(st)}>${regionsText(refs, cls)}${back}</div>`;
@@ -179,7 +274,7 @@ export function bookHtml(P, { printed = false, figureSrc = null } = {}) {
   let html = "";
   const flows = Object.keys(book.flows).sort((a, b) => (a === "main" ? -1 : b === "main" ? 1 : 0));
   for (const flow of flows) {
-    lastPage = null;
+    lastPage = null; flowNow = flow;
     const tops = book.flows[flow];
     if (!tops.length) continue;
     html += `<section class="r-flow" data-flow="${esc(flow)}">`;
@@ -251,6 +346,138 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
   });
 }
 
+// The contents beside the Book view: the parts (top-level sections) and their sections, each by its label and number,
+// after a link to the front matter and to a printed table of contents if the book has one.
+export function bookToc(P) {
+  const { book, units } = P;
+  const tops = book.flows.main || [];
+  const name = unit => `${unit.number ? `<span class="num">${esc(unit.number)}</span> ` : ""}${esc(unit.label || unit.number || "…")}`;
+  const link = (uid, html, cls = "") => `<a href="#u-${safeId(uid)}"${cls ? ` class="${cls}"` : ""}>${html}</a>`;
+  const first = tops.findIndex(uid => units[uid]?.type === "section");
+  let out = "";
+  if (first > 0) out += link(tops[0], "Front matter", "front");
+  const contents = tops.slice(0, first < 0 ? tops.length : first).find(uid => /toc/.test(units[uid]?.type || ""));
+  if (contents) out += link(contents, "Contents (as printed)", "front");
+  for (const uid of tops) {
+    const unit = units[uid];
+    if (unit?.type !== "section") continue;
+    const kids = unit.children.map(child => units[child.unit]).filter(kid => kid?.type === "section");
+    out += `<details class="part" open><summary>${link(uid, esc(unit.label || "Part"))}</summary>${kids.map(kid => link(kid.id, name(kid), "ep")).join("")}</details>`;
+  }
+  const last = tops.findLastIndex(uid => units[uid]?.type === "section");
+  if (last >= 0 && last < tops.length - 1) out += link(tops[last + 1], "End", "front");
+  return `<nav class="bv-toc" aria-label="Contents">${out}</nav>`;
+}
+
+// The Book view's behaviour, self-contained so the HTML export can carry it as a script: links within the book scroll
+// to their place (in the app the address belongs to the app's own routes); on a narrow screen a note marker opens its
+// note under the line; the contents follow the reading, marking the part and section in view; a button shows the
+// contents where they do not fit beside the text.
+export function wireBookView(root, scroller) {
+  const top = () => scroller === window ? 0 : scroller.getBoundingClientRect().top;
+  root.addEventListener("click", event => {
+    if (event.target.closest(".bv-open")) { root.classList.toggle("toc-open"); return; }
+    const a = event.target.closest('a[href^="#"]');
+    if (!a) return;
+    const target = root.querySelector(`[id="${a.getAttribute("href").slice(1)}"]`);
+    if (!target) return;
+    event.preventDefault();
+    if (a.classList.contains("r-mk") && getComputedStyle(target).float === "none") {
+      // Where notes do not fit in the margin, the note opens under its verse or paragraph, and a second tap closes it.
+      const block = a.closest(".r-verse, .r-para, .r-heading, .r-tocline") || a.parentElement;
+      const open = block.nextElementSibling;
+      if (open && open.classList.contains("bv-inline-note") && open.dataset.for === target.id) { open.remove(); return; }
+      const box = document.createElement("div");
+      box.className = "bv-inline-note"; box.dataset.for = target.id; box.innerHTML = target.innerHTML;
+      block.after(box);
+      return;
+    }
+    root.classList.remove("toc-open");
+    target.scrollIntoView({ block: "start" });
+    if (scroller !== window) scroller.scrollTop -= 8;
+  });
+  const links = [...root.querySelectorAll(".bv-toc a")], nav = root.querySelector(".bv-toc");
+  const targets = links.map(a => root.querySelector(`[id="${a.getAttribute("href").slice(1)}"]`));
+  let pending = false;
+  const spy = () => {
+    pending = false;
+    let current = -1;
+    targets.forEach((el, i) => { if (el && el.getBoundingClientRect().top - top() < 120) current = i; });
+    links.forEach((a, i) => a.classList.toggle("active", i === current));
+    const active = links[current];
+    if (active && nav && !root.classList.contains("toc-open")) {
+      const r = active.getBoundingClientRect(), n = nav.getBoundingClientRect();
+      if (r.top < n.top || r.bottom > n.bottom) nav.scrollTop += r.top - n.top - n.height / 3;
+    }
+  };
+  (scroller === window ? window : scroller).addEventListener("scroll", () => { if (!pending) { pending = true; requestAnimationFrame(spy); } }, { passive: true });
+  spy();
+}
+
+// The Book view's styles, shared by the app and the HTML export.
+export const BOOK_CSS = `
+.bookview { --toc: 15rem; --note: 14rem; --gap: 2.5rem; display: grid; grid-template-columns: var(--toc) minmax(0, 38rem) var(--note); column-gap: var(--gap); justify-content: center; align-items: start; }
+.bookview .bv-toc { grid-column: 1; position: sticky; top: 0; max-height: 100vh; overflow-y: auto; box-sizing: border-box; padding: 1.5rem .25rem 4rem 0; font: 14px/1.45 system-ui, -apple-system, sans-serif; }
+.bv-toc a { display: block; color: inherit; text-decoration: none; padding: 1px 6px; border-radius: 4px; }
+.bv-toc a:hover { background: #f1eee4; }
+.bv-toc a.active { background: #ece6d4; font-weight: 600; }
+.bv-toc a.front { color: #666; margin-bottom: 2px; }
+.bv-toc details.part { margin: .5em 0; }
+.bv-toc summary { cursor: pointer; font-weight: 600; list-style-position: outside; }
+.bv-toc summary a { display: inline; }
+.bv-toc a.ep { padding-left: 1.2em; }
+.bv-toc .num { color: #999; display: inline-block; min-width: 1.4em; }
+.bookview .reader { grid-column: 2; max-width: none; margin: 0; padding: 1.5rem 0 10rem; }
+.bookview .reader:not(.printed) { font-size: 18px; line-height: 1.65; }
+.bookview .reader:not(.printed) .r-verse { margin: .8em 0 .8em 1.5em; }
+.bookview .reader:not(.printed) .r-para { margin: .5em 0; }
+.bookview .reader:not(.printed) .r-heading { text-align: center; margin: 1.4em 0 .5em; }
+.bookview .r-flow[data-flow]:not([data-flow="main"]) { display: none; }
+.bookview .r-mk { cursor: pointer; }
+.bookview .sidenote { float: right; clear: right; width: var(--note); margin: .15em calc(-1 * (var(--note) + var(--gap))) .6em 0; font-size: 13.5px; line-height: 1.45; color: #555; text-align: left; text-indent: 0; }
+.bookview .sidenote.unlinked { color: #888; }
+.bookview .r-unit[id] { scroll-margin-top: 8px; }
+.bv-open { display: none; }
+.r-tocline { display: flex; align-items: baseline; gap: .4em; margin: .1em 0; }
+.r-tocline .r-leader { flex: 1; border-bottom: 1px dotted #bbb; }
+.r-tocline a { color: inherit; text-decoration: none; }
+.r-tocline a:hover { text-decoration: underline; }
+@media (max-width: 1240px) {
+  .bookview { grid-template-columns: minmax(0, 38rem) var(--note); }
+  .bookview .reader { grid-column: 1; }
+  .bookview .bv-toc { position: fixed; left: 0; top: 0; bottom: 0; z-index: 40; width: 19rem; max-height: none; padding: 1rem; background: #fdfdfb; box-shadow: 0 0 24px rgba(0,0,0,.18); transform: translateX(-105%); transition: transform .18s; }
+  .bookview.toc-open .bv-toc { transform: none; }
+  .bv-open { display: block; position: sticky; top: .5rem; z-index: 30; grid-column: 1 / -1; justify-self: start; font: 13px system-ui, sans-serif; padding: 4px 10px; border: 1px solid #ccc; border-radius: 6px; background: #fdfdfb; cursor: pointer; }
+}
+@media (max-width: 820px) {
+  .bookview { grid-template-columns: minmax(0, 1fr); padding: 0 1rem; }
+  .bookview .sidenote { display: none; float: none; }
+  .bookview .bv-inline-note { margin: .2em 0 .7em 1.5em; padding: .35em .6em; font-size: 14px; line-height: 1.45; color: #555; background: #f6f3ea; border-left: 3px solid #d9cfb5; }
+}
+@media print { .bv-toc, .bv-open { display: none; } .bookview { display: block; } }
+`;
+
+// The Book view in the app: the book to read, with its contents beside it and its notes in the margin; no page
+// numbers, nothing to edit, and clicking opens nothing but notes and links.
+export async function renderBookView(el, app) {
+  const { book } = app;
+  const token = app.routeToken;
+  app.onLeaveReader?.(); app.onLeaveReader = null;
+  app.textPanel?.destroy?.(); app.pageView?.destroy(); app.textPanel = null; app.pageView = null; app.doc = null;
+  el.replaceChildren(h("div", { class: "loading" }, "Loading the pages…"));
+  const all = await book.all((d, n) => { if (app.routeToken === token) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
+  if (app.book !== book || app.routeToken !== token) return;
+  const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
+  const P = prepare(readingDocuments(book.pages, accepted), book.types, book.style);
+  if (!document.getElementById("bookview-css")) document.head.append(h("style", { id: "bookview-css" }, BOOK_CSS));
+  const printed = !!(app.readerPrinted && P.sheet);
+  const view = h("div", { class: "bookview" });
+  view.innerHTML = `<button class="bv-open" type="button">☰ Contents</button>${bookToc(P)}<article class="reader plain${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>${bookHtml(P, { printed, plain: true })}</article>`;
+  el.replaceChildren(view);
+  fillFigures(view, app, P);
+  wireBookView(view, el);
+}
+
 // The CSS a standalone export needs: the reader's rules for its elements, as printed.
 const EXPORT_CSS = `
 body { margin: 0; background: #fdfdfb; color: #1d1d1b; }
@@ -273,18 +500,19 @@ body { margin: 0; background: #fdfdfb; color: #1d1d1b; }
 @media print { .r-pb, .r-back { display: none; } .reader { margin: 0 auto; } }
 `;
 
-// A standalone HTML document of the book: as printed where the book has a style sheet, rows side by side, figures
-// as images (figureSrc gives each figure region's image URL, such as a data: URL of its crop), the printed page
-// numbers small in the text.
+// A standalone HTML document of the book, laid out as the Book view: the contents beside the text and each note in
+// the margin by its marker; as printed where the book has a style sheet, rows side by side, figures as images
+// (figureSrc gives each figure region's image URL, such as a data: URL of its crop).
 export function bookDocument(P, { title, lang = "", figureSrc }) {
   const printed = !!P.sheet;
   return `<!DOCTYPE html>
 <html${lang ? ` lang="${esc(lang)}"` : ""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
-<style>${EXPORT_CSS}</style></head>
-<body><article class="reader${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>
-${bookHtml(P, { printed, figureSrc })}
-</article></body></html>
+<style>${EXPORT_CSS}${BOOK_CSS}</style></head>
+<body><div class="bookview"><button class="bv-open" type="button">☰ Contents</button>${bookToc(P)}<article class="reader plain${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>
+${bookHtml(P, { printed, figureSrc, plain: true })}
+</article></div>
+<script>(${wireBookView.toString()})(document.querySelector(".bookview"), window);</script></body></html>
 `;
 }
 
