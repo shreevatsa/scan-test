@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261119-book-7";
+import { assemble } from "./assemble.js?v=20261119-book-8";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-7";
-import { layerState } from "./layers.js?v=20261119-book-7";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-7";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-8";
+import { layerState } from "./layers.js?v=20261119-book-8";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-8";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -383,7 +383,9 @@ export function bookToc(P) {
     if (unit?.type !== "section") continue;
     const kids = unit.children.map(child => units[child.unit]).filter(kid => kid?.type === "section");
     // A part the book gives no name keeps none here either.
-    const title = unit.label ? esc(unit.label) : `<span class="untitled">untitled in the book</span>`;
+    // A name the editor gave (not printed as the part's name) is in parentheses and lighter.
+    const title = !unit.label ? `<span class="untitled">untitled in the book</span>`
+      : unit.source?.label === "editor" ? `<span class="editorial">(${esc(unit.label)})</span>` : esc(unit.label);
     out += `<details class="part" open><summary>${link(uid, title)}</summary>${kids.map(kid => link(kid.id, name(kid), "ep")).join("")}</details>`;
   }
   const last = tops.findLastIndex(uid => units[uid]?.type === "section");
@@ -452,6 +454,7 @@ export const BOOK_CSS = `
 .bv-toc a.ep { padding-left: 1.2em; }
 .bv-toc .num { color: #999; display: inline-block; min-width: 1.8em; }
 .bv-toc .untitled { font-weight: normal; font-style: italic; color: #888; }
+.bv-toc .editorial { font-weight: normal; color: #7a7466; }
 .r-title_page { text-align: center; margin: 1.5em 0 4em; }
 .r-title_page .r-para, .r-title_page .r-heading { text-align: center; margin: .6em 0; }
 .r-verse_group { margin-left: -12px; padding-left: 10px; border-left: 2px solid transparent; border-radius: 2px; transition: background .15s; }

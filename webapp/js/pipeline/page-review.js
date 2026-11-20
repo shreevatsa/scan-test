@@ -1,10 +1,10 @@
-import { makeValidator } from "../schema.js?v=20261119-book-7";
-import { REGION_CLASSES } from "../book-types.js?v=20261119-book-7";
-import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261119-book-7";
-import { finderById } from "./finders.js?v=20261119-book-7";
-import { finderRequest } from "./finder-requests.js?v=20261119-book-7";
-import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261119-book-7";
-import { templates, jsonHash } from "./run.js?v=20261119-book-7";
+import { makeValidator } from "../schema.js?v=20261119-book-8";
+import { REGION_CLASSES } from "../book-types.js?v=20261119-book-8";
+import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261119-book-8";
+import { finderById } from "./finders.js?v=20261119-book-8";
+import { finderRequest } from "./finder-requests.js?v=20261119-book-8";
+import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261119-book-8";
+import { templates, jsonHash } from "./run.js?v=20261119-book-8";
 import { sha256hex } from "../chayapdf.js";
 
 export const PAGE_REVIEW_MODELS = [

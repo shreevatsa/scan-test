@@ -106,7 +106,8 @@ export function groupPage(doc, items, previous, next, { partLabels = [], parts =
     }
     const open = { start: partItems[0] === here[0] && sameAs(previous, partItems[0], "part"), end: partItems.at(-1) === here.at(-1) && sameAs(next, partItems.at(-1), "part") };
     const info = parts[first.part] || {};
-    top.push(container(partChildren, open, { label: partLabels[first.part], source: { starts: info.starts, ends: info.ends } }));
+    // A part's name from --part-labels is the editor's, not the book's: so marked, and shown as such.
+    top.push(container(partChildren, open, { label: partLabels[first.part], source: { starts: info.starts, ends: info.ends, ...(partLabels[first.part] ? { label: "editor" } : {}) } }));
     i = j + 1;
   }
   doc.flows.main = top;

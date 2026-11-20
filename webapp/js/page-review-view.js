@@ -1,12 +1,12 @@
 import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261119-book-7";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261119-book-7";
-import { settings } from "./store.js?v=20261119-book-7";
-import { money } from "./reader-controls.js?v=20261119-book-7";
-import { reviewTypeChange } from "./type-operations.js?v=20261119-book-7";
-import { REGION_CLASSES } from "./book-types.js?v=20261119-book-7";
-import { classPicker, defaultClass } from "./class-labels.js?v=20261119-book-7";
-import { reviewPage } from "./review-view.js?v=20261119-book-7";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261119-book-8";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261119-book-8";
+import { settings } from "./store.js?v=20261119-book-8";
+import { money } from "./reader-controls.js?v=20261119-book-8";
+import { reviewTypeChange } from "./type-operations.js?v=20261119-book-8";
+import { REGION_CLASSES } from "./book-types.js?v=20261119-book-8";
+import { classPicker, defaultClass } from "./class-labels.js?v=20261119-book-8";
+import { reviewPage } from "./review-view.js?v=20261119-book-8";
 import { runProgress } from "./run-progress.js";
 
 export async function reviewPageWithAI(app) {
