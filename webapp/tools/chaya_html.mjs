@@ -14,6 +14,6 @@ const { data } = await readChaya(new Uint8Array(readFileSync(input)));
 const files = data.files, manifest = files["book.json"], skipped = new Set(manifest.skipped || []);
 const docs = manifest.pages.filter(page => !skipped.has(page.id)).map(page => files[`edits/${page.id}.json`] || files[`pages/${page.id}.json`])
   .filter(doc => doc && layerState(doc, "text")?.accepted);
-const P = prepare(readingDocuments(manifest.pages, docs), files["types.json"], files["style.json"] || null);
+const P = prepare(readingDocuments(manifest.pages, docs, skipped), files["types.json"], files["style.json"] || null);
 writeFileSync(output, bookDocument(P, { title: manifest.title || files["types.json"].title, lang: (files["types.json"].languages || [])[0] || "", figureSrc: () => "" }));
 console.log(`${docs.length} pages, ${P.book.units.length} units, ${P.warnings.length} warnings → ${output}`);

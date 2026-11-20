@@ -22,4 +22,9 @@ Then, all by rule with no model ([outputs](../../outputs/surveys/100-hydrogen-lo
 6. `chaya_verse_groups.mjs` (run after step 3, before the sections): the four verse groups — (तिलकम्) after ३६०–३६२ (PDF 44) and ४५०–४५२ (51), (युगलकम्) after ४६३–४६४ (52) and ४७२–४७३ (53) — each checked by its meaning (the first verses of each group have no main verb of their own). Two markers had been read as a verse's last line and were split off; two had been put after the following verse, or after an episode's closing, in reading order.
 7. [front_matter.mjs](front_matter.mjs), by hand: each of the four title pages (PDF 3, 7, 8, 9) one `title_page` unit (a new container, set centred by the reader) holding its statements — series, title, author, editors, imprint — each one unit of its printed lines; saved as corrections (`edits/`). The sections tool also no longer wraps the stretch after a part's last episode closing (PDF 94, 304–305) as an unnamed episode.
 
+8. PDF 242–243 are a second scan of PDF 240–241 (printed pages 226–227, verses ४७९–५०३ again): dimmed ([dim_pages.mjs](dim_pages.mjs)), so the book reads them once.
+9. `chaya_page_labels.mjs`: the page labels read again from the new page-number text (61 had kept the old reading's), then 25 corrected by sequence (such as PDF 164–173, read 190, 161, …, 169 for 150–159); the printed contents' page numbers confirm them (रामप्रलापः, १५४, on PDF 168).
+
+[pipeline.sh](pipeline.sh) runs steps 2–9 from the reading. Contents lines: all 200 linked, 195 to their episode by name (the printed page only choosing among names nearly as close), 5 "…हननम्" entries to their page (their episodes close as "…वधः").
+
 The app opens the result with no page failing its checks and no page break where units do not join. `webapp/tools/chaya_html.mjs` writes it as one web page in the Book view's layout.

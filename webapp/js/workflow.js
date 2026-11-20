@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261119-book-3";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-book-3";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261119-book-3";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261119-book-3";
+import { typeRevision } from "./schema.js?v=20261119-book-4";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-book-4";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261119-book-4";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261119-book-4";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -106,9 +106,12 @@ export function readingGaps(pages, included) {
 // The book's pages in order, each its document where it is in `docs` and null where it is not: what Read assembles (the
 // pages moved on to Read), and Problems and Export (the pages with a document). Assembly joins nothing across a null,
 // so a page not moved on yet (or with no document yet) is a gap that no unit crosses.
-export function readingDocuments(pages, docs) {
+// A dimmed page (`skipped`, a set of page ids or a function) is not part of the book: it is left out, not a gap, so a
+// unit goes on across it, as across a duplicate scan of a page.
+export function readingDocuments(pages, docs, skipped = null) {
   const byId = new Map(docs.map(doc => [doc.page.id, doc]));
-  return pages.map(page => byId.get(page.id) || null);
+  const left = typeof skipped === "function" ? skipped : skipped ? id => skipped.has(id) : () => false;
+  return pages.filter(page => !left(page.id)).map(page => byId.get(page.id) || null);
 }
 
 // A page with no regions has no content: a library's cover, a blank page, a page that is not part of the book. It has

@@ -77,3 +77,18 @@ test("a verse-group marker groups the verses printed just above it, however it w
   assert.equal(doc2.page.regions.find(r => r.id === "r3").lines.length, 2);
   assert.equal(doc2.flows.main[0], "vg1");
 });
+
+test("page numbers between two runs that agree take the numbers they imply; a new numbering is a break", async () => {
+  const { pageNumberFixes } = await import("../tools/chaya_page_labels.mjs");
+  const entries = [2, 3, 4, null, 2, 3, 4, 5, 16, 17, 8, 19, 10, 11, 12, 13].map((value, index) => ({ index, value }));
+  const { fixes, breaks } = pageNumberFixes(entries);
+  assert.deepEqual(fixes.map(f => [f.entry.index, f.value]), [[8, 6], [9, 7], [11, 9]], "a misread run (16, 17, 19 for 6, 7, 9) between runs that agree");
+  assert.deepEqual(breaks.map(b => b.read), [2], "the front matter's own numbering, then the body's");
+});
+
+test("a dimmed page is left out of the reading sequence, not made a gap", async () => {
+  const { readingDocuments } = await import("../js/workflow.js");
+  const pages = ["a", "b", "c"].map(id => ({ id })), docs = ["a", "c"].map(id => ({ page: { id } }));
+  assert.deepEqual(readingDocuments(pages, docs).map(d => d?.page.id ?? null), ["a", null, "c"]);
+  assert.deepEqual(readingDocuments(pages, docs, new Set(["b"])).map(d => d?.page.id ?? null), ["a", "c"]);
+});

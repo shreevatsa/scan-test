@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261119-book-3";
+import { assemble } from "./assemble.js?v=20261119-book-4";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-3";
-import { layerState } from "./layers.js?v=20261119-book-3";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-3";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-4";
+import { layerState } from "./layers.js?v=20261119-book-4";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-4";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -62,11 +62,17 @@ function tocTargets(P) {
   for (const page of P.book.pages) if (page.label && !byLabel.has(asciiDigits(page.label))) byLabel.set(asciiDigits(page.label), page.id);
   return {
     find({ title, page }) {
-      const name = bareLetters(title), at = Number(asciiDigits(page));
-      const near = unit => unit.page === null || Math.abs(unit.page - at) <= 2;
-      const scored = named.filter(near).map(unit => ({ unit, d: editDistance(name, unit.name) / Math.max(name.length, unit.name.length, 1) }))
-        .sort((a, b) => a.d - b.d);
-      if (scored[0] && scored[0].d <= 0.35) return `u-${safeId(scored[0].unit.uid)}`;
+      // By name first ("… समाप्तिः", the end of a section, names that section); the printed page only chooses among
+      // names nearly as close, since a page number read from the scan may be wrong.
+      const name = bareLetters(title).replace(/समाप्तिः$/u, ""), at = Number(asciiDigits(page));
+      const scored = named.map(unit => ({ unit, d: editDistance(name, unit.name) / Math.max(name.length, unit.name.length, 1), near: unit.page === null || Math.abs(unit.page - at) <= 3 }))
+        .sort((a, b) => a.d - b.d || b.near - a.near);
+      const best = scored[0];
+      if (best && best.d <= 0.35) {
+        const close = scored.filter(s => s.d <= best.d + 0.05);
+        const pick = close.length === 1 ? best : close.find(s => s.near);
+        if (pick) return `u-${safeId(pick.unit.uid)}`;
+      }
       const pid = byLabel.get(asciiDigits(page));
       return pid ? `pb-${safeId(pid)}` : null;
     },
@@ -301,7 +307,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
   if (!current()) return;
   const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
   const gaps = readingGaps(book.pages, new Set([...accepted.map(doc => doc.page.id), ...book.pages.filter(page => book.isSkipped?.(page.id)).map(page => page.id)]));   // a dimmed page is left out on purpose, so it is no gap
-  const P = prepare(readingDocuments(book.pages, accepted), book.types, book.style);
+  const P = prepare(readingDocuments(book.pages, accepted, id => book.isSkipped?.(id)), book.types, book.style);
   const issues = readingIssues(accepted, book.types, app.validate, P.warnings, P.unitCanonical);
   app.readerData = P;
   if (app.readerPrinted === undefined) app.readerPrinted = !!book.style;
@@ -476,7 +482,7 @@ export async function renderBookView(el, app) {
   const all = await book.all((d, n) => { if (app.routeToken === token) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
   if (app.book !== book || app.routeToken !== token) return;
   const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
-  const P = prepare(readingDocuments(book.pages, accepted), book.types, book.style);
+  const P = prepare(readingDocuments(book.pages, accepted, id => book.isSkipped?.(id)), book.types, book.style);
   if (!document.getElementById("bookview-css")) document.head.append(h("style", { id: "bookview-css" }, BOOK_CSS));
   const printed = !!(app.readerPrinted && P.sheet);
   const view = h("div", { class: "bookview" });
