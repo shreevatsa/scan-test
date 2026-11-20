@@ -6,7 +6,7 @@
 // is checked with schema.js before it is saved.
 
 import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-open-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-edit-2";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };
@@ -727,6 +727,22 @@ export function splitRegionAt(doc, rid, i, newUnit = true) {
   owner.children.splice(k + 1, 0, { region: regionRef(doc, nid) });
   if (newUnit) splitUnit(doc, owner.id, k + 1);
   return nid;
+}
+
+// Give a region with no line pieces one, over its whole outline, so its text can be typed: a region drawn where the
+// ink analysis found no line (a small or faint line, such as a title page's "BY"). Its line id is the page's next.
+export function addLinePiece(doc, rid) {
+  const r = regionById(doc, rid);
+  if ((r.lines || []).length) fail("this region has line pieces already");
+  const ids = doc.page.regions.flatMap(x => (x.lines || []).map(L => L.line)).filter(Number.isInteger);
+  r.lines = [{ line: (ids.length ? Math.max(...ids) : 0) + 1, polygons: [boxRing(regionBox(r))], text: "" }];
+  // It ends as the line before it in its unit does (a title page's lines are kept as lines).
+  const owner = ownerOf(doc, rid), refs = owner ? owner.children.filter(c => c.region).map(c => c.region.split("#").pop()) : [];
+  const before = refs.slice(0, refs.indexOf(rid)).reverse().map(id => doc.page.regions.find(x => x.id === id)).find(x => (x?.lines || []).length);
+  const end = before?.lines.at(-1).end;
+  if (end && refs.indexOf(rid) < refs.length - 1) r.lines[0].end = end;
+  r.source = { ...(r.source || {}), line_piece: "added by hand over the region's outline, to type its text" };
+  return r.lines[0];
 }
 
 // Move the text after code point `offset` of line piece `i` to a column on the right, for a block printed in two

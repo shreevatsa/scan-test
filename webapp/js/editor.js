@@ -1,4 +1,4 @@
-import { suggestionButton } from "./review-view.js?v=20261120-open-1";
+import { suggestionButton } from "./review-view.js?v=20261120-edit-2";
 // The text side of the page editor: the page's units in reading order, each region's line pieces as editable
 // lines (one region is one editing host, so a selection can run across its lines), and an inspector for the
 // selected unit, region or note marker. Text typed into a line is read back from the DOM into text and spans; every
@@ -6,9 +6,9 @@ import { suggestionButton } from "./review-view.js?v=20261120-open-1";
 
 import { cp, cpLength, covered, removeKind, normalizeSpans } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261120-open-1";
-import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261120-open-1";
-import { orderedRegions, textFlags } from "./flags.js?v=20261120-open-1";
+import * as ops from "./ops.js?v=20261120-edit-2";
+import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261120-edit-2";
+import { orderedRegions, textFlags } from "./flags.js?v=20261120-edit-2";
 
 const END_CYCLE = { space: "hyphen", hyphen: "join", join: "line", line: "space" };
 const END_NAMES = { space: "a space", hyphen: "a hyphen to drop (the word goes on)", join: "nothing (the word goes on)", line: "a line break" };
@@ -230,6 +230,13 @@ export class TextPanel {
   wire(host) {
     const app = this.app, rid = host.dataset.rid;
     host.addEventListener("mousedown", e => {
+      // A region with no line piece (the ink analysis found no line in it) gets one when clicked, so its text can be typed.
+      const region = app.doc.page.regions.find(x => x.id === rid);
+      if (this.textEditable && region && !(region.lines || []).length && app.tl.types[region.type]?.region !== "figure") {
+        e.preventDefault();
+        app.edit(d => ops.addLinePiece(d, rid), { after: () => this.placeCaret(rid, 0, 0) });
+        return;
+      }
       const mk = e.target.closest(".mk");
       if (mk) { e.preventDefault(); app.select({ marker: mk.dataset.id }); return; }
       const lp = e.target.closest(".lp");
@@ -422,7 +429,7 @@ export function renderInspector(el, app) {
     }
     return regionInspector(el, app, s.region);
   }
-  if (app.stage === "read") { el.append(h("p", { class: "hint" }, "Select a unit to change its grouping, or a region to review its line joins. Its transcription is read only.")); return; }
+  if (app.stage === "read") { el.append(h("p", { class: "hint" }, "Select a unit to change its grouping, or a region to correct its text or review its line joins. A region showing “(no text)” takes text when you click it.")); return; }
   el.append(h("div", { class: "hint" },
     "Click a region on the page or its heading in the text to select it; click a unit's heading to select the unit. ",
     "Type to correct the text; select text and use the formatting buttons (or ⌘B, ⌘I); click a line's right edge to change how it joins the next line. ",

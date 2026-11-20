@@ -166,6 +166,7 @@ g:hover > .pv-regbox, g.hl > .pv-regbox, g.sel > .pv-regbox { display: block; }
 .line-join-row > span { flex: 1; white-space: pre-wrap; }
 .line-join-row select { flex-shrink: 0; max-width: 50%; }
 .lp.notext:empty::before { content: "(no text)"; color: #bbb; font-size: 13px; }
+.rtext[contenteditable="true"] .lp.notext:empty::before { content: "(no text — click to type it)"; }
 .lp:not(.notext):empty::before { content: "(empty line piece: a mark or speck on the page)"; color: #c8c8c8; font-size: 12px; }
 .mk { color: var(--bad); font-weight: 600; cursor: pointer; padding: 0 1px; user-select: none; }
 .mk::before { content: attr(data-sign); }

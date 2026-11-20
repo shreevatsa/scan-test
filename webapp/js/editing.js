@@ -1,9 +1,11 @@
-import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261120-open-1";
-import { layerView } from "./layers.js?v=20261120-open-1";
-import { checkDocument } from "./schema.js?v=20261120-open-1";
-import { assemble } from "./assemble.js?v=20261120-open-1";
+import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261120-edit-2";
+import { layerView } from "./layers.js?v=20261120-edit-2";
+import { checkDocument } from "./schema.js?v=20261120-edit-2";
+import { assemble } from "./assemble.js?v=20261120-edit-2";
 
-export function editorFocus(stage) { return stage === "text" ? "text" : stage === "read" ? "units" : stage === "regions" ? "regions" : "all"; }
+// What a page's editor may change at each stage. Read's editor corrects everything but the page's geometry: units,
+// line joins and note links, and the transcription too, as you read (the first step to one page editor).
+export function editorFocus(stage) { return stage === "text" ? "text" : stage === "regions" ? "regions" : "all"; }
 
 export function unitSnapshot(doc) {
   return canonical({ grouping: JSON.parse(layerView(doc, "units")), types: doc.page.regions.map(region => [region.id, region.type]) });

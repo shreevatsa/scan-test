@@ -24,8 +24,10 @@ function page(pid = "p1") {
     source: { layers: Object.fromEntries(["regions", "text", "units"].map(layer => [layer, { state: "model", types_revision: 1, accepted_at_utc: "reviewed" }])) } };
 }
 
-test("focus locks geometry and grouping under Text and transcription under Read", () => {
-  assert.equal(editorFocus("text"), "text"); assert.equal(editorFocus("read"), "units");
+test("focus locks geometry and grouping under Text; Read's editor corrects the transcription too", () => {
+  assert.equal(editorFocus("text"), "text"); assert.equal(editorFocus("read"), "all");
+  const typed = page(); typed.page.regions[0].lines[0].text = "ಕನ್ನಡ";
+  assert.doesNotThrow(() => assertFocusEdit(editorFocus("read"), page(), typed));
   const base = page(), text = ops.clone(base); text.page.regions[0].lines[0].text = "ಕನ್ನಡ";
   assert.doesNotThrow(() => assertFocusEdit("text", base, text));
   assert.throws(() => assertFocusEdit("units", base, text), /transcription/);
@@ -179,4 +181,14 @@ test("book exports keep both joined pages and reject stale unit snapshots", asyn
   const files = await book.chayaFiles(), P = prepare([files["edits/p1.json"], files["edits/p2.json"]], files["types.json"]);
   assert.deepEqual(P.warnings, []);
   await assert.rejects(book.editPages(["p1"], docs => docs, { check, expected }), /units changed/);
+});
+
+test("a region with no line piece gets one over its outline, so its text can be typed", () => {
+  const doc = page(); const r = doc.page.regions[0]; const others = doc.page.regions.flatMap(x => (x.lines || []).map(L => L.line));
+  r.lines = []; r.box = [10, 20, 110, 60];
+  const piece = ops.addLinePiece(doc, r.id);
+  assert.equal(piece.line, Math.max(...others) + 1);
+  assert.deepEqual(piece.polygons, [[[10, 20], [110, 20], [110, 60], [10, 60]]]);
+  assert.equal(piece.text, "");
+  assert.throws(() => ops.addLinePiece(doc, r.id), /already/);
 });
