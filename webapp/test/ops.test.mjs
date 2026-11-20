@@ -55,6 +55,7 @@ test("add, move and delete regions", { skip: !have }, () => {
   const doc = page(KALE, "kale-1913-page-166"), orig = ops.clone(doc);
   const rid = ops.addRegion(doc, KT, "paragraph", [100, 1000, 1200, 1100], "u1");
   valid(doc, KT, "paragraph added inside the notes");
+  ops.addLinePiece(doc, rid);   // a drawn region's line pieces come from the outline step; by hand, one over its box
   ops.setLine(doc, rid, 0, "An added line.", [{ start: 3, end: 8, kind: "italic" }]);
   valid(doc, KT, "with text");
   ops.moveRegionToUnit(doc, KT, rid, "u3");
@@ -62,7 +63,13 @@ test("add, move and delete regions", { skip: !have }, () => {
   assert.equal(ops.regionById(doc, rid).type, "stanza_note");
   ops.deleteRegion(doc, rid);
   assert.deepEqual(structure(doc), structure(orig));
-  assert.throws(() => ops.addRegion(doc, KT, "stanza_note", [0, 0, 50, 50]), /top level/);
+  // A type that cannot stand at the top level goes into a container on the page that may hold it.
+  const nested = ops.addRegion(doc, KT, "stanza_note", [0, 0, 50, 50]);
+  valid(doc, KT, "a stanza note drawn with no unit chosen");
+  assert.ok(ops.containersFor(KT, "stanza_note").includes(ops.placeOf(doc, ops.ownerOf(doc, nested).id).parent.type));
+  ops.deleteRegion(doc, nested);
+  assert.deepEqual(structure(doc), structure(orig));
+  assert.throws(() => ops.addRegion({ ...ops.clone(doc), units: [], flows: {} }, KT, "stanza_note", [0, 0, 50, 50]), /top level/);
   const fid = ops.addRegion(doc, KT, "page_number", [600, 2000, 700, 2050]);
   valid(doc, KT, "furniture needs no unit");
   ops.deleteRegion(doc, fid);

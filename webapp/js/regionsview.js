@@ -1,12 +1,12 @@
-import { suggestionButton } from "./review-view.js?v=20261120-edit-2";
-import { typeRevision } from "./schema.js?v=20261120-edit-2";
+import { suggestionButton } from "./review-view.js?v=20261120-regions-in-read-1";
+import { typeRevision } from "./schema.js?v=20261120-regions-in-read-1";
 import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261120-edit-2";
-import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261120-edit-2";
-import { REGION_CLASSES } from "./book-types.js?v=20261120-edit-2";
-import { classSelect } from "./class-labels.js?v=20261120-edit-2";
-import { editTypeDialog } from "./type-operations.js?v=20261120-edit-2";
-import { normalizeTypeName } from "./type-additions.js?v=20261120-edit-2";
+import * as ops from "./ops.js?v=20261120-regions-in-read-1";
+import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261120-regions-in-read-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261120-regions-in-read-1";
+import { classSelect } from "./class-labels.js?v=20261120-regions-in-read-1";
+import { editTypeDialog } from "./type-operations.js?v=20261120-regions-in-read-1";
+import { normalizeTypeName } from "./type-additions.js?v=20261120-regions-in-read-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -229,25 +229,36 @@ export function renderRegionInspector(el, app) {
   }
   const region = doc.page.regions.find(value => value.id === selection.region);
   if (!region) return;
+  el.append(h("h3", {}, `Region ${region.id}`), ...regionTools(app, region));
+}
+
+// What can be done to a region: its type, box, continuation flags (Regions only: Read sets a unit's open ends), split,
+// merge, reading order (Read only: Regions has it on each card), outlines and deletion. Both page editors use it.
+export function regionTools(app, region, { continuation = true, order = false } = {}) {
+  const { doc } = app, out = [];
   const box = region.box || ops.boxesOf({ page: { regions: [region] } })[0];
   const coords = box.map((value, index) => h("input", { type: "number", required: true, min: 0,
     max: index % 2 ? doc.page.height : doc.page.width, value, "aria-label": ["Left", "Top", "Right", "Bottom"][index] }));
-  el.append(...[h("h3", {}, `Region ${region.id}`), regionTypeSelect(app, region.type, type => app.retypeRegion(region.id, type)),
+  const furniture = app.tl.types[region.type]?.role === "furniture";
+  out.push(...[regionTypeSelect(app, region.type, type => app.retypeRegion(region.id, type)),
     app.tl.types[region.type]?.description ? h("p", { class: "desc" }, app.tl.types[region.type].description) : null,
     h("div", { class: "actions" }, h("button", { onclick: () => app.setRegionView("types", region.type) }, "Examples of this type"),
       app.book.writable ? h("button", { onclick: () => editTypeDialog(app, region.type) }, "Edit type…") : null),
+    order ? h("div", { class: "actions region-order" }, h("span", { class: "meta" }, furniture ? "Page furniture: not in the reading order" : "Reading order: "),
+      h("button", { disabled: furniture, onclick: () => app.edit(next => ops.moveRegionOrder(next, app.tl, region.id, -1)) }, "Earlier"),
+      h("button", { disabled: furniture, onclick: () => app.edit(next => ops.moveRegionOrder(next, app.tl, region.id, 1)) }, "Later")) : null,
     h("div", { class: "region-coordinates" }, ...coords), h("button", { onclick: () => {
       if (!coords.every(input => input.reportValidity())) return;
       if (app.edit(next => ops.setBox(next, region.id, coords.map(input => Number(input.value))))) app.recompute();
     } }, "Set box")].filter(Boolean));
-  for (const [flag, label] of [["continues_from_earlier", "Continued from the previous page"], ["continues_later", "Continues on the next page"]])
-    el.append(h("label", { class: "region-continuation" }, h("input", { type: "checkbox", checked: !!region.source?.[flag], onchange: event => app.edit(next => {
+  if (continuation) for (const [flag, label] of [["continues_from_earlier", "Continued from the previous page"], ["continues_later", "Continues on the next page"]])
+    out.push(h("label", { class: "region-continuation" }, h("input", { type: "checkbox", checked: !!region.source?.[flag], onchange: event => app.edit(next => {
       const target = ops.regionById(next, region.id); target.source = { ...target.source, [flag]: event.target.checked };
     }) }), ` ${label}`));
   const split = h("select", { "aria-label": "Split before line piece" }, ...(region.lines || []).slice(1).map((line, index) => h("option", { value: index + 1 }, `Before piece ${index + 2}${line.text ? ` · ${line.text.slice(0, 30)}` : ""}`)));
   const merge = h("select", { "aria-label": "Region to merge" }, ...doc.page.regions.filter(value => value.id !== region.id && value.type === region.type)
     .map(value => h("option", { value: value.id }, value.id)));
-  el.append(h("div", { class: "actions" }, split, h("button", { disabled: (region.lines || []).length < 2, onclick: () => {
+  out.push(h("div", { class: "actions" }, split, h("button", { disabled: (region.lines || []).length < 2, onclick: () => {
     if (app.edit(next => { const id = ops.splitRegionAt(next, region.id, Number(split.value)); app.selection = { region: id }; })) app.recompute();
   } }, "Split region")), h("div", { class: "actions" }, merge, h("button", { disabled: !merge.options.length, onclick: () => {
     if (app.edit(next => ops.mergeRegions(next, app.tl, region.id, merge.value))) app.recompute();
@@ -255,4 +266,5 @@ export function renderRegionInspector(el, app) {
   h("button", { class: "danger", onclick: () => {
     if (app.edit(next => { ops.deleteRegion(next, region.id); app.selection = {}; })) app.recompute();
   } }, "Delete region")));
+  return out;
 }

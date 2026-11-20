@@ -1,38 +1,38 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261120-edit-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261120-edit-2";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261120-edit-2";
-import { RECIPE } from "./recipe.js?v=20261120-edit-2";
-import { readerOptions } from "./pipeline/readers.js?v=20261120-edit-2";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261120-regions-in-read-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261120-regions-in-read-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261120-regions-in-read-1";
+import { RECIPE } from "./recipe.js?v=20261120-regions-in-read-1";
+import { readerOptions } from "./pipeline/readers.js?v=20261120-regions-in-read-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { PageView } from "./pageimage.js?v=20261120-edit-2";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261120-edit-2";
-import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261120-edit-2";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261120-edit-2";
-import { renderStyle } from "./styleview.js?v=20261120-edit-2";
-import { openTypeList } from "./typesview.js?v=20261120-edit-2";
-import { typeSetup } from "./type-setup.js?v=20261120-edit-2";
+import { PageView } from "./pageimage.js?v=20261120-regions-in-read-1";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261120-regions-in-read-1";
+import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261120-regions-in-read-1";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261120-regions-in-read-1";
+import { renderStyle } from "./styleview.js?v=20261120-regions-in-read-1";
+import { openTypeList } from "./typesview.js?v=20261120-regions-in-read-1";
+import { typeSetup } from "./type-setup.js?v=20261120-regions-in-read-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261120-edit-2";
-import { EditError } from "./ops.js?v=20261120-edit-2";
-import { Maker, post } from "./pipeline/run.js?v=20261120-edit-2";
-import { CredentialChecks } from "./key-check.js?v=20261120-edit-2";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261120-edit-2";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261120-edit-2";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261120-edit-2";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-edit-2";
-import { layerState, noteEdit } from "./layers.js?v=20261120-edit-2";
-import { orderedRegions } from "./flags.js?v=20261120-edit-2";
-import { assemble } from "./assemble.js?v=20261120-edit-2";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261120-edit-2";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261120-edit-2";
-import { renderPages } from "./pagesview.js?v=20261120-edit-2";
-import { settings } from "./store.js?v=20261120-edit-2";
-import { renderReaders } from "./readersview.js?v=20261120-edit-2";
-import { renderStructures } from "./structuresview.js?v=20261120-edit-2";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261120-edit-2";
+import * as ops from "./ops.js?v=20261120-regions-in-read-1";
+import { EditError } from "./ops.js?v=20261120-regions-in-read-1";
+import { Maker, post } from "./pipeline/run.js?v=20261120-regions-in-read-1";
+import { CredentialChecks } from "./key-check.js?v=20261120-regions-in-read-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261120-regions-in-read-1";
+import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261120-regions-in-read-1";
+import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261120-regions-in-read-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-regions-in-read-1";
+import { layerState, layerView, noteEdit } from "./layers.js?v=20261120-regions-in-read-1";
+import { orderedRegions } from "./flags.js?v=20261120-regions-in-read-1";
+import { assemble } from "./assemble.js?v=20261120-regions-in-read-1";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261120-regions-in-read-1";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261120-regions-in-read-1";
+import { renderPages } from "./pagesview.js?v=20261120-regions-in-read-1";
+import { settings } from "./store.js?v=20261120-regions-in-read-1";
+import { renderReaders } from "./readersview.js?v=20261120-regions-in-read-1";
+import { renderStructures } from "./structuresview.js?v=20261120-regions-in-read-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261120-regions-in-read-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -912,8 +912,8 @@ class App {
       toolbar.querySelectorAll(".fmt").forEach(button => button.remove());
       toolbar.querySelector('[title="insert a note marker at the caret"]')?.remove();
     }
-    if (this.stage !== "regions") toolbar.querySelector(".draw")?.remove();
-    else if (this.book.writable) toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"),
+    if (this.stage === "text") toolbar.querySelector(".draw")?.remove();
+    if (this.stage === "regions" && this.book.writable) toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"),
       h("button", { class: "no-content", title: "for a page that is not part of the book, such as a library’s cover or a blank page: remove its regions and move it on to Text, where it needs no transcription",
         onclick: () => this.markNoContent().catch(error => this.toast(error.message, "bad")) }, "No content on this page"));
     const textPane = h("div", { class: "textpane" });
@@ -925,7 +925,7 @@ class App {
     this.main.replaceChildren(...(this.regionTypePanel ? [this.regionTypePanel.element] : []), imgPane, side);
     const fit = this.pageView?.fit;   // fit height is kept when the page view is made again
     this.pageView = new PageView(imgPane, {
-      editable: this.stage === "regions",
+      editable: this.stage !== "text",   // Regions and Read edit the page's regions
       onSelectRegion: rid => this.select(rid ? { region: rid } : {}),
       onSelectOmitted: index => this.select({ omitted: index }),
       onBox: (rid, box) => { if (this.edit(d => ops.setBox(d, rid, box))) this.recompute(); },
@@ -1014,11 +1014,13 @@ class App {
       fn(next);
       const focus = editorFocus(this.stage);
       assertFocusEdit(focus, this.doc, next);
-      if (this.stage === "regions") {
+      // A page whose units are provisional has them rebuilt from its regions after every edit, in Read as in Regions;
+      // settled units are kept, and the region edits in ops.js keep them consistent.
+      if (this.stage === "regions" || focus === "all" && layerState(next, "units")?.state === "provisional")
         rebuildProvisional(next, this.tl, { firstPage: this.book.index[this.pid] === 0, lastPage: this.book.index[this.pid] === this.book.pages.length - 1 });
-        next = noteEdit(this.doc, next, { focus: "regions" });
+      next = noteEdit(this.doc, next, { focus: this.stage === "regions" ? "regions" : focus });
+      if (this.stage === "regions" || next.source.layers.regions && layerView(this.doc, "regions") !== layerView(next, "regions"))
         next.source.layers.regions.types_revision = typeRevision(this.tl.source?.revision);
-      } else next = noteEdit(this.doc, next, { focus });
     }
     catch (e) {
       if (e instanceof EditError) { this.toast(e.message, "warn"); return false; }
@@ -1135,7 +1137,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261120-edit-2", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261120-regions-in-read-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
@@ -1197,7 +1199,7 @@ class App {
     if (e.altKey && e.key === "ArrowLeft" && this.mode === "page") { e.preventDefault(); this.step(-1); }
     if (e.altKey && e.key === "ArrowRight" && this.mode === "page") { e.preventDefault(); this.step(1); }
     if (e.key === "Escape") { this.pageView?.setDrawing(false); document.querySelectorAll(".popup").forEach(p => p.remove()); }
-    if (this.mode !== "page" || this.stage !== "regions" || mod || e.altKey || e.target.closest("input,select,textarea,button,dialog,[contenteditable]")) return;
+    if (this.mode !== "page" || this.stage === "text" || mod || e.altKey || e.target.closest("input,select,textarea,button,dialog,[contenteditable]")) return;
     if (/^[1-9]$/.test(e.key) && this.selection.region) {
       const type = Object.entries(this.tl.types).filter(([, value]) => value.region)[Number(e.key) - 1]?.[0];
       if (type) { e.preventDefault(); this.retypeRegion(this.selection.region, type); }

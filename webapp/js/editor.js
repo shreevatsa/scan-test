@@ -1,4 +1,4 @@
-import { suggestionButton } from "./review-view.js?v=20261120-edit-2";
+import { suggestionButton } from "./review-view.js?v=20261120-regions-in-read-1";
 // The text side of the page editor: the page's units in reading order, each region's line pieces as editable
 // lines (one region is one editing host, so a selection can run across its lines), and an inspector for the
 // selected unit, region or note marker. Text typed into a line is read back from the DOM into text and spans; every
@@ -6,9 +6,10 @@ import { suggestionButton } from "./review-view.js?v=20261120-edit-2";
 
 import { cp, cpLength, covered, removeKind, normalizeSpans } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261120-edit-2";
-import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261120-edit-2";
-import { orderedRegions, textFlags } from "./flags.js?v=20261120-edit-2";
+import * as ops from "./ops.js?v=20261120-regions-in-read-1";
+import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261120-regions-in-read-1";
+import { orderedRegions, textFlags } from "./flags.js?v=20261120-regions-in-read-1";
+import { regionTools } from "./regionsview.js?v=20261120-regions-in-read-1";
 
 const END_CYCLE = { space: "hyphen", hyphen: "join", join: "line", line: "space" };
 const END_NAMES = { space: "a space", hyphen: "a hyphen to drop (the word goes on)", join: "nothing (the word goes on)", line: "a line break" };
@@ -425,11 +426,15 @@ export function renderInspector(el, app) {
       const owner = ops.ownerOf(doc, s.region);
       if (owner) unitInspector(el, app, owner.id);
       regionLineJoins(el, app, s.region);
+      // The region itself: its type, box, split, merge, reading order and deletion, as in Regions.
+      const region = doc.page.regions.find(r => r.id === s.region);
+      el.append(h("details", { class: "region-tools", open: true }, h("summary", {}, `Region ${region.id} · ${region.type}`),
+        ...regionTools(app, region, { continuation: false, order: true })));
       return;
     }
     return regionInspector(el, app, s.region);
   }
-  if (app.stage === "read") { el.append(h("p", { class: "hint" }, "Select a unit to change its grouping, or a region to correct its text or review its line joins. A region showing “(no text)” takes text when you click it.")); return; }
+  if (app.stage === "read") { el.append(h("p", { class: "hint" }, "Select a unit to change its grouping, or a region to correct its text, review its line joins or change its type, box or place. Draw a new region with ＋ Region. A region showing “(no text)” takes text when you click it.")); return; }
   el.append(h("div", { class: "hint" },
     "Click a region on the page or its heading in the text to select it; click a unit's heading to select the unit. ",
     "Type to correct the text; select text and use the formatting buttons (or ⌘B, ⌘I); click a line's right edge to change how it joins the next line. ",

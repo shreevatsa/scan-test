@@ -1,7 +1,7 @@
-import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261120-edit-2";
-import { layerView } from "./layers.js?v=20261120-edit-2";
-import { checkDocument } from "./schema.js?v=20261120-edit-2";
-import { assemble } from "./assemble.js?v=20261120-edit-2";
+import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261120-regions-in-read-1";
+import { layerView } from "./layers.js?v=20261120-regions-in-read-1";
+import { checkDocument } from "./schema.js?v=20261120-regions-in-read-1";
+import { assemble } from "./assemble.js?v=20261120-regions-in-read-1";
 
 // What a page's editor may change at each stage. Read's editor corrects everything but the page's geometry: units,
 // line joins and note links, and the transcription too, as you read (the first step to one page editor).
