@@ -44,3 +44,14 @@ test("nothing before the first verse or after the last closing is grouped", () =
   assert.equal(b.flows.main.length, 2);
   assert.equal(b.flows.main.at(-1), "u3");
 });
+
+test("the book's own closing after the last part stays outside the parts, and a part's heading can start a part", () => {
+  const a = page("a", ["heading", "verse", "section_closing", "heading", "verse", "section_closing"]);
+  const b = page("b", ["verse", "section_closing", "section_closing"]);
+  a.units.find(u => u.id === "u3").text = "इति प्रथमः॥"; a.units.find(u => u.id === "u4").text = "उत्तरकाण्डः";
+  a.units.find(u => u.id === "u6").text = "इति द्वितीयः॥";
+  b.units.find(u => u.id === "u2").text = "रामायणकथासारे उत्तरकाण्डः समाप्तः"; b.units.find(u => u.id === "u3").text = "इति रामायणमञ्जरी समाप्ता";
+  const items = sectionKeys([a, b], { closing: "section_closing", partClosing: /कथासारे/, partHeading: /काण्ड/, textOf: (doc, unit) => unit.text || "" });
+  assert.deepEqual(items.map(i => i.part), [0, 0, 0, 1, 1, 1, 1, 1, null], "the heading starts part 1; the book's last line is in no part");
+  assert.equal(items.at(-1).episode, null);
+});
