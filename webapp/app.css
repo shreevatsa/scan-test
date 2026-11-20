@@ -390,6 +390,11 @@ main.page .inspector .actions { display: flex; flex-wrap: wrap; gap: 7px; margin
 .textpane > .region-review-flags, .textpane > .region-ignored-lines { margin: 4px 0 10px; }
 .textpane > .region-review-flags > summary, .textpane > .region-ignored-lines > summary, .page-types > summary { cursor: pointer; }
 .page-types { margin-top: 10px; }
+.page-menu { position: relative; display: inline-block; }
+.page-menu > summary { cursor: pointer; list-style: none; padding: 2px 8px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+.page-menu > summary::-webkit-details-marker { display: none; }
+.page-menu-items { position: absolute; right: 0; z-index: 40; display: grid; gap: 2px; min-width: 260px; padding: 6px; background: #fff; border: 1px solid #aaa; border-radius: 6px; box-shadow: 0 4px 18px rgba(0,0,0,.15); }
+.page-menu-items button { text-align: left; padding: 4px 6px; }
 .page-types > .region-types { border: 0; padding: 6px 0 0; }
 .pv-omitted { stroke: #b77916; stroke-width: 2; stroke-dasharray: 5 3; vector-effect: non-scaling-stroke; cursor: pointer; }
 .type-dialog { width: min(520px, 95vw); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); }
