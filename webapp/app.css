@@ -194,9 +194,9 @@ g:hover > .pv-regbox, g.hl > .pv-regbox, g.sel > .pv-regbox { display: block; }
 .r-verse { margin: .8em 0 .8em 1.5em; }
 .r-title_page { text-align: center; margin: 1.5em 0 4em; }
 .r-title_page .r-para, .r-title_page .r-heading { text-align: center; margin: .6em 0; }
-.r-verse_group { margin: 0 0 0 -12px; padding: 0 0 .1em 10px; border-left: 2px solid transparent; border-radius: 2px; transition: background .15s; }
-.r-verse_group > .r-lead_in { text-align: right; margin: -.5em 0 .7em; font-size: .85em; color: #8a8170; cursor: pointer; }
-.r-verse_group:has(> .r-lead_in:hover), .r-verse_group.lit { border-left-color: #d9cfb5; background: #faf6ea; }
+.r-verse_group { margin-left: -12px; padding-left: 10px; border-left: 2px solid transparent; border-radius: 2px; transition: background .15s; }
+.r-vgmark { float: right; margin-left: 1em; font-size: .85em; color: #8a8170; cursor: pointer; }
+.r-verse_group:has(.r-vgmark:hover), .r-verse_group.lit { border-left-color: #d9cfb5; background: #faf6ea; }
 .r-note { font-size: 15px; margin: .4em 0; }
 .r-tablewrap { overflow-x: auto; margin: .8em 0; }
 .r-table { border-collapse: collapse; font-size: 14px; }

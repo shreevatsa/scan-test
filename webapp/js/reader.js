@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261119-book-4";
+import { assemble } from "./assemble.js?v=20261119-book-5";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-4";
-import { layerState } from "./layers.js?v=20261119-book-4";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-4";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261119-book-5";
+import { layerState } from "./layers.js?v=20261119-book-5";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261119-book-5";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -163,7 +163,8 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
   };
   // The text of a run of regions of one unit, joined across line pieces, regions and pages. As printed, a line
   // piece's own style is kept, and a heading's lines are set one under the other.
-  const regionsText = (refs, cls) => {
+  // `tail` goes after the last line's text (a verse group's marker, floated into the free space at its right).
+  const regionsText = (refs, cls, tail = "") => {
     let out = "";
     refs.forEach((ref, k) => {
       const R = regions[ref];
@@ -180,6 +181,7 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
         const ls = sheet && L.style ? css(sheet, L.style, { block: false }) : "";
         if (sheet && cls === "heading") { out += `<span class="r-ln"${styleAttr("display:block" + (ls ? ";" + ls : ""))}>${text}</span>`; return; }
         out += ls ? `<span${styleAttr(ls)}>${text}</span>` : text;
+        if (last && tail) out += tail;   // after the text: it stays on the line only where it fits beside it
         if (!last) out += SEP[end] ?? " ";
       });
       out += "</span>";
@@ -221,7 +223,7 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
     return out;
   };
   const label = u => [u.type.replace(/_/g, " "), u.number, u.label ? `“${u.label}”` : ""].filter(Boolean).join(" ");
-  const unitHtml = (uid, depth) => {
+  const unitHtml = (uid, depth, tail = "") => {
     const u = units[uid];
     if (!u) return "";
     const t = tl.types[u.type] || {}, cls = t.region;
@@ -232,6 +234,17 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
     const attrs = `data-uid="${esc(uid)}" data-label="${esc(label(u))}"${lang ? ` lang="${esc(lang)}"` : ""}${anchor}`;
     const back = (markersOf[uid] || []).map(a => `<a class="r-back" href="#mk-${esc(a)}" title="back to the marker">↩</a>`).join("");
     const mixed = u.children.some(c => c.unit);
+    // Verses that make one sentence, with their marker ((युगलकम्), (तिलकम्)) set in the free space at the right of the
+    // last line rather than on a line of its own.
+    if (u.type === "verse_group") {
+      const kids = u.children.map(c => c.unit).filter(id => units[id]);
+      const markId = kids.find(id => tl.types[units[id].type]?.region === "lead_in");
+      const verses = kids.filter(id => id !== markId);
+      const text = markId ? units[markId].children.filter(c => c.region).map(c => regions[c.region]).filter(Boolean)
+        .map(R => (R.region.lines || []).map(L => lineHtml(L.text || "", L.spans || [], marker(R.page.id))).join(" ")).join(" ") : "";
+      const mark = markId ? `<span class="r-vgmark" data-uid="${esc(markId)}" title="these verses make one sentence">${text}</span>` : "";
+      return `<section class="r-unit r-verse_group" ${attrs}>${verses.map((id, i) => unitHtml(id, depth + 1, i === verses.length - 1 ? mark : "")).join("")}</section>`;
+    }
     if (!cls || mixed) {
       // A first-line indent belongs to the unit's first run of text only (the text after a quoted verse goes on).
       const indent = own && own.indent_pt !== undefined ? own.indent_pt : null;
@@ -273,7 +286,7 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
       const title = target ? `<a href="#${target}">${esc(entry.title)}</a>` : esc(entry.title);
       return `<p class="r-tocline" ${attrs}>${pages}<span class="r-toctitle">${title}</span><span class="r-leader"></span><span class="r-tocpage">${esc(entry.page)}</span></p>`;
     }
-    if (cls === "verse") return `<div class="r-verse" ${attrs}${styleAttr(st)}>${regionsText(refs, cls)}</div>`;
+    if (cls === "verse") return `<div class="r-verse" ${attrs}${styleAttr(st)}>${regionsText(refs, cls, tail)}</div>`;
     if (cls === "table") return `<div class="r-tablewrap" ${attrs}${styleAttr(st)}>${tableHtml(refs)}</div>`;
     if (cls === "note") return `<div class="r-note" id="note-${esc(uid)}" ${attrs}${styleAttr(st)}>${regionsText(refs, cls)}${back}</div>`;
     return `<p class="r-para r-${esc(cls)}" ${attrs}${styleAttr(st)}>${regionsText(refs, cls)}${back}</p>`;
@@ -384,8 +397,8 @@ export function wireBookView(root, scroller) {
   const top = () => scroller === window ? 0 : scroller.getBoundingClientRect().top;
   root.addEventListener("click", event => {
     if (event.target.closest(".bv-open")) { root.classList.toggle("toc-open"); return; }
-    const marker = event.target.closest(".r-verse_group > .r-lead_in");
-    if (marker) { marker.parentElement.classList.toggle("lit"); return; }   // a tap lights the verses the marker groups
+    const groupMark = event.target.closest(".r-vgmark");
+    if (groupMark) { groupMark.closest(".r-verse_group")?.classList.toggle("lit"); return; }   // a tap lights the verses the marker groups
     const a = event.target.closest('a[href^="#"]');
     if (!a) return;
     const target = root.querySelector(`[id="${a.getAttribute("href").slice(1)}"]`);
@@ -438,9 +451,9 @@ export const BOOK_CSS = `
 .bv-toc .num { color: #999; display: inline-block; min-width: 1.8em; }
 .r-title_page { text-align: center; margin: 1.5em 0 4em; }
 .r-title_page .r-para, .r-title_page .r-heading { text-align: center; margin: .6em 0; }
-.r-verse_group { margin: 0 0 0 -12px; padding: 0 0 .1em 10px; border-left: 2px solid transparent; border-radius: 2px; transition: background .15s; }
-.r-verse_group > .r-lead_in { text-align: right; margin: -.5em 0 .7em; font-size: .85em; color: #8a8170; cursor: pointer; }
-.r-verse_group:has(> .r-lead_in:hover), .r-verse_group.lit { border-left-color: #d9cfb5; background: #faf6ea; }
+.r-verse_group { margin-left: -12px; padding-left: 10px; border-left: 2px solid transparent; border-radius: 2px; transition: background .15s; }
+.r-vgmark { float: right; margin-left: 1em; font-size: .85em; color: #8a8170; cursor: pointer; }
+.r-verse_group:has(.r-vgmark:hover), .r-verse_group.lit { border-left-color: #d9cfb5; background: #faf6ea; }
 .bookview .reader { grid-column: 2; max-width: none; margin: 0; padding: 1.5rem 0 10rem; }
 .bookview .reader:not(.printed) { font-size: 18px; line-height: 1.65; }
 .bookview .reader:not(.printed) .r-verse { margin: .8em 0 .8em 1.5em; }
