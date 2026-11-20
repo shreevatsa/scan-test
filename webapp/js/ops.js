@@ -6,7 +6,7 @@
 // is checked with schema.js before it is saved.
 
 import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-regions-in-read-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-one-editor-1";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };
@@ -363,6 +363,13 @@ export function setBox(doc, rid, box, outline = null) {
 // Add a region of `type` with `box` and one empty line piece. A text region gets a new unit: inside `into` (a unit
 // of the same type, which takes the region; or a container that may hold the type), else at the top of the type's
 // flow. Returns the new region's id.
+// The unit a region drawn in the page editor may be put into: the selected unit, or the selected region's unit. A drawn
+// region is placed where it is drawn unless the person chooses this unit in the menu that follows the drawing.
+export function drawnInto(doc, selection = {}) {
+  if (selection.unit && doc.units.some(unit => unit.id === selection.unit)) return selection.unit;
+  return (selection.region && doc.page.regions.some(region => region.id === selection.region) && ownerOf(doc, selection.region)?.id) || null;
+}
+
 export function addRegion(doc, tl, type, box, into = null) {
   if (!tl.types[type] || !printedAs(tl, type)) fail(`${type} is not printed as regions`);
   const rid = newRegionId(doc);

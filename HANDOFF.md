@@ -52,6 +52,7 @@ These are opinions formed on 2026-11-12 from reading the code and using the app.
 4. **Completion is the wrong shape.** It is the costliest text-only step, the least validated, and it may contradict structure the user already reviewed. Regions already carry type, order and continuation flags, and the local rule builds a valid tree from them. The remaining model work is small and checkable (line ends, numbers, note links), which is what task 5 tests. If it holds, the stages become Regions (structure, final) → Text → Read (corrections only), and "Units and links" stops being a stage.
 5. **Review by exception only works if exceptions are few.** A stage should be judged by how many pages it asks a person to open. Every flag kind should have a measured rate on a real book, and one that fires on a third of pages is a defect in the flag (task 2).
 6. **Fewer, larger views.** `main.js` (1,100 lines) and the many `*view.js` files grew by accretion, with sub-tabs under tabs (Read has five). After task 4 shows which screens are used, remove the ones that were not.
+7. **One page editor (done, 2026-11-20).** The three page editors (Regions, Text, Read) became one, the same at every stage, at `#page&p=<id>` (old stage addresses still open it): commits ee07366f and ad9120b0 gave Read's editor text and region editing, and the next commit removed the other two, moving their flag list, kept-text offer and page actions into it.
 
 ## Decisions the user has accepted
 

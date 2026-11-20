@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261120-regions-in-read-1";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-regions-in-read-1";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261120-regions-in-read-1";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261120-regions-in-read-1";
+import { typeRevision } from "./schema.js?v=20261120-one-editor-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-one-editor-1";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261120-one-editor-1";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261120-one-editor-1";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -61,33 +61,32 @@ export function availability(states) {
     read: states.some(state => eligible("read", state)), export: true };
 }
 
+// An address with a page and no view opens the page editor, whatever stage it names: `#page&p=<id>` is the address it
+// makes, and the older `#regions&p=`, `#text&p=`, `#read&p=` and bare `#p=` (saved links) open it too. The page editor is
+// never locked: a page not moved on to Read opens in it as any other does.
 export function workflowRoute(value, ready, pageState = () => null) {
   const hash = new URLSearchParams(value.replace(/^#/, ""));
   const aliases = { readers: ["text", "compare"], structures: ["read", "compare"],
     check: ["read", "problems"], style: ["read", "style"], make: ["regions", "pages"], types: ["regions", "types"] };
   const old = Object.keys(aliases).find(key => hash.has(key));
-  let stage = old ? aliases[old][0] : STAGES.find(key => hash.has(key));
-  if (!stage) {
-    const state = pageState(hash.get("p"));
-    stage = hash.has("p") ? state ? state.layers.text?.accepted ? "read" : state.layers.regions?.accepted ? "text" : "regions"
-      : ready.read ? "read" : "regions" : "pages";
-  }
+  const pid = hash.get("p");
   let view = old ? aliases[old][1] : hash.get("view") || "";
   if (old === "types" && hash.get("view") === "proposal") view = "proposal";
+  if (pid && !view) return { stage: "page", mode: "page", pid, view: "", region: hash.get("r"), unit: hash.get("u"), locked: false };
+  const stage = old ? aliases[old][0] : STAGES.find(key => hash.has(key)) || "pages";
   const locked = !ready[stage];
   if (locked) return { stage: "pages", mode: "grid", locked };
-  const pid = hash.get("p");
   const views = { "regions/types": "types", "regions/proposal": "types", "text/compare": "readers", "read/compare": "structures",
     "read/problems": "check", "read/style": "style", "read/book": "plain" };
-  const mode = pid && !view ? "page" : views[`${stage}/${view}`] ||
-    (stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");
+  const mode = views[`${stage}/${view}`] || (stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");
   return { stage, mode, pid, view, region: hash.get("r"), unit: hash.get("u"), locked: false };
 }
 
+// The address of a stage view, or with a page (and a stage or "page"), of the page editor at that page.
 export function workflowAddress(mode, pid = null, selection = {}) {
   const aliases = { readers: "text&view=compare", structures: "read&view=compare",
-    check: "read&view=problems", style: "read&view=style", plain: "read&view=book", make: "regions", book: "regions", page: "read", types: "regions&view=types" };
-  const hash = aliases[mode] || mode;
+    check: "read&view=problems", style: "read&view=style", plain: "read&view=book", make: "regions", book: "regions", types: "regions&view=types" };
+  const hash = pid && ["page", ...STAGES].includes(mode) ? "page" : aliases[mode] || mode;
   const extra = selection.region ? `&r=${encodeURIComponent(selection.region)}` : selection.unit ? `&u=${encodeURIComponent(selection.unit)}` : "";
   return `#${hash}${pid ? `&p=${encodeURIComponent(pid)}` : ""}${extra}`;
 }

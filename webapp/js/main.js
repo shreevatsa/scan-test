@@ -1,38 +1,38 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261120-regions-in-read-1";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261120-regions-in-read-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261120-regions-in-read-1";
-import { RECIPE } from "./recipe.js?v=20261120-regions-in-read-1";
-import { readerOptions } from "./pipeline/readers.js?v=20261120-regions-in-read-1";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261120-one-editor-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261120-one-editor-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261120-one-editor-1";
+import { RECIPE } from "./recipe.js?v=20261120-one-editor-1";
+import { readerOptions } from "./pipeline/readers.js?v=20261120-one-editor-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { PageView } from "./pageimage.js?v=20261120-regions-in-read-1";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261120-regions-in-read-1";
-import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261120-regions-in-read-1";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261120-regions-in-read-1";
-import { renderStyle } from "./styleview.js?v=20261120-regions-in-read-1";
-import { openTypeList } from "./typesview.js?v=20261120-regions-in-read-1";
-import { typeSetup } from "./type-setup.js?v=20261120-regions-in-read-1";
+import { PageView } from "./pageimage.js?v=20261120-one-editor-1";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261120-one-editor-1";
+import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261120-one-editor-1";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261120-one-editor-1";
+import { renderStyle } from "./styleview.js?v=20261120-one-editor-1";
+import { openTypeList } from "./typesview.js?v=20261120-one-editor-1";
+import { typeSetup } from "./type-setup.js?v=20261120-one-editor-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261120-regions-in-read-1";
-import { EditError } from "./ops.js?v=20261120-regions-in-read-1";
-import { Maker, post } from "./pipeline/run.js?v=20261120-regions-in-read-1";
-import { CredentialChecks } from "./key-check.js?v=20261120-regions-in-read-1";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261120-regions-in-read-1";
-import { pageStages, eligible, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261120-regions-in-read-1";
-import { RegionsPanel, renderRegionInspector, regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261120-regions-in-read-1";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-regions-in-read-1";
-import { layerState, layerView, noteEdit } from "./layers.js?v=20261120-regions-in-read-1";
-import { orderedRegions } from "./flags.js?v=20261120-regions-in-read-1";
-import { assemble } from "./assemble.js?v=20261120-regions-in-read-1";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261120-regions-in-read-1";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261120-regions-in-read-1";
-import { renderPages } from "./pagesview.js?v=20261120-regions-in-read-1";
-import { settings } from "./store.js?v=20261120-regions-in-read-1";
-import { renderReaders } from "./readersview.js?v=20261120-regions-in-read-1";
-import { renderStructures } from "./structuresview.js?v=20261120-regions-in-read-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261120-regions-in-read-1";
+import * as ops from "./ops.js?v=20261120-one-editor-1";
+import { EditError } from "./ops.js?v=20261120-one-editor-1";
+import { Maker, post } from "./pipeline/run.js?v=20261120-one-editor-1";
+import { CredentialChecks } from "./key-check.js?v=20261120-one-editor-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261120-one-editor-1";
+import { pageStages, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261120-one-editor-1";
+import { regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261120-one-editor-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-one-editor-1";
+import { layerState, layerView, noteEdit } from "./layers.js?v=20261120-one-editor-1";
+import { orderedRegions } from "./flags.js?v=20261120-one-editor-1";
+import { assemble } from "./assemble.js?v=20261120-one-editor-1";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261120-one-editor-1";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261120-one-editor-1";
+import { renderPages } from "./pagesview.js?v=20261120-one-editor-1";
+import { settings } from "./store.js?v=20261120-one-editor-1";
+import { renderReaders } from "./readersview.js?v=20261120-one-editor-1";
+import { renderStructures } from "./structuresview.js?v=20261120-one-editor-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261120-one-editor-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -527,7 +527,7 @@ class App {
     this.regionOverview = {};
     this.processOpen = {};
     this.typeOverview = {};
-    this.regionPageViews = new Map();
+    this.pageViews = new Map();
     this.workflowScroll = new Map();
     this.lastTypeRevision = null;
     if (book.browser) history.replaceState(null, "", `${location.pathname}?local=${encodeURIComponent(book.where.name)}${location.hash}`);
@@ -624,7 +624,7 @@ class App {
       await this.refreshWorkflowPage(pid);
       this.doc = null; this.pageBuilt = false;
     } finally { this.workflowBusy = false; }
-    if (location.hash === workflowAddress("regions", pid)) await this.route(); else this.openPage(pid, {}, "regions");
+    if (location.hash === workflowAddress("page", pid)) await this.route(); else this.openPage(pid);
   }
 
   // "No content on this page" (Regions): every region removed, as one editing step that undo restores, and the page
@@ -632,7 +632,7 @@ class App {
   // any page with no unit of their type (assemble.js); this is how a page that is not part of the book (a library's
   // cover, a blank page) is kept. Asked first when the page has regions with text or a person's edits.
   async markNoContent() {
-    if (this.stage !== "regions" || !this.doc || !this.book.writable) return;
+    if (this.mode !== "page" || !this.doc || !this.book.writable) return;
     if (this.workflowBusy || this.outlineBusy) return this.toast("Wait for the current edit to finish.");
     const pid = this.pid, doc = this.doc, regions = doc.page.regions;
     const withText = regions.filter(region => region.lines?.some(line => typeof line.text === "string")).length;
@@ -657,6 +657,8 @@ class App {
     await this.flush();
     if (this.pid !== pid) return;
     if (this.dirty || this.lastErrors?.length) return this.toast("The page could not be saved without its regions, so it was not moved on.", "bad");
+    // A page already moved on from Regions stays where it is; one still at Regions moves on to Text.
+    if (layerState(this.doc, "regions")?.accepted) { await this.refreshWorkflowPage(pid); this.toast("No content on this page: its regions are removed. Undo brings them back."); return; }
     this.workflowBusy = true;
     try {
       const out = await movePage(this.book, pid, "regions", true, value => this.check(value));
@@ -736,9 +738,10 @@ class App {
         tabBtn("read", "", "Read"), tabBtn("read", "book", "Book view"), tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
       h("span", { class: "nav" }, h("button", { title: "previous page (Alt ←)", onclick: () => this.step(-1) }, "←"), pageSel, h("button", { title: "next page (Alt →)", onclick: () => this.step(1) }, "→")),
       h("span", { class: "undo" }, h("button", { title: "undo (⌘Z)", onclick: () => this.undo() }, "↶"), h("button", { title: "redo (⇧⌘Z)", onclick: () => this.redo() }, "↷")),
-      h("span", { class: "page-stage-links" }, ...["regions", "text", "read"].map(stage => h("button", { class: "mini", dataset: { stage }, onclick: () => this.openPage(this.pid, {}, stage) }, `Open in ${stage === "read" ? "Read" : stage[0].toUpperCase() + stage.slice(1)}`)),
-        h("button", { class: "mini", onclick: () => {
-          const ids = book.pages.filter(page => eligible(this.stage, this.pageStates.get(page.id)) && stageFlags(this.pageStates.get(page.id), this.stage).length).map(page => page.id);
+      h("span", { class: "page-stage-links" },
+        h("button", { class: "mini", title: "the next page with flags at the stage it waits at", onclick: () => {
+          // Each page's flags at the stage it waits at, as Pages shows them.
+          const ids = book.pages.filter(page => this.pageStates.get(page.id) && stageFlags(this.pageStates.get(page.id), "pages").length).map(page => page.id);
           const next = ids.find(pid => book.index[pid] > book.index[this.pid]) || ids[0];
           if (next) this.openPage(next);
         } }, "Next flagged page")), this.status, this.copyStatus = h("span", { class: "copy-status" }));
@@ -753,20 +756,21 @@ class App {
     if (this.workflowBusy || this.outlineBusy || this.maker?.processing) { history.replaceState(null, "", this.lastWorkflowUrl); return this.toast("Wait for the active operation before switching views."); }
     this.workflowScroll ||= new Map();
     if (this.stage) this.workflowScroll.set(`${this.stage}/${this.mode}`, this.main.scrollTop);
-    if (this.stage === "regions" && this.mode === "page" && this.pageBuilt && this.doc) {
-      const panes = [this.pageView.el, this.textPanel.el, this.main.querySelector(".lower"), this.regionTypePanel.element];
-      this.regionPageViews.set(this.pid, { selection: structuredClone(this.selection), fit: this.pageView.fit, zoom: this.pageView.zoom,
+    if (this.mode === "page" && this.pageBuilt && this.doc) {
+      const panes = [this.pageView.el, this.textPanel.el, this.main.querySelector(".lower")];
+      this.pageViews.set(this.pid, { selection: structuredClone(this.selection), fit: this.pageView.fit, zoom: this.pageView.zoom,
         scroll: panes.map(pane => [pane.scrollLeft, pane.scrollTop]) });
-      this.regionOverview.pageAddress = workflowAddress("regions", this.pid, this.selection);
     }
     const token = this.routeToken = (this.routeToken || 0) + 1;
     await this.flush();
     if (this.dirty) { history.replaceState(null, "", this.lastWorkflowUrl); return; }
     if (this.pid) await this.refreshWorkflowPage(this.pid);
     if (token !== this.routeToken) return;
-    const route = workflowRoute(location.hash, this.available, pid => this.pageStates.get(pid)), { stage } = route;
+    const route = workflowRoute(location.hash, this.available, pid => this.pageStates.get(pid));
+    // A page the book does not have shows Pages.
+    if (route.mode === "page" && !this.pageStates.has(route.pid)) Object.assign(route, { stage: "pages", mode: "grid" });
+    const { stage } = route;
     let { mode } = route;
-    if (route.pid && (!this.pageStates.has(route.pid) || !eligible(stage, this.pageStates.get(route.pid)))) mode = "grid";
     // Comparisons call models: a read-only book shows its stage grid, which offers an editable copy.
     if (!this.book.writable && ["readers", "structures"].includes(mode)) { mode = stage === "read" ? "read" : "grid"; route.view = ""; }
     this.onLeaveGrid?.(); this.onLeaveGrid = null;
@@ -776,7 +780,9 @@ class App {
     this.mode = mode;
     this.header.dataset.top = stage;
     this.header.dataset.view = mode;
-    this.header.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === stage));
+    // The page editor serves every stage; the header marks the stage its page waits at.
+    const marked = stage === "page" ? currentStage(this.pageStates.get(route.pid)) : stage;
+    this.header.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === marked));
     this.header.querySelectorAll(".tab").forEach(b => {
       // Comparisons are reached from a stage's "Change"; their tab shows only while one is open.
       b.hidden = b.dataset.stage !== stage || b.dataset.view === "compare" && (route.view !== "compare" || !this.book.writable);
@@ -784,20 +790,18 @@ class App {
       b.classList.toggle("on", b.dataset.view === view);
       b.setAttribute("aria-pressed", String(b.classList.contains("on")));
     });
-    this.header.querySelectorAll(".page-stage-links [data-stage]").forEach(button => { button.disabled = !route.pid || !eligible(button.dataset.stage, this.pageStates.get(route.pid)); });
-    for (const option of this.pageSel.options) option.hidden = !eligible(stage, this.pageStates.get(option.value));
     if (this.onLeaveReader && mode !== "read") { this.onLeaveReader(); this.onLeaveReader = null; }
     if (mode === "page") {
       const sel = route.region ? { region: route.region } : route.unit ? { unit: route.unit } : null;
       await this.showPage(route.pid, sel);
       if (token !== this.routeToken) return;
-      const saved = stage === "regions" && this.regionPageViews.get(route.pid);
+      const saved = this.pageViews.get(route.pid);
       if (saved && this.pageBuilt && (!sel || ops.canonical(sel) === ops.canonical(saved.selection))) {
         this.select(saved.selection, { keepFocus: true });
         this.pageView.setZoom(saved.zoom);
         this.pageView.fit = saved.fit;
         if (saved.fit === "height") this.pageView.fitHeight();
-        const panes = [this.pageView.el, this.textPanel.el, this.main.querySelector(".lower"), this.regionTypePanel.element];
+        const panes = [this.pageView.el, this.textPanel.el, this.main.querySelector(".lower")];
         panes.forEach((pane, index) => { [pane.scrollLeft, pane.scrollTop] = saved.scroll[index]; });
       }
     } else {
@@ -812,7 +816,6 @@ class App {
       if (mode === "readers") renderReaders(this.main, this).catch(error => this.toast(error.message, "bad"));
       if (mode === "structures") renderStructures(this.main, this).catch(error => this.toast(error.message, "bad"));
     }
-    if (stage === "regions" && mode === "grid") this.regionOverview.pageAddress = workflowAddress("regions");
     if (mode !== "page" && token === this.routeToken) this.main.scrollTop = this.workflowScroll.get(`${stage}/${mode}`) || 0;
     if (route.locked) this.toast("Move pages on from the previous stage to open this tab.");
   }
@@ -823,20 +826,21 @@ class App {
 
   setRegionView(view, type) {
     if (view === "types") {
-      const regionType = this.stage === "regions" && this.mode === "page" && this.doc?.page.regions.find(region => region.id === this.selection.region)?.type;
+      const regionType = this.mode === "page" && this.doc?.page.regions.find(region => region.id === this.selection.region)?.type;
       if (type || regionType) this.typeOverview.selected = type || regionType;
       this.setMode("types");
-    } else location.hash = this.regionOverview.pageAddress || workflowAddress("regions");
+    } else location.hash = workflowAddress("regions");
   }
 
-  openPage(pid, sel = {}, stage = ["regions", "text", "read"].includes(this.stage) ? this.stage : "regions") {
-    location.hash = workflowAddress(stage, pid, sel);
+  // Every way of opening a page opens the one page editor, whatever the stage.
+  openPage(pid, sel = {}) {
+    location.hash = workflowAddress("page", pid, sel);
   }
 
-  // The previous or next page (Edit pages).
+  // The previous or next page of the book, in the page editor.
   step(d) {
     if (this.mode !== "page") return;
-    const pages = this.book.pages.filter(page => eligible(this.stage, this.pageStates.get(page.id)));
+    const pages = this.book.pages;
     const i = pages.findIndex(page => page.id === this.pid);
     const j = Math.max(0, Math.min(pages.length - 1, i + d));
     if (j !== i && pages[j]) this.openPage(pages[j].id);
@@ -846,9 +850,7 @@ class App {
 
   async showPage(pid, sel) {
     const token = this.routeToken;
-    const focusChanged = this.editorStage !== this.stage;
-    if (focusChanged) this.pageBuilt = false;
-    const changed = this.pid !== pid || !this.doc || focusChanged;
+    const changed = this.pid !== pid || !this.doc;
     if (changed || !this.pageBuilt) {
       await this.flush();
       this.pid = pid;
@@ -876,7 +878,6 @@ class App {
       this.selection = {};
     }
     if (!this.pageBuilt) {
-      this.editorStage = this.stage;
       await this.buildPageMode();
       if (token !== this.routeToken) return;
       this.pageBuilt = true;
@@ -908,24 +909,21 @@ class App {
       h("button", { title: "zoom in (or ⌘ + scroll on the page)", onclick: () => this.pageView.setZoom(this.pageView.zoom * 1.25) }, "+"),
       h("span", { class: "sep" }),
       h("button", { class: "revert", title: "return to this page’s last stage save", onclick: () => this.revertPage() }, "Revert page"));
-    if (this.stage !== "text" && this.stage !== "read") {
-      toolbar.querySelectorAll(".fmt").forEach(button => button.remove());
-      toolbar.querySelector('[title="insert a note marker at the caret"]')?.remove();
-    }
-    if (this.stage === "text") toolbar.querySelector(".draw")?.remove();
-    if (this.stage === "regions" && this.book.writable) toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"),
+    if (this.book.writable) toolbar.append(h("button", { onclick: () => reviewPageWithAI(this).catch(error => this.toast(error.message, "bad")) }, "Review page with AI"),
       h("button", { class: "no-content", title: "for a page that is not part of the book, such as a library’s cover or a blank page: remove its regions and move it on to Text, where it needs no transcription",
         onclick: () => this.markNoContent().catch(error => this.toast(error.message, "bad")) }, "No content on this page"));
     const textPane = h("div", { class: "textpane" });
     this.inspector = h("div", { class: "inspector" });
     this.problems = h("div", { class: "checks" });
-    const side = h("div", { class: "side" }, toolbar, textPane, h("div", { class: "lower" }, this.problems, this.inspector));
-    this.regionTypePanel = this.stage === "regions" ? regionTypesPanel(this, () => openTypeList(this).catch(error => this.toast(error.message, "bad"))) : null;
-    this.main.classList.toggle("regions-editor", this.stage === "regions");
-    this.main.replaceChildren(...(this.regionTypePanel ? [this.regionTypePanel.element] : []), imgPane, side);
+    // The book's region types, with the page's counts and the keys 1–9 that set a selected region's type (Regions' side panel).
+    this.regionTypePanel = regionTypesPanel(this, () => openTypeList(this).catch(error => this.toast(error.message, "bad")));
+    const typesBox = h("details", { class: "page-types", open: !!this.typesOpen, ontoggle: event => { this.typesOpen = event.target.open; } },
+      h("summary", {}, "Region types · keys 1–9"), this.regionTypePanel.element);
+    const side = h("div", { class: "side" }, toolbar, textPane, h("div", { class: "lower" }, this.problems, this.inspector, typesBox));
+    this.main.replaceChildren(imgPane, side);
     const fit = this.pageView?.fit;   // fit height is kept when the page view is made again
     this.pageView = new PageView(imgPane, {
-      editable: this.stage !== "text",   // Regions and Read edit the page's regions
+      editable: true,
       onSelectRegion: rid => this.select(rid ? { region: rid } : {}),
       onSelectOmitted: index => this.select({ omitted: index }),
       onBox: (rid, box) => { if (this.edit(d => ops.setBox(d, rid, box))) this.recompute(); },
@@ -934,7 +932,7 @@ class App {
       onHoverRegion: (rid, on) => this.hoverRegion(rid, on, true),
     });
     if (fit === "height") this.pageView.fit = "height";
-    this.textPanel = this.stage === "regions" ? new RegionsPanel(textPane, this) : new TextPanel(textPane, this);
+    this.textPanel = new TextPanel(textPane, this);
     await this.refresh();
   }
 
@@ -948,7 +946,7 @@ class App {
 
   afterRender() {
     this.pageView.select(this.selection.region || (this.selection.marker && ops.findMarker(this.doc, this.selection.marker)?.region.id) || null);
-    if (this.stage === "regions") renderRegionInspector(this.inspector, this); else renderInspector(this.inspector, this);
+    renderInspector(this.inspector, this);
     this.renderChecks();
   }
 
@@ -984,7 +982,7 @@ class App {
       if (first) this.pageView.reveal(first);
     }
     if (target && !keepFocus) target.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    if (this.stage === "regions") renderRegionInspector(this.inspector, this); else renderInspector(this.inspector, this);
+    renderInspector(this.inspector, this);
   }
 
   hoverRegion(rid, on, revealText = false) {
@@ -1012,14 +1010,14 @@ class App {
     let next = ops.clone(this.doc);
     try {
       fn(next);
-      const focus = editorFocus(this.stage);
+      const focus = editorFocus();
       assertFocusEdit(focus, this.doc, next);
       // A page whose units are provisional has them rebuilt from its regions after every edit, in Read as in Regions;
       // settled units are kept, and the region edits in ops.js keep them consistent.
-      if (this.stage === "regions" || focus === "all" && layerState(next, "units")?.state === "provisional")
+      if (layerState(next, "units")?.state === "provisional")
         rebuildProvisional(next, this.tl, { firstPage: this.book.index[this.pid] === 0, lastPage: this.book.index[this.pid] === this.book.pages.length - 1 });
-      next = noteEdit(this.doc, next, { focus: this.stage === "regions" ? "regions" : focus });
-      if (this.stage === "regions" || next.source.layers.regions && layerView(this.doc, "regions") !== layerView(next, "regions"))
+      next = noteEdit(this.doc, next, { focus });
+      if (next.source.layers.regions && layerView(this.doc, "regions") !== layerView(next, "regions"))
         next.source.layers.regions.types_revision = typeRevision(this.tl.source?.revision);
     }
     catch (e) {
@@ -1053,7 +1051,6 @@ class App {
 
   // Text the user typed, read back from a line (the DOM already shows it).
   typed(rid, i, text, spans) {
-    if (this.stage !== "text" && this.stage !== "read") return;   // Read's editor corrects the transcription too
     ops.setLine(this.doc, rid, i, text, spans);
     this.changed();
     this.renderChecks();
@@ -1077,7 +1074,7 @@ class App {
   }
 
   async persistPage() {
-    const doc = ops.clone(this.doc), pid = this.pid, focus = editorFocus(this.stage), base = this.savedDoc;
+    const doc = ops.clone(this.doc), pid = this.pid, focus = editorFocus(), base = this.savedDoc;
     const [errors] = this.check(doc);
     try {
       if (errors.length) { await this.book.putDraft(pid, doc); this.dirty = ops.canonical(this.doc) !== ops.canonical(doc); }
@@ -1137,7 +1134,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261120-regions-in-read-1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261120-one-editor-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
@@ -1173,17 +1170,22 @@ class App {
     this.pageView.setDrawing(false);
     this.main.querySelector(".toolbar .draw")?.classList.remove("on");
     const printed = Object.entries(this.tl.types).filter(([, t]) => "region" in t).map(([n]) => n);
-    const into = this.selection.unit || (this.selection.region && ops.ownerOf(this.doc, this.selection.region)?.id) || null;
+    // Placed where it is drawn; with a unit or region selected, the menu also offers to put it into that unit.
+    const offered = ops.drawnInto(this.doc, this.selection);
+    const intoBox = offered ? h("input", { type: "checkbox", "aria-label": `Put it into ${offered}` }) : null;
+    const into = () => (intoBox?.checked ? offered : null);
     const menu = h("div", { class: "popup", style: `left:${ev.clientX}px;top:${ev.clientY}px` },
       h("div", { class: "meta" }, "The new region's type:"),
+      offered ? h("label", { class: "draw-into", title: "unchecked, the region gets a unit of its type where it is drawn" }, intoBox, ` into ${offered} (${this.doc.units.find(unit => unit.id === offered)?.type})`) : null,
       ...printed.map(t => h("button", { class: "link", onclick: () => {
         menu.remove();
         let rid = null;
-        if (this.edit(d => { rid = ops.addRegion(d, this.tl, t, box, into); }, { after: () => { this.select({ region: rid }); this.textPanel.placeCaret(rid, 0, 0); } })) this.recompute();
+        if (this.edit(d => { rid = ops.addRegion(d, this.tl, t, box, into()); }, { after: () => { this.select({ region: rid }); this.textPanel.placeCaret(rid, 0, 0); } })) this.recompute();
       } }, h("i", { style: `background:${this.colors[t]}` }), t)),
       h("button", { class: "link", disabled: !this.book.writable, onclick: () => {
+        const chosen = into();
         menu.remove(); newTypeDialog(this, type => {
-          if (this.edit(doc => { const rid = ops.addRegion(doc, this.tl, type, box, into); this.selection = { region: rid }; })) this.recompute();
+          if (this.edit(doc => { const rid = ops.addRegion(doc, this.tl, type, box, chosen); this.selection = { region: rid }; })) this.recompute();
         }, true);
       } }, "New type…"),
       h("button", { class: "mini", onclick: () => menu.remove() }, "cancel"));
@@ -1199,7 +1201,7 @@ class App {
     if (e.altKey && e.key === "ArrowLeft" && this.mode === "page") { e.preventDefault(); this.step(-1); }
     if (e.altKey && e.key === "ArrowRight" && this.mode === "page") { e.preventDefault(); this.step(1); }
     if (e.key === "Escape") { this.pageView?.setDrawing(false); document.querySelectorAll(".popup").forEach(p => p.remove()); }
-    if (this.mode !== "page" || this.stage === "text" || mod || e.altKey || e.target.closest("input,select,textarea,button,dialog,[contenteditable]")) return;
+    if (this.mode !== "page" || mod || e.altKey || e.target.closest("input,select,textarea,button,dialog,[contenteditable]")) return;
     if (/^[1-9]$/.test(e.key) && this.selection.region) {
       const type = Object.entries(this.tl.types).filter(([, value]) => value.region)[Number(e.key) - 1]?.[0];
       if (type) { e.preventDefault(); this.retypeRegion(this.selection.region, type); }

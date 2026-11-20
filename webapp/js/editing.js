@@ -1,11 +1,12 @@
-import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261120-regions-in-read-1";
-import { layerView } from "./layers.js?v=20261120-regions-in-read-1";
-import { checkDocument } from "./schema.js?v=20261120-regions-in-read-1";
-import { assemble } from "./assemble.js?v=20261120-regions-in-read-1";
+import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261120-one-editor-1";
+import { layerView } from "./layers.js?v=20261120-one-editor-1";
+import { checkDocument } from "./schema.js?v=20261120-one-editor-1";
+import { assemble } from "./assemble.js?v=20261120-one-editor-1";
 
-// What a page's editor may change at each stage. Read's editor corrects everything but the page's geometry: units,
-// line joins and note links, and the transcription too, as you read (the first step to one page editor).
-export function editorFocus(stage) { return stage === "text" ? "text" : stage === "regions" ? "regions" : "all"; }
+// What the page editor may change. There is one page editor for every stage, and it may change anything: regions,
+// transcription, units, line joins and note links. (The narrower focuses, "text", "units" and "regions", are for the
+// saves made elsewhere: Read's units panel and the merging of a save with another tab's.)
+export function editorFocus() { return "all"; }
 
 export function unitSnapshot(doc) {
   return canonical({ grouping: JSON.parse(layerView(doc, "units")), types: doc.page.regions.map(region => [region.id, region.type]) });

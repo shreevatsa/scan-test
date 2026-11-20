@@ -305,7 +305,7 @@ header:not([data-view="page"]) .undo, header:not([data-view="page"]) .status { d
 header:not([data-view="page"]) .copy-status { margin-left: auto; }
 header:not([data-view="page"]) .page-stage-links { display: none; }
 header .tabs:empty { display: none; }
-header[data-top="pages"] .tabs, header[data-top="export"] .tabs { display: none; }
+header[data-top="pages"] .tabs, header[data-top="export"] .tabs, header[data-top="page"] .tabs { display: none; }
 main.page-empty { overflow: auto; }
 button:disabled { opacity: .45; cursor: default; }
 [hidden] { display: none !important; }
@@ -356,21 +356,10 @@ main.grid, main.types { overflow: auto; }
 .region-type-row kbd { font-size: 11px; padding: 0 4px; border: 1px solid var(--line); border-radius: 3px; color: var(--muted); background: var(--panel); }
 .region-types .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .layout-heading { grid-column: 1 / -1; margin: 12px 0 0; font-size: 15px; }
-main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(320px, 1fr); }
-.regions-editor > .region-types { height: 100%; overflow: auto; border-radius: 0; }
-.regions-editor .region { margin: 6px 0; padding: 6px 8px; }
-.regions-editor .region.hl { background: var(--hl); }
-.regions-editor .region.sel.hl { box-shadow: inset 0 0 0 2px #d1ac42; }
-.regions-editor .region-select { font: 12px Menlo, monospace; flex: 0 0 calc(var(--region-id-width, 3ch) + 4px); text-align: left; white-space: nowrap; }
-.regions-editor .region-position { flex: 0 0 7.5em; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.regions-editor .region .fields select { max-width: min(260px, 100%); }
-.regions-editor .lower:has(.inspector[hidden]):has(.checks:empty) { display: none; }
 .region-type-legend { margin: 8px 0 12px; }
 .region-type-legend .region-type-row:hover { background: var(--hl); }
 .region-types > details { margin: 12px 0; }
 .region-types > details > summary { cursor: pointer; }
-.regions-editor .region .fields { display: flex; flex-wrap: wrap; gap: 5px; }
-.regions-editor .region.sel { background: #edf3fd; }
 .region-grid-content { min-width: 0; }
 .process-section .actions, .process-section .fields { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .process-section .actions { margin: 10px 0; }
@@ -397,7 +386,11 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .region-coordinates { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
 .region-coordinates input { width: 5em; }
 .region-continuation { display: block; font-size: 12px; margin: 7px 0; }
-.regions-editor .inspector .actions { display: flex; flex-wrap: wrap; gap: 7px; margin: 9px 0; }
+main.page .inspector .actions { display: flex; flex-wrap: wrap; gap: 7px; margin: 9px 0; }
+.textpane > .region-review-flags, .textpane > .region-ignored-lines { margin: 4px 0 10px; }
+.textpane > .region-review-flags > summary, .textpane > .region-ignored-lines > summary, .page-types > summary { cursor: pointer; }
+.page-types { margin-top: 10px; }
+.page-types > .region-types { border: 0; padding: 6px 0 0; }
 .pv-omitted { stroke: #b77916; stroke-width: 2; stroke-dasharray: 5 3; vector-effect: non-scaling-stroke; cursor: pointer; }
 .type-dialog { width: min(520px, 95vw); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); }
 .type-dialog::backdrop { background: #0006; }
@@ -412,14 +405,7 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .type-dialog .type-child-choice, .proposal-form .type-child-choice { display: inline-flex; gap: 5px; margin: 5px 12px 5px 0; }
 .typetable th .mini { display: block; margin-top: 5px; }
 .type-questions textarea { display: block; width: 100%; max-width: 650px; margin: 8px 0; }
-@media (max-width: 850px) { .region-type-list { max-height: 150px; } main.page.regions-editor { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .regions-editor > .region-types { grid-column: 1 / -1; max-height: 180px; } .regions-editor .side { min-width: 0; } }
-@media (max-width: 560px) {
-  main.page.regions-editor { display: block; overflow: auto; }
-  .regions-editor > .region-types { height: auto; max-height: none; }
-  .regions-editor > .imgpane { height: 55vh; }
-  .regions-editor .textpane { overflow: visible; flex: initial; }
-  .regions-editor .lower { max-height: none; overflow: visible; }
-}
+@media (max-width: 850px) { .region-type-list { max-height: 150px; } }
 .stage-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
 .stage-badge { font-size: 11px; border-radius: 4px; padding: 2px 5px; background: #eee; }
 .stage-badge.accepted { background: #e2f0e4; color: #245b2b; }

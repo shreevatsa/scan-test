@@ -1,22 +1,22 @@
-import { suggestionButton } from "./review-view.js?v=20261120-regions-in-read-1";
+import { suggestionButton } from "./review-view.js?v=20261120-one-editor-1";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, resetGrouping, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261120-regions-in-read-1";
-import { RARE_LAYOUT } from "./flags.js?v=20261120-regions-in-read-1";
-import { regionBoxes } from "./pageimage.js?v=20261120-regions-in-read-1";
+import { eligible, STAGE_LAYER, movePage, resetGrouping, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261120-one-editor-1";
+import { RARE_LAYOUT } from "./flags.js?v=20261120-one-editor-1";
+import { regionBoxes } from "./pageimage.js?v=20261120-one-editor-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261120-regions-in-read-1";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261120-regions-in-read-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261120-regions-in-read-1";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261120-regions-in-read-1";
-import { settings } from "./store.js?v=20261120-regions-in-read-1";
-import { runBatch } from "./pipeline/batch.js?v=20261120-regions-in-read-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261120-one-editor-1";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261120-one-editor-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261120-one-editor-1";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261120-one-editor-1";
+import { settings } from "./store.js?v=20261120-one-editor-1";
+import { runBatch } from "./pipeline/batch.js?v=20261120-one-editor-1";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261120-regions-in-read-1";
-import { renderFinders } from "./findersview.js?v=20261120-regions-in-read-1";
-import { money } from "./reader-controls.js?v=20261120-regions-in-read-1";
-import { findTargets } from "./find-targets.js?v=20261120-regions-in-read-1";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261120-regions-in-read-1";
-import { proposalsBox } from "./proposals-view.js?v=20261120-regions-in-read-1";
+import { pageCost, recipeLine, runEstimate, costBasis, dollars } from "./recipe.js?v=20261120-one-editor-1";
+import { renderFinders } from "./findersview.js?v=20261120-one-editor-1";
+import { money } from "./reader-controls.js?v=20261120-one-editor-1";
+import { findTargets } from "./find-targets.js?v=20261120-one-editor-1";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261120-one-editor-1";
+import { proposalsBox } from "./proposals-view.js?v=20261120-one-editor-1";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -163,7 +163,7 @@ export async function renderPages(el, app) {
       h("button", { disabled: index === 0, onclick: () => showPreview(book.pages[index - 1].id) }, "← Previous"),
       h("button", { disabled: index === book.pages.length - 1, onclick: () => showPreview(book.pages[index + 1].id) }, "Next →"),
       h("button", { onclick: () => preview.close() }, "Close"),
-      h("button", { onclick: () => { preview.close(); app.openPage(pid, {}, "regions"); } }, "Open in Regions")), h("h3", {}, `Page ${index + 1}`), image);
+      h("button", { onclick: () => { preview.close(); app.openPage(pid); } }, "Open the page")), h("h3", {}, `Page ${index + 1}`), image);
     if (!preview.open) preview.showModal();
     image.src = await book.imageUrl(pid);
   };
@@ -189,7 +189,7 @@ export async function renderPages(el, app) {
       app.diskCopy?.checkpoint();
     } }) : null;
     const element = h("article", { class: "stage-card", dataset: { page: page.id } }, skipButton,
-      h("button", { class: "stage-thumbnail", "aria-label": `Open page ${book.index[page.id] + 1}`, onclick: () => stage === "pages" ? showPreview(page.id) : app.openPage(page.id, {}, stage) }, image),
+      h("button", { class: "stage-thumbnail", "aria-label": `Open page ${book.index[page.id] + 1}`, onclick: () => stage === "pages" ? showPreview(page.id) : app.openPage(page.id) }, image),
       selecting ? h("label", {}, checkbox, ` Page ${book.index[page.id] + 1}${page.label ? ` · ${page.label}` : ""}`)
         : h("p", { class: "stage-card-name" }, `Page ${book.index[page.id] + 1}${page.label ? ` · ${page.label}` : ""}`), states, flags);
     if (stage === "regions" && !state.doc && book.writable) element.append(h("button", { class: "mini start-manual", onclick: async event => {
@@ -424,7 +424,7 @@ export async function renderPages(el, app) {
       // Say what failed, page by page, next to the progress it belongs to: a failed page keeps what it had, and the
       // reason is also its own flag on the card.
       const outcome = () => [h("p", {}, summary), ...failures.map(failure => h("p", { class: "run-failure bad" },
-        `Page ${book.index[failure.pid] + 1}: ${failure.message} `, h("button", { class: "link", onclick: () => app.openPage(failure.pid, {}, stage) }, "Open the page"))),
+        `Page ${book.index[failure.pid] + 1}: ${failure.message} `, h("button", { class: "link", onclick: () => app.openPage(failure.pid) }, "Open the page"))),
         failures.length ? h("p", { class: "meta" }, "A call that fails after the model answered is still charged. The page keeps its earlier state, so nothing was lost; run it again, choose another model, or correct the page by hand.") : null].filter(Boolean);
       status.replaceChildren(...outcome());
       message.textContent = summary;

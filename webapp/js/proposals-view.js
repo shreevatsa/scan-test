@@ -5,11 +5,11 @@
 // the others are listed with links, to be given the type by hand.
 import { h } from "./render.js";
 import { readPendingProposals, pendingItems, decideProposal, additionChoice, additionOperations, proposalAssignments,
-  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261120-regions-in-read-1";
-import { reviewTypeChange } from "./type-operations.js?v=20261120-regions-in-read-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261120-regions-in-read-1";
-import { classPicker, classShort, defaultClass } from "./class-labels.js?v=20261120-regions-in-read-1";
-import { isProtected, LAYERS } from "./layers.js?v=20261120-regions-in-read-1";
+  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261120-one-editor-1";
+import { reviewTypeChange } from "./type-operations.js?v=20261120-one-editor-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261120-one-editor-1";
+import { classPicker, classShort, defaultClass } from "./class-labels.js?v=20261120-one-editor-1";
+import { isProtected, LAYERS } from "./layers.js?v=20261120-one-editor-1";
 
 const where = type => type.furniture ? "Page furniture"
   : [type.parents.length ? `Inside ${type.parents.join(", ")}` : "", type.flow ? `Top level of ${type.flow}` : ""].filter(Boolean).join(" · ");
@@ -23,7 +23,7 @@ export function proposalsBox(app) {
   const list = h("div", { class: "proposal-list" }), status = h("p", { role: "status" });
   const summary = h("summary", {}, "Proposed types");
   const section = h("details", { class: "region-section proposals-section", open: true, hidden: true }, summary, h("div", {}, status, list));
-  const pageLink = pid => h("button", { class: "link", onclick: () => app.openPage(pid, {}, "regions"), "aria-label": `Open ${pageName(pid)} in the page editor` }, pageName(pid));
+  const pageLink = pid => h("button", { class: "link", onclick: () => app.openPage(pid), "aria-label": `Open ${pageName(pid)} in the page editor` }, pageName(pid));
   const pidOfPdfPage = page => book.pages.find(value => value.pdf_page === page)?.id || book.pages[page - 1]?.id;
   const docOf = async pid => app.pageStates?.get(pid)?.doc ?? await book.current(pid);
   const protectedPage = doc => LAYERS.some(layer => isProtected(doc, layer));
@@ -118,7 +118,7 @@ export function proposalsBox(app) {
       h("p", {}, type.description || h("span", { class: "meta" }, "No definition was given.")),
       where(type) ? h("p", { class: "meta" }, where(type)) : null,
       evidence.pdf_pages.length ? h("p", { class: "type-evidence" }, "Survey evidence: PDF pages ",
-        ...evidence.pdf_pages.flatMap(page => { const pid = pidOfPdfPage(page); return [pid ? h("button", { class: "link", onclick: () => app.openPage(pid, {}, "regions"), "aria-label": `Open PDF page ${page}` }, String(page)) : String(page), " "]; }),
+        ...evidence.pdf_pages.flatMap(page => { const pid = pidOfPdfPage(page); return [pid ? h("button", { class: "link", onclick: () => app.openPage(pid), "aria-label": `Open PDF page ${page}` }, String(page)) : String(page), " "]; }),
         type.evidence ? `· ${type.evidence}` : "") : null,
       evidence.pages.length ? h("p", { class: "type-evidence" }, `Found by the region finder: ${plural(evidence.regions, "region")} on `,
         ...evidence.pages.flatMap(pid => [pageLink(pid), regionsBy.get(pid) > 1 ? ` (${regionsBy.get(pid)})` : "", " "])) : null,

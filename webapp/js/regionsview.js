@@ -1,12 +1,11 @@
-import { suggestionButton } from "./review-view.js?v=20261120-regions-in-read-1";
-import { typeRevision } from "./schema.js?v=20261120-regions-in-read-1";
-import { h, esc, lineHtml } from "./render.js";
-import * as ops from "./ops.js?v=20261120-regions-in-read-1";
-import { orderedRegions, regionFlags, ignoredLines, linePosition } from "./flags.js?v=20261120-regions-in-read-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261120-regions-in-read-1";
-import { classSelect } from "./class-labels.js?v=20261120-regions-in-read-1";
-import { editTypeDialog } from "./type-operations.js?v=20261120-regions-in-read-1";
-import { normalizeTypeName } from "./type-additions.js?v=20261120-regions-in-read-1";
+import { typeRevision } from "./schema.js?v=20261120-one-editor-1";
+import { h } from "./render.js";
+import * as ops from "./ops.js?v=20261120-one-editor-1";
+import { regionFlags, textFlags, ignoredLines, linePosition } from "./flags.js?v=20261120-one-editor-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261120-one-editor-1";
+import { classSelect } from "./class-labels.js?v=20261120-one-editor-1";
+import { editTypeDialog } from "./type-operations.js?v=20261120-one-editor-1";
+import { normalizeTypeName } from "./type-additions.js?v=20261120-one-editor-1";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -142,99 +141,50 @@ function uncoveredRow(app, flag) {
   return row;
 }
 
-export class RegionsPanel {
-  constructor(el, app) {
-    this.el = el; this.app = app; this.lastSel = null;
-    el.addEventListener("click", event => { if (event.target === el) app.select({}); });
-  }
-  selectionInfo() { return null; }
-  placeCaret() {}
-  format() {}
-  render() {
-    const app = this.app, scroll = this.el.scrollTop;
-    const regions = orderedRegions(app.doc, app.tl);
-    const idWidth = regions.reduce((width, region) => Math.max(width, region.id.length), 3);
-    this.el.style.setProperty("--region-id-width", `${idWidth}ch`);
-    const cards = regions.map(region => {
-      const card = h("section", { class: "region", dataset: { rid: region.id }, style: `border-left-color:${app.colors[region.type] || "#888"}`,
-        onpointerenter: () => app.hoverRegion(region.id, true), onpointerleave: () => app.hoverRegion(region.id, false),
-      }, h("div", { class: "fields" }, h("button", { class: "link region-select", onclick: () => app.select({ region: region.id }), "aria-label": `Select region ${region.id}` }, region.id),
-          regionTypeSelect(app, region.type, type => app.retypeRegion(region.id, type), region.id),
-          h("span", { class: "meta region-position" }, Number.isFinite(region.order) ? `Position ${region.order}` : "Page furniture"),
-          h("button", { onclick: () => app.edit(doc => ops.moveRegionOrder(doc, app.tl, region.id, -1)), disabled: app.tl.types[region.type]?.role === "furniture" }, "Earlier"),
-          h("button", { onclick: () => app.edit(doc => ops.moveRegionOrder(doc, app.tl, region.id, 1)), disabled: app.tl.types[region.type]?.role === "furniture" }, "Later")));
-      const text = h("div", { class: "rtext readonly", dataset: { rid: region.id }, "aria-label": `${region.id} transcription, read only` });
-      if (region.lines?.some(line => typeof line.text === "string")) {
-        for (const [index, line] of region.lines.entries()) text.append(h("div", { class: "lp", dataset: { i: index },
-          html: line.text === undefined ? '<span class="hint">Text pending</span>' : lineHtml(line.text, line.spans || [], marker => `<sup>${esc(marker.marker)}</sup>`) }));
-      }
-      if (text.childNodes.length) card.append(text);
-      return card;
-    });
-    // A region of a proposed type (method 097) names it; once the proposal is a type, one button gives it that type.
-    const omitted = (app.doc.source?.omitted_regions || []).map((region, index) => {
-      const target = region.proposed_type && (app.proposalAssignments?.get(normalizeTypeName(region.proposed_type)) ||
-        Object.keys(app.tl.types).find(name => normalizeTypeName(name) === normalizeTypeName(region.proposed_type)));
-      return h("p", { class: "box warn" }, `${region.region} · unassigned type${region.proposed_type ? ` · proposed: ${region.proposed_type}` : ""} `,
-        target && app.tl.types[target] ? h("button", { onclick: () => app.recoverOmitted(index, target) }, `Make it ${target}`) : null, " ",
-        h("button", { onclick: () => app.select({ omitted: index }) }, "Give it a type"));
-    });
-    const flags = regionFlags(app.doc, app.tl, app.regionFlagContext(app.doc));
-    const uncovered = flags.some(flag => flag.code === "uncovered" || flag.code === "no-ink" && flag.box && !flag.region);
-    const ignored = [...ignoredLines(app.doc)];
-    this.el.replaceChildren(
-      ...(flags.length ? [h("details", { class: "region-review-flags", open: uncovered || this.flagsOpen }, h("summary", {}, `${flags.length} review flag${flags.length === 1 ? "" : "s"}`),
-        // A real list: one boxed item per flag. A flag about a region is a button that selects it; the others are plain text.
-        h("ul", { class: "flag-list" }, ...flags.map(flag => h("li", { class: `flag-item flag-${flag.code}` },
-          flag.code === "uncovered" || flag.code === "no-ink" && flag.box && !flag.region ? uncoveredRow(app, flag)
-            : [h("span", { class: "flag-mark", "aria-hidden": "true" }, flag.code === "region-warning" || flag.code === "provisional" ? "ℹ" : "⚠"),
-              flag.region ? h("button", { class: "link", title: `Select ${flag.region}`, onclick: () => app.select({ region: flag.region }) }, flag.message) : h("span", {}, flag.message),
-              flag.page && app.book.index[flag.page] !== undefined ? [" ", h("button", { class: "link open-neighbor", onclick: () => app.openPage(flag.page) }, `Open page ${app.book.index[flag.page] + 1}`)] : null]))))] : []),
-      ...(ignored.length ? [h("details", { class: "region-ignored-lines" }, h("summary", {}, `Ignored lines (${ignored.length})`),
-        ...ignored.map(entry => { const box = typeof entry === "number" ? (app.doc.source?.uncovered_lines || []).find(value => value.line_id === entry)?.box : entry.box;
-          return h("p", {}, `A printed line ${linePosition(box, app.doc.page) || "outside all regions"} `, h("button", { onclick: () => app.edit(doc => ops.restoreLine(doc, entry)) }, "Restore")); }))] : []),
-      ...cards, ...omitted);
-    this.el.scrollTop = scroll;
-    this.markSelection();
-  }
-  markSelection() {
-    let selected = null;
-    for (const card of this.el.querySelectorAll(".region")) {
-      const on = card.dataset.rid === this.app.selection.region;
-      card.classList.toggle("sel", on);
-      if (on) selected = card;
-    }
-    return selected;
-  }
-  highlightRegion(rid, on, reveal = false) {
-    const card = this.el.querySelector(`.region[data-rid="${CSS.escape(rid)}"]`);
-    card?.classList.toggle("hl", on);
-    if (card && on && reveal) card.scrollIntoView({ block: "nearest" });
-  }
+// What the page editor lists above the page's text: the page's review flags (as Pages and the stage grids count them),
+// printed lines the ink analysis found outside every region (each with Add a region / Ignore), lines set aside as ignored,
+// and regions a finder could not give a type.
+export function pageFlags(app, { open = false, onToggle = () => {} } = {}) {
+  const doc = app.doc, flags = regionFlags(doc, app.tl, app.regionFlagContext(doc));
+  const seen = new Set(flags.map(flag => flag.message));
+  for (const flag of textFlags(doc, app.tl)) if (!seen.has(flag.message)) { seen.add(flag.message); flags.push(flag); }
+  const uncovered = flags.some(flag => flag.code === "uncovered" || flag.code === "no-ink" && flag.box && !flag.region);
+  const ignored = [...ignoredLines(doc)];
+  // A region of a proposed type (method 097) names it; once the proposal is a type, one button gives it that type.
+  const omitted = (doc.source?.omitted_regions || []).map((region, index) => {
+    const target = region.proposed_type && (app.proposalAssignments?.get(normalizeTypeName(region.proposed_type)) ||
+      Object.keys(app.tl.types).find(name => normalizeTypeName(name) === normalizeTypeName(region.proposed_type)));
+    return h("p", { class: "box warn" }, `${region.region} · unassigned type${region.proposed_type ? ` · proposed: ${region.proposed_type}` : ""} `,
+      target && app.tl.types[target] ? h("button", { onclick: () => app.recoverOmitted(index, target) }, `Make it ${target}`) : null, " ",
+      h("button", { onclick: () => app.select({ omitted: index }) }, "Give it a type"));
+  });
+  return [
+    ...(flags.length ? [h("details", { class: "region-review-flags", open: uncovered || open, ontoggle: event => onToggle(event.target.open) }, h("summary", {}, `${flags.length} review flag${flags.length === 1 ? "" : "s"}`),
+      // A real list: one boxed item per flag. A flag about a region is a button that selects it; the others are plain text.
+      h("ul", { class: "flag-list" }, ...flags.map(flag => h("li", { class: `flag-item flag-${flag.code}` },
+        flag.code === "uncovered" || flag.code === "no-ink" && flag.box && !flag.region ? uncoveredRow(app, flag)
+          : [h("span", { class: "flag-mark", "aria-hidden": "true" }, flag.code === "region-warning" || flag.code === "provisional" ? "ℹ" : "⚠"),
+            flag.region ? h("button", { class: "link", title: `Select ${flag.region}`, onclick: () => app.select({ region: flag.region }) }, flag.message) : h("span", {}, flag.message),
+            flag.page && app.book.index[flag.page] !== undefined ? [" ", h("button", { class: "link open-neighbor", onclick: () => app.openPage(flag.page) }, `Open page ${app.book.index[flag.page] + 1}`)] : null]))))] : []),
+    ...(ignored.length ? [h("details", { class: "region-ignored-lines" }, h("summary", {}, `Ignored lines (${ignored.length})`),
+      ...ignored.map(entry => { const box = typeof entry === "number" ? (doc.source?.uncovered_lines || []).find(value => value.line_id === entry)?.box : entry.box;
+        return h("p", {}, `A printed line ${linePosition(box, doc.page) || "outside all regions"} `, h("button", { onclick: () => app.edit(next => ops.restoreLine(next, entry)) }, "Restore")); }))] : []),
+    ...omitted];
 }
 
-export function renderRegionInspector(el, app) {
-  const { doc, selection } = app;
-  el.hidden = !selection.region && selection.omitted === undefined && !Object.keys(doc.source?.suggestions || {}).length;
-  el.replaceChildren();
-  el.append(suggestionButton(app, doc.page.id));
-  if (selection.omitted !== undefined) {
-    const omitted = doc.source?.omitted_regions?.[selection.omitted];
-    if (!omitted) return;
-    if (!omitted.box) { el.append(h("p", {}, "This older record has no saved box. Draw the region on the scan to restore it.")); return; }
-    const choose = regionTypeSelect(app, "", type => app.recoverOmitted(selection.omitted, type));
-    choose.prepend(h("option", { value: "", selected: true, disabled: true }, "Choose its type…"));
-    el.append(h("h3", {}, `Unassigned region ${omitted.region}`), h("p", {}, "Choose a type to add this outlined region to the page."), choose);
-    return;
-  }
-  const region = doc.page.regions.find(value => value.id === selection.region);
-  if (!region) return;
-  el.append(h("h3", {}, `Region ${region.id}`), ...regionTools(app, region));
+// A region a finder could not give a type, selected on the scan: choose its type to add it to the page.
+export function omittedInspector(el, app, index) {
+  const omitted = app.doc.source?.omitted_regions?.[index];
+  if (!omitted) return;
+  if (!omitted.box) { el.append(h("p", {}, "This older record has no saved box. Draw the region on the scan to restore it.")); return; }
+  const choose = regionTypeSelect(app, "", type => app.recoverOmitted(index, type));
+  choose.prepend(h("option", { value: "", selected: true, disabled: true }, "Choose its type…"));
+  el.append(h("h3", {}, `Unassigned region ${omitted.region}`), h("p", {}, "Choose a type to add this outlined region to the page."), choose);
 }
 
-// What can be done to a region: its type, box, continuation flags (Regions only: Read sets a unit's open ends), split,
-// merge, reading order (Read only: Regions has it on each card), outlines and deletion. Both page editors use it.
-export function regionTools(app, region, { continuation = true, order = false } = {}) {
+// What can be done to a region: its type, box, split, merge, reading order, outlines and deletion (the page editor's
+// region inspector). A region's continuation flags are not offered: the page editor sets a unit's open ends instead.
+export function regionTools(app, region) {
   const { doc } = app, out = [];
   const box = region.box || ops.boxesOf({ page: { regions: [region] } })[0];
   const coords = box.map((value, index) => h("input", { type: "number", required: true, min: 0,
@@ -244,17 +194,13 @@ export function regionTools(app, region, { continuation = true, order = false } 
     app.tl.types[region.type]?.description ? h("p", { class: "desc" }, app.tl.types[region.type].description) : null,
     h("div", { class: "actions" }, h("button", { onclick: () => app.setRegionView("types", region.type) }, "Examples of this type"),
       app.book.writable ? h("button", { onclick: () => editTypeDialog(app, region.type) }, "Edit type…") : null),
-    order ? h("div", { class: "actions region-order" }, h("span", { class: "meta" }, furniture ? "Page furniture: not in the reading order" : "Reading order: "),
+    h("div", { class: "actions region-order" }, h("span", { class: "meta" }, furniture ? "Page furniture: not in the reading order" : "Reading order: "),
       h("button", { disabled: furniture, onclick: () => app.edit(next => ops.moveRegionOrder(next, app.tl, region.id, -1)) }, "Earlier"),
-      h("button", { disabled: furniture, onclick: () => app.edit(next => ops.moveRegionOrder(next, app.tl, region.id, 1)) }, "Later")) : null,
+      h("button", { disabled: furniture, onclick: () => app.edit(next => ops.moveRegionOrder(next, app.tl, region.id, 1)) }, "Later")),
     h("div", { class: "region-coordinates" }, ...coords), h("button", { onclick: () => {
       if (!coords.every(input => input.reportValidity())) return;
       if (app.edit(next => ops.setBox(next, region.id, coords.map(input => Number(input.value))))) app.recompute();
     } }, "Set box")].filter(Boolean));
-  if (continuation) for (const [flag, label] of [["continues_from_earlier", "Continued from the previous page"], ["continues_later", "Continues on the next page"]])
-    out.push(h("label", { class: "region-continuation" }, h("input", { type: "checkbox", checked: !!region.source?.[flag], onchange: event => app.edit(next => {
-      const target = ops.regionById(next, region.id); target.source = { ...target.source, [flag]: event.target.checked };
-    }) }), ` ${label}`));
   const split = h("select", { "aria-label": "Split before line piece" }, ...(region.lines || []).slice(1).map((line, index) => h("option", { value: index + 1 }, `Before piece ${index + 2}${line.text ? ` · ${line.text.slice(0, 30)}` : ""}`)));
   const merge = h("select", { "aria-label": "Region to merge" }, ...doc.page.regions.filter(value => value.id !== region.id && value.type === region.type)
     .map(value => h("option", { value: value.id }, value.id)));

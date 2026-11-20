@@ -1,4 +1,4 @@
-import { suggestionButton } from "./review-view.js?v=20261120-regions-in-read-1";
+import { suggestionButton } from "./review-view.js?v=20261120-one-editor-1";
 // The text side of the page editor: the page's units in reading order, each region's line pieces as editable
 // lines (one region is one editing host, so a selection can run across its lines), and an inspector for the
 // selected unit, region or note marker. Text typed into a line is read back from the DOM into text and spans; every
@@ -6,10 +6,10 @@ import { suggestionButton } from "./review-view.js?v=20261120-regions-in-read-1"
 
 import { cp, cpLength, covered, removeKind, normalizeSpans } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261120-regions-in-read-1";
-import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261120-regions-in-read-1";
-import { orderedRegions, textFlags } from "./flags.js?v=20261120-regions-in-read-1";
-import { regionTools } from "./regionsview.js?v=20261120-regions-in-read-1";
+import * as ops from "./ops.js?v=20261120-one-editor-1";
+import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261120-one-editor-1";
+import { textFlags } from "./flags.js?v=20261120-one-editor-1";
+import { regionTools, pageFlags, omittedInspector } from "./regionsview.js?v=20261120-one-editor-1";
 
 const END_CYCLE = { space: "hyphen", hyphen: "join", join: "line", line: "space" };
 const END_NAMES = { space: "a space", hyphen: "a hyphen to drop (the word goes on)", join: "nothing (the word goes on)", line: "a line break" };
@@ -92,7 +92,7 @@ export class TextPanel {
     this.el = el;
     this.app = app;
     this.lastSel = null;
-    this.focus = editorFocus(app.stage);
+    this.focus = editorFocus();
     this.onSelection = () => {
       const info = this.selectionInfo();
       if (info) this.lastSel = info;
@@ -116,10 +116,7 @@ export class TextPanel {
     this.drawn = new Set();
     const problems = doc.source?.problems || [];
     if (problems.length) el.append(h("div", { class: "problems model" }, h("b", {}, "The model's notes on this page"), ...problems.map(p => h("div", {}, "• " + p))));
-    if (this.focus === "text") {
-      for (const region of orderedRegions(doc, this.app.tl)) el.append(this.regionBlock(region.id, null, 0));
-      el.scrollTop = scroll; this.markSelection(); return;
-    }
+    el.append(...pageFlags(this.app, { open: this.flagsOpen, onToggle: open => { this.flagsOpen = open; } }));
     for (const [flow, tops] of Object.entries(doc.flows)) {
       const sec = h("section", { class: "flow" }, h("div", { class: "flow-name" }, `flow ${flow}`));
       tops.forEach((uid, i) => sec.append(this.unitBlock(uid, { flow }, i)));
@@ -415,46 +412,30 @@ export function renderInspector(el, app) {
   el.replaceChildren();
   if (!app.readPanel) el.append(suggestionButton(app, doc.page.id));
   if (s.marker) return markerInspector(el, app, s.marker);
-  if (app.stage === "text") return textInspector(el, app);
+  if (s.omitted !== undefined) return omittedInspector(el, app, s.omitted);
   if (s.unit && doc.units.some(u => u.id === s.unit)) {
     unitInspector(el, app, s.unit);
-    if (app.stage === "read") for (const rid of unitRegionIds(doc, s.unit)) regionLineJoins(el, app, rid);
+    for (const rid of unitRegionIds(doc, s.unit)) regionLineJoins(el, app, rid);
     return;
   }
   if (s.region && doc.page.regions.some(r => r.id === s.region)) {
-    if (app.stage === "read") {
-      const owner = ops.ownerOf(doc, s.region);
-      if (owner) unitInspector(el, app, owner.id);
-      regionLineJoins(el, app, s.region);
-      // The region itself: its type, box, split, merge, reading order and deletion, as in Regions.
-      const region = doc.page.regions.find(r => r.id === s.region);
-      el.append(h("details", { class: "region-tools", open: true }, h("summary", {}, `Region ${region.id} · ${region.type}`),
-        ...regionTools(app, region, { continuation: false, order: true })));
-      return;
-    }
-    return regionInspector(el, app, s.region);
+    const owner = ops.ownerOf(doc, s.region);
+    if (owner) unitInspector(el, app, owner.id);
+    regionLineJoins(el, app, s.region);
+    if (app.readPanel) return;
+    // The region itself: its type, box, split, merge, reading order and deletion.
+    const region = doc.page.regions.find(r => r.id === s.region);
+    for (const flag of textFlags(doc, tl).filter(flag => flag.region === region.id)) el.append(h("p", { class: "warn" }, flag.message));
+    el.append(h("details", { class: "region-tools", open: true }, h("summary", {}, `Region ${region.id} · ${region.type}`),
+      ...regionTools(app, region)));
+    return;
   }
-  if (app.stage === "read") { el.append(h("p", { class: "hint" }, "Select a unit to change its grouping, or a region to correct its text, review its line joins or change its type, box or place. Draw a new region with ＋ Region. A region showing “(no text)” takes text when you click it.")); return; }
-  el.append(h("div", { class: "hint" },
-    "Click a region on the page or its heading in the text to select it; click a unit's heading to select the unit. ",
-    "Type to correct the text; select text and use the formatting buttons (or ⌘B, ⌘I); click a line's right edge to change how it joins the next line. ",
-    "Changes are checked as you go and saved when the page passes the checks."));
+  el.append(h("p", { class: "hint" }, "Select a unit to change its grouping, or a region to correct its text, review its line joins or change its type, box or place. Draw a new region with ＋ Region. A region showing “(no text)” takes text when you click it."));
+  if (!app.readPanel) el.append(field("Printed page label", h("input", { value: doc.page.label || "", "aria-label": "Printed page label", onchange: event => app.edit(next => {
+    if (event.target.value.trim()) next.page.label = event.target.value.trim(); else delete next.page.label;
+  }) })));
   const loose = (doc.relations || []).map((r, i) => [r, i]).filter(([r]) => r.type === "note" && !r.from.anchor && !r.from.unit);
-  if (loose.length) el.append(looseRelations(app, loose));
-}
-
-function textInspector(el, app) {
-  const { doc, tl } = app, rid = app.selection.region;
-  const region = doc.page.regions.find(region => region.id === rid);
-  el.append(h("p", { class: "hint" }, "Correct each line’s transcription and formatting. Select a printed note marker to change its sign."),
-    field("Printed page label", h("input", { value: doc.page.label || "", "aria-label": "Printed page label", onchange: event => app.edit(next => {
-      if (event.target.value.trim()) next.page.label = event.target.value.trim(); else delete next.page.label;
-    }) })));
-  if (region) el.append(h("h3", {}, `${region.id} · ${region.type}`), h("p", {}, tl.types[region.type]?.description || ""));
-  for (const flag of textFlags(doc, tl).filter(flag => !flag.region || !rid || flag.region === rid)) el.append(h("p", { class: "warn" }, flag.message));
-  el.append(h("button", { onclick: () => {
-    app.pendingStageSelection = { stage: "text", ids: [doc.page.id], reprocess: true }; app.setMode("text");
-  } }, "Review re-transcription of this page"));
+  if (loose.length && !app.readPanel) el.append(looseRelations(app, loose));
 }
 
 export function regionLineJoins(el, app, rid) {
@@ -491,7 +472,7 @@ export function unitInspector(el, app, uid) {
   el.append(h("div", { class: "ititle" }, "Unit ", h("b", {}, unitName(u))),
     h("div", { class: "desc" }, t.description || ""),
     h("div", { class: "fields" },
-      field("type", select(ops.retypeChoices(doc, tl, uid).filter(type => app.stage !== "read" || (tl.types[type].region === "figure") === (t.region === "figure")), u.type, v => change("type", v), { "aria-label": "Unit type" })),
+      field("type", select(ops.retypeChoices(doc, tl, uid).filter(type => (tl.types[type].region === "figure") === (t.region === "figure")), u.type, v => change("type", v), { "aria-label": "Unit type" })),
       field("number", text("number", u.number)), field("label", text("label", u.label)),
       field("begun on an earlier page", h("input", { type: "checkbox", checked: (u.open || {}).start ? true : null, onchange: e => change("start", e.target.checked) })),
       field("goes on on a later page", h("input", { type: "checkbox", checked: (u.open || {}).end ? true : null, onchange: e => change("end", e.target.checked) }))));
@@ -507,19 +488,18 @@ export function unitInspector(el, app, uid) {
     field("side by side with the next unit", h("input", { type: "checkbox", checked: besideNext ? true : null, disabled: nextUid ? null : true,
       onchange: e => app.edit(d => ops.setRowWithNext(d, uid, e.target.checked)) }))));
   const wrapTypes = ops.containersFor(tl, u.type);
-  if (app.stage === "read" && u.children.length > 1) {
+  if (u.children.length > 1) {
     const split = select(u.children.slice(1).map((child, index) => [String(index + 1), `Before ${child.unit || child.region}`]), "1", () => {}, { "aria-label": "Split before child" });
     el.append(h("div", { class: "actions" }, split, h("button", { onclick: () => change("split", Number(split.value)) }, "Split unit")));
   }
   // Page furniture (an ornament, a running header): the unit's regions leave the text.
-  const furnitureTypes = u.children.every(c => c.region) ? Object.entries(tl.types).filter(([, type]) => type.role === "furniture" && type.region && (app.stage !== "read" || (type.region === "figure") === (t.region === "figure"))).map(([n]) => n) : [];
+  const furnitureTypes = u.children.every(c => c.region) ? Object.entries(tl.types).filter(([, type]) => type.role === "furniture" && type.region && (type.region === "figure") === (t.region === "figure")).map(([n]) => n) : [];
   el.append(h("div", { class: "actions" },
     h("button", { onclick: () => app.joinNext ? app.joinNext(uid) : app.edit(d => ops.joinWithNext(d, uid)) }, "Join with the next unit"),
     wrapTypes.length ? select([["", "Put inside a new…"], ...wrapTypes], "", v => v && change("wrap", v), { "aria-label": "Wrap in a container" }) : null,
     furnitureTypes.length ? select([["", "Make it page furniture…"], ...furnitureTypes], "", v => v && change("furniture", v),
       { title: "take it out of the text: its regions stay on the page as furniture (as an ornament or a running header)" }) : null,
-    u.children.every(c => c.unit) ? h("button", { onclick: () => change("unwrap") }, "Unwrap (keep its contents)") : null,
-    app.stage !== "read" ? h("button", { class: "danger", onclick: () => app.edit(d => { ops.deleteUnit(d, uid); app.selection = {}; }) }, "Delete with its regions") : null));
+    u.children.every(c => c.unit) ? h("button", { onclick: () => change("unwrap") }, "Unwrap (keep its contents)") : null));
   // Relations from and to this unit.
   const rels = (doc.relations || []).map((r, i) => [r, i]).filter(([r]) => r.from.unit === uid || r.to.unit === uid ||
     (r.from.anchor && u.children.some(c => c.region && regionHasAnchor(doc, localRegion(c.region), r.from.anchor))));
@@ -543,44 +523,6 @@ function regionHasAnchor(doc, rid, anchor) {
   return !!r && (r.lines || []).some(L => (L.spans || []).some(s => `${doc.page.id}#${s.id}` === anchor));
 }
 
-function regionInspector(el, app, rid) {
-  const { doc, tl } = app;
-  const r = doc.page.regions.find(x => x.id === rid);
-  const owner = ops.ownerOf(doc, rid);
-  const printed = Object.entries(tl.types).filter(([, t]) => "region" in t).map(([n, t]) => [n, n + (t.role === "furniture" ? " (furniture)" : "")]);
-  const targets = doc.units.filter(u => (tl.types[u.type] || {}).region && u.id !== owner?.id);
-  const caret = app.textPanel.lastSel && app.textPanel.lastSel.rid === rid ? app.textPanel.lastSel.end[0] : (r.lines || []).length - 1;
-  const nLines = (r.lines || []).length;
-  // Splitting at the caret's line piece, and moving the rest of its line to a column on the right. The caret is
-  // read when the button is pressed.
-  const caretHere = () => {
-    const s = app.textPanel.lastSel;
-    if (!s || s.rid !== rid) throw new ops.EditError("Put the caret in this region's text first, at the line (or the place in the line) to split at.");
-    return s;
-  };
-  const blockActions = nLines ? h("div", { class: "actions" },
-    h("button", { title: "the line pieces from the caret's on become a new unit of the same type, right after this one",
-      onclick: () => app.edit(d => { const nid = ops.splitRegionAt(d, rid, caretHere().end[0], true); app.selection = { region: nid }; }) }, "Start a new unit at the caret's line"),
-    h("button", { title: "the line pieces from the caret's on become a new region of the same unit (as for a second paragraph of a saying)",
-      onclick: () => app.edit(d => { const nid = ops.splitRegionAt(d, rid, caretHere().end[0], false); app.selection = { region: nid }; }) }, "Split the region at the caret's line"),
-    h("button", { title: "for two columns read as one: the text after the caret goes to a column region on the right (made the first time, then added to), in its own unit",
-      onclick: () => app.edit(d => { const c = caretHere(); ops.moveRestToColumn(d, rid, c.end[0], c.end[1]); }) },
-      "Move the text after the caret to a column on the right")) : null;
-  el.append(h("div", { class: "ititle" }, "Region ", h("b", {}, `${rid} · ${r.type}`), owner ? ` in ${unitName(owner)}` : " (furniture: no unit)"),
-    h("div", { class: "desc" }, (tl.types[r.type] || {}).description || ""),
-    h("div", { class: "fields" },
-      field("type", select(printed, r.type, v => app.edit(d => ops.setRegionType(d, tl, rid, v, app.selection.unit || null)))),
-      targets.length ? field("move to", select([["", "another unit…"], ...targets.map(u => [u.id, unitName(u)])], "", v => v && app.edit(d => ops.moveRegionToUnit(d, tl, rid, v)))) : null),
-    h("div", { class: "meta" }, `${(r.lines || []).length} line pieces; box ${r.box ? `[${r.box.join(", ")}]` : "none (the outline's bounds)"}. `,
-      "Drag the box's handles on the page to change it.", r.source?.outline ? ` Outline: ${r.source.outline}.` : ""),
-    h("div", { class: "actions" },
-      h("button", { onclick: () => app.edit(d => ops.addLine(d, rid, caret), { after: () => app.textPanel.placeCaret(rid, caret + 1, 0) }) }, "Add a line piece after the caret's"),
-      (r.lines || []).length ? h("button", { onclick: () => app.edit(d => ops.deleteLine(d, rid, Math.max(0, caret))) }, "Delete the caret's line piece") : null,
-      h("button", { title: "run the outline step again on this page's boxes", onclick: () => app.recompute() }, "Recompute the outlines"),
-      h("button", { class: "danger", onclick: () => app.edit(d => { ops.deleteRegion(d, rid); app.selection = {}; }) }, "Delete the region")),
-    blockActions || "");
-}
-
 function markerInspector(el, app, sid) {
   const { doc, tl } = app;
   const m = ops.findMarker(doc, sid);
@@ -590,16 +532,16 @@ function markerInspector(el, app, sid) {
   const notes = ops.noteTargets(doc, tl);
   el.append(h("div", { class: "ititle" }, "Note marker ", h("b", {}, m.span.marker), ` in ${m.region.id}, line piece ${m.index + 1}`),
     h("div", { class: "fields" },
-      field("printed as", app.stage === "read" ? h("span", {}, m.span.marker) : h("input", { value: m.span.marker, size: 4, onchange: e => app.edit(d => ops.setMarkerSign(d, sid, e.target.value.trim())) })),
-      app.stage !== "text" ? field("its note", select([["", "(none)"], ...notes.map(u => [u.id, unitName(u)])], rel ? rel.to.unit : "", v => app.edit(d => ops.linkMarker(d, tl, sid, v || null)))) : null),
+      field("printed as", app.readPanel ? h("span", {}, m.span.marker) : h("input", { value: m.span.marker, size: 4, onchange: e => app.edit(d => ops.setMarkerSign(d, sid, e.target.value.trim())) })),
+      field("its note", select([["", "(none)"], ...notes.map(u => [u.id, unitName(u)])], rel ? rel.to.unit : "", v => app.edit(d => ops.linkMarker(d, tl, sid, v || null))))),
     h("div", { class: "actions" },
       rel ? h("button", { onclick: () => app.select({ unit: rel.to.unit }) }, "Go to the note") : null,
-      app.stage !== "read" ? h("button", { class: "danger", onclick: () => app.edit(d => { ops.deleteMarker(d, sid); app.selection = { region: m.region.id }; }) }, "Delete the marker") : null));
+      !app.readPanel ? h("button", { class: "danger", onclick: () => app.edit(d => { ops.deleteMarker(d, sid); app.selection = { region: m.region.id }; }) }, "Delete the marker") : null));
 }
 
 // A form to insert a marker at the last caret position.
 export function markerForm(el, app) {
-  if (app.stage === "read") return;
+  if (app.readPanel) return;
   const at = app.textPanel.lastSel;
   el.replaceChildren();
   if (!at) { el.append(h("div", { class: "hint" }, "Put the caret in the text where the marker is printed, then click ＋ Marker again.")); return; }
@@ -610,7 +552,7 @@ export function markerForm(el, app) {
   let note = "";
   el.append(h("div", { class: "ititle" }, `Insert a note marker in ${at.rid}, line piece ${at.end[0] + 1}, at character ${at.end[1]}`),
     h("div", { class: "fields" }, field("printed as", input),
-      app.stage !== "text" ? field("its note", select([["", "(none yet)"], ...notes.map(u => [u.id, unitName(u)])], "", v => (note = v))) : null),
+      field("its note", select([["", "(none yet)"], ...notes.map(u => [u.id, unitName(u)])], "", v => (note = v)))),
     h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => {
       let id = null;
       app.edit(d => { id = ops.insertMarker(d, at.rid, at.end[0], at.end[1], input.value.trim()); if (note) ops.linkMarker(d, app.tl, id, note); },

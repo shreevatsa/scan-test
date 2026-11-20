@@ -24,8 +24,8 @@ function page(pid = "p1") {
     source: { layers: Object.fromEntries(["regions", "text", "units"].map(layer => [layer, { state: "model", types_revision: 1, accepted_at_utc: "reviewed" }])) } };
 }
 
-test("focus locks geometry and grouping under Text; Read's editor corrects the transcription too", () => {
-  assert.equal(editorFocus("text"), "text"); assert.equal(editorFocus("read"), "all");
+test("the one page editor may change anything; the narrower focuses lock geometry and grouping", () => {
+  for (const stage of ["regions", "text", "read", "page", undefined]) assert.equal(editorFocus(stage), "all");
   const typed = page(); typed.page.regions[0].lines[0].text = "ಕನ್ನಡ";
   assert.doesNotThrow(() => assertFocusEdit(editorFocus("read"), page(), typed));
   const base = page(), text = ops.clone(base); text.page.regions[0].lines[0].text = "ಕನ್ನಡ";

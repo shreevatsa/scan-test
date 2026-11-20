@@ -1,10 +1,10 @@
-import { suggestionButton } from "./review-view.js?v=20261120-regions-in-read-1";
+import { suggestionButton } from "./review-view.js?v=20261120-one-editor-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261120-regions-in-read-1";
-import { applyUnitAction, applyUnitChanges, assertJoinMetadata, joinPartnerId, nextPageUnit, unitPath, unitRegionIds, unitSnapshot } from "./editing.js?v=20261120-regions-in-read-1";
-import { joinFollowingUnit } from "./reading-edit.js?v=20261120-regions-in-read-1";
-import { renderInspector } from "./editor.js?v=20261120-regions-in-read-1";
-import { checkPage } from "./schema.js?v=20261120-regions-in-read-1";
+import * as ops from "./ops.js?v=20261120-one-editor-1";
+import { applyUnitAction, applyUnitChanges, assertJoinMetadata, joinPartnerId, nextPageUnit, unitPath, unitRegionIds, unitSnapshot } from "./editing.js?v=20261120-one-editor-1";
+import { joinFollowingUnit } from "./reading-edit.js?v=20261120-one-editor-1";
+import { renderInspector } from "./editor.js?v=20261120-one-editor-1";
+import { checkPage } from "./schema.js?v=20261120-one-editor-1";
 
 const nameOf = unit => [unit.type, unit.number, unit.label].filter(Boolean).join(" · ");
 
@@ -59,7 +59,7 @@ export async function wireReadingPanel({ app, body, panel, workspace, docs, P, i
     const owned = uid ? unitRegionIds(doc, uid) : region ? [rid] : [];
     if (owned.length > 1) panel.append(h("label", {}, "Source region ", h("select", { "aria-label": "Source region", onchange: event => select({ page: doc.page.id, unit: uid, region: event.target.value }) },
       ...owned.map(id => h("option", { value: id, selected: id === rid }, id)))));
-    panel.append(h("p", {}, h("button", { onclick: () => app.openPage(doc.page.id, uid ? { unit: uid } : { region: rid }, "read") }, "Open this page")), status);
+    panel.append(h("p", {}, h("button", { onclick: () => app.openPage(doc.page.id, uid ? { unit: uid } : { region: rid }) }, "Open this page")), status);
     const setBusy = value => {
       busy = value; app.workflowBusy = value;
       panel.querySelectorAll("button,input,select,textarea").forEach(control => { control.disabled = value; });

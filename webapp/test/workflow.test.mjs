@@ -33,7 +33,7 @@ test("new and old addresses reach the stage views and locked stages return to Pa
     "text&view=compare": ["text", "readers"], "read&view=pages": ["read", "grid"], "read&view=compare": ["read", "structures"],
     "read&view=problems": ["read", "check"], "read&view=style": ["read", "style"], read: ["read", "read"], export: ["export", "export"],
     types: ["regions", "types"], "types&view=proposal": ["regions", "types"], readers: ["text", "readers"], structures: ["read", "structures"], make: ["regions", "grid"],
-    check: ["read", "check"], style: ["read", "style"], "p=p1": ["read", "page"] };
+    check: ["read", "check"], style: ["read", "style"], "p=p1": ["page", "page"], "page&p=p1": ["page", "page"] };
   for (const [hash, expected] of Object.entries(cases)) {
     const out = workflowRoute(`#${hash}`, ready);
     assert.deepEqual([out.stage, out.mode], expected, hash);
@@ -44,6 +44,24 @@ test("new and old addresses reach the stage views and locked stages return to Pa
   assert.equal(specific.region, "r1");
   assert.equal(workflowAddress("types"), "#regions&view=types");
   assert.equal(workflowRoute("#types&view=proposal", ready).view, "proposal");
+  // A page in a stage's grid keeps its view: only an address with no view opens the page editor.
+  assert.deepEqual([workflowRoute("#read&view=pages&p=p1", ready).mode, workflowRoute("#regions&view=types&p=p1", ready).mode], ["grid", "types"]);
+});
+
+test("there is one page editor: every address with a page opens it, the old stage addresses too", () => {
+  const ready = { pages: true, regions: true, text: true, read: true, export: true };
+  assert.equal(workflowAddress("page", "p 1", { region: "r1" }), "#page&p=p%201&r=r1");
+  for (const stage of ["page", "pages", "regions", "text", "read"]) assert.equal(workflowAddress(stage, "p1"), "#page&p=p1", stage);
+  assert.equal(workflowAddress("regions"), "#regions");
+  // Saved links from the three page editors still open the page, in the one editor, with their selection.
+  for (const old of ["regions", "text", "read", "pages"]) {
+    const out = workflowRoute(`#${old}&p=p1&u=u2`, ready);
+    assert.deepEqual([out.stage, out.mode, out.pid, out.unit, out.locked], ["page", "page", "p1", "u2", false], old);
+  }
+  // A page not moved on to Read (Read and Text locked for the whole book) still opens in the page editor.
+  const early = { ...ready, text: false, read: false };
+  assert.equal(workflowRoute("#read", early).locked, true);
+  for (const hash of ["#read&p=p1", "#text&p=p1", "#page&p=p1"]) assert.deepEqual([workflowRoute(hash, early).mode, workflowRoute(hash, early).locked], ["page", false], hash);
 });
 
 test("reading gaps are named and units never join across pages awaiting acceptance", () => {

@@ -1,4 +1,4 @@
-// Region edits in Read's page editor (the Regions editor's tools on a page whose units are settled): retyping,
+// Region edits in the page editor (on a page whose units are settled): retyping,
 // drawing, deleting, splitting, merging and reordering regions keep the page valid and its units consistent, and a
 // page whose units are still provisional has them rebuilt from its regions, as in Regions.
 import { test } from "node:test";
@@ -108,6 +108,23 @@ test("a drawn region gets a unit of its type where it is drawn, or joins the uni
   const note = readEdit(base, d => { rid = ops.addRegion(d, types, "note", [10, 240, 190, 250]); });
   valid(note);
   assert.deepEqual(note.flows.notes, ["n1", ops.ownerOf(note, rid).id]);
+});
+
+test("a drawn region is placed where it is drawn unless the selected unit is chosen in the menu", () => {
+  const base = page();
+  // With the first verse's region selected, the menu offers its unit; the drawing alone does not use it.
+  assert.equal(ops.drawnInto(base, { region: "r2" }), "u3");
+  assert.equal(ops.drawnInto(base, { unit: "u5" }), "u5");
+  assert.equal(ops.drawnInto(base, { region: "r6" }), null);   // furniture has no unit
+  assert.equal(ops.drawnInto(base, {}), null);
+  let rid;
+  const placed = readEdit(base, d => { rid = ops.addRegion(d, types, "verse", [10, 92, 190, 98], null); });
+  valid(placed);
+  assert.deepEqual(kids(placed, "u1"), ["u2", "u3", "u4", ops.ownerOf(placed, rid).id, "u5"]);
+  assert.deepEqual(kids(placed, "u3"), ["p1#r2"]);
+  const chosen = readEdit(base, d => { rid = ops.addRegion(d, types, "verse", [10, 92, 190, 98], ops.drawnInto(base, { region: "r2" })); });
+  valid(chosen);
+  assert.deepEqual(kids(chosen, "u3"), ["p1#r2", `p1#${rid}`]);
 });
 
 test("deleting regions removes emptied units from their containers and flows, with relations to them", () => {

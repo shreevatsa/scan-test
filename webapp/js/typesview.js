@@ -4,19 +4,19 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
-import { classLabel, classNote } from "./class-labels.js?v=20261120-regions-in-read-1";
+import { classLabel, classNote } from "./class-labels.js?v=20261120-one-editor-1";
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261120-regions-in-read-1";
-import { prepare } from "./reader.js?v=20261120-regions-in-read-1";
-import { typeRevision } from "./schema.js?v=20261120-regions-in-read-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261120-regions-in-read-1";
-import { newTypeDialog } from "./regionsview.js?v=20261120-regions-in-read-1";
-import { renderSurvey } from "./type-survey-view.js?v=20261120-regions-in-read-1";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261120-regions-in-read-1";
-import { unusedDraftTypes } from "./draft-types.js?v=20261120-regions-in-read-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261120-regions-in-read-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261120-regions-in-read-1";
-import { regionPath } from "./pageimage.js?v=20261120-regions-in-read-1";
+import { typeForest } from "./type-tree.js?v=20261120-one-editor-1";
+import { prepare } from "./reader.js?v=20261120-one-editor-1";
+import { typeRevision } from "./schema.js?v=20261120-one-editor-1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261120-one-editor-1";
+import { newTypeDialog } from "./regionsview.js?v=20261120-one-editor-1";
+import { renderSurvey } from "./type-survey-view.js?v=20261120-one-editor-1";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261120-one-editor-1";
+import { unusedDraftTypes } from "./draft-types.js?v=20261120-one-editor-1";
+import { citedSamplePages } from "./type-revisions.js?v=20261120-one-editor-1";
+import { typeExampleIndex } from "./type-examples.js?v=20261120-one-editor-1";
+import { regionPath } from "./pageimage.js?v=20261120-one-editor-1";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -116,7 +116,7 @@ async function renderTypeExamples(el, app, reviewPages, mark) {
     for (const example of examples.slice(offset, offset + size)) {
       const page = book.page(example.page.id), number = page.pdf_page || book.index[page.id] + 1;
       const crop = h("div", { class: "type-example-crop" });
-      const button = h("button", { class: "type-example-open", "aria-label": `Open page ${number}, ${example.unit || example.regions[0].id}`, onclick: () => app.openPage(page.id, { region: example.regions[0].id }, "regions") }, crop);
+      const button = h("button", { class: "type-example-open", "aria-label": `Open page ${number}, ${example.unit || example.regions[0].id}`, onclick: () => app.openPage(page.id, { region: example.regions[0].id }) }, crop);
       const status = h("span", { class: "meta" }, "Preparing scan…");
       cards.append(h("figure", {}, button, h("figcaption", {}, `PDF page ${number}${page.label ? ` · printed ${page.label}` : ""} · ${example.unit || example.regions[0].id}`,
         h("span", { class: "meta" }, example.unit ? ` · ${example.regions.length} regions${example.provisional ? " · provisional grouping" : ""}` : "")), status));
@@ -228,7 +228,7 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false, 
 
 // The book's details: title, description (the one description every model call uses), languages, relations, inline
 // kinds and transcription conventions, with the forms that change them, and the questions a type proposal left to review.
-export function renderBookDetails(el, app, { onAdded = () => app.route(), onReviewPages, onOpenPage = pid => app.openPage(pid, {}, "regions") } = {}) {
+export function renderBookDetails(el, app, { onAdded = () => app.route(), onReviewPages, onOpenPage = pid => app.openPage(pid) } = {}) {
   const { book, tl } = app;
   const list = (obj, render) => h("ul", {}, ...Object.entries(obj).map(render));
   const download = h("button", { onclick: () => {
@@ -295,7 +295,7 @@ export async function openTypeList(app) {
   const dialog = h("dialog", { class: "type-dialog type-list-dialog", "aria-label": "Edit type list" },
     h("div", { class: "stylebar" }, h("h2", {}, "Unit types"), h("button", { onclick: () => dialog.close() }, "Close")), content);
   const refresh = () => renderTypes(content, app, { onAdded: refresh, onOpenPage: pid => {
-    dialog.close(); app.openPage(pid, {}, "regions");
+    dialog.close(); app.openPage(pid);
   } });
   app.refreshTypeList = refresh;
   dialog.addEventListener("close", () => { dialog.remove(); app.refreshTypeList = null; }, { once: true });
