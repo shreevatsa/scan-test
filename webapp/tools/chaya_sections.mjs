@@ -120,14 +120,15 @@ export async function sections(bytes, { closing = "section_closing", partPattern
   const pathOf = page => files[`edits/${page.id}.json`] ? `edits/${page.id}.json` : `pages/${page.id}.json`;
   // A section may hold what stands in it: the closing line and the verse-group marker, besides what it holds already.
   const section = files["types.json"].types.section;
-  const holds = new Set([...(section.contains || []), closing, ...Object.keys(files["types.json"].types).filter(name => name === "verse_group_marker")]);
-  const types = revisedTypeList(files["types.json"], [{ kind: "rules", name: "section", contains: [...holds], flow: section.flow }]);
-  files["types.json"] = types;
-  const revision = types.source.revision;
   const docs = pagesMeta.map(page => structuredClone(files[pathOf(page)]));
   const textOf = (doc, unit) => unit.children.filter(child => child.region).map(child => doc.page.regions.find(region => region.id === child.region.split("#").pop())).flatMap(region => (region?.lines || []).map(line => line.text || "")).join(" ");
   const re = value => value ? new RegExp(value) : null;
   const items = sectionKeys(docs, { closing, partClosing: new RegExp(partPattern), partHeading: re(partHeading), partAfter: re(partAfter), divisionClosing: re(divisionClosing), textOf });
+  // A section may hold what stands in it: the closing line, a verse group, whatever falls inside a part or an episode.
+  const holds = new Set([...(section.contains || []), closing, ...items.filter(item => item.part !== null).map(item => item.unit.type)]);
+  const types = revisedTypeList(files["types.json"], [{ kind: "rules", name: "section", contains: [...holds], flow: section.flow }]);
+  files["types.json"] = types;
+  const revision = types.source.revision;
   const report = { pages: docs.length, containers: 0, parts: new Set(items.filter(i => i.part !== null).map(i => i.part)).size, episodes: new Set(items.filter(i => i.episode !== null).map(i => i.episode)).size };
   const before = docs.reduce((n, doc) => n + doc.units.length, 0);
   for (const [index, doc] of docs.entries()) {

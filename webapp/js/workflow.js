@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261119-book-2";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-book-2";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261119-book-2";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261119-book-2";
+import { typeRevision } from "./schema.js?v=20261119-book-3";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261119-book-3";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261119-book-3";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261119-book-3";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };

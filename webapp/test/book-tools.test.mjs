@@ -52,3 +52,28 @@ test("the Book view has its own address under Read", async () => {
   assert.equal(workflowRoute("#read&view=book", { read: true }).mode, "plain");
   assert.equal(workflowAddress("plain"), "#read&view=book");
 });
+
+test("a verse-group marker groups the verses printed just above it, however it was read", async () => {
+  const { groupVerses } = await import("../tools/chaya_verse_groups.mjs");
+  const ring = b => [[[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]]]];
+  const line = (n, text, y) => ({ line: n, polygons: ring([10, y, 500, y + 40]), text });
+  const verse = (id, y, number, extra) => ({ id, type: "verse", box: [10, y, 500, y + (extra ? 140 : 90)], polygons: ring([10, y, 500, y + (extra ? 140 : 90)]),
+    lines: [line(1, "क ।", y), line(2, `ख ॥ ${number} ॥`, y + 45), ...(extra ? [line(3, extra, y + 95)] : [])] });
+  // The marker printed at the right after the second of four verses, but read last.
+  const regions = [verse("r1", 0, "१"), verse("r2", 100, "२"), { id: "r9", type: "verse_group_marker", box: [400, 195, 500, 230], polygons: ring([400, 195, 500, 230]), lines: [line(1, "(युगलकम्)", 195)] },
+    verse("r3", 240, "३"), verse("r4", 340, "४")];
+  const doc = { page: { id: "p", regions }, units: ["r1", "r2", "r3", "r4", "r9"].map((r, i) => ({ id: `u${i + 1}`, type: r === "r9" ? "verse_group_marker" : "verse", children: [{ region: `p#${r}` }] })),
+    flows: { main: ["u1", "u2", "u3", "u4", "u5"] } };
+  const counts = { "युगलकम्": 2, "तिलकम्": 3 };
+  assert.deepEqual(groupVerses(doc, { counts }).made, [{ marker: "युगलकम्", verses: ["u1", "u2"] }]);
+  assert.deepEqual(doc.flows.main, ["vg1", "u3", "u4"]);
+  assert.deepEqual(doc.units.find(u => u.id === "vg1").children.map(c => c.unit), ["u1", "u2", "u5"]);
+  // A marker read as the last line of the third verse is split off first.
+  const doc2 = { page: { id: "q", regions: [verse("r1", 0, "१"), verse("r2", 100, "२"), verse("r3", 200, "३", "(तिलकम्)"), verse("r4", 360, "४")] },
+    units: ["r1", "r2", "r3", "r4"].map((r, i) => ({ id: `u${i + 1}`, type: "verse", children: [{ region: `q#${r}` }] })), flows: { main: ["u1", "u2", "u3", "u4"] } };
+  const made = groupVerses(doc2, { counts }).made;
+  assert.equal(made.filter(m => m.split).length, 1);
+  assert.deepEqual(made.find(m => m.marker).verses, ["u1", "u2", "u3"]);
+  assert.equal(doc2.page.regions.find(r => r.id === "r3").lines.length, 2);
+  assert.equal(doc2.flows.main[0], "vg1");
+});
