@@ -651,3 +651,7 @@ main.page.regions-editor { grid-template-columns: 190px minmax(0, 1fr) minmax(32
 .uncovered-row .actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .class-rule { color: #777; font-size: .9em; margin: .2em 0; }
 .class-picker { margin: .4em 0; }
+
+/* opening a book: what is happening, with a bar */
+.lib.opening { padding-top: 2em; }
+.lib.opening progress { width: min(28em, 100%); height: 10px; accent-color: var(--accent); }

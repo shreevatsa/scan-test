@@ -7,12 +7,12 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit } from "./layers.js?v=20261119-book-8";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261119-book-8";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261119-book-8";
-import { canonical } from "./ops.js?v=20261119-book-8";
-import { checkDocument, typeRevision } from "./schema.js?v=20261119-book-8";
-import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261119-book-8";
+import { LAYERS, isProtected, noteEdit } from "./layers.js?v=20261120-open-1";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261120-open-1";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261120-open-1";
+import { canonical } from "./ops.js?v=20261120-open-1";
+import { checkDocument, typeRevision } from "./schema.js?v=20261120-open-1";
+import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261120-open-1";
 
 const bookWrites = new Map();
 
@@ -966,8 +966,10 @@ export async function restoreChaya(bytes, handle, bookId) {
 
 // A .chaya.pdf put into this browser's storage, as a book: its original PDF and its files (into `into`, a book's
 // directory to replace, or a new one). Returns the book, opened.
-export async function importChaya(bytes, { into = null } = {}) {
-  const { data, original } = await readChaya(bytes);
+// `read` is the PDF already read (readChaya's result), so it is not read twice; onProgress(done, total) is told as the
+// book's files are written into the browser.
+export async function importChaya(bytes, { into = null, read = null, onProgress = null } = {}) {
+  const { data, original } = read || await readChaya(bytes);
   if (!data || data.format !== "chaya-book") throw new Error("this PDF has no book in it (no chaya.json)");
   const manifest = data.files["book.json"];
   let dir = into;
@@ -976,9 +978,10 @@ export async function importChaya(bytes, { into = null } = {}) {
   } else dir = await newBrowserBookDir(manifest.book_id);
   const book = new Book("folder", dir, manifest, null, { browser: true });
   await book.writeFile("source.pdf", original || bytes);
-  for (const [path, v] of Object.entries(data.files)) {
-    if (path === "book.json") continue;
+  const entries = Object.entries(data.files).filter(([path]) => path !== "book.json");
+  for (const [k, [path, v]] of entries.entries()) {
     await book.writeFile(path, typeof v === "string" ? v : JSON.stringify(v, null, 1) + "\n");
+    if (onProgress && (k % 25 === 24 || k === entries.length - 1)) onProgress(k + 1, entries.length);
   }
   manifest.pdf = { path: "source.pdf", ...(manifest.pdf || {}) };
   await book.writeFile("book.json", JSON.stringify(manifest, null, 1) + "\n");
