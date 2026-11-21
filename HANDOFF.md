@@ -1,84 +1,186 @@
 # Scanned books, source-aware: handoff
 
-Rewritten 2026-11-12 to describe the present. The previous handoff (a 1,200-line log holding the full stage-workflow design, build progress and earlier notes) is at [old/HANDOFF-2026-11-11.md](old/HANDOFF-2026-11-11.md); consult it for the detailed reasoning behind something already built, not for what to do next. Keep this file short: replace statements when they stop being true, and put test records in NOTEBOOK.md.
+Rewritten 2026-11-21 to describe the present. Earlier versions are in git history; the long design log of 2026-11-11 is at [old/HANDOFF-2026-11-11.md](old/HANDOFF-2026-11-11.md). Keep this file short: replace statements when they stop being true, and put test records in NOTEBOOK.md.
 
 ## Goal
 
-Turn a book's PDF into a digital book in which every unit (paragraph, verse, footnote…) links to its regions on the scanned page, in a statically hosted web app that uses the user's own API keys. Structure comes first: each book has its own type list, and regions and their types are settled from the scans before transcription.
+Turn a book's PDF into a digital book in which every passage links to where it is printed on the scanned page, in a statically hosted web app that uses the user's own API keys. Models do the first pass; a person checks and corrects; the result reads well and exports cleanly.
 
 ## Where things stand
 
-- **The app works and is tested.** `webapp/` is plain HTML, CSS and JavaScript modules with no build step (about 13,000 lines in `webapp/js`). Tabs are Pages · Regions · Text · Read · Export, one per stage. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3).
-- **Tests:** `node --test webapp/test/*.test.mjs` (351 pass) and `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
-- **Running:** `uv run --offline python -m http.server 8765 --bind 127.0.0.1` from the repository root, then http://127.0.0.1:8765/webapp/. A book opens read only with `?book=/outputs/books/kale-1913.chaya.pdf`. The Tailscale HTTPS address for the user's other devices is in PRIVATE.md.
-- **Books that exist** (`outputs/books/`, not in git): Kale 1913 (252 pages) and Telang, both made by the older one-pass pipeline (method 052), and the vachana book made from a digital PDF's text layer (methods 058 and 062, private).
-- **Books are kept on disk as well as in the browser** (task 1, done 2026-11-12): a book in the browser can keep a `.chaya.pdf` on disk that the app rewrites after runs and moves and at most every five minutes while there are changes; paid runs wait for a copy; a book with unreadable files is not opened as if empty. `webapp/README.md`, "The copy on disk", describes it. Checked in Chrome with the file picker simulated; the real picker and a real file changing on disk still need one manual check by the user.
-- **Screens are quiet for reading and reviewing** (task 2, done 2026-11-12): a read-only book shows no processing controls, only "Make an editable copy"; each stage grid has its controls in a "Process pages" section that starts open only while pages wait; layout rarity is a filter, not a flag, and Pages shows each page's flags at the stage it waits at. Flags on Kale are now 16 pages in Regions (6.3%), 32 in Text (12.7%), 8 in Read and in Pages (3.2%), down from 104 in Regions and 114 in Pages (NOTEBOOK, "Rare review flags on Kale"). `webapp/tools/flag_counts.mjs` recounts them.
-- **Surveys only add to the type list** (2026-11-13): Regions → "Find unit types using a survey of pages" has one page field and one model choice; up to twelve pages go as page images (method 095), more as contact sheets (096). The request carries the current list and description and asks for new types, definition edits and possible duplicates; results are pending proposals (`work/type-proposals/pending.json`, `js/type-additions.js`) added through the `add` revision operation or dismissed. Each item records its source; the region finder now proposes into the same list (below). The whole-list replacement, the mode menu and the merged two-model comparison are removed; the new-book form keeps only the review of a saved `&proposal=` and the excerpt path. Tried on the public Rāmāyaṇamañjarī scan for about $0.10 (NOTEBOOK).
-- **A survey proposes the book's description when it is empty** (method 098, 2026-11-13): 095's and 096's request plus one field; a non-empty book gets 095 or 096 exactly. The proposal is a card in Proposed types: Use (editable) goes through the book-details operation, Dismiss drops it (NOTEBOOK).
-- **Find regions can propose types** (method 097, 2026-11-13): the finder "proposes new types" lists the pending proposals as "not yet accepted" and may name a new type for a region that fits nothing listed; those regions stay unassigned with their `proposed_type`, and names merge into the pending list ignoring case and separators. Review moved out of the survey box into Regions → "Proposed types (N)"; adding a proposal (or "Use this type") gives its waiting regions the type on unprotected pages and lists protected ones. 097 is the default finder for new books: on the nine references it scored as 042 (0 / 0 / 0, no proposals), at about 14% more per page; on 25 public Rāmāyaṇamañjarī pages it proposed five types with no duplicate names (NOTEBOOK, "Find regions proposing types, method 097").
-- **Types tidied** (2026-11-13): a survey says where its results went; the survey box has no page browser and shows saved attempts only while one is unresolved; no type may have class `other` (a proposal with none starts as paragraph with a note; By type marks existing ones "no region rule yet"; plain "Draw regions like" wording, js/class-labels.js); unused draft types are muted in By type with "Remove unused draft types (N)" (`js/draft-types.js`).
-- **One default recipe** (task 3, done 2026-11-12): a new book starts with Terra regions proposing types (097, since 2026-11-13; 042 + 063 before), Argon low transcription and Argon high completion, saved in its `book.json` (`webapp/js/recipe.js`). Each stage's "Process pages" line (in Regions: one credentials box, an optional survey box and the "Find regions" box above a By page | By type switch) names the model and its cost a page, with "Change" leading to the model list and that stage's comparison (no longer a header tab). Estimates use the book's own calls, else the measured figures below; other models without calls say they have no measured cost yet.
-- **No scanned book has gone through the staged workflow end to end.** This is the main gap. The user's 267-page private book was lost from browser storage on 2026-11-12 with about $3.86 of model work in it, and was started again; it now has 267 pages, the eleven draft types and nothing processed. A backup `.chaya.pdf` of that fresh state exists (PRIVATE.md says where).
-- **Least tested stage:** completion (units, line joins, note links), compared on two private pages only, with nobody having checked which model was right. Region finding is the best tested (0 / 0 / 0 on the nine reference pages) and the cheapest.
-- **Measured cost per page** on the private series: finding regions about $0.010, transcription $0.038 (Argon low), completion $0.032 (Argon high). About $21 for 267 pages.
-- **An agent path exists beside the app:** `skills/transcribe-chaya-book/` is a portable skill (workflow, format reference, Python packer) by which an agent prepares a `.chaya.pdf` without the app.
+- **One scanned book is finished:** the Rāmāyaṇa-mañjarī (Kāvyamālā 83, 1903, an archive.org scan). It has 532 PDF pages, 517 in the book. Every page was read again with Gemini 4 Hydrogen (method 100, $9.86), then shaped by rules:
+  - verse, episode and page numbers checked by their sequence;
+  - verse groups ((युगलकम्), (तिलकम्));
+  - parts and 202 episodes from the closing lines;
+  - 616 of 711 footnotes linked to their markers.
+
+  It has no check failures and no unjoined page breaks. The rebuild from the reading is `methods/100-hydrogen-low-whole-page-reading/pipeline.sh`. The files are kept outside git:
+  - `outputs/books/ramayana-manjari.chaya.pdf`, the book. It is the same file as `ramayana-manjari-hydrogen.chaya.pdf`, which older links name.
+  - `ramayana-manjari-read.chaya.pdf`, the pipeline's input.
+  - `ramayana-manjari.html`, the book as one web page.
+  - `superseded/`, older versions.
+
+  This book went through the app's stages only partly; most of its finishing was done by the command-line tools below.
+- **Other books:** Kale 1913 and Telang were made by the older one-pass pipeline (method 052). The vachana book came from a digital PDF's text layer (058, 062). The user's 267-page private book has regions only; PRIVATE.md says where it is.
+- **The app** (`webapp/`, about 16,600 lines of JavaScript, no build step) has tabs Pages · Regions · Text · Read · Export. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3). Recent changes:
+  - **One page editor** at `#page&p=<id>`, the same from every stage. Old `#regions&p=`, `#text&p=` and `#read&p=` addresses open it. It edits text, regions (type, box, draw, split, merge, order, delete), units, joins and note links. It shows the page's flags, and a Page menu offers review with AI, no content, find regions again, and read again. A region with no line piece takes text when clicked.
+  - **Read → Book view:** the book to read, with a contents sidebar that follows the reading, footnotes as sidenotes, no page numbers, and printed contents lines linked to their episodes. Part names the editor gave are shown in parentheses. The HTML export uses the same layout; `webapp/tools/chaya_html.mjs` writes it from the command line.
+  - **Dimmed pages** are left out of the book, not gaps, so a unit goes on across a duplicate scan.
+  - **Pages are drawn at the scan's resolution:** `scanImage` takes the sharpest image on a page. An archive.org page is a 133 ppi colour background under a 400 ppi text layer.
+  - **Opening a book shows progress bars** for downloading, reading, and saving its files into the browser.
+  - **The front page lists example books,** served from `outputs/books/` by a local server only.
+- **Command-line tools** (`webapp/tools/`, each documented at the end of `webapp/README.md`) work on a `.chaya.pdf`:
+  - `chaya_baseline` puts units back to their provisional grouping;
+  - `chaya_verse_numbers` checks verse numbers, and episode numbers with `--type=section_closing`;
+  - `chaya_verse_groups` makes verse groups;
+  - `chaya_sections` makes parts and episodes from closing lines and headings;
+  - `chaya_notes` links note markers;
+  - `chaya_page_labels` corrects page numbers;
+  - `chaya_rescale` redraws a book's pages at another size;
+  - `chaya_html` writes the book as one web page.
+- **Readers:** method 099 compared readers at 400 ppi on eleven pages, one whole page per call:
+  - Hydrogen, Carbon and Neon (all at low thinking) were about 0.5% wrong words, and all three placed all 16 footnote markers;
+  - Flash 3.8 and Cloud Vision were about 4.4%; Vision never sees markers;
+  - Flash-Lite was 12.8%;
+  - every reader misreads this font's digits, so numbers need the sequence checks.
+
+  Method 100 then read the whole book with Hydrogen low, one page image per call with the page's regions listed in the prompt, at 1.9¢ a page. **The app's own reading request still sends an overview plus every region crop as a separate image** (18,000–56,000 image tokens a page against about 1,100 for one page image); it should change (task 3). Vertex AI is enabled on the user's Google Cloud project; a `gcloud auth print-access-token` token lasts an hour, so long runs need a fresh one.
+- **Open items on the finished book:**
+  - 88 notes have no marker in the text;
+  - 4 regions kept their old text (line counts differed);
+  - 9 verse-number breaks and 3 episode-number breaks are listed, not changed;
+  - 5 contents lines link to a page instead of an episode (the "…हननम्" entries);
+  - 9 front-matter pages keep the provisional grouping.
+- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (373 pass), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
+- **Running:**
+  - A loopback server, `python3 -m http.server 8765 --bind 127.0.0.1`, runs from the repository root.
+  - `tailscale serve --https=8765 http://127.0.0.1:8765` makes it reachable from the user's other devices; the address is in PRIVATE.md.
+  - Open a book with `?book=../outputs/books/<file>.chaya.pdf`.
+- **Not pushed:** 24 commits on `main`. One of them, `3f817602` (fetch the example books from a release when deploying), is the approach the user set aside in favour of a separate small repository for the examples; drop or revert it before pushing, and ask the user before pushing.
+
+## The redesign: blocks, as in Wikisource
+
+### What we found
+
+Wikisource digitizes books with about five concepts:
+- an Index page for the book;
+- one page of wikitext per scan, edited beside the image;
+- four proofreading states;
+- chapters made by including page ranges;
+- a few conventions: `<ref>`, `<poem>`, header and footer fields, and a template for a word hyphenated across pages.
+
+This app has, besides the PDF and pages:
+- regions, with outlines and line pieces;
+- text as line pieces with spans;
+- units, a separate tree with open ends across pages;
+- flows and relations;
+- a type list with revisions, aliases, proposals and surveys;
+- three layers per page with four states each;
+- five stages with move-on gates;
+- many model profiles.
+
+Measured on the finished Rāmāyaṇa-mañjarī:
+
+| Concept | In the finished book |
+|---|---|
+| Leaf units | 7,575, of which 7,564 (99.85%) are exactly one region |
+| Containers | 1,205, all made by rules except 4 by hand |
+| Note links | 616, all made by the same-number-on-the-page rule |
+| Line endings | 15,127 of 15,144 are the default |
+| Spans | 620, almost all note markers |
+| Pages edited by hand | 4 |
+
+The units layer, the relations, the line endings, the layer states and the stages carried data that rules produced from blocks and their text.
+
+### What is essential
+
+- **A box per block on the scan.** It is what makes the book source-aware (every line traced to its place), how a model is told what to read, how figures are cropped, and how reading order is checked.
+- **Types instead of markup.** A block is a verse, a heading, a note or a running head.
+- **Models for the first pass,** with people checking.
+
+### What to keep, simplify or drop
+
+| Concept | Verdict |
+|---|---|
+| Regions | Keep, as **blocks**: type, box, text lines, reading order |
+| Region outlines and line pieces | Keep text as lines; make line outlines optional, computed when needed for highlighting (whole-page reading no longer needs them) |
+| Text spans | Keep note markers and the rare formatting; edit each block as plain text with markers shown as `[१]`, as models already write them |
+| Units as an authored layer | **Drop.** A block is its unit. A passage running onto the next page has a "continues" flag. Containers and numbers come from rules. |
+| Flows | Drop as a concept: a note block is a note, a commentary block is commentary |
+| Relations | Derive by rule; store only a person's overrides |
+| Line endings per line piece | Drop the field; join or break by the block's type; fix the odd case in the text |
+| Layers × states, stages, move-on gates | **Replace** with one status per page (unchecked, checked, model suggestion waiting) and one rule: a model never overwrites a person's edit |
+| Type-list revision machinery | Shrink to a short editable list (name, plain description, how it reads); a rename just applies |
+| Model profiles, finder and reader comparisons, surveys | Move to a "lab" page; the product uses one recipe |
+
+### The result
+
+Wikisource's two panes, with boxes:
+- **The page editor:** the scan on the left; on the right the page's blocks in reading order, each a type and a text box. Clicking a block highlights its box; drawing a box adds a block.
+- **The book's structure:** a few rules set once per book, as the command-line tools take them now (what closes an episode, what starts a part, verse-group markers, how markers find their notes), each with an override on a block ("a new section starts here", "this marker goes to that note").
+
+### What needs care
+
+- **Several parallel flows** (Kale's commentary and translation) work as types.
+- **A block interrupted on its own page** (by a figure) gets the same "continues" flag.
+- **Prose hyphenated across lines** (Kannada) needs a joining rule plus fixes in the text.
+- **Existing books** keep the `.chaya.pdf` envelope; their units are derivable, as the finished book shows.
+
+### The page editor, simplified meanwhile
+
+From the user's review of the one page editor (2026-11-20):
+1. **Lead with what to do.** One short "Check this page" list at the top, each item one sentence with one button, in place of the flags, ignored lines and unassigned-region rows. Library stamps and shelf marks get "Leave them out". An empty list says so and offers "Next page to check".
+2. **Plain words.** No "FLOW MAIN", `title_page`, `r2`, `f1`, "unowned regions" or "edits/". Show the page as it reads, with small type tags and containers as quiet brackets. A plainer save status.
+3. **Tools in context.** Formatting buttons only while typing; zoom and ＋ Region on the scan; Revert in the Page menu; "(no text — click to type it)" only on text blocks.
+4. **A small inspector.** For the selected block: its type, "continues" only at a page's top or bottom, and number and label only for types that have them; the rest under "More…". Line joins shown as marks at line ends in the text, for prose only.
+5. **Three tabs:** Pages (progress, flags, runs; model comparisons under Advanced), Read (Book view and the editor), Export.
 
 ## What to do next, in order
 
-Each task is sized for one session. Finish, test and commit one before starting the next. Rules for all of them are under "Working rules". Tasks 1 (durable books), 2 (quiet screens) and 3 (one default recipe) are done.
+Each task is sized for one session. Finish, test and commit one before starting the next.
 
-### Task 4. Take the 267-page book through every stage (with the user)
+1. **Blocks spike.** Build the blocks-only page editor and reader as a view over the existing data: blocks from regions, containers and numbers from the tools' rules, note links by rule. Try it on Kale (prose, several flows) and the Rāmāyaṇa-mañjarī, and count how many hand overrides each needs. Include items 1–4 of the simplified page editor. Report to the user before retiring anything.
+2. **Retire what the spike shows unneeded,** one at a time, each with tests: the units layer as authored data, the layer states and stage gates, flows, the line-ending field, the type-revision machinery. Then the three tabs (item 5).
+3. **The app reads like method 100.** One page image per call with the page's blocks listed, Hydrogen low by default, an updated cost estimate, and markers taken from `[n]`.
+4. **The structure rules move into the app** as a book's settings (closings, part headings, verse groups, note linking, number checks), with the command-line tools kept for batch work.
+5. **The examples hosting:** a separate small repository with Pages enabled (the user's choice), when the user asks.
 
-This needs the user's browser, keys and spending approval; an agent does not start it alone. After tasks 1 and 2: regions for pages 1–10, review, then all pages; transcription the same way; completion the same way. Fix only what blocks the run. Write each real obstacle in PRIVATE.md (it is a private book) and turn each into a test with a public or synthetic fixture. The purpose is to learn what the workflow lacks, so resist adding features until the book is through.
-
-### Task 5. Experiments that shrink completion
-
-New method IDs from 099, with NOTEBOOK entries and recorded costs. In this order:
-1. **A narrow completion call:** with units fixed by the local rule (`provisionalUnits`) and the user's region types, ask only for line ends, unit numbers and labels, and note links. Expect lower cost and fewer invalid results than 070 and 073–076.
-2. **Container starts from region finding:** one extra field per region naming the container that begins there, the tree built locally, compared with trees a person corrected.
-3. **Line joins by rule** on transcribed scans (the digital book's rule was about 87% right).
-4. **Completion over a run of pages** for joins and notes that cross page breaks.
-
-Still open from before, lower priority: the text-layer path in the app (port `nudi.py` and method 062 to JavaScript; tell a real text layer from invisible OCR text, which is not to be trusted); LaTeX or Typst export; Safari's storage fallback; the public `.chaya.pdf` files on a GitHub Release.
-
-## Thoughts on redesign
-
-These are opinions formed on 2026-11-12 from reading the code and using the app. Tasks 1 to 3 are the parts already decided above; the rest is for the user to accept or reject.
-
-1. **The file on disk should be the book; the browser should be a cache.** `.chaya.pdf` is the best idea here, and the app treats it as an export. Task 1 moves toward the reverse. The end state is "open a file, work, it saves", as a desktop editor does, with browser storage holding only what makes reopening fast.
-2. **Bulk processing does not belong in a browser tab.** A 267-page run is hundreds of calls over an hour or more, exposed to tab reloads, sleep, 75-second deadlines and storage loss. The pipeline modules (`webapp/js/pipeline/`) already run under Node in the tests. A small command-line runner (`node webapp/tools/run_book.mjs book.chaya.pdf --stage regions --pages 1-50`) that reads and writes the same `.chaya.pdf` would make long runs resumable and scriptable, and would let an agent do them. The app would then be for what needs eyes: reviewing regions, correcting text, reading. Whether page rendering and the local ink step run under Node without a canvas has not been checked; check that first. The static-app goal is kept: the in-browser run stays for small ranges.
-3. **Research and product are mixed in the interface.** The 92 methods and the comparison screens were how the recipe was found. They are evidence, and the user of a book needs the result of that evidence (task 3). If a comparison is needed again for a new kind of book, it is an advanced action.
-4. **Completion is the wrong shape.** It is the costliest text-only step, the least validated, and it may contradict structure the user already reviewed. Regions already carry type, order and continuation flags, and the local rule builds a valid tree from them. The remaining model work is small and checkable (line ends, numbers, note links), which is what task 5 tests. If it holds, the stages become Regions (structure, final) → Text → Read (corrections only), and "Units and links" stops being a stage.
-5. **Review by exception only works if exceptions are few.** A stage should be judged by how many pages it asks a person to open. Every flag kind should have a measured rate on a real book, and one that fires on a third of pages is a defect in the flag (task 2).
-6. **Fewer, larger views.** `main.js` (1,100 lines) and the many `*view.js` files grew by accretion, with sub-tabs under tabs (Read has five). After task 4 shows which screens are used, remove the ones that were not.
-7. **One page editor (done, 2026-11-20).** The three page editors (Regions, Text, Read) became one, the same at every stage, at `#page&p=<id>` (old stage addresses still open it): commits ee07366f and ad9120b0 gave Read's editor text and region editing, and the next commit removed the other two, moving their flag list, kept-text offer and page actions into it.
+Lower priority: a command-line runner for long model runs; the text-layer path in the app (port `nudi.py` and method 062); LaTeX or Typst export; Safari's storage fallback.
 
 ## Decisions the user has accepted
 
-- Two model profiles (Terra, Argon low) under one method ID, as in 095, 096 and 098.
-- A proposed container that holds another new type is added in two steps (the contained type first or later, through the type-list operations), not as one combined proposal.
-- Method 097 is the default region finder, although it costs about 14% more per page than 042.
+- **Follow the print** where it speaks:
+  - parts end at their printed closings;
+  - the Bāla and Ayodhyā are one part, as printed (heading at the start, closing at the end);
+  - the ten renumbered episodes after the Yuddhakāṇḍa's closing are a part the book leaves untitled, kept untitled;
+  - names the editor gives are marked as such (`source.label: "editor"`) and shown in parentheses.
+- **Readers:** Hydrogen low reads whole pages (method 100). Carbon low is as accurate but slow; Neon costs about 3.4¢ a page.
+- **One page editor** for all stages, with text editable at every stage, and nothing removed that the user still needs.
+- **The Book view** with footnotes as sidenotes, no page numbers, and a verse group's marker floated in the free space after its last line.
+- **Examples** are hosted from a separate repository with Pages enabled (set aside for now); nothing is pushed without asking.
+- **Model profiles:** two (Terra, Argon low) under one method ID, as in 095, 096 and 098; method 097 is the default region finder.
 
 ## Invariants of the built design
 
-Details are in the archived handoff under "Data model"; these are the rules code must keep.
+These hold until the redesign replaces them; change them only deliberately.
 
-- **Layers:** a page document has three layers, `regions`, `text` and `units` (`source.layers`, helpers in `webapp/js/layers.js`). A layer is protected when a person has edited it or it has been accepted (moved on to the next stage).
-- **A model never overwrites a person's work.** Model steps write only unprotected layers (`webapp/js/pipeline/apply.js`); the rest becomes a suggestion to take or dismiss.
-- **Transcription depends on shapes, never on the type list.** A reading is reused when page image, region and line shapes and model match (`geometry_key`). Changing types never forces paying for transcription again.
+- **A model never overwrites a person's work.** Model steps write only unprotected layers (`webapp/js/pipeline/apply.js`); the rest becomes a suggestion to take or dismiss. A person's edits are saved under `edits/`.
+- **Layers:** a page document has three layers, `regions`, `text` and `units` (`source.layers`, `webapp/js/layers.js`). A layer is protected when a person has edited it or it has been accepted.
+- **Transcription depends on shapes, never on the type list.** A reading is reused when the page image, region and line shapes and model match (`geometry_key`).
 - **A merge that would make a valid page invalid is not applied.**
-- **Type lists change through operations** (rename, merge, split, containment…) with a preview of their reach, a revision number and aliases; never by free-form JSON editing. Work records (calls, runs) are never rewritten; state files such as the pending type proposals are updated in place.
-- **`.chaya.pdf`:** the original PDF's bytes unchanged, plus one update attaching `chaya.json`. The original must be recoverable exactly.
-- **PDF is the only input.** Styling is separate from semantic structure. Unlabelled ornaments are page furniture.
-- **Requests have a 75-second deadline** (five minutes for whole-book contact sheets, by the user's choice). Attempts are entered in the ledger before the request is sent. Keys are checked where they are entered.
+- **Type lists change through operations** with a preview, a revision number and aliases. Work records (calls, runs) are never rewritten.
+- **`.chaya.pdf`:** the original PDF's bytes unchanged, plus one update attaching `chaya.json`; the original is recoverable exactly.
+- **PDF is the only input.** Styling is separate from semantic structure.
+- **Pages:** drawn from the sharpest image covering at least half the page (`scanImage`), at 300 dpi or less. A dimmed page is left out of the book, not a gap.
+- **Requests have a 75-second deadline** (five minutes for contact sheets). Attempts are entered in the ledger before the request is sent.
 
 ## Working rules
 
-- **Private material stays out of git and out of this file:** the private books' names, pages, results and personal URLs go in `PRIVATE.md` and `private/` (both local; `.git/info/exclude` lists the rest). Read PRIVATE.md at the start of a session on this machine.
-- **Methods:** code and README under `methods/<id>-<name>/`. A changed prompt, model, setting or recipe gets a new ID (next unused: 099); a repeated request gets a new `run-NNN` directory. Saved requests, responses and prior method code are immutable.
-- **NOTEBOOK.md** records actual tests only (settings, observations, costs, images), newest last, one physical line per paragraph. Plans and conclusions go here.
-- **Python:** `uv run --offline python`. **Keys:** from the environment or the `llm` key store (`openai`, `gemini`); never printed or written to files.
-- **Spending:** no paid model call without the user's approval for that run; record every charge.
-- **The user's browser storage holds their work.** Do not clear site data, and do not create or delete books in the user's own browser profile without being asked. Test in a separate profile.
-- **Commits:** finished, tested work goes straight to `main` and is pushed, as the user prefers. Update `webapp/README.md` with any change to a screen, and this file when a statement in it stops being true.
+- **Private material** stays out of git and out of this file: the private books' names, pages, results and personal URLs go in `PRIVATE.md` and `private/`. Read PRIVATE.md at the start of a session on this machine.
+- **Methods:** code and README under `methods/<id>-<name>/`. A changed prompt, model, setting or recipe gets a new ID (next unused: 101). Saved requests, responses and prior method code are immutable.
+- **NOTEBOOK.md** records actual tests (settings, observations, costs), newest last. Plans and conclusions go here.
+- **Spending:** no paid model call without the user's approval for that run; record every charge (the book's ledger for app calls, the method's README for calls made outside the app).
+- **The user's browser storage holds their work.** Do not clear site data or create or delete books in the user's own browser profile. Test in a separate profile; the headless checks use a fresh Playwright context with `channel: 'chrome'`.
+- **Cache-busting:** every `?v=` string in `webapp/` must be one value; change it everywhere when a module changes.
+- **Commits:** commit finished, tested work to `main`; ask the user before pushing. Update `webapp/README.md` with any change to a screen, and this file when a statement in it stops being true.
+- **Python:** `uv run --offline python`. **Keys:** from the environment or the `llm` key store; never printed or written to files.
