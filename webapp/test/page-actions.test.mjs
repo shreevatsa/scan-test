@@ -1,18 +1,17 @@
 // The page editor's "Find regions on this page again" and "Read this page again" take the stage's run path for the one
-// page open, with the book's chosen model; when that choice cannot run here they open the stage's grid with the page
-// selected instead.
+// page open, with the book's chosen model. Missing credentials open Settings.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { runPageAgain, pageRunBlocked } from "../js/page-actions.js";
 
-function fakeApp({ finder = "local-blocks", reader = "argon-low", valid = () => false, regionsAccepted = true, manual = false } = {}) {
+function fakeApp({ finder = "local-blocks", reader = "argon-low", valid = () => false, regionsAccepted = true } = {}) {
   const calls = [], toasts = [], modes = [];
   const maker = { processing: false, jobs: new Map(), onCost: () => {}, options: async () => ({ finder, reader }),
     credentials: { status: profile => (profile.provider === "local" ? { valid: true } : { valid: valid(profile) }) },
     findRegions: async (pid, options) => { calls.push(["regions", pid, options.force]); maker.onCost(0); return { cached: false }; },
     read: async (pid, options, flags) => { calls.push(["text", pid, flags.force, flags.save]); maker.onCost(0.01); return { cached: false }; } };
   const state = { valid: true, doc: { page: { id: "p2", regions: [{ id: "r1" }] } }, layers: { regions: regionsAccepted ? { accepted: true } : { state: "model" } }, runErrors: {} };
-  const app = { book: { writable: true }, pid: "p2", pageStates: new Map([["p2", state]]), dirty: false, regionOverview: { manual },
+  const app = { book: { writable: true }, pid: "p2", pageStates: new Map([["p2", state]]), dirty: false,
     flush: async () => {}, getMaker: async () => maker, confirmSpending: async () => true, refreshWorkflowPage: async () => {},
     route: async () => { app.routed = true; }, toast: (message, kind) => toasts.push([message, kind]), setMode: mode => modes.push(mode) };
   return { app, calls, toasts, modes };
@@ -32,13 +31,12 @@ test("reading the open page again uses the chosen reader once its key checks, an
   assert.deepEqual(calls, [["text", "p2", false, true]]);
 });
 
-test("without a checked key, or with Draw by hand chosen, the stage's grid opens with the page selected", async () => {
-  for (const [stage, options] of [["text", {}], ["regions", { finder: "terra-regions" }], ["regions", { manual: true }]]) {
+test("a page action with unchecked credentials opens Settings without calling the model", async () => {
+  for (const [stage, options] of [["text", {}], ["regions", { finder: "terra-regions" }]]) {
     const { app, calls, modes } = fakeApp(options);
     await runPageAgain(app, stage);
     assert.deepEqual(calls, [], stage);
-    assert.deepEqual(modes, [stage]);
-    assert.deepEqual(app.pendingStageSelection, { stage, ids: ["p2"], reprocess: true });
+    assert.deepEqual(modes, ["settings"]);
   }
 });
 

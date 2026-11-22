@@ -1,19 +1,19 @@
-import { reviewPage } from "./review-view.js?v=20261122-one-editor";
-import { settledChecks } from "./review.js?v=20261122-one-editor";
+import { reviewPage } from "./review-view.js?v=20261122-three-tabs";
+import { settledChecks } from "./review.js?v=20261122-three-tabs";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261122-one-editor";
-import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261122-one-editor";
-import { finderById } from "./pipeline/finders.js?v=20261122-one-editor";
-import { CredentialChecks } from "./key-check.js?v=20261122-one-editor";
+import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261122-three-tabs";
+import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath } from "./pipeline/readers.js?v=20261122-three-tabs";
+import { finderById } from "./pipeline/finders.js?v=20261122-three-tabs";
+import { CredentialChecks } from "./key-check.js?v=20261122-three-tabs";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
-import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261122-one-editor";
-import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261122-one-editor";
-import { settings } from "./store.js?v=20261122-one-editor";
+import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261122-three-tabs";
+import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261122-three-tabs";
+import { settings } from "./store.js?v=20261122-three-tabs";
 import { runProgress } from "./run-progress.js";
-import { readingFits } from "./pipeline/partial-reading.js?v=20261122-one-editor";
+import { readingFits } from "./pipeline/partial-reading.js?v=20261122-three-tabs";
 import { sha256hex } from "./chayapdf.js";
-import { layerState } from "./layers.js?v=20261122-one-editor";
+import { layerState } from "./layers.js?v=20261122-three-tabs";
 
 export async function renderReaders(el, app) {
   const token = Symbol();
@@ -41,7 +41,6 @@ export async function renderReaders(el, app) {
   const referenceSelect = h("select", { "aria-label": "Reference transcription source" }, h("option", { value: "current", selected: referenceId === "current" }, "Current page text"),
     ...READERS.map(r => h("option", { value: r.id, selected: r.id === referenceId }, r.label)));
   const onlyDifferences = h("input", { type: "checkbox", checked: selection.only_differences ?? true });
-  const includeStructure = h("input", { type: "checkbox", checked: selection.include_structure ?? true });
   const budget = h("input", { type: "number", min: "0.1", step: "0.5", value: selection.budget || "5", "aria-label": "Trial spend threshold" });
   const projectionPages = h("input", { type: "number", min: "1", step: "1", "aria-label": "Book pages for cost estimate",
     value: selection.projection_pages ?? book.manifest.cost_projection?.page_count ?? book.manifest.pdf?.page_count ?? book.pages.length });
@@ -57,24 +56,23 @@ export async function renderReaders(el, app) {
   const results = new Map(), geometry = new Map(), checks = new Map();
   const credentialChecks = maker.credentials ||= new CredentialChecks(maker.keys), credentials = h("div");
 
-  function requiredProfiles(retry = null, options = defaults) {
-    const ids = retry ? [retry.reader] : [...new Set([...candidates, ...(referenceSelect.value === "current" ? [] : [referenceSelect.value])])];
+  function requiredProfiles(options = defaults) {
+    const ids = [...new Set([...candidates, ...(referenceSelect.value === "current" ? [] : [referenceSelect.value])])];
     const profiles = ids.map(readerById);
-    if (includeStructure.checked || retry) profiles.push(structurerById(options.structurer));
-    if ((retry ? [retry.pid] : [...chosenPages]).some(pid => !geometry.has(pid))) profiles.push(finderById(options.finder));
+    if ([...chosenPages].some(pid => !geometry.has(pid))) profiles.push(finderById(options.finder));
     return profiles;
   }
 
   function updateRun() { run.disabled = busy || !requiredProfiles().every(profile => credentialChecks.status(profile)?.valid); }
-  function updateCredentials(retry = null) {
-    credentials.replaceChildren(keyControls(credentialChecks, requiredProfiles(retry), (id, value) => settings.set(`key:${id}`, value), updateRun));
+  function updateCredentials() {
+    credentials.replaceChildren(keyControls(credentialChecks, requiredProfiles(), (id, value) => settings.set(`key:${id}`, value), updateRun));
     updateRun();
   }
 
   async function saveSelection() {
     await book.writeWork("work/reader-lab/selection.json", { pages: [...chosenPages], readers: [...candidates], difference_offset: differenceOffset,
       reference: referenceSelect.value, only_differences: onlyDifferences.checked,
-      include_structure: includeStructure.checked, budget: budget.value, projection_pages: projectionPages.value });
+      budget: budget.value, projection_pages: projectionPages.value });
   }
 
   async function loadPage(pid, onlyProcessed = false) {
@@ -95,14 +93,13 @@ export async function renderReaders(el, app) {
     for (const [index, reader] of READERS.entries()) {
       const reading = readings[index];
       let structure = await book.readWork(structurePath(pid, reader.id, defaults.structurer));
-      const costStructure = structure;
       if (!readingFits(reading, rec, imageHash)) continue;
       if (structure?.reading_fingerprint !== reading.fingerprint) structure = null;
       if (structure) {
         const [errors, warnings] = app.check(structure.doc);
         structure = { ...structure, errors, warnings };
       }
-      runs.set(reader.id, { reading, structure, costReading: await wholePageReading(book, reading), costStructure });
+      runs.set(reader.id, { reading, structure, costReading: await wholePageReading(book, reading) });
     }
     results.set(pid, runs);
     return { rec, sent, signature };
@@ -119,13 +116,12 @@ export async function renderReaders(el, app) {
     const shared = [...chosenPages].map(pid => {
       const runs = results.get(pid);
       const values = [runs?.get(defaults.reader), runs?.get(referenceSelect.value), ...(runs?.values() || [])].filter(Boolean);
-      return { pid, regions: geometry.get(pid)?.rec.region_call || values.find(value => value.costReading?.regions_record?.region_call)?.costReading.regions_record.region_call,
-        structure: values.find(value => Number.isFinite(value.costStructure?.cost_usd))?.costStructure };
+      return { pid, regions: geometry.get(pid)?.rec.region_call || values.find(value => value.costReading?.regions_record?.region_call)?.costReading.regions_record.region_call };
     });
     for (const reader of READERS) {
       const runs = [...chosenPages].map(pid => ({ pid, value: results.get(pid)?.get(reader.id) })).filter(x => x.value);
       if (!runs.length) continue;
-      let chars = 0, edits = 0, checkedChars = 0, checkedEdits = 0, valid = 0, structured = 0, compared = 0;
+      let chars = 0, edits = 0, checkedChars = 0, checkedEdits = 0, compared = 0;
       for (const { pid, value } of runs) {
         const ref = await reference(pid);
         if (ref) {
@@ -133,23 +129,21 @@ export async function renderReaders(el, app) {
           chars += score.characters; edits += score.edits;
           checkedChars += score.checked_characters; checkedEdits += score.checked_edits; compared++;
         }
-        valid += Number(value.structure && !value.structure.errors.length);
-        structured += Number(Boolean(value.structure));
       }
       const estimate = bookCostEstimate(shared.map(sample => ({ ...sample, reading: results.get(sample.pid)?.get(reader.id)?.costReading })), Number(projectionPages.value));
       const historical = runs.filter(run => run.value.reading.partial && run.value.costReading).length;
-      const seconds = runs.reduce((sum, x) => sum + x.value.reading.seconds + (x.value.structure?.seconds || 0), 0) / runs.length;
+      const seconds = runs.reduce((sum, x) => sum + x.value.reading.seconds, 0) / runs.length;
       rows.push(h("tr", {}, h("td", {}, reader.label, h("div", {}, `${runs.length}/${chosenPages.size} pages`),
         runs.some(run => run.value.reading.partial) ? h("div", { class: "meta" }, "Includes saved region repairs") : null,
         reader.id === defaults.reader ? h("div", { class: "ok" }, "Selected for this book") : null),
         h("td", {}, costEstimate(estimate), historical ? h("div", { class: "meta" }, `Uses ${historical} saved whole-page transcription prices from before region edits.`) : null),
         h("td", {}, chars ? (edits / chars * 1000).toFixed(2) : "—", compared ? h("div", { class: "meta" }, `${chars.toLocaleString()} characters`) : null),
         h("td", {}, checkedChars ? (checkedEdits / checkedChars * 1000).toFixed(2) : "—", checkedChars ? h("div", { class: "meta" }, `${checkedChars} checked characters`) : null),
-        h("td", {}, structured ? `${valid}/${structured} valid` : "Pending"), h("td", {}, `${seconds.toFixed(1)} s`)));
+        h("td", {}, `${seconds.toFixed(1)} s`)));
     }
     if (!active()) return;
     summary.replaceChildren(rows.length ? h("div", { class: "table-scroll" }, h("table", { class: "pages" },
-      h("thead", {}, h("tr", {}, ...["Transcription model", `Estimated total / ${Number(projectionPages.value).toLocaleString()} pages`, "Differences / 1,000 characters", "Checked errors / 1,000 characters", "Schema checks", "Transcription + schema time / page"].map(label => h("th", {}, label)))), h("tbody", {}, ...rows)))
+      h("thead", {}, h("tr", {}, ...["Transcription model", `Estimated total / ${Number(projectionPages.value).toLocaleString()} pages`, "Differences / 1,000 characters", "Checked errors / 1,000 characters", "Transcription time / page"].map(label => h("th", {}, label)))), h("tbody", {}, ...rows)))
       : h("p", { class: "hint" }, "Choose sample pages and transcription models, then run a trial. Saved trial results appear here."));
   }
 
@@ -258,14 +252,13 @@ export async function renderReaders(el, app) {
         ...models.filter(model => model.transcription).map(model => h("button", { onclick: () => reviewPage(app, {
           pid, layer: "text", path: `work/readings/${pid}/${model.id}.json`, onSaved: refresh,
         }).catch(error => { trialStatus.textContent = error.message; }) }, model.label)));
-      const diagnostics = h("details", { class: "trial-structure" }, h("summary", {}, "Optional schema check diagnostics"),
+      const diagnostics = h("details", { class: "trial-structure" }, h("summary", {}, "Saved schema diagnostics"),
         ...models.filter(model => model.transcription).map(model => {
           const value = runs.get(model.id), structure = value?.structure;
           return h("details", {}, h("summary", {}, model.label), structure
             ? h("pre", {}, JSON.stringify({ units: structure.doc.units, flows: structure.doc.flows, relations: structure.doc.relations,
               errors: structure.errors, warnings: structure.warnings, problems: structure.problems }, null, 2))
-            : h("p", { class: "hint" }, "Schema check pending for this transcription."),
-          h("button", { class: "mini", disabled: busy, onclick: () => trial({ pid, reader: model.id }) }, "Retry this structural check with a new API call"));
+            : h("p", { class: "hint" }, "No saved schema diagnostics for this transcription."));
         }));
       sections.push(h("section", { class: "trial-page", "aria-label": pageTitle }, pageReview, diagnostics, ...blocks));
     }
@@ -291,8 +284,7 @@ export async function renderReaders(el, app) {
     updateCredentials();
   }
 
-  async function trial(retry = null) {
-    const retryStructure = Boolean(retry);
+  async function trial() {
     if (busy) return;
     if (maker.processing || maker.jobs.size) { trialStatus.textContent = "Wait for the active processing to finish."; return; }
     const limit = Number(budget.value);
@@ -300,19 +292,18 @@ export async function renderReaders(el, app) {
       trialStatus.textContent = "Select pages and transcription models, and enter a positive spend threshold.";
       return;
     }
-    const samplePages = retry ? [retry.pid] : [...chosenPages];
-    const ids = retry ? [retry.reader] : [...candidates];
-    if (!retryStructure && referenceSelect.value !== "current" && !ids.includes(referenceSelect.value)) ids.push(referenceSelect.value);
-    const withStructure = includeStructure.checked || retryStructure;
+    const samplePages = [...chosenPages];
+    const ids = [...candidates];
+    if (referenceSelect.value !== "current" && !ids.includes(referenceSelect.value)) ids.push(referenceSelect.value);
     const options = readerOptions(await book.getReaderOptions(), book.types);
-    if (!requiredProfiles(retry, options).every(profile => credentialChecks.status(profile)?.valid)) {
-      updateCredentials(retry);
+    if (!requiredProfiles(options).every(profile => credentialChecks.status(profile)?.valid)) {
+      updateCredentials();
       trialStatus.textContent = "Check the API credentials for the selected comparison models before running.";
       credentials.scrollIntoView({ block: "start" });
       return;
     }
     if (!await app.confirmSpending() || busy || maker.processing || maker.jobs.size) return;
-    progress.start(samplePages.length * (1 + ids.length * (withStructure ? 2 : 1)));
+    progress.start(samplePages.length * (1 + ids.length));
     let outcome = "Interrupted";
     busy = true; maker.processing = true; stop = false; sessionCost = 0; unknownCosts = 0;
     const failures = [];
@@ -332,7 +323,6 @@ export async function renderReaders(el, app) {
         } catch (error) { failures.push(`${pid} · ${error.message}`); regionOutcome = "failed"; }
         progress.advance(regionOutcome);
       }
-      // Read all sample pages first so schema assignment can use their neighboring text.
       for (const reader of ids) {
         for (const pid of samplePages) {
           if (stop || sessionCost >= limit || unknownCosts) break;
@@ -346,19 +336,6 @@ export async function renderReaders(el, app) {
           await loadPage(pid);
           await showSummary();
         }
-      }
-      if (withStructure) for (const reader of ids) for (const pid of samplePages) {
-        if (stop || sessionCost >= limit || unknownCosts) break;
-        const reading = results.get(pid)?.get(reader)?.reading;
-        if (!reading) { progress.advance("skipped"); continue; }
-        trialStatus.textContent = `Building units for ${pid} from the ${READERS.find(model => model.id === reader).label} transcription…`;
-        try {
-          const structure = await maker.structure(pid, reading, { force: retryStructure, structurer: options.structurer });
-          progress.advance(structure.cached ? "reused" : "completed");
-        }
-        catch (error) { failures.push(`${pid} · ${reader} · ${error.message}`); progress.advance("failed"); }
-        await loadPage(pid);
-        await showSummary();
       }
       trialStatus.replaceChildren(`Saved ${[...results.values()].reduce((n, runs) => n + runs.size, 0)} transcriptions. New API spend was ${money(sessionCost)}${unknownCosts ? `, with ${unknownCosts} costs unavailable` : ""}.${stop ? " Stopped after the active call." : sessionCost >= limit ? " Reached the spend threshold." : ""}`,
         ...failures.length ? [h("details", { open: true }, h("summary", {}, `${failures.length} failed stages`), ...failures.map(message => h("div", { class: "bad" }, message)))] : []);
@@ -377,7 +354,7 @@ export async function renderReaders(el, app) {
   const run = h("button", { class: "primary", onclick: () => trial() }, "Run sample comparison");
   const stopButton = h("button", { onclick: () => { stop = true; } }, "Stop after the active call");
   const refreshButton = h("button", { onclick: refresh }, "Refresh saved results");
-  for (const input of [referenceSelect, onlyDifferences, includeStructure, budget, projectionPages,
+  for (const input of [referenceSelect, onlyDifferences, budget, projectionPages,
     ...pageBoxes.flatMap(x => [...x.querySelectorAll("input")]), ...readerBoxes.flatMap(x => [...x.querySelectorAll("input")])]) input.addEventListener("change", async () => {
     updateCredentials();
     if (input === referenceSelect || input === onlyDifferences) differenceOffset = 0;
@@ -393,8 +370,7 @@ export async function renderReaders(el, app) {
     h("div", { class: "fields col" }, h("label", {}, "Reference transcription from ", referenceSelect),
       h("label", {}, "Stop after an API call once new trial spend reaches $", budget)),
     h("details", { class: "trial-cost-settings" }, h("summary", {}, "Whole-book estimate settings"),
-      h("p", { class: "hint" }, `For total-cost estimates, every transcription uses the fixed ${structurerById(defaults.structurer).label} schema assignment model. Its measured price is shared across the transcription models. Page-region detection uses ${finderById(defaults.finder).label}. Schema models are compared on the next page.`),
-      h("label", {}, includeStructure, " Include fixed-model schema assignment in this trial")),
+      h("p", { class: "hint" }, `Page-region detection uses ${finderById(defaults.finder).label}.`)),
     h("p", { class: "hint" }, `The reference transcription comes from the selected source above. Argon high is the default reference. Error scores use only the reference lines you mark checked against the scan. Missing regions are detected once and shared across transcription models. Requests time out after ${REQUEST_TIMEOUT_MS / 1000} seconds. A spend threshold can be exceeded by the final call.`),
     h("div", { class: "actions" }, run, " ", stopButton, " ", refreshButton), progress.element, trialStatus,
     h("h3", {}, "2. Review costs and transcription differences"), h("label", {}, "Book pages ", projectionPages),
@@ -405,8 +381,7 @@ export async function renderReaders(el, app) {
     h("p", { class: "diff-legend hint" }, h("span", { class: "diff-text" }, "Text difference"), " · ", h("span", { class: "diff-format" }, "Formatting difference"), " · ",
       h("span", { class: "diff-omitted", "data-missing": "Omitted reference text", "aria-label": "Omitted reference text" }), " · Highlights keep grapheme clusters and Indic conjuncts together."), detail,
     choice, h("section", { class: "reader-next" },
-      h("p", {}, "After saving the transcription model, compare schema assignment models using its transcription."),
-      h("button", { onclick: () => app.setMode("structures") }, "Compare schema assignment with the saved transcription model →")));
+      h("a", { href: "#settings" }, "Back to book settings")));
   el.replaceChildren(content);
   await refresh();
 }

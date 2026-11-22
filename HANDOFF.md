@@ -22,11 +22,11 @@ Turn a book's PDF into a digital book in which every passage links to where it i
 
   This book went through the app's stages only partly; most of its finishing was done by the command-line tools below.
 - **Other books:** Kale 1913 and Telang were made by the older one-pass pipeline (method 052). The vachana book came from a digital PDF's text layer (058, 062). The user's 267-page private book has regions only; PRIVATE.md says where it is.
-- **The app** (`webapp/`, about 16,600 lines of JavaScript, no build step) has tabs Pages · Regions · Text · Read · Export. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3). Recent changes:
+- **The app** (`webapp/`, about 16,600 lines of JavaScript, no build step) has tabs Pages · Read · Export, with Settings for models, credentials and types. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3). Recent changes:
   - **One page editor** at `#page&p=<id>`, the same from every stage. Old `#regions&p=`, `#text&p=` and `#read&p=` addresses open it. It edits text, regions (type, box, draw, split, merge, order, delete), units, joins and note links. It shows the page's flags, and a Page menu offers review with AI, no content, find regions again, and read again. A region with no line piece takes text when clicked.
   - **Reading-order warnings** name the first pair of region IDs that the reader and the saved box order put in different positions.
-  - **One review status per page.** Pages, processing grids and the blocks editor show unchecked, checked or suggestion waiting. The existing layer records carry compatibility and overwrite protection for stored books.
-  - **Stage gates retired.** All tabs open from the start. Valid regions can be transcribed and saved text can be read. Review marks still protect the work from model replacement.
+  - **One review status per page.** Pages and the blocks editor show unchecked, checked or suggestion waiting. The existing layer records carry compatibility and overwrite protection for stored books.
+  - **Stage gates retired.** Process pages finds regions and reads text. Read is available as soon as text is saved. Review marks still protect the work from model replacement.
   - **One blocks editor and book reader.** The editor displays the scan, blocks and checks. The reader and exports use saved structure where present, with rule-derived grouping on ungrouped runs. Existing addresses reach the new views.
   - **Dimmed pages** are left out of the book, not gaps, so a unit goes on across a duplicate scan.
   - **Pages are drawn at the scan's resolution:** `scanImage` takes the sharpest image on a page. An archive.org page is a 133 ppi colour background under a 400 ppi text layer.
@@ -54,7 +54,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
   - 9 verse-number breaks and 3 episode-number breaks are listed, not changed;
   - 5 contents lines link to a page instead of an episode (the "…हननम्" entries);
   - 9 front-matter pages keep the provisional grouping.
-- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (379 pass in the local checkout, 377 with public fixtures), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
+- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (380 pass in the local checkout, 378 with public fixtures), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
 - **Running:**
   - A loopback server, `python3 -m http.server 8765 --bind 127.0.0.1`, runs from the repository root.
   - `tailscale serve --https=8765 http://127.0.0.1:8765` makes it reachable from the user's other devices; the address is in PRIVATE.md.
@@ -143,7 +143,7 @@ From the user's review of the one page editor (2026-11-20):
 Each task is sized for one session. Finish, test and commit one before starting the next.
 
 1. **Blocks spike (done).** The comparison works on Kale and the Rāmāyaṇa-mañjarī. See NOTEBOOK.md and the audit command there for the differences to preserve before retiring authored grouping, metadata, joins or line endings.
-2. **Retire what the spike shows unneeded,** one at a time, each with tests. The duplicate reader and editor, stage gates and separate review badges are retired. Next move to three workflow tabs, with one processing action in Pages and the book's model and type choices in Settings. Keep saved grouping, numbering, labels, links, flows and line joins readable when changing how new books are stored.
+2. **Retire what the spike shows unneeded,** one at a time, each with tests. The duplicate reader and editor, stage gates and separate review badges are retired. The three tabs and combined Process pages action are in place. Settings holds models and types. The completion stage has left the UI, while saved structure remains readable. Keep saved grouping, numbering, labels, links, flows and line joins readable when changing how new books are stored.
 3. **The app reads like method 100.** One page image per call with the page's blocks listed, Hydrogen low by default, an updated cost estimate, and markers taken from `[n]`.
 4. **The structure rules move into the app** as a book's settings (closings, part headings, verse groups, note linking, number checks), with the command-line tools kept for batch work.
 5. **The examples hosting:** a separate small repository with Pages enabled (the user's choice), when the user asks.

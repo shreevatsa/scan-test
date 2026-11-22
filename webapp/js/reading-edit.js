@@ -1,9 +1,9 @@
-import * as ops from "./ops.js?v=20261122-one-editor";
-import { assertJoinMetadata, joinPageUnits, joinPartnerId } from "./editing.js?v=20261122-one-editor";
-import { layerState } from "./layers.js?v=20261122-one-editor";
-import { checkPage } from "./schema.js?v=20261122-one-editor";
+import * as ops from "./ops.js?v=20261122-three-tabs";
+import { assertJoinMetadata, joinPageUnits, joinPartnerId } from "./editing.js?v=20261122-three-tabs";
+import { layerState } from "./layers.js?v=20261122-three-tabs";
+import { checkPage } from "./schema.js?v=20261122-three-tabs";
 
-export { unitSnapshot } from "./editing.js?v=20261122-one-editor";
+export { unitSnapshot } from "./editing.js?v=20261122-three-tabs";
 
 export async function joinFollowingUnit(app, pid, uid, expected = new Map()) {
   const book = app.book, current = await book.current(pid, { refresh: true }), place = ops.placeOf(current, uid);

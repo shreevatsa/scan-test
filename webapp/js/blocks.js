@@ -1,14 +1,14 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261122-one-editor";
-import { orderedRegions } from "./flags.js?v=20261122-one-editor";
-import { pageLabel } from "./pipeline/steps.js?v=20261122-one-editor";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261122-one-editor";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261122-one-editor";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261122-one-editor";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261122-one-editor";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261122-three-tabs";
+import { orderedRegions } from "./flags.js?v=20261122-three-tabs";
+import { pageLabel } from "./pipeline/steps.js?v=20261122-three-tabs";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261122-three-tabs";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261122-three-tabs";
+import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261122-three-tabs";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261122-three-tabs";
 import { cp, shiftSpans } from "./inline.js";
-import { layerState } from "./layers.js?v=20261122-one-editor";
-import { readingDocuments } from "./workflow.js?v=20261122-one-editor";
+import { layerState } from "./layers.js?v=20261122-three-tabs";
+import { readingDocuments } from "./workflow.js?v=20261122-three-tabs";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);

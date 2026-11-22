@@ -50,7 +50,7 @@ test("a printed contents line splits into its title and page; other lines are no
 test("the former Book view address opens Read", async () => {
   const { workflowRoute, workflowAddress } = await import("../js/workflow.js");
   assert.equal(workflowRoute("#read&view=book").mode, "read");
-  assert.equal(workflowAddress("plain"), "#read&view=book");
+  assert.equal(workflowAddress("plain"), "#read");
 });
 
 test("a verse-group marker groups the verses printed just above it, however it was read", async () => {

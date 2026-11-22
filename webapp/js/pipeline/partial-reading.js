@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261122-one-editor";
+import { canonical } from "../ops.js?v=20261122-three-tabs";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {

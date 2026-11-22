@@ -4,19 +4,19 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
-import { classLabel, classNote } from "./class-labels.js?v=20261122-one-editor";
+import { classLabel, classNote } from "./class-labels.js?v=20261122-three-tabs";
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261122-one-editor";
-import { prepare } from "./reader.js?v=20261122-one-editor";
-import { typeRevision } from "./schema.js?v=20261122-one-editor";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261122-one-editor";
-import { newTypeDialog } from "./regionsview.js?v=20261122-one-editor";
-import { renderSurvey } from "./type-survey-view.js?v=20261122-one-editor";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261122-one-editor";
-import { unusedDraftTypes } from "./draft-types.js?v=20261122-one-editor";
-import { citedSamplePages } from "./type-revisions.js?v=20261122-one-editor";
-import { typeExampleIndex } from "./type-examples.js?v=20261122-one-editor";
-import { regionPath } from "./pageimage.js?v=20261122-one-editor";
+import { typeForest } from "./type-tree.js?v=20261122-three-tabs";
+import { prepare } from "./reader.js?v=20261122-three-tabs";
+import { typeRevision } from "./schema.js?v=20261122-three-tabs";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261122-three-tabs";
+import { newTypeDialog } from "./regionsview.js?v=20261122-three-tabs";
+import { renderSurvey } from "./type-survey-view.js?v=20261122-three-tabs";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261122-three-tabs";
+import { unusedDraftTypes } from "./draft-types.js?v=20261122-three-tabs";
+import { citedSamplePages } from "./type-revisions.js?v=20261122-three-tabs";
+import { typeExampleIndex } from "./type-examples.js?v=20261122-three-tabs";
+import { regionPath } from "./pageimage.js?v=20261122-three-tabs";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.
@@ -45,8 +45,8 @@ export async function renderTypeView(el, app) {
   app.typeOverview ||= {};
   const tree = h("div", { class: "type-side" }), detail = h("section", { class: "type-detail", "aria-label": "Selected unit type" }), details = h("div");
   const reviewPages = ids => {
-    app.pendingStageSelection = { stage: "regions", ids };
-    app.setMode("regions");
+    app.pendingStageSelection = { ids };
+    app.setMode("pages");
   };
   const mark = name => {
     for (const row of tree.querySelectorAll("[data-type]")) {

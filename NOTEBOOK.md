@@ -5269,3 +5269,7 @@ Opened the Rāmāyaṇa-mañjarī in fresh headless Chrome and checked all 532 P
 ### 2026-11-22 One editor and reader
 
 Opened both public books in a fresh headless Chrome profile. Read shows four saved title-page groups and 616 linked note markers in the Rāmāyaṇa-mañjarī and all 279 assembled verse groups in Kale. Double-clicking a passage opens its scan in the blocks editor. A comparison in memory found the same assembled unit and relation counts and the same join warnings as the saved reading for both books. The rules supplied the grouping on the four ungrouped contents pages in the Rāmāyaṇa-mañjarī. No model calls.
+
+### 2026-11-22 Three workflow tabs
+
+Verified Pages, Read, Export and Settings in a separate headless profile on Kale 1913 and the Rāmāyaṇa-mañjarī. On a one-page PDF rasterized from the public English title page, Process pages found boxes using local line blocks and transcribed them with local Tesseract, then Read displayed the text. A simulated spend stop between the model steps kept the boxes, and resuming transcribed the same page without finding boxes a second time. No paid model calls.

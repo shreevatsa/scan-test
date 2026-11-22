@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261122-one-editor";
+import { typeRevision } from "../schema.js?v=20261122-three-tabs";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {

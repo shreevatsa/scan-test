@@ -1,16 +1,11 @@
-// The page editor's page actions that call a model for the open page: "Find regions on this page again" and "Read this
-// page again". They take the stage's own run path (pipeline/batch.js, as the Regions and Text grids' run buttons do) for
-// a selection of this one page, with the same rules: the book's current finder or reader, its checked key (a local
-// finder needs none), the spending check, costs in the ledger, saved model results reused unless the grid's "Ignore saved
-// model results" is used, and a person's work never overwritten (a protected layer gets the result as a suggestion).
-// When the choice is not ready here (no checked key, "Draw by hand" chosen), the stage's grid opens with this page
-// selected and its run box ready.
+// Page actions use the same batch loop as Process pages. They reuse saved model results
+// and send a suggestion when the page already has protected work. Settings checks credentials.
 import { h } from "./render.js";
-import { runBatch } from "./pipeline/batch.js?v=20261122-one-editor";
-import { finderById } from "./pipeline/finders.js?v=20261122-one-editor";
-import { READERS } from "./pipeline/readers.js?v=20261122-one-editor";
-import { eligible, noContent } from "./workflow.js?v=20261122-one-editor";
-import { money } from "./reader-controls.js?v=20261122-one-editor";
+import { runBatch } from "./pipeline/batch.js?v=20261122-three-tabs";
+import { finderById } from "./pipeline/finders.js?v=20261122-three-tabs";
+import { READERS } from "./pipeline/readers.js?v=20261122-three-tabs";
+import { eligible, noContent } from "./workflow.js?v=20261122-three-tabs";
+import { money } from "./reader-controls.js?v=20261122-three-tabs";
 
 const NAMES = { regions: "Find regions on this page again", text: "Read this page again" };
 
@@ -26,16 +21,9 @@ export function pageRunBlocked(app, stage) {
 // The model the stage's grid would use, when it is ready to run here; else null.
 async function readyProfile(app, maker, stage) {
   const options = await maker.options();
-  if (stage === "regions" && app.regionOverview?.manual) return null;
   let profile = null;
   try { profile = stage === "regions" ? finderById(options.finder) : READERS.find(item => item.id === options.reader) || null; } catch { return null; }
   return profile && maker.credentials?.status(profile)?.valid ? profile : null;
-}
-
-function openStageGrid(app, stage, pid, why) {
-  app.pendingStageSelection = { stage, ids: [pid], reprocess: true };
-  app.setMode(stage);
-  app.toast(`${why} ${stage === "regions" ? "Regions" : "Text"} opens with this page selected: run it from the run box there.`, "warn");
 }
 
 export async function runPageAgain(app, stage) {
@@ -47,8 +35,10 @@ export async function runPageAgain(app, stage) {
   const book = app.book, pid = app.pid, maker = await app.getMaker();
   const profile = await readyProfile(app, maker, stage);
   if (app.book !== book || app.pid !== pid) return;
-  if (!profile) return openStageGrid(app, stage, pid, stage === "regions" && app.regionOverview?.manual
-    ? "Regions is set to draw by hand." : "The chosen model's key has not been checked in this browser.");
+  if (!profile) {
+    app.setMode("settings");
+    return app.toast("Check the chosen model’s credential in Settings, then return to this page.", "warn");
+  }
   if (profile.provider !== "local" && !await app.confirmSpending()) return;
   if (app.book !== book || app.pid !== pid || app.workflowBusy) return;
   app.workflowBusy = true;
@@ -69,7 +59,7 @@ export async function runPageAgain(app, stage) {
   const state = app.pageStates.get(pid);
   if (failure) return app.toast(`${NAMES[stage]}: ${failure.message}`, "bad");
   const spend = out?.spend ? ` · ${money(out.spend)}` : "";
-  app.toast(value?.cached ? `${profile.label}'s saved result for this page was used again (no new call). To call it afresh, use "Ignore saved model results" in the ${stage === "regions" ? "Regions" : "Text"} run box.`
+  app.toast(value?.cached ? `${profile.label}'s saved result for this page was used again without a new call.`
     : state?.suggestion ? `Done${spend}. The page has your work, so the result waits as a suggestion: review it from the inspector.` : `Done${spend}.`);
 }
 

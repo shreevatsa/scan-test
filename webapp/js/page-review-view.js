@@ -1,12 +1,12 @@
 import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261122-one-editor";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261122-one-editor";
-import { settings } from "./store.js?v=20261122-one-editor";
-import { money } from "./reader-controls.js?v=20261122-one-editor";
-import { reviewTypeChange } from "./type-operations.js?v=20261122-one-editor";
-import { REGION_CLASSES } from "./book-types.js?v=20261122-one-editor";
-import { classPicker, defaultClass } from "./class-labels.js?v=20261122-one-editor";
-import { reviewPage } from "./review-view.js?v=20261122-one-editor";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261122-three-tabs";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261122-three-tabs";
+import { settings } from "./store.js?v=20261122-three-tabs";
+import { money } from "./reader-controls.js?v=20261122-three-tabs";
+import { reviewTypeChange } from "./type-operations.js?v=20261122-three-tabs";
+import { REGION_CLASSES } from "./book-types.js?v=20261122-three-tabs";
+import { classPicker, defaultClass } from "./class-labels.js?v=20261122-three-tabs";
+import { reviewPage } from "./review-view.js?v=20261122-three-tabs";
 import { runProgress } from "./run-progress.js";
 
 export async function reviewPageWithAI(app) {

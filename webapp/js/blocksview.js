@@ -1,15 +1,15 @@
-import { TextPanel, renderInspector } from "./editor.js?v=20261122-one-editor";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261122-one-editor";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261122-one-editor";
+import { TextPanel, renderInspector } from "./editor.js?v=20261122-three-tabs";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261122-three-tabs";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261122-three-tabs";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261122-one-editor";
+import * as ops from "./ops.js?v=20261122-three-tabs";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261122-one-editor";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261122-one-editor";
-import { suggestionButton } from "./review-view.js?v=20261122-one-editor";
-import { unitPath } from "./editing.js?v=20261122-one-editor";
-import { pageReviewState } from "./layers.js?v=20261122-one-editor";
-import { REVIEW_LABELS } from "./workflow.js?v=20261122-one-editor";
+import { noteProblems } from "./note-links.js?v=20261122-three-tabs";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261122-three-tabs";
+import { suggestionButton } from "./review-view.js?v=20261122-three-tabs";
+import { unitPath } from "./editing.js?v=20261122-three-tabs";
+import { pageReviewState } from "./layers.js?v=20261122-three-tabs";
+import { REVIEW_LABELS } from "./workflow.js?v=20261122-three-tabs";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

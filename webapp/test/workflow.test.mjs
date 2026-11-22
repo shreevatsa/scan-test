@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pageStages, hasReading, workflowRoute, workflowAddress, eligible, readingGaps, readingDocuments, movePage, reviewPageStates, stageFlags, currentStage } from "../js/workflow.js";
+import { pageStages, hasReading, workflowRoute, workflowAddress, eligible, readingGaps, readingDocuments, movePage, reviewPageStates, stageFlags, currentStage, nextProcessingStage } from "../js/workflow.js";
 import { accept, layerState } from "../js/layers.js";
 import { runBatch } from "../js/pipeline/batch.js";
 import { CredentialChecks } from "../js/key-check.js";
@@ -34,13 +34,13 @@ test("processing uses valid input without review marks and Read can show partial
   assert.equal(hasReading(doc, types), true, "a blank page can be joined across");
 });
 
-test("new and old addresses reach the stage views regardless of review status", () => {
-  const cases = { pages: ["pages", "grid"], regions: ["regions", "grid"], "regions&view=types": ["regions", "types"],
-    "regions&view=proposal": ["regions", "types"], "regions&view=compare": ["regions", "grid"],
-    "text&view=compare": ["text", "readers"], "read&view=pages": ["read", "grid"], "read&view=compare": ["read", "structures"],
-    "read&view=problems": ["read", "check"], "read&view=style": ["read", "style"], read: ["read", "read"], export: ["export", "export"],
-    types: ["regions", "types"], "types&view=proposal": ["regions", "types"], readers: ["text", "readers"], structures: ["read", "structures"], make: ["regions", "grid"],
-    check: ["read", "check"], style: ["read", "style"], "p=p1": ["page", "page"], "page&p=p1": ["page", "page"] };
+test("old bookmarks reach the three tabs and the book settings", () => {
+  const cases = { pages: ["pages", "grid"], regions: ["settings", "settings"], "regions&view=types": ["settings", "settings"],
+    "regions&view=proposal": ["settings", "settings"], "regions&view=compare": ["settings", "settings"],
+    "text&view=compare": ["settings", "readers"], "read&view=pages": ["pages", "grid"], "read&view=compare": ["settings", "settings"],
+    "read&view=problems": ["pages", "grid"], "read&view=style": ["export", "style"], read: ["read", "read"], export: ["export", "export"],
+    types: ["settings", "settings"], "types&view=proposal": ["settings", "settings"], readers: ["settings", "readers"], structures: ["settings", "settings"],
+    check: ["pages", "grid"], style: ["export", "style"], "p=p1": ["page", "page"], "page&p=p1": ["page", "page"] };
   for (const [hash, expected] of Object.entries(cases)) {
     const out = workflowRoute(`#${hash}`);
     assert.deepEqual([out.stage, out.mode], expected, hash);
@@ -48,16 +48,16 @@ test("new and old addresses reach the stage views regardless of review status", 
   const specific = workflowRoute(workflowAddress("text", "p 1", { region: "r1" }));
   assert.equal(specific.pid, "p 1");
   assert.equal(specific.region, "r1");
-  assert.equal(workflowAddress("types"), "#regions&view=types");
+  assert.equal(workflowAddress("types"), "#settings&view=types");
   assert.equal(workflowRoute("#types&view=proposal").view, "proposal");
   // A page in a stage's grid keeps its view: only an address with no view opens the page editor.
-  assert.deepEqual([workflowRoute("#read&view=pages&p=p1").mode, workflowRoute("#regions&view=types&p=p1").mode], ["grid", "types"]);
+  assert.deepEqual([workflowRoute("#read&view=pages&p=p1").mode, workflowRoute("#regions&view=types&p=p1").mode], ["grid", "settings"]);
 });
 
 test("there is one page editor: every address with a page opens it, the old stage addresses too", () => {
   assert.equal(workflowAddress("page", "p 1", { region: "r1" }), "#page&p=p%201&r=r1");
   for (const stage of ["page", "pages", "regions", "text", "read"]) assert.equal(workflowAddress(stage, "p1"), "#page&p=p1", stage);
-  assert.equal(workflowAddress("regions"), "#regions");
+  assert.equal(workflowAddress("regions"), "#settings");
   // Saved links from the three page editors still open the page, in the one editor, with their selection.
   for (const old of ["regions", "text", "read", "pages"]) {
     const out = workflowRoute(`#${old}&p=p1&u=u2`);
@@ -124,6 +124,35 @@ test("a batch stops between calls for spending, unknown cost and a requested sto
     assert.equal(out.processed, 1);
     assert.equal(out.paused, true);
   }
+});
+
+test("Process pages finds boxes first, respects the shared budget and resumes with transcription", async () => {
+  const docs = new Map(), calls = [];
+  const stageOf = id => nextProcessingStage(pageStages(docs.get(id), types));
+  const maker = { jobs: new Map(), onCost() {},
+    async findRegions(id) {
+      calls.push(["boxes", id]);
+      const outlined = page(id);
+      delete outlined.page.regions[0].lines[0].text;
+      docs.set(id, outlined);
+      this.onCost(0.2);
+      return {};
+    },
+    async read(id) {
+      calls.push(["text", id]);
+      docs.set(id, page(id));
+      this.onCost(0.2);
+      return {};
+    },
+  };
+  const paused = await runBatch({ maker, ids: ["p1","p2"], stage: "pages", stageOf, limit: 0.1 });
+  assert.equal(paused.paused, true);
+  assert.deepEqual(calls, [["boxes","p1"]]);
+  assert.equal(stageOf("p1"), "text");
+  const resumed = await runBatch({ maker, ids: ["p1","p2"], stage: "pages", stageOf, limit: 1 });
+  assert.equal(resumed.paused, false);
+  assert.deepEqual(calls, [["boxes","p1"],["text","p1"],["boxes","p2"],["text","p2"]]);
+  assert.equal(stageOf("p2"), null);
 });
 
 test("credential checks use small content-free requests and preserve provider errors", async () => {

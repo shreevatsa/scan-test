@@ -1,161 +1,96 @@
-import { suggestionButton } from "./review-view.js?v=20261122-one-editor";
+import { suggestionButton } from "./review-view.js?v=20261122-three-tabs";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, REVIEW_LABELS, resetGrouping, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261122-one-editor";
-import { RARE_LAYOUT } from "./flags.js?v=20261122-one-editor";
-import { regionBoxes } from "./pageimage.js?v=20261122-one-editor";
+import { nextProcessingStage, REVIEW_LABELS, noContent } from "./workflow.js?v=20261122-three-tabs";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261122-one-editor";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261122-one-editor";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261122-one-editor";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261122-one-editor";
-import { settings } from "./store.js?v=20261122-one-editor";
-import { runBatch } from "./pipeline/batch.js?v=20261122-one-editor";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261122-three-tabs";
+import { READERS } from "./pipeline/readers.js?v=20261122-three-tabs";
+import { finderById } from "./pipeline/finders.js?v=20261122-three-tabs";
+import { runBatch } from "./pipeline/batch.js?v=20261122-three-tabs";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis } from "./recipe.js?v=20261122-one-editor";
-import { renderFinders } from "./findersview.js?v=20261122-one-editor";
-import { money } from "./reader-controls.js?v=20261122-one-editor";
-import { findTargets } from "./find-targets.js?v=20261122-one-editor";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261122-one-editor";
-import { proposalsBox } from "./proposals-view.js?v=20261122-one-editor";
-
-const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
-const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
+import { money } from "./reader-controls.js?v=20261122-three-tabs";
 
 export async function renderPages(el, app) {
-  const book = app.book, stage = app.stage, layer = STAGE_LAYER[stage];
-  const overview = stage === "regions" ? app.regionOverview : null;
-  // Regions shows its page grid (By page) or its type view (By type) below the same boxes.
-  const view = stage === "regions" && app.mode === "types" ? "types" : "pages";
-  const token = app.routeToken;
-  const active = () => app.book === book && app.stage === stage && (app.mode === "grid" || app.mode === "types") && app.routeToken === token;
-  const pending = app.pendingStageSelection?.stage === stage ? app.pendingStageSelection : null;
-  // Pages has nothing that acts on a selection, so its grid has no selection controls; the stage grids do.
-  const selecting = stage !== "pages";
-  const rows = new Map(), urls = new Set(), selected = new Set(selecting ? pending?.ids || overview?.selected || [] : []);
-  if (overview) overview.selected = selected;
-  app.pendingStageSelection = null;
-  let observer, queue = Promise.resolve(), visible = [], lastSelected = null, stopped = false, busy = false;
-  const grid = h("div", { class: "stage-grid", "aria-label": `${TITLES[stage]} page grid` });
-  const selection = h("input", { placeholder: "all or 1-50, 62", "aria-label": "Select page range" });
-  const showSelection = () => { selection.value = pageSelectionText([...selected].map(pid => book.index[pid] + 1), book.pages.length); };
-  if (selected.size) showSelection();
+  const { book, routeToken } = app;
+  const active = () => app.book === book && app.routeToken === routeToken;
+  const selected = app.pagesSelection ||= new Set();
+  if (app.pendingStageSelection) {
+    selected.clear();
+    for (const id of app.pendingStageSelection.ids) selected.add(id);
+    app.pendingStageSelection = null;
+  }
+  let visible = [], lastSelected = null, busy = false, stopped = false, observer;
+  let queue = Promise.resolve();
+  const rows = new Map(), urls = new Set();
+  const stateOf = pid => app.pageStates.get(pid);
+  const stageOf = pid => nextProcessingStage(stateOf(pid));
+  const targets = () => selected.size ? [...selected] : visible.filter(pid => !book.isSkipped(pid));
+  const runnable = () => targets().filter(stageOf);
+  const grid = h("div", { class: "stage-grid", "aria-label": "Pages" });
+  const summary = h("p", { class: "stage-selection", role: "status" });
+  const status = h("p", { role: "status" }), failures = h("div");
+  const availability = h("p", { class: "hint" });
+  const range = h("input", { placeholder: "1-50, 62", "aria-label": "Select page range" });
+  const showSelection = () => { range.value = pageSelectionText([...selected].map(pid => book.index[pid] + 1), book.pages.length); };
   const stateFilter = h("select", { "aria-label": "Page review" }, h("option", { value: "all" }, "All review states"),
     ...Object.entries(REVIEW_LABELS).map(([value, label]) => h("option", { value }, label)));
-  const filter = h("select", { "aria-label": "Page flags" }, ...[["all", "All pages"], ["flagged", "Flagged"], ["dimmed", "Dimmed"], ...stage === "regions" ? [["rareLayout", `Rare layouts (under ${RARE_LAYOUT} pages)`]] : [],
-    ["earlier", "Earlier type revision"], ["suggestion", "Has a suggestion"]].map(([value, label]) => h("option", { value }, label)));
-  const grouping = h("select", { "aria-label": "Group pages by layout" }, h("option", { value: "order" }, "Page order"), h("option", { value: "layout" }, "Layout · rarest first"));
-  if (overview?.filters) {
-    stateFilter.value = Object.hasOwn(REVIEW_LABELS, overview.filters.state) ? overview.filters.state : "all";
-    filter.value = overview.filters.flags;
-    grouping.value = overview.filters.grouping;
-  }
-  const flagsFor = pid => stageFlags(app.pageStates.get(pid), stage);
-  const summary = h("p", { class: "stage-selection", role: "status" });
-  const message = h("p", { role: "status" });
-  const empty = h("p", { class: "hint", hidden: true });
-  // Pages dimmed on Pages (marked not interesting) are left out of what runs and moves default to, but a page named in
-  // the selection is always used.
-  const targetIds = () => findTargets({ selected: [...selected], view, shown: visible, all: [...rows.keys()],
-    isSkipped: pid => book.isSkipped(pid), eligible: pid => eligible(stage, app.pageStates.get(pid)) });
-  // A page with no content (no regions) has nothing to transcribe or complete: Text and Read count it as done, and
-  // their runs and estimates leave it out.
-  const nothingToDo = pid => (layer === "text" || layer === "units") && noContent(app.pageStates.get(pid).doc);
-  const layerReady = pid => {
-    const state = app.pageStates.get(pid);
-    return nothingToDo(pid) || state.layers[layer] && (layer !== "units" || state.layers.units.state !== "provisional");
-  };
-  const canReview = (pid, checked) => {
-    const state = app.pageStates.get(pid);
-    return !!state.doc && state.valid && state.checked !== checked;
-  };
-  let cost = pageCost(null), runButton, moveButton, backButton, checks, profile, barNote = null, barHint = "";
-  const processSummary = h("span", { class: "meta" }), recipeText = h("span");
-  const include = h("input", { type: "checkbox", checked: pending?.reprocess, "aria-label": "Also redo pages that already have a result" });
-  const fresh = h("input", { type: "checkbox", "aria-label": "Ignore saved model results" });
-  const estimateLabel = h("p", { class: "hint" });
-  const runnable = () => targetIds().filter(pid => !nothingToDo(pid) && (include.checked || !layerReady(pid)));
+  const filter = h("select", { "aria-label": "Page flags" },
+    ...[["all","All pages"], ["flagged","Flagged"], ["dimmed","Dimmed"], ["earlier","Earlier type revision"]]
+      .map(([value,label]) => h("option", { value }, label)));
+  const empty = h("p", { class: "hint", hidden: true }, "No pages match these filters.");
+  const threshold = h("input", { type: "number", min: 0.1, step: 0.5, value: 5, "aria-label": "Processing spend threshold" });
+  const progress = runProgress("Processing pages");
+  const process = h("button", { class: "primary", disabled: true }, "Process pages");
+  const stop = h("button", { disabled: true, onclick: () => { stopped = true; status.textContent = "Stopping after the active call…"; } }, "Stop after the active call");
+  const pageOptions = h("div");
+  const controls = h("div", { class: "stage-filters" }, stateFilter, filter);
+  const reviewBar = h("div", { class: "actions" });
+  const settingsLink = h("a", { href: "#settings" }, "Book settings");
+  const panel = h("section", { class: "region-section" },
+    h("div", { class: "fields selection-row" }, h("label", {}, "Select pages ", range), h("label", {}, "Spend threshold $", threshold)),
+    h("div", { class: "actions" }, process, stop, settingsLink), availability, progress.element, status, failures, reviewBar);
+  let maker, finder, reader;
+  const requiredModels = ids => ids.some(pid => stageOf(pid) === "regions") ? [finder, reader] : [reader];
+  const ready = ids => !!maker && requiredModels(ids).every(profile => profile && maker.credentials.status(profile)?.valid);
   const refreshSummary = () => {
-    const ids = targetIds(), flagged = ids.filter(pid => flagsFor(pid).length).length;
-    const hidden = ids.filter(pid => !visible.includes(pid)).length;
-    const dimmed = selected.size ? 0 : visible.filter(pid => book.isSkipped(pid)).length;
-    const skippedNote = n => n ? ` (${n} dimmed ${n === 1 ? "page" : "pages"} skipped)` : "";
-    const scope = selected.size ? `${ids.length} selected${hidden && view === "pages" ? ` (${hidden} hidden by filters)` : ""}`
-      : view === "types" ? `All ${ids.length} pages of the book targeted${skippedNote([...rows.keys()].filter(pid => book.isSkipped(pid) && eligible(stage, app.pageStates.get(pid))).length)}`
-        : `All ${ids.length} displayed pages targeted${skippedNote(dimmed)}`;
-    summary.textContent = selecting ? `${scope} · ${flagged} flagged${view === "pages" ? ` · ${visible.length} shown` : ""}`
-      : `${visible.length} of ${rows.size} pages shown · ${flagged} flagged${book.skipped.size ? ` · ${book.skipped.size} dimmed` : ""}`;
-    if (runButton) {
-      const ready = profile && checks?.status(profile)?.valid;
-      const count = runnable().length;
-      runButton.disabled = busy || !book.writable || !count || !ready;
-      processSummary.textContent = `${recipeLine(stage, profile, cost)} · ${count} ${count === 1 ? "page" : "pages"} to process`;
-      recipeText.textContent = recipeLine(stage, profile, cost);
-      recipeText.title = profile ? `Cost a page: ${costBasis(cost)}.` : "";
-      estimateLabel.textContent = runEstimate(count, cost);
-    }
-    if (moveButton) moveButton.disabled = busy || !ids.some(pid => canReview(pid, true));
-    if (backButton) backButton.disabled = busy || !ids.some(pid => canReview(pid, false));
+    const ids = runnable();
+    const flagged = visible.filter(pid => stateOf(pid).flags.length).length;
+    summary.textContent = `${visible.length} of ${rows.size} pages shown · ${flagged} flagged${book.skipped.size ? ` · ${book.skipped.size} dimmed` : ""}`;
+    availability.replaceChildren(
+      `${ids.length} ${ids.length === 1 ? "page" : "pages"} to process${selected.size ? " in the selection" : ""}`,
+      ids.length && maker && !ready(ids) ? " · Check this book’s model credentials in Settings" : "");
+    process.disabled = busy || !ids.length || !ready(ids);
+    reviewBar.querySelectorAll("button").forEach(button => { button.disabled = busy || !targets().some(pid => stateOf(pid).doc && stateOf(pid).valid); });
   };
-  // The element that scrolls the grid: re-placing the cards must not send it back to the top.
-  const scrollParent = () => {
-    for (let node = grid.parentElement; node; node = node.parentElement)
-      if (node.scrollHeight > node.clientHeight && /auto|scroll/.test(getComputedStyle(node).overflowY)) return node;
-    return document.scrollingElement;
-  };
-  const applyFilters = () => {
-    const scroller = scrollParent(), top = scroller?.scrollTop;
-    if (overview) overview.filters = { state: stateFilter.value, flags: filter.value, grouping: grouping.value };
+  function applyFilters() {
     visible = [];
-    let removed = false;
-    const sorted = [...rows].sort(([a], [b]) => grouping.value === "layout"
-      ? app.pageStates.get(a).layoutFrequency - app.pageStates.get(b).layoutFrequency || app.pageStates.get(a).layout.localeCompare(app.pageStates.get(b).layout) || book.index[a] - book.index[b]
-      : book.index[a] - book.index[b]);
-    grid.querySelectorAll(".layout-heading").forEach(heading => heading.remove());
-    let lastLayout = null;
-    for (const [pid, row] of sorted) {
-      const state = app.pageStates.get(pid);
-      const matchesState = stateFilter.value === "all" || state.status === stateFilter.value;
-      const matchesFlag = filter.value === "all" || (filter.value === "flagged" ? flagsFor(pid).length : filter.value === "dimmed" ? book.isSkipped(pid) : state[filter.value]);
-      row.element.hidden = !eligible(stage, state) || !matchesState || !matchesFlag;
-      if (!eligible(stage, state) && selected.delete(pid)) removed = true;
+    for (const [pid, row] of rows) {
+      const state = stateOf(pid);
+      const matchesReview = stateFilter.value === "all" || state.status === stateFilter.value;
+      const matchesFlag = filter.value === "all" || (filter.value === "flagged" ? state.flags.length : filter.value === "dimmed" ? book.isSkipped(pid) : state.earlier);
+      row.element.hidden = !matchesReview || !matchesFlag;
       if (!row.element.hidden) visible.push(pid);
-      if (!row.element.hidden && grouping.value === "layout" && state.layout !== lastLayout) {
-        grid.append(h("h3", { class: "layout-heading" }, `${state.layout || "No regions yet"} · ${state.layoutFrequency} ${state.layoutFrequency === 1 ? "page" : "pages"}`));
-        lastLayout = state.layout;
-      }
-      grid.append(row.element);
-      if (row.checkbox) row.checkbox.checked = selected.has(pid);
+      if (row.select) row.select.checked = selected.has(pid);
     }
-    if (removed) showSelection();
     empty.hidden = !!visible.length;
-    empty.textContent = [...rows.keys()].some(pid => eligible(stage, app.pageStates.get(pid)))
-      ? "No pages match these filters." : stage === "text" ? "Pages appear here when they have valid scan boxes." : "Pages appear here when their transcription is ready.";
     refreshSummary();
-    if (scroller && top) scroller.scrollTop = top;
-  };
-  const refreshCard = pid => {
-    const row = rows.get(pid), state = app.pageStates.get(pid);
-    if (!row) return;
-    const progress = !state.doc ? "Awaiting boxes" : noContent(state.doc) ? "No content"
-      : !state.readable || state.missing ? "Awaiting text" : "";
-    row.states.replaceChildren(h("span", { class: `stage-badge ${state.checked ? "accepted" : ""}` }, REVIEW_LABELS[state.status]));
-    if (progress) row.states.append(h("span", { class: "meta" }, progress));
-    const flags = flagsFor(pid);
-    row.flags.textContent = flags.length ? `${flags.length} ${flags.length === 1 ? "flag" : "flags"} · ${flags[0]}` : "";
-    row.element.classList.toggle("has-flags", !!flags.length);
-    row.element.classList.toggle("skipped", book.isSkipped(pid));
-    if (row.skipButton) {
-      row.skipButton.textContent = book.isSkipped(pid) ? "↺" : "×";
-      row.skipButton.title = book.isSkipped(pid) ? "Not interesting: bring this page back" : "Not interesting: dim this page and leave it out when pages are processed";
-      row.skipButton.setAttribute("aria-label", `${book.isSkipped(pid) ? "Bring back" : "Dim"} page ${book.index[pid] + 1}`);
+  }
+  function refreshCard(pid) {
+    const { element, states, flags, skip } = rows.get(pid), state = stateOf(pid);
+    const progress=!state.doc ? "Awaiting boxes" : noContent(state.doc) ? "No content" : stageOf(pid)==="text" ? "Awaiting text" : "";
+    states.replaceChildren(h("span", { class: `stage-badge ${state.checked ? "accepted" : ""}` }, REVIEW_LABELS[state.status]));
+    if (progress) states.append(h("span", { class: "meta" }, progress));
+    const count=state.flags.length, dimmed=book.isSkipped(pid);
+    flags.textContent = count ? `${count} ${count===1 ? "flag" : "flags"} · ${state.flags[0]}` : "";
+    flags.title=state.flags.join("\n");
+    element.classList.toggle("has-flags",Boolean(count));
+    element.classList.toggle("skipped",dimmed);
+    if (skip) {
+      skip.textContent=dimmed ? "↺" : "×";
+      skip.setAttribute("aria-label",`${dimmed ? "Bring back" : "Dim"} page ${book.index[pid]+1}`);
     }
-    row.flags.title = flags.join("\n");
-    row.element.querySelector(".suggestion-actions")?.remove();
-    row.element.append(suggestionButton(app, pid, layer));
-    row.element.querySelector(".stage-boxes")?.remove();
-    if (state.doc) row.element.querySelector(".start-manual")?.remove();
-    if (stage === "regions" && state.doc) row.element.querySelector(".stage-thumbnail").append(regionBoxes(state.doc, app.colors));
-  };
+    element.querySelector(".suggestion-actions")?.remove();
+    element.append(suggestionButton(app,pid));
+  }
   const preview = h("dialog", { class: "pdf-preview-dialog", "aria-label": "Scanned page preview" });
   const showPreview = async pid => {
     const index = book.index[pid];
@@ -168,138 +103,96 @@ export async function renderPages(el, app) {
     if (!preview.open) preview.showModal();
     image.src = await book.imageUrl(pid);
   };
-  for (const page of book.pages) {
-    const state = app.pageStates.get(page.id);
-    const checkbox = selecting ? h("input", { type: "checkbox", "aria-label": `Select page ${book.index[page.id] + 1}`, onclick: event => {
-      const ids = event.shiftKey && lastSelected && visible.includes(lastSelected) ? visible.slice(
-        Math.min(visible.indexOf(lastSelected), visible.indexOf(page.id)), Math.max(visible.indexOf(lastSelected), visible.indexOf(page.id)) + 1) : [page.id];
-      for (const pid of ids) { if (checkbox.checked) selected.add(pid); else selected.delete(pid); }
-      lastSelected = page.id;
-      showSelection();
-      for (const [pid, row] of rows) if (row.checkbox) row.checkbox.checked = selected.has(pid);
-      refreshSummary();
+  for (const scan of book.pages) {
+    const { id } = scan, index = book.index[id];
+    const select = book.writable ? h("input", { type: "checkbox", "aria-label": `Select page ${index+1}`, onclick: event => {
+      if (busy) return;
+      const first = lastSelected ? visible.indexOf(lastSelected) : -1, last = visible.indexOf(id);
+      const ids=event.shiftKey && first>=0 ? visible.slice(Math.min(first,last),Math.max(first,last)+1) : [id];
+      for (const pid of ids) { if (select.checked) selected.add(pid); else selected.delete(pid); }
+      lastSelected = id; showSelection(); applyFilters();
     } }) : null;
-    const image = h("img", { alt: `Page ${book.index[page.id] + 1}`, width: 120, height: 166 });
-    const states = h("div", { class: "stage-badges" }), flags = h("p", { class: "stage-flags" });
-    // Pages only: a small × dims the page (and ↺ brings it back). Dimming is just a default for runs and moves.
-    const skipButton = stage === "pages" && book.writable ? h("button", { class: "skip-toggle", onclick: async () => {
-      try { await book.setSkipped([page.id], !book.isSkipped(page.id)); } catch (error) { message.textContent = error.message; return; }
-      refreshCard(page.id);
-      if (filter.value === "dimmed") applyFilters(); else refreshSummary();
-      app.diskCopy?.checkpoint();
+    const skip = book.writable ? h("button", { class: "skip-toggle", onclick: async () => {
+      try {
+        await book.setSkipped([id],!book.isSkipped(id));
+        refreshCard(id); applyFilters(); app.diskCopy?.checkpoint();
+      } catch (error) { status.textContent=error.message; }
     } }) : null;
-    const element = h("article", { class: "stage-card", dataset: { page: page.id } }, skipButton,
-      h("button", { class: "stage-thumbnail", "aria-label": `Open page ${book.index[page.id] + 1}`, onclick: () => stage === "pages" ? showPreview(page.id) : app.openPage(page.id) }, image),
-      selecting ? h("label", {}, checkbox, ` Page ${book.index[page.id] + 1}${page.label ? ` · ${page.label}` : ""}`)
-        : h("p", { class: "stage-card-name" }, `Page ${book.index[page.id] + 1}${page.label ? ` · ${page.label}` : ""}`), states, flags);
-    if (stage === "regions" && !state.doc && book.writable) element.append(h("button", { class: "mini start-manual", onclick: async event => {
-      if (app.workflowBusy) return;
-      const button = event.currentTarget;
-      button.disabled = true; button.textContent = "Preparing page…";
-      try { await app.startByHand(page.id); } catch (error) { app.toast(error.message, "bad"); }
-      finally { button.disabled = false; button.textContent = "Start by hand"; }
-    } }, "Start by hand"));
-    rows.set(page.id, { element, checkbox, image, states, flags, skipButton });
-    grid.append(element);
-    refreshCard(page.id);
+    const image = h("img", { alt: `Page ${index+1}`, width: 120, height: 166 });
+    const states = h("div", { class: "stage-badges" }), flags=h("p", { class: "stage-flags" });
+    const name = `Page ${index+1}${scan.label ? ` · ${scan.label}` : ""}`;
+    const element = h("article", { class: "stage-card", dataset: { page: id } }, skip,
+      h("button", { class: "stage-thumbnail", "aria-label": `Open page ${index+1}`, onclick: () => showPreview(id) }, image),
+      select ? h("label", {}, select, " "+name) : h("p", { class: "stage-card-name" },name), states, flags);
+    grid.append(element); rows.set(id,{element, image, select, states, flags, skip}); refreshCard(id);
   }
-  // The pages a run applies to are chosen in the Process pages box, above the run button, where a book can be processed;
-  // elsewhere (a read-only book) the same controls sit with the filters.
-  const applyRange = () => {
+  range.onchange = () => {
     try {
-      const numbers = selection.value.trim() ? pageRange(selection.value, book.pages.length) : [];
+      const numbers=range.value.trim() ? pageRange(range.value,book.pages.length) : [];
       selected.clear();
-      let dimmed = 0;
       for (const number of numbers) {
-        const pid = book.pages[number - 1].id;
-        if (!rows.has(pid)) continue;
-        if (book.isSkipped(pid)) dimmed++; else selected.add(pid);
+        const pid=book.pages[number-1].id;
+        if (!book.isSkipped(pid)) selected.add(pid);
       }
-      message.textContent = dimmed ? `${dimmed} dimmed ${dimmed === 1 ? "page" : "pages"} in the range left out. Tick a dimmed page in the grid to include it.` : "";
-      applyFilters();
-    } catch (error) { message.textContent = error.message; }
+      showSelection(); applyFilters();
+    } catch (error) { status.textContent=error.message; }
   };
-  selection.onchange = applyRange;
-  const selectionControls = selecting ? [h("label", {}, "Select pages ", selection)] : [];
-  const selectionInBox = selecting && book.writable;
-  const toolbar = h("div", { class: "stage-filters" }, ...selectionInBox ? [] : selectionControls, stateFilter, filter,
-    ...(stage === "regions" ? [grouping] : []));
-  const stageReview = h("div", { class: "actions stage-review" });
-  const heading = h("h1", {}, TITLES[stage]);
-  app.regionTypePanel = null;
-  // Pages is browsing only: the way on is Regions, said here as well as by the tab at the top.
-  const nextStep = stage === "pages" ? h("div", { class: "next-step" },
-    h("button", { class: "primary", onclick: () => { location.hash = workflowAddress("regions"); } }, "Continue to Regions →"),
-    h("span", { class: "meta" }, "Find each page’s regions and choose the book’s unit types.")) : null;
-  // In Regions the count of pages a run will use and its messages sit in the Find regions box, which both views share.
-  const boxed = stage === "regions" && book.writable;
-  // Proposed types from surveys and from Find regions (method 097), shown only while some wait.
-  const proposals = boxed ? proposalsBox(app) : null;
-  proposals?.refresh();
-  const creds = boxed ? credentialsBox((id, value) => settings.set(`key:${id}`, value)) : null;
-  const content = h("div", { class: "region-grid-content" }, toolbar, stageReview, ...boxed ? [] : [summary, message], empty, grid, nextStep, preview);
-  const typeContent = h("div", { class: "region-type-content" });
-  // Model choice, credentials and run controls are one section, open at first while pages wait for this stage's
-  // processing. A read-only book has none of them, only the way to an editable copy.
-  const processing = stage !== "pages" && book.writable;
-  // The stage's one line names its model and cost a page; "Change" opens the model list and the comparison.
-  app.changeOpen ||= {};
-  const modelFields = h("div", { class: "fields" });
-  const changeArea = h("div", { class: "recipe-change", hidden: !(app.routeView === "compare" || app.changeOpen[stage]) }, modelFields);
-  const changeButton = h("button", { class: "mini", "aria-expanded": String(!changeArea.hidden), onclick: () => {
-    changeArea.hidden = !changeArea.hidden;
-    app.changeOpen[stage] = !changeArea.hidden;
-    changeButton.textContent = changeArea.hidden ? "Change" : "Close";
-    changeButton.setAttribute("aria-expanded", String(!changeArea.hidden));
-  } }, changeArea.hidden ? "Change" : "Close");
-  const recipeRow = h("p", { class: "recipe-line" }, recipeText, " ", changeButton);
-  const runArea = h("div");
-  app.processOpen ||= {};
-  const waiting = [...rows.keys()].filter(pid => !layerReady(pid)).length;
-  const processSection = processing ? h("details", { class: "region-section process-section",
-    open: app.routeView === "compare" || !!pending || (app.processOpen[stage] ?? waiting > 0) }, h("summary", {}, stage === "regions" ? "Find regions" : "Process pages", " ", processSummary), recipeRow, changeArea, runArea) : null;
-  processSection?.addEventListener("toggle", () => { if (active()) app.processOpen[stage] = processSection.open; });
-  const readOnly = stage !== "pages" && !book.writable ? h("p", { class: "box read-only-line" }, "This book is read only here. ",
-    h("button", { class: "primary", onclick: () => app.continueBook(stage) }, "Make an editable copy"), " in this browser to process pages and move them on.") : null;
-  let comparison, comparisonContent;
-  let setBusy = (area, value) => { app.workflowBusy = app.header.inert = value; };
-  const loadOnOpen = (section, target, render) => {
-    let loaded = false;
-    const load = async () => {
-      if (!section.open || loaded || !active()) return;
-      loaded = true;
-      try { await render(); }
-      catch (error) { target.replaceChildren(h("p", { role: "status", class: "bad" }, error.message)); loaded = false; }
-    };
-    section.addEventListener("toggle", load);
-    load();
+  const refreshAll = () => { for (const pid of rows.keys()) refreshCard(pid); applyFilters(); };
+  const setBusy = value => {
+    busy = app.workflowBusy = value;
+    app.header.inert = grid.inert = controls.inert = pageOptions.inert = value;
+    range.disabled = threshold.disabled = value;
+    stop.disabled = !value;
+    refreshSummary();
   };
-  if (overview && processing) {
-    comparisonContent = h("div");
-    comparison = h("details", { class: "region-disclosure", open: app.routeView === "compare" || overview.compare }, h("summary", {}, "Compare finders"), comparisonContent);
-    comparison.addEventListener("toggle", () => { if (active()) overview.compare = comparison.open; });
-    changeArea.append(comparison);
-    setBusy = (area, value) => {
-      app.workflowBusy = app.header.inert = value;
-      for (const part of [recipeRow, modelFields, runArea, comparisonContent, content, typeContent, survey?.element, proposals?.element, creds?.element]) if (part && part !== area) part.inert = value;
-    };
-  }
-  const survey = boxed && book.manifest.pdf ? surveyBox(app, { credentialsBox: creds, selected: () => [...selected], onBusy: value => {
-    app.workflowBusy = app.header.inert = content.inert = typeContent.inert = processSection.inert = value;
-    if (proposals) proposals.element.inert = value;
-  }, onProposals: () => proposals?.refresh() }) : null;
-  const switcher = stage === "regions" ? h("nav", { class: "view-switch", "aria-label": "Regions view" },
-    ...[["pages", "By page"], ["types", "By type"]].map(([value, label]) => h("button", { class: value === view ? "on" : "", "aria-pressed": String(value === view),
-      onclick: () => { if (value !== view) app.setRegionView(value); } }, label))) : null;
-  const container = h("div", { class: "stage-overview" }, heading,
-    h("p", { class: "hint" }, stage === "pages" ? "Browse the scans and see each page’s progress; open one for a larger view. Open a page to review its scan boxes and text. A page that is not part of the book, such as a library’s cover or a blank page, is given no regions there (“No content on this page”)."
-      : stage === "regions" ? "Find the page regions and review the scan boxes."
-        : stage === "text" ? "Transcribe pages with scan boxes. Review the text beside the scans."
-          : "Complete units and links on transcribed pages. Open a page to review its structure."),
-    creds?.element, survey?.element, proposals?.element, processSection, readOnly, switcher, view === "types" ? typeContent : content);
-  el.replaceChildren(container);
-  const dispose = () => { observer?.disconnect(); for (const url of urls) URL.revokeObjectURL(url); preview.close(); };
-  app.onLeaveGrid = dispose;
+  process.onclick = async () => {
+    const ids = runnable();
+    if (busy || app.workflowBusy || !ids.length || !ready(ids)) return;
+    if (requiredModels(ids).some(profile => profile.provider!=="local") && !await app.confirmSpending()) return;
+    if (!active() || busy || app.workflowBusy) return;
+    stopped = false; setBusy(true); progress.start(ids.length); failures.replaceChildren();
+    try {
+      const outcome=await runBatch({ maker, ids, stage: "pages", stageOf, limit: Number(threshold.value), stopped: () => stopped,
+        onProgress: event => { status.textContent=`Page ${book.index[event.pid]+1} · ${money(event.spend)} new spend`; },
+        onPage: async (pid, value, error) => {
+          progress.advance(error ? "failed" : value?.cached ? "reused" : "completed");
+          const state = stateOf(pid);
+          if (error) {
+            state.runErrors.pages=error.message;
+            failures.append(h("p", { class: "bad" }, `Page ${book.index[pid]+1}: ${error.message} `,
+              h("button", { class: "link", onclick: () => app.openPage(pid) }, "Open page")));
+          } else delete state.runErrors.pages;
+          await app.refreshWorkflowPage(pid);
+          refreshCard(pid);
+        } });
+      progress.finish(outcome.paused ? "Stopped" : "Finished");
+      status.textContent=`${outcome.processed} of ${ids.length} pages visited · ${outcome.failed} failed · ${money(outcome.spend)} new spend${outcome.unknown ? " · Cost unavailable" : ""}`;
+    } catch (error) { progress.finish("Stopped"); status.textContent=error.message; }
+    finally { setBusy(false); refreshAll(); app.diskCopy?.checkpoint(); }
+  };
+  for (const [label, checked] of [["Mark checked",true],["Reopen review",false]]) reviewBar.append(h("button", { onclick: async () => {
+    if (busy || app.workflowBusy) return;
+    const ids=targets().filter(pid => stateOf(pid).doc && stateOf(pid).valid && stateOf(pid).checked!==checked);
+    setBusy(true);
+    try {
+      for (const pid of ids) {
+        await book.savePageReview(pid,checked);
+        await app.refreshWorkflowPage(pid);
+      }
+      status.textContent=`${ids.length} pages ${checked ? "marked checked" : "reopened"}.`;
+    } catch (error) { status.textContent=error.message; }
+    finally { setBusy(false); refreshAll(); if (ids.length) app.diskCopy?.checkpoint(); }
+  } },label));
+  const details=h("details", { class: "box page-problems", open: app.routeView === "problems" }, h("summary", {}, "Book checks"), pageOptions);
+  details.addEventListener("toggle", () => {
+    if (details.open) app.renderCheck(pageOptions).catch(error => { pageOptions.textContent=error.message; });
+  });
+  el.replaceChildren(h("div", { class: "stage-overview" }, h("h1", {}, "Pages"), book.writable ? panel :
+    h("button", { onclick: () => app.continueBook("pages") }, "Make an editable copy"), controls, summary, empty, grid, details, preview));
+  app.onLeaveGrid=() => { observer?.disconnect(); for (const url of urls) URL.revokeObjectURL(url); preview.close(); };
+  stateFilter.onchange = filter.onchange = applyFilters;
+  showSelection(); applyFilters();
+  if (details.open) app.renderCheck(pageOptions).catch(error => { pageOptions.textContent = error.message; });
   observer = lazyThumbnails(el, target => {
     queue = queue.catch(() => {}).then(async () => {
       if (!active()) return;
@@ -312,211 +205,13 @@ export async function renderPages(el, app) {
     });
   });
   for (const row of rows.values()) observer.observe(row.element);
-  stateFilter.onchange = filter.onchange = applyFilters;
-  grouping.onchange = applyFilters;
-  applyFilters();
-  if (view === "types") {
-    try {
-      const stopTypes = await renderTypeView(typeContent, app);
-      if (active()) { const previous = app.onLeaveGrid; app.onLeaveGrid = () => { previous?.(); stopTypes(); }; } else stopTypes();
-    } catch (error) { typeContent.replaceChildren(h("p", { class: "bad", role: "status" }, error.message)); }
-  }
-  if (!processing) return;
-
-  const maker = await app.getMaker(), options = await maker.options();
-  if (!active()) return;
-  checks = maker.credentials ||= new CredentialChecks(maker.keys);
-  creds?.bind(checks);
-  creds?.onChange(refreshSummary);
-  const profiles = stage === "regions" ? FINDERS
-    : stage === "text" ? READERS : STRUCTURERS;
-  const chosen = overview?.manual ? "manual" : stage === "regions" ? finderById(options.finder).id : stage === "text" ? options.reader : options.structurer;
-  profile = profiles.find(item => item.id === chosen);
-  const select = h("select", { "aria-label": overview ? "Chosen region finder" : `Chosen ${stage === "text" ? "transcription" : "completion"} model` },
-    ...profiles.map(item => h("option", { value: item.id, selected: item.id === chosen }, item.label)),
-    overview ? h("option", { value: "manual", selected: chosen === "manual" }, "Draw by hand") : null);
-  const keyPanel = h("div");
-  const runControls = h("div");
-  const manualHint = h("p", { class: "hint" }, "Open a page or choose Start by hand to draw its regions.");
-  const languages = h("select", { "aria-label": "Region finder OCR language pack" },
-    ...OCR_LANGUAGES.map(([id, name]) => h("option", { value: id, selected: id === options.ocr_languages }, name)));
-  const languageLabel = h("label", {}, "OCR language pack ", languages);
-  const refreshModel = async () => {
-    profile = profiles.find(item => item.id === select.value);
-    if (overview) {
-      overview.manual = !profile;
-      runControls.hidden = !profile;
-      manualHint.hidden = !!profile;
-      languageLabel.hidden = profile?.id !== "tesseract-regions";
-    }
-    creds?.setFinder(profile);
-    if (!profile) { cost = pageCost(null); keyPanel.replaceChildren(); refreshSummary(); return; }
-    if (!creds) keyPanel.replaceChildren(stageKeyControls(checks, profile, (id, value) => settings.set(`key:${id}`, value), refreshSummary));
-    const ledger = await book.readWork("work/reader-lab/ledger.json");
-    cost = pageCost(profile, (ledger?.calls || []).filter(call => call.stage === { regions: "regions", text: "reading", read: "structure" }[stage]));
+  if (!book.writable) return;
+  try {
+    maker = await app.getMaker();
+    const chosen = await maker.options();
+    if (!active()) return;
+    finder = finderById(chosen.finder);
+    reader = READERS.find(profile => profile.id===chosen.reader);
     refreshSummary();
-  };
-  const chooseFinder = async (id, language = languages.value) => {
-    if (app.workflowBusy) return false;
-    setBusy(null, true);
-    try {
-      if (id !== "manual") await book.saveReaderOptions({ ...await maker.options(), finder: id, ocr_languages: language });
-      select.value = id;
-      languages.value = language;
-      await refreshModel();
-      return true;
-    } finally { setBusy(null, false); }
-  };
-  languages.onchange = () => chooseFinder(select.value).catch(error => { message.textContent = error.message; });
-  select.onchange = async () => {
-    try {
-      if (overview) await chooseFinder(select.value);
-      else {
-        await book.saveReaderOptions({ ...await maker.options(), [stage === "text" ? "reader" : "structurer"]: select.value });
-        await refreshModel();
-      }
-    } catch (error) { select.value = profile?.id || "manual"; message.textContent = error.message; }
-  };
-  const threshold = h("input", { type: "number", min: 0.1, step: 0.5, value: 5, "aria-label": "Processing spend threshold" });
-  const progress = runProgress(`${TITLES[stage]} processing progress`);
-  const status = h("p", { role: "status" });
-  const stop = h("button", { disabled: true, onclick: () => { stopped = true; status.textContent = "Stopping after the active call…"; } }, "Stop after the active call");
-  const disabledFields = new Map();
-  const busyFields = value => {
-    busy = value;
-    setBusy(runArea, value);
-    if (value) for (const field of container.querySelectorAll("button, input, select")) {
-      disabledFields.set(field, field.disabled);
-      field.disabled = true;
-    } else {
-      for (const [field, disabled] of disabledFields) field.disabled = disabled;
-      disabledFields.clear();
-    }
-    stop.disabled = !value;
-    refreshSummary();
-  };
-  runButton = h("button", { class: "primary", onclick: async () => {
-    if (app.workflowBusy || !profile || !checks.status(profile)?.valid) return;
-    if (profile.provider !== "local" && !await app.confirmSpending()) return;
-    if (app.workflowBusy || !active()) return;
-    const ids = runnable(), failures = [];
-    stopped = false;
-    busyFields(true);
-    progress.start(ids.length);
-    try {
-      const out = await runBatch({ maker, ids, stage, limit: Number(threshold.value), force: fresh.checked, stopped: () => stopped,
-        onProgress: value => {
-          const reading = value.value;
-          const scope = reading?.partial && !reading.cached
-            ? ` · ${reading.region_ids.length} changed ${reading.region_ids.length === 1 ? "region" : "regions"} transcribed · ${reading.reused_regions.length} reused` : "";
-          status.textContent = `${ACTIONS[stage]} · ${value.pid}${scope} · New spend ${money(value.spend)}${value.unknown ? " · Cost unavailable" : ""}`;
-        },
-        onPage: async (pid, value, error) => {
-          progress.advance(error ? "failed" : value.cached ? "reused" : "completed");
-          await app.refreshWorkflowPage(pid);
-          const state = app.pageStates.get(pid);
-          if (error) { state.runErrors[stage] = error.message; failures.push({ pid, message: error.message }); } else delete state.runErrors[stage];
-          refreshCard(pid);
-          rows.get(pid).flags.classList.toggle("bad", !!error);
-        } });
-      progress.finish(out.paused ? "Stopped" : "Finished");
-      const summary = `${out.processed} ${out.processed === 1 ? "page" : "pages"} processed · ${out.failed} failed · ${money(out.spend)} new spend${out.unknown ? " · Stopped because a call’s cost is unavailable" : ""}`;
-      // Say what failed, page by page, next to the progress it belongs to: a failed page keeps what it had, and the
-      // reason is also its own flag on the card.
-      const outcome = () => [h("p", {}, summary), ...failures.map(failure => h("p", { class: "run-failure bad" },
-        `Page ${book.index[failure.pid] + 1}: ${failure.message} `, h("button", { class: "link", onclick: () => app.openPage(failure.pid) }, "Open the page"))),
-        failures.length ? h("p", { class: "meta" }, "A call that fails after the model answered is still charged. The page keeps its earlier state, so nothing was lost; run it again, choose another model, or correct the page by hand.") : null].filter(Boolean);
-      status.replaceChildren(...outcome());
-      message.textContent = summary;
-    } catch (error) { progress.finish("Stopped"); message.textContent = error.message; }
-    finally { busyFields(false); for (const pid of rows.keys()) refreshCard(pid); app.diskCopy?.checkpoint(); await refreshModel(); applyFilters(); await proposals?.refresh(); }
-  } }, ACTIONS[stage]);
-  const review = async reviewed => {
-    if (app.workflowBusy) return;
-    const targets = targetIds().filter(pid => canReview(pid, reviewed));
-    busyFields(true);
-    let count = 0, failed = 0;
-    try {
-      for (const [index, pid] of targets.entries()) {
-        barNote.textContent = `Saving review marks · ${index + 1} of ${targets.length}`;
-        try { await book.savePageReview(pid, reviewed); count++; }
-        catch (error) { failed++; message.textContent = error.message; }
-        await app.refreshWorkflowPage(pid);
-        refreshCard(pid);
-      }
-      barNote.textContent = `${count} ${count === 1 ? "page" : "pages"} ${reviewed ? "marked checked" : "reopened"}${failed ? ` · ${failed} need correction` : ""}.`;
-    } finally {
-      busyFields(false);
-      applyFilters();
-      if (count) app.diskCopy?.checkpoint();
-    }
-  };
-  // Units: pages whose grouping a model made (not accepted, not the person's) can go back to the grouping made from their regions.
-  let resetButton = null;
-  if (stage === "read" && book.writable) resetButton = h("button", { title: "Put the pages shown (or selected) back to the grouping made from their regions, as before completion", onclick: async () => {
-    if (app.workflowBusy) return;
-    const ids = targetIds().filter(pid => { const units = app.pageStates.get(pid).layers.units; return units && units.state === "model" && !units.accepted; });
-    if (!ids.length) { if (barNote) barNote.textContent = "No page shown has completed grouping that could go back."; return; }
-    if (!window.confirm(`Put ${ids.length} ${ids.length === 1 ? "page" : "pages"} back to the grouping made from their regions?\n\nThe model's units, line joins and links on them are removed (the saved model result stays in the book's records). Edited and reviewed pages are kept.`)) return;
-    busyFields(true);
-    let done = 0, failed = 0;
-    try {
-      for (const [index, pid] of ids.entries()) {
-        if (barNote) barNote.textContent = `Putting grouping back: page ${index + 1} of ${ids.length}…`;
-        try { await resetGrouping(book, pid, doc => app.check(doc)); done++; } catch (error) { failed++; message.textContent = error.message; }
-        await app.refreshWorkflowPage(pid); refreshCard(pid);
-      }
-      if (barNote) barNote.replaceChildren(h("b", { class: "ok" }, `✓ ${done} ${done === 1 ? "page" : "pages"} back to the provisional grouping.`), failed ? ` ${failed} could not be reset.` : "");
-    } finally { busyFields(false); applyFilters(); if (done) app.diskCopy?.checkpoint(); }
-  } }, "Back to provisional grouping");
-  moveButton = h("button", { onclick: () => review(true) }, "Mark checked");
-  backButton = h("button", { onclick: () => review(false) }, "Reopen review");
-  const already = { regions: "have regions", text: "are already transcribed", read: "are already completed" }[stage];
-  const processingFields = h("div", { class: "run-fields" }, h("label", {}, "Spend threshold $", threshold),
-    h("details", { class: "run-options", open: !!include.checked },
-      h("summary", { class: "meta" }, "Redo options"),
-      h("label", { title: "Normally pages that already have a result for this stage are skipped. For edited or reviewed pages, a new result waits as a suggestion." },
-        include, ` Also redo pages that ${already}`),
-      h("label", { title: "Normally a request already made for the same page and settings is reused for free. Tick to send a new request, which is charged again." },
-        fresh, " Ignore saved model results (charged again)")));
-  runControls.append(h("div", { class: "fields selection-row" }, ...selectionControls),
-    h("p", { class: "hint" }, view === "types" ? "Type a range such as 1-50, 62 and press Enter. With none, every page of the book is used. A range, or none selected, leaves out dimmed pages."
-      : "Type a range such as 1-50, 62 and press Enter, or tick pages in the grid below. A range, or none selected (every page shown), leaves out dimmed pages. Tick a dimmed page to include it."),
-    ...boxed ? [summary] : [], processingFields, estimateLabel, h("div", { class: "actions" }, runButton, stop), progress.element, status, ...boxed ? [message] : []);
-  if (overview) {
-    modelFields.append(h("label", {}, "Region finder ", select), languageLabel);
-    runArea.append(manualHint, runControls);
-    comparison.addEventListener("toggle", () => {
-      if (!comparison.open && !app.workflowBusy) refreshModel().catch(error => { message.textContent = error.message; });
-    });
-  } else {
-    modelFields.append(h("label", {}, "Model ", select),
-      h("button", { onclick: () => app.setMode(stage === "text" ? "readers" : "structures") }, stage === "text" ? "Compare transcription models" : "Compare completion models"));
-    runArea.append(keyPanel, runControls);
-  }
-  if (moveButton || backButton || resetButton) {
-    barHint = "Applies to the selected pages, or to the undimmed pages shown when none are selected.";
-    barNote = h("span", { class: "meta bar-note" });
-    content.append(h("div", { class: "next-step" }, ...[resetButton, backButton, moveButton].filter(Boolean), barNote));
-    barNote.textContent = barHint;
-  }
-  include.onchange = refreshSummary;
-  await refreshModel();
-  survey?.load();
-  if (overview) loadOnOpen(comparison, comparisonContent, () => renderFinders(comparisonContent, app, {
-    selected: () => [...selected], onCredentialsChanged: refreshSummary,
-    onChoose: async (id, language) => {
-      if (!await chooseFinder(id, language)) return;
-      comparison.open = false;
-      select.focus();
-    },
-    onBusy: async value => {
-      setBusy(comparisonContent, value);
-      if (!value) {
-        languages.value = (await maker.options()).ocr_languages;
-        await refreshModel();
-      }
-    },
-    onReviewed: () => { for (const pid of rows.keys()) refreshCard(pid); applyFilters(); },
-  }));
+  } catch (error) { status.textContent=error.message; }
 }

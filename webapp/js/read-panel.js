@@ -1,5 +1,5 @@
-import { ownerOf } from "./ops.js?v=20261122-one-editor";
-import { checkPage } from "./schema.js?v=20261122-one-editor";
+import { ownerOf } from "./ops.js?v=20261122-three-tabs";
+import { checkPage } from "./schema.js?v=20261122-three-tabs";
 
 export function readingIssues(docs, types, validate, warnings, canonical) {
   const issues = [];

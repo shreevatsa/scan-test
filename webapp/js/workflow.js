@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261122-one-editor";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-one-editor";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261122-one-editor";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261122-one-editor";
+import { typeRevision } from "./schema.js?v=20261122-three-tabs";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-three-tabs";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261122-three-tabs";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261122-three-tabs";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
@@ -64,30 +64,35 @@ export function eligible(stage, state) {
   return !!state?.doc && state.valid && (stage === "text" || state.readable && !state.missing);
 }
 
-// With a page and no view, open the same page editor from every stage and old bookmark.
-export function workflowRoute(value) {
-  const hash = new URLSearchParams(value.replace(/^#/, ""));
-  const aliases = { readers: ["text", "compare"], structures: ["read", "compare"],
-    check: ["read", "problems"], style: ["read", "style"], make: ["regions", "pages"], types: ["regions", "types"] };
-  const old = Object.keys(aliases).find(key => hash.has(key));
-  const pid = hash.get("p");
-  let view = old ? aliases[old][1] : hash.get("view") || "";
-  if (old === "types" && hash.get("view") === "proposal") view = "proposal";
-  if (hash.has("blocks")) return { stage: pid ? "page" : "read", mode: pid ? "page" : "read",
-    pid, view: "", region: hash.get("r"), unit: hash.get("u") };
-  if (pid && !view) return { stage: "page", mode: "page", pid, view: "", region: hash.get("r"), unit: hash.get("u") };
-  const stage = old ? aliases[old][0] : STAGES.find(key => hash.has(key)) || "pages";
-  const views = { "regions/types": "types", "regions/proposal": "types", "text/compare": "readers", "read/compare": "structures",
-    "read/problems": "check", "read/style": "style" };
-  const mode = views[`${stage}/${view}`] || (stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");
-  return { stage, mode, pid, view, region: hash.get("r"), unit: hash.get("u") };
+export function nextProcessingStage(state) {
+  if (!state?.doc) return "regions";
+  if (!state.valid || noContent(state.doc) || state.doc.source?.suggestions?.text) return null;
+  return !state.readable || state.missing ? "text" : null;
 }
 
-// The address of a stage view, or with a page (and a stage or "page"), of the page editor at that page.
+export function workflowRoute(value) {
+  const hash = new URLSearchParams(value.replace(/^#/, ""));
+  const pid = hash.get("p"), region = hash.get("r"), unit = hash.get("u");
+  const view = hash.get("view") || "";
+  const at = (stage, mode, section = "") => ({ stage, mode, pid, view: section, region, unit });
+  if (pid && (!view || hash.has("blocks"))) return at("page", "page");
+  if (hash.has("style") || (hash.has("read") || hash.has("export")) && view === "style") return at("export", "style", "style");
+  if (hash.has("readers") || hash.has("text") && view === "compare" || hash.has("settings") && view === "readers")
+    return at("settings", "readers", "compare");
+  if (hash.has("settings") || hash.has("regions") || hash.has("types") || hash.has("make") || hash.has("structures") || hash.has("read") && view === "compare")
+    return at("settings", "settings", hash.has("types") ? view || "types" : view);
+  if (hash.has("check") || hash.has("read") && ["problems", "pages"].includes(view)) return at("pages", "grid", view === "problems" || hash.has("check") ? "problems" : "");
+  if (hash.has("export")) return at("export", "export", view);
+  if (hash.has("pages") && view === "problems") return at("pages", "grid", "problems");
+  if (hash.has("read") || hash.has("blocks")) return at("read", "read");
+  return at("pages", "grid");
+}
+
 export function workflowAddress(mode, pid = null, selection = {}) {
-  const aliases = { readers: "text&view=compare", structures: "read&view=compare",
-    check: "read&view=problems", style: "read&view=style", plain: "read&view=book", make: "regions", book: "regions", types: "regions&view=types" };
-  const hash = pid && ["page", ...STAGES].includes(mode) ? "page" : aliases[mode] || mode;
+  const aliases = { readers: "settings&view=readers", structures: "settings", check: "pages&view=problems",
+    style: "export&view=style", plain: "read", make: "settings", book: "settings", types: "settings&view=types",
+    regions: "settings", text: "pages" };
+  const hash = pid && ["page", "settings", ...STAGES].includes(mode) ? "page" : aliases[mode] || mode;
   const extra = selection.region ? `&r=${encodeURIComponent(selection.region)}` : selection.unit ? `&u=${encodeURIComponent(selection.unit)}` : "";
   return `#${hash}${pid ? `&p=${encodeURIComponent(pid)}` : ""}${extra}`;
 }

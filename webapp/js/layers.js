@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261122-one-editor";
-import { typeRevision } from "./schema.js?v=20261122-one-editor";
+import { canonical } from "./ops.js?v=20261122-three-tabs";
+import { typeRevision } from "./schema.js?v=20261122-three-tabs";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));
