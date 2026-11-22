@@ -31,6 +31,22 @@ test("Regions flags skipped ink and edited boxes that found no ink", () => {
   page.page.regions[0].source.no_ink = true;
   assert.deepEqual(codes(page), ["no-ink", "no-ink"]);
 });
+test("an outline preview summary stays out of the page flags, and transcribing a missed box clears its own flag", () => {
+  const box = region("r16");
+  box.source.no_ink = true;
+  const page = doc([box]);
+  const summary = "The outline step found ink in 20 of 21 proposed regions. Review the proposed boxes before applying this layout.";
+  page.source.warnings = [summary, "Furniture region 0 is marked keep=true."];
+  assert.deepEqual(codes(page), ["no-ink", "region-warning"]);
+  box.lines = [{ text: "  " }];
+  assert.deepEqual(codes(page), ["no-ink", "region-warning"], "a blank line still needs review");
+  box.lines[0].text = "Printed";
+  assert.deepEqual(codes(page), ["region-warning"]);
+  box.lines[0].text = "";
+  assert.deepEqual(codes(page), ["no-ink", "region-warning"], "removing the text reopens the issue");
+  assert.equal(box.source.no_ink, true);
+  assert.equal(page.source.warnings[0], summary);
+});
 test("Regions flags completely uncovered printed lines and keeps their bounds", () => {
   const page = doc(); page.source.uncovered_lines = [{ line_id: 5, box: [4, 5, 70, 15] }];
   assert.deepEqual(codes(page), ["uncovered"]);
@@ -92,12 +108,12 @@ test("a layout is the kinds of content on a page, not their counts, order or fur
   assert.equal(RARE_LAYOUT, 3);
   assert.deepEqual(codes(doc(), { frequency: 1 }), []);
 });
-test("Text flags missing text, uncertainty, line mismatches and an earlier type revision", () => {
+test("Text flags content issues regardless of the type list revision used for transcription", () => {
   const page = doc(); page.source.layers = { text: { state: "model", types_revision: 1 } };
   page.source.problems = ["Line count mismatch"];
   page.page.regions[0].lines = [{ polygons: [[[0, 0], [1, 0], [1, 1]]] }];
   page.page.regions[0].source.transcription = { uncertain: true };
-  assert.deepEqual(textFlags(page, { ...types, source: { revision: 2 } }).map(flag => flag.code), ["missing-text", "uncertain-text", "line-count", "earlier-text"]);
+  assert.deepEqual(textFlags(page, { ...types, source: { revision: 2 } }).map(flag => flag.code), ["missing-text", "uncertain-text", "line-count"]);
   assert.deepEqual(textFlags(doc(), types), []);
 });
 test("Read flags checks, assembly, uncertain completion and waiting suggestions", () => {

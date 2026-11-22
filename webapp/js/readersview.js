@@ -1,19 +1,19 @@
-import { reviewPage } from "./review-view.js?v=20261121-page-review";
-import { settledChecks } from "./review.js?v=20261121-page-review";
+import { reviewPage } from "./review-view.js?v=20261121-live-flags";
+import { settledChecks } from "./review.js?v=20261121-live-flags";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261121-page-review";
-import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261121-page-review";
-import { finderById } from "./pipeline/finders.js?v=20261121-page-review";
-import { CredentialChecks } from "./key-check.js?v=20261121-page-review";
+import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261121-live-flags";
+import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261121-live-flags";
+import { finderById } from "./pipeline/finders.js?v=20261121-live-flags";
+import { CredentialChecks } from "./key-check.js?v=20261121-live-flags";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
-import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261121-page-review";
-import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261121-page-review";
-import { settings } from "./store.js?v=20261121-page-review";
+import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261121-live-flags";
+import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261121-live-flags";
+import { settings } from "./store.js?v=20261121-live-flags";
 import { runProgress } from "./run-progress.js";
-import { readingFits } from "./pipeline/partial-reading.js?v=20261121-page-review";
+import { readingFits } from "./pipeline/partial-reading.js?v=20261121-live-flags";
 import { sha256hex } from "./chayapdf.js";
-import { layerState } from "./layers.js?v=20261121-page-review";
+import { layerState } from "./layers.js?v=20261121-live-flags";
 
 export async function renderReaders(el, app) {
   const token = Symbol();

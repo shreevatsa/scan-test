@@ -1,4 +1,4 @@
-import { suggestionButton } from "./review-view.js?v=20261121-page-review";
+import { suggestionButton } from "./review-view.js?v=20261121-live-flags";
 // The text side of the page editor: the page's units in reading order, each region's line pieces as editable
 // lines (one region is one editing host, so a selection can run across its lines), and an inspector for the
 // selected unit, region or note marker. Text typed into a line is read back from the DOM into text and spans; every
@@ -6,10 +6,10 @@ import { suggestionButton } from "./review-view.js?v=20261121-page-review";
 
 import { cp, cpLength, covered, removeKind, normalizeSpans } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261121-page-review";
-import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261121-page-review";
-import { textFlags } from "./flags.js?v=20261121-page-review";
-import { regionTools, pageFlags, omittedInspector } from "./regionsview.js?v=20261121-page-review";
+import * as ops from "./ops.js?v=20261121-live-flags";
+import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261121-live-flags";
+import { textFlags } from "./flags.js?v=20261121-live-flags";
+import { regionTools, pageFlags, omittedInspector } from "./regionsview.js?v=20261121-live-flags";
 
 const END_CYCLE = { space: "hyphen", hyphen: "join", join: "line", line: "space" };
 const END_NAMES = { space: "a space", hyphen: "a hyphen to drop (the word goes on)", join: "nothing (the word goes on)", line: "a line break" };
@@ -116,7 +116,9 @@ export class TextPanel {
     this.drawn = new Set();
     const problems = doc.source?.problems || [];
     if (problems.length) el.append(h("div", { class: "problems model" }, h("b", {}, "The model's notes on this page"), ...problems.map(p => h("div", {}, "• " + p))));
-    el.append(...pageFlags(this.app, { open: this.flagsOpen, onToggle: open => { this.flagsOpen = open; } }));
+    this.findings = h("div", { class: "page-findings" });
+    el.append(this.findings);
+    this.refreshFindings();
     for (const [flow, tops] of Object.entries(doc.flows)) {
       const sec = h("section", { class: "flow" }, h("div", { class: "flow-name" }, `flow ${flow}`));
       tops.forEach((uid, i) => sec.append(this.unitBlock(uid, { flow }, i)));
@@ -141,6 +143,10 @@ export class TextPanel {
       ...omitted.map(o => h("div", { class: "omit" }, `${o.region}: ${(o.text || []).join(" / ")}`))));
     el.scrollTop = scroll;
     this.markSelection();
+  }
+
+  refreshFindings() {
+    this.findings.replaceChildren(...pageFlags(this.app, { open: this.flagsOpen, onToggle: open => { this.flagsOpen = open; } }));
   }
 
   unitBlock(uid, container, index) {

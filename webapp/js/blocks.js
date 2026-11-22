@@ -1,13 +1,13 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261121-page-review";
-import { orderedRegions } from "./flags.js?v=20261121-page-review";
-import { pageLabel } from "./pipeline/steps.js?v=20261121-page-review";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261121-page-review";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261121-page-review";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261121-page-review";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261121-page-review";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261121-live-flags";
+import { orderedRegions } from "./flags.js?v=20261121-live-flags";
+import { pageLabel } from "./pipeline/steps.js?v=20261121-live-flags";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261121-live-flags";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261121-live-flags";
+import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261121-live-flags";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261121-live-flags";
 import { cp, shiftSpans } from "./inline.js";
-import { readingDocuments } from "./workflow.js?v=20261121-page-review";
+import { readingDocuments } from "./workflow.js?v=20261121-live-flags";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);

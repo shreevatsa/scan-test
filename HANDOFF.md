@@ -54,7 +54,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
   - 9 verse-number breaks and 3 episode-number breaks are listed, not changed;
   - 5 contents lines link to a page instead of an episode (the "…हननम्" entries);
   - 9 front-matter pages keep the provisional grouping.
-- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (376 pass in the local checkout, 374 with public fixtures), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
+- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (377 pass in the local checkout, 375 with public fixtures), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
 - **Running:**
   - A loopback server, `python3 -m http.server 8765 --bind 127.0.0.1`, runs from the repository root.
   - `tailscale serve --https=8765 http://127.0.0.1:8765` makes it reachable from the user's other devices; the address is in PRIVATE.md.

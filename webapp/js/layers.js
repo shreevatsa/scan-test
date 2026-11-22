@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261121-page-review";
-import { typeRevision } from "./schema.js?v=20261121-page-review";
+import { canonical } from "./ops.js?v=20261121-live-flags";
+import { typeRevision } from "./schema.js?v=20261121-live-flags";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));

@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261121-page-review";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-page-review";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261121-page-review";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-page-review";
+import { typeRevision } from "./schema.js?v=20261121-live-flags";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-live-flags";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261121-live-flags";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-live-flags";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
@@ -9,7 +9,7 @@ export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
 
 export function pageStages(doc, types, errors = [], warnings = []) {
   const layers = Object.fromEntries(["regions", "text", "units"].map(layer => [layer, layerState(doc, layer)]));
-  const flags = [...errors, ...(doc?.source?.problems || []), ...(doc?.source?.warnings || [])];
+  const flags = [...errors, ...(doc?.source?.problems || []), ...regionWarnings(doc)];
   if (doc?.source?.omitted_regions?.length) flags.push(`${doc.source.omitted_regions.length} unassigned regions`);
   const missing = (doc?.page.regions || []).filter(region => types.types[region.type]?.region !== "figure")
     .flatMap(region => region.lines || []).filter(line => line.polygons?.length && typeof line.text !== "string").length;

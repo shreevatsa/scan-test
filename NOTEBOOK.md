@@ -5257,3 +5257,7 @@ Used a three-page fixture made from the public Kale PDF, with an unreviewed tran
 The same mixed-readiness fixture showed Unchecked before review. Marking the page Checked in the grid appeared in the blocks editor and survived reload. Reopening it left the text visible. A regression test checked that review leaves a saved correction in edits/, carries review marks through a save from an already-open editor, and keeps edited text protected when review is reopened. The main suite passed 374 tests, page-joins passed 17 separately, and the Python schema suite passed 19. No model calls.
 
 Re-ran the committed code from the repository checkout. The main suite passed 376, the separate page-join suite passed 17, and the Python schema suite passed 19.
+
+### Review flags after a box is transcribed
+
+Used a public Kale fixture with an older transcription revision, a box where the outline step found no ink, and the summary from a proposed layout. In fresh headless Chrome, both editors showed just the actionable box finding. Adding text cleared it immediately with the editing caret intact. Deleting the text reopened it, and an edited page still cleared the flag after reload. The public-fixture suite passed 375 tests, page joins passed 17 separately, and the Python schema suite passed 19. No model calls.

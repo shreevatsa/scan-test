@@ -1,11 +1,11 @@
-import { typeRevision } from "./schema.js?v=20261121-page-review";
+import { typeRevision } from "./schema.js?v=20261121-live-flags";
 import { h } from "./render.js";
-import * as ops from "./ops.js?v=20261121-page-review";
-import { regionFlags, textFlags, ignoredLines, linePosition } from "./flags.js?v=20261121-page-review";
-import { REGION_CLASSES } from "./book-types.js?v=20261121-page-review";
-import { classSelect } from "./class-labels.js?v=20261121-page-review";
-import { editTypeDialog } from "./type-operations.js?v=20261121-page-review";
-import { normalizeTypeName } from "./type-additions.js?v=20261121-page-review";
+import * as ops from "./ops.js?v=20261121-live-flags";
+import { regionFlags, textFlags, ignoredLines, linePosition } from "./flags.js?v=20261121-live-flags";
+import { REGION_CLASSES } from "./book-types.js?v=20261121-live-flags";
+import { classSelect } from "./class-labels.js?v=20261121-live-flags";
+import { editTypeDialog } from "./type-operations.js?v=20261121-live-flags";
+import { normalizeTypeName } from "./type-additions.js?v=20261121-live-flags";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {

@@ -1,13 +1,13 @@
-import { TextPanel } from "./editor.js?v=20261121-page-review";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, projectBlocks } from "./blocks.js?v=20261121-page-review";
-import { linePosition, regionFlags, textFlags } from "./flags.js?v=20261121-page-review";
+import { TextPanel } from "./editor.js?v=20261121-live-flags";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, projectBlocks } from "./blocks.js?v=20261121-live-flags";
+import { linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261121-live-flags";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261121-page-review";
+import * as ops from "./ops.js?v=20261121-live-flags";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261121-page-review";
-import { prepare } from "./reader.js?v=20261121-page-review";
-import { pageReviewState } from "./layers.js?v=20261121-page-review";
-import { REVIEW_LABELS, workflowAddress } from "./workflow.js?v=20261121-page-review";
+import { noteProblems } from "./note-links.js?v=20261121-live-flags";
+import { prepare } from "./reader.js?v=20261121-live-flags";
+import { pageReviewState } from "./layers.js?v=20261121-live-flags";
+import { REVIEW_LABELS, workflowAddress } from "./workflow.js?v=20261121-live-flags";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -70,8 +70,8 @@ export function blockChecks(app, doc, projection) {
     }
   }
   for (const region of pageBlocks(doc, tl)) {
-    if (tl.types[region.type]?.region === "figure" || region.lines?.some(line => line.text?.trim())) continue;
-    if (!see.has(`missing-text:${region.id}`)) add(`This ${blockName(region.type).toLowerCase()} needs text.`, "Show block", () => openBlock(region.id));
+    if (tl.types[region.type]?.region === "figure" || regionHasText(region)) continue;
+    if (!see.has(`missing-text:${region.id}`) && !see.has(`no-ink:${region.id}`)) add(`This ${blockName(region.type).toLowerCase()} needs text.`, "Show block", () => openBlock(region.id));
   }
   const derived = projection?.docs.find(item => item?.page.id === doc.page.id);
   if (derived) {
@@ -100,26 +100,15 @@ export class BlocksPanel extends TextPanel {
     const oldScroll = el.scrollTop;
     this.projection = app.blocksProjection;
     this.context = blockContext(this.projection.docs.find(value => value?.page.id === doc.page.id));
-    const findings = blockChecks(app, doc, this.projection), review = pageReviewState(doc);
-    const next = () => {
-      const pages = app.book.pages;
-      const from = app.book.index[app.pid];
-      const remaining = [...pages.slice(from + 1), ...pages.slice(0, from)];
-      const page = remaining.find(page => {
-        const state = app.pageStates.get(page.id);
-        return !app.book.isSkipped(page.id) && state?.doc && (!state.checked || state.suggestion || blockChecks(app, state.doc, this.projection).length);
-      });
-      if (page) app.openPage(page.id);
-      else app.toast("Every page has been checked.");
-    };
+    const review = pageReviewState(doc);
+    this.findings = h("div", { class: "block-findings" });
     this.reviewItem = h("div", { class: "block-review-item" });
     el.replaceChildren(h("section", { class: "block-check" },
       h("h2", {}, "Check this page"),
       h("div", { class: "block-review-status" }, h("span", {}, REVIEW_LABELS[review.status]),
         app.book.writable ? h("button", { onclick: () => app.setPageReviewed(!review.checked) }, review.checked ? "Reopen review" : "Mark checked") : null),
-      findings.length ? h("ul", {}, ...findings.map(({ text, label, action }) => h("li", {}, h("span", {}, text),
-        h("button", { onclick: action }, label)))) : h("div", { class: "block-check-clear" },
-        h("span", {}, "Nothing to check here."), h("button", { onclick: next }, "Next page to check")), this.reviewItem));
+      this.findings, this.reviewItem));
+    this.refreshFindings();
     const blocks = pageBlocks(doc, tl);
     let prior = [];
     for (const region of blocks) {
@@ -134,6 +123,27 @@ export class BlocksPanel extends TextPanel {
     if (!blocks.length) el.append(h("p", { class: "hint" }, "There are no blocks on this page."));
     el.scrollTop = oldScroll;
     this.markSelection();
+  }
+
+  refreshFindings() {
+    const { app } = this;
+    const findings = blockChecks(app, app.doc, this.projection);
+    this.findings.replaceChildren(findings.length
+      ? h("ul", {}, ...findings.map(({ text, label, action }) => h("li", {}, h("span", {}, text), h("button", { onclick: action }, label))))
+      : h("div", { class: "block-check-clear" }, h("span", {}, "Nothing to check here."),
+        h("button", { onclick: () => this.nextPageToCheck() }, "Next page to check")));
+  }
+
+  nextPageToCheck() {
+    const { app } = this, { book, pageStates } = app;
+    const from = book.index[app.pid];
+    const remaining = [...book.pages.slice(from + 1), ...book.pages.slice(0, from)];
+    const page = remaining.find(page => {
+      const state = pageStates.get(page.id);
+      return !book.isSkipped(page.id) && state?.doc && (!state.checked || state.suggestion || blockChecks(app, state.doc, this.projection).length);
+    });
+    if (page) app.openPage(page.id);
+    else app.toast("Every page has been checked.");
   }
 
   block(region, depth) {

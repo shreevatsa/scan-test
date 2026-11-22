@@ -1,6 +1,5 @@
-import { typeRevision } from "./schema.js?v=20261121-page-review";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261121-page-review";
-import { layerState } from "./layers.js?v=20261121-page-review";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261121-live-flags";
+import { layerState } from "./layers.js?v=20261121-live-flags";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -127,6 +126,16 @@ function boxShare(a, b) {
   return w * h / Math.min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]));
 }
 
+// The saved proposal's outline summary belongs in its preview. The applied page has individual flags
+// for boxes that still need a decision.
+const outlinePreviewNotice = /^The outline step found ink in \d+ of \d+ proposed regions\. Review the proposed boxes before applying this layout\.$/;
+
+export function regionWarnings(doc) {
+  return (doc?.source?.warnings || []).map(String).filter(warning => !outlinePreviewNotice.test(warning));
+}
+
+export const regionHasText = region => (region.lines || []).some(line => line.text?.trim());
+
 export function regionFlags(doc, types, { errors = [], previous = null, next = null, cache = null } = {}) {
   if (!doc) return [];
   const flags = [], add = (code, message, region = null, box = null, extra = {}) => flags.push({ code, message, region, box, ...extra });
@@ -135,10 +144,10 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
     if (region.source?.uncertain) add("uncertain", `${region.id} has an uncertain type or boundary`, region.id);
     if (!Object.hasOwn(types.types, region.type)) add("unknown-type", `${region.id} needs a known type`, region.id, region.box);
     if (types.types[region.type]?.role !== "furniture" && !Number.isFinite(region.order)) add("missing-order", `${region.id} has no reading order`, region.id);
-    if (region.source?.no_ink) add("no-ink", `${region.id} has no detected ink`, region.id, region.box);
+    if (region.source?.no_ink && !regionHasText(region)) add("no-ink", `${region.id} has no detected ink`, region.id, region.box);
   }
   for (const omitted of doc.source?.omitted_regions || []) add("omitted", `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`, omitted.region, omitted.box);
-  for (const warning of doc.source?.warnings || []) add("region-warning", String(warning));
+  for (const warning of regionWarnings(doc)) add("region-warning", warning);
   for (const skipped of doc.source?.regions_skipped || []) {
     // A region the person has since drawn over the same place replaces it: nothing is left to report.
     if (skipped.model_box && regions.some(region => region.box && boxShare(region.box, skipped.model_box) >= 0.5)) continue;
@@ -231,7 +240,6 @@ export function textFlags(doc, types) {
     if (region.source?.transcription?.uncertain) flags.push({ code: "uncertain-text", message: `${region.id} has an uncertain transcription`, region: region.id });
   }
   for (const message of doc.source?.problems || []) if (/line.*(count|mismatch)|missing.*line/i.test(message)) flags.push({ code: "line-count", message });
-  if (typeRevision(doc.source?.layers?.text?.types_revision) < typeRevision(types.source?.revision)) flags.push({ code: "earlier-text", message: "Transcribed under an earlier type list" });
   return flags;
 }
 

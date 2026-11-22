@@ -6,12 +6,12 @@
 // When the choice is not ready here (no checked key, "Draw by hand" chosen), the stage's grid opens with this page
 // selected and its run box ready.
 import { h } from "./render.js";
-import { runBatch } from "./pipeline/batch.js?v=20261121-page-review";
-import { finderById } from "./pipeline/finders.js?v=20261121-page-review";
-import { READERS } from "./pipeline/readers.js?v=20261121-page-review";
-import { eligible, noContent } from "./workflow.js?v=20261121-page-review";
-import { pageReviewState } from "./layers.js?v=20261121-page-review";
-import { money } from "./reader-controls.js?v=20261121-page-review";
+import { runBatch } from "./pipeline/batch.js?v=20261121-live-flags";
+import { finderById } from "./pipeline/finders.js?v=20261121-live-flags";
+import { READERS } from "./pipeline/readers.js?v=20261121-live-flags";
+import { eligible, noContent } from "./workflow.js?v=20261121-live-flags";
+import { pageReviewState } from "./layers.js?v=20261121-live-flags";
+import { money } from "./reader-controls.js?v=20261121-live-flags";
 
 const NAMES = { regions: "Find regions on this page again", text: "Read this page again" };
 

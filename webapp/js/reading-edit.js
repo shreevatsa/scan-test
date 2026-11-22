@@ -1,9 +1,9 @@
-import * as ops from "./ops.js?v=20261121-page-review";
-import { assertJoinMetadata, joinPageUnits, joinPartnerId } from "./editing.js?v=20261121-page-review";
-import { layerState } from "./layers.js?v=20261121-page-review";
-import { checkPage } from "./schema.js?v=20261121-page-review";
+import * as ops from "./ops.js?v=20261121-live-flags";
+import { assertJoinMetadata, joinPageUnits, joinPartnerId } from "./editing.js?v=20261121-live-flags";
+import { layerState } from "./layers.js?v=20261121-live-flags";
+import { checkPage } from "./schema.js?v=20261121-live-flags";
 
-export { unitSnapshot } from "./editing.js?v=20261121-page-review";
+export { unitSnapshot } from "./editing.js?v=20261121-live-flags";
 
 export async function joinFollowingUnit(app, pid, uid, expected = new Map()) {
   const book = app.book, current = await book.current(pid, { refresh: true }), place = ops.placeOf(current, uid);
