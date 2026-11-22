@@ -1,12 +1,12 @@
 import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261121-page-card";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261121-page-card";
-import { settings } from "./store.js?v=20261121-page-card";
-import { money } from "./reader-controls.js?v=20261121-page-card";
-import { reviewTypeChange } from "./type-operations.js?v=20261121-page-card";
-import { REGION_CLASSES } from "./book-types.js?v=20261121-page-card";
-import { classPicker, defaultClass } from "./class-labels.js?v=20261121-page-card";
-import { reviewPage } from "./review-view.js?v=20261121-page-card";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261122-reading-order";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261122-reading-order";
+import { settings } from "./store.js?v=20261122-reading-order";
+import { money } from "./reader-controls.js?v=20261122-reading-order";
+import { reviewTypeChange } from "./type-operations.js?v=20261122-reading-order";
+import { REGION_CLASSES } from "./book-types.js?v=20261122-reading-order";
+import { classPicker, defaultClass } from "./class-labels.js?v=20261122-reading-order";
+import { reviewPage } from "./review-view.js?v=20261122-reading-order";
 import { runProgress } from "./run-progress.js";
 
 export async function reviewPageWithAI(app) {

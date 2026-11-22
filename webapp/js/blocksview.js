@@ -1,13 +1,13 @@
-import { TextPanel } from "./editor.js?v=20261121-page-card";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, projectBlocks } from "./blocks.js?v=20261121-page-card";
-import { linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261121-page-card";
+import { TextPanel } from "./editor.js?v=20261122-reading-order";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, projectBlocks } from "./blocks.js?v=20261122-reading-order";
+import { linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261122-reading-order";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261121-page-card";
+import * as ops from "./ops.js?v=20261122-reading-order";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261121-page-card";
-import { prepare } from "./reader.js?v=20261121-page-card";
-import { pageReviewState } from "./layers.js?v=20261121-page-card";
-import { REVIEW_LABELS, workflowAddress } from "./workflow.js?v=20261121-page-card";
+import { noteProblems } from "./note-links.js?v=20261122-reading-order";
+import { prepare } from "./reader.js?v=20261122-reading-order";
+import { pageReviewState } from "./layers.js?v=20261122-reading-order";
+import { REVIEW_LABELS, workflowAddress } from "./workflow.js?v=20261122-reading-order";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

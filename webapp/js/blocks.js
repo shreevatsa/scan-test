@@ -1,13 +1,13 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261121-page-card";
-import { orderedRegions } from "./flags.js?v=20261121-page-card";
-import { pageLabel } from "./pipeline/steps.js?v=20261121-page-card";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261121-page-card";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261121-page-card";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261121-page-card";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261121-page-card";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261122-reading-order";
+import { orderedRegions } from "./flags.js?v=20261122-reading-order";
+import { pageLabel } from "./pipeline/steps.js?v=20261122-reading-order";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261122-reading-order";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261122-reading-order";
+import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261122-reading-order";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261122-reading-order";
 import { cp, shiftSpans } from "./inline.js";
-import { readingDocuments } from "./workflow.js?v=20261121-page-card";
+import { readingDocuments } from "./workflow.js?v=20261122-reading-order";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);

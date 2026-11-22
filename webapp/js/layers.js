@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261121-page-card";
-import { typeRevision } from "./schema.js?v=20261121-page-card";
+import { canonical } from "./ops.js?v=20261122-reading-order";
+import { typeRevision } from "./schema.js?v=20261122-reading-order";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));

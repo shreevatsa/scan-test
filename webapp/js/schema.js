@@ -229,11 +229,13 @@ export function checkDocument(doc, tl) {
   if (doc.format === "page") {
     const p = pages[0];
     for (const flow of Object.keys(doc.flows)) {
-      const orders = [...depthFirst(units, doc.flows)].filter(([f, x]) => f === flow && x[0] === "region")
-        .map(([, x]) => regions[x[1]].order).filter(o => o !== undefined && o !== null);
-      const sorted = [...orders].sort((a, b) => a - b);
-      if (!equal(orders, sorted))
-        warnings.push(`page ${p.id}, flow ${flow}: units read regions in the order [${orders.join(", ")}], not the region step's order`);
+      const readingOrder = [...depthFirst(units, doc.flows)].filter(([f, x]) => f === flow && x[0] === "region")
+        .map(([, x]) => regions[x[1]]).filter(region => region.order != null);
+      const reversed = readingOrder.findIndex((region, i) => i > 0 && readingOrder[i - 1].order > region.order);
+      if (reversed !== -1) {
+        const first = readingOrder[reversed - 1].id, second = readingOrder[reversed].id;
+        warnings.push(`page ${p.id}, flow ${flow}: The reader shows ${first} before ${second}. The saved box order puts ${second} before ${first}.`);
+      }
     }
   }
   return [errors, warnings];

@@ -1,10 +1,10 @@
-import { suggestionButton } from "./review-view.js?v=20261121-page-card";
+import { suggestionButton } from "./review-view.js?v=20261122-reading-order";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261121-page-card";
-import { applyUnitAction, applyUnitChanges, assertJoinMetadata, joinPartnerId, nextPageUnit, unitPath, unitRegionIds, unitSnapshot } from "./editing.js?v=20261121-page-card";
-import { joinFollowingUnit } from "./reading-edit.js?v=20261121-page-card";
-import { renderInspector } from "./editor.js?v=20261121-page-card";
-import { checkPage } from "./schema.js?v=20261121-page-card";
+import * as ops from "./ops.js?v=20261122-reading-order";
+import { applyUnitAction, applyUnitChanges, assertJoinMetadata, joinPartnerId, nextPageUnit, unitPath, unitRegionIds, unitSnapshot } from "./editing.js?v=20261122-reading-order";
+import { joinFollowingUnit } from "./reading-edit.js?v=20261122-reading-order";
+import { renderInspector } from "./editor.js?v=20261122-reading-order";
+import { checkPage } from "./schema.js?v=20261122-reading-order";
 
 const nameOf = unit => [unit.type, unit.number, unit.label].filter(Boolean).join(" · ");
 

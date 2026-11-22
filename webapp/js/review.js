@@ -1,13 +1,13 @@
-import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261121-page-card";
-import { layerRecords } from "./layers.js?v=20261121-page-card";
-import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261121-page-card";
-import { checkDocument } from "./schema.js?v=20261121-page-card";
+import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261122-reading-order";
+import { layerRecords } from "./layers.js?v=20261122-reading-order";
+import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261122-reading-order";
+import { checkDocument } from "./schema.js?v=20261122-reading-order";
 import { markedText } from "./pipeline/split.js";
 import { structureDecisions } from "./pipeline/structure-compare.js";
-import { unitPath, unitRegionIds } from "./editing.js?v=20261121-page-card";
-import { regionLayout } from "./pipeline/finders.js?v=20261121-page-card";
-import { preserveMarkerIds } from "./marker-ids.js?v=20261121-page-card";
-import { partialTextScope } from "./pipeline/partial-reading.js?v=20261121-page-card";
+import { unitPath, unitRegionIds } from "./editing.js?v=20261122-reading-order";
+import { regionLayout } from "./pipeline/finders.js?v=20261122-reading-order";
+import { preserveMarkerIds } from "./marker-ids.js?v=20261122-reading-order";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261122-reading-order";
 
 export const reviewSnapshot = (doc, types) => canonical({ doc, types });
 const freeLayer = (doc, layer) => {

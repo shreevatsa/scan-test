@@ -2,7 +2,7 @@
 // API and standard paid-tier pricing checked 2026-11-08.
 // https://docs.cloud.google.com/vision/docs/fulltext-annotations
 // https://cloud.google.com/vision/pricing
-import { wordsToReading } from "./ocr.js?v=20261121-page-card";
+import { wordsToReading } from "./ocr.js?v=20261122-reading-order";
 
 export function visionRequest(profile, imageDataUrl) {
   const content = imageDataUrl.split(",")[1];

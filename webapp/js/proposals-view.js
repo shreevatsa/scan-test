@@ -5,11 +5,11 @@
 // the others are listed with links, to be given the type by hand.
 import { h } from "./render.js";
 import { readPendingProposals, pendingItems, decideProposal, additionChoice, additionOperations, proposalAssignments,
-  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261121-page-card";
-import { reviewTypeChange } from "./type-operations.js?v=20261121-page-card";
-import { REGION_CLASSES } from "./book-types.js?v=20261121-page-card";
-import { classPicker, classShort, defaultClass } from "./class-labels.js?v=20261121-page-card";
-import { isProtected, LAYERS } from "./layers.js?v=20261121-page-card";
+  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261122-reading-order";
+import { reviewTypeChange } from "./type-operations.js?v=20261122-reading-order";
+import { REGION_CLASSES } from "./book-types.js?v=20261122-reading-order";
+import { classPicker, classShort, defaultClass } from "./class-labels.js?v=20261122-reading-order";
+import { isProtected, LAYERS } from "./layers.js?v=20261122-reading-order";
 
 const where = type => type.furniture ? "Page furniture"
   : [type.parents.length ? `Inside ${type.parents.join(", ")}` : "", type.flow ? `Top level of ${type.flow}` : ""].filter(Boolean).join(" · ");

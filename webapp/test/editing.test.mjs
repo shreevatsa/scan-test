@@ -124,6 +124,19 @@ test("reading problems identify page-unit targets for inline review", () => {
   assert.equal(issues.length, 1); assert.ok(issues[0].targets.some(target => target.page === "p2" && target.unit === "u1"));
 });
 
+test("reading-order warnings name the region IDs shown in the editor", () => {
+  const doc = page();
+  Object.assign(doc.page.regions[0], { id: "r16", order: 14 });
+  Object.assign(doc.page.regions[1], { id: "r15", order: 13 });
+  doc.units[1].children[0].region = "p1#r16";
+  doc.units[2].children[0].region = "p1#r15";
+  assert.deepEqual(checkPage(validate, doc, types), [[], [
+    "page p1, flow main: The reader shows r16 before r15. The saved box order puts r15 before r16.",
+  ]]);
+  ops.orderFromUnits(doc, types);
+  assert.deepEqual(checkPage(validate, doc, types), [[], []]);
+});
+
 function stored() {
   const manifest = { format: "book-folder", version: 1, book_id: types.book_id, title: types.title, types: "types.json",
     pages: [1, 2].map(n => ({ id: `p${n}`, pdf_page: n, document: `pages/p${n}.json` })) };

@@ -1,19 +1,19 @@
-import { reviewPage } from "./review-view.js?v=20261121-page-card";
-import { settledChecks } from "./review.js?v=20261121-page-card";
+import { reviewPage } from "./review-view.js?v=20261122-reading-order";
+import { settledChecks } from "./review.js?v=20261122-reading-order";
 import { h, bbox, cropInto } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261121-page-card";
-import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261121-page-card";
-import { finderById } from "./pipeline/finders.js?v=20261121-page-card";
-import { CredentialChecks } from "./key-check.js?v=20261121-page-card";
+import { modelChoice, keyControls, money, costEstimate } from "./reader-controls.js?v=20261122-reading-order";
+import { READERS, DEFAULT_TRANSCRIPTION_REFERENCE, readerById, readerOptions, bookCostEstimate, wholePageReading, structurePath, structurerById } from "./pipeline/readers.js?v=20261122-reading-order";
+import { finderById } from "./pipeline/finders.js?v=20261122-reading-order";
+import { CredentialChecks } from "./key-check.js?v=20261122-reading-order";
 import { transcriptionHtml } from "./transcription-diff.js";
 import { selectPageRegions, readingFromDocument, plainReading } from "./pipeline/split.js";
-import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261121-page-card";
-import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261121-page-card";
-import { settings } from "./store.js?v=20261121-page-card";
+import { compareReadings, comparePages } from "./pipeline/compare.js?v=20261122-reading-order";
+import { jsonHash, REQUEST_TIMEOUT_MS } from "./pipeline/run.js?v=20261122-reading-order";
+import { settings } from "./store.js?v=20261122-reading-order";
 import { runProgress } from "./run-progress.js";
-import { readingFits } from "./pipeline/partial-reading.js?v=20261121-page-card";
+import { readingFits } from "./pipeline/partial-reading.js?v=20261122-reading-order";
 import { sha256hex } from "./chayapdf.js";
-import { layerState } from "./layers.js?v=20261121-page-card";
+import { layerState } from "./layers.js?v=20261122-reading-order";
 
 export async function renderReaders(el, app) {
   const token = Symbol();

@@ -4,19 +4,19 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
-import { classLabel, classNote } from "./class-labels.js?v=20261121-page-card";
+import { classLabel, classNote } from "./class-labels.js?v=20261122-reading-order";
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261121-page-card";
-import { prepare } from "./reader.js?v=20261121-page-card";
-import { typeRevision } from "./schema.js?v=20261121-page-card";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261121-page-card";
-import { newTypeDialog } from "./regionsview.js?v=20261121-page-card";
-import { renderSurvey } from "./type-survey-view.js?v=20261121-page-card";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261121-page-card";
-import { unusedDraftTypes } from "./draft-types.js?v=20261121-page-card";
-import { citedSamplePages } from "./type-revisions.js?v=20261121-page-card";
-import { typeExampleIndex } from "./type-examples.js?v=20261121-page-card";
-import { regionPath } from "./pageimage.js?v=20261121-page-card";
+import { typeForest } from "./type-tree.js?v=20261122-reading-order";
+import { prepare } from "./reader.js?v=20261122-reading-order";
+import { typeRevision } from "./schema.js?v=20261122-reading-order";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261122-reading-order";
+import { newTypeDialog } from "./regionsview.js?v=20261122-reading-order";
+import { renderSurvey } from "./type-survey-view.js?v=20261122-reading-order";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261122-reading-order";
+import { unusedDraftTypes } from "./draft-types.js?v=20261122-reading-order";
+import { citedSamplePages } from "./type-revisions.js?v=20261122-reading-order";
+import { typeExampleIndex } from "./type-examples.js?v=20261122-reading-order";
+import { regionPath } from "./pageimage.js?v=20261122-reading-order";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.

@@ -275,10 +275,13 @@ def check_document(doc, tl):
         if doc["format"] != "page":
             break
         for flow in doc["flows"]:
-            orders = [regions[x[1]].get("order") for f, x, _ in depth_first(units, doc["flows"]) if f == flow and x[0] == "region"]
-            orders = [o for o in orders if o is not None]
-            if orders != sorted(orders):
-                warnings.append(f"page {p['id']}, flow {flow}: units read regions in the order {orders}, not the region step's order")
+            reading_order = [regions[x[1]] for f, x, _ in depth_first(units, doc["flows"]) if f == flow and x[0] == "region"]
+            reading_order = [r for r in reading_order if r.get("order") is not None]
+            for first, second in zip(reading_order, reading_order[1:]):
+                if first["order"] > second["order"]:
+                    warnings.append(f"page {p['id']}, flow {flow}: The reader shows {first['id']} before {second['id']}. "
+                                    f"The saved box order puts {second['id']} before {first['id']}.")
+                    break
     return errors, warnings
 
 

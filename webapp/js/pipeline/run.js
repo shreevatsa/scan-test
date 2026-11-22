@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261121-page-card";
-import { mappedTypeNames } from "../type-revisions.js?v=20261121-page-card";
+import { typeRevision } from "../schema.js?v=20261122-reading-order";
+import { mappedTypeNames } from "../type-revisions.js?v=20261122-reading-order";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261121-page-card";
-import * as I from "./images.js?v=20261121-page-card";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261121-page-card";
+import * as S from "./steps.js?v=20261122-reading-order";
+import * as I from "./images.js?v=20261122-reading-order";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261122-reading-order";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261121-page-card";
-import { classifyBlocks } from "../local/blocks.js?v=20261121-page-card";
-import { finderById, finderPath } from "./finders.js?v=20261121-page-card";
-import { finderRequest } from "./finder-requests.js?v=20261121-page-card";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261121-page-card";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261121-page-card";
+import { localReading, localLayout } from "./ocr.js?v=20261122-reading-order";
+import { classifyBlocks } from "../local/blocks.js?v=20261122-reading-order";
+import { finderById, finderPath } from "./finders.js?v=20261122-reading-order";
+import { finderRequest } from "./finder-requests.js?v=20261122-reading-order";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261122-reading-order";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261122-reading-order";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261121-page-card";
-import { layerState, noteEdit } from "../layers.js?v=20261121-page-card";
-import { provisionalDocument } from "./provisional.js?v=20261121-page-card";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261121-page-card";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261121-page-card";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261121-page-card";
-import { isProtected, LAYERS } from "../layers.js?v=20261121-page-card";
+import { canonical } from "../ops.js?v=20261122-reading-order";
+import { layerState, noteEdit } from "../layers.js?v=20261122-reading-order";
+import { provisionalDocument } from "./provisional.js?v=20261122-reading-order";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261122-reading-order";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261122-reading-order";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261122-reading-order";
+import { isProtected, LAYERS } from "../layers.js?v=20261122-reading-order";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

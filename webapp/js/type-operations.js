@@ -1,9 +1,9 @@
 import { h } from "./render.js";
-import { checkPage } from "./schema.js?v=20261121-page-card";
-import { REGION_CLASSES } from "./book-types.js?v=20261121-page-card";
-import { classSelect } from "./class-labels.js?v=20261121-page-card";
-import { pageSelectionText } from "./page-browser.js?v=20261121-page-card";
-import { money } from "./reader-controls.js?v=20261121-page-card";
+import { checkPage } from "./schema.js?v=20261122-reading-order";
+import { REGION_CLASSES } from "./book-types.js?v=20261122-reading-order";
+import { classSelect } from "./class-labels.js?v=20261122-reading-order";
+import { pageSelectionText } from "./page-browser.js?v=20261122-reading-order";
+import { money } from "./reader-controls.js?v=20261122-reading-order";
 
 const labels = { description: "Edit description", rename: "Rename type", merge: "Merge into another type", split: "Split into a second type", rules: "Change containment or flow", class: "Change how regions are drawn", remove: "Remove unused type" };
 const quantity = (n, name) => `${n} ${name}${n === 1 ? "" : "s"}`;

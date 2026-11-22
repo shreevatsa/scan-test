@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261121-page-card";
+import { assemble } from "./assemble.js?v=20261122-reading-order";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, workflowAddress, hasReading, noContent } from "./workflow.js?v=20261121-page-card";
-import { layerState } from "./layers.js?v=20261121-page-card";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261121-page-card";
+import { readingGaps, readingDocuments, workflowAddress, hasReading, noContent } from "./workflow.js?v=20261122-reading-order";
+import { layerState } from "./layers.js?v=20261122-reading-order";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261122-reading-order";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {

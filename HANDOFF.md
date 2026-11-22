@@ -24,6 +24,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
 - **Other books:** Kale 1913 and Telang were made by the older one-pass pipeline (method 052). The vachana book came from a digital PDF's text layer (058, 062). The user's 267-page private book has regions only; PRIVATE.md says where it is.
 - **The app** (`webapp/`, about 16,600 lines of JavaScript, no build step) has tabs Pages · Regions · Text · Read · Export. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3). Recent changes:
   - **One page editor** at `#page&p=<id>`, the same from every stage. Old `#regions&p=`, `#text&p=` and `#read&p=` addresses open it. It edits text, regions (type, box, draw, split, merge, order, delete), units, joins and note links. It shows the page's flags, and a Page menu offers review with AI, no content, find regions again, and read again. A region with no line piece takes text when clicked.
+  - **Reading-order warnings** name the first pair of region IDs that the reader and the saved box order put in different positions.
   - **One review status per page.** Pages, processing grids and the blocks editor show unchecked, checked or suggestion waiting. The existing layer records carry compatibility and overwrite protection for stored books.
   - **Stage gates retired.** All tabs open from the start. Valid regions can be transcribed and saved text can be read. Review marks still protect the work from model replacement.
   - **Blocks comparison** at `#blocks` and `#blocks&p=<id>`, linked by **Blocks** and **Original view**. It edits regions with the same save path, and derives reading structure in memory. The original reader and editor remain available.
@@ -54,7 +55,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
   - 9 verse-number breaks and 3 episode-number breaks are listed, not changed;
   - 5 contents lines link to a page instead of an episode (the "…हननम्" entries);
   - 9 front-matter pages keep the provisional grouping.
-- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (377 pass in the local checkout, 375 with public fixtures), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
+- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (378 pass in the local checkout, 376 with public fixtures), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
 - **Running:**
   - A loopback server, `python3 -m http.server 8765 --bind 127.0.0.1`, runs from the repository root.
   - `tailscale serve --https=8765 http://127.0.0.1:8765` makes it reachable from the user's other devices; the address is in PRIVATE.md.
