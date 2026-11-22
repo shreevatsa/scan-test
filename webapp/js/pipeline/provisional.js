@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261122-reading-order";
+import { typeRevision } from "../schema.js?v=20261122-one-editor";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {

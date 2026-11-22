@@ -47,9 +47,9 @@ test("a printed contents line splits into its title and page; other lines are no
   assert.equal(tocLine("स्फीतोऽभूदङ्गविषयो विषयः सर्वसंपदाम् ॥ १२१ ॥"), null);
 });
 
-test("the Book view has its own address under Read", async () => {
+test("the former Book view address opens Read", async () => {
   const { workflowRoute, workflowAddress } = await import("../js/workflow.js");
-  assert.equal(workflowRoute("#read&view=book", { read: true }).mode, "plain");
+  assert.equal(workflowRoute("#read&view=book").mode, "read");
   assert.equal(workflowAddress("plain"), "#read&view=book");
 });
 

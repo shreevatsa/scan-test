@@ -27,8 +27,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
   - **Reading-order warnings** name the first pair of region IDs that the reader and the saved box order put in different positions.
   - **One review status per page.** Pages, processing grids and the blocks editor show unchecked, checked or suggestion waiting. The existing layer records carry compatibility and overwrite protection for stored books.
   - **Stage gates retired.** All tabs open from the start. Valid regions can be transcribed and saved text can be read. Review marks still protect the work from model replacement.
-  - **Blocks comparison** at `#blocks` and `#blocks&p=<id>`, linked by **Blocks** and **Original view**. It edits regions with the same save path, and derives reading structure in memory. The original reader and editor remain available.
-  - **Read → Book view:** the book to read, with a contents sidebar that follows the reading, footnotes as sidenotes, no page numbers, and printed contents lines linked to their episodes. Part names the editor gave are shown in parentheses. The HTML export uses the same layout; `webapp/tools/chaya_html.mjs` writes it from the command line.
+  - **One blocks editor and book reader.** The editor displays the scan, blocks and checks. The reader and exports use saved structure where present, with rule-derived grouping on ungrouped runs. Existing addresses reach the new views.
   - **Dimmed pages** are left out of the book, not gaps, so a unit goes on across a duplicate scan.
   - **Pages are drawn at the scan's resolution:** `scanImage` takes the sharpest image on a page. An archive.org page is a 133 ppi colour background under a 400 ppi text layer.
   - **Opening a book shows progress bars** for downloading, reading, and saving its files into the browser.
@@ -55,7 +54,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
   - 9 verse-number breaks and 3 episode-number breaks are listed, not changed;
   - 5 contents lines link to a page instead of an episode (the "…हननम्" entries);
   - 9 front-matter pages keep the provisional grouping.
-- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (378 pass in the local checkout, 376 with public fixtures), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
+- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (379 pass in the local checkout, 377 with public fixtures), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
 - **Running:**
   - A loopback server, `python3 -m http.server 8765 --bind 127.0.0.1`, runs from the repository root.
   - `tailscale serve --https=8765 http://127.0.0.1:8765` makes it reachable from the user's other devices; the address is in PRIVATE.md.
@@ -144,7 +143,7 @@ From the user's review of the one page editor (2026-11-20):
 Each task is sized for one session. Finish, test and commit one before starting the next.
 
 1. **Blocks spike (done).** The comparison works on Kale and the Rāmāyaṇa-mañjarī. See NOTEBOOK.md and the audit command there for the differences to preserve before retiring authored grouping, metadata, joins or line endings.
-2. **Retire what the spike shows unneeded,** one at a time, each with tests. Stage gates and separate review badges are retired. Before switching readers, preserve the audited grouping, numbering, labels, links and line joins as rules or block overrides. Internal layer protection, flows and type revisions still serve existing books and processing tools. Switch to three tabs after the retirements (item 5).
+2. **Retire what the spike shows unneeded,** one at a time, each with tests. The duplicate reader and editor, stage gates and separate review badges are retired. Next move to three workflow tabs, with one processing action in Pages and the book's model and type choices in Settings. Keep saved grouping, numbering, labels, links, flows and line joins readable when changing how new books are stored.
 3. **The app reads like method 100.** One page image per call with the page's blocks listed, Hydrogen low by default, an updated cost estimate, and markers taken from `[n]`.
 4. **The structure rules move into the app** as a book's settings (closings, part headings, verse groups, note linking, number checks), with the command-line tools kept for batch work.
 5. **The examples hosting:** a separate small repository with Pages enabled (the user's choice), when the user asks.

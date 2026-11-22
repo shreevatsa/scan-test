@@ -1,11 +1,8 @@
-import { typeRevision } from "./schema.js?v=20261122-reading-order";
 import { h } from "./render.js";
-import * as ops from "./ops.js?v=20261122-reading-order";
-import { regionFlags, textFlags, ignoredLines, linePosition } from "./flags.js?v=20261122-reading-order";
-import { REGION_CLASSES } from "./book-types.js?v=20261122-reading-order";
-import { classSelect } from "./class-labels.js?v=20261122-reading-order";
-import { editTypeDialog } from "./type-operations.js?v=20261122-reading-order";
-import { normalizeTypeName } from "./type-additions.js?v=20261122-reading-order";
+import * as ops from "./ops.js?v=20261122-one-editor";
+import { REGION_CLASSES } from "./book-types.js?v=20261122-one-editor";
+import { classSelect } from "./class-labels.js?v=20261122-one-editor";
+import { editTypeDialog } from "./type-operations.js?v=20261122-one-editor";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -76,100 +73,6 @@ export function newTypeDialog(app, use = () => {}, printedOnly = false) {
   dialog.addEventListener("close", () => dialog.remove(), { once: true });
   dialog.showModal();
   name.focus();
-}
-
-export function regionTypesPanel(app, editTypes) {
-  const list = h("div", { class: "region-type-list" });
-  const legend = h("div", { class: "region-type-legend", "aria-label": "Region types on this page" });
-  const status = h("p", { class: "hint" });
-  const element = h("aside", { class: "region-types" }, h("h3", {}, "On this page"), legend,
-    h("details", {}, h("summary", {}, "All book types"), status, list),
-    h("div", { class: "actions" }, h("button", { disabled: !app.book.writable, onclick: () => newTypeDialog(app) }, "＋ Type"),
-      h("button", { onclick: editTypes }, "Edit type list")));
-  const refresh = () => {
-    const counts = new Map();
-    for (const [pid, state] of app.pageStates) for (const region of (app.mode === "page" && app.pid === pid ? app.doc : state.doc)?.page.regions || [])
-      counts.set(region.type, (counts.get(region.type) || 0) + 1);
-    status.textContent = `${app.tl.source?.draft ? "Draft type list · " : ""}Revision ${typeRevision(app.tl.source?.revision)}`;
-    const shortcuts = Object.entries(app.tl.types).filter(([, type]) => type.region).map(([name]) => name);
-    const pageCounts = new Map();
-    for (const region of app.doc?.page.regions || []) pageCounts.set(region.type, (pageCounts.get(region.type) || 0) + 1);
-    legend.replaceChildren(...[...pageCounts].map(([name, count]) => h("div", { class: "region-type-row", title: app.tl.types[name]?.description,
-      onpointerenter: () => app.doc.page.regions.filter(region => region.type === name).forEach(region => app.hoverRegion(region.id, true)),
-      onpointerleave: () => app.doc.page.regions.filter(region => region.type === name).forEach(region => app.hoverRegion(region.id, false)),
-    }, h("i", { style: `background:${app.colors[name] || "#888"}` }),
-      h("button", { class: "link", onclick: () => app.setRegionView("types", name), "aria-label": `Review examples of ${name}` }, name),
-      shortcuts.indexOf(name) >= 0 && shortcuts.indexOf(name) < 9 ? h("kbd", { title: `Type shortcut ${shortcuts.indexOf(name) + 1}` }, shortcuts.indexOf(name) + 1) : null,
-      h("span", { class: "meta", "aria-label": `${count} ${count === 1 ? "region" : "regions"}` }, count))));
-    if (!pageCounts.size) legend.append(h("p", { class: "hint" }, "Draw or find regions to see their types here."));
-    list.replaceChildren(...Object.entries(app.tl.types).map(([name, type]) =>
-      h("div", { class: "region-type-row", title: type.description || "" },
-        h("i", { style: `background:${app.colors[name] || "#888"}` }), h("span", {}, name),
-        ...(app.mode === "page" && shortcuts.indexOf(name) >= 0 && shortcuts.indexOf(name) < 9 ? [h("kbd", { title: `Type shortcut ${shortcuts.indexOf(name) + 1}` }, shortcuts.indexOf(name) + 1)] : []),
-        h("span", { class: "meta" }, type.region ? `${counts.get(name) || 0}` : "container"))));
-  };
-  if (app.mode === "page") element.append(h("p", { class: "hint" }, "Select a region on the scan. Keys 1–9 choose its type. Tab selects the next region, Shift+Tab the previous."));
-  refresh();
-  return { element, refresh };
-}
-
-// A printed line the local analysis found outside every region: a crop of it from the scan, where it is, and what to do.
-function uncoveredRow(app, flag) {
-  const box = flag.box, noInk = flag.code === "no-ink", type = h("select", { "aria-label": "Type of the new region" }, h("option", { value: "", selected: true, disabled: true }, "Type…"),
-    ...Object.entries(app.tl.types).filter(([, value]) => value.region).map(([name, value]) => h("option", { value: name }, `${name}${value.role === "furniture" ? " (furniture)" : ""}`)));
-  const crop = h("canvas", { class: "line-crop", "aria-label": "The line, cut from the scan" });
-  const src = app.pageView?.img?.src, { width: W, height: H } = app.doc.page;
-  if (box && src) {
-    const image = new Image();
-    image.onload = () => {
-      const k = image.naturalWidth / W, pad = Math.max(8, (box[3] - box[1]) * 0.4);
-      const x = Math.max(0, box[0] - pad), y = Math.max(0, box[1] - pad), w = Math.min(W, box[2] + pad) - x, hh = Math.min(H, box[3] + pad) - y;
-      const scale = Math.min(1, 320 / w);
-      crop.width = Math.max(1, Math.round(w * scale)); crop.height = Math.max(1, Math.round(hh * scale));
-      crop.getContext("2d").drawImage(image, x * k, y * k, w * k, hh * k, 0, 0, crop.width, crop.height);
-    };
-    image.src = src;
-  }
-  const show = on => { app.pageView.markLine({ hover: on ? box : null }); if (on && box) app.pageView.revealBox(box); };
-  const row = h("div", { class: "uncovered-row", tabindex: 0, role: "group", "aria-label": flag.message,
-    onpointerenter: () => show(true), onpointerleave: () => show(false), onfocusin: () => show(true), onfocusout: () => show(false),
-    onclick: () => app.pageView.markLine({ pinned: box }) },
-    crop, h("div", { class: "uncovered-text" }, flag.message),
-    noInk ? h("p", { class: "meta" }, "The model drew this box, but the scan has no ink in it, so the region was dropped. If text is missing here, draw a region over it.")
-    : h("div", { class: "actions" }, type, h("button", { class: "add-line-region", onclick: () => { if (type.value) app.addRegionOverLine(flag.line_id, type.value); else app.toast("Choose the region's type first.", "warn"); } }, "Add a region"),
-      h("button", { class: "ignore-line", onclick: () => { app.pageView.markLine({ hover: null, pinned: null }); app.edit(doc => ops.ignoreLine(doc, { line_id: flag.line_id, box: flag.box })); } }, "Ignore")));
-  return row;
-}
-
-// What the page editor lists above the page's text: the page's review flags (as Pages and the stage grids count them),
-// printed lines the ink analysis found outside every region (each with Add a region / Ignore), lines set aside as ignored,
-// and regions a finder could not give a type.
-export function pageFlags(app, { open = false, onToggle = () => {} } = {}) {
-  const doc = app.doc, flags = regionFlags(doc, app.tl, app.regionFlagContext(doc));
-  const seen = new Set(flags.map(flag => flag.message));
-  for (const flag of textFlags(doc, app.tl)) if (!seen.has(flag.message)) { seen.add(flag.message); flags.push(flag); }
-  const uncovered = flags.some(flag => flag.code === "uncovered" || flag.code === "no-ink" && flag.box && !flag.region);
-  const ignored = [...ignoredLines(doc)];
-  // A region of a proposed type (method 097) names it; once the proposal is a type, one button gives it that type.
-  const omitted = (doc.source?.omitted_regions || []).map((region, index) => {
-    const target = region.proposed_type && (app.proposalAssignments?.get(normalizeTypeName(region.proposed_type)) ||
-      Object.keys(app.tl.types).find(name => normalizeTypeName(name) === normalizeTypeName(region.proposed_type)));
-    return h("p", { class: "box warn" }, `${region.region} · unassigned type${region.proposed_type ? ` · proposed: ${region.proposed_type}` : ""} `,
-      target && app.tl.types[target] ? h("button", { onclick: () => app.recoverOmitted(index, target) }, `Make it ${target}`) : null, " ",
-      h("button", { onclick: () => app.select({ omitted: index }) }, "Give it a type"));
-  });
-  return [
-    ...(flags.length ? [h("details", { class: "region-review-flags", open: uncovered || open, ontoggle: event => onToggle(event.target.open) }, h("summary", {}, `${flags.length} review flag${flags.length === 1 ? "" : "s"}`),
-      // A real list: one boxed item per flag. A flag about a region is a button that selects it; the others are plain text.
-      h("ul", { class: "flag-list" }, ...flags.map(flag => h("li", { class: `flag-item flag-${flag.code}` },
-        flag.code === "uncovered" || flag.code === "no-ink" && flag.box && !flag.region ? uncoveredRow(app, flag)
-          : [h("span", { class: "flag-mark", "aria-hidden": "true" }, flag.code === "region-warning" || flag.code === "provisional" ? "ℹ" : "⚠"),
-            flag.region ? h("button", { class: "link", title: `Select ${flag.region}`, onclick: () => app.select({ region: flag.region }) }, flag.message) : h("span", {}, flag.message),
-            flag.page && app.book.index[flag.page] !== undefined ? [" ", h("button", { class: "link open-neighbor", onclick: () => app.openPage(flag.page) }, `Open page ${app.book.index[flag.page] + 1}`)] : null]))))] : []),
-    ...(ignored.length ? [h("details", { class: "region-ignored-lines" }, h("summary", {}, `Ignored lines (${ignored.length})`),
-      ...ignored.map(entry => { const box = typeof entry === "number" ? (doc.source?.uncovered_lines || []).find(value => value.line_id === entry)?.box : entry.box;
-        return h("p", {}, `A printed line ${linePosition(box, doc.page) || "outside all regions"} `, h("button", { onclick: () => app.edit(next => ops.restoreLine(next, entry)) }, "Restore")); }))] : []),
-    ...omitted];
 }
 
 // A region a finder could not give a type, selected on the scan: choose its type to add it to the page.

@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261122-reading-order";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-reading-order";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261122-reading-order";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261122-reading-order";
+import { typeRevision } from "./schema.js?v=20261122-one-editor";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-one-editor";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261122-one-editor";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261122-one-editor";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
@@ -73,12 +73,12 @@ export function workflowRoute(value) {
   const pid = hash.get("p");
   let view = old ? aliases[old][1] : hash.get("view") || "";
   if (old === "types" && hash.get("view") === "proposal") view = "proposal";
-  if (hash.has("blocks")) return { stage: pid ? "page" : "read", mode: pid ? "page" : "blocks-read",
-    pid, view: "blocks", region: hash.get("r"), unit: null };
+  if (hash.has("blocks")) return { stage: pid ? "page" : "read", mode: pid ? "page" : "read",
+    pid, view: "", region: hash.get("r"), unit: hash.get("u") };
   if (pid && !view) return { stage: "page", mode: "page", pid, view: "", region: hash.get("r"), unit: hash.get("u") };
   const stage = old ? aliases[old][0] : STAGES.find(key => hash.has(key)) || "pages";
   const views = { "regions/types": "types", "regions/proposal": "types", "text/compare": "readers", "read/compare": "structures",
-    "read/problems": "check", "read/style": "style", "read/book": "plain" };
+    "read/problems": "check", "read/style": "style" };
   const mode = views[`${stage}/${view}`] || (stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");
   return { stage, mode, pid, view, region: hash.get("r"), unit: hash.get("u") };
 }

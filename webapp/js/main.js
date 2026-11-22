@@ -1,41 +1,39 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261122-reading-order";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261122-reading-order";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261122-reading-order";
-import { RECIPE } from "./recipe.js?v=20261122-reading-order";
-import { readerOptions } from "./pipeline/readers.js?v=20261122-reading-order";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261122-one-editor";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261122-one-editor";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261122-one-editor";
+import { RECIPE } from "./recipe.js?v=20261122-one-editor";
+import { readerOptions } from "./pipeline/readers.js?v=20261122-one-editor";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook, prepareBlockReader } from "./blocksview.js?v=20261122-reading-order";
-import { blockName } from "./blocks.js?v=20261122-reading-order";
-import { PageView } from "./pageimage.js?v=20261122-reading-order";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261122-reading-order";
-import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261122-reading-order";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261122-reading-order";
-import { renderStyle } from "./styleview.js?v=20261122-reading-order";
-import { openTypeList } from "./typesview.js?v=20261122-reading-order";
-import { typeSetup } from "./type-setup.js?v=20261122-reading-order";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261122-one-editor";
+import { blockName, readingProjection } from "./blocks.js?v=20261122-one-editor";
+import { PageView } from "./pageimage.js?v=20261122-one-editor";
+import { markerForm } from "./editor.js?v=20261122-one-editor";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261122-one-editor";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261122-one-editor";
+import { renderStyle } from "./styleview.js?v=20261122-one-editor";
+import { typeSetup } from "./type-setup.js?v=20261122-one-editor";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261122-reading-order";
-import { EditError } from "./ops.js?v=20261122-reading-order";
-import { Maker, post } from "./pipeline/run.js?v=20261122-reading-order";
-import { CredentialChecks } from "./key-check.js?v=20261122-reading-order";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261122-reading-order";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261122-reading-order";
-import { regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261122-reading-order";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-reading-order";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261122-reading-order";
-import { orderedRegions } from "./flags.js?v=20261122-reading-order";
-import { assemble } from "./assemble.js?v=20261122-reading-order";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261122-reading-order";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261122-reading-order";
-import { renderPages } from "./pagesview.js?v=20261122-reading-order";
-import { settings } from "./store.js?v=20261122-reading-order";
-import { renderReaders } from "./readersview.js?v=20261122-reading-order";
-import { renderStructures } from "./structuresview.js?v=20261122-reading-order";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261122-reading-order";
-import { pageMenu } from "./page-actions.js?v=20261122-reading-order";
+import * as ops from "./ops.js?v=20261122-one-editor";
+import { EditError } from "./ops.js?v=20261122-one-editor";
+import { Maker, post } from "./pipeline/run.js?v=20261122-one-editor";
+import { CredentialChecks } from "./key-check.js?v=20261122-one-editor";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261122-one-editor";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261122-one-editor";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-one-editor";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261122-one-editor";
+import { orderedRegions } from "./flags.js?v=20261122-one-editor";
+import { assemble } from "./assemble.js?v=20261122-one-editor";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261122-one-editor";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261122-one-editor";
+import { renderPages } from "./pagesview.js?v=20261122-one-editor";
+import { settings } from "./store.js?v=20261122-one-editor";
+import { renderReaders } from "./readersview.js?v=20261122-one-editor";
+import { renderStructures } from "./structuresview.js?v=20261122-one-editor";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261122-one-editor";
+import { pageMenu } from "./page-actions.js?v=20261122-one-editor";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -626,7 +624,7 @@ class App {
       await this.refreshWorkflowPage(pid);
       this.doc = null; this.pageBuilt = false;
     } finally { this.workflowBusy = false; }
-    if (location.hash === workflowAddress(this.routeView === "blocks" ? "blocks" : "page", pid)) await this.route(); else this.openPage(pid);
+    if (location.hash === workflowAddress("page", pid)) await this.route(); else this.openPage(pid);
   }
 
   // Remove every region in one undoable edit. A blank page needs no model work.
@@ -713,12 +711,7 @@ class App {
       h("nav", { class: "modes", "aria-label": "Book workflow" }, ...["pages", "regions", "text", "read", "export"].map(mode => modeBtn(mode, mode[0].toUpperCase() + mode.slice(1)))),
       h("nav", { class: "tabs", "aria-label": "Stage views" },
         tabBtn("text", "", "Pages"), tabBtn("text", "compare", "Compare models"),
-        tabBtn("read", "", "Read"), tabBtn("read", "book", "Book view"), tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
-      h("button", { class: "blocks-toggle", onclick: () => {
-        const blocks = this.routeView === "blocks";
-        if (this.mode === "page") location.hash = workflowAddress(blocks ? "page" : "blocks", this.pid, this.selection);
-        else this.setMode(blocks ? "plain" : "blocks");
-      } }, "Blocks"),
+        tabBtn("read", "pages", "Units and links"), tabBtn("read", "compare", "Compare completion models"), tabBtn("read", "problems", "Problems"), tabBtn("read", "style", "Style sheet")),
       h("span", { class: "nav" }, h("button", { title: "previous page (Alt ←)", onclick: () => this.step(-1) }, "←"), pageSel, h("button", { title: "next page (Alt →)", onclick: () => this.step(1) }, "→")),
       h("span", { class: "undo" }, h("button", { title: "undo (⌘Z)", onclick: () => this.undo() }, "↶"), h("button", { title: "redo (⇧⌘Z)", onclick: () => this.redo() }, "↷")),
       h("span", { class: "page-stage-links" },
@@ -740,7 +733,7 @@ class App {
     if (this.stage) this.workflowScroll.set(`${this.stage}/${this.mode}`, this.main.scrollTop);
     if (this.mode === "page" && this.pageBuilt && this.doc) {
       const panes = [this.pageView.el, this.textPanel.el, this.main.querySelector(".lower")];
-      this.pageViews.set(`${this.routeView}/${this.pid}`, { selection: structuredClone(this.selection), fit: this.pageView.fit, zoom: this.pageView.zoom,
+      this.pageViews.set(this.pid, { selection: structuredClone(this.selection), fit: this.pageView.fit, zoom: this.pageView.zoom,
         scroll: panes.map(pane => [pane.scrollLeft, pane.scrollTop]) });
     }
     const token = this.routeToken = (this.routeToken || 0) + 1;
@@ -758,13 +751,10 @@ class App {
     this.onLeaveGrid?.(); this.onLeaveGrid = null;
     this.lastWorkflowUrl = location.href;
     this.stage = stage;
-    if ((this.routeView === "blocks") !== (route.view === "blocks")) this.pageBuilt = false;
     this.routeView = route.view;
-    this.header.querySelector(".blocks-toggle").textContent = route.view === "blocks" ? "Original view" : "Blocks";
     this.mode = mode;
     this.header.dataset.top = stage;
     this.header.dataset.view = mode;
-    this.header.toggleAttribute("data-blocks", route.view === "blocks");
     // The page editor serves every stage; the header marks the stage its page waits at.
     const marked = stage === "page" ? currentStage(this.pageStates.get(route.pid)) : stage;
     this.header.querySelectorAll(".mode").forEach(b => b.classList.toggle("on", b.dataset.mode === marked));
@@ -775,14 +765,13 @@ class App {
       b.classList.toggle("on", b.dataset.view === view);
       b.setAttribute("aria-pressed", String(b.classList.contains("on")));
     });
-    if (this.onLeaveReader && mode !== "read") { this.onLeaveReader(); this.onLeaveReader = null; }
     if (mode === "page") {
       this.blocksProjection = null;
       this.blocksSource = null;
       const sel = route.region ? { region: route.region } : route.unit ? { unit: route.unit } : null;
       await this.showPage(route.pid, sel);
       if (token !== this.routeToken) return;
-      const saved = this.pageViews.get(`${this.routeView}/${route.pid}`);
+      const saved = this.pageViews.get(route.pid);
       if (saved && this.pageBuilt && (!sel || ops.canonical(sel) === ops.canonical(saved.selection))) {
         this.select(saved.selection, { keepFocus: true });
         this.pageView.setZoom(saved.zoom);
@@ -795,9 +784,7 @@ class App {
       this.pageBuilt = false;
       this.main.className = mode;
       if (mode === "grid" || mode === "types") await renderPages(this.main, this);
-      if (mode === "read") await renderReader(this.main, this);
-      if (mode === "plain") await renderBookView(this.main, this);
-      if (mode === "blocks-read") await renderBookView(this.main, this, prepareBlockReader(this));
+      if (mode === "read") await renderBookView(this.main, this);
       if (mode === "style") renderStyle(this.main, this);
       if (mode === "check") this.renderCheck();
       if (mode === "export") this.renderExport();
@@ -821,7 +808,7 @@ class App {
 
   // Every way of opening a page opens the one page editor, whatever the stage.
   openPage(pid, sel = {}) {
-    location.hash = workflowAddress(this.routeView === "blocks" ? "blocks" : "page", pid, sel);
+    location.hash = workflowAddress("page", pid, sel);
   }
 
   // The previous or next page of the book, in the page editor.
@@ -879,52 +866,8 @@ class App {
 
   async buildPageMode() {
     this.textPanel?.destroy?.();
+    const fit = this.pageView?.fit;
     this.pageView?.destroy();
-    if (this.routeView === "blocks") return this.buildBlocksPage();
-    this.main.className = "page";
-    const imgPane = h("div", { class: "imgpane" });
-    const toolbar = h("div", { class: "toolbar" },
-      ...FORMAT_BUTTONS.map(([k, t, title]) => h("button", { class: `fmt f-${k}`, title, onmousedown: e => e.preventDefault(), onclick: () => this.textPanel.format(k) }, t)),
-      ...Object.entries(this.tl.inline || {}).map(([k, d]) => h("button", { class: "fmt", title: d.description, onmousedown: e => e.preventDefault(), onclick: () => this.textPanel.format(k) }, k)),
-      h("span", { class: "sep" }),
-      h("button", { title: "insert a note marker at the caret", onmousedown: e => e.preventDefault(), onclick: () => markerForm(this.inspector, this) }, "＋ Marker"),
-      h("span", { class: "sep" }),
-      h("button", { class: "draw", title: "draw a new region on the page", onclick: e => this.toggleDraw(e.currentTarget) }, "＋ Region"),
-      h("span", { class: "sep" }),
-      h("button", { title: "zoom out", onclick: () => this.pageView.setZoom(this.pageView.zoom / 1.25) }, "−"),
-      h("button", { title: "the page's whole width in the pane", onclick: () => this.pageView.fitWidth() }, "fit width"),
-      h("button", { title: "the page's whole height in the pane (kept as you resize the window or change pages)", onclick: () => this.pageView.fitHeight() }, "fit height"),
-      h("button", { title: "zoom in (or ⌘ + scroll on the page)", onclick: () => this.pageView.setZoom(this.pageView.zoom * 1.25) }, "+"),
-      h("span", { class: "sep" }),
-      h("button", { class: "revert", title: "return to this page’s last stage save", onclick: () => this.revertPage() }, "Revert page"));
-    // The page menu: Review page with AI, No content on this page, and finding regions or reading this page again.
-    if (this.book.writable) toolbar.append(h("span", { class: "sep" }), pageMenu(this, { reviewPageWithAI }));
-    const textPane = h("div", { class: "textpane" });
-    this.inspector = h("div", { class: "inspector" });
-    this.problems = h("div", { class: "checks" });
-    // The book's region types, with the page's counts and the keys 1–9 that set a selected region's type (Regions' side panel).
-    this.regionTypePanel = regionTypesPanel(this, () => openTypeList(this).catch(error => this.toast(error.message, "bad")));
-    const typesBox = h("details", { class: "page-types", open: !!this.typesOpen, ontoggle: event => { this.typesOpen = event.target.open; } },
-      h("summary", {}, "Region types · keys 1–9"), this.regionTypePanel.element);
-    const side = h("div", { class: "side" }, toolbar, textPane, h("div", { class: "lower" }, this.problems, this.inspector, typesBox));
-    this.main.replaceChildren(imgPane, side);
-    const fit = this.pageView?.fit;   // fit height is kept when the page view is made again
-    this.pageView = new PageView(imgPane, {
-      editable: true,
-      onSelectRegion: rid => this.select(rid ? { region: rid } : {}),
-      onSelectOmitted: index => this.select({ omitted: index }),
-      onBox: (rid, box) => { if (this.edit(d => ops.setBox(d, rid, box))) this.recompute(); },
-      onDraw: (box, ev) => this.drawn(box, ev),
-      onHoverLine: (key, on) => this.textPanel.el.querySelectorAll(`.rtext[data-rid="${CSS.escape(key.split(":")[0])}"] > .lp[data-i="${key.split(":")[1]}"]`).forEach(x => x.classList.toggle("hl", on)),
-      onHoverRegion: (rid, on) => this.hoverRegion(rid, on, true),
-    });
-    if (fit === "height") this.pageView.fit = "height";
-    this.textPanel = new TextPanel(textPane, this);
-    await this.refresh();
-  }
-
-  async buildBlocksPage() {
-    this.regionTypePanel = null;
     const image = h("div", { class: "imgpane" });
     const scanToolbar = h("div", { class: "toolbar block-scan-tools", "aria-label": "Scan tools" },
       h("button", { onclick: () => this.pageView.setZoom(this.pageView.zoom / 1.25), "aria-label": "Zoom out" }, "−"),
@@ -941,22 +884,18 @@ class App {
     const format = h("div", { class: "block-format", hidden: true, "aria-label": "Text formatting" },
       ...FORMAT_BUTTONS.map(([kind, label, title]) => h("button", { title, onmousedown: event => event.preventDefault(),
         onclick: () => this.textPanel.format(kind) }, label)),
+      ...Object.entries(this.tl.inline || {}).map(([kind, def]) => h("button", { title: def.description,
+        onmousedown: event => event.preventDefault(), onclick: () => this.textPanel.format(kind) }, kind)),
       h("button", { onmousedown: event => event.preventDefault(), onclick: () => markerForm(this.inspector, this) }, "＋ Marker"));
     text.addEventListener("focusin", event => { format.hidden = !event.target.closest("[contenteditable]"); });
     text.addEventListener("focusout", event => {
       if (!event.relatedTarget?.closest(".block-format, [contenteditable]")) format.hidden = true;
     });
-    const menu = h("details", { class: "block-page-menu" }, h("summary", {}, "Page"),
-      h("div", { class: "block-menu-items" }, this.book.writable ? h("button", { onclick: () => {
-        menu.open = false;
-        this.revertPage();
-      } }, "Revert page") : null,
-      h("button", { onclick: () => this.setMode("blocks") }, "Read book")));
     this.inspector = h("div", { class: "inspector block-inspector" });
     this.main.className = "page blocks-page";
     this.main.replaceChildren(h("div", { class: "block-scan" }, scanToolbar, image),
       h("div", { class: "side block-side" }, h("div", { class: "toolbar block-page-tools" },
-        h("a", { href: "#blocks" }, "Read book"), menu, format), text, h("div", { class: "lower" }, this.inspector)));
+        h("a", { href: "#read" }, "Read book"), this.book.writable ? pageMenu(this, { reviewPageWithAI }) : null, format), text, h("div", { class: "lower" }, this.inspector)));
     this.pageView = new PageView(image, {
       editable: this.book.writable,
       typeLabel: blockName,
@@ -970,7 +909,7 @@ class App {
         text.querySelector(`.rtext[data-rid="${CSS.escape(rid)}"] > .lp[data-i="${index}"]`)?.classList.toggle("hl", on);
       },
     });
-    this.pageView.fit = "height";
+    this.pageView.fit = fit || "height";
     await this.refresh();
   }
 
@@ -979,12 +918,11 @@ class App {
     const url = await this.book.imageUrl(pid);
     if (pid !== this.pid || routeToken !== this.routeToken || !this.doc) return;
     this.pageView.show(this.doc, url, this.colors, this.furniture, this.tl);
-    if (this.routeView === "blocks" && this.blocksSource !== this.doc) {
+    if (this.blocksSource !== this.doc) {
       this.blocksProjection = projectOpenBook(this);
       this.blocksSource = this.doc;
     }
     this.textPanel.render();
-    this.regionTypePanel?.refresh();
     this.afterRender();
   }
 
@@ -995,32 +933,14 @@ class App {
   }
 
   renderPageInspector() {
-    const render = this.routeView === "blocks" ? blockInspector : renderInspector;
-    render(this.inspector, this);
+    blockInspector(this.inspector, this);
   }
 
   renderChecks() {
-    const [errors, warnings] = this.check(this.doc);
+    const [errors] = this.check(this.doc);
     this.lastErrors = errors;
-    const edited = this.book.edits.has(this.pid);
-    if (this.routeView === "blocks") {
-      const message = errors.length ? "Draft needs review" : this.dirty ? "Saving…" : this.book.writable ? "Saved" : "Read only";
-      this.status.replaceChildren(h("span", {}, message));
-      return;
-    }
-    let state;
-    if (errors.length) state = h("span", { class: "bad" }, `not saved: ${errors.length} problem${errors.length > 1 ? "s" : ""}`);
-    else if (this.dirty) state = h("span", { class: "pending" }, "saving…");
-    else state = h("span", { class: "ok" }, edited ? (this.book.writable ? "your version, saved in edits/" : "your version, saved in this browser") : "saved stage version");
-    this.status.replaceChildren(state);
-    const goto = msg => {
-      const m = /region [^#\s]+#(\S+?)[: ]/.exec(msg + " ") || /unit (\S+?)[: ]/.exec(msg + " ");
-      if (!m) return;
-      if (msg.includes("region ")) this.select({ region: m[1] }); else this.select({ unit: m[1] });
-    };
-    this.problems.replaceChildren(
-      ...errors.map(e => h("div", { class: "err", onclick: () => goto(e) }, "✗ " + e)),
-      ...warnings.map(w => h("div", { class: "warnline" }, "• " + w)));
+    const message = errors.length ? "Draft needs review" : this.dirty ? "Saving…" : this.book.writable ? "Saved" : "Read only";
+    this.status.replaceChildren(h("span", {}, message));
   }
 
   select(sel, { keepFocus = false } = {}) {
@@ -1207,7 +1127,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261122-reading-order", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261122-one-editor", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
@@ -1230,39 +1150,6 @@ class App {
       d.source = { ...d.source, char_h: res.charH, page_angle_deg: res.angle, uncovered_lines: res.uncovered || [] };
       delete d.source.geometry_error;
     }, { sameStep: true });
-  }
-
-  toggleDraw(btn) {
-    const on = !this.pageView.drawing;
-    this.pageView.setDrawing(on);
-    btn.classList.toggle("on", on);
-    if (on) this.toast("Drag a rectangle on the page. The new region goes into the selected unit, if it can.");
-  }
-
-  drawn(box, ev) {
-    this.pageView.setDrawing(false);
-    this.main.querySelector(".toolbar .draw")?.classList.remove("on");
-    const printed = Object.entries(this.tl.types).filter(([, t]) => "region" in t).map(([n]) => n);
-    // Placed where it is drawn; with a unit or region selected, the menu also offers to put it into that unit.
-    const offered = ops.drawnInto(this.doc, this.selection);
-    const intoBox = offered ? h("input", { type: "checkbox", "aria-label": `Put it into ${offered}` }) : null;
-    const into = () => (intoBox?.checked ? offered : null);
-    const menu = h("div", { class: "popup", style: `left:${ev.clientX}px;top:${ev.clientY}px` },
-      h("div", { class: "meta" }, "The new region's type:"),
-      offered ? h("label", { class: "draw-into", title: "unchecked, the region gets a unit of its type where it is drawn" }, intoBox, ` into ${offered} (${this.doc.units.find(unit => unit.id === offered)?.type})`) : null,
-      ...printed.map(t => h("button", { class: "link", onclick: () => {
-        menu.remove();
-        let rid = null;
-        if (this.edit(d => { rid = ops.addRegion(d, this.tl, t, box, into()); }, { after: () => { this.select({ region: rid }); this.textPanel.placeCaret(rid, 0, 0); } })) this.recompute();
-      } }, h("i", { style: `background:${this.colors[t]}` }), t)),
-      h("button", { class: "link", disabled: !this.book.writable, onclick: () => {
-        const chosen = into();
-        menu.remove(); newTypeDialog(this, type => {
-          if (this.edit(doc => { const rid = ops.addRegion(doc, this.tl, type, box, chosen); this.selection = { region: rid }; })) this.recompute();
-        }, true);
-      } }, "New type…"),
-      h("button", { class: "mini", onclick: () => menu.remove() }, "cancel"));
-    document.body.append(menu);
   }
 
   keydown(e) {
@@ -1385,12 +1272,15 @@ class App {
       document.body.append(a); a.click(); a.remove();
     };
     const id = book.manifest.book_id;
-    const assembled = async () => prepare(readingDocuments(book.pages, await book.all(), id => book.isSkipped?.(id)), this.tl, book.style);
+    const assembled = async () => {
+      const view = readingProjection(book.pages, await book.all(), this.tl, id => book.isSkipped?.(id));
+      return prepare(view.docs, view.types, book.style);
+    };
     // Each figure unit's regions cut from their page images, as data: URLs (ornaments, being furniture, are not in the text).
     const figureCrops = async P => {
       const out = {};
       for (const u of P.book.units) {
-        if ((this.tl.types[u.type] || {}).region !== "figure") continue;
+        if (P.tl.types[u.type]?.region !== "figure") continue;
         for (const c of u.children) {
           const R = c.region && P.regions[c.region];
           if (!R) continue;

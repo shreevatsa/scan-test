@@ -4,9 +4,9 @@
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
 
 import { analyzePage } from "./ink.js";
-import { regionsFromBoxes } from "./regions.js?v=20261122-reading-order";
+import { regionsFromBoxes } from "./regions.js?v=20261122-one-editor";
 import { LINES, OWNERSHIP } from "./config.js";
-import { lineBlocks } from "./blocks.js?v=20261122-reading-order";
+import { lineBlocks } from "./blocks.js?v=20261122-one-editor";
 
 const cache = new Map();
 

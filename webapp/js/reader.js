@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261122-reading-order";
+import { assemble } from "./assemble.js?v=20261122-one-editor";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, workflowAddress, hasReading, noContent } from "./workflow.js?v=20261122-reading-order";
-import { layerState } from "./layers.js?v=20261122-reading-order";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261122-reading-order";
+import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261122-one-editor";
+import { layerState } from "./layers.js?v=20261122-one-editor";
+import { readingProjection } from "./blocks.js?v=20261122-one-editor";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -143,7 +143,12 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
   // Plain (the Book view and the HTML export): no page numbers in the text, only anchors; each note beside its marker,
   // and a note no marker points to beside the start of its page.
   const notes = plain ? plainNotes(P) : null;
-  const sidenote = (uid, cls = "") => `<span class="sidenote${cls}" id="sn-${safeId(uid)}">${notes.text(uid)}</span>`;
+  const renderedNotes = new Set();
+  const sidenote = (uid, cls = "") => {
+    if (renderedNotes.has(uid)) return "";
+    renderedNotes.add(uid);
+    return `<span class="sidenote${cls}" id="sn-${safeId(uid)}">${notes.text(uid)}</span>`;
+  };
   const toc = tocTargets(P);
   let lastPage = null, flowNow = "main";
   const pageMark = pid => {
@@ -305,67 +310,6 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
   return html;
 }
 
-export async function renderReader(el, app, { keepPlace = false } = {}) {
-  const { book } = app;
-  const token = app.routeToken;
-  const generation = app.readerGeneration = (app.readerGeneration || 0) + 1;
-  const current = () => app.book === book && app.routeToken === token && app.readerGeneration === generation && app.mode === "read";
-  const oldAnchor = keepPlace && [...el.querySelectorAll(".r-reg")].find(region => region.getBoundingClientRect().bottom > el.getBoundingClientRect().top);
-  const bookmark = oldAnchor && { ref: oldAnchor.dataset.ref, top: oldAnchor.getBoundingClientRect().top };
-  const oldScroll = el.scrollTop;
-  app.onLeaveReader?.(); app.onLeaveReader = null;
-  app.textPanel?.destroy?.(); app.pageView?.destroy(); app.textPanel = null; app.pageView = null; app.doc = null;
-  el.replaceChildren(h("div", { class: "loading" }, "Loading the pages…"));
-  const all = await book.all((d, n) => { if (current()) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
-  if (!current()) return;
-  const readable = all.filter(doc => hasReading(doc, book.types));
-  const gaps = readingGaps(book.pages, new Set([...readable.map(doc => doc.page.id), ...book.pages.filter(page => book.isSkipped?.(page.id)).map(page => page.id)]));   // a dimmed page is left out on purpose, so it is no gap
-  const P = prepare(readingDocuments(book.pages, readable, id => book.isSkipped?.(id)), book.types, book.style);
-  const issues = readingIssues(readable, book.types, app.validate, P.warnings, P.unitCanonical);
-  app.readerData = P;
-  if (app.readerPrinted === undefined) app.readerPrinted = !!book.style;
-  const body = h("article", { class: "reader" });
-  const draw = () => {
-    const printed = app.readerPrinted && !!P.sheet;
-    body.innerHTML = bookHtml(P, { printed });
-    body.classList.toggle("printed", printed);
-    body.classList.toggle("structure", !!app.readerStructure);
-    body.style.cssText = printed ? baseCss(P.sheet) : "";
-    fillFigures(body, app, P);
-  };
-  const tools = h("div", { class: "r-tools" },
-    h("label", {}, h("input", { type: "checkbox", checked: app.readerStructure, onchange: e => { app.readerStructure = e.target.checked; body.classList.toggle("structure", e.target.checked); } }), " show the units"),
-    P.sheet ? h("label", { title: "fonts, sizes, alignment and spacing from the book's style sheet and each unit's style" },
-      h("input", { type: "checkbox", checked: app.readerPrinted ? true : null, onchange: e => { app.readerPrinted = e.target.checked; renderReader(el, app, { keepPlace: true }).catch(error => app.toast(error.message, "bad")); } }), " as printed") : null,
-    h("span", { class: "meta" }, `${readable.length} pages · ${P.book.units.length} units · ${book.edits.size} pages corrected`),
-    issues.length ? h("details", { class: "warn" }, h("summary", {}, `${issues.length} reading problems`),
-      ...issues.map(issue => h("p", {}, h("button", { class: "link", onclick: () => app.selectReadingIssue?.(issue) }, issue.message)))) : null,
-    app.dirty ? h("div", { class: "warn" }, "The page open in the editor has changes that are not saved yet; they are not shown here.") : null);
-  draw();
-  const panel = h("aside", { class: "read-panel", "aria-label": "Passage structure", hidden: true });
-  const workspace = h("div", { class: "read-workspace" }, h("div", { class: "reading-main" }, tools, body), panel);
-  el.replaceChildren(app.book.writable ? h("div", { class: "r-stage-actions" }, h("button", { onclick: () => app.setMode("read&view=pages") }, "Complete and review units and links")) : "",
-    ...(gaps.length ? [h("p", { class: "reading-gaps" }, `${gaps.join(" · ")} ${gaps.length === 1 && !gaps[0].startsWith("Pages") ? "is" : "are"} not here yet. Move these pages on from Text to include them.`)] : []),
-    ...(P.provisionalPages.size ? [h("p", { class: "reading-gaps" }, `${P.provisionalPages.size} pages have provisional unit grouping. Complete units and links to review that grouping.`)] : []), workspace);
-  wireSourcePreview(body, app, P);
-  const leavePreview = app.onLeaveReader;
-  const leavePanel = await wireReadingPanel({ app, body, panel, workspace, docs: readable, P, issues, redraw: () => renderReader(el, app, { keepPlace: true }) });
-  if (!current()) { leavePanel(); leavePreview(); return; }
-  app.onLeaveReader = () => { leavePanel(); leavePreview(); };
-  if (bookmark) {
-    const anchor = body.querySelector(`[data-ref="${CSS.escape(bookmark.ref)}"]`);
-    if (anchor) el.scrollTop = oldScroll + anchor.getBoundingClientRect().top - bookmark.top;
-  } else if (keepPlace) el.scrollTop = oldScroll;
-  body.addEventListener("click", e => {
-    const pb = e.target.closest(".r-pb");
-    if (pb) { e.preventDefault(); app.openPage(pb.dataset.page); }
-  });
-  body.addEventListener("dblclick", e => {
-    const r = e.target.closest(".r-reg");
-    if (r) { const [pid, rid] = r.dataset.ref.split("#"); app.openPage(pid, { region: rid }); }
-  });
-}
-
 // The contents beside the Book view: the parts (top-level sections) and their sections, each by its label and number,
 // after a link to the front matter and to a printed table of contents if the book has one.
 export function bookToc(P) {
@@ -493,42 +437,37 @@ export const BOOK_CSS = `
 @media print { .bv-toc, .bv-open { display: none; } .bookview { display: block; } }
 `;
 
-// The Book view in the app: the book to read, with its contents beside it and its notes in the margin; no page
-// numbers, nothing to edit, and clicking opens nothing but notes and links.
-export async function renderBookView(el, app, blocks = null) {
-  const { book } = app;
-  const token = app.routeToken;
-  app.onLeaveReader?.(); app.onLeaveReader = null;
-  app.textPanel?.destroy?.(); app.pageView?.destroy(); app.textPanel = null; app.pageView = null; app.doc = null;
+export async function renderBookView(el, app) {
+  const { book, routeToken } = app;
+  app.textPanel?.destroy();
+  app.pageView?.destroy();
+  app.textPanel = null; app.pageView = null; app.doc = null;
   el.replaceChildren(h("div", { class: "loading" }, "Loading the pages…"));
-  let P = blocks;
-  if (!P) {
-    const all = await book.all((d, n) => { if (app.routeToken === token) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
-    if (app.book !== book || app.routeToken !== token) return;
-    const readable = all.filter(doc => hasReading(doc, book.types));
-    P = prepare(readingDocuments(book.pages, readable, id => book.isSkipped?.(id)), book.types, book.style);
-  }
+  const current = () => app.book === book && app.routeToken === routeToken;
+  const all = await book.all((done, total) => {
+    if (current()) el.firstChild.textContent = `Loading the pages… ${done} of ${total}`;
+  });
+  if (!current()) return;
+  const readable = all.filter(doc => hasReading(doc, book.types));
+  const projection = readingProjection(book.pages, readable, book.types, id => book.isSkipped?.(id));
+  const P = prepare(projection.docs, projection.types, book.style);
   if (!document.getElementById("bookview-css")) document.head.append(h("style", { id: "bookview-css" }, BOOK_CSS));
-  if (!P.book.units.length && !blocks) {
+  if (!P.book.units.length) {
     el.replaceChildren(h("p", { class: "loading" }, "Text appears here as pages are transcribed."));
     return;
   }
-  const printed = !!(app.readerPrinted && P.sheet);
+  const printed = Boolean((app.readerPrinted ?? true) && P.sheet);
   const view = h("div", { class: "bookview" });
   view.innerHTML = `<button class="bv-open" type="button">☰ Contents</button>${bookToc(P)}<article class="reader plain${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>${bookHtml(P, { printed, plain: true })}</article>`;
-  if (blocks) {
-    const first = P.book.pages[0];
-    const source = h("div", { class: "blocks-reader-tools" },
-      h("a", { href: first ? workflowAddress("blocks", first.id) : "#pages" }, "Open page editor"),
-      h("span", {}, "Double-click text to see its scan."));
-    view.addEventListener("dblclick", event => {
-      const ref = event.target.closest(".r-reg")?.dataset.ref;
-      if (!ref || event.target.closest("a")) return;
-      const [pid, region] = ref.split("#");
-      app.openPage(pid, { region });
-    });
-    el.replaceChildren(source, view);
-  } else el.replaceChildren(view);
+  const first = P.book.pages[0];
+  const editor = h("a", { href: workflowAddress("page", app.pid || first.id) }, "Open page editor");
+  view.addEventListener("dblclick", event => {
+    const ref = event.target.closest(".r-reg")?.dataset.ref;
+    if (!ref || event.target.closest("a")) return;
+    const [pid, region] = ref.split("#");
+    app.openPage(pid, { region });
+  });
+  el.replaceChildren(h("div", { class: "blocks-reader-tools" }, editor, h("span", {}, "Double-click text to see its scan.")), view);
   fillFigures(view, app, P);
   wireBookView(view, el);
 }
@@ -578,41 +517,6 @@ export async function fillFigures(body, app, P) {
     if (!R) continue;
     cropInto(el, await app.book.imageUrl(R.page.id), R.page, R.region.box || bbox(R.region.polygons), 480, 420);
   }
-}
-
-// A floating view of a passage's region on its page image, shown on hover.
-function wireSourcePreview(body, app, P) {
-  const tip = h("div", { class: "r-source" });
-  document.body.append(tip);
-  let current = null;
-  body.addEventListener("mouseover", async e => {
-    const r = e.target.closest(".r-reg");
-    if (!r || r.dataset.ref === current) return;
-    current = r.dataset.ref;
-    const R = P.regions[current];
-    if (!R) return;
-    const url = await app.book.imageUrl(R.page.id);
-    if (current !== r.dataset.ref) return;
-    const [x1, y1, x2, y2] = R.region.box || bbox(R.region.polygons);
-    const pad = 12, bw = x2 - x1 + 2 * pad, bh = y2 - y1 + 2 * pad;
-    const s = Math.min(1, 560 / bw, 360 / bh);
-    tip.style.width = `${bw * s}px`;
-    tip.style.height = `${bh * s}px`;
-    tip.style.backgroundImage = `url("${url}")`;
-    tip.style.backgroundSize = `${R.page.width * s}px ${R.page.height * s}px`;
-    tip.style.backgroundPosition = `${-(x1 - pad) * s}px ${-(y1 - pad) * s}px`;
-    tip.title = current;
-    const rect = r.getBoundingClientRect();
-    const below = rect.bottom + 8 + bh * s < innerHeight;
-    tip.style.left = `${Math.max(8, Math.min(innerWidth - bw * s - 8, rect.left))}px`;
-    tip.style.top = `${below ? rect.bottom + 8 : Math.max(8, rect.top - bh * s - 8)}px`;
-    tip.classList.add("on");
-  });
-  body.addEventListener("mouseout", e => {
-    const r = e.target.closest(".r-reg");
-    if (r && !r.contains(e.relatedTarget)) { tip.classList.remove("on"); current = null; }
-  });
-  app.onLeaveReader = () => tip.remove();
 }
 
 // The book as plain text, with page references: each top-level unit's text, a blank line between units,

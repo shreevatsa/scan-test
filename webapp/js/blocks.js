@@ -1,13 +1,14 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261122-reading-order";
-import { orderedRegions } from "./flags.js?v=20261122-reading-order";
-import { pageLabel } from "./pipeline/steps.js?v=20261122-reading-order";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261122-reading-order";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261122-reading-order";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261122-reading-order";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261122-reading-order";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261122-one-editor";
+import { orderedRegions } from "./flags.js?v=20261122-one-editor";
+import { pageLabel } from "./pipeline/steps.js?v=20261122-one-editor";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261122-one-editor";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261122-one-editor";
+import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261122-one-editor";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261122-one-editor";
 import { cp, shiftSpans } from "./inline.js";
-import { readingDocuments } from "./workflow.js?v=20261122-reading-order";
+import { layerState } from "./layers.js?v=20261122-one-editor";
+import { readingDocuments } from "./workflow.js?v=20261122-one-editor";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
@@ -144,6 +145,46 @@ export function projectBlocks(pages, saved, types, skipped) {
   return { docs, types: tl, report, noteTypes, mainTypes };
 }
 
+function hasSavedStructure(doc) {
+  if (!doc.units?.length) return false;
+  const layer = layerState(doc, "units");
+  return layer?.state !== "provisional" || layer.accepted || !!doc.relations?.length ||
+    doc.units.some(unit => unit.label != null || unit.number != null || unit.lang || unit.style || unit.open?.start || unit.open?.end) ||
+    doc.page.regions.some(region => region.lines?.some(line => line.end != null || line.style));
+}
+
+// Keep the structure of existing books. Apply rules to runs of ungrouped pages so
+// a generated section never spans a saved section or a gap in the transcription.
+export function readingProjection(pages, saved, types, skipped) {
+  const docs = readingDocuments(pages, saved, skipped);
+  const report = { numberBreaks: {} };
+  const eligible = doc => doc && doc.page.regions.length && !hasSavedStructure(doc);
+  for (let start = 0; start < docs.length;) {
+    if (!eligible(docs[start])) { start++; continue; }
+    let end = start + 1;
+    while (end < docs.length && eligible(docs[end])) end++;
+    const run = docs.slice(start, end);
+    const view = projectBlocks(run.map(doc => doc.page), run, types);
+    types = view.types;
+    for (const [index, doc] of view.docs.entries()) {
+      const label = run[index].page.label;
+      if (label != null) {
+        doc.page.label = label;
+        const printed = run[index].page.regions.find(region => region.type === "page_number");
+        if (printed) doc.page.regions.find(region => region.id === printed.id).lines = structuredClone(printed.lines);
+      }
+      docs[start + index] = doc;
+    }
+    for (const [name, breaks] of Object.entries(view.report.numberBreaks))
+      (report.numberBreaks[name] ||= []).push(...breaks);
+    start = end;
+  }
+  const { noteTypes, mainTypes } = noteTypesOf(types);
+  for (const [type, path] of regionTypePaths(types))
+    if (types.types[type].region && types.types[path[0]].flow === "main") mainTypes.add(type);
+  return { docs, types, report, noteTypes, mainTypes };
+}
+
 export function blockContext(doc) {
   const contexts = new Map(), units = new Map(doc?.units.map(unit => [unit.id, unit]));
   function visit(id, containers) {
@@ -159,6 +200,9 @@ export function blockContext(doc) {
   return contexts;
 }
 
-export function pageBlocks(doc, types) {
-  return orderedRegions(doc, types);
+export function pageBlocks(doc, types, context) {
+  const regions = orderedRegions(doc, types);
+  if (!context?.size) return regions;
+  const positions = new Map([...context.keys()].map((id, index) => [id, index]));
+  return regions.sort((a, b) => (positions.get(a.id) ?? Infinity) - (positions.get(b.id) ?? Infinity));
 }

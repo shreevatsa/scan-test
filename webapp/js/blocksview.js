@@ -1,23 +1,20 @@
-import { TextPanel } from "./editor.js?v=20261122-reading-order";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, projectBlocks } from "./blocks.js?v=20261122-reading-order";
-import { linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261122-reading-order";
+import { TextPanel, renderInspector } from "./editor.js?v=20261122-one-editor";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261122-one-editor";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261122-one-editor";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261122-reading-order";
+import * as ops from "./ops.js?v=20261122-one-editor";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261122-reading-order";
-import { prepare } from "./reader.js?v=20261122-reading-order";
-import { pageReviewState } from "./layers.js?v=20261122-reading-order";
-import { REVIEW_LABELS, workflowAddress } from "./workflow.js?v=20261122-reading-order";
+import { noteProblems } from "./note-links.js?v=20261122-one-editor";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261122-one-editor";
+import { suggestionButton } from "./review-view.js?v=20261122-one-editor";
+import { unitPath } from "./editing.js?v=20261122-one-editor";
+import { pageReviewState } from "./layers.js?v=20261122-one-editor";
+import { REVIEW_LABELS } from "./workflow.js?v=20261122-one-editor";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
   const saved = book.pages.map(page => page.id === doc?.page.id ? doc : app.pageStates.get(page.id)?.doc).filter(Boolean);
-  return projectBlocks(book.pages, saved, book.types, book.skipped);
-}
-
-export function prepareBlockReader(app) {
-  const projection = projectOpenBook(app);
-  return prepare(projection.docs, projection.types, app.book.style);
+  return readingProjection(book.pages, saved, book.types, book.skipped);
 }
 
 const tag = (type, colors) => h("span", { class: "block-tag", style: `--block-color:${colors[type] || "#65716c"}` }, blockName(type));
@@ -34,7 +31,7 @@ export function blockChecks(app, doc, projection) {
   const findings = [], add = (text, label, action) => findings.push({ text, label, action });
   const openBlock = rid => rid && app.select({ region: rid });
   const scan = box => { app.pageView.markLine({ pinned: box }); app.pageView.revealBox(box); };
-  const legacy = () => { location.hash = workflowAddress("page", doc.page.id); };
+  const details = () => app.textPanel.showDetails(doc);
   const plain = {
     uncertain: "Check this block’s type and outline.",
     "unknown-type": "Give this block a type.",
@@ -66,7 +63,7 @@ export function blockChecks(app, doc, projection) {
       add("An area on the scan needs a type.", "Review area", () => app.select({ omitted: index }));
     } else if (plain[flag.code]) {
       add(plain[flag.code], flag.region ? "Show block" : flag.box ? "Show scan" : "Review",
-        flag.region ? () => openBlock(flag.region) : flag.box ? () => scan(flag.box) : legacy);
+        flag.region ? () => openBlock(flag.region) : flag.box ? () => scan(flag.box) : details);
     }
   }
   for (const region of pageBlocks(doc, tl)) {
@@ -86,8 +83,9 @@ export function blockChecks(app, doc, projection) {
         add(`Check the ${type === "verse" ? "verse" : "episode"} numbers against the scan.`, "Show block", () => openBlock(doc.page.regions.find(region => region.type === type)?.id));
     }
   }
-  if (Object.keys(doc.source?.suggestions || {}).length) add("A model suggestion is ready to review.", "Review suggestion", legacy);
-  if (app.check(doc)[0].length) add("This page needs a correction before it can be saved.", "Show details", legacy);
+  if (Object.keys(doc.source?.suggestions || {}).length) add("A model suggestion is ready to review.", "Review suggestion", () => app.textPanel.showSuggestion());
+  const [errors, warnings] = app.check(doc);
+  if (errors.length || warnings.length) add("Review the page checks.", "Show details", details);
   return findings;
 }
 
@@ -109,7 +107,14 @@ export class BlocksPanel extends TextPanel {
         app.book.writable ? h("button", { onclick: () => app.setPageReviewed(!review.checked) }, review.checked ? "Reopen review" : "Mark checked") : null),
       this.findings, this.reviewItem));
     this.refreshFindings();
-    const blocks = pageBlocks(doc, tl);
+    const ignored = ignoredLines(doc);
+    if (ignored.length) el.firstChild.append(h("details", {}, h("summary", {}, `Ignored lines (${ignored.length})`),
+      ...ignored.map(entry => {
+        const box = typeof entry === "number" ? doc.source.uncovered_lines?.find(line => line.line_id === entry)?.box : entry.box;
+        return h("p", {}, `Line ${linePosition(box, doc.page) || "outside the boxes"} `,
+          app.book.writable ? h("button", { onclick: () => app.edit(next => ops.restoreLine(next, entry)) }, "Restore") : null);
+      })));
+    const blocks = pageBlocks(doc, tl, this.context);
     let prior = [];
     for (const region of blocks) {
       const path = this.context.get(region.id)?.containers || [];
@@ -164,7 +169,7 @@ export class BlocksPanel extends TextPanel {
     this.wire(host);
     if (this.textEditable) host.addEventListener("focusout", () => {
       const current = app.doc?.page.regions.find(value => value.id === id);
-      if (!current || !this.projection.mainTypes.has(current.type) || app.mode !== "page" || app.routeView !== "blocks") return;
+      if (!current || !this.projection.mainTypes.has(current.type) || app.mode !== "page") return;
       let changed = false;
       for (const [index, line] of (current.lines || []).entries()) {
         const before = line.text || "";
@@ -210,6 +215,14 @@ export class BlocksPanel extends TextPanel {
     if (on && reveal && block) block.scrollIntoView({ block: "nearest" });
   }
 
+  showDetails(doc) {
+    this.reviewItem.replaceChildren(...this.app.check(doc).flat().map(message => h("p", { class: "warn" }, message)));
+  }
+
+  showSuggestion() {
+    this.reviewItem.replaceChildren(suggestionButton(this.app, this.app.doc.page.id));
+  }
+
   reviewFinding(line) {
     this.reviewItem.replaceChildren(h("p", {}, "Add the line as a block, or leave out a stamp, shelf mark or blemish."),
       this.app.book.writable ? typesMenu(this.app, "", type => this.app.addRegionOverLine(line.line_id, type)) : null,
@@ -240,8 +253,8 @@ export function blockInspector(el, app) {
     return;
   }
   app.pageView.markLine({ pinned: null });
-  const marker = selection.marker && ops.findMarker(doc, selection.marker);
-  const region = doc.page.regions.find(value => value.id === (selection.region || marker?.region.id));
+  if (selection.marker || selection.unit) { renderInspector(el, app); return; }
+  const region = doc.page.regions.find(value => value.id === selection.region);
   if (!region) return;
   const type = tl.types[region.type];
   const fields = [h("label", {}, "Type", typesMenu(app, region.type, value => app.retypeRegion(region.id, value)))];
@@ -263,25 +276,28 @@ export function blockInspector(el, app) {
   const numbered = type?.region === "page_number" ? app.textPanel.projection.docs.find(value => value?.page.id === doc.page.id)?.page.label : unit?.number;
   if (numbered) fields.push(h("span", {}, "Number ", numbered));
   if (unit?.label) fields.push(h("span", {}, "Label ", unit.label));
-  if (marker) fields.push(h("span", {}, `Marker [${marker.span.marker}]`));
-  const move = delta => app.edit(next => ops.moveRegionOrder(next, tl, region.id, delta));
+  const owning = ops.ownerOf(doc, region.id);
   const more = h("details", { class: "block-more" }, h("summary", {}, "More…"),
-    h("div", { class: "actions" },
-      h("button", { disabled: !book.writable || type?.role === "furniture", onclick: () => move(-1) }, "Earlier"),
-      h("button", { disabled: !book.writable || type?.role === "furniture", onclick: () => move(1) }, "Later"),
-      h("button", { disabled: !book.writable || type?.region === "figure", onclick: () => app.edit(next => ops.addLine(next, region.id, region.lines.length)) }, "Add text line"),
-      h("button", { onclick: () => { location.hash = workflowAddress("page", doc.page.id, { region: region.id }); } }, "Original tools")));
+    ...(owning && book.writable ? unitPath(doc, owning.id).map(unit =>
+      h("button", { onclick: () => app.select({ unit: unit.id }) }, `Edit ${unit.label || blockName(unit.type).toLowerCase()}`)) : []),
+    book.writable && type?.region !== "figure" ? h("button", { onclick: () => app.edit(next => ops.addLine(next, region.id, region.lines.length)) }, "Add text line") : null,
+    book.writable ? regionTools(app, region) : null);
   el.append(h("div", { class: "block-fields" }, ...fields), more);
 }
 
 export function drawBlock(app, box, event) {
   app.pageView.setDrawing(false);
   app.main.querySelector(".draw")?.classList.remove("on");
+  const owning = ops.drawnInto(app.doc, app.selection);
+  const into = owning ? h("input", { type: "checkbox" }) : null;
+  const add = type => {
+    menu.remove();
+    if (app.edit(doc => { app.selection = { region: ops.addRegion(doc, app.tl, type, box, into?.checked ? owning : null) }; })) app.recompute();
+  };
   const menu = h("div", { class: "popup block-draw-menu", style: `left:${event.clientX}px;top:${event.clientY}px` },
-    typesMenu(app, "", type => {
-      menu.remove();
-      if (app.edit(doc => { app.selection = { region: ops.addRegion(doc, app.tl, type, box) }; })) app.recompute();
-    }),
+    typesMenu(app, "", add),
+    into ? h("label", {}, into, " Add to the selected group") : null,
+    h("button", { onclick: () => { menu.remove(); newTypeDialog(app, add, true); } }, "New type…"),
     h("button", { onclick: () => menu.remove() }, "Cancel"));
   document.body.append(menu);
   menu.querySelector("select").focus();

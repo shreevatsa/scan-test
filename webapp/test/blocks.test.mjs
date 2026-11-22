@@ -1,14 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { blockContext, pageBlocks, projectBlocks } from "../js/blocks.js";
+import { blockContext, pageBlocks, projectBlocks, readingProjection } from "../js/blocks.js";
 import { workflowAddress, workflowRoute } from "../js/workflow.js";
 
 test("the blocks address opens directly regardless of the current workflow stage", () => {
   const page = workflowAddress("blocks", "page 1", { region: "r1" });
   assert.equal(page, "#blocks&p=page%201&r=r1");
   assert.deepEqual(workflowRoute(page), { stage: "page", mode: "page", pid: "page 1",
-    view: "blocks", region: "r1", unit: null });
-  assert.equal(workflowRoute("#blocks").mode, "blocks-read");
+    view: "", region: "r1", unit: null });
+  assert.equal(workflowRoute("#blocks").mode, "read");
 });
 
 test("blocks build episode brackets and link notes without using saved units or rewriting the page", () => {
@@ -37,4 +37,22 @@ test("blocks build episode brackets and link notes without using saved units or 
   assert.match(view.page.regions.find(region => region.id === "verse").lines[1].text, /²/);
   assert.deepEqual(pageBlocks(doc, types).map(region => region.id), ["verse", "closing", "note", "page"]);
   assert.deepEqual(doc, before);
+});
+
+test("the reader keeps saved grouping and applies rules only to ungrouped pages", () => {
+  const types = { flows: { main: "Text" }, types: { title: { flow: "main", contains: ["heading"] }, heading: { region: "heading", flow: "main" } } };
+  const page = id => ({ format: "page", page: { id, regions: [{ id: "heading", type: "heading", order: 1, lines: [{ text: "Title" }] }] },
+    source: { layers: { units: { state: "provisional" } } }, units: [], flows: { main: [] } });
+  const saved = page("p1"), fresh = page("p2");
+  saved.units = [{ id: "h", type: "heading", number: "i", children: [{ region: "p1#heading" }] },
+    { id: "title", type: "title", label: "Printed title", children: [{ unit: "h" }] }];
+  saved.flows.main = ["title"];
+  saved.page.label = "iv";
+  saved.page.regions[0].lines[0].end = "line";
+  const before = structuredClone([saved, fresh]);
+  const view = readingProjection([saved.page, fresh.page], [saved, fresh], types);
+  assert.deepEqual(view.docs[0], saved);
+  assert.deepEqual(view.docs[1].flows.main, ["u1"]);
+  assert.deepEqual(view.docs[1].units[0].children, [{ region: "p2#heading" }]);
+  assert.deepEqual([saved, fresh], before);
 });

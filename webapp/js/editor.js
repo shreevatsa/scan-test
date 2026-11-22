@@ -1,4 +1,4 @@
-import { suggestionButton } from "./review-view.js?v=20261122-reading-order";
+import { suggestionButton } from "./review-view.js?v=20261122-one-editor";
 // The text side of the page editor: the page's units in reading order, each region's line pieces as editable
 // lines (one region is one editing host, so a selection can run across its lines), and an inspector for the
 // selected unit, region or note marker. Text typed into a line is read back from the DOM into text and spans; every
@@ -6,10 +6,10 @@ import { suggestionButton } from "./review-view.js?v=20261122-reading-order";
 
 import { cp, cpLength, covered, removeKind, normalizeSpans } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261122-reading-order";
-import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261122-reading-order";
-import { textFlags } from "./flags.js?v=20261122-reading-order";
-import { regionTools, pageFlags, omittedInspector } from "./regionsview.js?v=20261122-reading-order";
+import * as ops from "./ops.js?v=20261122-one-editor";
+import { editorFocus, applyUnitAction, unitRegionIds } from "./editing.js?v=20261122-one-editor";
+import { textFlags } from "./flags.js?v=20261122-one-editor";
+import { regionTools, omittedInspector } from "./regionsview.js?v=20261122-one-editor";
 
 const END_CYCLE = { space: "hyphen", hyphen: "join", join: "line", line: "space" };
 const END_NAMES = { space: "a space", hyphen: "a hyphen to drop (the word goes on)", join: "nothing (the word goes on)", line: "a line break" };
@@ -105,111 +105,6 @@ export class TextPanel {
   get unitsEditable() { return this.focus !== "text"; }
 
   get inlineKinds() { return new Set(Object.keys(this.app.tl.inline || {})); }
-
-  render() {
-    const { doc } = this.app;
-    const el = this.el;
-    const scroll = el.scrollTop;
-    el.replaceChildren();
-    this.units = Object.fromEntries(doc.units.map(u => [u.id, u]));
-    this.regions = Object.fromEntries(doc.page.regions.map(r => [r.id, r]));
-    this.drawn = new Set();
-    const problems = doc.source?.problems || [];
-    if (problems.length) el.append(h("div", { class: "problems model" }, h("b", {}, "The model's notes on this page"), ...problems.map(p => h("div", {}, "• " + p))));
-    this.findings = h("div", { class: "page-findings" });
-    el.append(this.findings);
-    this.refreshFindings();
-    for (const [flow, tops] of Object.entries(doc.flows)) {
-      const sec = h("section", { class: "flow" }, h("div", { class: "flow-name" }, `flow ${flow}`));
-      tops.forEach((uid, i) => sec.append(this.unitBlock(uid, { flow }, i)));
-      if (!tops.length) sec.append(h("div", { class: "empty" }, "(nothing on this page)"));
-      el.append(sec);
-    }
-    const loose = doc.units.filter(u => !this.drawn.has(u.id));
-    if (loose.length) {
-      const sec = h("section", { class: "flow" }, h("div", { class: "flow-name bad" }, "units in no flow"));
-      for (const u of loose) if (!this.drawn.has(u.id)) sec.append(this.unitBlock(u.id, null, 0));
-      el.append(sec);
-    }
-    const owned = new Set(doc.units.flatMap(u => u.children.filter(c => c.region).map(c => localRegion(c.region))));
-    const furn = doc.page.regions.filter(r => !owned.has(r.id));
-    if (furn.length) {
-      const sec = h("section", { class: "flow furniture" }, h("div", { class: "flow-name" }, "page furniture and unowned regions"));
-      for (const r of furn) sec.append(this.regionBlock(r.id, null, 0));
-      el.append(sec);
-    }
-    const omitted = doc.source?.omitted_regions || [];
-    if (omitted.length) el.append(h("section", { class: "flow omitted" }, h("div", { class: "flow-name" }, "left out by the transcription step (type other)"),
-      ...omitted.map(o => h("div", { class: "omit" }, `${o.region}: ${(o.text || []).join(" / ")}`))));
-    el.scrollTop = scroll;
-    this.markSelection();
-  }
-
-  refreshFindings() {
-    this.findings.replaceChildren(...pageFlags(this.app, { open: this.flagsOpen, onToggle: open => { this.flagsOpen = open; } }));
-  }
-
-  unitBlock(uid, container, index) {
-    const app = this.app, u = this.units[uid];
-    if (!u) return h("div", { class: "unit bad" }, `?? ${uid}`);
-    if (this.drawn.has(uid)) return h("div", { class: "unit bad" }, `${uid} again (not a tree)`);
-    this.drawn.add(uid);
-    const open = end => {
-      const on = !!(u.open || {})[end];
-      return h("span", {
-        class: "open" + (on ? " on" : ""), title: end === "start" ? (on ? "begun on an earlier page (click to change)" : "click if this unit began on an earlier page")
-          : (on ? "goes on on a later page (click to change)" : "click if this unit goes on on a later page"),
-        onclick: e => { e.stopPropagation(); app.edit(d => ops.setOpen(d, uid, end, !on)); },
-      }, end === "start" ? "↑" : "↓");
-    };
-    const mover = container ? this.movers(container, index) : null;
-    const head = h("div", { class: "uhead", onclick: () => app.select({ unit: uid }) }, open("start"),
-      h("span", { class: "utype" }, u.type), u.number ? h("span", { class: "unum" }, u.number) : null,
-      u.label ? h("span", { class: "ulabel" }, `“${u.label}”`) : null, open("end"), mover);
-    const block = h("div", { class: "unit", dataset: { uid } }, head);
-    u.children.forEach((c, k) => {
-      if (k > 0) block.append(h("div", { class: "split", title: "split the unit here", onclick: () => app.edit(d => ops.splitUnit(d, uid, k)) }, "✂ split here"));
-      block.append(c.unit ? this.unitBlock(c.unit, { unit: uid }, k) : this.regionBlock(localRegion(c.region), { unit: uid }, k));
-    });
-    return block;
-  }
-
-  movers(container, index) {
-    const app = this.app;
-    return h("span", { class: "movers" },
-      h("button", { class: "mini", title: "move up", onclick: e => { e.stopPropagation(); app.edit(d => ops.moveChild(d, container, index, -1)); } }, "▲"),
-      h("button", { class: "mini", title: "move down", onclick: e => { e.stopPropagation(); app.edit(d => ops.moveChild(d, container, index, +1)); } }, "▼"));
-  }
-
-  regionBlock(rid, container, index) {
-    const app = this.app, r = this.regions[rid];
-    if (!r) return h("div", { class: "region bad" }, `?? ${rid}`);
-    const col = app.colors[r.type] || "#888";
-    const block = h("div", { class: "region", dataset: { rid }, style: `border-left-color:${col}` });
-    block.append(h("div", { class: "rhead", onclick: () => app.select({ region: rid }) },
-      h("span", { class: "rid" }, rid), h("span", { class: "rtype", style: `color:${col}` }, r.type),
-      container ? this.movers(container, index) : null));
-    if (app.tl.types[r.type]?.region === "figure" && !(r.lines || []).length) {
-      const owner = ops.ownerOf(app.doc, rid);
-      const pic = h("div", { class: "figpic", title: "the figure on the page" });
-      app.book.imageUrl(app.doc.page.id).then(url => cropInto(pic, url, app.doc.page, r.box || bbox(r.polygons), 260, 160));
-      block.append(pic, h("div", { class: "hint" }, owner?.label ? `Label: ${owner.label}` : "A figure: no text. Select its unit to give it a label (what it shows)."));
-      return block;
-    }
-    const lang = app.tl.types[r.type]?.lang;
-    const host = h("div", { class: `rtext${this.unitsEditable ? " line-joins" : ""}`, contenteditable: this.textEditable ? "true" : null, spellcheck: "false", dataset: { rid }, lang: lang || null,
-      "aria-label": `${rid} transcription${this.textEditable ? "" : ", read only"}` });
-    this.fillHost(host, r);
-    this.wire(host);
-    block.append(host);
-    const kept = r.source?.transcription?.lines;
-    if (kept && (r.lines || []).every(L => !L.text)) {
-      block.append(h("div", { class: "kept" }, h("div", {}, `The transcription has ${kept.length} lines for ${(r.lines || []).length} line pieces, so it was kept aside:`),
-        h("div", { class: "kept-text" }, kept.map(k => k.text).join(" / ")),
-        this.textEditable ? h("button", { onclick: () => app.edit(d => ops.useKeptText(d, rid)) }, "Put it on the line pieces") : null));
-    }
-    return block;
-  }
 
   fillHost(host, r) {
     const app = this.app;

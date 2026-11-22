@@ -1,14 +1,14 @@
 import { h, esc } from "./render.js";
-import { regionPath } from "./pageimage.js?v=20261122-reading-order";
-import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261122-reading-order";
-import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261122-reading-order";
+import { regionPath } from "./pageimage.js?v=20261122-one-editor";
+import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261122-one-editor";
+import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261122-one-editor";
 import { pageRange } from "./pipeline/pdf.js";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261122-reading-order";
-import { reviewPage } from "./review-view.js?v=20261122-reading-order";
-import { settings } from "./store.js?v=20261122-reading-order";
-import { money, costEstimate } from "./reader-controls.js?v=20261122-reading-order";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261122-one-editor";
+import { reviewPage } from "./review-view.js?v=20261122-one-editor";
+import { settings } from "./store.js?v=20261122-one-editor";
+import { money, costEstimate } from "./reader-controls.js?v=20261122-one-editor";
 import { runProgress } from "./run-progress.js";
-import { pageSelectionText } from "./page-browser.js?v=20261122-reading-order";
+import { pageSelectionText } from "./page-browser.js?v=20261122-one-editor";
 
 function scanCard(record, profile, image, reference, onChoose, onReview) {
   const paths = record.regions.map(region => {

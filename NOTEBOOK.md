@@ -5265,3 +5265,7 @@ Used a public Kale fixture with an older transcription revision, a box where the
 ### Pages cards with no progress message
 
 Opened the Rāmāyaṇa-mañjarī in fresh headless Chrome and checked all 532 Pages cards. Pages 3 and 12 showed only their review badge, page 1 kept Awaiting boxes, and no card rendered literal null. The public-fixture suite passed 375 tests, page joins passed 17 separately, and the Python schema suite passed 19.
+
+### 2026-11-22 One editor and reader
+
+Opened both public books in a fresh headless Chrome profile. Read shows four saved title-page groups and 616 linked note markers in the Rāmāyaṇa-mañjarī and all 279 assembled verse groups in Kale. Double-clicking a passage opens its scan in the blocks editor. A comparison in memory found the same assembled unit and relation counts and the same join warnings as the saved reading for both books. The rules supplied the grouping on the four ungrouped contents pages in the Rāmāyaṇa-mañjarī. No model calls.

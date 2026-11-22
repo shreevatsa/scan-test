@@ -4,7 +4,7 @@
 // browser for a book opened by URL). Units' and line pieces' own styles are edited in the page view.
 
 import { h, esc } from "./render.js";
-import { prepare, bookHtml, fillFigures } from "./reader.js?v=20261122-reading-order";
+import { prepare, bookHtml, fillFigures } from "./reader.js?v=20261122-one-editor";
 import { baseCss } from "./style.js";
 
 const clone = x => JSON.parse(JSON.stringify(x));
