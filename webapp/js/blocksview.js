@@ -1,0 +1,275 @@
+import { TextPanel } from "./editor.js?v=20261121-blocks";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, projectBlocks } from "./blocks.js?v=20261121-blocks";
+import { linePosition, regionFlags, textFlags } from "./flags.js?v=20261121-blocks";
+import { h, bbox, cropInto } from "./render.js";
+import * as ops from "./ops.js?v=20261121-blocks";
+import { cp, MARKER, shiftSpans } from "./inline.js";
+import { noteProblems } from "./note-links.js?v=20261121-blocks";
+import { prepare } from "./reader.js?v=20261121-blocks";
+import { workflowAddress } from "./workflow.js?v=20261121-blocks";
+
+export function projectOpenBook(app) {
+  const { book, doc } = app;
+  const saved = book.pages.map(page => page.id === doc?.page.id ? doc : app.pageStates.get(page.id)?.doc).filter(Boolean);
+  return projectBlocks(book.pages, saved, book.types, book.skipped);
+}
+
+export function prepareBlockReader(app) {
+  const projection = projectOpenBook(app);
+  return prepare(projection.docs, projection.types, app.book.style);
+}
+
+const tag = (type, colors) => h("span", { class: "block-tag", style: `--block-color:${colors[type] || "#65716c"}` }, blockName(type));
+
+function typesMenu(app, selected, changed) {
+  const options = Object.entries(app.tl.types).filter(([, type]) => type.region);
+  return h("select", { "aria-label": "Block type", disabled: !app.book.writable, onchange: event => changed(event.target.value) },
+    selected ? null : h("option", { value: "", disabled: true, selected: true }, "Choose a type"),
+    ...options.map(([type]) => h("option", { value: type, selected: type === selected }, blockName(type))));
+}
+
+export function blockChecks(app, doc, projection) {
+  const { tl } = app;
+  const findings = [], add = (text, label, action) => findings.push({ text, label, action });
+  const openBlock = rid => rid && app.select({ region: rid });
+  const scan = box => { app.pageView.markLine({ pinned: box }); app.pageView.revealBox(box); };
+  const legacy = () => { location.hash = workflowAddress("page", doc.page.id); };
+  const plain = {
+    uncertain: "Check this block’s type and outline.",
+    "unknown-type": "Give this block a type.",
+    "missing-order": "Place this block in reading order.",
+    "no-ink": "Check this area of the scan for faint text.",
+    overlap: "Two scan boxes overlap.",
+    "missing-text": "Some lines in this block need text.",
+    "uncertain-text": "Compare this text with the scan.",
+    continuation: "Check whether this passage continues on the next or previous page.",
+    geometry: "Check the scan outlines.",
+    "line-count": "Some transcribed lines need to be matched to the scan.",
+    "region-warning": "The region finder flagged something to review.",
+    "type-revision": "Check whether a figure’s outline needs to be drawn again.",
+  };
+  const flags = [...regionFlags(doc, tl, app.regionFlagContext(doc)), ...textFlags(doc, tl)];
+  const see = new Set();
+  for (const flag of flags) {
+    const key = `${flag.code}:${flag.region || flag.line_id || ""}`;
+    if (see.has(key)) continue;
+    see.add(key);
+    if (flag.code === "uncovered") {
+      const line = doc.source.uncovered_lines.find(line => line.line_id === flag.line_id);
+      add(`There is a printed line ${linePosition(flag.box, doc.page)}.`, "Review line", () => {
+        scan(flag.box);
+        app.textPanel.reviewFinding(line);
+      });
+    } else if (flag.code === "omitted") {
+      const index = doc.source.omitted_regions.findIndex(region => region.region === flag.region);
+      add("An area on the scan needs a type.", "Review area", () => app.select({ omitted: index }));
+    } else if (plain[flag.code]) {
+      add(plain[flag.code], flag.region ? "Show block" : flag.box ? "Show scan" : "Review",
+        flag.region ? () => openBlock(flag.region) : flag.box ? () => scan(flag.box) : legacy);
+    }
+  }
+  for (const region of pageBlocks(doc, tl)) {
+    if (tl.types[region.type]?.region === "figure" || region.lines?.some(line => line.text?.trim())) continue;
+    if (!see.has(`missing-text:${region.id}`)) add(`This ${blockName(region.type).toLowerCase()} needs text.`, "Show block", () => openBlock(region.id));
+  }
+  const derived = projection?.docs.find(item => item?.page.id === doc.page.id);
+  if (derived) {
+    const { notes, markers } = noteProblems(derived, projection.noteTypes, projection.mainTypes);
+    if (notes.length || markers.length) {
+      add(`${notes.length ? `${notes.length} ${notes.length === 1 ? "note has" : "notes have"} no matching marker` : ""}${notes.length && markers.length ? " and " : ""}${markers.length ? `${markers.length} ${markers.length === 1 ? "marker has" : "markers have"} no matching note` : ""}.`,
+        "Review notes", () => openBlock(doc.page.regions.find(region => projection.noteTypes.has(region.type))?.id ||
+          doc.page.regions.find(region => region.lines?.some(line => line.spans?.some(span => span.kind === "note_marker")))?.id));
+    }
+    for (const [type, entries] of Object.entries(projection.report.numberBreaks)) {
+      if (type !== "page" && entries.some(entry => entry.page === doc.page.id))
+        add(`Check the ${type === "verse" ? "verse" : "episode"} numbers against the scan.`, "Show block", () => openBlock(doc.page.regions.find(region => region.type === type)?.id));
+    }
+  }
+  if (Object.keys(doc.source?.suggestions || {}).length) add("A model suggestion is ready to review.", "Review suggestion", legacy);
+  if (app.check(doc)[0].length) add("This page needs a correction before it can be saved.", "Show details", legacy);
+  return findings;
+}
+
+export class BlocksPanel extends TextPanel {
+  get textEditable() { return this.app.book.writable && super.textEditable; }
+  get unitsEditable() { return false; }
+
+  render() {
+    const { app, el } = this, { doc, tl, colors } = app;
+    const oldScroll = el.scrollTop;
+    this.projection = app.blocksProjection;
+    this.context = blockContext(this.projection.docs.find(value => value?.page.id === doc.page.id));
+    const findings = blockChecks(app, doc, this.projection);
+    const next = () => {
+      const pages = app.book.pages;
+      const from = app.book.index[app.pid];
+      const remaining = [...pages.slice(from + 1), ...pages.slice(0, from)];
+      const page = remaining.find(page => {
+        const other = app.pageStates.get(page.id)?.doc;
+        return !app.book.isSkipped(page.id) && (!other || blockChecks(app, other, this.projection).length);
+      });
+      if (page) app.openPage(page.id);
+      else app.toast("Every page has been checked.");
+    };
+    this.reviewItem = h("div", { class: "block-review-item" });
+    el.replaceChildren(h("section", { class: "block-check" },
+      h("h2", {}, "Check this page"),
+      findings.length ? h("ul", {}, ...findings.map(({ text, label, action }) => h("li", {}, h("span", {}, text),
+        h("button", { onclick: action }, label)))) : h("div", { class: "block-check-clear" },
+        h("span", {}, "Nothing to check here."), h("button", { onclick: next }, "Next page to check")), this.reviewItem));
+    const blocks = pageBlocks(doc, tl);
+    let prior = [];
+    for (const region of blocks) {
+      const path = this.context.get(region.id)?.containers || [];
+      const block = this.block(region, path.length);
+      block.prepend(...path.filter((container, index) => container !== prior[index]).map(container =>
+        h("div", { class: "block-bracket" }, [container.number, container.label || blockName(container.type)].filter(Boolean).join(" · "))));
+      if (path.length) prior = path;
+      else if (tl.types[region.type]?.role !== "furniture" && tl.types[region.type]?.region !== "note") prior = [];
+      el.append(block);
+    }
+    if (!blocks.length) el.append(h("p", { class: "hint" }, "There are no blocks on this page."));
+    el.scrollTop = oldScroll;
+    this.markSelection();
+  }
+
+  block(region, depth) {
+    const { app } = this, { id, type } = region;
+    const block = h("section", { class: "region block-card", dataset: { rid: id }, style: `--block-depth:${depth}` },
+      h("button", { class: "block-label link", onclick: () => app.select({ region: id }), "aria-label": `Select ${blockName(type).toLowerCase()}` }, tag(type, app.colors)));
+    block.addEventListener("mouseenter", () => app.pageView.highlightRegion(id, true));
+    block.addEventListener("mouseleave", () => app.pageView.highlightRegion(id, false));
+    if (app.tl.types[type]?.region === "figure") {
+      const preview = h("div", { class: "block-figure" });
+      cropInto(preview, app.pageView.img.src, app.doc.page, region.box || bbox(region.polygons), 240, 150);
+      block.append(preview);
+      return block;
+    }
+    const host = h("div", { class: "rtext block-text" + (isProseBlock(region, app.tl) ? " block-prose" : ""), contenteditable: this.textEditable ? "true" : null,
+      role: "textbox", "aria-multiline": "true", "aria-label": `${blockName(type)} text`, spellcheck: "false", lang: app.tl.types[type]?.lang || null, dataset: { rid: id } });
+    this.fillHost(host, region);
+    this.wire(host);
+    if (this.textEditable) host.addEventListener("focusout", () => {
+      const current = app.doc?.page.regions.find(value => value.id === id);
+      if (!current || !this.projection.mainTypes.has(current.type) || app.mode !== "page" || app.routeView !== "blocks") return;
+      let changed = false;
+      for (const [index, line] of (current.lines || []).entries()) {
+        const before = line.text || "";
+        const tokens = [...before.matchAll(MARKER)].filter(token => /^[0-9०-९*†‡§]+$/.test(token[1]));
+        if (!tokens.length) continue;
+        let text = "", start = 0, spans = line.spans || [];
+        for (const token of tokens) {
+          text += before.slice(start, token.index);
+          start = token.index + token[0].length;
+          spans = [...spans, { kind: "note_marker", id: nextId(app.doc, spans), marker: token[1], start: cp(before.slice(0, token.index)).length,
+            end: cp(before.slice(0, token.index)).length }];
+        }
+        text += before.slice(start);
+        // Move pre-existing spans one deletion at a time, so spans between markers stay in place.
+        let currentText = before;
+        for (const token of tokens.reverse()) {
+          const after = currentText.slice(0, token.index) + currentText.slice(token.index + token[0].length);
+          spans = shiftSpans(spans, cp(currentText), cp(after));
+          currentText = after;
+        }
+        app.typed(id, index, text, spans);
+        changed = true;
+      }
+      if (changed && host.isConnected) this.fillHost(host, current);
+    });
+    block.append(host);
+    return block;
+  }
+
+  fillHost(host, region) {
+    super.fillHost(host, region);
+    for (const [index, line] of [...host.children].entries()) {
+      line.dataset.end = region.lines?.[index]?.end || blockLineEnd(region.lines?.[index] || {}, region, this.app.tl);
+      if (!index && line.classList.contains("notext") && !region.lines?.some(value => value.text?.trim())) line.dataset.empty = this.textEditable ? "(no text — click to type it)" : "(no text)";
+      if (!index || region.lines?.[index]?.text) continue;
+      delete line.dataset.empty;
+    }
+  }
+
+  highlightRegion(rid, on, reveal) {
+    const block = this.el.querySelector(`.region[data-rid="${CSS.escape(rid)}"]`);
+    block?.classList.toggle("hl", on);
+    if (on && reveal && block) block.scrollIntoView({ block: "nearest" });
+  }
+
+  reviewFinding(line) {
+    this.reviewItem.replaceChildren(h("p", {}, "Add the line as a block, or leave out a stamp, shelf mark or blemish."),
+      this.app.book.writable ? typesMenu(this.app, "", type => this.app.addRegionOverLine(line.line_id, type)) : null,
+      this.app.book.writable ? h("button", { onclick: () => this.app.edit(doc => ops.ignoreLine(doc, line)) }, "Leave it out") : null);
+  }
+}
+
+function nextId(doc, pending) {
+  const used = new Set([...pending, ...doc.page.regions.flatMap(region => (region.lines || []).flatMap(line => line.spans || []))].map(span => span.id));
+  let count = 1;
+  while (used.has(`m${count}`)) count++;
+  return `m${count}`;
+}
+
+export function blockInspector(el, app) {
+  const { selection, doc, book, tl } = app;
+  el.replaceChildren();
+  const omitted = doc.source?.omitted_regions?.[selection.omitted];
+  if (omitted) {
+    app.pageView.markLine({ pinned: omitted.box });
+    app.pageView.revealBox(omitted.box);
+    el.append(h("h3", {}, "Area without a type"),
+      typesMenu(app, "", type => app.recoverOmitted(selection.omitted, type)),
+      book.writable ? h("button", { onclick: () => app.edit(next => {
+        next.source.omitted_regions.splice(selection.omitted, 1);
+        app.selection = {};
+      }) }, "Leave it out") : null);
+    return;
+  }
+  app.pageView.markLine({ pinned: null });
+  const marker = selection.marker && ops.findMarker(doc, selection.marker);
+  const region = doc.page.regions.find(value => value.id === (selection.region || marker?.region.id));
+  if (!region) return;
+  const type = tl.types[region.type];
+  const fields = [h("label", {}, "Type", typesMenu(app, region.type, value => app.retypeRegion(region.id, value)))];
+  const content = pageBlocks(doc, tl).filter(value => tl.types[value.type]?.role !== "furniture" && tl.types[value.type]?.region !== "note");
+  const stream = type?.region === "note" ? pageBlocks(doc, tl).filter(value => tl.types[value.type]?.region === "note") : content;
+  const context = app.textPanel.context?.get(region.id);
+  if (context) for (const [at, key, end, name] of [[stream[0], "continues_from_earlier", "start", "From previous page"],
+    [stream.at(-1), "continues_later", "end", "On next page"]]) {
+    if (at !== region) continue;
+    fields.push(h("label", {}, h("input", { type: "checkbox", checked: !!region.source?.[key], disabled: !book.writable,
+      onchange: event => app.edit(next => {
+        const value = ops.regionById(next, region.id);
+        value.source = { ...value.source, [key]: event.target.checked };
+        const unit = ops.ownerOf(next, region.id), place = unit && ops.placeOf(next, unit.id);
+        if (place?.index === (end === "start" ? 0 : place.list.length - 1)) ops.setOpen(next, unit.id, end, event.target.checked);
+      }) }), name));
+  }
+  const unit = context?.unit;
+  const numbered = type?.region === "page_number" ? app.textPanel.projection.docs.find(value => value?.page.id === doc.page.id)?.page.label : unit?.number;
+  if (numbered) fields.push(h("span", {}, "Number ", numbered));
+  if (unit?.label) fields.push(h("span", {}, "Label ", unit.label));
+  if (marker) fields.push(h("span", {}, `Marker [${marker.span.marker}]`));
+  const move = delta => app.edit(next => ops.moveRegionOrder(next, tl, region.id, delta));
+  const more = h("details", { class: "block-more" }, h("summary", {}, "More…"),
+    h("div", { class: "actions" },
+      h("button", { disabled: !book.writable || type?.role === "furniture", onclick: () => move(-1) }, "Earlier"),
+      h("button", { disabled: !book.writable || type?.role === "furniture", onclick: () => move(1) }, "Later"),
+      h("button", { disabled: !book.writable || type?.region === "figure", onclick: () => app.edit(next => ops.addLine(next, region.id, region.lines.length)) }, "Add text line"),
+      h("button", { onclick: () => { location.hash = workflowAddress("page", doc.page.id, { region: region.id }); } }, "Original tools")));
+  el.append(h("div", { class: "block-fields" }, ...fields), more);
+}
+
+export function drawBlock(app, box, event) {
+  app.pageView.setDrawing(false);
+  app.main.querySelector(".draw")?.classList.remove("on");
+  const menu = h("div", { class: "popup block-draw-menu", style: `left:${event.clientX}px;top:${event.clientY}px` },
+    typesMenu(app, "", type => {
+      menu.remove();
+      if (app.edit(doc => { app.selection = { region: ops.addRegion(doc, app.tl, type, box) }; })) app.recompute();
+    }),
+    h("button", { onclick: () => menu.remove() }, "Cancel"));
+  document.body.append(menu);
+  menu.querySelector("select").focus();
+}

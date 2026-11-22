@@ -24,6 +24,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
 - **Other books:** Kale 1913 and Telang were made by the older one-pass pipeline (method 052). The vachana book came from a digital PDF's text layer (058, 062). The user's 267-page private book has regions only; PRIVATE.md says where it is.
 - **The app** (`webapp/`, about 16,600 lines of JavaScript, no build step) has tabs Pages · Regions · Text · Read · Export. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3). Recent changes:
   - **One page editor** at `#page&p=<id>`, the same from every stage. Old `#regions&p=`, `#text&p=` and `#read&p=` addresses open it. It edits text, regions (type, box, draw, split, merge, order, delete), units, joins and note links. It shows the page's flags, and a Page menu offers review with AI, no content, find regions again, and read again. A region with no line piece takes text when clicked.
+  - **Blocks comparison** at `#blocks` and `#blocks&p=<id>`, linked by **Blocks** and **Original view**. It edits regions with the same save path, and derives reading structure in memory. The original reader and editor remain available.
   - **Read → Book view:** the book to read, with a contents sidebar that follows the reading, footnotes as sidenotes, no page numbers, and printed contents lines linked to their episodes. Part names the editor gave are shown in parentheses. The HTML export uses the same layout; `webapp/tools/chaya_html.mjs` writes it from the command line.
   - **Dimmed pages** are left out of the book, not gaps, so a unit goes on across a duplicate scan.
   - **Pages are drawn at the scan's resolution:** `scanImage` takes the sharpest image on a page. An archive.org page is a 133 ppi colour background under a 400 ppi text layer.
@@ -56,7 +57,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
   - A loopback server, `python3 -m http.server 8765 --bind 127.0.0.1`, runs from the repository root.
   - `tailscale serve --https=8765 http://127.0.0.1:8765` makes it reachable from the user's other devices; the address is in PRIVATE.md.
   - Open a book with `?book=../outputs/books/<file>.chaya.pdf`.
-- **Not pushed:** 24 commits on `main`. One of them, `3f817602` (fetch the example books from a release when deploying), is the approach the user set aside in favour of a separate small repository for the examples; drop or revert it before pushing, and ask the user before pushing.
+- **Examples hosting:** the release-fetch deployment was reverted in `262390ed`. Use the separate examples repository when requested. Ask the user before pushing.
 
 ## The redesign: blocks, as in Wikisource
 
@@ -139,7 +140,7 @@ From the user's review of the one page editor (2026-11-20):
 
 Each task is sized for one session. Finish, test and commit one before starting the next.
 
-1. **Blocks spike.** Build the blocks-only page editor and reader as a view over the existing data: blocks from regions, containers and numbers from the tools' rules, note links by rule. Try it on Kale (prose, several flows) and the Rāmāyaṇa-mañjarī, and count how many hand overrides each needs. Include items 1–4 of the simplified page editor. Report to the user before retiring anything.
+1. **Blocks spike (done).** The comparison works on Kale and the Rāmāyaṇa-mañjarī. See NOTEBOOK.md and the audit command there for the differences to preserve before retiring authored grouping, metadata, joins or line endings.
 2. **Retire what the spike shows unneeded,** one at a time, each with tests: the units layer as authored data, the layer states and stage gates, flows, the line-ending field, the type-revision machinery. Then the three tabs (item 5).
 3. **The app reads like method 100.** One page image per call with the page's blocks listed, Hydrogen low by default, an updated cost estimate, and markers taken from `[n]`.
 4. **The structure rules move into the app** as a book's settings (closings, part headings, verse groups, note linking, number checks), with the command-line tools kept for batch work.

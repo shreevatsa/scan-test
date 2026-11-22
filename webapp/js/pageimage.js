@@ -21,13 +21,14 @@ const svgEl = (tag, attrs = {}) => {
 };
 
 export class PageView {
-  constructor(el, { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, onHoverRegion, editable = true }) {
+  constructor(el, { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, onHoverRegion, editable = true, typeLabel = null }) {
     this.el = el;
     this.cb = { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, onHoverRegion };
     this.zoom = 1;
     this.fit = "width";        // "width", "height" (kept as the pane or the page changes), or null after zooming
     this.drawing = false;
     this.editable = editable;
+    this.typeLabel = typeLabel;
     el.innerHTML = "";
     this.wrap = document.createElement("div");
     this.wrap.className = "pv-wrap";
@@ -113,7 +114,8 @@ export class PageView {
     for (const r of doc.page.regions) {
       const col = this.colors[r.type] || "#888";
       const g = svgEl("g", { "data-rid": r.id });
-      const title = svgEl("title"); title.textContent = `${r.id} · ${r.type}`; g.append(title);
+      const label = this.typeLabel ? this.typeLabel(r.type) : `${r.id} · ${r.type}`;
+      const title = svgEl("title"); title.textContent = label; g.append(title);
       const p = svgEl("path", { d: regionPath(r, this.types?.types[r.type]?.region), class: "pv-reg" + (this.furniture.has(r.type) ? " furn" : ""), stroke: col, fill: col });
       g.append(p);
       // The region's whole box, drawn only while the region is hovered, selected or highlighted: the filled outline above
@@ -126,7 +128,7 @@ export class PageView {
       g.addEventListener("click", e => { if (!this.drawing) { e.stopPropagation(); this.cb.onSelectRegion(r.id); } });
       g.addEventListener("pointerenter", event => {
         this.cb.onHoverRegion?.(r.id, true);
-        this.tooltip.textContent = `${r.id} · ${r.type}`;
+        this.tooltip.textContent = label;
         this.tooltip.hidden = false;
         this.positionTooltip(event);
       });
@@ -140,7 +142,7 @@ export class PageView {
     for (const [index, omitted] of (doc.source?.omitted_regions || []).entries()) if (omitted.box) {
       const [x1, y1, x2, y2] = omitted.box;
       const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-omitted", fill: "url(#pv-omitted-hatch)", "data-omitted": index });
-      const title = svgEl("title"); title.textContent = `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`; rect.append(title);
+      const title = svgEl("title"); title.textContent = this.typeLabel ? "Area without a type" : `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`; rect.append(title);
       rect.addEventListener("click", event => { event.stopPropagation(); this.cb.onSelectOmitted?.(index); });
       svg.append(rect);
     }

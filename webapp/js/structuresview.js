@@ -1,14 +1,14 @@
-import { reviewPage } from "./review-view.js?v=20261120-one-editor-2";
-import { assignmentOf, settledStructureScore } from "./review.js?v=20261120-one-editor-2";
+import { reviewPage } from "./review-view.js?v=20261121-blocks";
+import { assignmentOf, settledStructureScore } from "./review.js?v=20261121-blocks";
 import { h } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261120-one-editor-2";
-import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261120-one-editor-2";
-import { finderById } from "./pipeline/finders.js?v=20261120-one-editor-2";
-import { CredentialChecks } from "./key-check.js?v=20261120-one-editor-2";
+import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261121-blocks";
+import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261121-blocks";
+import { finderById } from "./pipeline/finders.js?v=20261121-blocks";
+import { CredentialChecks } from "./key-check.js?v=20261121-blocks";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
-import { renderStructureComparison } from "./structure-visual.js?v=20261120-one-editor-2";
-import { settings } from "./store.js?v=20261120-one-editor-2";
+import { renderStructureComparison } from "./structure-visual.js?v=20261121-blocks";
+import { settings } from "./store.js?v=20261121-blocks";
 import { runProgress } from "./run-progress.js";
 
 export async function renderStructures(el, app) {

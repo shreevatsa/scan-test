@@ -5227,3 +5227,23 @@ Method 099 read eleven pages at 400 ppi, one whole page per call, with Cloud Vis
 ## The Rāmāyaṇa-mañjarī read again with Hydrogen, whole pages — method 100, 2026-11-19
 
 Pages redrawn at 300 dpi (`webapp/tools/chaya_rescale.mjs`) and every page read with Gemini 4 Hydrogen low, one whole-page image per call with the page's regions listed in the prompt ([README](methods/100-hydrogen-low-whole-page-reading/README.md)): $9.86 for 519 pages, 4 of 8,704 regions left with their old text, 627 markers. Then by rule: 102 verse numbers and 5 episode numbers corrected by their sequence (`webapp/tools/chaya_verse_numbers.mjs`), the parts as the book closes them, with 202 named episodes (`chaya_sections.mjs`: PDF 15–94, from the Bālakāṇḍa heading to the Ayodhyākāṇḍa closing, one part as printed; the Yuddhakāṇḍa ending at its own closing, and the ten renumbered episodes after it, before the Uttarakāṇḍa's heading, a part the book leaves untitled; part names the editor's, in parentheses), and 623 of 711 notes linked (`chaya_notes.mjs`). The app's own reading request sends every region crop as an image (18,000–56,000 image tokens a page against about 1,100 for the whole page); it should send the page instead.
+
+## 2026-11-21 Blocks comparison
+
+Opened Kale 1913 (all 252 pages) and the Rāmāyaṇa-mañjarī (517 undimmed pages) through the comparison in a fresh headless Chrome profile. Checked the scan-to-block selection, editor/reader switches, source links, note rendering, and typing and reload in an imported browser copy. The audit is reproducible with `node webapp/tools/blocks_audit.mjs outputs/books/{kale-1913,ramayana-manjari}.chaya.pdf`. No model calls.
+
+| Changes to review for parity with the saved reading | Kale 1913 | Rāmāyaṇa-mañjarī |
+|---|---:|---:|
+| Saved container fragments absent from the derived reading | 369 | 4 |
+| Additional derived container fragments | 195 | 0 |
+| Saved leaf groupings that differ | 20 | 4 |
+| Continuation edges that differ on saved leaves | 39 | 7 |
+| Pages with a different main block order | 1 | 0 |
+| Changed line joins between lines of a saved leaf | 181 | 26 |
+| Saved labels on matching groupings that differ | 695 | 0 |
+| Saved numbers on matching groupings that differ | 976 | 0 |
+| Saved anchored note links that differ | 1 | 0 |
+| Additional anchored note links | 7 | 0 |
+| Printed page-number corrections made by rule | 6 | 0 |
+
+These are counts of differences by kind, with overlap within a page. A new rule can replace many individual changes. Kale's missing containers include 335 verse groups, 24 sections, five translation fragments, four notes fragments and one contents fragment. Its numeric metadata differences count distinct values after normalizing the digit script. For the Rāmāyaṇa-mañjarī the rules reproduce all 1,197 closing-line containers, all four verse groups and all 616 saved note links. Its four absent containers are the hand-shaped front-matter pages. The 88 notes with no marker and four markers with no note are printed-text review candidates. The derived reader reported 43 and seven join warnings respectively (saved readers had two and zero). For Kale, the six page label changes came from the sequence rule. Resolve the differences or carry them as block-level exceptions before switching an existing book's reader.

@@ -1,16 +1,17 @@
+import { workflowAddress } from "./workflow.js?v=20261121-blocks";
 // The book as one text: its page documents (the user's corrected versions where there are any) assembled, and each
 // flow rendered in reading order. Headings, verses, paragraphs, tables and notes follow their types' region classes;
 // formatting is shown; note markers link to their notes; figures are shown as their part of the page image, with
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261120-one-editor-2";
+import { assemble } from "./assemble.js?v=20261121-blocks";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261120-one-editor-2";
-import { layerState } from "./layers.js?v=20261120-one-editor-2";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261120-one-editor-2";
+import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261121-blocks";
+import { layerState } from "./layers.js?v=20261121-blocks";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261121-blocks";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -495,21 +496,36 @@ export const BOOK_CSS = `
 
 // The Book view in the app: the book to read, with its contents beside it and its notes in the margin; no page
 // numbers, nothing to edit, and clicking opens nothing but notes and links.
-export async function renderBookView(el, app) {
+export async function renderBookView(el, app, blocks = null) {
   const { book } = app;
   const token = app.routeToken;
   app.onLeaveReader?.(); app.onLeaveReader = null;
   app.textPanel?.destroy?.(); app.pageView?.destroy(); app.textPanel = null; app.pageView = null; app.doc = null;
   el.replaceChildren(h("div", { class: "loading" }, "Loading the pages…"));
-  const all = await book.all((d, n) => { if (app.routeToken === token) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
-  if (app.book !== book || app.routeToken !== token) return;
-  const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
-  const P = prepare(readingDocuments(book.pages, accepted, id => book.isSkipped?.(id)), book.types, book.style);
+  let P = blocks;
+  if (!P) {
+    const all = await book.all((d, n) => { if (app.routeToken === token) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
+    if (app.book !== book || app.routeToken !== token) return;
+    const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
+    P = prepare(readingDocuments(book.pages, accepted, id => book.isSkipped?.(id)), book.types, book.style);
+  }
   if (!document.getElementById("bookview-css")) document.head.append(h("style", { id: "bookview-css" }, BOOK_CSS));
   const printed = !!(app.readerPrinted && P.sheet);
   const view = h("div", { class: "bookview" });
   view.innerHTML = `<button class="bv-open" type="button">☰ Contents</button>${bookToc(P)}<article class="reader plain${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>${bookHtml(P, { printed, plain: true })}</article>`;
-  el.replaceChildren(view);
+  if (blocks) {
+    const first = P.book.pages[0];
+    const source = h("div", { class: "blocks-reader-tools" },
+      h("a", { href: first ? workflowAddress("blocks", first.id) : "#pages" }, "Open page editor"),
+      h("span", {}, "Double-click text to see its scan."));
+    view.addEventListener("dblclick", event => {
+      const ref = event.target.closest(".r-reg")?.dataset.ref;
+      if (!ref || event.target.closest("a")) return;
+      const [pid, region] = ref.split("#");
+      app.openPage(pid, { region });
+    });
+    el.replaceChildren(source, view);
+  } else el.replaceChildren(view);
   fillFigures(view, app, P);
   wireBookView(view, el);
 }

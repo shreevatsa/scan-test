@@ -10,28 +10,8 @@ import { pageLabel } from "../js/pipeline/steps.js";
 
 const DEV = "०१२३४५६७८९";
 
-// [{ index, value }] in page order → corrections [{ entry, value }] and breaks. Each page's offset is its number less
-// its place in the book. A run of at least three numbered pages with one offset is trusted; between two trusted runs
-// with the same offset, at most `gap` pages apart, every numbered page takes the number they imply. Runs with
-// different offsets (a new numbering) are listed as breaks, as is any page left out of agreement.
-export function pageNumberFixes(entries, { least = 3, gap = 12 } = {}) {
-  const numbered = entries.filter(entry => entry.value !== null);
-  const offset = entry => entry.value - entry.index;
-  const runs = [];
-  for (let k = 0; k < numbered.length;) {
-    let j = k; while (j + 1 < numbered.length && offset(numbered[j + 1]) === offset(numbered[k])) j++;
-    if (j - k + 1 >= least) runs.push({ from: k, to: j, offset: offset(numbered[k]) });
-    k = j + 1;
-  }
-  const fixes = [], breaks = [];
-  for (let r = 1; r < runs.length; r++) {
-    const before = runs[r - 1], after = runs[r], between = numbered.slice(before.to + 1, after.from);
-    if (before.offset === after.offset && numbered[after.from].index - numbered[before.to].index <= gap + 1) {
-      for (const entry of between) { const value = entry.index + before.offset; if (value !== entry.value) { fixes.push({ entry, value }); entry.value = value; } }
-    } else breaks.push({ entry: numbered[after.from], previous: numbered[before.to].value, read: numbered[after.from].value, expected: numbered[before.to].value + (numbered[after.from].index - numbered[before.to].index), pages: between.length });
-  }
-  return { fixes, breaks };
-}
+import { pageNumberFixes } from "../js/number-rules.js";
+export { pageNumberFixes };
 
 export async function pageLabels(bytes) {
   const { data, original } = await readChaya(bytes);

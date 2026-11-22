@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261120-one-editor-2";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261120-one-editor-2";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261120-one-editor-2";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261120-one-editor-2";
+import { typeRevision } from "./schema.js?v=20261121-blocks";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-blocks";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261121-blocks";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-blocks";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -72,6 +72,8 @@ export function workflowRoute(value, ready, pageState = () => null) {
   const pid = hash.get("p");
   let view = old ? aliases[old][1] : hash.get("view") || "";
   if (old === "types" && hash.get("view") === "proposal") view = "proposal";
+  if (hash.has("blocks")) return { stage: pid ? "page" : "read", mode: pid ? "page" : "blocks-read",
+    pid, view: "blocks", region: hash.get("r"), unit: null, locked: false };
   if (pid && !view) return { stage: "page", mode: "page", pid, view: "", region: hash.get("r"), unit: hash.get("u"), locked: false };
   const stage = old ? aliases[old][0] : STAGES.find(key => hash.has(key)) || "pages";
   const locked = !ready[stage];

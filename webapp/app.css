@@ -647,3 +647,58 @@ main.page .inspector .actions { display: flex; flex-wrap: wrap; gap: 7px; margin
 /* opening a book: what is happening, with a bar */
 .lib.opening { padding-top: 2em; }
 .lib.opening progress { width: min(28em, 100%); height: 10px; accent-color: var(--accent); }
+
+/* Blocks comparison */
+.blocks-toggle { white-space: nowrap; }
+header[data-blocks] .page-stage-links { display: none; }
+main.blocks-read { overflow: auto; }
+header[data-top="page"]:has(.blocks-toggle) .blocks-toggle { flex-shrink: 0; }
+.block-scan { display: grid; grid-template-rows: auto minmax(0, 1fr); min-height: 0; background: #e7e6e1; }
+.block-scan .imgpane { background: #dfded8; }
+.block-scan-tools, .block-page-tools { min-height: 32px; gap: 6px; }
+.block-scan-tools .draw { margin-left: 8px; }
+.block-page-tools { padding-inline: 16px; gap: 12px; }
+.block-page-menu { position: relative; }
+.block-page-menu summary { cursor: pointer; }
+.block-menu-items { position: absolute; z-index: 5; left: 0; top: calc(100% + 7px); display: grid; gap: 4px; min-width: max-content; background: white; padding: 6px; border: 1px solid var(--line); border-radius: 5px; }
+.block-format { display: flex; gap: 3px; flex-wrap: wrap; }
+.block-format[hidden] { display: none; }
+.block-pane { background: #f7f7f3; padding: 16px clamp(12px, 2.2vw, 36px) 48px; }
+.block-check { background: #fff; border: 1px solid #d6dad1; border-radius: 6px; margin-bottom: 18px; padding: 12px 15px; }
+.block-check h2 { margin: 0 0 7px; font-size: 16px; }
+.block-check ul { margin: 0; padding: 0; list-style: none; max-height: 220px; overflow: auto; }
+.block-check li, .block-check-clear { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 4px 0; font-size: 13px; }
+.block-check li + li { border-top: 1px solid #eee; }
+.block-check li button { flex-shrink: 0; }
+.block-review-item:empty { display: none; }
+.block-review-item { border-top: 1px solid var(--line); padding-top: 8px; }
+.block-review-item p { margin: 0 0 6px; }
+.block-review-item button, .block-inspector button { margin-left: 4px; }
+.block-card.region { border: 1px solid #e0e1d9; border-radius: 5px; margin: 0 0 7px calc(var(--block-depth) * 9px); background: #fff; padding: 7px 10px 6px; }
+.block-card.region:focus-within, .block-card.region.sel { background: #fcfdf7; border-color: #75926e; }
+.block-card.region.hl { border-color: #a3ad93; }
+.block-label { padding: 0; color: inherit; }
+.block-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: #465149; }
+.block-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--block-color); }
+.block-bracket { border-left: 2px solid #b9c5b5; border-top: 1px solid #d6ded1; color: #536653; font-size: 12px; padding: 3px 8px; margin: 0 0 6px; }
+.block-text { padding: 4px 3px; border-radius: 3px; }
+.block-text:focus { outline: 1px solid #789674; background: #fff; }
+.block-text .lp.nooutline { color: inherit; border: 0; padding-left: 0; }
+.block-text .lp:empty::before { content: none; }
+.block-text .lp[data-empty]:empty::before { content: attr(data-empty); }
+.block-text .mk::before { content: "[" attr(data-sign) "]"; }
+.block-text .mk { vertical-align: baseline; }
+.block-text.block-prose > .lp:not(:last-child)[data-end="hyphen"]::after { content: "‐⏎"; }
+.block-text.block-prose > .lp:not(:last-child)[data-end="join"]::after { content: "⁀"; }
+.block-text.block-prose > .lp:not(:last-child)[data-end="line"]::after { content: "↵"; }
+.block-fields, .block-fields label { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.block-fields { gap: 7px 16px; }
+.block-fields select { max-width: min(240px, 60vw); }
+.block-more summary { cursor: pointer; margin-top: 7px; }
+.blocks-page .lower:has(.block-inspector:empty) { display: none; }
+.blocks-reader-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 14px; padding: 8px 20px; background: #fafbf7; border-bottom: 1px solid var(--line); font-size: 13px; }
+.blocks-reader-tools span { color: var(--muted); }
+@media (max-width: 730px) {
+  .blocks-page .block-scan { height: 42vh; }
+  .blocks-page .block-side { min-height: 52vh; }
+}

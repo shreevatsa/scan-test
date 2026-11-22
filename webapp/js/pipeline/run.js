@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261120-one-editor-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261120-one-editor-2";
+import { typeRevision } from "../schema.js?v=20261121-blocks";
+import { mappedTypeNames } from "../type-revisions.js?v=20261121-blocks";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261120-one-editor-2";
-import * as I from "./images.js?v=20261120-one-editor-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261120-one-editor-2";
+import * as S from "./steps.js?v=20261121-blocks";
+import * as I from "./images.js?v=20261121-blocks";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261121-blocks";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261120-one-editor-2";
-import { classifyBlocks } from "../local/blocks.js?v=20261120-one-editor-2";
-import { finderById, finderPath } from "./finders.js?v=20261120-one-editor-2";
-import { finderRequest } from "./finder-requests.js?v=20261120-one-editor-2";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261120-one-editor-2";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261120-one-editor-2";
+import { localReading, localLayout } from "./ocr.js?v=20261121-blocks";
+import { classifyBlocks } from "../local/blocks.js?v=20261121-blocks";
+import { finderById, finderPath } from "./finders.js?v=20261121-blocks";
+import { finderRequest } from "./finder-requests.js?v=20261121-blocks";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261121-blocks";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261121-blocks";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261120-one-editor-2";
-import { layerState, noteEdit } from "../layers.js?v=20261120-one-editor-2";
-import { provisionalDocument } from "./provisional.js?v=20261120-one-editor-2";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261120-one-editor-2";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261120-one-editor-2";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261120-one-editor-2";
-import { isProtected, LAYERS } from "../layers.js?v=20261120-one-editor-2";
+import { canonical } from "../ops.js?v=20261121-blocks";
+import { layerState, noteEdit } from "../layers.js?v=20261121-blocks";
+import { provisionalDocument } from "./provisional.js?v=20261121-blocks";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261121-blocks";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261121-blocks";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261121-blocks";
+import { isProtected, LAYERS } from "../layers.js?v=20261121-blocks";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
