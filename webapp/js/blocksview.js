@@ -1,12 +1,12 @@
-import { TextPanel } from "./editor.js?v=20261121-blocks";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, projectBlocks } from "./blocks.js?v=20261121-blocks";
-import { linePosition, regionFlags, textFlags } from "./flags.js?v=20261121-blocks";
+import { TextPanel } from "./editor.js?v=20261121-stage-readiness";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, projectBlocks } from "./blocks.js?v=20261121-stage-readiness";
+import { linePosition, regionFlags, textFlags } from "./flags.js?v=20261121-stage-readiness";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261121-blocks";
+import * as ops from "./ops.js?v=20261121-stage-readiness";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261121-blocks";
-import { prepare } from "./reader.js?v=20261121-blocks";
-import { workflowAddress } from "./workflow.js?v=20261121-blocks";
+import { noteProblems } from "./note-links.js?v=20261121-stage-readiness";
+import { prepare } from "./reader.js?v=20261121-stage-readiness";
+import { workflowAddress } from "./workflow.js?v=20261121-stage-readiness";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

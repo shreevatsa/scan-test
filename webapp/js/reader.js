@@ -1,17 +1,16 @@
-import { workflowAddress } from "./workflow.js?v=20261121-blocks";
 // The book as one text: its page documents (the user's corrected versions where there are any) assembled, and each
 // flow rendered in reading order. Headings, verses, paragraphs, tables and notes follow their types' region classes;
 // formatting is shown; note markers link to their notes; figures are shown as their part of the page image, with
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261121-blocks";
+import { assemble } from "./assemble.js?v=20261121-stage-readiness";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { readingGaps, readingDocuments, eligible, noContent } from "./workflow.js?v=20261121-blocks";
-import { layerState } from "./layers.js?v=20261121-blocks";
-import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261121-blocks";
+import { readingGaps, readingDocuments, workflowAddress, hasReading, noContent } from "./workflow.js?v=20261121-stage-readiness";
+import { layerState } from "./layers.js?v=20261121-stage-readiness";
+import { wireReadingPanel, readingIssues } from "./read-panel.js?v=20261121-stage-readiness";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -319,10 +318,10 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
   el.replaceChildren(h("div", { class: "loading" }, "Loading the pages…"));
   const all = await book.all((d, n) => { if (current()) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
   if (!current()) return;
-  const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
-  const gaps = readingGaps(book.pages, new Set([...accepted.map(doc => doc.page.id), ...book.pages.filter(page => book.isSkipped?.(page.id)).map(page => page.id)]));   // a dimmed page is left out on purpose, so it is no gap
-  const P = prepare(readingDocuments(book.pages, accepted, id => book.isSkipped?.(id)), book.types, book.style);
-  const issues = readingIssues(accepted, book.types, app.validate, P.warnings, P.unitCanonical);
+  const readable = all.filter(doc => hasReading(doc, book.types));
+  const gaps = readingGaps(book.pages, new Set([...readable.map(doc => doc.page.id), ...book.pages.filter(page => book.isSkipped?.(page.id)).map(page => page.id)]));   // a dimmed page is left out on purpose, so it is no gap
+  const P = prepare(readingDocuments(book.pages, readable, id => book.isSkipped?.(id)), book.types, book.style);
+  const issues = readingIssues(readable, book.types, app.validate, P.warnings, P.unitCanonical);
   app.readerData = P;
   if (app.readerPrinted === undefined) app.readerPrinted = !!book.style;
   const body = h("article", { class: "reader" });
@@ -338,7 +337,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
     h("label", {}, h("input", { type: "checkbox", checked: app.readerStructure, onchange: e => { app.readerStructure = e.target.checked; body.classList.toggle("structure", e.target.checked); } }), " show the units"),
     P.sheet ? h("label", { title: "fonts, sizes, alignment and spacing from the book's style sheet and each unit's style" },
       h("input", { type: "checkbox", checked: app.readerPrinted ? true : null, onchange: e => { app.readerPrinted = e.target.checked; renderReader(el, app, { keepPlace: true }).catch(error => app.toast(error.message, "bad")); } }), " as printed") : null,
-    h("span", { class: "meta" }, `${accepted.length} pages · ${P.book.units.length} units · ${book.edits.size} pages corrected`),
+    h("span", { class: "meta" }, `${readable.length} pages · ${P.book.units.length} units · ${book.edits.size} pages corrected`),
     issues.length ? h("details", { class: "warn" }, h("summary", {}, `${issues.length} reading problems`),
       ...issues.map(issue => h("p", {}, h("button", { class: "link", onclick: () => app.selectReadingIssue?.(issue) }, issue.message)))) : null,
     app.dirty ? h("div", { class: "warn" }, "The page open in the editor has changes that are not saved yet; they are not shown here.") : null);
@@ -350,7 +349,7 @@ export async function renderReader(el, app, { keepPlace = false } = {}) {
     ...(P.provisionalPages.size ? [h("p", { class: "reading-gaps" }, `${P.provisionalPages.size} pages have provisional unit grouping. Complete units and links to review that grouping.`)] : []), workspace);
   wireSourcePreview(body, app, P);
   const leavePreview = app.onLeaveReader;
-  const leavePanel = await wireReadingPanel({ app, body, panel, workspace, docs: accepted, P, issues, redraw: () => renderReader(el, app, { keepPlace: true }) });
+  const leavePanel = await wireReadingPanel({ app, body, panel, workspace, docs: readable, P, issues, redraw: () => renderReader(el, app, { keepPlace: true }) });
   if (!current()) { leavePanel(); leavePreview(); return; }
   app.onLeaveReader = () => { leavePanel(); leavePreview(); };
   if (bookmark) {
@@ -506,10 +505,14 @@ export async function renderBookView(el, app, blocks = null) {
   if (!P) {
     const all = await book.all((d, n) => { if (app.routeToken === token) el.firstChild.textContent = `Loading the pages… ${d} of ${n}`; });
     if (app.book !== book || app.routeToken !== token) return;
-    const accepted = all.filter(doc => eligible("read", app.pageStates.get(doc.page.id)));
-    P = prepare(readingDocuments(book.pages, accepted, id => book.isSkipped?.(id)), book.types, book.style);
+    const readable = all.filter(doc => hasReading(doc, book.types));
+    P = prepare(readingDocuments(book.pages, readable, id => book.isSkipped?.(id)), book.types, book.style);
   }
   if (!document.getElementById("bookview-css")) document.head.append(h("style", { id: "bookview-css" }, BOOK_CSS));
+  if (!P.book.units.length && !blocks) {
+    el.replaceChildren(h("p", { class: "loading" }, "Text appears here as pages are transcribed."));
+    return;
+  }
   const printed = !!(app.readerPrinted && P.sheet);
   const view = h("div", { class: "bookview" });
   view.innerHTML = `<button class="bv-open" type="button">☰ Contents</button>${bookToc(P)}<article class="reader plain${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>${bookHtml(P, { printed, plain: true })}</article>`;

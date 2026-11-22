@@ -11,7 +11,7 @@ function fakeApp({ finder = "local-blocks", reader = "argon-low", valid = () => 
     credentials: { status: profile => (profile.provider === "local" ? { valid: true } : { valid: valid(profile) }) },
     findRegions: async (pid, options) => { calls.push(["regions", pid, options.force]); maker.onCost(0); return { cached: false }; },
     read: async (pid, options, flags) => { calls.push(["text", pid, flags.force, flags.save]); maker.onCost(0.01); return { cached: false }; } };
-  const state = { doc: { page: { id: "p2", regions: [{ id: "r1" }] } }, layers: { regions: regionsAccepted ? { accepted: true } : { state: "model" } }, runErrors: {} };
+  const state = { valid: true, doc: { page: { id: "p2", regions: [{ id: "r1" }] } }, layers: { regions: regionsAccepted ? { accepted: true } : { state: "model" } }, runErrors: {} };
   const app = { book: { writable: true }, pid: "p2", pageStates: new Map([["p2", state]]), dirty: false, regionOverview: { manual },
     flush: async () => {}, getMaker: async () => maker, confirmSpending: async () => true, refreshWorkflowPage: async () => {},
     route: async () => { app.routed = true; }, toast: (message, kind) => toasts.push([message, kind]), setMode: mode => modes.push(mode) };
@@ -42,12 +42,17 @@ test("without a checked key, or with Draw by hand chosen, the stage's grid opens
   }
 });
 
-test("reading again waits until the page has been moved on from Regions; a read-only book runs nothing", async () => {
+test("reading again needs valid boxes and can use them before review", async () => {
   const early = fakeApp({ regionsAccepted: false, valid: () => true });
-  assert.match(pageRunBlocked(early.app, "text"), /Move this page on from Regions/);
-  assert.equal(pageRunBlocked(early.app, "regions"), null);
+  assert.equal(pageRunBlocked(early.app, "text"), null);
   await runPageAgain(early.app, "text");
-  assert.deepEqual(early.calls, []);
+  assert.deepEqual(early.calls, [["text", "p2", false, true]]);
+  const invalid = fakeApp({ valid: () => true });
+  invalid.app.pageStates.get("p2").valid = false;
+  assert.match(pageRunBlocked(invalid.app, "text"), /needs valid scan boxes/);
+  assert.equal(pageRunBlocked(early.app, "regions"), null);
+  await runPageAgain(invalid.app, "text");
+  assert.deepEqual(invalid.calls, []);
   const readOnly = fakeApp();
   readOnly.app.book.writable = false;
   assert.match(pageRunBlocked(readOnly.app, "regions"), /read-only/);

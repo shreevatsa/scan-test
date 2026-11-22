@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261121-blocks";
-import { typeRevision } from "./schema.js?v=20261121-blocks";
+import { canonical } from "./ops.js?v=20261121-stage-readiness";
+import { typeRevision } from "./schema.js?v=20261121-stage-readiness";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));

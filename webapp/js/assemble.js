@@ -2,8 +2,7 @@
 // [book, warnings]. A unit open at its end joins the unit open at its start on a later page of its flow, level by
 // level, when the two have the same type and every page between has no unit of that type there and no open end of its
 // own (a blank page, a plate with its caption, a page whose units are all of other types). The pages between keep
-// their units, after the joined one. A null in pageDocs is a page that is not there (Read leaves out pages not moved on
-// to it): nothing joins across it, as at the start or end of the book.
+// their units, after the joined one. A null in pageDocs is a page that is not there (Read leaves out pages awaiting transcription): nothing joins across it, as at the start or end of the book.
 
 const clone = x => (x === undefined ? x : JSON.parse(JSON.stringify(x)));
 

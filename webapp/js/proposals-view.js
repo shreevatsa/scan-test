@@ -1,15 +1,15 @@
 // The "Proposed types (N)" box of the Regions tab, between the survey box and the Find regions box: pending proposals
 // for the type list from surveys (methods 095, 096) and from the region finder (method 097), each added through the
 // type-list revision operations, found to be the same as an existing type, or dismissed. When a proposal becomes a
-// type, the unassigned regions that carry its name get that type on every page a person has not edited or moved on;
+// type, the unassigned regions that carry its name get that type on every page a person has not edited or reviewed;
 // the others are listed with links, to be given the type by hand.
 import { h } from "./render.js";
 import { readPendingProposals, pendingItems, decideProposal, additionChoice, additionOperations, proposalAssignments,
-  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261121-blocks";
-import { reviewTypeChange } from "./type-operations.js?v=20261121-blocks";
-import { REGION_CLASSES } from "./book-types.js?v=20261121-blocks";
-import { classPicker, classShort, defaultClass } from "./class-labels.js?v=20261121-blocks";
-import { isProtected, LAYERS } from "./layers.js?v=20261121-blocks";
+  waitingRegions, normalizeTypeName, itemNames, proposalEvidence } from "./type-additions.js?v=20261121-stage-readiness";
+import { reviewTypeChange } from "./type-operations.js?v=20261121-stage-readiness";
+import { REGION_CLASSES } from "./book-types.js?v=20261121-stage-readiness";
+import { classPicker, classShort, defaultClass } from "./class-labels.js?v=20261121-stage-readiness";
+import { isProtected, LAYERS } from "./layers.js?v=20261121-stage-readiness";
 
 const where = type => type.furniture ? "Page furniture"
   : [type.parents.length ? `Inside ${type.parents.join(", ")}` : "", type.flow ? `Top level of ${type.flow}` : ""].filter(Boolean).join(" · ");
@@ -53,7 +53,7 @@ export function proposalsBox(app) {
     if (message?.book !== book) return;
     const { regions, pages, type, held } = message;
     status.replaceChildren(`${plural(regions, "region")} on ${plural(pages, "page")} now ${regions === 1 ? "has" : "have"} type ${type}.`,
-      ...held.length ? [` ${plural(held.length, "moved-on page")} ${held.length === 1 ? "has" : "have"} regions waiting for this type: `, ...held.flatMap(pid => [pageLink(pid), " "])] : []);
+      ...held.length ? [` ${plural(held.length, "protected page")} ${held.length === 1 ? "has" : "have"} regions waiting for this type: `, ...held.flatMap(pid => [pageLink(pid), " "])] : []);
   };
   const decide = async (item, decision) => {
     try {
@@ -171,11 +171,11 @@ export function proposalsBox(app) {
     showMessage();
     section.hidden = !types.length && !descriptions.length && !edits.length && !waiting.length && app.proposalMessage?.book !== book;
     list.replaceChildren(...[
-      types.length ? h("p", { class: "hint" }, "Types proposed by surveys and by Find regions. Regions of a proposed type stay unassigned (hatched) until the type is added; then they get it on every page you have not edited or moved on.") : null,
+      types.length ? h("p", { class: "hint" }, "Types proposed by surveys and by Find regions. Regions of a proposed type stay unassigned (hatched) until the type is added; then they get it on every page you have not edited or reviewed.") : null,
       ...descriptions.map(descriptionCard),
       ...types.map(typeCard),
       edits.length ? h("h4", {}, "Suggested definition edits") : null, ...edits.map(editCard),
-      waiting.length ? h("div", { class: "box" }, h("p", {}, `${plural(waiting.length, "moved-on page")} ${waiting.length === 1 ? "has" : "have"} regions waiting for an added type: `),
+      waiting.length ? h("div", { class: "box" }, h("p", {}, `${plural(waiting.length, "protected page")} ${waiting.length === 1 ? "has" : "have"} regions waiting for an added type: `),
         h("p", {}, ...waiting.flatMap(({ pid, types: names }) => [pageLink(pid), ` (${names.join(", ")}) `]))) : null,
       questions.length ? h("p", { class: "box" }, `${plural(questions.length, "question")} from surveys ${questions.length === 1 ? "is" : "are"} in Questions to review. `,
         h("button", { onclick: () => app.setRegionView("types") }, "Open By type")) : null,

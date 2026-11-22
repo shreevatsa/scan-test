@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pageStages, availability, workflowRoute, workflowAddress, eligible, readingGaps, readingDocuments, movePage, reviewPageStates, stageFlags, currentStage } from "../js/workflow.js";
+import { pageStages, hasReading, workflowRoute, workflowAddress, eligible, readingGaps, readingDocuments, movePage, reviewPageStates, stageFlags, currentStage } from "../js/workflow.js";
 import { accept, layerState } from "../js/layers.js";
 import { runBatch } from "../js/pipeline/batch.js";
 import { CredentialChecks } from "../js/key-check.js";
@@ -13,21 +13,28 @@ const page = (id = "p1") => ({ page: { id, regions: [{ id: "r1", type: "paragrap
   units: [{ id: "u1", type: "paragraph", children: [{ region: `${id}#r1` }], open: { start: true, end: true } }],
   source: { layers: { regions: { state: "model", types_revision: 1 }, text: { state: "model", types_revision: 1 }, units: { state: "provisional", types_revision: 1 } } } });
 
-test("stage availability follows acceptance and legacy documents retain their completed stages", () => {
+test("processing uses valid input without review marks and Read can show partial text", () => {
   const empty = pageStages(null, types);
-  assert.deepEqual(availability([empty]), { pages: true, regions: true, text: false, read: false, export: true });
-  const doc = page();
-  assert.equal(eligible("text", pageStages(doc, types)), false);
-  const regions = accept(doc, "regions");
-  assert.equal(availability([pageStages(regions, types)]).text, true);
-  assert.equal(availability([pageStages(regions, types)]).read, false);
-  assert.equal(availability([pageStages(accept(regions, "text"), types)]).read, true);
+  assert.equal(eligible("text", empty), false);
+  assert.equal(eligible("read", empty), false);
+  const doc = page(), unreviewed = pageStages(doc, types);
+  assert.equal(eligible("text", unreviewed), true);
+  assert.equal(eligible("read", unreviewed), true);
+  assert.equal(hasReading(doc, types), true);
+  const partial = structuredClone(doc);
+  partial.page.regions[0].lines.push({ line: 2, polygons: doc.page.regions[0].lines[0].polygons });
+  assert.equal(hasReading(partial, types), true);
+  assert.equal(eligible("read", pageStages(partial, types)), false);
+  assert.equal(eligible("text", pageStages(doc, types, ["Invalid draft"])), false);
   delete doc.source.layers;
-  assert.equal(availability([pageStages(doc, types)]).read, true);
+  assert.equal(eligible("read", pageStages(doc, types)), true);
+  delete doc.page.regions[0].lines[0].text;
+  assert.equal(hasReading(doc, types), false);
+  doc.page.regions = [];
+  assert.equal(hasReading(doc, types), true, "a blank page can be joined across");
 });
 
-test("new and old addresses reach the stage views and locked stages return to Pages", () => {
-  const ready = { pages: true, regions: true, text: true, read: true, export: true };
+test("new and old addresses reach the stage views regardless of review status", () => {
   const cases = { pages: ["pages", "grid"], regions: ["regions", "grid"], "regions&view=types": ["regions", "types"],
     "regions&view=proposal": ["regions", "types"], "regions&view=compare": ["regions", "grid"],
     "text&view=compare": ["text", "readers"], "read&view=pages": ["read", "grid"], "read&view=compare": ["read", "structures"],
@@ -35,42 +42,37 @@ test("new and old addresses reach the stage views and locked stages return to Pa
     types: ["regions", "types"], "types&view=proposal": ["regions", "types"], readers: ["text", "readers"], structures: ["read", "structures"], make: ["regions", "grid"],
     check: ["read", "check"], style: ["read", "style"], "p=p1": ["page", "page"], "page&p=p1": ["page", "page"] };
   for (const [hash, expected] of Object.entries(cases)) {
-    const out = workflowRoute(`#${hash}`, ready);
+    const out = workflowRoute(`#${hash}`);
     assert.deepEqual([out.stage, out.mode], expected, hash);
   }
-  assert.equal(workflowRoute("#text", { ...ready, text: false }).locked, true);
-  const specific = workflowRoute(workflowAddress("text", "p 1", { region: "r1" }), ready);
+  const specific = workflowRoute(workflowAddress("text", "p 1", { region: "r1" }));
   assert.equal(specific.pid, "p 1");
   assert.equal(specific.region, "r1");
   assert.equal(workflowAddress("types"), "#regions&view=types");
-  assert.equal(workflowRoute("#types&view=proposal", ready).view, "proposal");
+  assert.equal(workflowRoute("#types&view=proposal").view, "proposal");
   // A page in a stage's grid keeps its view: only an address with no view opens the page editor.
-  assert.deepEqual([workflowRoute("#read&view=pages&p=p1", ready).mode, workflowRoute("#regions&view=types&p=p1", ready).mode], ["grid", "types"]);
+  assert.deepEqual([workflowRoute("#read&view=pages&p=p1").mode, workflowRoute("#regions&view=types&p=p1").mode], ["grid", "types"]);
 });
 
 test("there is one page editor: every address with a page opens it, the old stage addresses too", () => {
-  const ready = { pages: true, regions: true, text: true, read: true, export: true };
   assert.equal(workflowAddress("page", "p 1", { region: "r1" }), "#page&p=p%201&r=r1");
   for (const stage of ["page", "pages", "regions", "text", "read"]) assert.equal(workflowAddress(stage, "p1"), "#page&p=p1", stage);
   assert.equal(workflowAddress("regions"), "#regions");
   // Saved links from the three page editors still open the page, in the one editor, with their selection.
   for (const old of ["regions", "text", "read", "pages"]) {
-    const out = workflowRoute(`#${old}&p=p1&u=u2`, ready);
-    assert.deepEqual([out.stage, out.mode, out.pid, out.unit, out.locked], ["page", "page", "p1", "u2", false], old);
+    const out = workflowRoute(`#${old}&p=p1&u=u2`);
+    assert.deepEqual([out.stage, out.mode, out.pid, out.unit], ["page", "page", "p1", "u2"], old);
   }
-  // A page not moved on to Read (Read and Text locked for the whole book) still opens in the page editor.
-  const early = { ...ready, text: false, read: false };
-  assert.equal(workflowRoute("#read", early).locked, true);
-  for (const hash of ["#read&p=p1", "#text&p=p1", "#page&p=p1"]) assert.deepEqual([workflowRoute(hash, early).mode, workflowRoute(hash, early).locked], ["page", false], hash);
+  for (const hash of ["#read&p=p1", "#text&p=p1", "#page&p=p1"]) assert.equal(workflowRoute(hash).mode, "page");
 });
 
-test("reading gaps are named and units never join across pages awaiting acceptance", () => {
+test("reading gaps are named and units never join across pages awaiting transcription", () => {
   const pages = ["p1", "p2", "p3", "p4"].map(id => ({ id }));
   const docs = [page("p1"), page("p3")], snapshot = structuredClone(docs);
   assert.deepEqual(readingGaps(pages, new Set(["p1", "p3"])), ["Page 2", "Page 4"]);
   assert.deepEqual(readingGaps(pages, new Set(["p1"])), ["Pages 2–4"]);
   const out = readingDocuments(pages, docs);
-  assert.deepEqual(out, [docs[0], null, docs[1], null], "the pages in order, a gap where a page is not moved on");
+  assert.deepEqual(out, [docs[0], null, docs[1], null], "the pages in order, a gap where a page is not transcribed");
   const [book, warnings] = assemble(out.map(doc => doc && { ...doc, flows: { main: ["u1"] } }), { flows: { main: "Main" }, ...types });
   assert.deepEqual(warnings, [], "a gap is like the end of the book before it and its start after it");
   assert.deepEqual(book.units.map(unit => unit.id), ["p1#u1", "p3#u1"], "nothing joins across it");
@@ -239,22 +241,24 @@ test("acceptance and sending back persist in edits, folder stages and a book PDF
   } finally { Object.assign(idb, originals); }
 });
 
-test("Pages shows each page's flags at the stage it waits at, and rare layouts are a filter, not a flag", () => {
+test("Pages collects review flags and processing follows the available input", () => {
   const types = { types: { paragraph: { region: "paragraph", flow: "main" }, heading: { region: "heading", flow: "main" } } };
   const uncertain = id => {
     const doc = page(id);
     doc.page.regions[0].source = { uncertain: true, transcription: { uncertain: true } };
     return doc;
   };
-  const docs = { p1: uncertain("p1"), p2: accept(uncertain("p2"), "regions"), p3: accept(accept(uncertain("p3"), "regions"), "text") };
+  const docs = { p1: uncertain("p1"), p2: uncertain("p2"), p3: uncertain("p3") };
+  delete docs.p2.page.regions[0].lines[0].text;
   docs.p3.page.regions[0].type = "heading";
   const pages = ["p1", "p2", "p3"].map(id => ({ id }));
   const states = new Map(pages.map(({ id }) => [id, { ...pageStages(docs[id], types), runErrors: {} }]));
   reviewPageStates(pages, states, types);
-  assert.deepEqual(["p1", "p2", "p3"].map(id => currentStage(states.get(id))), ["regions", "text", "read"]);
+  assert.deepEqual(["p1", "p2", "p3"].map(id => currentStage(states.get(id))), ["read", "text", "read"]);
+  assert.equal(currentStage(pageStages(null, types)), "regions");
   assert.match(stageFlags(states.get("p1"), "pages")[0], /uncertain type or boundary/);
-  assert.match(stageFlags(states.get("p2"), "pages")[0], /uncertain transcription/);
-  assert.match(stageFlags(states.get("p3"), "pages")[0], /uncertain completion/);
+  assert.ok(stageFlags(states.get("p2"), "pages").some(flag => /uncertain transcription/.test(flag)));
+  assert.ok(stageFlags(states.get("p3"), "pages").some(flag => /uncertain completion/.test(flag)));
   assert.match(stageFlags(states.get("p3"), "regions")[0], /uncertain type or boundary/, "a stage still lists its own flags");
   assert.deepEqual(["p1", "p2", "p3"].map(id => states.get(id).rareLayout), [true, true, true]);
   assert.equal(states.get("p1").layout, "paragraph");

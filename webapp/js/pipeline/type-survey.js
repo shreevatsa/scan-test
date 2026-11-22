@@ -2,11 +2,11 @@
 // where they belong and their evidence pages, optional clearer definitions of existing types, and possible duplicates
 // among existing types as questions. Up to twelve pages go as full page images (method 095), more as labelled contact
 // sheets in batches (method 096). Each response is schema-checked, then checked against the current list.
-import { makeValidator, typeRevision } from "../schema.js?v=20261121-blocks";
-import { structurerById, geminiReadingRequest } from "./readers.js?v=20261121-blocks";
-import { Maker, templates, jsonHash } from "./run.js?v=20261121-blocks";
-import { openaiCost } from "./steps.js?v=20261121-blocks";
-import { CONTACT_SHEET_RECIPE, sheetBatches } from "./contact-sheets.js?v=20261121-blocks";
+import { makeValidator, typeRevision } from "../schema.js?v=20261121-stage-readiness";
+import { structurerById, geminiReadingRequest } from "./readers.js?v=20261121-stage-readiness";
+import { Maker, templates, jsonHash } from "./run.js?v=20261121-stage-readiness";
+import { openaiCost } from "./steps.js?v=20261121-stage-readiness";
+import { CONTACT_SHEET_RECIPE, sheetBatches } from "./contact-sheets.js?v=20261121-stage-readiness";
 
 export const SURVEY_PAGE_IMAGE_LIMIT = 12;
 export const SURVEY_METHODS = { pages: "095-additive-page-image-type-survey", sheets: "096-additive-contact-sheet-type-survey" };

@@ -1,41 +1,41 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261121-blocks";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261121-blocks";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261121-blocks";
-import { RECIPE } from "./recipe.js?v=20261121-blocks";
-import { readerOptions } from "./pipeline/readers.js?v=20261121-blocks";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261121-stage-readiness";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261121-stage-readiness";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261121-stage-readiness";
+import { RECIPE } from "./recipe.js?v=20261121-stage-readiness";
+import { readerOptions } from "./pipeline/readers.js?v=20261121-stage-readiness";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook, prepareBlockReader } from "./blocksview.js?v=20261121-blocks";
-import { blockName } from "./blocks.js?v=20261121-blocks";
-import { PageView } from "./pageimage.js?v=20261121-blocks";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261121-blocks";
-import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261121-blocks";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261121-blocks";
-import { renderStyle } from "./styleview.js?v=20261121-blocks";
-import { openTypeList } from "./typesview.js?v=20261121-blocks";
-import { typeSetup } from "./type-setup.js?v=20261121-blocks";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook, prepareBlockReader } from "./blocksview.js?v=20261121-stage-readiness";
+import { blockName } from "./blocks.js?v=20261121-stage-readiness";
+import { PageView } from "./pageimage.js?v=20261121-stage-readiness";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261121-stage-readiness";
+import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261121-stage-readiness";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261121-stage-readiness";
+import { renderStyle } from "./styleview.js?v=20261121-stage-readiness";
+import { openTypeList } from "./typesview.js?v=20261121-stage-readiness";
+import { typeSetup } from "./type-setup.js?v=20261121-stage-readiness";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261121-blocks";
-import { EditError } from "./ops.js?v=20261121-blocks";
-import { Maker, post } from "./pipeline/run.js?v=20261121-blocks";
-import { CredentialChecks } from "./key-check.js?v=20261121-blocks";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261121-blocks";
-import { pageStages, availability, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, movePage, pageWalker, readingDocuments } from "./workflow.js?v=20261121-blocks";
-import { regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261121-blocks";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-blocks";
-import { layerState, layerView, noteEdit } from "./layers.js?v=20261121-blocks";
-import { orderedRegions } from "./flags.js?v=20261121-blocks";
-import { assemble } from "./assemble.js?v=20261121-blocks";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261121-blocks";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261121-blocks";
-import { renderPages } from "./pagesview.js?v=20261121-blocks";
-import { settings } from "./store.js?v=20261121-blocks";
-import { renderReaders } from "./readersview.js?v=20261121-blocks";
-import { renderStructures } from "./structuresview.js?v=20261121-blocks";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261121-blocks";
-import { pageMenu } from "./page-actions.js?v=20261121-blocks";
+import * as ops from "./ops.js?v=20261121-stage-readiness";
+import { EditError } from "./ops.js?v=20261121-stage-readiness";
+import { Maker, post } from "./pipeline/run.js?v=20261121-stage-readiness";
+import { CredentialChecks } from "./key-check.js?v=20261121-stage-readiness";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261121-stage-readiness";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261121-stage-readiness";
+import { regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261121-stage-readiness";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-stage-readiness";
+import { layerState, layerView, noteEdit } from "./layers.js?v=20261121-stage-readiness";
+import { orderedRegions } from "./flags.js?v=20261121-stage-readiness";
+import { assemble } from "./assemble.js?v=20261121-stage-readiness";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261121-stage-readiness";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261121-stage-readiness";
+import { renderPages } from "./pagesview.js?v=20261121-stage-readiness";
+import { settings } from "./store.js?v=20261121-stage-readiness";
+import { renderReaders } from "./readersview.js?v=20261121-stage-readiness";
+import { renderStructures } from "./structuresview.js?v=20261121-stage-readiness";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261121-stage-readiness";
+import { pageMenu } from "./page-actions.js?v=20261121-stage-readiness";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -371,7 +371,7 @@ class App {
     el.className = `copy-status${label?.warn ? " warn" : ""}`;
     if (!label) { el.replaceChildren(); return; }
     const state = copy.state;
-    el.title = state.disk ? `${state.name}: written again after each processing run, after pages are moved on, and at most every five minutes while there are changes.` : "";
+    el.title = state.disk ? `${state.name}: written again after each processing run, after review marks change, and at most every five minutes while there are changes.` : "";
     const actions = {
       choose: ["Keep a copy on disk…", () => this.chooseDiskCopy()],
       download: ["Download .chaya.pdf", () => this.saveChaya(this.book)],
@@ -552,7 +552,7 @@ class App {
     const tlErrors = [...this.validate(this.tl)];
     if (tlErrors.length) this.toast(`The type list has problems: ${tlErrors[0]}`, "bad");
     this.layout();
-    if (!location.hash) location.hash = book.pages.every(page => this.pageStates.get(page.id).layers.text?.accepted) ? "#read" : "#pages";
+    if (!location.hash) location.hash = book.pages.every(page => book.isSkipped(page.id) || currentStage(this.pageStates.get(page.id)) === "read") ? "#read" : "#pages";
     else await this.route();
   }
 
@@ -561,7 +561,6 @@ class App {
     const [errors, warnings] = draft ? this.check(draft.doc) : current ? this.check(current) : [[], []];
     this.pageStates.set(pid, { ...pageStages(current, book.types, errors, warnings), runErrors: this.pageStates.get(pid)?.runErrors || {} });
     if (!this.workflowLoading) { this.refreshWorkflowFlags(); this.renderCopyStatus(); }
-    this.updateWorkflowNavigation();
   }
 
   refreshWorkflowFlags() {
@@ -630,10 +629,7 @@ class App {
     if (location.hash === workflowAddress(this.routeView === "blocks" ? "blocks" : "page", pid)) await this.route(); else this.openPage(pid);
   }
 
-  // "No content on this page" (Regions): every region removed, as one editing step that undo restores, and the page
-  // moved on to Text. A page with no regions has nothing to transcribe or complete, and units join across it as across
-  // any page with no unit of their type (assemble.js); this is how a page that is not part of the book (a library's
-  // cover, a blank page) is kept. Asked first when the page has regions with text or a person's edits.
+  // Remove every region in one undoable edit. A blank page needs no model work.
   async markNoContent() {
     if (this.mode !== "page" || !this.doc || !this.book.writable) return;
     if (this.workflowBusy || this.outlineBusy) return this.toast("Wait for the current edit to finish.");
@@ -641,7 +637,7 @@ class App {
     const withText = regions.filter(region => region.lines?.some(line => typeof line.text === "string")).length;
     const edited = this.book.edits.has(pid) || ["regions", "text", "units"].some(layer => layerState(doc, layer)?.state === "edited");
     if (regions.length && (withText || edited)) {
-      const lines = [`This removes its ${regions.length} ${regions.length === 1 ? "region" : "regions"}${withText ? `, ${withText} of them with text,` : ""} and moves it on to Text.`,
+      const lines = [`This removes its ${regions.length} ${regions.length === 1 ? "region" : "regions"}${withText ? `, ${withText} of them with text,` : ""}.`,
         ...edited ? ["The page has your edits. Undo restores the regions while the page is open."] : []];
       if (!await this.confirmDialog("No content on this page?", lines, "Remove the regions")) return;
       if (this.pid !== pid) return;
@@ -659,22 +655,10 @@ class App {
     }
     await this.flush();
     if (this.pid !== pid) return;
-    if (this.dirty || this.lastErrors?.length) return this.toast("The page could not be saved without its regions, so it was not moved on.", "bad");
-    // A page already moved on from Regions stays where it is; one still at Regions moves on to Text.
-    if (layerState(this.doc, "regions")?.accepted) { await this.refreshWorkflowPage(pid); this.toast("No content on this page: its regions are removed. Undo brings them back."); return; }
-    this.workflowBusy = true;
-    try {
-      const out = await movePage(this.book, pid, "regions", true, value => this.check(value));
-      if (this.pid !== pid) return;
-      // The editor keeps its undo steps: undoing brings the regions back as an edit, and the page back to Regions.
-      this.modelDoc = out.doc; this.savedDoc = out.doc; this.doc = ops.clone(out.doc); this.dirty = false;
-      await this.refreshWorkflowPage(pid);
-      this.updateWorkflowNavigation();
-      this.markPageOption(pid);
-      await this.refresh();
-      this.diskCopy?.checkpoint();
-      this.toast("No content on this page: its regions are removed and it is moved on to Text, where it needs no transcription. Undo brings the regions back.");
-    } finally { this.workflowBusy = false; }
+    if (this.dirty || this.lastErrors?.length) return this.toast("The page could not be saved without its regions.", "bad");
+    await this.refreshWorkflowPage(pid);
+    this.diskCopy?.checkpoint();
+    this.toast("No content on this page. Undo brings the regions back.");
   }
 
   // A question before an action, answered in a dialog: resolves whether to go ahead.
@@ -709,15 +693,6 @@ class App {
       doc.source.omitted_regions.splice(index, 1);
       this.selection = { region: rid };
     })) this.recompute();
-  }
-
-  updateWorkflowNavigation() {
-    this.available = availability([...this.pageStates.values()]);
-    if (!this.header) return;
-    this.header.querySelectorAll(".mode").forEach(button => {
-      button.disabled = !this.available[button.dataset.mode];
-      button.title = button.disabled ? `Move pages on from ${button.dataset.mode === "text" ? "Regions" : "Text"} first` : "";
-    });
   }
 
   layout() {
@@ -755,7 +730,6 @@ class App {
         } }, "Next flagged page")), this.status, this.copyStatus = h("span", { class: "copy-status" }));
     this.main = h("main", {});
     this.root.replaceChildren(this.header, this.main);
-    this.updateWorkflowNavigation();
     this.renderCopyStatus();
   }
 
@@ -774,7 +748,7 @@ class App {
     if (this.dirty) { history.replaceState(null, "", this.lastWorkflowUrl); return; }
     if (this.pid) await this.refreshWorkflowPage(this.pid);
     if (token !== this.routeToken) return;
-    const route = workflowRoute(location.hash, this.available, pid => this.pageStates.get(pid));
+    const route = workflowRoute(location.hash);
     // A page the book does not have shows Pages.
     if (route.mode === "page" && !this.pageStates.has(route.pid)) Object.assign(route, { stage: "pages", mode: "grid" });
     const { stage } = route;
@@ -831,7 +805,6 @@ class App {
       if (mode === "structures") renderStructures(this.main, this).catch(error => this.toast(error.message, "bad"));
     }
     if (mode !== "page" && token === this.routeToken) this.main.scrollTop = this.workflowScroll.get(`${stage}/${mode}`) || 0;
-    if (route.locked) this.toast("Move pages on from the previous stage to open this tab.");
   }
 
   setMode(mode) {
@@ -1215,7 +1188,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261121-blocks", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261121-stage-readiness", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
@@ -1424,7 +1397,7 @@ class App {
       if (!copySection || this.book !== book) return;
       const copy = this.diskCopy, state = copy?.state;
       const label = state && copyLabel(state, { hasWork: true, canPick: !!window.showSaveFilePicker, time: shortTime });
-      const when = "after each processing run, after pages are moved on, and at most every five minutes while there are changes";
+      const when = "after each processing run, after review marks change, and at most every five minutes while there are changes";
       copySection.replaceChildren(...[h("h3", {}, "Copies of this book"),
         h("p", { class: this.storage?.persisted === false ? "warn" : "meta" }, storageText(this.storage || {})),
         state?.disk ? [h("p", { class: label.warn ? "warn" : "" }, `${label.text}. The file ${state.name} is written again ${when}.`),

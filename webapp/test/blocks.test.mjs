@@ -6,9 +6,9 @@ import { workflowAddress, workflowRoute } from "../js/workflow.js";
 test("the blocks address opens directly regardless of the current workflow stage", () => {
   const page = workflowAddress("blocks", "page 1", { region: "r1" });
   assert.equal(page, "#blocks&p=page%201&r=r1");
-  assert.deepEqual(workflowRoute(page, {}), { stage: "page", mode: "page", pid: "page 1",
-    view: "blocks", region: "r1", unit: null, locked: false });
-  assert.equal(workflowRoute("#blocks", {}).mode, "blocks-read");
+  assert.deepEqual(workflowRoute(page), { stage: "page", mode: "page", pid: "page 1",
+    view: "blocks", region: "r1", unit: null });
+  assert.equal(workflowRoute("#blocks").mode, "blocks-read");
 });
 
 test("blocks build episode brackets and link notes without using saved units or rewriting the page", () => {

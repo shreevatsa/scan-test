@@ -6,11 +6,11 @@
 // When the choice is not ready here (no checked key, "Draw by hand" chosen), the stage's grid opens with this page
 // selected and its run box ready.
 import { h } from "./render.js";
-import { runBatch } from "./pipeline/batch.js?v=20261121-blocks";
-import { finderById } from "./pipeline/finders.js?v=20261121-blocks";
-import { READERS } from "./pipeline/readers.js?v=20261121-blocks";
-import { eligible, noContent } from "./workflow.js?v=20261121-blocks";
-import { money } from "./reader-controls.js?v=20261121-blocks";
+import { runBatch } from "./pipeline/batch.js?v=20261121-stage-readiness";
+import { finderById } from "./pipeline/finders.js?v=20261121-stage-readiness";
+import { READERS } from "./pipeline/readers.js?v=20261121-stage-readiness";
+import { eligible, noContent } from "./workflow.js?v=20261121-stage-readiness";
+import { money } from "./reader-controls.js?v=20261121-stage-readiness";
 
 const NAMES = { regions: "Find regions on this page again", text: "Read this page again" };
 
@@ -18,7 +18,7 @@ const NAMES = { regions: "Find regions on this page again", text: "Read this pag
 export function pageRunBlocked(app, stage) {
   const state = app.pageStates.get(app.pid);
   if (!app.book.writable) return "A read-only book runs no models.";
-  if (stage === "text" && !eligible("text", state)) return "Move this page on from Regions first.";
+  if (stage === "text" && !eligible("text", state)) return "This page needs valid scan boxes before it can be read.";
   if (stage === "text" && noContent(state?.doc)) return "This page has no content: there is nothing to read.";
   return null;
 }
@@ -84,7 +84,7 @@ export function pageMenu(app, { reviewPageWithAI }) {
     if (!menu.open) return;
     items.replaceChildren(
       item("Review page with AI", "ask a model to review this page's regions and types, and choose what to take", () => reviewPageWithAI(app)),
-      item("No content on this page", "for a page that is not part of the book, such as a library’s cover or a blank page: remove its regions (and move it on to Text if it is at Regions), where it needs no transcription",
+      item("No content on this page", "for a page that is not part of the book, such as a library’s cover or a blank page: remove its regions. A blank page needs no transcription",
         () => app.markNoContent()),
       item(NAMES.regions, "the book's chosen region finder on this page; your edits are kept and its result waits as a suggestion", () => runPageAgain(app, "regions"), pageRunBlocked(app, "regions")),
       item(NAMES.text, "the book's chosen transcription model on this page; your text is kept and its result waits as a suggestion", () => runPageAgain(app, "text"), pageRunBlocked(app, "text")));

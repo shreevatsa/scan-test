@@ -1,13 +1,13 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261121-blocks";
-import { orderedRegions } from "./flags.js?v=20261121-blocks";
-import { pageLabel } from "./pipeline/steps.js?v=20261121-blocks";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261121-blocks";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261121-blocks";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261121-blocks";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261121-blocks";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261121-stage-readiness";
+import { orderedRegions } from "./flags.js?v=20261121-stage-readiness";
+import { pageLabel } from "./pipeline/steps.js?v=20261121-stage-readiness";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261121-stage-readiness";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261121-stage-readiness";
+import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261121-stage-readiness";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261121-stage-readiness";
 import { cp, shiftSpans } from "./inline.js";
-import { readingDocuments } from "./workflow.js?v=20261121-blocks";
+import { readingDocuments } from "./workflow.js?v=20261121-stage-readiness";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);

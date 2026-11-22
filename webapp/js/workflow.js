@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261121-blocks";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-blocks";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261121-blocks";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-blocks";
+import { typeRevision } from "./schema.js?v=20261121-stage-readiness";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-stage-readiness";
+import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261121-stage-readiness";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-stage-readiness";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
@@ -13,7 +13,7 @@ export function pageStages(doc, types, errors = [], warnings = []) {
   const missing = (doc?.page.regions || []).filter(region => types.types[region.type]?.region !== "figure")
     .flatMap(region => region.lines || []).filter(line => line.polygons?.length && typeof line.text !== "string").length;
   if (missing && layers.text) flags.push(`Text missing on ${missing} line pieces`);
-  return { doc, layers, flags, errors, warnings, valid: !errors.length, missing,
+  return { doc, layers, flags, errors, warnings, valid: !errors.length, missing, readable: hasReading(doc, types),
     earlier: Object.values(layers).some(layer => layer && layer.types_revision < typeRevision(types.source?.revision)),
     suggestion: !!Object.keys(doc?.source?.suggestions || {}).length };
 }
@@ -37,34 +37,34 @@ export function reviewPageStates(pages, states, types, assemblyWarnings = []) {
   });
 }
 
-// The stage a page waits at: the first whose layer has not been moved on, and Read once its text has been.
+// The next kind of work implied by the page's current contents.
 export function currentStage(state) {
-  return !state.layers.regions?.accepted ? "regions" : !state.layers.text?.accepted ? "text" : "read";
+  if (!state?.doc) return "regions";
+  return state.readable && !state.missing ? "read" : "text";
 }
 
-// A page's flags at a stage. Pages shows each page's flags at the stage it waits at: a layer that was moved on was
-// accepted, and its stage still lists its flags.
+// Pages collects findings across the book. Each processing view shows the relevant findings.
 export function stageFlags(state, stage) {
-  if (stage === "pages") stage = currentStage(state);
   const flags = stage === "regions" ? (state.regionFlags || []).map(flag => flag.message)
     : stage === "text" ? [...state.errors, ...(state.textFlags || []).map(flag => flag.message)]
       : stage === "read" ? (state.readFlags || []).map(flag => flag.message) : state.flags;
   return state.runErrors?.[stage] ? [state.runErrors[stage], ...flags] : flags;
 }
 
+export function hasReading(doc, types) {
+  if (!doc) return false;
+  const textBlocks = doc.page.regions.filter(region => types.types[region.type]?.region !== "figure");
+  return !textBlocks.length || textBlocks.some(region => region.lines?.some(line => typeof line.text === "string"));
+}
+
+// A model needs valid input from the previous operation. Reviewing it is a separate choice.
 export function eligible(stage, state) {
-  return stage === "text" ? !!state.layers.regions?.accepted : stage === "read" ? !!state.layers.text?.accepted : true;
+  if (stage !== "text" && stage !== "read") return true;
+  return !!state?.doc && state.valid && (stage === "text" || state.readable && !state.missing);
 }
 
-export function availability(states) {
-  return { pages: true, regions: true, text: states.some(state => eligible("text", state)),
-    read: states.some(state => eligible("read", state)), export: true };
-}
-
-// An address with a page and no view opens the page editor, whatever stage it names: `#page&p=<id>` is the address it
-// makes, and the older `#regions&p=`, `#text&p=`, `#read&p=` and bare `#p=` (saved links) open it too. The page editor is
-// never locked: a page not moved on to Read opens in it as any other does.
-export function workflowRoute(value, ready, pageState = () => null) {
+// With a page and no view, open the same page editor from every stage and old bookmark.
+export function workflowRoute(value) {
   const hash = new URLSearchParams(value.replace(/^#/, ""));
   const aliases = { readers: ["text", "compare"], structures: ["read", "compare"],
     check: ["read", "problems"], style: ["read", "style"], make: ["regions", "pages"], types: ["regions", "types"] };
@@ -73,15 +73,13 @@ export function workflowRoute(value, ready, pageState = () => null) {
   let view = old ? aliases[old][1] : hash.get("view") || "";
   if (old === "types" && hash.get("view") === "proposal") view = "proposal";
   if (hash.has("blocks")) return { stage: pid ? "page" : "read", mode: pid ? "page" : "blocks-read",
-    pid, view: "blocks", region: hash.get("r"), unit: null, locked: false };
-  if (pid && !view) return { stage: "page", mode: "page", pid, view: "", region: hash.get("r"), unit: hash.get("u"), locked: false };
+    pid, view: "blocks", region: hash.get("r"), unit: null };
+  if (pid && !view) return { stage: "page", mode: "page", pid, view: "", region: hash.get("r"), unit: hash.get("u") };
   const stage = old ? aliases[old][0] : STAGES.find(key => hash.has(key)) || "pages";
-  const locked = !ready[stage];
-  if (locked) return { stage: "pages", mode: "grid", locked };
   const views = { "regions/types": "types", "regions/proposal": "types", "text/compare": "readers", "read/compare": "structures",
     "read/problems": "check", "read/style": "style", "read/book": "plain" };
   const mode = views[`${stage}/${view}`] || (stage === "export" ? "export" : stage === "read" && view !== "pages" ? "read" : "grid");
-  return { stage, mode, pid, view, region: hash.get("r"), unit: hash.get("u"), locked: false };
+  return { stage, mode, pid, view, region: hash.get("r"), unit: hash.get("u") };
 }
 
 // The address of a stage view, or with a page (and a stage or "page"), of the page editor at that page.
@@ -104,9 +102,7 @@ export function readingGaps(pages, included) {
   return gaps;
 }
 
-// The book's pages in order, each its document where it is in `docs` and null where it is not: what Read assembles (the
-// pages moved on to Read), and Problems and Export (the pages with a document). Assembly joins nothing across a null,
-// so a page not moved on yet (or with no document yet) is a gap that no unit crosses.
+// Pages in book order, with null where the caller has no document to include. Assembly never crosses a null.
 // A dimmed page (`skipped`, a set of page ids or a function) is not part of the book: it is left out, not a gap, so a
 // unit goes on across it, as across a duplicate scan of a page.
 export function readingDocuments(pages, docs, skipped = null) {
@@ -160,8 +156,8 @@ export async function movePage(book, pid, layer, forward, check) {
     let doc = draft ? noteEdit(current, draft) : current;
     const [errors] = check(doc);
     if (forward && (errors.length || layer === "text" && pageStages(doc, book.types).missing))
-      throw new Error(errors[0] || "Transcribe the missing line pieces before moving this page on.");
-    // A page with no content moves on from Text with an empty text layer, as transcribing it would give (with no call).
+      throw new Error(errors[0] || "Transcribe the missing line pieces before marking the text reviewed.");
+    // Reviewing a blank page's text creates an empty text layer without a transcription call.
     if (forward && layer === "text" && noContent(doc) && !layerState(doc, "text")) {
       doc = structuredClone(doc);
       doc.source = { ...doc.source, layers: { ...layerRecords(doc), text: { state: "model", types_revision: typeRevision(book.types.source?.revision) } } };
