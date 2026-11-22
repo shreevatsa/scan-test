@@ -1,14 +1,14 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261122-three-tabs";
-import { orderedRegions } from "./flags.js?v=20261122-three-tabs";
-import { pageLabel } from "./pipeline/steps.js?v=20261122-three-tabs";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261122-three-tabs";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261122-three-tabs";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261122-three-tabs";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261122-three-tabs";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261122-review-actions";
+import { orderedRegions } from "./flags.js?v=20261122-review-actions";
+import { pageLabel } from "./pipeline/steps.js?v=20261122-review-actions";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261122-review-actions";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261122-review-actions";
+import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261122-review-actions";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261122-review-actions";
 import { cp, shiftSpans } from "./inline.js";
-import { layerState } from "./layers.js?v=20261122-three-tabs";
-import { readingDocuments } from "./workflow.js?v=20261122-three-tabs";
+import { layerState } from "./layers.js?v=20261122-review-actions";
+import { readingDocuments } from "./workflow.js?v=20261122-review-actions";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);

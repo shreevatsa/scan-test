@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261122-three-tabs";
+import { canonical } from "../ops.js?v=20261122-review-actions";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {

@@ -6,7 +6,7 @@
 // is checked with schema.js before it is saved.
 
 import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-three-tabs";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-review-actions";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };
@@ -1002,6 +1002,22 @@ export function markEdited(doc, base) {
 // Ignore a printed line the analysis found outside all regions (a stain, a rule, a printer's mark), or bring its flag back.
 // The ignored line is kept as {line_id, box}: a later analysis (another method, another threshold) may number the page's
 // lines differently, so it is matched by where it lies (flags.js `lineIgnored`), the id being only a hint.
+// Keep dismissed scan areas with the page so an editor can restore the finding.
+export function ignoreOmittedRegion(doc, index) {
+  const source = doc.source;
+  if (!source?.omitted_regions?.[index]) fail("This area is no longer on the page.");
+  const [region] = source.omitted_regions.splice(index, 1);
+  (source.ignored_regions ||= []).push(region);
+}
+
+export function restoreOmittedRegion(doc, index) {
+  const source = doc.source;
+  if (!source?.ignored_regions?.[index]) fail("This area has already been restored.");
+  const [region] = source.ignored_regions.splice(index, 1);
+  (source.omitted_regions ||= []).push(region);
+  if (!source.ignored_regions.length) delete source.ignored_regions;
+}
+
 export function ignoreLine(doc, line) {
   const entry = typeof line === "number" ? { line_id: line } : { line_id: line.line_id, box: line.box };
   const kept = (doc.source?.ignored_lines || []).filter(value => !sameIgnored(value, entry));

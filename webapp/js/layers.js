@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261122-three-tabs";
-import { typeRevision } from "./schema.js?v=20261122-three-tabs";
+import { canonical } from "./ops.js?v=20261122-review-actions";
+import { typeRevision } from "./schema.js?v=20261122-review-actions";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));
@@ -11,7 +11,10 @@ export function layerView(doc, layer) {
     case "regions":
       return canonical(regions.map(region => ({ ...fields(region, ["id", "type", "polygons", "box", "order"]),
         continues_from_earlier: Boolean(region.source?.continues_from_earlier), continues_later: Boolean(region.source?.continues_later),
-        lines: (region.lines || []).map(line => fields(line, ["line", "polygons"])) })).concat(doc?.source?.ignored_lines?.length ? [{ ignored_lines: doc.source.ignored_lines }] : []));
+        lines: (region.lines || []).map(line => fields(line, ["line", "polygons"])) })).concat(
+        doc?.source?.ignored_lines?.length ? [{ ignored_lines: doc.source.ignored_lines }] : [],
+        doc?.source?.ignored_regions?.length ? [{ ignored_regions: doc.source.ignored_regions }] : [],
+      ));
     case "text":
       return canonical({ label: doc?.page?.label ?? null, regions: regions.map(region => ({ id: region.id,
         lines: (region.lines || []).map(line => ({ line: line.line, text: line.text ?? null,

@@ -2,16 +2,16 @@
 // are proposed additions, kept as pending proposals until each is added (through the type-list revision operations)
 // or dismissed; they are reviewed in the Proposed types box (proposals-view.js). Up to twelve pages are sent as page images (method 095), more as contact sheets (method 096).
 import { h } from "./render.js";
-import { money } from "./reader-controls.js?v=20261122-three-tabs";
-import { settings } from "./store.js?v=20261122-three-tabs";
+import { money } from "./reader-controls.js?v=20261122-review-actions";
+import { settings } from "./store.js?v=20261122-review-actions";
 import { sha256hex } from "./chayapdf.js";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { samplePages } from "./pipeline/type-discovery.js?v=20261122-three-tabs";
-import { renderContactSheets, sheetBatches } from "./pipeline/contact-sheets.js?v=20261122-three-tabs";
-import { SURVEY_MODELS, SURVEY_PAGE_IMAGE_LIMIT, surveyForm, surveyProfile, runSurvey } from "./pipeline/type-survey.js?v=20261122-three-tabs";
-import { surveyItems, addPendingProposals, surveyOutcome } from "./type-additions.js?v=20261122-three-tabs";
-import { pageSelectionText } from "./page-browser.js?v=20261122-three-tabs";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261122-three-tabs";
+import { samplePages } from "./pipeline/type-discovery.js?v=20261122-review-actions";
+import { renderContactSheets, sheetBatches } from "./pipeline/contact-sheets.js?v=20261122-review-actions";
+import { SURVEY_MODELS, SURVEY_PAGE_IMAGE_LIMIT, surveyForm, surveyProfile, runSurvey } from "./pipeline/type-survey.js?v=20261122-review-actions";
+import { surveyItems, addPendingProposals, surveyOutcome } from "./type-additions.js?v=20261122-review-actions";
+import { pageSelectionText } from "./page-browser.js?v=20261122-review-actions";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261122-review-actions";
 
 export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, credentialsBox = null, onProposals = () => {} }) {
   const book = app.book, token = app.routeToken;

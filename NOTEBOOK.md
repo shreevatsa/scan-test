@@ -5273,3 +5273,7 @@ Opened both public books in a fresh headless Chrome profile. Read shows four sav
 ### 2026-11-22 Three workflow tabs
 
 Verified Pages, Read, Export and Settings in a separate headless profile on Kale 1913 and the Rāmāyaṇa-mañjarī. On a one-page PDF rasterized from the public English title page, Process pages found boxes using local line blocks and transcribed them with local Tesseract, then Read displayed the text. A simulated spend stop between the model steps kept the boxes, and resuming transcribed the same page without finding boxes a second time. No paid model calls.
+
+### 2026-11-22 Review actions
+
+In a fresh headless profile on the Rāmāyaṇa-mañjarī, dismissed the three unassigned areas and two possible lines on the copyright page through the five Leave out controls. Restored a dismissed area, cleared the order warning on scan 51 with Use reader order and checked that dimmed Pages cards carry no review badge. Opened all 252 Kale pages and verified its 279 saved verse groups in Read. The area-dismissal regression checks that the saved edit is protected and reversible. No model calls.

@@ -1,13 +1,13 @@
-import { suggestionButton } from "./review-view.js?v=20261122-three-tabs";
+import { suggestionButton } from "./review-view.js?v=20261122-review-actions";
 import { h } from "./render.js";
-import { nextProcessingStage, REVIEW_LABELS, noContent } from "./workflow.js?v=20261122-three-tabs";
+import { nextProcessingStage, REVIEW_LABELS, noContent } from "./workflow.js?v=20261122-review-actions";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261122-three-tabs";
-import { READERS } from "./pipeline/readers.js?v=20261122-three-tabs";
-import { finderById } from "./pipeline/finders.js?v=20261122-three-tabs";
-import { runBatch } from "./pipeline/batch.js?v=20261122-three-tabs";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261122-review-actions";
+import { READERS } from "./pipeline/readers.js?v=20261122-review-actions";
+import { finderById } from "./pipeline/finders.js?v=20261122-review-actions";
+import { runBatch } from "./pipeline/batch.js?v=20261122-review-actions";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261122-three-tabs";
+import { money } from "./reader-controls.js?v=20261122-review-actions";
 
 export async function renderPages(el, app) {
   const { book, routeToken } = app;
@@ -65,7 +65,8 @@ export async function renderPages(el, app) {
     visible = [];
     for (const [pid, row] of rows) {
       const state = stateOf(pid);
-      const matchesReview = stateFilter.value === "all" || state.status === stateFilter.value;
+      const matchesReview = stateFilter.value === "all" ||
+        !book.isSkipped(pid) && !noContent(state.doc) && state.status === stateFilter.value;
       const matchesFlag = filter.value === "all" || (filter.value === "flagged" ? state.flags.length : filter.value === "dimmed" ? book.isSkipped(pid) : state.earlier);
       row.element.hidden = !matchesReview || !matchesFlag;
       if (!row.element.hidden) visible.push(pid);
@@ -77,9 +78,12 @@ export async function renderPages(el, app) {
   function refreshCard(pid) {
     const { element, states, flags, skip } = rows.get(pid), state = stateOf(pid);
     const progress=!state.doc ? "Awaiting boxes" : noContent(state.doc) ? "No content" : stageOf(pid)==="text" ? "Awaiting text" : "";
-    states.replaceChildren(h("span", { class: `stage-badge ${state.checked ? "accepted" : ""}` }, REVIEW_LABELS[state.status]));
-    if (progress) states.append(h("span", { class: "meta" }, progress));
-    const count=state.flags.length, dimmed=book.isSkipped(pid);
+    const count = state.flags.length, dimmed = book.isSkipped(pid);
+    states.replaceChildren();
+    if (!dimmed) {
+      if (!noContent(state.doc)) states.append(h("span", { class: `stage-badge ${state.checked ? "accepted" : ""}` }, REVIEW_LABELS[state.status]));
+      if (progress) states.append(h("span", { class: "meta" }, progress));
+    }
     flags.textContent = count ? `${count} ${count===1 ? "flag" : "flags"} · ${state.flags[0]}` : "";
     flags.title=state.flags.join("\n");
     element.classList.toggle("has-flags",Boolean(count));

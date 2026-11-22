@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261122-three-tabs";
+import { typeRevision } from "../schema.js?v=20261122-review-actions";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {

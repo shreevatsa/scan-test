@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261122-three-tabs";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-three-tabs";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261122-three-tabs";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261122-three-tabs";
+import { typeRevision } from "./schema.js?v=20261122-review-actions";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-review-actions";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261122-review-actions";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261122-review-actions";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };

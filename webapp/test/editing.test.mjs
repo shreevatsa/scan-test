@@ -137,6 +137,20 @@ test("reading-order warnings name the region IDs shown in the editor", () => {
   assert.deepEqual(checkPage(validate, doc, types), [[], []]);
 });
 
+test("leaving out an unassigned area is a protected, reversible page edit", () => {
+  const original = page();
+  const area = { region: "r3", type: "other", box: [0, 5, 25, 10] };
+  original.source.omitted_regions = [area];
+  const edited = ops.clone(original);
+  ops.ignoreOmittedRegion(edited, 0);
+  assert.deepEqual(edited.source.omitted_regions, []);
+  assert.deepEqual(edited.source.ignored_regions, [area]);
+  assert.equal(layerState(noteEdit(original, edited), "regions").state, "edited");
+  ops.restoreOmittedRegion(edited, 0);
+  assert.deepEqual(edited.source.omitted_regions, [area]);
+  assert.equal(edited.source.ignored_regions, undefined);
+});
+
 function stored() {
   const manifest = { format: "book-folder", version: 1, book_id: types.book_id, title: types.title, types: "types.json",
     pages: [1, 2].map(n => ({ id: `p${n}`, pdf_page: n, document: `pages/p${n}.json` })) };

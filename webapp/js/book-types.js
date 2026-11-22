@@ -1,5 +1,5 @@
-import { checkTypes, typeRevision } from "./schema.js?v=20261122-three-tabs";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261122-three-tabs";
+import { checkTypes, typeRevision } from "./schema.js?v=20261122-review-actions";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261122-review-actions";
 
 export const REGION_CLASSES = ["verse", "paragraph", "heading", "lead_in", "list_item", "formula", "note", "table", "figure", "caption", "running_header", "page_number", "other"];
 

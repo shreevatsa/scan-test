@@ -667,3 +667,8 @@ main.page .inspector .actions { display: flex; flex-wrap: wrap; gap: 7px; margin
   .blocks-page .block-scan { height: 42vh; }
   .blocks-page .block-side { min-height: 52vh; }
 }
+
+.block-check .actions { flex-shrink: 0; margin: 0; }
+.block-uncertain-label { color: var(--warn); font-size: 12px; margin-left: .65em; }
+.block-uncertain { border-inline-start: 3px solid #c18e36; padding-inline-start: .45em; }
+.block-review-crop { margin-bottom: .5em; }

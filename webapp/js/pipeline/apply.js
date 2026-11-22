@@ -1,9 +1,9 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261122-three-tabs";
-import { canonical } from "../ops.js?v=20261122-three-tabs";
-import { checkDocument, typeRevision } from "../schema.js?v=20261122-three-tabs";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261122-review-actions";
+import { canonical } from "../ops.js?v=20261122-review-actions";
+import { checkDocument, typeRevision } from "../schema.js?v=20261122-review-actions";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261122-three-tabs";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261122-three-tabs";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261122-review-actions";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261122-review-actions";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,

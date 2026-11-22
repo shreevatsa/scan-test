@@ -1,11 +1,11 @@
 import { h } from "./render.js";
-import { settings } from "./store.js?v=20261122-three-tabs";
-import { credentialsBox } from "./key-check.js?v=20261122-three-tabs";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261122-three-tabs";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261122-three-tabs";
-import { renderTypeView, surveyBox } from "./typesview.js?v=20261122-three-tabs";
-import { renderFinders } from "./findersview.js?v=20261122-three-tabs";
-import { proposalsBox } from "./proposals-view.js?v=20261122-three-tabs";
+import { settings } from "./store.js?v=20261122-review-actions";
+import { credentialsBox } from "./key-check.js?v=20261122-review-actions";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261122-review-actions";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261122-review-actions";
+import { renderTypeView, surveyBox } from "./typesview.js?v=20261122-review-actions";
+import { renderFinders } from "./findersview.js?v=20261122-review-actions";
+import { proposalsBox } from "./proposals-view.js?v=20261122-review-actions";
 
 export async function renderBookSettings(el, app) {
   const { book, routeToken } = app;
