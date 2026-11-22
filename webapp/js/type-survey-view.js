@@ -2,16 +2,16 @@
 // are proposed additions, kept as pending proposals until each is added (through the type-list revision operations)
 // or dismissed; they are reviewed in the Proposed types box (proposals-view.js). Up to twelve pages are sent as page images (method 095), more as contact sheets (method 096).
 import { h } from "./render.js";
-import { money } from "./reader-controls.js?v=20261121-live-flags";
-import { settings } from "./store.js?v=20261121-live-flags";
+import { money } from "./reader-controls.js?v=20261121-page-card";
+import { settings } from "./store.js?v=20261121-page-card";
 import { sha256hex } from "./chayapdf.js";
 import { renderPage, pageRange } from "./pipeline/pdf.js";
-import { samplePages } from "./pipeline/type-discovery.js?v=20261121-live-flags";
-import { renderContactSheets, sheetBatches } from "./pipeline/contact-sheets.js?v=20261121-live-flags";
-import { SURVEY_MODELS, SURVEY_PAGE_IMAGE_LIMIT, surveyForm, surveyProfile, runSurvey } from "./pipeline/type-survey.js?v=20261121-live-flags";
-import { surveyItems, addPendingProposals, surveyOutcome } from "./type-additions.js?v=20261121-live-flags";
-import { pageSelectionText } from "./page-browser.js?v=20261121-live-flags";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261121-live-flags";
+import { samplePages } from "./pipeline/type-discovery.js?v=20261121-page-card";
+import { renderContactSheets, sheetBatches } from "./pipeline/contact-sheets.js?v=20261121-page-card";
+import { SURVEY_MODELS, SURVEY_PAGE_IMAGE_LIMIT, surveyForm, surveyProfile, runSurvey } from "./pipeline/type-survey.js?v=20261121-page-card";
+import { surveyItems, addPendingProposals, surveyOutcome } from "./type-additions.js?v=20261121-page-card";
+import { pageSelectionText } from "./page-browser.js?v=20261121-page-card";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261121-page-card";
 
 export async function renderSurvey(el, app, { selected = [], onBusy = () => {}, credentialsBox = null, onProposals = () => {} }) {
   const book = app.book, token = app.routeToken;

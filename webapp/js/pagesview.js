@@ -1,22 +1,22 @@
-import { suggestionButton } from "./review-view.js?v=20261121-live-flags";
+import { suggestionButton } from "./review-view.js?v=20261121-page-card";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, REVIEW_LABELS, resetGrouping, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261121-live-flags";
-import { RARE_LAYOUT } from "./flags.js?v=20261121-live-flags";
-import { regionBoxes } from "./pageimage.js?v=20261121-live-flags";
+import { eligible, STAGE_LAYER, REVIEW_LABELS, resetGrouping, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261121-page-card";
+import { RARE_LAYOUT } from "./flags.js?v=20261121-page-card";
+import { regionBoxes } from "./pageimage.js?v=20261121-page-card";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261121-live-flags";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261121-live-flags";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261121-live-flags";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261121-live-flags";
-import { settings } from "./store.js?v=20261121-live-flags";
-import { runBatch } from "./pipeline/batch.js?v=20261121-live-flags";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261121-page-card";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261121-page-card";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261121-page-card";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261121-page-card";
+import { settings } from "./store.js?v=20261121-page-card";
+import { runBatch } from "./pipeline/batch.js?v=20261121-page-card";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis } from "./recipe.js?v=20261121-live-flags";
-import { renderFinders } from "./findersview.js?v=20261121-live-flags";
-import { money } from "./reader-controls.js?v=20261121-live-flags";
-import { findTargets } from "./find-targets.js?v=20261121-live-flags";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261121-live-flags";
-import { proposalsBox } from "./proposals-view.js?v=20261121-live-flags";
+import { pageCost, recipeLine, runEstimate, costBasis } from "./recipe.js?v=20261121-page-card";
+import { renderFinders } from "./findersview.js?v=20261121-page-card";
+import { money } from "./reader-controls.js?v=20261121-page-card";
+import { findTargets } from "./find-targets.js?v=20261121-page-card";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261121-page-card";
+import { proposalsBox } from "./proposals-view.js?v=20261121-page-card";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
@@ -138,8 +138,8 @@ export async function renderPages(el, app) {
     if (!row) return;
     const progress = !state.doc ? "Awaiting boxes" : noContent(state.doc) ? "No content"
       : !state.readable || state.missing ? "Awaiting text" : "";
-    row.states.replaceChildren(h("span", { class: `stage-badge ${state.checked ? "accepted" : ""}` }, REVIEW_LABELS[state.status]),
-      progress ? h("span", { class: "meta" }, progress) : null);
+    row.states.replaceChildren(h("span", { class: `stage-badge ${state.checked ? "accepted" : ""}` }, REVIEW_LABELS[state.status]));
+    if (progress) row.states.append(h("span", { class: "meta" }, progress));
     const flags = flagsFor(pid);
     row.flags.textContent = flags.length ? `${flags.length} ${flags.length === 1 ? "flag" : "flags"} · ${flags[0]}` : "";
     row.element.classList.toggle("has-flags", !!flags.length);

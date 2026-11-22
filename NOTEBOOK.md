@@ -5261,3 +5261,7 @@ Re-ran the committed code from the repository checkout. The main suite passed 37
 ### Review flags after a box is transcribed
 
 Used a public Kale fixture with an older transcription revision, a box where the outline step found no ink, and the summary from a proposed layout. In fresh headless Chrome, both editors showed just the actionable box finding. Adding text cleared it immediately with the editing caret intact. Deleting the text reopened it, and an edited page still cleared the flag after reload. The public-fixture suite passed 375 tests, page joins passed 17 separately, and the Python schema suite passed 19. No model calls.
+
+### Pages cards with no progress message
+
+Opened the Rāmāyaṇa-mañjarī in fresh headless Chrome and checked all 532 Pages cards. Pages 3 and 12 showed only their review badge, page 1 kept Awaiting boxes, and no card rendered literal null. The public-fixture suite passed 375 tests, page joins passed 17 separately, and the Python schema suite passed 19.

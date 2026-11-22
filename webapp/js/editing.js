@@ -1,7 +1,7 @@
-import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261121-live-flags";
-import { layerView } from "./layers.js?v=20261121-live-flags";
-import { checkDocument } from "./schema.js?v=20261121-live-flags";
-import { assemble } from "./assemble.js?v=20261121-live-flags";
+import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261121-page-card";
+import { layerView } from "./layers.js?v=20261121-page-card";
+import { checkDocument } from "./schema.js?v=20261121-page-card";
+import { assemble } from "./assemble.js?v=20261121-page-card";
 
 // What the page editor may change. There is one page editor for every stage, and it may change anything: regions,
 // transcription, units, line joins and note links. (The narrower focuses, "text", "units" and "regions", are for the

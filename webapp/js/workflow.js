@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261121-live-flags";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-live-flags";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261121-live-flags";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-live-flags";
+import { typeRevision } from "./schema.js?v=20261121-page-card";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-page-card";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261121-page-card";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-page-card";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };

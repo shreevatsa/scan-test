@@ -1,41 +1,41 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261121-live-flags";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261121-live-flags";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261121-live-flags";
-import { RECIPE } from "./recipe.js?v=20261121-live-flags";
-import { readerOptions } from "./pipeline/readers.js?v=20261121-live-flags";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261121-page-card";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261121-page-card";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261121-page-card";
+import { RECIPE } from "./recipe.js?v=20261121-page-card";
+import { readerOptions } from "./pipeline/readers.js?v=20261121-page-card";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook, prepareBlockReader } from "./blocksview.js?v=20261121-live-flags";
-import { blockName } from "./blocks.js?v=20261121-live-flags";
-import { PageView } from "./pageimage.js?v=20261121-live-flags";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261121-live-flags";
-import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261121-live-flags";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261121-live-flags";
-import { renderStyle } from "./styleview.js?v=20261121-live-flags";
-import { openTypeList } from "./typesview.js?v=20261121-live-flags";
-import { typeSetup } from "./type-setup.js?v=20261121-live-flags";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook, prepareBlockReader } from "./blocksview.js?v=20261121-page-card";
+import { blockName } from "./blocks.js?v=20261121-page-card";
+import { PageView } from "./pageimage.js?v=20261121-page-card";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261121-page-card";
+import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261121-page-card";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261121-page-card";
+import { renderStyle } from "./styleview.js?v=20261121-page-card";
+import { openTypeList } from "./typesview.js?v=20261121-page-card";
+import { typeSetup } from "./type-setup.js?v=20261121-page-card";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261121-live-flags";
-import { EditError } from "./ops.js?v=20261121-live-flags";
-import { Maker, post } from "./pipeline/run.js?v=20261121-live-flags";
-import { CredentialChecks } from "./key-check.js?v=20261121-live-flags";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261121-live-flags";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261121-live-flags";
-import { regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261121-live-flags";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-live-flags";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261121-live-flags";
-import { orderedRegions } from "./flags.js?v=20261121-live-flags";
-import { assemble } from "./assemble.js?v=20261121-live-flags";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261121-live-flags";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261121-live-flags";
-import { renderPages } from "./pagesview.js?v=20261121-live-flags";
-import { settings } from "./store.js?v=20261121-live-flags";
-import { renderReaders } from "./readersview.js?v=20261121-live-flags";
-import { renderStructures } from "./structuresview.js?v=20261121-live-flags";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261121-live-flags";
-import { pageMenu } from "./page-actions.js?v=20261121-live-flags";
+import * as ops from "./ops.js?v=20261121-page-card";
+import { EditError } from "./ops.js?v=20261121-page-card";
+import { Maker, post } from "./pipeline/run.js?v=20261121-page-card";
+import { CredentialChecks } from "./key-check.js?v=20261121-page-card";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261121-page-card";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261121-page-card";
+import { regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261121-page-card";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-page-card";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261121-page-card";
+import { orderedRegions } from "./flags.js?v=20261121-page-card";
+import { assemble } from "./assemble.js?v=20261121-page-card";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261121-page-card";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261121-page-card";
+import { renderPages } from "./pagesview.js?v=20261121-page-card";
+import { settings } from "./store.js?v=20261121-page-card";
+import { renderReaders } from "./readersview.js?v=20261121-page-card";
+import { renderStructures } from "./structuresview.js?v=20261121-page-card";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261121-page-card";
+import { pageMenu } from "./page-actions.js?v=20261121-page-card";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -1207,7 +1207,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261121-live-flags", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261121-page-card", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

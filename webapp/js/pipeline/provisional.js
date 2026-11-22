@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261121-live-flags";
+import { typeRevision } from "../schema.js?v=20261121-page-card";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
