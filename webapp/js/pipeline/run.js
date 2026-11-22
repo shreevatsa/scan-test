@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261121-stage-readiness";
-import { mappedTypeNames } from "../type-revisions.js?v=20261121-stage-readiness";
+import { typeRevision } from "../schema.js?v=20261121-page-review";
+import { mappedTypeNames } from "../type-revisions.js?v=20261121-page-review";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261121-stage-readiness";
-import * as I from "./images.js?v=20261121-stage-readiness";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261121-stage-readiness";
+import * as S from "./steps.js?v=20261121-page-review";
+import * as I from "./images.js?v=20261121-page-review";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261121-page-review";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261121-stage-readiness";
-import { classifyBlocks } from "../local/blocks.js?v=20261121-stage-readiness";
-import { finderById, finderPath } from "./finders.js?v=20261121-stage-readiness";
-import { finderRequest } from "./finder-requests.js?v=20261121-stage-readiness";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261121-stage-readiness";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261121-stage-readiness";
+import { localReading, localLayout } from "./ocr.js?v=20261121-page-review";
+import { classifyBlocks } from "../local/blocks.js?v=20261121-page-review";
+import { finderById, finderPath } from "./finders.js?v=20261121-page-review";
+import { finderRequest } from "./finder-requests.js?v=20261121-page-review";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261121-page-review";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261121-page-review";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261121-stage-readiness";
-import { layerState, noteEdit } from "../layers.js?v=20261121-stage-readiness";
-import { provisionalDocument } from "./provisional.js?v=20261121-stage-readiness";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261121-stage-readiness";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261121-stage-readiness";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261121-stage-readiness";
-import { isProtected, LAYERS } from "../layers.js?v=20261121-stage-readiness";
+import { canonical } from "../ops.js?v=20261121-page-review";
+import { layerState, noteEdit } from "../layers.js?v=20261121-page-review";
+import { provisionalDocument } from "./provisional.js?v=20261121-page-review";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261121-page-review";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261121-page-review";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261121-page-review";
+import { isProtected, LAYERS } from "../layers.js?v=20261121-page-review";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

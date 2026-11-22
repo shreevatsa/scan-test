@@ -1,26 +1,25 @@
-import { suggestionButton } from "./review-view.js?v=20261121-stage-readiness";
+import { suggestionButton } from "./review-view.js?v=20261121-page-review";
 import { h } from "./render.js";
-import { eligible, STAGE_LAYER, movePage, resetGrouping, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261121-stage-readiness";
-import { RARE_LAYOUT } from "./flags.js?v=20261121-stage-readiness";
-import { regionBoxes } from "./pageimage.js?v=20261121-stage-readiness";
+import { eligible, STAGE_LAYER, REVIEW_LABELS, resetGrouping, stageFlags, noContent, workflowAddress } from "./workflow.js?v=20261121-page-review";
+import { RARE_LAYOUT } from "./flags.js?v=20261121-page-review";
+import { regionBoxes } from "./pageimage.js?v=20261121-page-review";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261121-stage-readiness";
-import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261121-stage-readiness";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261121-stage-readiness";
-import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261121-stage-readiness";
-import { settings } from "./store.js?v=20261121-stage-readiness";
-import { runBatch } from "./pipeline/batch.js?v=20261121-stage-readiness";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261121-page-review";
+import { READERS, STRUCTURERS, OCR_LANGUAGES } from "./pipeline/readers.js?v=20261121-page-review";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261121-page-review";
+import { stageKeyControls, CredentialChecks, credentialsBox } from "./key-check.js?v=20261121-page-review";
+import { settings } from "./store.js?v=20261121-page-review";
+import { runBatch } from "./pipeline/batch.js?v=20261121-page-review";
 import { runProgress } from "./run-progress.js";
-import { pageCost, recipeLine, runEstimate, costBasis } from "./recipe.js?v=20261121-stage-readiness";
-import { renderFinders } from "./findersview.js?v=20261121-stage-readiness";
-import { money } from "./reader-controls.js?v=20261121-stage-readiness";
-import { findTargets } from "./find-targets.js?v=20261121-stage-readiness";
-import { surveyBox, renderTypeView } from "./typesview.js?v=20261121-stage-readiness";
-import { proposalsBox } from "./proposals-view.js?v=20261121-stage-readiness";
+import { pageCost, recipeLine, runEstimate, costBasis } from "./recipe.js?v=20261121-page-review";
+import { renderFinders } from "./findersview.js?v=20261121-page-review";
+import { money } from "./reader-controls.js?v=20261121-page-review";
+import { findTargets } from "./find-targets.js?v=20261121-page-review";
+import { surveyBox, renderTypeView } from "./typesview.js?v=20261121-page-review";
+import { proposalsBox } from "./proposals-view.js?v=20261121-page-review";
 
 const TITLES = { pages: "Pages", regions: "Regions", text: "Text", read: "Units and links" };
 const ACTIONS = { regions: "Find regions", text: "Transcribe", read: "Complete units and links" };
-const stateLabel = state => !state ? "Pending" : state.accepted ? "Reviewed" : state.state === "model" ? "Ready to review" : state.state === "edited" ? "Edited" : "Provisional";
 
 export async function renderPages(el, app) {
   const book = app.book, stage = app.stage, layer = STAGE_LAYER[stage];
@@ -40,13 +39,13 @@ export async function renderPages(el, app) {
   const selection = h("input", { placeholder: "all or 1-50, 62", "aria-label": "Select page range" });
   const showSelection = () => { selection.value = pageSelectionText([...selected].map(pid => book.index[pid] + 1), book.pages.length); };
   if (selected.size) showSelection();
-  const stateFilter = h("select", { "aria-label": "Page state" }, ...["all", "pending", "model", "edited", "provisional", "accepted"].map(value =>
-    h("option", { value }, { all: "All states", pending: "Pending", model: "Ready to review", edited: "Edited", provisional: "Provisional", accepted: "Reviewed" }[value])));
+  const stateFilter = h("select", { "aria-label": "Page review" }, h("option", { value: "all" }, "All review states"),
+    ...Object.entries(REVIEW_LABELS).map(([value, label]) => h("option", { value }, label)));
   const filter = h("select", { "aria-label": "Page flags" }, ...[["all", "All pages"], ["flagged", "Flagged"], ["dimmed", "Dimmed"], ...stage === "regions" ? [["rareLayout", `Rare layouts (under ${RARE_LAYOUT} pages)`]] : [],
     ["earlier", "Earlier type revision"], ["suggestion", "Has a suggestion"]].map(([value, label]) => h("option", { value }, label)));
   const grouping = h("select", { "aria-label": "Group pages by layout" }, h("option", { value: "order" }, "Page order"), h("option", { value: "layout" }, "Layout · rarest first"));
   if (overview?.filters) {
-    stateFilter.value = overview.filters.state;
+    stateFilter.value = Object.hasOwn(REVIEW_LABELS, overview.filters.state) ? overview.filters.state : "all";
     filter.value = overview.filters.flags;
     grouping.value = overview.filters.grouping;
   }
@@ -64,6 +63,10 @@ export async function renderPages(el, app) {
   const layerReady = pid => {
     const state = app.pageStates.get(pid);
     return nothingToDo(pid) || state.layers[layer] && (layer !== "units" || state.layers.units.state !== "provisional");
+  };
+  const canReview = (pid, checked) => {
+    const state = app.pageStates.get(pid);
+    return !!state.doc && state.valid && state.checked !== checked;
   };
   let cost = pageCost(null), runButton, moveButton, backButton, checks, profile, barNote = null, barHint = "";
   const processSummary = h("span", { class: "meta" }), recipeText = h("span");
@@ -90,8 +93,8 @@ export async function renderPages(el, app) {
       recipeText.title = profile ? `Cost a page: ${costBasis(cost)}.` : "";
       estimateLabel.textContent = runEstimate(count, cost);
     }
-    if (moveButton) moveButton.disabled = busy || !ids.some(pid => layerReady(pid) && !app.pageStates.get(pid).layers[layer]?.accepted);
-    if (backButton) backButton.disabled = busy || !ids.some(pid => app.pageStates.get(pid).layers[layer]?.accepted);
+    if (moveButton) moveButton.disabled = busy || !ids.some(pid => canReview(pid, true));
+    if (backButton) backButton.disabled = busy || !ids.some(pid => canReview(pid, false));
   };
   // The element that scrolls the grid: re-placing the cards must not send it back to the top.
   const scrollParent = () => {
@@ -110,10 +113,8 @@ export async function renderPages(el, app) {
     grid.querySelectorAll(".layout-heading").forEach(heading => heading.remove());
     let lastLayout = null;
     for (const [pid, row] of sorted) {
-      const state = app.pageStates.get(pid), owned = state.layers[layer || "regions"];
-      const layers = stage === "pages" ? Object.values(state.layers) : [owned];
-      const matchesState = stateFilter.value === "all" || layers.some(value => stateFilter.value === "pending" ? !value || value.state === "provisional"
-        : stateFilter.value === "accepted" ? value?.accepted : value?.state === stateFilter.value && !value.accepted);
+      const state = app.pageStates.get(pid);
+      const matchesState = stateFilter.value === "all" || state.status === stateFilter.value;
       const matchesFlag = filter.value === "all" || (filter.value === "flagged" ? flagsFor(pid).length : filter.value === "dimmed" ? book.isSkipped(pid) : state[filter.value]);
       row.element.hidden = !eligible(stage, state) || !matchesState || !matchesFlag;
       if (!eligible(stage, state) && selected.delete(pid)) removed = true;
@@ -135,10 +136,10 @@ export async function renderPages(el, app) {
   const refreshCard = pid => {
     const row = rows.get(pid), state = app.pageStates.get(pid);
     if (!row) return;
-    const empty = noContent(state.doc);
-    row.states.replaceChildren(...(stage === "pages" ? ["regions", "text", "units"] : [layer]).map(name =>
-      h("span", { class: `stage-badge ${state.layers[name]?.accepted ? "accepted" : ""}` }, `${{ regions: "Regions", text: "Text", units: "Units" }[name]} · ${
-        empty && name !== "regions" && !state.layers[name]?.accepted ? "No content" : stateLabel(state.layers[name])}`)));
+    const progress = !state.doc ? "Awaiting boxes" : noContent(state.doc) ? "No content"
+      : !state.readable || state.missing ? "Awaiting text" : "";
+    row.states.replaceChildren(h("span", { class: `stage-badge ${state.checked ? "accepted" : ""}` }, REVIEW_LABELS[state.status]),
+      progress ? h("span", { class: "meta" }, progress) : null);
     const flags = flagsFor(pid);
     row.flags.textContent = flags.length ? `${flags.length} ${flags.length === 1 ? "flag" : "flags"} · ${flags[0]}` : "";
     row.element.classList.toggle("has-flags", !!flags.length);
@@ -432,21 +433,18 @@ export async function renderPages(el, app) {
   } }, ACTIONS[stage]);
   const review = async reviewed => {
     if (app.workflowBusy) return;
-    const targets = targetIds().filter(pid => {
-      const marked = !!app.pageStates.get(pid).layers[layer]?.accepted;
-      return reviewed ? layerReady(pid) && !marked : marked;
-    });
+    const targets = targetIds().filter(pid => canReview(pid, reviewed));
     busyFields(true);
     let count = 0, failed = 0;
     try {
       for (const [index, pid] of targets.entries()) {
         barNote.textContent = `Saving review marks · ${index + 1} of ${targets.length}`;
-        try { await movePage(book, pid, layer, reviewed, doc => app.check(doc)); count++; }
+        try { await book.savePageReview(pid, reviewed); count++; }
         catch (error) { failed++; message.textContent = error.message; }
         await app.refreshWorkflowPage(pid);
         refreshCard(pid);
       }
-      barNote.textContent = `${count} ${count === 1 ? "page" : "pages"} ${reviewed ? "marked reviewed" : "reopened"}${failed ? ` · ${failed} need correction` : ""}.`;
+      barNote.textContent = `${count} ${count === 1 ? "page" : "pages"} ${reviewed ? "marked checked" : "reopened"}${failed ? ` · ${failed} need correction` : ""}.`;
     } finally {
       busyFields(false);
       applyFilters();
@@ -471,8 +469,8 @@ export async function renderPages(el, app) {
       if (barNote) barNote.replaceChildren(h("b", { class: "ok" }, `✓ ${done} ${done === 1 ? "page" : "pages"} back to the provisional grouping.`), failed ? ` ${failed} could not be reset.` : "");
     } finally { busyFields(false); applyFilters(); if (done) app.diskCopy?.checkpoint(); }
   } }, "Back to provisional grouping");
-  if (stage === "regions" || stage === "text") moveButton = h("button", { onclick: () => review(true) }, "Mark reviewed");
-  if (stage === "regions" || stage === "text") backButton = h("button", { onclick: () => review(false) }, "Reopen review");
+  moveButton = h("button", { onclick: () => review(true) }, "Mark checked");
+  backButton = h("button", { onclick: () => review(false) }, "Reopen review");
   const already = { regions: "have regions", text: "are already transcribed", read: "are already completed" }[stage];
   const processingFields = h("div", { class: "run-fields" }, h("label", {}, "Spend threshold $", threshold),
     h("details", { class: "run-options", open: !!include.checked },

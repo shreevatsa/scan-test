@@ -1,9 +1,10 @@
-import { typeRevision } from "./schema.js?v=20261121-stage-readiness";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-stage-readiness";
-import { layerState, layerRecords, accept, sendBack, noteEdit } from "./layers.js?v=20261121-stage-readiness";
-import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-stage-readiness";
+import { typeRevision } from "./schema.js?v=20261121-page-review";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-page-review";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261121-page-review";
+import { layoutCounts, layoutSignature, regionFlags, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261121-page-review";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
+export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
 export const STAGE_LAYER = { regions: "regions", text: "text", read: "units" };
 
 export function pageStages(doc, types, errors = [], warnings = []) {
@@ -15,7 +16,7 @@ export function pageStages(doc, types, errors = [], warnings = []) {
   if (missing && layers.text) flags.push(`Text missing on ${missing} line pieces`);
   return { doc, layers, flags, errors, warnings, valid: !errors.length, missing, readable: hasReading(doc, types),
     earlier: Object.values(layers).some(layer => layer && layer.types_revision < typeRevision(types.source?.revision)),
-    suggestion: !!Object.keys(doc?.source?.suggestions || {}).length };
+    ...pageReviewState(doc, Object.values(layers)) };
 }
 
 export function reviewPageStates(pages, states, types, assemblyWarnings = []) {

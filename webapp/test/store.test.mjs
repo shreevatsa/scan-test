@@ -2,6 +2,7 @@
 // Run from the repository root:  node --test webapp/test/*.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { isProtected, pageReviewState } from "../js/layers.js";
 import { Book, idb } from "../js/store.js";
 
 function folder(files, prefix = "") {
@@ -60,6 +61,28 @@ function stageFixture() {
   book.edits.set("p1", edit);
   return { book, files, handle, edit };
 }
+
+test("page review preserves the corrected version and survives a save from an already-open editor", async () => {
+  const { book, files, edit } = stageFixture();
+  book.draft = async () => null;
+  book.clearDraft = async () => {};
+  const original = files.get("pages/p1.json");
+  const checked = await book.savePageReview("p1", true);
+  assert.deepEqual(pageReviewState(checked), { checked: true, suggestion: false, status: "checked" });
+  assert.equal(files.get("pages/p1.json"), original);
+  assert.equal(JSON.parse(files.get("edits/p1.json")).page.label, "corrected");
+  const staleEditor = structuredClone(edit);
+  staleEditor.page.label = "yet another correction";
+  const saved = await book.saveEdit("p1", staleEditor, { focus: "all", base: edit });
+  assert.equal(pageReviewState(saved).status, "checked");
+  saved.source.suggestions = { text: "work/reading.json" };
+  assert.equal(pageReviewState(saved).status, "suggestion");
+  const reopened = await book.savePageReview("p1", false);
+  assert.equal(pageReviewState(reopened).status, "unchecked");
+  assert.equal(isProtected(reopened, "text"), true, "reopening review still protects text edited by the user");
+  assert.equal(reopened.page.label, "yet another correction");
+  assert.equal(files.get("pages/p1.json"), original);
+});
 
 test("stage saves recover after every file boundary and retain one protected previous document", async () => {
   const original = { ...idb };

@@ -7,12 +7,12 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit } from "./layers.js?v=20261121-stage-readiness";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261121-stage-readiness";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261121-stage-readiness";
-import { canonical } from "./ops.js?v=20261121-stage-readiness";
-import { checkDocument, typeRevision } from "./schema.js?v=20261121-stage-readiness";
-import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261121-stage-readiness";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261121-page-review";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261121-page-review";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261121-page-review";
+import { canonical } from "./ops.js?v=20261121-page-review";
+import { checkDocument, typeRevision } from "./schema.js?v=20261121-page-review";
+import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261121-page-review";
 
 const bookWrites = new Map();
 
@@ -733,6 +733,25 @@ export class Book {
     });
   }
 
+  // Review changes the current version in place, including a correction in edits/.
+  async savePageReview(pid, checked) {
+    if (!this.writable) throw new Error("Open an editable copy to check this page.");
+    return this.pageWrite(async () => {
+      const pending = await this.readJson(this.stagePath(pid));
+      if (pending) await this.finishStage(pid, pending);
+      if (await this.draft(pid)) throw new Error("Correct the page’s draft before changing its review status.");
+      const modelPath = this.page(pid).document, editPath = `edits/${pid}.json`;
+      const edit = await this.readJson(editPath);
+      const current = edit || await this.readJson(modelPath);
+      if (!current) throw new Error("Prepare the page before checking it.");
+      const doc = withPageReview(current, checked);
+      await this.writeFile(edit ? editPath : modelPath, pretty(doc));
+      if (edit) this.edits.set(pid, doc);
+      else { this.models.set(pid, doc); this.edits.delete(pid); }
+      return doc;
+    });
+  }
+
   saveStage(pid, doc, valid) { return this.updateStage(pid, () => ({ doc, valid })); }
 
   // A new book in an empty directory, from a PDF: the PDF itself (source.pdf, the book's source), the manifest and
@@ -797,6 +816,7 @@ export class Book {
           const prior = migrateTypeDocument(base, this.types, operations);
           if (latest && focus === "text") doc = mergeTextEdit(latest, doc, prior);
           if (latest && focus === "units") doc = applyUnitChanges(prior, doc, latest);
+          if (latest && focus === "all") doc = preservePageReview(doc, latest);
         }
       } else if (base) {
         const latest = await idb.get("edits", [this.key, pid]) || this.edits.get(pid) || await this.model(pid);

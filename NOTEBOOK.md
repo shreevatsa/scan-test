@@ -5251,3 +5251,7 @@ These are counts of differences by kind, with overlap within a page. A new rule 
 ### Stage readiness
 
 Used a three-page fixture made from the public Kale PDF, with an unreviewed transcription, unreviewed boxes alone, and an unprocessed scan. In fresh headless Chrome, Text listed the two pages with boxes, Read displayed the available transcription, and Units and links listed the one ready page. Marking and reopening review changed its protection mark while the text stayed visible. The main suite passed 373 tests, page-joins passed 17 separately, and the Python schema suite passed 19. No model calls.
+
+### Page review status
+
+The same mixed-readiness fixture showed Unchecked before review. Marking the page Checked in the grid appeared in the blocks editor and survived reload. Reopening it left the text visible. A regression test checked that review leaves a saved correction in edits/, carries review marks through a save from an already-open editor, and keeps edited text protected when review is reopened. The main suite passed 374 tests, page-joins passed 17 separately, and the Python schema suite passed 19. No model calls.

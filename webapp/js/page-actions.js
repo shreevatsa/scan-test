@@ -6,11 +6,12 @@
 // When the choice is not ready here (no checked key, "Draw by hand" chosen), the stage's grid opens with this page
 // selected and its run box ready.
 import { h } from "./render.js";
-import { runBatch } from "./pipeline/batch.js?v=20261121-stage-readiness";
-import { finderById } from "./pipeline/finders.js?v=20261121-stage-readiness";
-import { READERS } from "./pipeline/readers.js?v=20261121-stage-readiness";
-import { eligible, noContent } from "./workflow.js?v=20261121-stage-readiness";
-import { money } from "./reader-controls.js?v=20261121-stage-readiness";
+import { runBatch } from "./pipeline/batch.js?v=20261121-page-review";
+import { finderById } from "./pipeline/finders.js?v=20261121-page-review";
+import { READERS } from "./pipeline/readers.js?v=20261121-page-review";
+import { eligible, noContent } from "./workflow.js?v=20261121-page-review";
+import { pageReviewState } from "./layers.js?v=20261121-page-review";
+import { money } from "./reader-controls.js?v=20261121-page-review";
 
 const NAMES = { regions: "Find regions on this page again", text: "Read this page again" };
 
@@ -82,7 +83,9 @@ export function pageMenu(app, { reviewPageWithAI }) {
   const items = h("div", { class: "page-menu-items" });
   const menu = h("details", { class: "page-menu", ontoggle: () => {
     if (!menu.open) return;
+    const { checked } = pageReviewState(app.doc);
     items.replaceChildren(
+      item(checked ? "Reopen review" : "Mark checked", "Set the review status for this page", () => app.setPageReviewed(!checked)),
       item("Review page with AI", "ask a model to review this page's regions and types, and choose what to take", () => reviewPageWithAI(app)),
       item("No content on this page", "for a page that is not part of the book, such as a library’s cover or a blank page: remove its regions. A blank page needs no transcription",
         () => app.markNoContent()),

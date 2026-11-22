@@ -4,19 +4,19 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
-import { classLabel, classNote } from "./class-labels.js?v=20261121-stage-readiness";
+import { classLabel, classNote } from "./class-labels.js?v=20261121-page-review";
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261121-stage-readiness";
-import { prepare } from "./reader.js?v=20261121-stage-readiness";
-import { typeRevision } from "./schema.js?v=20261121-stage-readiness";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261121-stage-readiness";
-import { newTypeDialog } from "./regionsview.js?v=20261121-stage-readiness";
-import { renderSurvey } from "./type-survey-view.js?v=20261121-stage-readiness";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261121-stage-readiness";
-import { unusedDraftTypes } from "./draft-types.js?v=20261121-stage-readiness";
-import { citedSamplePages } from "./type-revisions.js?v=20261121-stage-readiness";
-import { typeExampleIndex } from "./type-examples.js?v=20261121-stage-readiness";
-import { regionPath } from "./pageimage.js?v=20261121-stage-readiness";
+import { typeForest } from "./type-tree.js?v=20261121-page-review";
+import { prepare } from "./reader.js?v=20261121-page-review";
+import { typeRevision } from "./schema.js?v=20261121-page-review";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261121-page-review";
+import { newTypeDialog } from "./regionsview.js?v=20261121-page-review";
+import { renderSurvey } from "./type-survey-view.js?v=20261121-page-review";
+import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261121-page-review";
+import { unusedDraftTypes } from "./draft-types.js?v=20261121-page-review";
+import { citedSamplePages } from "./type-revisions.js?v=20261121-page-review";
+import { typeExampleIndex } from "./type-examples.js?v=20261121-page-review";
+import { regionPath } from "./pageimage.js?v=20261121-page-review";
 
 // The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
 // then.

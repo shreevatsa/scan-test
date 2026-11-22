@@ -1,41 +1,41 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261121-stage-readiness";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261121-stage-readiness";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261121-stage-readiness";
-import { RECIPE } from "./recipe.js?v=20261121-stage-readiness";
-import { readerOptions } from "./pipeline/readers.js?v=20261121-stage-readiness";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261121-page-review";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261121-page-review";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261121-page-review";
+import { RECIPE } from "./recipe.js?v=20261121-page-review";
+import { readerOptions } from "./pipeline/readers.js?v=20261121-page-review";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook, prepareBlockReader } from "./blocksview.js?v=20261121-stage-readiness";
-import { blockName } from "./blocks.js?v=20261121-stage-readiness";
-import { PageView } from "./pageimage.js?v=20261121-stage-readiness";
-import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261121-stage-readiness";
-import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261121-stage-readiness";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261121-stage-readiness";
-import { renderStyle } from "./styleview.js?v=20261121-stage-readiness";
-import { openTypeList } from "./typesview.js?v=20261121-stage-readiness";
-import { typeSetup } from "./type-setup.js?v=20261121-stage-readiness";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook, prepareBlockReader } from "./blocksview.js?v=20261121-page-review";
+import { blockName } from "./blocks.js?v=20261121-page-review";
+import { PageView } from "./pageimage.js?v=20261121-page-review";
+import { TextPanel, renderInspector, markerForm } from "./editor.js?v=20261121-page-review";
+import { renderReader, renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261121-page-review";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261121-page-review";
+import { renderStyle } from "./styleview.js?v=20261121-page-review";
+import { openTypeList } from "./typesview.js?v=20261121-page-review";
+import { typeSetup } from "./type-setup.js?v=20261121-page-review";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261121-stage-readiness";
-import { EditError } from "./ops.js?v=20261121-stage-readiness";
-import { Maker, post } from "./pipeline/run.js?v=20261121-stage-readiness";
-import { CredentialChecks } from "./key-check.js?v=20261121-stage-readiness";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261121-stage-readiness";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261121-stage-readiness";
-import { regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261121-stage-readiness";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-stage-readiness";
-import { layerState, layerView, noteEdit } from "./layers.js?v=20261121-stage-readiness";
-import { orderedRegions } from "./flags.js?v=20261121-stage-readiness";
-import { assemble } from "./assemble.js?v=20261121-stage-readiness";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261121-stage-readiness";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261121-stage-readiness";
-import { renderPages } from "./pagesview.js?v=20261121-stage-readiness";
-import { settings } from "./store.js?v=20261121-stage-readiness";
-import { renderReaders } from "./readersview.js?v=20261121-stage-readiness";
-import { renderStructures } from "./structuresview.js?v=20261121-stage-readiness";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261121-stage-readiness";
-import { pageMenu } from "./page-actions.js?v=20261121-stage-readiness";
+import * as ops from "./ops.js?v=20261121-page-review";
+import { EditError } from "./ops.js?v=20261121-page-review";
+import { Maker, post } from "./pipeline/run.js?v=20261121-page-review";
+import { CredentialChecks } from "./key-check.js?v=20261121-page-review";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261121-page-review";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261121-page-review";
+import { regionTypesPanel, newTypeDialog } from "./regionsview.js?v=20261121-page-review";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261121-page-review";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261121-page-review";
+import { orderedRegions } from "./flags.js?v=20261121-page-review";
+import { assemble } from "./assemble.js?v=20261121-page-review";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261121-page-review";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261121-page-review";
+import { renderPages } from "./pagesview.js?v=20261121-page-review";
+import { settings } from "./store.js?v=20261121-page-review";
+import { renderReaders } from "./readersview.js?v=20261121-page-review";
+import { renderStructures } from "./structuresview.js?v=20261121-page-review";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261121-page-review";
+import { pageMenu } from "./page-actions.js?v=20261121-page-review";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -1160,7 +1160,7 @@ class App {
   undo() {
     if (this.mode !== "page" || !this.undoStack.length) return;
     this.redoStack.push(this.doc);
-    this.doc = this.undoStack.pop();
+    this.doc = preservePageReview(this.undoStack.pop(), this.doc);
     this.typingKey = null;
     this.changed();
     this.refresh();
@@ -1169,10 +1169,28 @@ class App {
   redo() {
     if (this.mode !== "page" || !this.redoStack.length) return;
     this.undoStack.push(this.doc);
-    this.doc = this.redoStack.pop();
+    this.doc = preservePageReview(this.redoStack.pop(), this.doc);
     this.typingKey = null;
     this.changed();
     this.refresh();
+  }
+
+  async setPageReviewed(checked) {
+    if (this.workflowBusy || this.outlineBusy) return this.toast("Wait for the current edit to finish.");
+    const { book, pid } = this;
+    await this.flush();
+    if (this.pid !== pid || this.book !== book) return;
+    if (this.dirty || this.lastErrors?.length) return this.toast("Correct the draft before checking this page.", "warn");
+    this.workflowBusy = this.header.inert = this.main.inert = true;
+    try {
+      this.doc = await book.savePageReview(pid, checked);
+      this.savedDoc = this.doc;
+      this.modelDoc = await book.model(pid);
+      await this.refreshWorkflowPage(pid);
+      await this.refresh();
+      this.diskCopy?.checkpoint();
+    } catch (error) { this.toast(error.message, "bad"); }
+    finally { this.workflowBusy = this.header.inert = this.main.inert = false; }
   }
 
   async revertPage() {
@@ -1188,7 +1206,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261121-stage-readiness", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261121-page-review", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

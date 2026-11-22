@@ -1,14 +1,14 @@
-import { reviewPage } from "./review-view.js?v=20261121-stage-readiness";
-import { assignmentOf, settledStructureScore } from "./review.js?v=20261121-stage-readiness";
+import { reviewPage } from "./review-view.js?v=20261121-page-review";
+import { assignmentOf, settledStructureScore } from "./review.js?v=20261121-page-review";
 import { h } from "./render.js";
-import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261121-stage-readiness";
-import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261121-stage-readiness";
-import { finderById } from "./pipeline/finders.js?v=20261121-stage-readiness";
-import { CredentialChecks } from "./key-check.js?v=20261121-stage-readiness";
+import { modelChoice, keyControls, money, costEstimate, continueControls } from "./reader-controls.js?v=20261121-page-review";
+import { STRUCTURERS, STRUCTURER, readerById, readerOptions, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261121-page-review";
+import { finderById } from "./pipeline/finders.js?v=20261121-page-review";
+import { CredentialChecks } from "./key-check.js?v=20261121-page-review";
 import { selectPageRegions } from "./pipeline/split.js";
 import { structureDifferences } from "./pipeline/structure-compare.js";
-import { renderStructureComparison } from "./structure-visual.js?v=20261121-stage-readiness";
-import { settings } from "./store.js?v=20261121-stage-readiness";
+import { renderStructureComparison } from "./structure-visual.js?v=20261121-page-review";
+import { settings } from "./store.js?v=20261121-page-review";
 import { runProgress } from "./run-progress.js";
 
 export async function renderStructures(el, app) {

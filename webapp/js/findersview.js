@@ -1,14 +1,14 @@
 import { h, esc } from "./render.js";
-import { regionPath } from "./pageimage.js?v=20261121-stage-readiness";
-import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261121-stage-readiness";
-import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261121-stage-readiness";
+import { regionPath } from "./pageimage.js?v=20261121-page-review";
+import { FINDERS, finderById, finderPath, regionLayout, reviewedRegionLayout } from "./pipeline/finders.js?v=20261121-page-review";
+import { OCR_LANGUAGES, structurePath, bookCostEstimate, wholePageReading } from "./pipeline/readers.js?v=20261121-page-review";
 import { pageRange } from "./pipeline/pdf.js";
-import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261121-stage-readiness";
-import { reviewPage } from "./review-view.js?v=20261121-stage-readiness";
-import { settings } from "./store.js?v=20261121-stage-readiness";
-import { money, costEstimate } from "./reader-controls.js?v=20261121-stage-readiness";
+import { stageKeyControls, CredentialChecks } from "./key-check.js?v=20261121-page-review";
+import { reviewPage } from "./review-view.js?v=20261121-page-review";
+import { settings } from "./store.js?v=20261121-page-review";
+import { money, costEstimate } from "./reader-controls.js?v=20261121-page-review";
 import { runProgress } from "./run-progress.js";
-import { pageSelectionText } from "./page-browser.js?v=20261121-stage-readiness";
+import { pageSelectionText } from "./page-browser.js?v=20261121-page-review";
 
 function scanCard(record, profile, image, reference, onChoose, onReview) {
   const paths = record.regions.map(region => {

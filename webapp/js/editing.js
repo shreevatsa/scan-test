@@ -1,7 +1,7 @@
-import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261121-stage-readiness";
-import { layerView } from "./layers.js?v=20261121-stage-readiness";
-import { checkDocument } from "./schema.js?v=20261121-stage-readiness";
-import { assemble } from "./assemble.js?v=20261121-stage-readiness";
+import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261121-page-review";
+import { layerView } from "./layers.js?v=20261121-page-review";
+import { checkDocument } from "./schema.js?v=20261121-page-review";
+import { assemble } from "./assemble.js?v=20261121-page-review";
 
 // What the page editor may change. There is one page editor for every stage, and it may change anything: regions,
 // transcription, units, line joins and note links. (The narrower focuses, "text", "units" and "regions", are for the

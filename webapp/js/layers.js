@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261121-stage-readiness";
-import { typeRevision } from "./schema.js?v=20261121-stage-readiness";
+import { canonical } from "./ops.js?v=20261121-page-review";
+import { typeRevision } from "./schema.js?v=20261121-page-review";
 
 export const LAYERS = ["regions", "text", "units"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));
@@ -61,6 +61,41 @@ function materialize(doc) {
   return next;
 }
 
+export function pageReviewState(doc, layers = LAYERS.map(layer => layerState(doc, layer))) {
+  const saved = layers.filter(Boolean);
+  const checked = !!saved.length && saved.every(layer => layer.accepted);
+  const suggestion = !!Object.keys(doc?.source?.suggestions || {}).length;
+  return { checked, suggestion, status: suggestion ? "suggestion" : checked ? "checked" : "unchecked" };
+}
+
+export function withPageReview(doc, checked, at = new Date().toISOString()) {
+  const next = materialize(doc);
+  for (const layer of Object.values(next.source.layers)) {
+    if (checked) {
+      if (!layer.accepted_at_utc && !layer.accepted_legacy) layer.accepted_at_utc = at;
+    } else {
+      delete layer.accepted_at_utc;
+      delete layer.accepted_legacy;
+    }
+  }
+  return next;
+}
+
+function copyReviewMark(target, source) {
+  delete target.accepted_at_utc;
+  delete target.accepted_legacy;
+  Object.assign(target, fields(source, ["accepted_at_utc", "accepted_legacy"]));
+}
+
+// A page editor may have been open when a different tab checked the page.
+export function preservePageReview(doc, current) {
+  const next = materialize(doc), saved = layerRecords(current);
+  for (const [layer, target] of Object.entries(next.source.layers)) {
+    if (saved[layer]) copyReviewMark(target, saved[layer]);
+  }
+  return next;
+}
+
 export function noteEdit(modelDoc, doc, { focus = null } = {}) {
   const next = materialize(doc), regionsChanged = layerView(modelDoc, "regions") !== layerView(doc, "regions");
   for (const layer of LAYERS) {
@@ -70,6 +105,8 @@ export function noteEdit(modelDoc, doc, { focus = null } = {}) {
     if (layerView(modelDoc, layer) === layerView(doc, layer)) {
       if (baseline) {
         delete baseline.accepted;
+        const review = next.source.layers[layer];
+        if (review) copyReviewMark(baseline, review);
         next.source.layers[layer] = baseline;
       } else delete next.source.layers[layer];
       continue;

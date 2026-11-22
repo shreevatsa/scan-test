@@ -24,6 +24,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
 - **Other books:** Kale 1913 and Telang were made by the older one-pass pipeline (method 052). The vachana book came from a digital PDF's text layer (058, 062). The user's 267-page private book has regions only; PRIVATE.md says where it is.
 - **The app** (`webapp/`, about 16,600 lines of JavaScript, no build step) has tabs Pages · Regions · Text · Read · Export. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3). Recent changes:
   - **One page editor** at `#page&p=<id>`, the same from every stage. Old `#regions&p=`, `#text&p=` and `#read&p=` addresses open it. It edits text, regions (type, box, draw, split, merge, order, delete), units, joins and note links. It shows the page's flags, and a Page menu offers review with AI, no content, find regions again, and read again. A region with no line piece takes text when clicked.
+  - **One review status per page.** Pages, processing grids and the blocks editor show unchecked, checked or suggestion waiting. The existing layer records carry compatibility and overwrite protection for stored books.
   - **Stage gates retired.** All tabs open from the start. Valid regions can be transcribed and saved text can be read. Review marks still protect the work from model replacement.
   - **Blocks comparison** at `#blocks` and `#blocks&p=<id>`, linked by **Blocks** and **Original view**. It edits regions with the same save path, and derives reading structure in memory. The original reader and editor remain available.
   - **Read → Book view:** the book to read, with a contents sidebar that follows the reading, footnotes as sidenotes, no page numbers, and printed contents lines linked to their episodes. Part names the editor gave are shown in parentheses. The HTML export uses the same layout; `webapp/tools/chaya_html.mjs` writes it from the command line.
@@ -53,7 +54,7 @@ Turn a book's PDF into a digital book in which every passage links to where it i
   - 9 verse-number breaks and 3 episode-number breaks are listed, not changed;
   - 5 contents lines link to a page instead of an episode (the "…हननम्" entries);
   - 9 front-matter pages keep the provisional grouping.
-- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (373 pass), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
+- **Tests:** `node --test $(ls webapp/test/*.test.mjs | grep -v page-joins)` (374 pass), then `node --test webapp/test/page-joins.test.mjs` on its own (17 pass). Its Python reference helper sometimes hangs waiting for input in a parallel run; `pkill -f py_reference.py` and rerun it alone. Also `UV_NO_SYNC=1 uv run --offline python schema/test_book.py` (19 pass).
 - **Running:**
   - A loopback server, `python3 -m http.server 8765 --bind 127.0.0.1`, runs from the repository root.
   - `tailscale serve --https=8765 http://127.0.0.1:8765` makes it reachable from the user's other devices; the address is in PRIVATE.md.
@@ -78,7 +79,7 @@ This app has, besides the PDF and pages:
 - flows and relations;
 - a type list with revisions, aliases, proposals and surveys;
 - three layers per page with four states each;
-- five processing views with review marks;
+- five processing views;
 - many model profiles.
 
 Measured on the finished Rāmāyaṇa-mañjarī:
@@ -111,7 +112,7 @@ The units layer, the relations, the line endings, the layer states and the stage
 | Flows | Drop as a concept: a note block is a note, a commentary block is commentary |
 | Relations | Derive by rule; store only a person's overrides |
 | Line endings per line piece | Drop the field; join or break by the block's type; fix the odd case in the text |
-| Layers × states, stages, move-on gates | **Replace** with one status per page (unchecked, checked, model suggestion waiting) and one rule: a model never overwrites a person's edit |
+| Review states | One visible status per page. Existing layer records still protect the saved regions, text and units. |
 | Type-list revision machinery | Shrink to a short editable list (name, plain description, how it reads); a rename just applies |
 | Model profiles, finder and reader comparisons, surveys | Move to a "lab" page; the product uses one recipe |
 
@@ -142,7 +143,7 @@ From the user's review of the one page editor (2026-11-20):
 Each task is sized for one session. Finish, test and commit one before starting the next.
 
 1. **Blocks spike (done).** The comparison works on Kale and the Rāmāyaṇa-mañjarī. See NOTEBOOK.md and the audit command there for the differences to preserve before retiring authored grouping, metadata, joins or line endings.
-2. **Retire what the spike shows unneeded,** one at a time, each with tests. Stage gates are retired. Before switching readers, preserve the audited grouping, numbering, labels, links and line joins as rules or block overrides. The review-state, flow and type-list changes still need compatible replacements for existing books and protected edits. Switch to three tabs after the retirements (item 5).
+2. **Retire what the spike shows unneeded,** one at a time, each with tests. Stage gates and separate review badges are retired. Before switching readers, preserve the audited grouping, numbering, labels, links and line joins as rules or block overrides. Internal layer protection, flows and type revisions still serve existing books and processing tools. Switch to three tabs after the retirements (item 5).
 3. **The app reads like method 100.** One page image per call with the page's blocks listed, Hydrogen low by default, an updated cost estimate, and markers taken from `[n]`.
 4. **The structure rules move into the app** as a book's settings (closings, part headings, verse groups, note linking, number checks), with the command-line tools kept for batch work.
 5. **The examples hosting:** a separate small repository with Pages enabled (the user's choice), when the user asks.
