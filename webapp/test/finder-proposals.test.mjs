@@ -123,60 +123,6 @@ function fixture(responses) {
   return { book, maker, calls, files };
 }
 
-test("a run's later pages see proposals made by earlier pages; Add, rename and same-as assign waiting regions on unprotected pages only", async () => {
-  const responses = [
-    { new_types: [{ name: "sarga colophon", definition: "The closing line of a canto.", region_class: "paragraph" }],
-      regions: [box(0), box(300, { type: "other", proposed_type: "sarga colophon", reading_order: 2 })] },
-    { new_types: [], regions: [box(0), box(300, { type: "sarga_colophon", reading_order: 2 })] },
-    { new_types: [{ name: "Sarga-Colophon", definition: "Again.", region_class: "paragraph" }, { name: "plate", definition: "A plate.", region_class: "figure" }],
-      regions: [box(0, { type: "other", proposed_type: "Sarga-Colophon" }), box(300, { type: "other", proposed_type: "plate", reading_order: 2 })] },
-  ];
-  const { book, maker, calls } = fixture(responses);
-  for (const pid of ["p1", "p2"]) await maker.findRegions(pid);
-  assert.doesNotMatch(calls[0].input[0].content[0].text, /not yet accepted/);
-  assert.match(calls[1].input[0].content[0].text, /- sarga_colophon \(printed as paragraph\): The closing line of a canto\./, "page 2's request carries page 1's proposal");
-  assert.deepEqual(calls[1].text.format.schema.properties.regions.items.properties.type.enum, ["paragraph", "page_number", "other", "sarga_colophon"]);
-  for (const pid of ["p1", "p2"]) {
-    const doc = await book.current(pid);
-    assert.deepEqual(doc.page.regions.map(region => region.type), ["paragraph"]);
-    assert.deepEqual(doc.source.omitted_regions.map(region => [region.type, region.proposed_type]), [["other", "sarga_colophon"]]);
-    assert.deepEqual(validate(doc), []);
-  }
-  // Page 3 is moved on (protected) before its regions are found again.
-  await maker.findRegions("p3");
-  let record = await readPendingProposals(book);
-  const [colophon, plate] = pendingItems(record, "new_type");
-  assert.equal(pendingItems(record, "new_type").length, 2);
-  assert.deepEqual(colophon.evidence.map(value => value.page), ["p1", "p2", "p3"]);
-  await movePage(book, "p3", "regions", true, doc => checkPage(validate, doc, book.types));
-  assert.ok(isProtected(await book.current("p3"), "regions"));
-  // Add the proposal under another name: the type list changes, the decision is recorded, waiting regions get the type.
-  book.types.types.closing = { description: "The closing line of a canto.", region: "paragraph", flow: "main" };
-  await decideProposal(book, colophon.id, { status: "added", as: "closing" });
-  record = await readPendingProposals(book);
-  const assignments = proposalAssignments(record, book.types);
-  assert.equal(assignments.get("sargacolophon"), "closing");
-  const results = {};
-  for (const pid of ["p1", "p2", "p3"]) results[pid] = await maker.assignProposedRegions(pid, assignments);
-  assert.deepEqual(results, { p1: "assigned", p2: "assigned", p3: "protected" });
-  for (const pid of ["p1", "p2"]) {
-    const doc = await book.current(pid);
-    assert.deepEqual(doc.page.regions.map(region => [region.type, region.source.proposed_type]), [["paragraph", undefined], ["closing", "sarga_colophon"]]);
-    assert.deepEqual(doc.source.omitted_regions, []);
-    assert.ok(doc.units.some(unit => unit.type === "closing"));
-  }
-  const waiting = waitingRegions(await book.current("p3"), new Set(assignments.keys()));
-  assert.deepEqual(waiting.map(region => region.proposed_type), ["sarga_colophon"], "a new name matching a pending one is that proposal");
-  // Same as an existing type: the plate's regions become paragraphs where the page is not protected.
-  await decideProposal(book, plate.id, { status: "dismissed", same_as: "paragraph" });
-  assert.equal(proposalAssignments(await readPendingProposals(book), book.types).get("plate"), "paragraph");
-  // A finder result reused later resolves added names when the page is rebuilt.
-  responses.push({ new_types: [], regions: [box(0, { type: "other", proposed_type: "sarga colophon" })] });
-  await maker.findRegions("p1");
-  assert.deepEqual((await book.current("p1")).page.regions.map(region => region.type), ["closing"]);
-  assert.equal(pendingItems(await readPendingProposals(book), "new_type").length, 0, "an added name is not proposed again");
-});
-
 test("a page rebuilt for a second added type keeps the first one", async () => {
   const { book, maker } = fixture([{ new_types: [{ name: "colophon", definition: "A closing line.", region_class: "paragraph" },
     { name: "marker", definition: "A verse-group marker.", region_class: "note" }],

@@ -6,7 +6,6 @@
 // is checked with schema.js before it is saved.
 
 import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-blocks-b1";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };
@@ -27,7 +26,7 @@ const localRegion = ref => ref.split("#")[1];
 // The unit that owns a region, or null (furniture).
 export function ownerOf(doc, rid) {
   const ref = regionRef(doc, rid);
-  return doc.units.find(u => u.children.some(c => c.region === ref)) || null;
+  return (doc.units || []).find(u => u.children.some(c => c.region === ref)) || null;
 }
 
 // Where a unit stands: {parent: unit} or {flow: name}, with its siblings list and index.
@@ -91,7 +90,8 @@ function bottomOf(doc, item) {
   return r ? Math.max(-Infinity, ...r.polygons.flat().map(p => p[1])) : -Infinity;
 }
 
-const unitsSettled = doc => doc.source?.layers?.units?.state !== "provisional";
+// A page document with units (0.3, as the page editor works on it until it edits overrides) keeps them consistent; a 0.4 one has regions only.
+const unitsSettled = doc => Array.isArray(doc.units);
 
 // Where a unit of `type` may stand: in the list of its parent (a container whose type may contain it) or at the top
 // of its flow.
@@ -330,7 +330,7 @@ function anchorsIn(doc, r) {
 function removeRegionOnly(doc, rid) {
   const r = regionById(doc, rid), ref = regionRef(doc, rid), anchors = anchorsIn(doc, r);
   doc.page.regions.splice(doc.page.regions.indexOf(r), 1);
-  doc.relations = (doc.relations || []).filter(rel => rel.from.region !== ref && !anchors.has(rel.from.anchor));
+  if (doc.relations) doc.relations = doc.relations.filter(rel => rel.from.region !== ref && !anchors.has(rel.from.anchor));
 }
 
 // Delete a region from the page; its unit goes too if it is left empty.
@@ -380,7 +380,7 @@ export function addRegion(doc, tl, type, box, into = null) {
   // A figure has no text of its own (its unit's label says what it shows).
   if (printedAs(tl, type) === "figure") delete r.lines;
   doc.page.regions.push(r);
-  if (doc.source?.layers?.units?.state === "provisional") { rebuildProvisional(doc, tl); return rid; }
+  if (!unitsSettled(doc)) return rid;
   if (isFurniture(tl, type)) return rid;
   try { placeRegionUnit(doc, tl, type, rid, into); } catch (e) { doc.page.regions.pop(); throw e; }
   r.order = null;
@@ -406,7 +406,7 @@ export function setRegionType(doc, tl, rid, type, into = null) {
   if (!unitsSettled(doc)) {
     r.type = type;
     r.order = isFurniture(tl, type) ? null : r.order ?? Math.max(0, ...doc.page.regions.map(region => region.order || 0)) + 1;
-    return rebuildProvisional(doc, tl);
+    return doc;
   }
   const owner = ownerOf(doc, rid), ref = regionRef(doc, rid);
   if (isFurniture(tl, type)) {
@@ -466,7 +466,7 @@ export function moveRegionOrder(doc, tl, rid, delta) {
   if (destination < 0 || destination >= ordered.length) return doc;
   [ordered[index], ordered[destination]] = [ordered[destination], ordered[index]];
   ordered.forEach((value, position) => { value.order = position + 1; });
-  return rebuildProvisional(doc, tl);
+  return doc;
 }
 
 function mergedLinePieces(lines) {
@@ -504,7 +504,7 @@ export function mergeRegions(doc, tl, keepRid, otherRid) {
   const keep = regionById(doc, keepRid), other = regionById(doc, otherRid);
   if (keep.type !== other.type) fail("give the regions the same type before merging them");
   const keepOwner = ownerOf(doc, keepRid), otherOwner = ownerOf(doc, otherRid);
-  const provisional = doc.source?.layers?.units?.state === "provisional";
+  const provisional = !unitsSettled(doc);
   if (!provisional && keepOwner?.id !== otherOwner?.id) {
     if (!keepOwner || !otherOwner || otherOwner.children.length !== 1) fail("merge regions in the same unit or merge a whole neighboring leaf unit");
     const a = placeOf(doc, keepOwner.id), b = placeOf(doc, otherOwner.id);
@@ -529,14 +529,14 @@ export function mergeRegions(doc, tl, keepRid, otherRid) {
     if (!keepOwner[key] && otherOwner[key]) keepOwner[key] = clone(otherOwner[key]);
   }
   if (keepOwner) { if (Object.keys(open).length) keepOwner.open = open; else delete keepOwner.open; }
-  for (const relation of doc.relations || []) for (const endpoint of [relation.from, relation.to]) {
+  if (doc.relations) for (const relation of doc.relations) for (const endpoint of [relation.from, relation.to]) {
     if (endpoint.region === regionRef(doc, otherRid)) endpoint.region = regionRef(doc, keepRid);
     if (otherOwner && keepOwner && otherOwner !== keepOwner && endpoint.unit === otherOwner.id) endpoint.unit = keepOwner.id;
   }
   // Its markers and their links now belong to the merged region.
   other.lines = [];
   deleteRegion(doc, otherRid);
-  return rebuildProvisional(doc, tl);
+  return doc;
 }
 
 // Make a unit page furniture of `type` (a furniture type, such as an ornament): its regions take the type and leave

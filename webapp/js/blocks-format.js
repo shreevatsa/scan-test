@@ -7,13 +7,13 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b1";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-b1";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b1";
-import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b1";
-import { assemble } from "./assemble.js?v=20261123-blocks-b1";
-import { textOf } from "./blocks.js?v=20261123-blocks-b1";
-import { compileRules } from "./rules.js?v=20261123-blocks-b1";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-1";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-b2-1";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b2-1";
+import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b2-1";
+import { assemble } from "./assemble.js?v=20261123-blocks-b2-1";
+import { textOf } from "./blocks.js?v=20261123-blocks-b2-1";
+import { compileRules } from "./rules.js?v=20261123-blocks-b2-1";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];
@@ -43,7 +43,8 @@ function derive(context, types) {
   const docs = context.pages.map((doc, index) => {
     if (!doc) return null;
     const page = clone(doc.page);
-    const { units, flows } = provisionalUnits(page.id, page.regions, tl, { firstPage: index === 0, lastPage: index === last });
+    const sample = doc.source?.sample;   // pages sampled from a book that do not follow each other are not open across the gap
+    const { units, flows } = provisionalUnits(page.id, page.regions, tl, { firstPage: index === 0 || sample?.consecutive_previous === false, lastPage: index === last || sample?.consecutive_next === false });
     return { page, units, flows };
   });
   const present = docs.filter(Boolean);

@@ -1,9 +1,10 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-blocks-b1";
-import { canonical } from "../ops.js?v=20261123-blocks-b1";
-import { checkDocument, typeRevision } from "../schema.js?v=20261123-blocks-b1";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-blocks-b2-1";
+import { canonical } from "../ops.js?v=20261123-blocks-b2-1";
+import { checkDocument, typeRevision } from "../schema.js?v=20261123-blocks-b2-1";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261123-blocks-b1";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261123-blocks-b1";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261123-blocks-b2-1";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261123-blocks-b2-1";
+import { blockLineEnd } from "../blocks.js?v=20261123-blocks-b2-1";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
@@ -31,7 +32,7 @@ function setState(doc, layer, profile, revision) {
 }
 
 export function mergeRegions(current, candidate, check) {
-  if (!current) return { doc: structuredClone(candidate), taken: ["regions", "units"], suggestion: false };
+  if (!current) return { doc: structuredClone(candidate), taken: ["regions"], suggestion: false };
   if (LAYERS.some(layer => isProtected(current, layer)))
     return blocked(current, LAYERS.some(layer => layerView(current, layer) !== layerView(candidate, layer)));
   const doc = structuredClone(candidate);
@@ -43,13 +44,14 @@ export function mergeRegions(current, candidate, check) {
         if (old.text !== undefined) line.text = old.text;
         if (old.spans) line.spans = structuredClone(old.spans);
         if (old.style) line.style = structuredClone(old.style);
+        if (old.end) line.end = old.end;
       }
     }
     if (current.page.label !== undefined) doc.page.label = current.page.label;
     doc.source.layers.text = structuredClone(current.source.layers.text);
     if (current.source.calls?.reading) doc.source.calls = { ...doc.source.calls, reading: structuredClone(current.source.calls.reading) };
   }
-  return result(current, doc, ["regions", "units"], false, check);
+  return result(current, doc, ["regions"], false, check);
 }
 
 function sentRegions(doc, types) {
@@ -109,6 +111,9 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
       target.text = line.text;
       delete target.spans;
       if (line.spans) target.spans = line.spans;
+      // How the line ends (a verse's lines are lines, a paragraph's run on): by the block's type, as the reading takes it.
+      const end = blockLineEnd(target, region, types);
+      if (!target.end && end !== "space") target.end = end;
     }
     region.source = { ...region.source, transcription: { uncertain: input.uncertain, note: input.note } };
   }
@@ -116,152 +121,6 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
   if (label) doc.page.label = label;
   else delete doc.page.label;
   if (isProtected(current, "text")) return blocked(current, layerView(current, "text") !== layerView(doc, "text"));
-  if (isProtected(current, "units")) {
-    const previous = markersOf(current), next = markersOf(doc);
-    if ((current.relations || []).some(relation => relation.from.anchor &&
-        canonical(previous.get(relation.from.anchor)) !== canonical(next.get(relation.from.anchor)))) return blocked(current);
-  }
   setState(doc, "text", reading.profile?.id, typeRevision(types.source?.revision));
   return result(current, doc, ["text"], false, check);
-}
-
-function firstRegion(unit, units, seen = new Set()) {
-  if (!unit || seen.has(unit.id)) return null;
-  seen.add(unit.id);
-  for (const child of unit.children) {
-    if (child.region) return child.region;
-    const found = firstRegion(units.get(child.unit), units, seen);
-    if (found) return found;
-  }
-  return null;
-}
-
-function unitMatches(current, candidate) {
-  const oldUnits = new Map(current.units.map(unit => [unit.id, unit]));
-  const newUnits = new Map(candidate.units.map(unit => [unit.id, unit])), matches = new Map();
-  for (const unit of candidate.units) {
-    const region = firstRegion(unit, newUnits);
-    const possible = region ? current.units.filter(old => old.type === unit.type && firstRegion(old, oldUnits) === region) : [];
-    if (possible.length === 1) matches.set(unit.id, possible[0]);
-  }
-  return matches;
-}
-
-function relationsFor(current, candidate, matches) {
-  let omitted = false;
-  const regions = new Map(current.page.regions.map(region => [`${current.page.id}#${region.id}`, region]));
-  const currentMarkers = markersOf(current), candidateMarkers = markersOf(candidate);
-  const markers = new Map();
-  for (const [anchor, span] of candidateMarkers) {
-    const found = [...currentMarkers].filter(([, value]) => canonical(value) === canonical(span));
-    if (found.length === 1) markers.set(anchor, found[0][0]);
-  }
-  const relations = [];
-  for (const value of candidate.relations || []) {
-    const relation = structuredClone(value);
-    let usable = true;
-    for (const side of ["from", "to"]) {
-      const endpoint = relation[side];
-      if (endpoint.unit && matches) {
-        if (matches.has(endpoint.unit)) endpoint.unit = matches.get(endpoint.unit).id;
-        else usable = false;
-      }
-      if (endpoint.region && !regions.has(endpoint.region)) usable = false;
-      if (endpoint.anchor) {
-        if (markers.has(endpoint.anchor)) endpoint.anchor = markers.get(endpoint.anchor);
-        else usable = false;
-      }
-    }
-    if (usable) relations.push(relation);
-    else omitted = true;
-  }
-  return { relations, omitted };
-}
-
-function relationSource(relation, markers) {
-  const from = relation.from;
-  let source = from;
-  if (from.anchor) source = { anchor: from.anchor };
-  else if (from.unit) source = { unit: from.unit };
-  else {
-    const possible = [...markers].filter(([, marker]) => marker.region === from.region && marker.line === from.line &&
-      (!from.marker || marker.marker === from.marker));
-    if (possible.length === 1) source = { anchor: possible[0][0] };
-  }
-  return canonical({ type: relation.type, from: source });
-}
-
-// Unit IDs are model-local. Compare their meaning through the ordered tree and flow paths.
-function completionView(doc) {
-  const units = new Map(doc.units.map(unit => [unit.id, unit])), paths = new Map();
-  const walk = (id, path, seen = new Set()) => {
-    const unit = units.get(id);
-    if (!unit || seen.has(id)) return { invalid: id };
-    const ancestors = new Set(seen).add(id);
-    paths.set(id, path);
-    return { type: unit.type, number: unit.number ?? null, label: unit.label ?? null, open: unit.open || {},
-      children: unit.children.map((child, index) => child.region || walk(child.unit, [...path, index], ancestors)) };
-  };
-  const flows = Object.fromEntries(Object.entries(doc.flows).map(([flow, roots]) => [flow, roots.map((id, index) => walk(id, [flow, index]))]));
-  const endpoint = value => value.unit ? { ...value, unit: paths.get(value.unit) } : value;
-  return canonical({ flows, joins: doc.page.regions.map(region => ({ id: region.id,
-    lines: (region.lines || []).map(line => [line.line, line.end || "space"]) })),
-    relations: (doc.relations || []).map(relation => ({ ...relation, from: endpoint(relation.from), to: endpoint(relation.to) })) });
-}
-
-export function mergeCompletion(current, candidate, types, check = doc => checkDocument(doc, types)) {
-  if (geometry(current) !== geometry(candidate)) return blocked(current);
-  const sent = sentRegions(current, types);
-  if (canonical(readingFromDocument(current, sent).regions) !== canonical(readingFromDocument(candidate, sent).regions)) return blocked(current);
-  const doc = structuredClone(current), unitsProtected = isProtected(current, "units"), regionsProtected = isProtected(current, "regions");
-  const matches = unitMatches(current, candidate);
-  const mapped = relationsFor(current, candidate, unitsProtected ? matches : null);
-  let suggestion = mapped.omitted;
-  if (unitsProtected) {
-    for (const unit of candidate.units) {
-      const target = matches.get(unit.id);
-      if (!target) continue;
-      for (const field of ["number", "label"]) if ((target[field] === undefined || target[field] === null || target[field] === "") &&
-          unit[field] !== undefined && unit[field] !== null && unit[field] !== "") {
-        doc.units.find(value => value.id === target.id)[field] = unit[field];
-      }
-    }
-    doc.relations ||= [];
-    const markers = markersOf(doc);
-    for (const relation of mapped.relations) {
-      const existing = doc.relations.some(value => relationSource(value, markers) === relationSource(relation, markers));
-      if (!existing) doc.relations.push(relation);
-    }
-    // Compare remapped endpoints against the protected tree using its own unit IDs.
-    const proposed = structuredClone(candidate);
-    proposed.relations = relationsFor(doc, candidate, null).relations;
-    suggestion ||= completionView(doc) !== completionView(proposed) || doc.page.regions.some(region =>
-      region.type !== candidate.page.regions.find(value => value.id === region.id).type);
-    const changed = layerView(current, "units") !== layerView(doc, "units");
-    return result(current, doc, changed ? ["units"] : [], suggestion, check);
-  }
-  doc.units = structuredClone(candidate.units);
-  doc.flows = structuredClone(candidate.flows);
-  doc.relations = mapped.relations;
-  for (const region of doc.page.regions) {
-    const proposed = candidate.page.regions.find(value => value.id === region.id);
-    if (regionsProtected) suggestion ||= region.type !== proposed.type;
-    else region.type = proposed.type;
-    for (const line of region.lines || []) {
-      delete line.end;
-      const end = proposed.lines?.find(value => value.line === line.line)?.end;
-      if (end && end !== "space") line.end = end;
-    }
-  }
-  if (regionsProtected) for (const unit of doc.units) {
-    const owned = unit.children.filter(child => child.region).map(child => doc.page.regions.find(region => `${doc.page.id}#${region.id}` === child.region)?.type);
-    if (owned.length) unit.type = owned[0];
-  }
-  for (const unit of candidate.units) {
-    const style = matches.get(unit.id)?.style;
-    if (style) doc.units.find(value => value.id === unit.id).style = structuredClone(style);
-  }
-  setState(doc, "units", candidate.source?.structurer?.id, typeRevision(types.source?.revision));
-  if (!regionsProtected && layerView(current, "regions") !== layerView(doc, "regions")) setState(doc, "regions", candidate.source?.structurer?.id, typeRevision(types.source?.revision));
-  return result(current, doc, regionsProtected ? ["units"] : ["regions", "units"], suggestion, check);
 }

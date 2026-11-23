@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261123-blocks-b1";
-import { mappedTypeNames } from "../type-revisions.js?v=20261123-blocks-b1";
+import { typeRevision } from "../schema.js?v=20261123-blocks-b2-1";
+import { mappedTypeNames } from "../type-revisions.js?v=20261123-blocks-b2-1";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261123-blocks-b1";
-import * as I from "./images.js?v=20261123-blocks-b1";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261123-blocks-b1";
+import * as S from "./steps.js?v=20261123-blocks-b2-1";
+import * as I from "./images.js?v=20261123-blocks-b2-1";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261123-blocks-b2-1";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261123-blocks-b1";
-import { classifyBlocks } from "../local/blocks.js?v=20261123-blocks-b1";
-import { finderById, finderPath } from "./finders.js?v=20261123-blocks-b1";
-import { finderRequest } from "./finder-requests.js?v=20261123-blocks-b1";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261123-blocks-b1";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261123-blocks-b1";
+import { localReading, localLayout } from "./ocr.js?v=20261123-blocks-b2-1";
+import { classifyBlocks } from "../local/blocks.js?v=20261123-blocks-b2-1";
+import { finderById, finderPath } from "./finders.js?v=20261123-blocks-b2-1";
+import { finderRequest } from "./finder-requests.js?v=20261123-blocks-b2-1";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261123-blocks-b2-1";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261123-blocks-b2-1";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261123-blocks-b1";
-import { layerState, noteEdit } from "../layers.js?v=20261123-blocks-b1";
-import { provisionalDocument } from "./provisional.js?v=20261123-blocks-b1";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261123-blocks-b1";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261123-blocks-b1";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261123-blocks-b1";
-import { isProtected, LAYERS } from "../layers.js?v=20261123-blocks-b1";
+import { canonical } from "../ops.js?v=20261123-blocks-b2-1";
+import { layerState, noteEdit } from "../layers.js?v=20261123-blocks-b2-1";
+import { provisionalDocument } from "./provisional.js?v=20261123-blocks-b2-1";
+import { mergeRegions, mergeText } from "./apply.js?v=20261123-blocks-b2-1";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261123-blocks-b2-1";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261123-blocks-b2-1";
+import { isProtected, LAYERS } from "../layers.js?v=20261123-blocks-b2-1";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -121,7 +121,6 @@ export class Maker {
         if (calls) result.doc.source.calls = { ...result.doc.source.calls, ...calls };
         if (result.doc.source.type_review) {
           delete result.doc.source.type_review[layer];
-          if (layer === "units") delete result.doc.source.type_review.manual;
           if (!Object.keys(result.doc.source.type_review).some(key => key !== "errors")) delete result.doc.source.type_review;
         }
       }
@@ -523,92 +522,6 @@ export class Maker {
       out.push({ side, page: page.id, regions: edge.map(r => ({ id: r.id, lines: side === "previous" ? r.lines.slice(-3) : r.lines.slice(0, 3) })) });
     }
     return out;
-  }
-
-  async structure(pid, reading, { force = false, structurer = null } = {}) {
-    await this.stageCurrent(pid);
-    const profile = structurerById(structurer || (await this.options()).structurer);
-    const { sent, skipped } = Split.selectPageRegions(reading.regions_record.regions);
-    const context = await this.context(pid, reading.options);
-    const prompt = Split.structurePrompt(this.book.types), input = Split.structureInput(reading.parsed, sent, context);
-    const fingerprint = await jsonHash({ version: Split.SPLIT_VERSION, reading: reading.fingerprint, text: reading.parsed, prompt, input, profile });
-    const path = structurePath(pid, reading.profile.id, profile.id), cached = await this.book.readWork(path);
-    if (!force && cached?.fingerprint === fingerprint && cached.status === "completed") return { ...cached, cached: true };
-    const key = `structure:${pid}:${fingerprint}`;
-    if (this.jobs.has(key)) return this.jobs.get(key);
-    const job = (async () => {
-      const pricing = profile.provider === "openai" ? (await templates()).regionPricing : null;
-      const result = sent.length ? await this.callJSON(pid, "structure", profile,
-        structureRequest(profile, prompt, input, Split.structureSchema(this.book.types, sent)),
-        parsed => { Split.combineReading(reading.parsed, parsed, sent, this.book.types); return parsed; },
-        pricing ? (usage, body) => S.openaiCost(usage, pricing, body.service_tier) : null)
-        : { status: "completed", parsed: { regions: [], units: [], flows: Object.keys(this.book.types.flows).map(flow => ({ flow, units: [] })) }, cost_usd: 0, seconds: 0 };
-      const parsed = Split.combineReading(reading.parsed, result.parsed, sent, this.book.types);
-      const p = this.book.page(pid), rec = reading.regions_record;
-      const page = { image: (p.image || `${pid}.png`).split("/").pop(), image_sha256: reading.image_sha256, width: rec.width, height: rec.height };
-      const source = { method: Split.SPLIT_VERSION, regions_method: rec.local_method || "existing page geometry", model: reading.profile.model,
-        char_h: rec.char_h, page_angle_deg: rec.page_angle_deg ?? 0,
-        reader: reading.profile, structurer: profile, created_at_utc: new Date().toISOString(), regions_skipped: skipped,
-        calls: { regions: rec.region_call || null, reading: { cost_usd: reading.cost_usd, seconds: reading.seconds },
-          structure: { cost_usd: result.cost_usd, seconds: result.seconds } } };
-      const [doc, problems] = S.buildPageDocument(pid, page, this.book.types, sent, parsed, source);
-      const [errors, warnings] = this.check(doc);
-      const structured = { ...result, format: "page-structure", version: 1, page: pid, profile, fingerprint,
-        reading_fingerprint: reading.fingerprint, doc, problems, errors, warnings };
-      await this.book.writeWork(path, structured);
-      return structured;
-    })();
-    this.jobs.set(key, job);
-    try { return await job; } finally { this.jobs.delete(key); }
-  }
-
-  async transcribe(pid, { options = null, force = false, save = this.book.writable } = {}) {
-    const chosen = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
-    const reading = await this.read(pid, chosen, { force, save });
-    return this.complete(pid, { options: chosen, reading, force, save });
-  }
-
-  async completionInput(pid, { options = null, reading = null, requireText = true } = {}) {
-    const chosen = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
-    const current = await this.stageCurrent(pid);
-    if (requireText && current && (!layerState(current, "text") || current.page.regions.some(region =>
-      this.book.types.types[region.type]?.region !== "figure" &&
-      region.lines?.some(line => line.polygons?.length && typeof line.text !== "string"))))
-      throw new Error("Some current line pieces have no transcription. Review the saved suggestion or transcribe the updated regions.");
-    reading ||= await this.book.readWork(`work/readings/${pid}/${chosen.reader}.json`);
-    if (!reading) {
-      if (!current || !layerState(current, "text")) throw new Error("Transcribe this page before completing its units and links.");
-      const record = await this.sourceRegions(pid), { sent } = Split.selectPageRegions(record.regions);
-      const parsed = Split.readingFromDocument(current, sent, chosen.reader);
-      reading = { profile: readerById(chosen.reader), options: chosen, regions_record: record, parsed,
-        image_sha256: current.page.image_sha256, fingerprint: await jsonHash({ text: parsed.regions }), cost_usd: 0, seconds: 0,
-        ...(current.source?.calls?.reading?.partial ? { partial: true, parts: current.source.calls.reading.parts } : {}) };
-    }
-    let input = reading;
-    if (current && layerState(current, "text")) {
-      const record = await this.sourceRegions(pid), { sent } = Split.selectPageRegions(record.regions);
-      const parsed = Split.readingFromDocument(current, sent, reading.profile.id);
-      const unchanged = sameReading(parsed, reading.parsed);
-      input = { ...reading, regions_record: record, parsed: unchanged ? reading.parsed : parsed,
-        fingerprint: unchanged ? reading.fingerprint : await jsonHash({ text: parsed.regions }) };
-    }
-    return { reading, input };
-  }
-
-  async complete(pid, { options = null, reading = null, force = false, save = this.book.writable } = {}) {
-    const chosen = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
-    const prepared = await this.completionInput(pid, { options: chosen, reading, requireText: save });
-    reading = prepared.reading;
-    const input = prepared.input;
-    const structure = await this.structure(pid, input, { force, structurer: chosen.structurer });
-    let merged;
-    if (save) merged = await this.saveMerged(pid, "units", structurePath(pid, reading.profile.id, chosen.structurer), latest =>
-      mergeCompletion(latest, mappedTypeNames(structure.doc, this.book.types), this.book.types, this.check),
-      { method: structure.doc.source.method, structurer: structure.profile, created_at_utc: structure.doc.source.created_at_utc,
-        calls: { structure: structure.doc.source.calls.structure } });
-    const cost = reading.cost_usd !== null && structure.cost_usd !== null ? reading.cost_usd + structure.cost_usd : null;
-    return { ...structure, ...(merged ? { doc: merged.doc, errors: this.check(merged.doc)[0], suggestion: merged.suggestion } : {}),
-      reading, structure, cost, seconds: reading.seconds + structure.seconds };
   }
 }
 

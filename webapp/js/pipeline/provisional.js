@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261123-blocks-b1";
+import { typeRevision } from "../schema.js?v=20261123-blocks-b2-1";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
@@ -85,17 +85,6 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
   return { units, flows, problems };
 }
 
-export function rebuildProvisional(doc, types, boundary = {}) {
-  if (doc.source?.layers?.units?.state !== "provisional") return doc;
-  const { units, flows, problems } = provisionalUnits(doc.page.id, doc.page.regions, types, boundary);
-  doc.units = units;
-  doc.flows = flows;
-  doc.source.problems = [...(doc.source.problems || []).filter(problem => !(doc.source.provisional_problems || []).includes(problem)), ...problems];
-  doc.source.provisional_problems = problems;
-  doc.source.layers.units.types_revision = typeRevision(types.source?.revision);
-  return doc;
-}
-
 export function provisionalDocument(pid, page, types, record, boundary = {}) {
   const { sent, skipped } = selectPageRegions(record.regions);
   const regions = [], omitted = [], kept = new Set();
@@ -126,15 +115,12 @@ export function provisionalDocument(pid, page, types, record, boundary = {}) {
   }
   const position = new Map(record.regions.map((r, index) => [r.document_region_id || `r${r.region_id}`, index]));
   regions.sort((a, b) => (position.get(a.id) ?? 0) - (position.get(b.id) ?? 0));
-  const { units, flows, problems } = provisionalUnits(pid, regions, types, boundary);
-  const revision = typeRevision(types.source?.revision);
   const source = { method: "provisional-regions-v1", char_h: record.char_h ?? record.line_analysis?.char_h ?? 0,
     page_angle_deg: record.page_angle_deg ?? record.line_analysis?.page_angle_deg ?? 0,
     regions_skipped: structuredClone(skipped.filter(entry => !kept.has(entry.region_id))), omitted_regions: omitted,
     uncovered_lines: structuredClone(record.uncovered_lines || []),
-    warnings: structuredClone(record.warnings || []), problems: [...(record.problems || []), ...problems], provisional_problems: problems,
-    layers: { regions: { state: "model", made_by: record.profile?.method || "042+063", types_revision: typeRevision(record.types_revision) }, units: { state: "provisional", types_revision: revision } } };
+    warnings: structuredClone(record.warnings || []), problems: [...(record.problems || [])],
+    layers: { regions: { state: "model", made_by: record.profile?.method || "042+063", types_revision: typeRevision(record.types_revision) } } };
   if (record.region_call) source.calls = { regions: structuredClone(record.region_call) };
-  return { format: "page", schema_version: "0.2", book_id: types.book_id, page: { id: pid, ...structuredClone(page), regions },
-    units, flows, relations: [], source };
+  return { format: "page", schema_version: "0.4", book_id: types.book_id, page: { id: pid, ...structuredClone(page), regions }, overrides: {}, source };
 }

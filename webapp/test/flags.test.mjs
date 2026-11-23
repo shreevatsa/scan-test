@@ -87,16 +87,6 @@ test("continuation flags compare each flow with both neighbors and tolerate miss
   assert.deepEqual(codes(current), []);
   assert.deepEqual(codes(current, { next: provisional(doc([region("n1", "note")])) }), ["continuation"]);
 });
-test("once both pages' units are settled, Read checks the page break and Regions does not", () => {
-  const settled = page => { page.source.layers = { units: { state: "model" } }; return page; };
-  const current = settled(doc()), next = settled(doc([region("n1", "note")]));
-  current.page.regions[0].source.continues_later = true;
-  assert.deepEqual(codes(current, { next }), []);
-  next.source.layers.units.state = "provisional";
-  assert.deepEqual(codes(current, { next }), ["continuation"], "a provisional neighbor still depends on the regions' flags");
-  delete current.source.layers; delete next.source.layers;
-  assert.deepEqual(codes(current, { next }), [], "a legacy page's units are complete");
-});
 test("a layout is the kinds of content on a page, not their counts, order or furniture, and rarity is not a flag", () => {
   const page = doc([region("r3", "paragraph", 3), region("r1", "heading", 1), region("r2", "paragraph", 2), region("r4", "footer", null)]);
   assert.equal(layoutSignature(page, types), "heading · paragraph");
@@ -164,18 +154,6 @@ test("An ignored line stays ignored when a later analysis numbers the lines diff
   const old = structuredClone(model); old.source.ignored_lines = [5];
   assert.deepEqual(regionFlags(old, types).map(flag => flag.line_id), [], "a plain id still works");
 });
-test("A region added over the line removes its flag; a continuation flag names the neighbouring page", () => {
-  const page = doc(); page.source.uncovered_lines = [{ line_id: 5, box: [4, 500, 70, 515] }];
-  assert.deepEqual(codes(page), ["uncovered"]);
-  page.source.layers = { units: { state: "provisional" } }; page.units = []; page.flows = {};
-  const rid = ops.coverLine(page, types, 5, "paragraph");
-  assert.deepEqual(codes(page), []);
-  assert.deepEqual(page.page.regions.find(value => value.id === rid).box, [4, 500, 70, 515]);
-  const provisional = (id, marks) => { const value = doc(); value.page.id = id; value.source.layers = { units: { state: "provisional" } }; Object.assign(value.page.regions[0].source, marks); return value; };
-  const here = provisional("p1", { continues_later: true }), other = provisional("p2", {});
-  assert.equal(regionFlags(here, types, { next: other }).find(flag => flag.code === "continuation").page, "p2");
-});
-
 test("A region left out for want of ink says where the model drew it, when that is known", () => {
   const page = doc(); page.page.width = 100; page.page.height = 300; page.page.regions = [];
   page.source.regions_skipped = [{ region_id: 1, type: "verse", status: "no_ink", model_box: [5, 10, 60, 30] }, { region_id: 2, type: "verse", status: "no_ink" }];

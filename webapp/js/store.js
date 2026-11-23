@@ -7,12 +7,15 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261123-blocks-b1";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261123-blocks-b1";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261123-blocks-b1";
-import { canonical } from "./ops.js?v=20261123-blocks-b1";
-import { checkDocument, typeRevision } from "./schema.js?v=20261123-blocks-b1";
-import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261123-blocks-b1";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261123-blocks-b2-1";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261123-blocks-b2-1";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261123-blocks-b2-1";
+import { canonical } from "./ops.js?v=20261123-blocks-b2-1";
+import { checkDocument, typeRevision } from "./schema.js?v=20261123-blocks-b2-1";
+import { mergeTextEdit } from "./editing.js?v=20261123-blocks-b2-1";
+import { upgradePages, isOldPage } from "./upgrade.js?v=20261123-blocks-b2-1";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261123-blocks-b2-1";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-1";
 
 const bookWrites = new Map();
 
@@ -227,7 +230,7 @@ export class Book {
     await this.removeFile("work/pending-types.json");
   }
 
-  async editPages(ids, mutate, { check = (doc, types) => checkDocument(doc, types)[0], expected = new Map(), focus = "units", archive = false, protect = [] } = {}) {
+  async editPages(ids, mutate, { check = (doc, types) => checkDocument(doc, types)[0], focus = null, archive = false, protect = [] } = {}) {
     return this.pageWrite(async () => {
       if (this.writable) this.types = await this.readJson(this.manifest.types) || this.types;
       const models = new Map(), before = new Map(), drafts = {};
@@ -243,7 +246,6 @@ export class Book {
         if (draft && errors.length) throw new Error(`Fix page ${this.index[pid] + 1}’s draft first. ${errors[0]}`);
         if (model) this.models.set(pid, model);
         if (edit) this.edits.set(pid, edit); else this.edits.delete(pid);
-        if (expected.has(pid) && unitSnapshot(doc) !== expected.get(pid)) throw new Error("This page’s units changed. Select the passage again before editing.");
         models.set(pid, model); before.set(pid, doc); drafts[pid] = draft;
       }
       const changed = await mutate(new Map([...before].map(([pid, doc]) => [pid, structuredClone(doc)])), this.types);
@@ -251,12 +253,9 @@ export class Book {
       for (const [pid, previous] of before) {
         const doc = changed.get(pid);
         if (!doc || doc.page.id !== pid) throw new Error("The edit must return each requested page.");
-        assertFocusEdit(focus, previous, doc);
         const errors = check(doc, this.types);
         if (errors.length) throw new Error(errors[0]);
-        docs[pid] = noteEdit(models.get(pid), doc, { focus });
-        if (protect.includes("regions") && doc.source?.layers?.units?.state === "provisional")
-          docs[pid].source.layers.units = structuredClone(doc.source.layers.units);
+        docs[pid] = noteEdit(models.get(pid), this.blocksOf(doc), { focus });
         for (const layer of protect) {
           if (!LAYERS.includes(layer)) throw new Error(`Unknown review layer ${layer}.`);
           docs[pid].source.layers[layer] = { ...docs[pid].source.layers[layer], state: "edited", types_revision: typeRevision(this.types.source?.revision) };
@@ -340,6 +339,7 @@ export class Book {
         if (pid in book.index) book.edits.set(pid, JSON.parse(await (await fh.getFile()).text()));
       }
     } catch (e) { console.warn("edits/ could not be read", e); }
+    await book.upgradePages();
     return book;
   }
 
@@ -360,6 +360,7 @@ export class Book {
     for (const key of await idb.keys("edits")) {
       if (Array.isArray(key) && key[0] === book.key) book.edits.set(key[1], await idb.get("edits", key));
     }
+    await book.upgradePages();
     return book;
   }
 
@@ -384,6 +385,64 @@ export class Book {
   }
 
   page(pid) { return this.pages[this.index[pid]]; }
+
+  // A page document in the form that is stored (0.4, schema/README.md): a 0.3 one (units, flows, relations, as the page
+  // editor works on until it edits overrides itself) becomes its regions and the overrides that differ from what the
+  // book's rules derive. Reads the pages that are loaded.
+  blocksOf(doc) {
+    if (!isOldPage(doc)) return doc;
+    const docs = this.pages.map(page => page.id === doc.page.id ? doc : this.edits.get(page.id) || this.models.get(page.id)).filter(Boolean);
+    const context = this.inReading(doc.page.id) ? blocksContext(readingDocuments(this.pages, docs, this.skipped), this.manifest.rules) : blocksContext([doc], this.manifest.rules);
+    let out;
+    try { out = toBlocks(doc, this.types, context); }
+    catch (error) { console.warn(`page ${doc.page.id} was kept in the old form: ${error.message}`); return doc; }
+    if (out.source?.layers?.units) { out.source = { ...out.source, layers: { ...out.source.layers } }; delete out.source.layers.units; }
+    return out;
+  }
+  inReading(pid) { return !this.isSkipped(pid); }
+
+  // Convert the book's 0.3 page documents to 0.4 (upgrade.js). A book in this browser or on disk is written back, page
+  // by page, each after its 0.3 structure is kept in work/pre-0.4/<page id>.json, and book.json says when it is done;
+  // a book that is read only (a PDF opened from a URL without a place to keep it) is converted in memory.
+  // Static Book.onUpgrade(done, total), if set, is told as pages are converted.
+  async upgradePages() {
+    if (this.manifest.page_schema === "0.4") return 0;
+    const models = new Map(), edits = new Map(this.edits);
+    let unreadable = 0;
+    for (const page of this.pages) {
+      try { const doc = await this.model(page.id); if (doc) models.set(page.id, doc); }
+      catch (error) { unreadable++; console.warn(`${page.document} could not be read, so the book is not converted yet: ${error.message}`); }
+    }
+    // Say so before the conversion starts: it keeps the page busy for a few seconds.
+    if (this.pages.some(page => isOldPage(edits.get(page.id)) || isOldPage(models.get(page.id)))) {
+      Book.onUpgrade?.(0, this.pages.length);
+      await new Promise(resolve => setTimeout(resolve, 30));
+    }
+    const done = upgradePages({ pages: this.pages, models, edits, types: this.types, rules: await this.getRules(), skipped: this.skipped,
+      progress: (n, total) => Book.onUpgrade?.(n, total) });
+    for (const [pid, record] of done.records) {
+      const model = done.models.get(pid) || this.models.get(pid), edit = done.edits.get(pid);
+      if (this.writable) {
+        await this.writeFile(`work/pre-0.4/${pid}.json`, pretty(record));
+        if (done.models.has(pid)) await this.writeFile(this.page(pid).document, pretty(model));
+        if (edit) await this.writeFile(`edits/${pid}.json`, pretty(edit));
+      } else {
+        this.files[`work/pre-0.4/${pid}.json`] = record;
+        if (done.models.has(pid)) this.files[this.page(pid).document] = model;
+        if (edit) this.files[`edits/${pid}.json`] = edit;
+      }
+      if (done.models.has(pid)) this.models.set(pid, model);
+      if (edit) this.edits.set(pid, edit);
+    }
+    for (const failure of done.failed) console.warn(`page ${failure.page} was not converted to 0.4: ${failure.message}`);
+    if (this.writable && !done.failed.length && !unreadable) {
+      const manifest = await this.readJson("book.json") || structuredClone(this.manifest);
+      manifest.page_schema = "0.4";
+      await this.writeFile("book.json", pretty(manifest));
+      this.manifest = manifest;
+    }
+    return done.records.size;
+  }
 
   // The model's page document, or null for a page not transcribed yet.
   async model(pid) {
@@ -659,17 +718,7 @@ export class Book {
 
   // A new model page document: saved in pages/, and the manifest updated.
   async saveModel(pid, doc, valid) {
-    const previous = await this.model(pid);
-    const sample = doc.source?.sample || previous?.source?.sample;
-    if (sample) {
-      const original = Object.fromEntries(doc.units.filter(unit => unit.open).map(unit => [unit.id, { ...unit.open }]));
-      for (const unit of doc.units.filter(unit => unit.open)) {
-        if (sample.consecutive_previous === false) delete unit.open.start;
-        if (sample.consecutive_next === false) delete unit.open.end;
-        if (!Object.keys(unit.open).length) delete unit.open;
-      }
-      doc.source = { ...doc.source, sample: { ...JSON.parse(JSON.stringify(sample)), original_open_ends: original } };
-    }
+    doc = this.blocksOf(doc);
     await this.writeFile(this.page(pid).document, JSON.stringify(doc) + "\n");
     this.models.set(pid, doc);
     Object.assign(this.page(pid), { label: doc.page.label ?? null, valid });
@@ -751,6 +800,7 @@ export class Book {
       const draft = await this.draft(pid);
       const out = await update(current, draft?.doc || null);
       if (!out?.doc) return out;
+      out.doc = this.blocksOf(out.doc);
       const previous = draft?.doc || current;
       const journal = { format: "page-stage-save", version: 1, page: pid, doc: out.doc, valid: out.valid, draft: draft || null,
         previous: previous && LAYERS.some(layer => isProtected(previous, layer)) ? previous : null };
@@ -790,7 +840,7 @@ export class Book {
       return { id, document: `pages/${id}.json`, label: null, valid: null, pdf_page: item.pdfPage, width: item.width, height: item.height, source: item.source };
     });
     const manifest = { format: "book-folder", version: 1, schema_version: "0.2", book_id: bookId, title, types: "types.json",
-                       pdf: { path: "source.pdf", name: pdf.file.name, sha256: pdf.sha256, page_count: pdf.pageCount }, pages,
+                       pdf: { path: "source.pdf", name: pdf.file.name, sha256: pdf.sha256, page_count: pdf.pageCount }, pages, page_schema: "0.4",
                        source: { made_by: "the web app", made_at_utc: new Date().toISOString() } };
     const book = new Book("folder", handle, manifest, types, { browser });
     await book.writeFile("source.pdf", pdf.file);
@@ -837,20 +887,19 @@ export class Book {
         this.types = await this.readJson(this.manifest.types) || this.types;
         const revision = doc.source?.types_migration_revision || 1;
         const operations = (this.types.source?.revisions || []).filter(entry => entry.n > revision).flatMap(entry => entry.operations);
-        doc = migrateTypeDocument(doc, this.types, operations);
+        doc = this.blocksOf(migrateTypeDocument(doc, this.types, operations));
         if (base) {
           const latest = await this.readJson(`edits/${pid}.json`) || model;
           const prior = migrateTypeDocument(base, this.types, operations);
           if (latest && focus === "text") doc = mergeTextEdit(latest, doc, prior);
-          if (latest && focus === "units") doc = applyUnitChanges(prior, doc, latest);
           if (latest && focus === "all") doc = preservePageReview(doc, latest);
         }
       } else if (base) {
+        doc = this.blocksOf(doc);
         const latest = await idb.get("edits", [this.key, pid]) || this.edits.get(pid) || await this.model(pid);
         if (focus === "text") doc = mergeTextEdit(latest, doc, base);
-        if (focus === "units") doc = applyUnitChanges(base, doc, latest);
       }
-      if (base && ["text", "units"].includes(focus)) {
+      if (base && focus === "text") {
         const errors = checkDocument(doc, this.types)[0];
         if (errors.length) throw new Error(errors[0]);
       }
@@ -897,6 +946,7 @@ export class Book {
         const operations = (this.types.source?.revisions || []).filter(entry => entry.n > revision).flatMap(entry => entry.operations);
         doc = migrateTypeDocument(doc, this.types, operations);
       }
+      try { doc = this.blocksOf(doc); } catch { /* a draft that does not pass the checks keeps its form */ }
       await idb.put("drafts", [this.key, pid], { doc, at: Date.now() });
     });
   }

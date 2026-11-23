@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b1";
-import { layerState } from "./layers.js?v=20261123-blocks-b1";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-1";
+import { layerState } from "./layers.js?v=20261123-blocks-b2-1";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -93,7 +93,7 @@ export function regionOverlap(a, b) {
 
 // Units settled by completion or by hand decide a page break themselves (Read checks those joins), so the regions'
 // continuation flags are compared only while either page's units are still provisional.
-const unitsSettled = doc => { const units = layerState(doc, "units"); return !!units && units.state !== "provisional"; };
+const unitsSettled = () => false;
 
 // `previous` and `next` are the pages around this one, for its continuation flags: each a page document (or null), or a
 // function that takes a test of the pages to look past and returns the nearest page that fails it, or null where the

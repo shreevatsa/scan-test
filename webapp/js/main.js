@@ -1,39 +1,40 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261123-blocks-b1";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261123-blocks-b1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261123-blocks-b1";
-import { RECIPE } from "./recipe.js?v=20261123-blocks-b1";
-import { readerOptions } from "./pipeline/readers.js?v=20261123-blocks-b1";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261123-blocks-b2-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261123-blocks-b2-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261123-blocks-b2-1";
+import { RECIPE } from "./recipe.js?v=20261123-blocks-b2-1";
+import { readerOptions } from "./pipeline/readers.js?v=20261123-blocks-b2-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261123-blocks-b1";
-import { blockName } from "./blocks.js?v=20261123-blocks-b1";
-import { bookReading, readThroughBlocks } from "./reading.js?v=20261123-blocks-b1";
-import { PageView } from "./pageimage.js?v=20261123-blocks-b1";
-import { markerForm } from "./editor.js?v=20261123-blocks-b1";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261123-blocks-b1";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261123-blocks-b1";
-import { renderStyle } from "./styleview.js?v=20261123-blocks-b1";
-import { typeSetup } from "./type-setup.js?v=20261123-blocks-b1";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261123-blocks-b2-1";
+import { blockName } from "./blocks.js?v=20261123-blocks-b2-1";
+import { bookReading, readThroughBlocks } from "./reading.js?v=20261123-blocks-b2-1";
+import { PageView } from "./pageimage.js?v=20261123-blocks-b2-1";
+import { markerForm } from "./editor.js?v=20261123-blocks-b2-1";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261123-blocks-b2-1";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261123-blocks-b2-1";
+import { renderStyle } from "./styleview.js?v=20261123-blocks-b2-1";
+import { typeSetup } from "./type-setup.js?v=20261123-blocks-b2-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-b1";
-import { EditError } from "./ops.js?v=20261123-blocks-b1";
-import { Maker, post } from "./pipeline/run.js?v=20261123-blocks-b1";
-import { CredentialChecks } from "./key-check.js?v=20261123-blocks-b1";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261123-blocks-b1";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261123-blocks-b1";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-blocks-b1";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261123-blocks-b1";
-import { orderedRegions } from "./flags.js?v=20261123-blocks-b1";
-import { assemble } from "./assemble.js?v=20261123-blocks-b1";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261123-blocks-b1";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261123-blocks-b1";
-import { renderPages } from "./pagesview.js?v=20261123-blocks-b1";
-import { settings } from "./store.js?v=20261123-blocks-b1";
-import { renderBookSettings } from "./settingsview.js?v=20261123-blocks-b1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261123-blocks-b1";
-import { pageMenu } from "./page-actions.js?v=20261123-blocks-b1";
+import * as ops from "./ops.js?v=20261123-blocks-b2-1";
+import { EditError } from "./ops.js?v=20261123-blocks-b2-1";
+import { Maker, post } from "./pipeline/run.js?v=20261123-blocks-b2-1";
+import { CredentialChecks } from "./key-check.js?v=20261123-blocks-b2-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261123-blocks-b2-1";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261123-blocks-b2-1";
+import { isOldPage } from "./upgrade.js?v=20261123-blocks-b2-1";
+import { fromBlocks, blocksContext } from "./blocks-format.js?v=20261123-blocks-b2-1";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261123-blocks-b2-1";
+import { orderedRegions } from "./flags.js?v=20261123-blocks-b2-1";
+import { assemble } from "./assemble.js?v=20261123-blocks-b2-1";
+import { assertFocusEdit, editorFocus, mergeTextEdit } from "./editing.js?v=20261123-blocks-b2-1";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261123-blocks-b2-1";
+import { renderPages } from "./pagesview.js?v=20261123-blocks-b2-1";
+import { settings } from "./store.js?v=20261123-blocks-b2-1";
+import { renderBookSettings } from "./settingsview.js?v=20261123-blocks-b2-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261123-blocks-b2-1";
+import { pageMenu } from "./page-actions.js?v=20261123-blocks-b2-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -42,6 +43,7 @@ const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (�
 class App {
   constructor() {
     this.root = $("#app");
+    Book.onUpgrade = (done, total) => this.upgradeProgress(done, total);
     this.selection = {};
     this.undoStack = [];
     this.redoStack = [];
@@ -208,6 +210,10 @@ class App {
   // opens its book in this browser if there is one, else starts a new book.
   // A step of opening a book that takes a while: what is happening, with a bar (one that only moves, where how much is
   // left is not known).
+  upgradeProgress(done, total) {
+    if (this.root.querySelector(":scope > .opening")) this.showProgress(`Converting the book's pages to the blocks form… ${done ? `${done.toLocaleString()} of ${total.toLocaleString()}` : ""}`, done, total);
+  }
+
   showProgress(text, value = null, max = null) {
     let box = this.root.querySelector(":scope > .opening");
     if (!box) { box = h("div", { class: "lib opening" }, h("p", {}), h("progress", {})); this.root.replaceChildren(box); }
@@ -636,7 +642,7 @@ class App {
     if (this.workflowBusy || this.outlineBusy) return this.toast("Wait for the current edit to finish.");
     const pid = this.pid, doc = this.doc, regions = doc.page.regions;
     const withText = regions.filter(region => region.lines?.some(line => typeof line.text === "string")).length;
-    const edited = this.book.edits.has(pid) || ["regions", "text", "units"].some(layer => layerState(doc, layer)?.state === "edited");
+    const edited = this.book.edits.has(pid) || ["regions", "text"].some(layer => layerState(doc, layer)?.state === "edited");
     if (regions.length && (withText || edited)) {
       const lines = [`This removes its ${regions.length} ${regions.length === 1 ? "region" : "regions"}${withText ? `, ${withText} of them with text,` : ""}.`,
         ...edited ? ["The page has your edits. Undo restores the regions while the page is open."] : []];
@@ -789,6 +795,15 @@ class App {
     } else this.setMode("settings");
   }
 
+  // A stored page document (0.4) as the page editor works on it for now: with its units, flows and relations derived
+  // from the regions, the book's rules and the page's overrides, in this book's reading (reading.js). A 0.3 one is used as it is.
+  derive(doc) {
+    if (isOldPage(doc)) return doc;
+    const { book } = this, saved = book.pages.map(page => page.id === doc.page.id ? doc : this.pageStates.get(page.id)?.doc).filter(Boolean);
+    const found = bookReading(book.pages, saved, book.types, book.skipped, book.rules).docs.find(value => value?.page.id === doc.page.id);
+    return structuredClone(found || fromBlocks(doc, book.types, blocksContext([doc], book.rules)));
+  }
+
   // Every way of opening a page opens the one page editor, whatever the stage.
   openPage(pid, sel = {}) {
     location.hash = workflowAddress("page", pid, sel);
@@ -829,9 +844,9 @@ class App {
       const saved = this.book.edits.get(pid);
       const draft = await this.book.draft(pid).catch(() => null);
       if (token !== this.routeToken) return;
-      this.modelDoc = model;
-      this.savedDoc = saved || model;
-      this.doc = ops.clone(draft ? draft.doc : this.savedDoc);
+      this.modelDoc = this.derive(model);
+      this.savedDoc = this.derive(saved || model);
+      this.doc = ops.clone(draft ? this.derive(draft.doc) : this.savedDoc);
       this.dirty = !!draft;
       this.undoStack = [];
       this.redoStack = [];
@@ -972,10 +987,6 @@ class App {
       fn(next);
       const focus = editorFocus();
       assertFocusEdit(focus, this.doc, next);
-      // A page whose units are provisional has them rebuilt from its regions after every edit, in Read as in Regions;
-      // settled units are kept, and the region edits in ops.js keep them consistent.
-      if (layerState(next, "units")?.state === "provisional")
-        rebuildProvisional(next, this.tl, { firstPage: this.book.index[this.pid] === 0, lastPage: this.book.index[this.pid] === this.book.pages.length - 1 });
       next = noteEdit(this.doc, next, { focus });
       if (next.source.layers.regions && layerView(this.doc, "regions") !== layerView(next, "regions"))
         next.source.layers.regions.types_revision = typeRevision(this.tl.source?.revision);
@@ -1044,11 +1055,10 @@ class App {
         this.dirty = false;
       } else {
         const out = ops.markEdited(ops.clone(doc), this.modelDoc.source?.created_at_utc || null);
-        this.savedDoc = await this.book.saveEdit(pid, out, { focus, base }) || out;
+        this.savedDoc = this.derive(await this.book.saveEdit(pid, out, { focus, base }) || out);
         const unchanged = ops.canonical(this.doc) === ops.canonical(doc);
         if (unchanged) this.doc = this.savedDoc;
         else if (focus === "text") this.doc = mergeTextEdit(this.savedDoc, this.doc, doc);
-        else if (focus === "units") this.doc = applyUnitChanges(doc, this.doc, this.savedDoc);
         if (ops.canonical(this.tl) !== ops.canonical(this.book.types)) {
           this.syncTypes();
           this.pageBuilt = false;
@@ -1092,7 +1102,7 @@ class App {
     try {
       this.doc = await book.savePageReview(pid, checked);
       this.savedDoc = this.doc;
-      this.modelDoc = await book.model(pid);
+      this.modelDoc = this.derive(await book.model(pid));
       await this.refreshWorkflowPage(pid);
       await this.refresh();
       this.diskCopy?.checkpoint();
@@ -1113,7 +1123,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261123-blocks-b1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261123-blocks-b2-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

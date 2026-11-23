@@ -19,7 +19,6 @@ function page(pid = "p1") {
     { regions: [{ region_id: 1, type: "paragraph", region_class: "paragraph", keep: true, reading_order: 1, status: "ok", polygons: ring, model_box: [10, 10, 90, 30], bounds: [10, 10, 90, 30], lines: [{ line_id: 1, polygons: ring }] }] });
   doc.page.regions[0].lines[0].text = "ಕನ್ನಡ";
   doc.source.layers.text = { state: "model", types_revision: 1 };
-  doc.source.layers.units.state = "model";
   assert.deepEqual(check(doc, types), []);
   return doc;
 }
@@ -50,22 +49,6 @@ test("add and split types leave text intact and identify pages to retype", () =>
   assert.deepEqual(container.types.types.chapter.contains, ["paragraph"]); validChanges(container);
 });
 
-test("rename migrates models, corrections, drafts, containment and styles without changing transcription", () => {
-  const before = snapshot(); before.edits.p1 = page(); before.edits.p1.units[0].label = "Reviewed";
-  before.drafts.p2 = { at: 3, doc: page("p2") };
-  const plan = planTypeRevision(types, before, [{ kind: "rename", name: "paragraph", to: "prose" }], options);
-  assert.equal(plan.changes.length, 3); assert.deepEqual(plan.pages, ["p1", "p2"]);
-  for (const change of plan.changes) {
-    const old = change.kind === "draft" ? change.before.doc : change.before, next = change.kind === "draft" ? change.after.doc : change.after;
-    assert.equal(next.page.regions[0].type, "prose");
-    assert.deepEqual(next.page.regions[0].lines, old.page.regions[0].lines);
-    assert.deepEqual(next.source.layers, old.source.layers);
-  }
-  assert.equal(plan.types.source.aliases.paragraph, "prose");
-  assert.deepEqual(plan.style.types.prose, { italic: true }); assert.equal(plan.style.types.paragraph, undefined);
-  validChanges(plan);
-});
-
 test("merge preserves compatible grouping and aliases while refusing incompatible classes", () => {
   const current = revisedTypeList(types, [{ kind: "add", name: "prose", region: "paragraph", parent: "article" }]);
   const plan = planTypeRevision(current, snapshot(), [{ kind: "merge", name: "paragraph", to: "prose" }], options);
@@ -73,36 +56,6 @@ test("merge preserves compatible grouping and aliases while refusing incompatibl
   const styled = snapshot(); styled.style.types.prose = { weight: "bold" };
   assert.deepEqual(planTypeRevision(current, styled, [{ kind: "merge", name: "paragraph", to: "prose" }], options).style.types.prose, { weight: "bold" });
   assert.throws(() => planTypeRevision(types, snapshot(), [{ kind: "merge", name: "paragraph", to: "verse" }], options), /same printed class/);
-});
-
-test("containment changes rebuild unprotected units and flag protected units for repair", () => {
-  const before = snapshot(); before.models.p2 = page("p2"); before.edits.p2 = page("p2"); before.edits.p2.source.layers.units.state = "edited";
-  const operations = [{ kind: "rules", name: "paragraph", flow: "main" }, { kind: "rules", name: "article", contains: ["verse"], flow: "main" }];
-  const plan = planTypeRevision(types, before, operations, options);
-  const first = plan.changes.find(change => change.page === "p1").after;
-  assert.deepEqual(check(first, plan.types), []); assert.equal(first.source.layers.units.state, "provisional");
-  assert.deepEqual(first.page.regions[0].lines, before.models.p1.page.regions[0].lines);
-  assert.deepEqual(plan.complete, ["p1"]); assert.deepEqual(plan.manual, ["p2"]);
-  const protectedDoc = plan.changes.find(change => change.kind === "edit").after;
-  assert.deepEqual(protectedDoc.units, before.edits.p2.units); assert.ok(check(protectedDoc, plan.types).length);
-});
-
-test("flow changes rebuild provisional roots under the revised flow", () => {
-  const before = snapshot(); before.models.p1.source.layers.units.state = "provisional";
-  const plan = planTypeRevision(types, before, [{ kind: "rules", name: "article", contains: ["paragraph", "verse"], flow: "notes" }], options);
-  assert.ok(plan.changes[0].after.flows.notes.length); validChanges(plan);
-});
-
-test("figure-class changes retain text as provenance and identify region work", () => {
-  const before = snapshot(); before.models.p1.source.layers.regions.accepted_at_utc = "reviewed";
-  const plan = planTypeRevision(types, before, [{ kind: "class", name: "paragraph", region: "figure" }], options);
-  const doc = plan.changes[0].after;
-  assert.equal(doc.page.regions[0].lines, undefined);
-  assert.deepEqual(doc.page.regions[0].source.kept_text, before.models.p1.page.regions[0].lines);
-  assert.equal(doc.source.layers.regions.accepted_at_utc, undefined); assert.deepEqual(plan.find, ["p1"]); validChanges(plan);
-  const ordinary = planTypeRevision(types, snapshot(), [{ kind: "class", name: "paragraph", region: "verse" }], options);
-  assert.deepEqual(ordinary.changes, []); assert.deepEqual(ordinary.find, []);
-  validChanges(planTypeRevision(types, snapshot(), [{ kind: "class", name: "paragraph", region: "figure" }, { kind: "rename", name: "paragraph", to: "illustration" }], options));
 });
 
 test("unused types can be removed while uses in drafts prevent removal", () => {

@@ -94,23 +94,6 @@ test("page states expose revision, suggestions and draft errors without flagging
   assert.equal(state.valid, false);
 });
 
-test("one batch loop handles every model step, reused results, failures and callback cleanup", async () => {
-  for (const stage of ["regions", "text", "read"]) {
-    const calls = [];
-    const invoke = async pid => { calls.push(pid); if (pid === "bad") throw Error("bad page"); return { cached: true }; };
-    const maker = { jobs: new Map(), onCost() {}, findRegions: invoke, read: invoke, complete: invoke };
-    const previous = maker.onCost;
-    const outcomes = [];
-    const out = await runBatch({ maker, ids: ["p1", "bad", "p3"], stage, limit: 5, onPage: async (pid, value, error) => outcomes.push(!!error) });
-    assert.deepEqual(calls, ["p1", "bad", "p3"]);
-    assert.deepEqual(outcomes, [false, true, false]);
-    assert.equal(out.failed, 1);
-    assert.equal(out.reused, 2);
-    assert.equal(maker.processing, false);
-    assert.equal(maker.onCost, previous);
-  }
-});
-
 test("a batch stops between calls for spending, unknown cost and a requested stop", async () => {
   for (const condition of ["spend", "unknown", "stop", "persistence"]) {
     let stop = false;
@@ -296,7 +279,7 @@ test("Pages collects review flags and processing follows the available input", (
 });
 
 test("a page card shows one state: Checked, N to check with the first item, Not processed, or none when dimmed", () => {
-  const checked = accept(accept(accept(page("p2"), "regions"), "text"), "units");
+  const checked = accept(accept(page("p2"), "regions"), "text");
   const states = new Map([
     ["p1", { ...pageStages(null, types), flags: [] }],
     ["p2", { ...pageStages(checked, types), flags: [] }],

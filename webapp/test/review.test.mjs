@@ -17,28 +17,13 @@ function page() {
     regions: [{ id: "r1", type: "paragraph", order: 1, polygons: poly(10), lines: [{ line: 1, polygons: poly(10), text: "first" }, { line: 2, polygons: poly(25), text: "second", end: "line" }] },
       { id: "r2", type: "paragraph", order: 2, polygons: poly(50), lines: [{ line: 3, polygons: poly(50), text: "third" }] }] },
     units: [{ id: "u1", type: "chapter", children: [{ unit: "u2" }, { unit: "u3" }] }, { id: "u2", type: "paragraph", children: [{ region: "p1#r1" }] }, { id: "u3", type: "paragraph", children: [{ region: "p1#r2" }], label: "Keep this label" }],
-    flows: { main: ["u1"], notes: [] }, relations: [], source: { layers: Object.fromEntries(["regions", "text", "units"].map(layer => [layer, { state: "edited", types_revision: 2, accepted_at_utc: "reviewed" }])) } };
+    flows: { main: ["u1"], notes: [] }, relations: [], source: { layers: Object.fromEntries(["regions", "text"].map(layer => [layer, { state: "edited", types_revision: 2, accepted_at_utc: "reviewed" }])) } };
 }
 const reading = () => ({ profile: { id: "test" }, parsed: { regions: [
   { id: "r1", lines: [{ n: 1, text: "new [*] text" }, { n: 2, text: "<b>second</b>" }], uncertain: false, note: null },
   { id: "r2", lines: [{ n: 1, text: "other" }], uncertain: false, note: null }] } });
 const sent = doc => doc.page.regions.map(region => ({ rid: region.id, line_ids: region.lines.map(line => line.line) }));
 const check = doc => checkPage(validate, doc, types)[0];
-
-test("reviewing a held transcription builds a candidate without changing protected work", () => {
-  const doc = page(), original = clone(doc), candidate = reviewCandidate(doc, reading(), "text", types);
-  assert.deepEqual(doc, original); assert.equal(candidate.page.regions[0].lines[0].text, "new  text");
-  assert.equal(layerView(doc, "units"), layerView(candidate, "units"));
-});
-
-test("settling one Indic line preserves geometry, other text, formatting and unit grouping", () => {
-  const doc = page(), record = reading(); record.parsed.regions[0].lines[0].text = "ಕನ್ನಡ [೧]";
-  const candidate = reviewCandidate(doc, record, "text", types), out = settle(doc, candidate, types, "text", { region: "r1", line: 1 }).doc;
-  assert.equal(out.page.regions[0].lines[0].text, "ಕನ್ನಡ "); assert.equal(out.page.regions[0].lines[1].text, "second");
-  assert.equal(out.page.regions[1].lines[0].text, "third"); assert.equal(layerView(out, "regions"), layerView(doc, "regions"));
-  assert.equal(layerView(out, "units"), layerView(doc, "units")); assert.deepEqual(check(out), []);
-  assert.equal(settledChecks(out, sent(out))["r1:1"].checked, true); assert.equal(settledChecks(out, sent(out))["r1:2"], undefined);
-});
 
 test("blank pages can be reviewed while missing line selections are rejected", () => {
   const doc = page(); doc.page.regions = []; doc.units = []; doc.flows.main = [];
@@ -128,14 +113,6 @@ test("a single region geometry choice preserves other regions and keeps compatib
   assert.deepEqual(out.page.regions[1], doc.page.regions[1]); assert.deepEqual(check(out), []);
 });
 
-test("invalid and geometrically stale candidates are held for review", () => {
-  const doc = page(), candidate = clone(doc); candidate.units[0].children = [];
-  assert.throws(() => settle(doc, candidate, types, "units"));
-  candidate.page.regions[0].lines[0].polygons = poly(11);
-  assert.throws(() => settle(doc, candidate, types, "text"), /geometry/);
-  assert.throws(() => reviewCandidate(doc, { doc: candidate }, "units", types), /does not fit/);
-});
-
 function stored() {
   const manifest = { format: "book-folder", version: 1, book_id: "review", title: "Review", types: "types.json", pages: [{ id: "p1", document: "pages/p1.json" }] };
   const doc = page(); doc.source.suggestions = { text: "work/reading.json" };
@@ -172,7 +149,6 @@ test("choosing replacement page regions leaves transcription pending and units p
   await saveReview(book, "p1", { ...selected, candidate, layer: "regions", path: null, record: null });
   const saved = await book.current("p1");
   assert.equal(layerState(saved, "regions").state, "edited"); assert.equal(layerState(saved, "text"), null);
-  assert.equal(layerState(saved, "units").state, "provisional");
   const exported = await book.chayaFiles(); assert.ok(exported["edits/p1.json"].source.review.regions.r1);
 });
 

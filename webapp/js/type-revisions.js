@@ -1,8 +1,8 @@
-import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261123-blocks-b1";
-import { canonical } from "./ops.js?v=20261123-blocks-b1";
-import { isProtected, layerRecords, layerState } from "./layers.js?v=20261123-blocks-b1";
-import { provisionalUnits } from "./pipeline/provisional.js?v=20261123-blocks-b1";
-import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261123-blocks-b1";
+import { checkTypes, checkDocument, typeRevision } from "./schema.js?v=20261123-blocks-b2-1";
+import { canonical } from "./ops.js?v=20261123-blocks-b2-1";
+import { isProtected, layerRecords, layerState } from "./layers.js?v=20261123-blocks-b2-1";
+import { provisionalUnits } from "./pipeline/provisional.js?v=20261123-blocks-b2-1";
+import { addBookType, REGION_CLASSES } from "./book-types.js?v=20261123-blocks-b2-1";
 
 export function citedSamplePages(question, samples) {
   const cited = new Set();
@@ -27,8 +27,26 @@ export function mappedTypeNames(record, types) {
   for (const value of [next, next?.doc, next?.parsed]) if (value) {
     for (const region of value.page?.regions || value.regions || []) if (typeof region.type === "string") region.type = resolveTypeName(region.type, types);
     for (const unit of value.units || []) if (typeof unit.type === "string") unit.type = resolveTypeName(unit.type, types);
+    if (value.overrides) value.overrides = mappedOverrides(value.overrides, types);
   }
   return next;
+}
+
+// A 0.4 page's overrides with the type names resolved: in the groups, and in the keys that name units ("verse@r4").
+const mappedKey = (key, types) => typeof key === "string" ? key.replace(/^([^@]+)@/, (_, type) => `${resolveTypeName(type, types)}@`) : key;
+function mappedOverrides(overrides, types) {
+  const group = item => {
+    if (typeof item === "string") return item;
+    const out = { ...item, type: resolveTypeName(item.type, types) };
+    if (item.members) out.members = item.members.map(member => member.block ? member : group(member));
+    return out;
+  };
+  const out = { ...overrides };
+  if (out.groups) out.groups = out.groups.map(group);
+  if (out.units) out.units = Object.fromEntries(Object.entries(out.units).map(([key, change]) => [mappedKey(key, types), change]));
+  if (out.order) out.order = Object.fromEntries(Object.entries(out.order).map(([flow, keys]) => [flow, keys.map(key => mappedKey(key, types))]));
+  if (out.links) out.links = out.links.map(link => ({ ...link, to: mappedKey(link.to, types) }));
+  return out;
 }
 
 function availableName(types, name) {
@@ -124,8 +142,10 @@ export function revisedTypeList(current, operations, at = new Date().toISOString
 
 function usage(doc, names) {
   return { regions: (doc?.page.regions || []).filter(region => names.has(region.type)).length,
-    units: (doc?.units || []).filter(unit => names.has(unit.type)).length };
+    units: (doc?.units || []).filter(unit => names.has(unit.type)).length + countGroups(doc?.overrides?.groups || [], names) };
 }
+const countGroups = (groups, names) => groups.reduce((n, item) => typeof item === "string" ? n :
+  n + (names.has(item.type) ? 1 : 0) + countGroups((item.members || []).filter(member => !member.block), names), 0);
 
 export function migrateTypeDocument(original, types, operations, check = (doc, list) => checkDocument(doc, list)[0], boundary = {}) {
   const doc = mappedTypeNames(original, types);
@@ -134,6 +154,7 @@ export function migrateTypeDocument(original, types, operations, check = (doc, l
   const fig = new Set(operations.filter(op => op.kind === "class" && (op.region === "figure" || op.before?.region === "figure")).map(op => resolveTypeName(op.name, types)));
   const figureChanged = doc.page.regions.some(region => fig.has(region.type));
   if (!changed && !figureChanged && !operations.some(op => ["rules", "merge"].includes(op.kind))) return doc;
+  if (doc.overrides) return migrateBlocksDocument(doc, types, operations, check, review, revision, changed || figureChanged);
   if (figureChanged) {
     doc.source = { ...doc.source, layers: layerRecords(doc) };
     for (const region of doc.page.regions.filter(region => fig.has(region.type))) {
@@ -160,13 +181,10 @@ export function migrateTypeDocument(original, types, operations, check = (doc, l
   const errors = check(doc, types);
   if (!errors.length && review.manual && operations.some(op => op.kind === "rules")) { delete review.manual; changed = true; }
   if (errors.length && operations.some(op => op.kind === "rules")) {
-    if (!isProtected(doc, "units") || layerState(doc, "units")?.state === "provisional") {
-      const provisional = provisionalUnits(doc.page.id, doc.page.regions, types, boundary);
-      doc.units = provisional.units; doc.flows = provisional.flows; doc.relations = [];
-      doc.source = { ...doc.source, layers: layerRecords(doc), provisional_problems: provisional.problems };
-      doc.source.layers.units = { state: "provisional", types_revision: revision };
-      review.units = revision;
-    } else review.manual = revision;
+    const provisional = provisionalUnits(doc.page.id, doc.page.regions, types, boundary);
+    doc.units = provisional.units; doc.flows = provisional.flows; doc.relations = [];
+    doc.source = { ...doc.source, layers: layerRecords(doc), provisional_problems: provisional.problems };
+    review.manual = revision;
     changed = true;
   }
   if (changed) {
@@ -174,6 +192,17 @@ export function migrateTypeDocument(original, types, operations, check = (doc, l
     const remaining = check(doc, types);
     if (Object.keys(review).length) doc.source.type_review = { ...review, errors: remaining };
     else delete doc.source.type_review;
+  }
+  return doc;
+}
+
+// A 0.4 page after a type-list change: the names are mapped; where its overrides no longer pass the checks (a rule changed
+// what may contain what), they are dropped and the page is marked for review.
+function migrateBlocksDocument(doc, types, operations, check, review, revision, changed) {
+  if (check(doc, types).length) { doc.overrides = {}; review.manual = revision; changed = true; }
+  if (changed) {
+    doc.source = { ...doc.source, types_migration_revision: revision };
+    if (Object.keys(review).length) doc.source.type_review = { ...review, errors: check(doc, types) }; else delete doc.source.type_review;
   }
   return doc;
 }

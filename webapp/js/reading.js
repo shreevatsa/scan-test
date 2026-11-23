@@ -5,11 +5,11 @@
 //
 // A reading is kept per type list: asking again with the same page documents (the same objects), rules and dimmed
 // pages gives the same result, and a changed page document, rule or type list makes a new one.
-import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261123-blocks-b1";
-import { readingProjection } from "./blocks.js?v=20261123-blocks-b1";
-import { readingDocuments } from "./workflow.js?v=20261123-blocks-b1";
-import { noteTypesOf } from "./note-links.js?v=20261123-blocks-b1";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b1";
+import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261123-blocks-b2-1";
+import { readingProjection } from "./blocks.js?v=20261123-blocks-b2-1";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-1";
+import { noteTypesOf } from "./note-links.js?v=20261123-blocks-b2-1";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-1";
 
 export const isBlocksPage = doc => Boolean(doc) && !doc.units;
 

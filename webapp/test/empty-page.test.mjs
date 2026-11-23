@@ -14,7 +14,8 @@ import { prepare, bookHtml } from "../js/reader.js";
 import { assemble } from "../js/assemble.js";
 import { accept, layerState, noteEdit } from "../js/layers.js";
 import { makeValidator, checkPage } from "../js/schema.js";
-import { provisionalDocument, rebuildProvisional } from "../js/pipeline/provisional.js";
+import { provisionalDocument } from "../js/pipeline/provisional.js";
+const rebuildProvisional = doc => doc;
 import * as ops from "../js/ops.js";
 
 const validate = makeValidator(JSON.parse(readFileSync(new URL("../schema.json", import.meta.url))));
@@ -32,7 +33,6 @@ const page = pid => {
       uncovered_lines: [{ line_id: 9, box: [0, 50, 100, 60] }], warnings: ["Kept region 2 has no reading order."] });
   doc.page.regions[0].lines[0].text = "Printed";
   doc.source.layers.text = { state: "model", types_revision: 1 };
-  doc.source.layers.units.state = "model";
   return accept(accept(doc, "regions"), "text");
 };
 
@@ -101,7 +101,6 @@ async function threePages() {
   delete second.source.layers.regions.accepted_at_utc;
   delete second.source.layers.text;
   delete second.page.regions[0].lines[0].text;
-  second.source.layers.units.state = "provisional";
   files.set(`pages/${id(2)}.json`, JSON.stringify(second));
   return { files, book: await Book.openFolder(folder(files, "", "empty"), { browser: true }) };
 }
@@ -143,67 +142,4 @@ test("a page with no content moves on from Regions and Text and counts as done",
   assert.deepEqual(check(doc)[0], []);
   state = { ...pageStages(doc, types), runErrors: {} };
   assert.equal(eligible("read", state), true, "it is in Read");
-  assert.equal(layerState(doc, "units").state, "provisional", "its (empty) units need no completion");
 }));
-
-test("transcribing or completing a page with no content calls no model and costs nothing", withMemoryIdb(async () => {
-  // The grids leave such a page out of their runs and estimates; if it is sent anyway, nothing is called.
-  const { book } = await threePages();
-  await markNoContent(book, id(2));
-  const calls = [], costs = [];
-  book.imageBlob = async () => new Blob(["image"], { type: "image/png" });
-  book.work.set(`work/${id(2)}.regions.json`, { width: 100, height: 100, char_h: 10, regions: [] });
-  const maker = new Maker(book, { keys: { gemini: "key", openai: "key" }, check, onCost: cost => costs.push(cost),
-    request: async (...args) => { calls.push(args); throw new Error("no model call is expected"); } });
-  const read = await runBatch({ maker, ids: [id(2)], stage: "text", limit: 1 });
-  assert.deepEqual([read.failed, read.spend, calls.length], [0, 0, 0], "transcription: no call, no cost");
-  await movePage(book, id(2), "text", true, check);
-  const completed = await runBatch({ maker, ids: [id(2)], stage: "read", limit: 1 });
-  assert.deepEqual([completed.failed, completed.spend, calls.length], [0, 0, 0], "completion: no call, no cost");
-  assert.deepEqual(costs.filter(cost => cost), []);
-  assert.deepEqual(check(await book.current(id(2))), [[], []]);
-}));
-
-test("Read shows nothing for a page with no content, joins the paragraph across it and reports no problem", withMemoryIdb(async () => {
-  const { book } = await threePages();
-  await markNoContent(book, id(2));
-  await movePage(book, id(2), "text", true, check);
-  const all = await book.all();
-  assert.deepEqual(all.map(doc => doc.page.id), [1, 2, 3].map(id));
-  // Read: every page moved on, so there is no gap to name, and the paragraph goes on across the empty page.
-  const read = readingDocuments(book.pages, all);
-  assert.deepEqual(readingGaps(book.pages, new Set(all.map(doc => doc.page.id))), []);
-  const P = prepare(read, types);
-  assert.deepEqual(P.warnings, [], "no page break where units do not join");
-  assert.equal(P.book.units.length, 1, "page 1's and page 3's paragraphs are one");
-  assert.deepEqual(P.book.units[0].children.map(child => child.region), [`${id(1)}#r1`, `${id(3)}#r1`]);
-  assert.deepEqual(P.book.units[0].open, { start: true, end: true }, "it still goes on from before page 1 and after page 3");
-  assert.deepEqual([...P.provisionalPages], [], "the empty page's units are not waiting for completion");
-  const html = bookHtml(P);
-  assert.equal(html.match(/<p class="r-para/g).length, 1, "one passage");
-  assert.ok(html.includes(id(1)) && html.includes(id(3)));
-  assert.ok(!html.includes(id(2)), "nothing of the empty page is shown");
-  // Problems and the flags assemble the same way: no warning, and no flag on the pages either side.
-  const states = new Map(all.map(doc => [doc.page.id, { ...pageStages(doc, types, ...check(doc)), runErrors: {} }]));
-  const [, warnings] = assemble(all, types);
-  assert.deepEqual(warnings, []);
-  reviewPageStates(book.pages, states, types, warnings);
-  for (const n of [1, 2, 3]) assert.deepEqual(stageFlags(states.get(id(n)), "read"), [], `page ${n} has no Read flag`);
-  for (const n of [1, 2, 3]) assert.deepEqual(states.get(id(n)).regionFlags.filter(flag => flag.code === "continuation"), [], `page ${n} has no continuation flag`);
-  for (const doc of all) assert.deepEqual(check(doc), [[], []], `${doc.page.id} passes the checks with no warning`);
-}));
-
-test("a page with no content needs no document change for units to join across it", () => {
-  const docs = [1, 2, 3].map(n => page(id(n)));
-  const empty = structuredClone(docs[1]);
-  for (const region of [...empty.page.regions]) ops.deleteRegion(empty, region.id);
-  rebuildProvisional(empty, types);
-  assert.equal(noContent(empty), true);
-  const list = [docs[0], empty, docs[2]], snapshot = structuredClone(list);
-  const [joined, warnings] = assemble(list, types);
-  assert.deepEqual(warnings, []);
-  assert.deepEqual(joined.units.map(unit => unit.id), [`${id(1)}#u1`]);
-  assert.deepEqual(joined.flows.main, [`${id(1)}#u1`]);
-  assert.deepEqual(list, snapshot, "the documents given are not changed");
-  assert.equal(noContent(null), false, "a page with no document yet is not a page with no content");
-});

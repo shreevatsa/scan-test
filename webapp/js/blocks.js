@@ -1,15 +1,15 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b1";
-import { orderedRegions } from "./flags.js?v=20261123-blocks-b1";
-import { pageLabel } from "./pipeline/steps.js?v=20261123-blocks-b1";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261123-blocks-b1";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b1";
-import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b1";
-import { compileRules } from "./rules.js?v=20261123-blocks-b1";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261123-blocks-b1";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-1";
+import { orderedRegions } from "./flags.js?v=20261123-blocks-b2-1";
+import { pageLabel } from "./pipeline/steps.js?v=20261123-blocks-b2-1";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261123-blocks-b2-1";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b2-1";
+import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b2-1";
+import { compileRules } from "./rules.js?v=20261123-blocks-b2-1";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261123-blocks-b2-1";
 import { cp, shiftSpans } from "./inline.js";
-import { layerState } from "./layers.js?v=20261123-blocks-b1";
-import { readingDocuments } from "./workflow.js?v=20261123-blocks-b1";
+import { layerState } from "./layers.js?v=20261123-blocks-b2-1";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-1";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
@@ -146,7 +146,7 @@ export function projectBlocks(pages, saved, types, skipped, rules) {
 
 function hasSavedStructure(doc) {
   if (!doc.units?.length) return false;
-  const layer = layerState(doc, "units");
+  const layer = doc.source?.layers?.units;
   return layer?.state !== "provisional" || layer.accepted || !!doc.relations?.length ||
     doc.units.some(unit => unit.label != null || unit.number != null || unit.lang || unit.style || unit.open?.start || unit.open?.end) ||
     doc.page.regions.some(region => region.lines?.some(line => line.end != null || line.style));

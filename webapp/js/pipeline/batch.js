@@ -14,7 +14,6 @@ export async function runBatch({ maker, ids, stage, stageOf, limit, force = fals
     let value;
     if (step === "regions") value = await maker.findRegions(pid, { force });
     else if (step === "text") value = await maker.read(pid, null, { force, save: true });
-    else if (step === "read") value = await maker.complete(pid, { force });
     else throw new Error(`Unknown processing stage ${step}.`);
     if (value.errors?.length) throw new Error(value.errors[0]);
     return value;

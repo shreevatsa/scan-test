@@ -8,6 +8,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { assemble } from "../js/assemble.js";
+import { readThroughBlocks } from "../js/reading.js";
 import { prepare, bookHtml } from "../js/reader.js";
 import { pageStages, reviewPageStates, readingDocuments, readingGaps, stageFlags, pageWalker } from "../js/workflow.js";
 import { regionFlags } from "../js/flags.js";
@@ -50,7 +51,7 @@ const type = region => region.type;
 // Every list of pages assembled here, for the parity test with schema/book.py at the end.
 const scenarios = [];
 const record = (types, docs) => { scenarios.push({ types, docs: structuredClone(docs) }); return docs; };
-const book = (types, specs) => record(types, specs.map((regions, k) => page(types, k + 1, regions)));
+const book = (types, specs) => record(types, readThroughBlocks(specs.map((regions, k) => page(types, k + 1, regions)), types));
 const pagesOf = docs => docs.map((doc, k) => ({ id: doc.page.id, pdf_page: k + 1 }));
 // The pages of the book each of its units has regions on, by type.
 const spans = assembled => assembled.units.filter(unit => unit.children.some(child => child.region))

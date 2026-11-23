@@ -1,13 +1,13 @@
-import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261123-blocks-b1";
-import { layerRecords } from "./layers.js?v=20261123-blocks-b1";
-import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261123-blocks-b1";
-import { checkDocument } from "./schema.js?v=20261123-blocks-b1";
+import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261123-blocks-b2-1";
+import { layerRecords } from "./layers.js?v=20261123-blocks-b2-1";
+import { mergeText } from "./pipeline/apply.js?v=20261123-blocks-b2-1";
+import { checkDocument } from "./schema.js?v=20261123-blocks-b2-1";
 import { markedText } from "./pipeline/split.js";
 import { structureDecisions } from "./pipeline/structure-compare.js";
-import { unitPath, unitRegionIds } from "./editing.js?v=20261123-blocks-b1";
-import { regionLayout } from "./pipeline/finders.js?v=20261123-blocks-b1";
-import { preserveMarkerIds } from "./marker-ids.js?v=20261123-blocks-b1";
-import { partialTextScope } from "./pipeline/partial-reading.js?v=20261123-blocks-b1";
+import { unitPath, unitRegionIds } from "./editing.js?v=20261123-blocks-b2-1";
+import { regionLayout } from "./pipeline/finders.js?v=20261123-blocks-b2-1";
+import { preserveMarkerIds } from "./marker-ids.js?v=20261123-blocks-b2-1";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261123-blocks-b2-1";
 
 export const reviewSnapshot = (doc, types) => canonical({ doc, types });
 const freeLayer = (doc, layer) => {
@@ -31,14 +31,9 @@ export function reviewCandidate(current, record, layer, types, regionCandidate =
     return clone(regionCandidate);
   }
   if (layer === "text") {
-    const unlocked = freeLayer(freeLayer(current, "text"), "units"); unlocked.relations = [];
+    const unlocked = freeLayer(current, "text");
     const out = mergeText(unlocked, record, types, () => [[], []], { regionIds: suggestion ? partialTextScope(current, record) : null });
     if (!out.taken.includes("text")) throw new EditError("The region geometry has changed. Compare a transcription made for the current regions.");
-    return out.doc;
-  }
-  if (layer === "units") {
-    const out = mergeCompletion(freeLayer(current, "units"), record.doc, types);
-    if (!out.taken.includes("units")) throw new EditError("This assignment does not fit the current text, geometry or type list. Review those inputs first.");
     return out.doc;
   }
   throw new EditError(`Unknown review layer ${layer}.`);

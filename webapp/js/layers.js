@@ -1,7 +1,7 @@
-import { canonical } from "./ops.js?v=20261123-blocks-b1";
-import { typeRevision } from "./schema.js?v=20261123-blocks-b1";
+import { canonical } from "./ops.js?v=20261123-blocks-b2-1";
+import { typeRevision } from "./schema.js?v=20261123-blocks-b2-1";
 
-export const LAYERS = ["regions", "text", "units"];
+export const LAYERS = ["regions", "text"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));
 
 // Compare owned content, excluding model provenance and stage bookkeeping.
@@ -19,11 +19,6 @@ export function layerView(doc, layer) {
       return canonical({ label: doc?.page?.label ?? null, regions: regions.map(region => ({ id: region.id,
         lines: (region.lines || []).map(line => ({ line: line.line, text: line.text ?? null,
           spans: (line.spans || []).map(span => fields(span, ["start", "end", "kind", "id", "marker"])) })) })) });
-    case "units":
-      return canonical({ units: (doc?.units || []).map(unit => fields(unit, ["id", "type", "children", "open", "number", "label", "lang", "style"])),
-        flows: doc?.flows || {}, relations: doc?.relations || [],
-        regions: regions.map(region => ({ id: region.id, lines: (region.lines || []).map(line => ({ line: line.line,
-          end: line.end || "space", ...fields(line, ["style"]) })) })) });
     default: throw new Error(`Unknown page layer ${layer}.`);
   }
 }
@@ -100,7 +95,7 @@ export function preservePageReview(doc, current) {
 }
 
 export function noteEdit(modelDoc, doc, { focus = null } = {}) {
-  const next = materialize(doc), regionsChanged = layerView(modelDoc, "regions") !== layerView(doc, "regions");
+  const next = materialize(doc);
   for (const layer of LAYERS) {
     const baseline = layerState(modelDoc, layer);
     if (layer === "text" && (focus === "regions" || !baseline && !doc.page.regions.some(region =>
@@ -115,8 +110,7 @@ export function noteEdit(modelDoc, doc, { focus = null } = {}) {
       continue;
     }
     const state = next.source.layers[layer] || { types_revision: baseline?.types_revision || 1 };
-    state.state = layer === "units" && baseline?.state === "provisional" && (focus !== "units" && regionsChanged || focus === "text") && state.state !== "edited"
-      ? "provisional" : "edited";
+    state.state = "edited";
     next.source.layers[layer] = state;
   }
   return next;

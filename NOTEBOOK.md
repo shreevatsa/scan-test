@@ -5322,3 +5322,18 @@ Checks:
 - Timings (headless Chrome, files on localhost, pages loaded): Read appears in 2.2 to 3.1 s for the Rāmāyaṇa-mañjarī (1.0 s before) and 0.3 s for Kale (0.04 s before); a second Read 1.1 s and 0.35 to 0.6 s; opening the page editor on PDF page 25 about 0.9 s (Kale 0.5 s); one edit re-derives the Rāmāyaṇa-mañjarī in 0.28 s. Derivation is about 0.3 s of that, `toBlocks` over every page about 0.45 s in Node.
 
 Limits: because the conversion is lossless, a changed rule changes nothing for a page stored as 0.3 (its saved structure is kept); it matters for pages with no saved structure and, from stage B2 on, for every page. Assembly warnings now name generated unit ids (`g12`) rather than saved ones (`u12`); the tests compare them by place.
+
+## 2026-11-24 Blocks storage, stage B2 step 1: the app writes 0.4
+
+No model was called. The app stores page documents in the blocks form (`schema/README.md`, "Blocks (draft 0.4)"): regions plus `overrides`, no units, flows or relations.
+
+What changed:
+- `webapp/js/upgrade.js` converts a book's 0.3 pages. A book in a browser's storage or on disk is converted when it is opened (`Book.upgradePages`, called by `openFolder`), page by page, each page's 0.3 structure first kept in `work/pre-0.4/<page id>.json` (`{ page, model?, edit? }`, each `{ units, flows, relations?, layers_units? }`), then `book.json` gets `page_schema: "0.4"`. A book opened read only (a `.chaya.pdf` without a place to keep it) is converted in memory, and its records go into the files that the next save writes. A page whose structure does not fit the type list stays as it was (reported on the console; the flag is not set, so the next open tries again).
+- Everything that writes a page document goes through `Book.blocksOf` (a 0.3-shaped document, as the page editor still works on until step 2, becomes 0.4 with `toBlocks` in the book's reading context): edits, stage saves, drafts, type migrations (`mappedOverrides` renames types in groups and unit keys). A model step writes regions and text only (`provisionalDocument` makes a 0.4 page; `mergeText` sets a line's end from its block's type, as the reading used to; the completion step, `mergeCompletion` and the units layer are gone).
+- Protection: layers `regions` and `text` only (`LAYERS`); the review status is those two.
+- Separated sample pages (`source.sample.consecutive_*` false) are not open across the gap when derived, which replaces the open-end editing in `saveModel`.
+
+Checks:
+- `webapp/test/upgrade.test.mjs`: the six public fixture runs, a mixed edit/model/dimmed case, a failing page, and both finished books: the assembled reading (units, flows, relations, warnings) before and after conversion is equal, every page is 0.4 with no units layer record, and each page's record holds its old structure. Kale 1913: 252 pages, 1.9 s with both readings; the Rāmāyaṇa-mañjarī: 519 pages, 2.8 s.
+- Tests: 64 tests that encoded authored units, the units layer or the completion step were removed (the unit-aware region edits in `ops.js` and the unit review in `review.js` still stand until steps 2 and 3); 351 + 17 pass, `schema/test_book.py` passes.
+- Chrome, `?book=` for each book (imported into the browser, converted, 0.4 pages in `app.book`): Rāmāyaṇa-mañjarī 519 pages converted, opening (import, conversion and open) 10.1 s, first Read 3.0 s with 210 contents entries (7 parts), 616 linked markers; Kale 252 pages, 2.3 s, Read 1.7 s, 4 contents entries, 499 linked markers (998 anchors). A unit number set on page 25 is stored as `overrides.units["verse@r3"].number`; Export's `.chaya.pdf` reopens with the same reading and holds 519 `work/pre-0.4` records.

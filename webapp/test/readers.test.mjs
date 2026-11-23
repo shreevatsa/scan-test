@@ -98,36 +98,6 @@ async function moveSecondRegion(book) {
   await book.saveEdit("p1", doc, { focus: "regions" });
 }
 
-test("a changed region gets one cut-out and combines with unchanged model text", async () => {
-  const { maker, book, calls, texts, images, costs } = repairFixture();
-  const first = await maker.read("p1");
-  await moveSecondRegion(book);
-  texts.r2 = "Repaired ಕನ್ನಡ[2]";
-  const repaired = await maker.read("p1", null, { save: true });
-  assert.equal(calls.length, 2);
-  assert.deepEqual(calls[1].payload.response_format.schema.properties.regions.items.properties.id.enum, ["r2"]);
-  assert.deepEqual(images, [["r1", "r2"], ["r2"]]);
-  assert.deepEqual(repaired.parsed.regions.map(region => region.lines[0].text), [texts.r1, texts.r2]);
-  assert.equal(repaired.partial, true);
-  assert.deepEqual(repaired.region_ids, ["r2"]);
-  assert.deepEqual(repaired.reused_regions, ["r1"]);
-  assert.equal(repaired.parts.length, 2);
-  assert.ok(Math.abs(repaired.cost_usd - costs[0] - costs[1]) < 1e-12);
-  assert.deepEqual(await book.readWork(repaired.previous_reading), first);
-  const call = await book.readWork(repaired.path);
-  assert.equal(call.partial, true);
-  assert.deepEqual(call.parsed.regions.map(region => region.id), ["r2"]);
-  const doc = await book.current("p1");
-  assert.equal(doc.page.regions[0].lines[0].text, "Original one");
-  assert.equal(doc.page.regions[1].lines[0].text, "Repaired ಕನ್ನಡ");
-  assert.equal((await maker.read("p1")).cached, true);
-  assert.equal(calls.length, 2);
-  const completed = await maker.complete("p1");
-  assert.deepEqual(calls[2].payload.input[1].text.includes("Repaired ಕನ್ನಡ"), true);
-  assert.equal(completed.doc.page.regions.length, 2);
-  assert.deepEqual(checkPage(validate, completed.doc, book.types)[0], []);
-});
-
 test("a partial suggestion keeps human corrections and marker identities outside the repaired region", async () => {
   const { maker, book, texts, calls } = repairFixture();
   await maker.read("p1", null, { save: true });
@@ -375,35 +345,6 @@ test("reader defaults cover legacy books and script subtags", () => {
   assert.throws(() => readerOptions({ structurer: "missing" }), /schema assignment model/);
 });
 
-test("changing the schema model preserves transcription caches and earlier schema trials", async () => {
-  const { book, maker, calls } = fixture();
-  const first = await maker.transcribe("p1");
-  const second = await maker.transcribe("p1", { options: { reader: "argon-low", structurer: "flash-structure" } });
-  assert.equal(calls.length, 3);
-  assert.equal(second.reading.fingerprint, first.reading.fingerprint);
-  assert.equal(second.doc.source.structurer.model, "gemini-3.8-flash");
-  assert.equal(second.doc.page.regions[0].lines[0].text, first.doc.page.regions[0].lines[0].text);
-  assert.equal((await book.readWork(structurePath("p1", "argon-low"))).profile.id, "argon-structure");
-  assert.equal((await book.readWork(structurePath("p1", "argon-low", "flash-structure"))).profile.id, "flash-structure");
-  await maker.transcribe("p1");
-  assert.equal(calls.length, 3);
-});
-
-test("stage integration preserves the historical requests and completion cache on an unedited page", async () => {
-  const { maker, book, calls } = fixture();
-  const raw = await maker.read("p1");
-  const old = await maker.structure("p1", raw);
-  const requests = structuredClone(calls);
-  const out = await maker.transcribe("p1");
-  assert.deepEqual(calls, requests);
-  assert.equal(out.structure.fingerprint, old.fingerprint);
-  assert.equal(out.reading.fingerprint, raw.fingerprint);
-  assert.equal(layerState(await book.current("p1"), "units").state, "model");
-  // Force the new path, then compare payloads with the historical builders.
-  await maker.transcribe("p1", { force: true });
-  assert.deepEqual(calls.slice(2), requests);
-});
-
 test("legacy transcription caches gain a geometry key and survive type and convention changes", async () => {
   const { maker, book, calls } = fixture();
   const first = await maker.read("p1");
@@ -443,107 +384,6 @@ test("current edited geometry and box replace the work record and are retained t
   assert.equal(saved.page.regions[0].box[0], 1);
   assert.equal(layerState(saved, "regions").state, "edited");
   assert.equal(layerState(saved, "text").state, "model");
-});
-
-test("completion uses corrected formatting and markers without paying for another transcription", async () => {
-  const { maker, book, calls } = fixture();
-  const first = await maker.transcribe("p1");
-  const edited = structuredClone(first.doc);
-  edited.page.regions[0].lines[0].text = "Fixed";
-  edited.page.regions[0].lines[0].spans = [{ kind: "italic", start: 0, end: 5 },
-    { kind: "note_marker", id: "m1", marker: "2", start: 5, end: 5 }];
-  await book.saveEdit("p1", edited);
-  const before = JSON.stringify(await book.current("p1"));
-  const prepared = await maker.completionInput("p1");
-  assert.equal(calls.length, 2);
-  assert.equal(prepared.input.parsed.regions[0].lines[0].text, "<i>Fixed</i>[2]");
-  assert.equal(JSON.stringify(await book.current("p1")), before);
-  const out = await maker.transcribe("p1");
-  assert.equal(calls.length, 3);
-  assert.ok(JSON.stringify(calls[2].payload).includes("<i>Fixed</i>[2]"));
-  assert.equal(out.doc.page.regions[0].lines[0].text, "Fixed");
-  assert.equal(out.doc.source.suggestions.text, "work/readings/p1/argon-low.json");
-  assert.equal(layerState(out.doc, "text").state, "edited");
-});
-
-test("a correction saved during a model call becomes protected and the model result becomes a suggestion", async () => {
-  const { maker, book } = fixture();
-  await maker.read("p1", null, { save: true });
-  const request = maker.request;
-  maker.request = async (...args) => {
-    const latest = structuredClone(await book.current("p1"));
-    latest.page.regions[0].lines[0].text = "Corrected while waiting";
-    latest.page.regions[0].lines[0].spans = [];
-    await book.saveEdit("p1", latest);
-    return request(...args);
-  };
-  await maker.read("p1", { reader: "flash-low" }, { save: true });
-  const saved = await book.current("p1");
-  assert.equal(saved.page.regions[0].lines[0].text, "Corrected while waiting");
-  assert.equal(saved.source.suggestions.text, "work/readings/p1/flash-low.json");
-  assert.equal(book.edits.has("p1"), false);
-  const next = fixture();
-  const initial = await next.maker.read("p1");
-  await next.book.saveStage("p1", next.maker.provisional("p1", records, initial.image_sha256), true);
-  const laterRequest = next.maker.request;
-  next.maker.request = async (...args) => {
-    const moved = structuredClone(await next.book.current("p1"));
-    moved.page.regions[0].polygons[0][0][0] += 1;
-    moved.page.regions[0].lines[0].polygons[0][0][0] += 1;
-    await next.book.saveEdit("p1", moved);
-    return laterRequest(...args);
-  };
-  await assert.rejects(next.maker.transcribe("p1", { force: true }), /current line pieces have no transcription/);
-  assert.equal(next.calls.length, 2, "completion waits for text matching the changed geometry");
-});
-
-test("invalid drafts stop before a model call and valid drafts feed completion as edited text", async () => {
-  const { maker, book, calls } = fixture();
-  const out = await maker.transcribe("p1");
-  const draft = structuredClone(out.doc);
-  draft.flows.main = ["p1#missing"];
-  book.draft = async () => ({ doc: draft });
-  await assert.rejects(maker.transcribe("p1"), /Fix this page's draft/);
-  assert.equal(calls.length, 2);
-  draft.flows = out.doc.flows;
-  draft.page.regions[0].lines[0].text = "Draft correction";
-  draft.page.regions[0].lines[0].spans = [];
-  book.clearDraft = async () => { book.draft = async () => null; };
-  const completed = await maker.transcribe("p1");
-  assert.equal(calls.length, 3);
-  assert.equal(completed.doc.page.regions[0].lines[0].text, "Draft correction");
-  book.draft = async pid => pid === "p2" ? { doc: { ...draft, flows: { main: ["p2#missing"] } } } : null;
-  await assert.doesNotReject(maker.context("p1", { reader: "argon-low" }));
-});
-
-test("comparison trials and read-only runs save work records without writing page documents", async () => {
-  const { maker, book, files } = fixture();
-  const reading = await maker.read("p1");
-  await maker.structure("p1", reading);
-  assert.equal(files.has("pages/p1.json"), false);
-  assert.equal(await book.current("p1"), null);
-  book.kind = "chaya";
-  book.writeWork = async (path, value) => { book.work.set(path, value); };
-  await maker.transcribe("p1");
-  assert.equal(files.has("pages/p1.json"), false);
-  await assert.rejects(book.saveStage("p1", {}, true), /writable copy/);
-});
-
-test("completion is independent of transcription and cached region trials can become provisional pages", async () => {
-  const { maker, book, calls } = fixture();
-  const regions = await maker.findRegions("p1", { force: false });
-  assert.equal(regions.cached, true);
-  assert.equal(calls.length, 0);
-  assert.equal(layerState(await book.current("p1"), "units").state, "provisional");
-  await maker.read("p1", null, { save: true });
-  const before = calls.length;
-  await maker.complete("p1");
-  assert.equal(calls.length, before + 1);
-  assert.ok(calls.at(-1).payload.response_format.schema.properties.regions.items.properties.ends);
-  // Existing page documents can be completed even without any saved OCR trial.
-  await book.writeWork("work/readings/p1/argon-low.json", null);
-  await maker.complete("p1");
-  assert.equal(calls.length, before + 2);
 });
 
 test("local finder trials retain independent results and preserve current page work", async () => {
@@ -695,7 +535,6 @@ test("page-region detection saves the complete estimated charge through its norm
     assert.equal((await book.readWork("work/reader-lab/ledger.json")).calls[0].cost_usd, 0.00146);
     assert.deepEqual(costs, [0.00146]);
     assert.equal(layerState(await book.current("p1"), "regions").state, "model");
-    assert.equal(layerState(await book.current("p1"), "units").state, "provisional");
     assert.equal(layerState(await book.current("p1"), "text"), null);
   } finally { globalThis.fetch = originalFetch; }
 });
@@ -797,43 +636,6 @@ test("Tesseract word boxes map to source lines and ignore outside text", () => {
   assert.deepEqual(wordsToReading(words, selected).regions.map(r => r.lines[0].text), ["first second", "next"]);
 });
 
-test("normal transcription caches both stages, fixes the structurer, and saves the result", async () => {
-  const { maker, book, calls, costs } = fixture();
-  const result = await maker.transcribe("p1", { options: { reader: "flash-low" } });
-  assert.deepEqual(result.errors, []);
-  assert.equal(calls.length, 2);
-  assert.equal(calls[0].payload.model, "gemini-3.8-flash");
-  assert.equal(calls[1].payload.model, STRUCTURER.model);
-  assert.equal(calls[1].payload.generation_config.thinking_level, "high");
-  assert.ok(calls[1].payload.input.every(item => item.type === "text"));
-  assert.equal((await book.model("p1")).page.regions[0].lines[0].text, "Print");
-  assert.equal(costs.length, 2);
-  await maker.transcribe("p1", { options: { reader: "flash-low" } });
-  assert.equal(calls.length, 2);
-  assert.equal(costs.length, 2);
-  assert.equal((await book.readWork("work/reader-lab/ledger.json")).calls.length, 2);
-});
-
-test("failed paid structuring is recorded and retries reuse the reading", async () => {
-  const { maker, calls, book, costs } = fixture();
-  const request = maker.request;
-  let failed = false;
-  maker.request = async (...args) => {
-    const result = await request(...args);
-    if (calls.length === 2) { failed = true; result.body.outputs[0].text = "{"; }
-    return result;
-  };
-  await assert.rejects(maker.transcribe("p1"));
-  assert.equal(failed, true);
-  const ledger = await book.readWork("work/reader-lab/ledger.json");
-  assert.equal(ledger.calls[1].status, "failed");
-  assert.ok(ledger.calls[1].cost_usd > 0);
-  await maker.transcribe("p1");
-  assert.equal(calls.length, 3);
-  assert.equal(costs.length, 3);
-  assert.ok(calls[2].payload.response_format.schema.properties.regions.items.properties.ends);
-});
-
 test("a storage failure after a paid response still counts cost and blocks further API calls", async () => {
   const { maker, book, calls, costs } = fixture();
   const write = book.writeWork.bind(book);
@@ -860,36 +662,6 @@ test("concurrent requests share work and only changed ink geometry invalidates t
   book.work.get("work/p1.regions.json").regions[0].lines[0].polygons[0][0][0] = 1;
   await maker.read("p1");
   assert.equal(calls.length, 3);
-});
-
-test("local reading has zero API calls and saved neighbor readings reach structuring", async () => {
-  const { maker, calls } = fixture();
-  const options = { reader: "tesseract" };
-  const local = await maker.read("p1", options);
-  assert.equal(local.cost_usd, 0);
-  assert.equal(calls.length, 0);
-  await maker.read("p2", options);
-  await maker.structure("p1", local);
-  assert.equal(calls.length, 1);
-  const input = JSON.parse(calls[0].payload.input[1].text);
-  assert.equal(input.neighbors[0].page, "p2");
-  assert.equal(input.neighbors[0].regions[0].lines[0].text, "Print");
-});
-
-test("saving a new document retains composite-page gap metadata for future context", async () => {
-  const { maker, book } = fixture();
-  const result = await maker.transcribe("p1");
-  result.doc.source.sample = { consecutive_next: false, source_pdf_page: 43 };
-  await book.saveStage("p1", result.doc, true);
-  const replacement = structuredClone(result.doc);
-  delete replacement.source.sample;
-  replacement.units[0].open = { end: true };
-  await book.saveModel("p1", replacement, true);
-  assert.equal((await book.model("p1")).source.sample.consecutive_next, false);
-  assert.equal((await book.model("p1")).units[0].open, undefined);
-  assert.deepEqual((await book.model("p1")).source.sample.original_open_ends.u1, { end: true });
-  await maker.read("p2");
-  assert.deepEqual(await maker.context("p1", { reader: "argon-low" }), []);
 });
 
 test("read-only books persist reader settings and trial records in their exported overlay", async () => {
