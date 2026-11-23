@@ -1,14 +1,14 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-tidy-1";
-import { orderedRegions } from "./flags.js?v=20261123-tidy-1";
-import { pageLabel } from "./pipeline/steps.js?v=20261123-tidy-1";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261123-tidy-1";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261123-tidy-1";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261123-tidy-1";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261123-tidy-1";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-tidy-2";
+import { orderedRegions } from "./flags.js?v=20261123-tidy-2";
+import { pageLabel } from "./pipeline/steps.js?v=20261123-tidy-2";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261123-tidy-2";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261123-tidy-2";
+import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261123-tidy-2";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261123-tidy-2";
 import { cp, shiftSpans } from "./inline.js";
-import { layerState } from "./layers.js?v=20261123-tidy-1";
-import { readingDocuments } from "./workflow.js?v=20261123-tidy-1";
+import { layerState } from "./layers.js?v=20261123-tidy-2";
+import { readingDocuments } from "./workflow.js?v=20261123-tidy-2";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);

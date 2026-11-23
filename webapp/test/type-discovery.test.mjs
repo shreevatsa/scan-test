@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { samplePages, discoverySchema, proposalTypes } from "../js/pipeline/type-discovery.js";
 import { makeValidator } from "../js/schema.js";
-import { contactSheetPlan, sheetBatches } from "../js/pipeline/contact-sheets.js";
 
 const schema = JSON.parse(readFileSync(new URL("../schema.json", import.meta.url)));
 const proposal = {
@@ -19,19 +18,6 @@ const context = { id: "test-book", title: "Test book", source: {}, schema, pages
 
 test("proposal schemas accept the saved whole-list proposals", () => {
   assert.deepEqual(makeValidator(discoverySchema(schema))(proposal), []);
-});
-
-test("contact sheets cover every page once and bound images and payload in each request", () => {
-  const plan = contactSheetPlan(267);
-  assert.equal(plan.length, 14);
-  assert.deepEqual(plan.flatMap(sheet => sheet.pages), Array.from({ length: 267 }, (_, index) => index + 1));
-  assert.equal(plan.at(-1).pages.at(-1), 267);
-  assert.ok(plan.every(sheet => sheet.width <= 2048 && sheet.height <= 2048));
-  const largeBook = contactSheetPlan(700).map(sheet => ({ ...sheet, dataUrl: "a".repeat(800000) }));
-  const batches = sheetBatches(largeBook);
-  assert.ok(batches.length > 1);
-  assert.ok(batches.every(batch => batch.length <= 16 && batch.reduce((sum, sheet) => sum + sheet.dataUrl.length, 0) < 12000000));
-  assert.deepEqual(batches.flat().flatMap(sheet => sheet.pages), Array.from({ length: 700 }, (_, index) => index + 1));
 });
 
 test("type discovery samples span short and long PDFs with a neighboring middle page", () => {

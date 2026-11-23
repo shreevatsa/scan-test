@@ -1,39 +1,38 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261123-tidy-1";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261123-tidy-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261123-tidy-1";
-import { RECIPE } from "./recipe.js?v=20261123-tidy-1";
-import { readerOptions } from "./pipeline/readers.js?v=20261123-tidy-1";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261123-tidy-2";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261123-tidy-2";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261123-tidy-2";
+import { RECIPE } from "./recipe.js?v=20261123-tidy-2";
+import { readerOptions } from "./pipeline/readers.js?v=20261123-tidy-2";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261123-tidy-1";
-import { blockName, readingProjection } from "./blocks.js?v=20261123-tidy-1";
-import { PageView } from "./pageimage.js?v=20261123-tidy-1";
-import { markerForm } from "./editor.js?v=20261123-tidy-1";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261123-tidy-1";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261123-tidy-1";
-import { renderStyle } from "./styleview.js?v=20261123-tidy-1";
-import { typeSetup } from "./type-setup.js?v=20261123-tidy-1";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261123-tidy-2";
+import { blockName, readingProjection } from "./blocks.js?v=20261123-tidy-2";
+import { PageView } from "./pageimage.js?v=20261123-tidy-2";
+import { markerForm } from "./editor.js?v=20261123-tidy-2";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261123-tidy-2";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261123-tidy-2";
+import { renderStyle } from "./styleview.js?v=20261123-tidy-2";
+import { typeSetup } from "./type-setup.js?v=20261123-tidy-2";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261123-tidy-1";
-import { EditError } from "./ops.js?v=20261123-tidy-1";
-import { Maker, post } from "./pipeline/run.js?v=20261123-tidy-1";
-import { CredentialChecks } from "./key-check.js?v=20261123-tidy-1";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261123-tidy-1";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261123-tidy-1";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-tidy-1";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261123-tidy-1";
-import { orderedRegions } from "./flags.js?v=20261123-tidy-1";
-import { assemble } from "./assemble.js?v=20261123-tidy-1";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261123-tidy-1";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261123-tidy-1";
-import { renderPages } from "./pagesview.js?v=20261123-tidy-1";
-import { settings } from "./store.js?v=20261123-tidy-1";
-import { renderReaders } from "./readersview.js?v=20261123-tidy-1";
-import { renderBookSettings } from "./settingsview.js?v=20261123-tidy-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261123-tidy-1";
-import { pageMenu } from "./page-actions.js?v=20261123-tidy-1";
+import * as ops from "./ops.js?v=20261123-tidy-2";
+import { EditError } from "./ops.js?v=20261123-tidy-2";
+import { Maker, post } from "./pipeline/run.js?v=20261123-tidy-2";
+import { CredentialChecks } from "./key-check.js?v=20261123-tidy-2";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261123-tidy-2";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261123-tidy-2";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-tidy-2";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261123-tidy-2";
+import { orderedRegions } from "./flags.js?v=20261123-tidy-2";
+import { assemble } from "./assemble.js?v=20261123-tidy-2";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261123-tidy-2";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261123-tidy-2";
+import { renderPages } from "./pagesview.js?v=20261123-tidy-2";
+import { settings } from "./store.js?v=20261123-tidy-2";
+import { renderBookSettings } from "./settingsview.js?v=20261123-tidy-2";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261123-tidy-2";
+import { pageMenu } from "./page-actions.js?v=20261123-tidy-2";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -422,7 +421,7 @@ class App {
     const info = h("span", { class: "meta" });
     const progress = h("div", { class: "meta" });
     let pdfDoc = null, pdfFile = null, pdfSha = null, opening = null, creating = false;
-    // A new book starts with the draft types, which Regions builds on (surveys of pages add types there). This form
+    // A new book starts with the draft types, which Regions builds on (Settings → Book types edits the list). This form
     // offers a choice only for an excerpt of an existing book (its types are the starting point) and for a saved proposal.
     const full = !!(template || proposalUrl);
     const setup = full ? typeSetup({ app: this, title, bookId, description, index, template, proposalUrl, onBusy: busy => {
@@ -738,7 +737,7 @@ class App {
     // A page the book does not have shows Pages.
     if (route.mode === "page" && !this.pageStates.has(route.pid)) Object.assign(route, { stage: "pages", mode: "grid" });
     const { stage } = route;
-    const mode = !this.book.writable && route.mode === "readers" ? "settings" : route.mode;
+    const mode = route.mode;
     this.onLeaveGrid?.(); this.onLeaveGrid = null;
     this.lastWorkflowUrl = location.href;
     this.stage = stage;
@@ -772,7 +771,6 @@ class App {
       if (mode === "read") await renderBookView(this.main, this);
       if (mode === "style") renderStyle(this.main, this);
       if (mode === "export") this.renderExport();
-      if (mode === "readers") renderReaders(this.main, this).catch(error => this.toast(error.message, "bad"));
     }
     if (mode !== "page" && token === this.routeToken) this.main.scrollTop = this.workflowScroll.get(`${stage}/${mode}`) || 0;
   }
@@ -1113,7 +1111,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261123-tidy-1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261123-tidy-2", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

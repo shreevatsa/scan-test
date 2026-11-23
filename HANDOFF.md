@@ -22,8 +22,10 @@ Turn a book's PDF into a digital book in which every passage links to where it i
 
   This book went through the app's stages only partly; most of its finishing was done by the command-line tools below.
 - **Other books:** Kale 1913 and Telang were made by the older one-pass pipeline (method 052). The vachana book came from a digital PDF's text layer (058, 062). The user's 267-page private book has regions only; PRIVATE.md says where it is.
-- **The app** (`webapp/`, about 16,600 lines of JavaScript, no build step) has tabs Pages · Read · Export, with Settings for models, credentials and types. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3). Recent changes:
+- **The app** (`webapp/`, about 15,000 lines of JavaScript, no build step) has tabs Pages · Read · Export, with Settings for models, credentials and types. `webapp/README.md` describes every screen; `schema/README.md` describes the format (draft 0.3). Recent changes:
   - **One page editor** at `#page&p=<id>`, the same from every stage. Old `#regions&p=`, `#text&p=` and `#read&p=` addresses open it. It edits text, regions (type, box, draw, split, merge, order, delete), units, joins and note links. It shows the page's flags, and a Page menu offers review with AI, no content, find regions again, and read again. A region with no line piece takes text when clicked.
+  - **Research tools are out of the app.** The region-finder and transcription-model comparisons, type surveys and the Proposed types box were removed (the `methods/` folders keep their code and results). Settings keeps the region finder, transcription model, OCR language pack (under Advanced) and Book types. A region the default finder (097) could not type carries `proposed_type`, and the page editor's check list offers "Add type X", "Review area" and "Leave out" for it.
+  - **Pages screen:** the processing box is one line ("All pages processed · Process again…") unless pages wait or a run goes; each card shows one state (Checked, N to check, Not processed); "Next page to check" is in the page editor's check box; the header says "Saved in this browser" or "Saved to <file>".
   - **Reading-order warnings** name the first pair of region IDs that the reader and the saved box order put in different positions.
   - **One review status per page.** Pages and the blocks editor show unchecked, checked or suggestion waiting on material to review. Dismiss or restore scan artifacts from the page's checks. Uncertain transcription is shown on the affected block. The existing layer records carry compatibility and overwrite protection for stored books.
   - **Stage gates retired.** Process pages finds regions and reads text. Read is available as soon as text is saved. Review marks still protect the work from model replacement.
@@ -114,7 +116,7 @@ The units layer, the relations, the line endings, the layer states and the stage
 | Line endings per line piece | Drop the field; join or break by the block's type; fix the odd case in the text |
 | Review states | One visible status per page. Existing layer records still protect the saved regions, text and units. |
 | Type-list revision machinery | Shrink to a short editable list (name, plain description, how it reads); a rename just applies |
-| Model profiles, finder and reader comparisons, surveys | Move to a "lab" page; the product uses one recipe |
+| Model profiles, finder and reader comparisons, surveys | Removed from the app (done); the product uses one recipe |
 
 ### The result
 
@@ -136,7 +138,7 @@ From the user's review of the one page editor (2026-11-20):
 2. **Plain words.** No "FLOW MAIN", `title_page`, `r2`, `f1`, "unowned regions" or "edits/". Show the page as it reads, with small type tags and containers as quiet brackets. A plainer save status.
 3. **Tools in context.** Formatting buttons only while typing; zoom and ＋ Region on the scan; Revert in the Page menu; "(no text — click to type it)" only on text blocks.
 4. **A small inspector.** For the selected block: its type, "continues" only at a page's top or bottom, and number and label only for types that have them; the rest under "More…". Line joins shown as marks at line ends in the text, for prose only.
-5. **Three tabs:** Pages (progress, flags, runs; model comparisons under Advanced), Read (Book view and the editor), Export.
+5. **Three tabs:** Pages (progress, flags, runs), Read (Book view and the editor), Export.
 
 ## What to do next, in order
 

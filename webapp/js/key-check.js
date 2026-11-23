@@ -1,5 +1,5 @@
-import { post } from "./pipeline/run.js?v=20261123-tidy-1";
-import { openaiText, geminiText } from "./pipeline/steps.js?v=20261123-tidy-1";
+import { post } from "./pipeline/run.js?v=20261123-tidy-2";
+import { openaiText, geminiText } from "./pipeline/steps.js?v=20261123-tidy-2";
 import { h } from "./render.js";
 
 // Generated blank PNG. Credential checks never contain a book page.
@@ -146,7 +146,7 @@ export function stageKeyControls(checks, profile, save, changed = () => {}, labe
 const PROVIDER_NAMES = { openai: "OpenAI", gemini: "Gemini", vision: "Google Cloud Vision" };
 
 // The Regions tab's one credentials box: a key field, its "Check key" and its state for each provider that any model in
-// use needs (the selected region finder, and the unit-type survey's model once that box has been opened). `bind` gives
+// use needs (the selected region finder, and the transcription model). `bind` gives
 // it the book's CredentialChecks; `onChange` is told whenever a key or a check result changes.
 export function credentialsBox(save) {
   let checks = null, finder = null, survey = [], shown = null;

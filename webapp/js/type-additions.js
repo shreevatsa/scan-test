@@ -1,24 +1,9 @@
-// Pending proposals for the type list: what a survey (or, later, the region finder) proposes to add, kept in the book's
-// work records until a person adds or dismisses each. Nothing here changes the type list: adding goes through the
-// type-list revision operations (an "add", and "rules" for a second parent or a flow), and an edited definition through
-// the "description" operation. Each item records its source, so several sources can add to the one list.
-import { REGION_CLASSES } from "./book-types.js?v=20261123-tidy-1";
-import { defaultClass } from "./class-labels.js?v=20261123-tidy-1";
+// Pending proposals for the type list: what the region finder (method 097) proposes to add, kept in the book's work
+// records (work/type-proposals/pending.json, which older books may also hold survey items in). Nothing here changes the
+// type list; the page editor's "Add type X" does that through the book's add-type operation.
+import { REGION_CLASSES } from "./book-types.js?v=20261123-tidy-2";
 export const PENDING_PATH = "work/type-proposals/pending.json";
 const empty = () => ({ format: "pending-type-proposals", version: 1, items: [] });
-
-// The items a survey run proposes. Ids are stable for a run, so recording the same run twice adds nothing.
-export function surveyItems(run) {
-  const source = { kind: "survey", method: run.method, run: run.id, model: run.profile.label, pages: run.pages, at_utc: run.finished_at_utc };
-  const item = (kind, key, proposal) => ({ id: `${run.id}:${kind}:${key}`, kind, status: "pending", source, proposal });
-  return [
-    ...run.result.proposed_description?.trim() ? [item("book_description", "description", { description: run.result.proposed_description.trim() })] : [],
-    ...run.result.new_types.map(type => item("new_type", type.name, type)),
-    ...run.result.definition_edits.map(edit => item("definition_edit", edit.name, edit)),
-    ...run.result.possible_duplicates.map((group, index) => item("question", `duplicate-${index + 1}`, { question: group.question, types: group.types, duplicate: true })),
-    ...run.result.questions.map((question, index) => item("question", `question-${index + 1}`, { question, types: [] })),
-  ];
-}
 
 export async function addPendingProposals(store, items) {
   return store.updateWork(PENDING_PATH, old => {
@@ -53,44 +38,6 @@ export async function decideProposal(store, id, decision, at = new Date().toISOS
 // The form's starting values for a proposed type.
 // "other" is the region finder's escape class for regions that fit no type, not a class a type may have.
 export const isRealClass = region => region === "container" || (REGION_CLASSES.includes(region) && region !== "other");
-
-// What a survey found, as text with links to where it went: strings and { link: "proposals" | "questions", text }.
-export function surveyOutcome(items) {
-  const count = kind => items.filter(item => item.kind === kind).length;
-  const types = count("new_type"), edits = count("definition_edit"), questions = count("question"), description = count("book_description");
-  const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
-  const parts = [];
-  if (!types && !edits && !description) parts.push("Nothing new: no new types or definition edits.");
-  else {
-    if (types) parts.push({ link: "proposals", text: `${plural(types, "proposed type")}` }, " — review them in Proposed types.");
-    const rest = [edits ? plural(edits, "suggested definition edit") : "", description ? "a proposed book description" : ""].filter(Boolean);
-    if (rest.length) parts.push(` ${types ? "Also " : "Found "}${rest.join(" and ")}${types ? "" : ", in Proposed types"}.`);
-  }
-  if (questions) parts.push(" ", { link: "questions", text: plural(questions, "question") }, " — see Questions to review.");
-  return parts;
-}
-
-export function additionChoice(proposal) {
-  return { name: proposal.name, description: proposal.description, region: defaultClass(proposal.region).region, classNote: defaultClass(proposal.region).note, furniture: !!proposal.furniture,
-    contains: [...(proposal.contains || [])], parents: [...(proposal.parents || [])], flow: proposal.flow || "" };
-}
-
-// The type-list operations that add a type where the choice says it belongs: an "add" with its first parent or its
-// flow, then a "rules" change for each further parent, and for its flow when it also has a parent.
-export function additionOperations(choice, current) {
-  const name = choice.name.trim(), furniture = !!choice.furniture, container = choice.region === "container";
-  const parents = furniture ? [] : [...new Set(choice.parents)];
-  const flow = furniture ? "" : choice.flow || "";
-  if (!isRealClass(choice.region)) throw new Error("Choose how this type is printed: heading, paragraph, …");
-  for (const parent of parents) if (!current.types[parent]) throw new Error(`Unknown parent type ${parent}.`);
-  if (!furniture && !parents.length && !flow) throw new Error("Choose where the type belongs: a type that may contain it, or a reading flow.");
-  const operations = [{ kind: "add", name, description: choice.description || "", region: choice.region, furniture,
-    ...(container ? { contains: [...choice.contains] } : {}), ...(parents.length ? { parent: parents[0] } : flow ? { flow } : {}) }];
-  for (const parent of parents.slice(1)) operations.push({ kind: "rules", name: parent,
-    contains: [...(current.types[parent].contains || []), name], flow: current.types[parent].flow || "" });
-  if (parents.length && flow) operations.push({ kind: "rules", name, flow });
-  return operations;
-}
 
 // ---------------------------------------------------------------- proposals from the region finder (method 097)
 
@@ -152,10 +99,3 @@ export function proposalAssignments(record, types) {
 // The unassigned regions of a page that carry a proposed name in `keys` (normalized names).
 export const waitingRegions = (doc, keys) => (doc?.source?.omitted_regions || [])
   .map((region, index) => ({ ...region, index })).filter(region => region.proposed_type && keys.has(normalizeTypeName(region.proposed_type)));
-
-// The evidence pages of a proposal: PDF pages from a survey, and page ids from the region finder.
-export function proposalEvidence(item) {
-  const finder = item.evidence || [];
-  const pages = [...new Set(finder.map(value => value.page))];
-  return { pdf_pages: [...(item.proposal.evidence_pages || [])], pages, regions: finder.reduce((n, value) => n + value.regions.length, 0) };
-}

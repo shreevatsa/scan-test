@@ -37,9 +37,9 @@ test("processing uses valid input without review marks and Read can show partial
 test("old bookmarks reach the three tabs and the book settings", () => {
   const cases = { pages: ["pages", "grid"], regions: ["settings", "settings"], "regions&view=types": ["settings", "settings"],
     "regions&view=proposal": ["settings", "settings"], "regions&view=compare": ["settings", "settings"],
-    "text&view=compare": ["settings", "readers"], "read&view=pages": ["pages", "grid"], "read&view=compare": ["settings", "settings"],
+    "text&view=compare": ["settings", "settings"], "read&view=pages": ["pages", "grid"], "read&view=compare": ["settings", "settings"],
     "read&view=problems": ["pages", "grid"], "read&view=style": ["export", "style"], read: ["read", "read"], export: ["export", "export"],
-    types: ["settings", "settings"], "types&view=proposal": ["settings", "settings"], readers: ["settings", "readers"], structures: ["settings", "settings"],
+    types: ["settings", "settings"], "types&view=proposal": ["settings", "settings"], readers: ["settings", "settings"], structures: ["settings", "settings"],
     check: ["pages", "grid"], style: ["export", "style"], "p=p1": ["page", "page"], "page&p=p1": ["page", "page"] };
   for (const [hash, expected] of Object.entries(cases)) {
     const out = workflowRoute(`#${hash}`);

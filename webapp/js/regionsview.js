@@ -1,8 +1,8 @@
 import { h } from "./render.js";
-import * as ops from "./ops.js?v=20261123-tidy-1";
-import { REGION_CLASSES } from "./book-types.js?v=20261123-tidy-1";
-import { classSelect } from "./class-labels.js?v=20261123-tidy-1";
-import { editTypeDialog } from "./type-operations.js?v=20261123-tidy-1";
+import * as ops from "./ops.js?v=20261123-tidy-2";
+import { REGION_CLASSES } from "./book-types.js?v=20261123-tidy-2";
+import { classSelect } from "./class-labels.js?v=20261123-tidy-2";
+import { editTypeDialog } from "./type-operations.js?v=20261123-tidy-2";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {
@@ -17,7 +17,7 @@ export function regionTypeSelect(app, current, changed, rid = null) {
   return select;
 }
 
-export function newTypeDialog(app, use = () => {}, printedOnly = false) {
+export function newTypeDialog(app, use = () => {}, printedOnly = false, prefill = {}) {
   const book = app.book;
   const dialogTitle = printedOnly ? "New region type" : "New unit type";
   const selected = app.doc?.page.regions.find(region => region.id === app.selection.region);
@@ -25,7 +25,11 @@ export function newTypeDialog(app, use = () => {}, printedOnly = false) {
   const name = h("input", { required: true, "aria-label": "New type name", placeholder: "verse_translation" });
   const description = h("textarea", { rows: 3, "aria-label": "New type description" });
   const { select: category, el: categoryField } = classSelect((printedOnly ? REGION_CLASSES : ["container", ...REGION_CLASSES]).filter(value => value !== "other"), previous?.region || "paragraph", "Draw regions like");
-  const furniture = h("input", { type: "checkbox", checked: previous?.role === "furniture", "aria-label": "Page furniture" });
+  // A type a finder proposed arrives with its name and, where known, its definition and class.
+  if (prefill.name) name.value = prefill.name;
+  if (prefill.description) description.value = prefill.description;
+  if (prefill.region && [...category.options].some(option => option.value === prefill.region)) category.value = prefill.region;
+  const furniture = h("input", { type: "checkbox", checked: prefill.furniture ?? previous?.role === "furniture", "aria-label": "Page furniture" });
   const childChoices = Object.entries(app.tl.types).filter(([, type]) => type.role !== "furniture").map(([child], index) => ({
     child, box: h("input", { type: "checkbox", checked: index === 0, "aria-label": `May contain ${child}` })
   }));

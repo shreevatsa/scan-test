@@ -8,7 +8,6 @@ import { readerOptions, readerById, usageCost, projectBookCost, bookCostEstimate
 import { openaiCost } from "../js/pipeline/steps.js";
 import { visionRequest, visionReading, visionCost } from "../js/pipeline/vision.js";
 import { selectPageRegions, checkReading, combineReading, structureSchema, markedText, plainReading } from "../js/pipeline/split.js";
-import { compareReadings, characterEdits, compareRegions, comparePages } from "../js/pipeline/compare.js";
 import { tesseractWords, wordsToReading } from "../js/pipeline/ocr.js";
 import { layerState } from "../js/layers.js";
 import { reviewCandidate, saveReview } from "../js/review.js";
@@ -731,72 +730,6 @@ test("saved inline formatting and note markers round-trip", () => {
     { kind: "bold", start: 1, end: 2 }, { kind: "note_marker", start: 2, end: 2, marker: "†" } ] });
   assert.equal(text, "A<b>😀</b>[†]B");
   assert.equal(plainReading(text), "A😀B");
-});
-
-test("agreement scores use Unicode characters and only checked lines count as truth", () => {
-  assert.equal(characterEdits("😀a", "😀b"), 1);
-  assert.equal(characterEdits("", "abc"), 3);
-  assert.equal(characterEdits("abc", ""), 3);
-  assert.equal(characterEdits("cafe\u0301".normalize("NFC"), "café"), 0);
-  const score = compareReadings(reading("<b>cat</b>"), reading("car"), sent, types,
-    { "r1:10": { text: "cat", checked: true } });
-  assert.equal(score.edits, 1);
-  assert.equal(score.characters, 3);
-  assert.equal(score.formatting_differences, 1);
-  assert.equal(score.checked_edits, 0);
-  assert.equal(score.checked_characters, 3);
-  assert.equal(compareReadings(reading("cat"), reading("car"), sent, types).checked_errors_per_1000, null);
-  assert.equal(compareReadings(reading(""), reading(""), sent, types).differences_per_1000, null);
-  const furniture = selectPageRegions([{ ...region(), type: "page_number" }]).sent;
-  assert.equal(compareReadings(reading("9"), reading("8"), furniture, types).characters, 0);
-});
-
-test("differing regions show all models and retain agreeing lines for context", () => {
-  const first = region();
-  first.lines.push({ line_id: 11, polygons: polygon(22) });
-  const selected = selectPageRegions([first, region(2, 50), { ...region(3, 75), type: "page_number" }]).sent;
-  const reference = { regions: [
-    { id: "r1", lines: [{ n: 1, text: "same" }, { n: 2, text: "context" }] },
-    { id: "r2", lines: [{ n: 1, text: "agree" }] },
-    { id: "r3", lines: [{ n: 1, text: "3" }] },
-  ] };
-  const candidate = structuredClone(reference);
-  candidate.regions[0].lines[0].text = "different";
-  const models = [
-    { id: "reference", transcription: reference },
-    { id: "matching", transcription: reference },
-    { id: "different", transcription: candidate },
-    { id: "pending", transcription: null },
-  ];
-  const regions = compareRegions(reference, models, selected, types);
-  assert.deepEqual(regions.map(region => [region.id, region.differs]), [["r1", true], ["r2", false]]);
-  assert.deepEqual(regions[0].models.map(model => model.id), models.map(model => model.id));
-  assert.deepEqual(regions[0].models[2].lines.map(line => line.candidate), ["different", "context"]);
-  assert.equal(regions[0].models[3].lines, null);
-  candidate.regions[0].lines[0].text = "<b>same</b>";
-  const formatted = compareRegions(reference, models, selected, types);
-  assert.equal(formatted[0].differs, true);
-  assert.equal(formatted[0].models[2].edits, 0);
-  assert.equal(formatted[0].models[2].formatting_differences, 1);
-  candidate.regions[0].lines[0].text = "same";
-  assert.ok(compareRegions(reference, models, selected, types).every(region => !region.differs));
-});
-
-test("cross-page comparisons retain repeated region IDs and skip missing references and unprocessed models", () => {
-  const page = (id, reference, candidate) => ({ id, referenceId: "reference", reference, sent,
-    models: [{ id: "reference", transcription: reference }, { id: "candidate", transcription: candidate }] });
-  const regions = comparePages([
-    page("p1", reading("same"), reading("different")),
-    page("p2", null, reading("waiting for reference")),
-    page("p3", reading("agree"), reading("agree")),
-    page("p4", reading("reference only"), null),
-    page("p5", reading("word"), reading("<b>word</b>")),
-    page("p6", null, null),
-  ], types);
-  assert.deepEqual(regions.map(region => [region.page, region.id, region.differs]), [
-    ["p1", "r1", true], ["p3", "r1", false], ["p5", "r1", true],
-  ]);
-  assert.deepEqual(regions.filter(region => region.differs).map(region => region.page), ["p1", "p5"]);
 });
 
 test("Carbon low and high use distinct settings and caches with dated token prices", async () => {

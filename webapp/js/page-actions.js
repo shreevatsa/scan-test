@@ -1,11 +1,11 @@
 // Page actions use the same batch loop as Process pages. They reuse saved model results
 // and send a suggestion when the page already has protected work. Settings checks credentials.
 import { h } from "./render.js";
-import { runBatch } from "./pipeline/batch.js?v=20261123-tidy-1";
-import { finderById } from "./pipeline/finders.js?v=20261123-tidy-1";
-import { READERS } from "./pipeline/readers.js?v=20261123-tidy-1";
-import { eligible, noContent } from "./workflow.js?v=20261123-tidy-1";
-import { money } from "./reader-controls.js?v=20261123-tidy-1";
+import { runBatch } from "./pipeline/batch.js?v=20261123-tidy-2";
+import { finderById } from "./pipeline/finders.js?v=20261123-tidy-2";
+import { READERS } from "./pipeline/readers.js?v=20261123-tidy-2";
+import { eligible, noContent } from "./workflow.js?v=20261123-tidy-2";
+import { money } from "./reader-controls.js?v=20261123-tidy-2";
 
 const NAMES = { regions: "Find regions on this page again", text: "Read this page again" };
 

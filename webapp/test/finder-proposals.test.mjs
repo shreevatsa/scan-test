@@ -6,7 +6,7 @@ import { Book } from "../js/store.js";
 import { makeValidator, checkPage } from "../js/schema.js";
 import { finderById } from "../js/pipeline/finders.js";
 import { proposingPrompt, proposingSchema, scaleProposingRegions, offeredProposals } from "../js/pipeline/proposing-finder.js";
-import { PENDING_PATH, surveyItems, addPendingProposals, readPendingProposals, pendingItems, decideProposal, recordFinderProposals,
+import { PENDING_PATH, addPendingProposals, readPendingProposals, pendingItems, decideProposal, recordFinderProposals,
   proposalAssignments, normalizeTypeName, typeNameStyle, waitingRegions } from "../js/type-additions.js";
 import { writeChaya, readChaya } from "../js/chayapdf.js";
 import { isProtected } from "../js/layers.js";

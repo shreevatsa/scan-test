@@ -58,14 +58,6 @@ code { font-size: 12.5px; background: #eee; padding: 0 3px; border-radius: 3px; 
 .type-card p { margin: 8px 0; }
 .type-card .type-evidence { font-size: 13px; color: #555; }
 .type-card details { margin-top: 8px; }
-.proposal-card .type-evidence .link { margin-right: 6px; }
-.proposal-form { border-top: 1px solid var(--line); margin-top: 10px; padding-top: 8px; }
-.proposal-form [hidden] { display: none !important; }
-.proposal-form textarea, .proposal-form input:not([type]) { width: 100%; max-width: 650px; font: inherit; }
-.proposal-form fieldset { border: 1px solid var(--line); border-radius: 6px; margin: 6px 0; }
-.survey-plan { margin: 4px 0 8px; }
-.survey-section .fields.col, .survey-section .proposal-form { align-items: flex-start; text-align: left; }
-.survey-questions textarea { display: block; width: 100%; max-width: 650px; margin: 8px 0; }
 .type-questions { background: #fff3cd; padding: 2px 14px; margin: 14px 0; }
 .type-json { display: block; width: 100%; margin: 8px 0; font: 12px monospace; }
 .lib .recent { margin-top: 24px; }
@@ -389,7 +381,7 @@ main.page .inspector .actions { display: flex; flex-wrap: wrap; gap: 7px; margin
 .revision-dialog { width: min(760px, 95vw); max-height: 90vh; overflow: auto; }
 .revision-detail { white-space: pre-wrap; overflow-wrap: anywhere; }
 .type-dialog input:not([type=checkbox]), .type-dialog select { max-width: 100%; }
-.type-dialog .type-child-choice, .proposal-form .type-child-choice { display: inline-flex; gap: 5px; margin: 5px 12px 5px 0; }
+.type-dialog .type-child-choice { display: inline-flex; gap: 5px; margin: 5px 12px 5px 0; }
 .typetable th .mini { display: block; margin-top: 5px; }
 .type-questions textarea { display: block; width: 100%; max-width: 650px; margin: 8px 0; }
 @media (max-width: 850px) { .region-type-list { max-height: 150px; } }
@@ -455,44 +447,17 @@ main.page .inspector .actions { display: flex; flex-wrap: wrap; gap: 7px; margin
 .typetable td.desc { min-width: 24em; color: #444; }
 .typetable tr.furn th, .typetable tr.furn td { color: #888; }
 
-/* Transcription models and source-reviewed comparisons. */
-.reader-lab { max-width: 1450px; }
-.reader-settings { border: 1px solid var(--line); border-radius: 5px; padding: 10px 14px; margin: 12px 0; }
-.reader-settings legend { font-weight: 600; }
-.model-choice { margin-top: 30px; background: var(--panel); }
-.model-choice select { max-width: 100%; }
-.trial-cost-settings { margin: 12px 0; }
 .run-progress { margin: 14px 0 6px; max-width: 760px; }
 .run-progress[hidden] { display: none; }
 .run-progress-label { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; }
 .run-progress progress { display: block; width: 100%; height: 18px; margin: 6px 0; accent-color: var(--accent); }
-.reader-keys { margin: 14px 0; }
-.reader-lab .hint, .reader-settings .hint { font-size: 13px; color: #666; }
-.trial-selection { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin: 12px 0; }
-.trial-selection fieldset { max-height: 260px; overflow: auto; border: 1px solid var(--line); }
-.trial-selection label { display: block; margin: 5px 0; overflow-wrap: anywhere; }
-.reader-lab .table-scroll { overflow-x: auto; }
-.reader-summary th { white-space: normal; min-width: 100px; }
-.reader-summary td { vertical-align: top; }
-.trial-line { border-top: 1px solid var(--line); padding: 15px 0; }
-.trial-line .source-line { margin: 10px 0; }
-.trial-region { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 10px; }
-.trial-region .source-region { margin: 10px 0; }
-.trial-transcription { border: 1px solid var(--line); border-radius: 4px; padding: 10px 14px; margin: 12px 0; }
-.trial-transcription.reference { border-color: #7d929e; background: #f1f5f7; }
-.trial-transcription h4 { margin: 0 0 4px; }
-.trial-transcription pre { margin: 8px 0 0; }
 .diff-text { color: #963b00; background: #fff0b3; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; }
 .diff-format { color: #1457a0; background: #e5efff; text-decoration: underline dotted; text-underline-offset: .2em; }
 .diff-omitted { color: #a82525; background: #ffe7e7; user-select: none; }
 .diff-omitted::before { content: attr(data-missing); text-decoration: line-through; }
 .diff-omitted[data-missing=" "]::before { content: "␣"; }
 .diff-note { font-size: .75em; vertical-align: super; }
-.source-line-scroll { overflow-x: auto; }
-.reader-detail pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 16px; line-height: 1.7; }
-.trial-line .stack { display: flex; flex-direction: column; gap: 5px; margin: 8px 0; }
-.trial-line textarea { width: 100%; box-sizing: border-box; font-size: 16px; line-height: 1.6; }
-@media (max-width: 750px) { .trial-selection { grid-template-columns: 1fr; } }
+.source-line-scroll, .table-scroll { overflow-x: auto; }
 
 /* Schema assignments shown through the printed regions and their unit hierarchy. */
 .schema-visual { margin-top: 20px; }
@@ -580,20 +545,6 @@ main.page .inspector .actions { display: flex; flex-wrap: wrap; gap: 7px; margin
 .suggestion-actions[hidden] { display: none; }
 @media (max-width: 650px) { .review-columns { grid-template-columns: 1fr; } }
 
-.finder-selection { display: grid; gap: .5rem; }
-.finder-lab .fields { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
-.finder-lab .fields label { max-width: 100%; }
-.finder-lab .fields select { max-width: 100%; }
-.finder-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: 1rem; margin: 1rem 0; }
-.finder-card { border: 1px solid #d1d5df; border-radius: .5rem; padding: .8rem; min-width: 0; }
-.finder-card h3 { min-height: 2.6em; }
-.finder-card.reference { background: #eff5fb; border-color: #91accd; }
-.finder-scan { position: relative; }
-.finder-scan img { width: 100%; display: block; }
-.finder-overlay { position: absolute; inset: 0; pointer-events: none; }
-.finder-overlay svg { width: 100%; height: 100%; }
-.finder-overlay path { fill-opacity: .08; stroke-width: 3; }
-.finder-overlay text { font: 24px sans-serif; stroke: white; stroke-width: 3; paint-order: stroke; }
 
 /* Regions tab: the boxes, then the By page | By type switch */
 .credentials-box { margin: 12px 0; padding: 4px 16px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }

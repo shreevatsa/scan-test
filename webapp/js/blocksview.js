@@ -1,15 +1,16 @@
-import { TextPanel, renderInspector } from "./editor.js?v=20261123-tidy-1";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261123-tidy-1";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-tidy-1";
+import { TextPanel, renderInspector } from "./editor.js?v=20261123-tidy-2";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261123-tidy-2";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-tidy-2";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-tidy-1";
+import * as ops from "./ops.js?v=20261123-tidy-2";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-tidy-1";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-tidy-1";
-import { suggestionButton } from "./review-view.js?v=20261123-tidy-1";
-import { unitPath } from "./editing.js?v=20261123-tidy-1";
-import { pageReviewState } from "./layers.js?v=20261123-tidy-1";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-tidy-1";
+import { noteProblems } from "./note-links.js?v=20261123-tidy-2";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-tidy-2";
+import { suggestionButton } from "./review-view.js?v=20261123-tidy-2";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-tidy-2";
+import { unitPath } from "./editing.js?v=20261123-tidy-2";
+import { pageReviewState } from "./layers.js?v=20261123-tidy-2";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-tidy-2";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -24,6 +25,20 @@ function typesMenu(app, selected, changed) {
   return h("select", { "aria-label": "Block type", disabled: !app.book.writable, onchange: event => changed(event.target.value) },
     selected ? null : h("option", { value: "", disabled: true, selected: true }, "Choose a type"),
     ...options.map(([type]) => h("option", { value: type, selected: type === selected }, blockName(type))));
+}
+
+// The type-list name a region's proposed type would have (spaces become underscores), or "".
+export const proposedTypeName = region => typeNameStyle(region?.proposed_type || "");
+
+// "Add type X": the new-type dialog filled in with the proposal (its definition and class from the saved proposals, when
+// the book has them), which adds the type to the list and gives the area that type.
+export async function addProposedType(app, name, region, index) {
+  const key = normalizeTypeName(name);
+  const record = await readPendingProposals(app.book).catch(() => null);
+  const item = record?.items.find(item => item.kind === "new_type" && itemNames(item).some(value => normalizeTypeName(value) === key));
+  const proposal = item?.proposal || {};
+  newTypeDialog(app, type => app.recoverOmitted(index, type), true, { name, description: proposal.description || "",
+    region: proposal.region, furniture: proposal.furniture });
 }
 
 export function blockChecks(app, doc, projection) {
@@ -45,6 +60,14 @@ export function blockChecks(app, doc, projection) {
     "region-warning": "The region finder flagged something to review.",
     "type-revision": "Check whether a figure’s outline needs to be drawn again.",
   };
+  // A region the finder could not match to a listed type carries `proposed_type`: it can be added to the type list, and
+  // the region given that type, or reviewed or left out as any unassigned area.
+  const addProposed = (proposed, text, region, index, leave) => {
+    const known = tl.types[proposed]?.region;
+    findings.push({ text, leaveOut: leave, label: known ? `Use type ${proposed}` : `Add type ${proposed}`,
+      action: () => known ? app.recoverOmitted(index, proposed) : addProposedType(app, proposed, region, index),
+      extra: [{ label: "Review area", action: () => app.select({ omitted: index }) }] });
+  };
   const flags = [...regionFlags(doc, tl, app.regionFlagContext(doc)), ...textFlags(doc, tl)];
   const see = new Set();
   for (const flag of flags) {
@@ -59,8 +82,10 @@ export function blockChecks(app, doc, projection) {
       }, () => app.edit(next => ops.ignoreLine(next, line)));
     } else if (flag.code === "omitted") {
       const index = doc.source.omitted_regions.findIndex(region => region.region === flag.region);
-      add("An area on the scan needs a type.", "Review area", () => app.select({ omitted: index }),
-        () => app.edit(next => { ops.ignoreOmittedRegion(next, index); app.selection = {}; }));
+      const region = doc.source.omitted_regions[index], proposed = proposedTypeName(region);
+      const leave = () => app.edit(next => { ops.ignoreOmittedRegion(next, index); app.selection = {}; });
+      if (proposed) addProposed(proposed, `An area may be a new type, “${region.proposed_type}”.`, region, index, leave);
+      else add("An area on the scan needs a type.", "Review area", () => app.select({ omitted: index }), leave);
     } else if (plain[flag.code]) {
       add(plain[flag.code], flag.region ? "Show block" : flag.box ? "Show scan" : "Review",
         flag.region ? () => openBlock(flag.region) : flag.box ? () => scan(flag.box) : details);
@@ -143,8 +168,9 @@ export class BlocksPanel extends TextPanel {
     const { app } = this;
     const findings = blockChecks(app, app.doc, this.projection);
     this.findings.replaceChildren(findings.length
-      ? h("ul", {}, ...findings.map(({ text, label, action, leaveOut }) => h("li", {}, h("span", {}, text),
+      ? h("ul", {}, ...findings.map(({ text, label, action, leaveOut, extra }) => h("li", {}, h("span", {}, text),
         h("div", { class: "actions" }, h("button", { onclick: action }, label),
+          ...(extra || []).map(item => h("button", { onclick: item.action }, item.label)),
           app.book.writable && leaveOut ? h("button", { onclick: leaveOut, title: "This area is outside the printed text." }, "Leave out") : null))))
       : h("div", { class: "block-check-clear" }, h("span", {}, "Nothing to check here.")));
   }

@@ -4,39 +4,18 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
-import { classLabel, classNote } from "./class-labels.js?v=20261123-tidy-1";
+import { classLabel, classNote } from "./class-labels.js?v=20261123-tidy-2";
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261123-tidy-1";
-import { prepare } from "./reader.js?v=20261123-tidy-1";
-import { typeRevision } from "./schema.js?v=20261123-tidy-1";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261123-tidy-1";
-import { newTypeDialog } from "./regionsview.js?v=20261123-tidy-1";
-import { renderSurvey } from "./type-survey-view.js?v=20261123-tidy-1";
-import { readPendingProposals, pendingItems, decideProposal } from "./type-additions.js?v=20261123-tidy-1";
-import { unusedDraftTypes } from "./draft-types.js?v=20261123-tidy-1";
-import { citedSamplePages } from "./type-revisions.js?v=20261123-tidy-1";
-import { typeExampleIndex } from "./type-examples.js?v=20261123-tidy-1";
-import { regionPath } from "./pageimage.js?v=20261123-tidy-1";
-
-// The optional survey box of the Regions tab (type-survey-view.js), closed until opened, which loads the source PDF only
-// then.
-export function surveyBox(app, { credentialsBox, onBusy, selected, onProposals }) {
-  const book = app.book, token = app.routeToken;
-  app.typeOverview ||= {};
-  const discovery = h("div");
-  const section = h("details", { class: "region-section survey-section", open: app.routeView === "proposal" || !!app.typeOverview.open },
-    h("summary", {}, "Find unit types using a survey of pages (optional)"), discovery);
-  let loaded = false;
-  const load = async () => {
-    app.typeOverview.open = section.open;
-    if (!section.open || !section.isConnected || loaded || app.book !== book || app.routeToken !== token) return;
-    loaded = true;
-    try { await renderSurvey(discovery, app, { selected: selected(), credentialsBox, onBusy, onProposals }); }
-    catch (error) { discovery.replaceChildren(h("p", { class: "bad", role: "status" }, error.message)); loaded = false; }
-  };
-  section.addEventListener("toggle", load);
-  return { element: section, load };
-}
+import { typeForest } from "./type-tree.js?v=20261123-tidy-2";
+import { prepare } from "./reader.js?v=20261123-tidy-2";
+import { typeRevision } from "./schema.js?v=20261123-tidy-2";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261123-tidy-2";
+import { newTypeDialog } from "./regionsview.js?v=20261123-tidy-2";
+import { readPendingProposals, pendingItems } from "./type-additions.js?v=20261123-tidy-2";
+import { unusedDraftTypes } from "./draft-types.js?v=20261123-tidy-2";
+import { citedSamplePages } from "./type-revisions.js?v=20261123-tidy-2";
+import { typeExampleIndex } from "./type-examples.js?v=20261123-tidy-2";
+import { regionPath } from "./pageimage.js?v=20261123-tidy-2";
 
 // By type: what may contain what (each type name selects its card), the cards with scan examples, then the book's
 // details and the questions to review. Returns what to run when leaving the view.
@@ -227,7 +206,7 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false, 
 }
 
 // The book's details: title, description (the one description every model call uses), languages, relations, inline
-// kinds and transcription conventions, with the forms that change them, and the questions a type proposal left to review.
+// kinds and transcription conventions, with the forms that change them.
 export function renderBookDetails(el, app, { onAdded = () => app.route(), onReviewPages, onOpenPage = pid => app.openPage(pid) } = {}) {
   const { book, tl } = app;
   const list = (obj, render) => h("ul", {}, ...Object.entries(obj).map(render));
@@ -235,27 +214,6 @@ export function renderBookDetails(el, app, { onAdded = () => app.route(), onRevi
     const a = h("a", { href: URL.createObjectURL(new Blob([JSON.stringify(tl, null, 1) + "\n"], { type: "application/json" })), download: "types.json" });
     document.body.append(a); a.click(); a.remove();
   } }, "Download types.json");
-  // Questions from surveys of pages (possible duplicates and other distinctions), kept with the pending proposals.
-  const surveyQuestions = h("div", { class: "survey-questions" });
-  readPendingProposals(book).then(record => {
-    const questions = pendingItems(record, "question");
-    if (!questions.length || app.book !== book) return;
-    const decide = (item, decision) => decideProposal(book, item.id, decision).then(() => renderBookDetails(el, app, { onAdded, onReviewPages, onOpenPage }))
-      .catch(error => app.toast(error.message, "bad"));
-    surveyQuestions.replaceChildren(...(tl.source?.discovery?.questions?.length ? [] : [h("h3", {}, "Questions to review")]), ...questions.map(item => {
-      const answer = h("textarea", { rows: 2, "aria-label": `Review decision for ${item.proposal.question}` });
-      return h("section", { class: "box" }, h("p", {}, item.proposal.question),
-        h("p", { class: "meta" }, `${item.proposal.duplicate ? "Possible duplicate · " : ""}From a survey by ${item.source.model ?? item.source.kind}`),
-        ...citedSamplePages(item.proposal.question, item.source.pages || []).map(number => h("button", { onclick: () => {
-          const page = book.pages.find(page => page.pdf_page === number); if (page) onOpenPage(page.id);
-        } }, `Page ${number}`)),
-        ...item.proposal.types.filter(name => tl.types[name]).map(name => book.writable ? h("button", { onclick: () => editTypeDialog(app, name) }, `Edit ${name}…`) : null),
-        book.writable ? [answer, h("div", { class: "actions" }, h("button", { onclick: () => {
-          if (!answer.value.trim()) { app.toast("Write the decision first.", "bad"); return; }
-          decide(item, { status: "answered", answer: answer.value.trim() });
-        } }, "Record decision"), h("button", { onclick: () => decide(item, { status: "dismissed" }) }, "Dismiss"))] : null);
-    }));
-  }).catch(error => surveyQuestions.replaceChildren(h("p", { class: "bad" }, error.message)));
   el.replaceChildren(h("div", { class: "typesview book-details" },
     app.lastTypeRevision ? h("p", { class: "box" }, `Revision ${app.lastTypeRevision.revision} saved. `,
       app.lastTypeRevision.pages.length && onReviewPages ? h("button", { onclick: () => onReviewPages(app.lastTypeRevision.pages) },
@@ -278,7 +236,7 @@ export function renderBookDetails(el, app, { onAdded = () => app.route(), onRevi
         const page = book.pages.find(page => page.pdf_page === number); if (page) onOpenPage(page.id);
       } }, `Page ${number}`)), decision ? h("p", { class: "ok" }, `Resolved · ${decision.answer}`) : null,
       book.writable ? [answer, h("button", { onclick: () => reviewTypeChange(app, [{ kind: "resolve_question", question, answer: answer.value }]).catch(error => app.toast(error.message, "bad")) }, "Preview review decision")] : null);
-    })] : null, surveyQuestions));
+    })] : null ));
 }
 
 // The type list as a dialog: the tree (a type name opens its edit form) and the book's details.

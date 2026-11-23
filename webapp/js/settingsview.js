@@ -1,26 +1,23 @@
 import { h } from "./render.js";
-import { settings } from "./store.js?v=20261123-tidy-1";
-import { credentialsBox } from "./key-check.js?v=20261123-tidy-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-tidy-1";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-tidy-1";
-import { renderTypeView, surveyBox } from "./typesview.js?v=20261123-tidy-1";
-import { renderFinders } from "./findersview.js?v=20261123-tidy-1";
-import { proposalsBox } from "./proposals-view.js?v=20261123-tidy-1";
+import { settings } from "./store.js?v=20261123-tidy-2";
+import { credentialsBox } from "./key-check.js?v=20261123-tidy-2";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-tidy-2";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-tidy-2";
+import { renderTypeView } from "./typesview.js?v=20261123-tidy-2";
 
 export async function renderBookSettings(el, app) {
   const { book, routeToken } = app;
   const active = () => app.book === book && app.routeToken === routeToken;
-  const types = h("div"), compare = h("div"), status = h("p", { role: "status" });
-  const selected = () => [...app.pagesSelection || []];
+  const types = h("div"), status = h("p", { role: "status" });
   const mode = app.routeView;
   const workspace = h("div", { class: "stage-overview" }, h("h1", {}, "Settings"));
   el.replaceChildren(workspace);
   const options = book.writable ? await (await app.getMaker()).options() : null;
   if (!active()) return;
 
-  const advanced = h("details", { class: "region-section", open: ["types", "proposal", "compare"].includes(mode) },
+  const advanced = h("details", { class: "region-section", open: mode === "types" },
     h("summary", {}, "Advanced"));
-  const typeSection = h("details", { open: ["types", "proposal"].includes(mode) }, h("summary", {}, "Book types"), types);
+  const typeSection = h("details", { open: mode === "types" }, h("summary", {}, "Book types"), types);
   let stopTypes, loadingTypes = false;
   const showTypes = async () => {
     if (!typeSection.open || loadingTypes || !active()) return;
@@ -44,10 +41,9 @@ export async function renderBookSettings(el, app) {
     if (!active()) return;
     const credentials = credentialsBox((id, value) => settings.set(`key:${id}`, value));
     credentials.bind(maker.credentials);
-    let surveyProfiles = [];
     const syncKeys = () => {
       credentials.setFinder(finderById(finder.value));
-      credentials.setSurvey([READERS.find(profile => profile.id === reader.value), ...surveyProfiles]);
+      credentials.setSurvey([READERS.find(profile => profile.id === reader.value)]);
     };
     syncKeys();
     const setBusy = value => {
@@ -65,31 +61,10 @@ export async function renderBookSettings(el, app) {
       finally { setBusy(false); }
     };
     finder.onchange = reader.onchange = language.onchange = choose;
-    const proposals = proposalsBox(app);
-    const survey = book.manifest.pdf ? surveyBox(app, {
-      credentialsBox: { ...credentials, setSurvey: profiles => { surveyProfiles = profiles; syncKeys(); } },
-      selected, onBusy: setBusy, onProposals: () => proposals.refresh(),
-    }) : null;
-    const comparisons = h("details", { open: mode === "compare" }, h("summary", {}, "Compare region finders"), compare);
-    let loaded = false;
-    const showComparison = async () => {
-      if (!comparisons.open || loaded || !active()) return;
-      loaded = true;
-      try {
-        await renderFinders(compare, app, { selected, onChoose: async (id, pack) => {
-          finder.value = id; language.value = pack; return choose();
-        }, onBusy: setBusy, onReviewed: async () => { await proposals.refresh(); }, onCredentialsChanged: syncKeys });
-      } catch (error) { status.textContent = error.message; loaded = false; }
-    };
-    comparisons.addEventListener("toggle", showComparison);
     workspace.append(h("div", { class: "fields" }, h("label", {}, "Region finder ", finder),
       h("label", {}, "Transcription model ", reader)), credentials.element);
-    advanced.append(h("div", { class: "fields" }, h("label", {}, "OCR language pack ", language)), typeSection, proposals.element, survey?.element,
-      h("p", {}, h("a", { href: "#settings&view=readers" }, "Compare transcription models")), comparisons);
+    advanced.append(h("div", { class: "fields" }, h("label", {}, "OCR language pack ", language)), typeSection);
     workspace.append(advanced);
-    await proposals.refresh();
-    await survey?.load();
-    await showComparison();
   } else {
     workspace.append(h("button", { onclick: () => app.continueBook("settings") }, "Make an editable copy"));
     advanced.append(typeSection);

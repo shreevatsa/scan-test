@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261123-tidy-1";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-tidy-1";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261123-tidy-1";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261123-tidy-1";
+import { typeRevision } from "./schema.js?v=20261123-tidy-2";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-tidy-2";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261123-tidy-2";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261123-tidy-2";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
@@ -102,10 +102,9 @@ export function workflowRoute(value) {
   const at = (stage, mode, section = "") => ({ stage, mode, pid, view: section, region, unit });
   if (pid && (!view || hash.has("blocks"))) return at("page", "page");
   if (hash.has("style") || (hash.has("read") || hash.has("export")) && view === "style") return at("export", "style", "style");
-  if (hash.has("readers") || hash.has("text") && view === "compare" || hash.has("settings") && view === "readers")
-    return at("settings", "readers", "compare");
+  if (hash.has("readers") || hash.has("text") && view === "compare") return at("settings", "settings");
   if (hash.has("settings") || hash.has("regions") || hash.has("types") || hash.has("make") || hash.has("structures") || hash.has("read") && view === "compare")
-    return at("settings", "settings", hash.has("types") ? view || "types" : view);
+    return at("settings", "settings", hash.has("types") ? view || "types" : view === "types" ? view : "");
   if (hash.has("check") || hash.has("read") && ["problems", "pages"].includes(view)) return at("pages", "grid", view === "problems" || hash.has("check") ? "problems" : "");
   if (hash.has("export")) return at("export", "export", view);
   if (hash.has("pages") && view === "problems") return at("pages", "grid", "problems");
@@ -114,7 +113,7 @@ export function workflowRoute(value) {
 }
 
 export function workflowAddress(mode, pid = null, selection = {}) {
-  const aliases = { readers: "settings&view=readers", structures: "settings", check: "pages&view=problems",
+  const aliases = { readers: "settings", structures: "settings", check: "pages&view=problems",
     style: "export&view=style", plain: "read", make: "settings", book: "settings", types: "settings&view=types",
     regions: "settings", text: "pages" };
   const hash = pid && ["page", "settings", ...STAGES].includes(mode) ? "page" : aliases[mode] || mode;

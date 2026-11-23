@@ -5,7 +5,7 @@ import { makeValidator } from "../js/schema.js";
 import { initialBookTypes, addBookType } from "../js/book-types.js";
 import { draftTypeNames, unusedDraftTypes } from "../js/draft-types.js";
 import { revisedTypeList } from "../js/type-revisions.js";
-import { surveyOutcome, additionChoice, additionOperations, isRealClass } from "../js/type-additions.js";
+import { isRealClass } from "../js/type-additions.js";
 
 const generic = JSON.parse(readFileSync(new URL("../types/generic.json", import.meta.url)));
 const validate = makeValidator(JSON.parse(readFileSync(new URL("../schema.json", import.meta.url))));
@@ -46,24 +46,8 @@ test("removing the unused draft types is one revision and leaves a valid list", 
   assert.deepEqual(validate(next), []);
 });
 
-test("the survey result line says where things went", () => {
-  const item = (kind, key = kind) => ({ kind, id: key, proposal: {} });
-  assert.equal(text(surveyOutcome([])), "Nothing new: no new types or definition edits.");
-  assert.equal(text(surveyOutcome([item("question", "a"), item("question", "b")])), "Nothing new: no new types or definition edits. [2 questions] — see Questions to review.");
-  assert.equal(text(surveyOutcome([item("new_type", "a"), item("new_type", "b"), item("question")])), "[2 proposed types] — review them in Proposed types. [1 question] — see Questions to review.");
-  assert.equal(text(surveyOutcome([item("new_type")])), "[1 proposed type] — review it in Proposed types.".replace("review it", "review them"));
-  assert.match(text(surveyOutcome([item("definition_edit")])), /1 suggested definition edit/);
-});
-
 test("a type may not have class other: the form needs a real class", () => {
   assert.ok(!isRealClass("other") && !isRealClass("") && !isRealClass(undefined) && isRealClass("heading") && isRealClass("container"));
-  const proposal = { name: "ornament", description: "x", region: "other", parents: ["section"], contains: [] };
-  assert.equal(additionChoice(proposal).region, "paragraph");
-  assert.equal(additionChoice({ ...proposal, region: "figure" }).region, "figure");
   const tl = start();
-  assert.equal(additionOperations(additionChoice(proposal), tl)[0].region, "paragraph", "the default is paragraph, never other");
-  assert.match(additionChoice(proposal).classNote, /No class fitted/);
-  assert.throws(() => additionOperations({ ...additionChoice(proposal), region: "other", parents: ["section"] }, tl), /Choose how this type is printed/);
   assert.throws(() => addBookType(tl, { name: "ornament", region: "other", parent: "section" }), /how this type is printed/);
-  assert.ok(additionOperations({ ...additionChoice(proposal), region: "figure" }, tl).length);
 });
