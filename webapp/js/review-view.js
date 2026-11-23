@@ -1,17 +1,15 @@
 import { h, cropInto, bbox, esc } from "./render.js";
-import { regionPath } from "./pageimage.js?v=20261123-blocks-b2-4";
-import { clone } from "./ops.js?v=20261123-blocks-b2-4";
+import { regionPath } from "./pageimage.js?v=20261123-blocks-b2-5";
+import { clone } from "./ops.js?v=20261123-blocks-b2-5";
 import { parseLine, TAGS } from "./inline.js";
 import { markedText } from "./pipeline/split.js";
 import { transcriptionHtml } from "./transcription-diff.js";
-import { renderStructureComparison } from "./structure-visual.js?v=20261123-blocks-b2-4";
-import { checkDocument } from "./schema.js?v=20261123-blocks-b2-4";
-import { assignmentOf, reviewCandidate, saveReview, settle } from "./review.js?v=20261123-blocks-b2-4";
-import { partialTextScope } from "./pipeline/partial-reading.js?v=20261123-blocks-b2-4";
+import { reviewCandidate, saveReview, settle } from "./review.js?v=20261123-blocks-b2-5";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261123-blocks-b2-5";
 
-const titles = { regions: "Page regions", text: "Transcription", units: "Units and links" };
+const titles = { regions: "Page regions", text: "Transcription" };
 
-export async function reviewPage(app, { pid, layer, path = null, region = null, line, field, suggestion = false, correction: initialCorrection, onSaved = async () => {} }) {
+export async function reviewPage(app, { pid, layer, path = null, region = null, line, suggestion = false, correction: initialCorrection, onSaved = async () => {} }) {
   if (app.workflowBusy || app.maker?.processing) throw new Error("Wait for active processing before reviewing a choice.");
   await app.flush();
   if (app.dirty) throw new Error("Save the page’s current changes before reviewing a result.");
@@ -35,16 +33,13 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
   if (region) scope.value = region;
   if (layer === "regions") { scope.value = ""; scope.disabled = true; }
   const lineSelect = h("select", { "aria-label": "Review line" });
-  const fieldSelect = h("select", { "aria-label": "Assignment to review" }, h("option", { value: "units" }, "Grouping, continuations and links"),
-    h("option", { value: "line_ends" }, "Line joins"), h("option", { value: "type" }, "Region type"));
-  if (field) fieldSelect.value = field;
   const correction = h("textarea", { rows: 3, "aria-label": "Correct chosen line" });
   const correctionLabel = h("label", { class: "stack" }, "Correct the chosen line after checking the scan", correction);
   const selectedScope = () => ({ ...(scope.value ? { region: scope.value } : {}),
-    ...(lineSelect.value ? { line: Number(lineSelect.value) } : {}), ...(layer === "units" && scope.value ? { field: fieldSelect.value } : {}) });
+    ...(lineSelect.value ? { line: Number(lineSelect.value) } : {}) });
   const effective = () => {
-    if (buildError && !(layer === "units" && fieldSelect.value === "type" && scope.value)) throw new Error(buildError);
-    const doc = layer === "units" && fieldSelect.value === "type" && scope.value ? clone(record?.doc || base) : clone(proposed);
+    if (buildError) throw new Error(buildError);
+    const doc = clone(proposed);
     if (layer === "text" && scope.value && lineSelect.value) {
       const target = doc.page.regions.find(value => value.id === scope.value).lines.find(value => value.line === Number(lineSelect.value));
       if (correction.value !== markedText(target)) {
@@ -83,17 +78,15 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
   async function updatePreview() {
     const selection = selectedScope();
     preview.querySelectorAll("[data-review-region]").forEach(element => { element.hidden = !!scope.value && element.dataset.reviewRegion !== scope.value; });
-    fieldSelect.hidden = layer !== "units" || !scope.value;
     lineSelect.hidden = layer !== "text" || !scope.value;
     correctionLabel.hidden = layer !== "text" || !lineSelect.value || !scope.value;
     try {
       const out = settle(base, effective(), types, layer, selection);
       const removed = base.page.regions.reduce((n, region) => n + (region.lines || []).filter(line => line.text !== undefined &&
         !out.doc.page.regions.find(value => value.id === region.id)?.lines?.some(value => value.line === line.line && value.text !== undefined)).length, 0);
-      const removedLinks = Math.max(0, (base.relations || []).length - (out.doc.relations || []).length);
       const formattingCount = doc => doc.page.regions.reduce((sum, region) => sum + (region.lines || []).reduce((n, line) => n + (line.spans || []).filter(span => span.kind !== "note_marker").length, 0), 0);
       const removedFormatting = Math.max(0, formattingCount(base) - formattingCount(out.doc));
-      status.textContent = `Saves ${out.regions.length} ${out.regions.length === 1 ? "region" : "regions"} on this page as a reviewed edit.${removed ? ` ${removed} transcribed lines become pending. The previous page is retained in history.` : ""}${removedLinks ? ` ${removedLinks} existing note or unit links are removed.` : ""}${removedFormatting ? ` ${removedFormatting} formatting spans are removed.` : ""}`;
+      status.textContent = `Saves ${out.regions.length} ${out.regions.length === 1 ? "region" : "regions"} on this page as a reviewed edit.${removed ? ` ${removed} transcribed lines become pending. The previous page is retained in history.` : ""}${out.doc.source?.dropped_overrides && !base.source?.dropped_overrides ? " The groupings and links made for the old regions no longer apply." : ""}${removedFormatting ? ` ${removedFormatting} formatting spans are removed.` : ""}`;
       apply.disabled = !book.writable;
     } catch (error) { status.textContent = error.message; apply.disabled = true; }
     keep.disabled = !book.writable;
@@ -110,15 +103,9 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
     const selected = proposed.page.regions.find(value => value.id === scope.value)?.lines?.find(value => value.line === Number(lineSelect.value));
     correction.value = initialCorrection ?? (selected ? markedText(selected) : ""); initialCorrection = undefined; updatePreview();
   }
-  scope.onchange = chooseLine; lineSelect.onchange = updateCorrection; fieldSelect.onchange = updatePreview; correction.oninput = updatePreview;
+  scope.onchange = chooseLine; lineSelect.onchange = updateCorrection; correction.oninput = updatePreview;
   const image = await book.imageUrl(pid);
-  if (layer === "units") {
-    const sent = base.page.regions.map(value => ({ rid: value.id, region: { ...value, lines: (value.lines || []).map(line => ({ ...line, line_id: line.line })) }, line_ids: (value.lines || []).map(line => line.line) }));
-    preview.append(renderStructureComparison({ rec: base.page, sent, reading: { regions: base.page.regions.map(value => ({ id: value.id, lines: (value.lines || []).map((line, index) => ({ n: index + 1, text: markedText(line) })) })) },
-      models: [{ id: "current", label: "Current page", result: { parsed: assignmentOf(base), errors: checkDocument(base, types)[0] } },
-        { id: "candidate", label, result: { parsed: assignmentOf(proposed), errors: checkDocument(proposed, types)[0] } }], reference: "current", image,
-      onlyDifferences: false, selectedRegion: region, onSelect: rid => { scope.value = rid; chooseLine(); }, width: 1050 }));
-  } else if (layer === "text") {
+  if (layer === "text") {
     const knownKinds = new Set([...Object.values(TAGS), "note_marker"]);
     const extraFormatting = region => {
       const extra = (region?.lines || []).flatMap(line => (line.spans || []).filter(span => !knownKinds.has(span.kind)).map(span => `line ${line.line} · ${span.kind}`));
@@ -144,7 +131,7 @@ export async function reviewPage(app, { pid, layer, path = null, region = null, 
   dialog.append(h("h2", {}, `Review ${titles[layer]} · page ${book.index[pid] + 1}`),
     h("p", {}, "Check the scan, choose a scope, then save the version you judge correct. Reviewed choices become page edits and supply the model scores."),
     ...(layer === "regions" ? record?.warnings || [] : []).map(warning => h("p", { class: "box warn" }, warning)),
-    h("div", { class: "fields" }, h("label", {}, "Scope ", scope), lineSelect, fieldSelect), correctionLabel, status, controls, preview);
+    h("div", { class: "fields" }, h("label", {}, "Scope ", scope), lineSelect), correctionLabel, status, controls, preview);
   dialog.addEventListener("cancel", event => { if (busy) event.preventDefault(); });
   dialog.addEventListener("close", () => dialog.remove());
   document.body.append(dialog); chooseLine(); dialog.showModal();

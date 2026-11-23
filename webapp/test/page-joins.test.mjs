@@ -97,6 +97,11 @@ for (const [name, types] of [["flat", FLAT], ["in chapters", NESTED]]) {
   });
 }
 
+test("pages in the blocks form (0.4) have a settled structure: Read reports their joins, not the regions' flags", () => {
+  const docs = book(FLAT, [[PARA_ENDS], [["figure"], ["paragraph"]], [PARA_GOES_ON]]).map(doc => ({ ...doc, overrides: {} }));
+  assert.deepEqual(continuation(docs, FLAT), [[], [], []]);
+});
+
 test("a page between with a paragraph of its own: nothing joins across it and the page breaks are reported", () => {
   const docs = book(FLAT, [[PARA_ENDS], [["figure"], ["paragraph"]], [PARA_GOES_ON]]);
   const [assembled, warnings] = assemble(docs, FLAT);

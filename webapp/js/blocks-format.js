@@ -7,13 +7,13 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-4";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-b2-4";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b2-4";
-import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b2-4";
-import { assemble } from "./assemble.js?v=20261123-blocks-b2-4";
-import { textOf } from "./blocks.js?v=20261123-blocks-b2-4";
-import { compileRules } from "./rules.js?v=20261123-blocks-b2-4";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-5";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-b2-5";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b2-5";
+import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b2-5";
+import { assemble } from "./assemble.js?v=20261123-blocks-b2-5";
+import { textOf } from "./blocks.js?v=20261123-blocks-b2-5";
+import { compileRules } from "./rules.js?v=20261123-blocks-b2-5";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];

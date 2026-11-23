@@ -1,16 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-4";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-4";
-import { bookReading } from "./reading.js?v=20261123-blocks-b2-4";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-4";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-5";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-5";
+import { bookReading } from "./reading.js?v=20261123-blocks-b2-5";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-5";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-b2-4";
+import * as ops from "./ops.js?v=20261123-blocks-b2-5";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-4";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-4";
-import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-4";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-4";
-import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-4";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-4";
+import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-5";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-5";
+import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-5";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-5";
+import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-5";
+import { readingOrderWarnings } from "./schema.js?v=20261123-blocks-b2-5";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-5";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -108,9 +109,10 @@ export function blockChecks(app, doc, projection) {
   if (Object.keys(doc.source?.suggestions || {}).length) add("A model suggestion is ready to review.", "Review suggestion", () => app.textPanel.showSuggestion());
   const [errors, warnings] = app.check(doc);
   const orderWarning = warning => warning.includes("The saved box order puts ");
-  const order = warnings.find(orderWarning);
-  if (order && app.book.writable) add(order.replace(/^page .+?, flow .+?: /, ""), "Use reader order",
-    () => app.edit(next => ops.orderFromUnits(next, app.tl)));
+  // A page in the blocks form is read as reading.js derives it, so its order is checked there.
+  const order = warnings.find(orderWarning) || (doc.overrides && derived ? readingOrderWarnings(derived)[0] : undefined);
+  if (order && app.book.writable && derived) add(order.replace(/^page .+?, flow .+?: /, ""), "Use reader order",
+    () => app.edit(next => ops.orderAsRead(next, derived, app.tl)));
   if (errors.length || warnings.some(warning => !orderWarning(warning)) || !app.book.writable && warnings.length)
     add("Review the page checks.", "Show details", details);
   return findings;
@@ -319,15 +321,13 @@ export function blockInspector(el, app) {
 export function drawBlock(app, box, event) {
   app.pageView.setDrawing(false);
   app.main.querySelector(".draw")?.classList.remove("on");
-  const owning = ops.drawnInto(app.doc, app.selection);
-  const into = owning ? h("input", { type: "checkbox" }) : null;
+  // A drawn block takes its place in the structure as the rules derive it; the structure panel can group it differently.
   const add = type => {
     menu.remove();
-    if (app.edit(doc => { app.selection = { region: ops.addRegion(doc, app.tl, type, box, into?.checked ? owning : null) }; })) app.recompute();
+    if (app.edit(doc => { app.selection = { region: ops.addRegion(doc, app.tl, type, box) }; })) app.recompute();
   };
   const menu = h("div", { class: "popup block-draw-menu", style: `left:${event.clientX}px;top:${event.clientY}px` },
     typesMenu(app, "", add),
-    into ? h("label", {}, into, " Add to the selected group") : null,
     h("button", { onclick: () => { menu.remove(); newTypeDialog(app, add, true); } }, "New type…"),
     h("button", { onclick: () => menu.remove() }, "Cancel"));
   document.body.append(menu);

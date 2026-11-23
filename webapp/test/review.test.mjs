@@ -5,7 +5,7 @@ import { Book } from "../js/store.js";
 import { clone, canonical } from "../js/ops.js";
 import { layerState, layerView } from "../js/layers.js";
 import { makeValidator, checkPage } from "../js/schema.js";
-import { reviewCandidate, settle, settledChecks, settledStructureScore, unitScope, saveReview } from "../js/review.js";
+import { reviewCandidate, settle, settledChecks, saveReview } from "../js/review.js";
 const validate = makeValidator(JSON.parse(readFileSync(new URL("../schema.json", import.meta.url))));
 const types = { format: "types", schema_version: "0.2", book_id: "review", title: "Review", source: { revision: 2 },
   flows: { main: "Main", notes: "Notes" }, relations: { note: "A printed note" }, types: {
@@ -64,45 +64,6 @@ test("text choices preserve matching marker IDs and links and remove links to re
   candidate.page.regions[0].lines[0].spans[0].marker = "2";
   out = settle(doc, candidate, types, "text", { region: "r1" }).doc;
   assert.notEqual(out.page.regions[0].lines[0].spans[0].id, "m7"); assert.equal(out.relations?.length || 0, 0); assert.deepEqual(check(out), []);
-});
-
-test("a region grouping choice takes the smallest complete subtree and retains outside choices", () => {
-  const doc = page(), candidate = clone(doc); candidate.units[1].number = "12"; candidate.units[2].label = "Other model label";
-  assert.deepEqual(unitScope(doc, candidate, "r1"), { current: "u2", candidate: "u2", regions: ["r1"] });
-  const out = settle(doc, candidate, types, "units", { region: "r1" });
-  assert.equal(out.doc.source.review.units.r1.geometry, undefined); assert.equal(typeof out.doc.source.review.units_geometry, "string");
-  assert.deepEqual(out.regions, ["r1"]); assert.equal(out.doc.units.find(unit => unit.id === "u2").number, "12");
-  assert.equal(out.doc.units.find(unit => unit.id === "u3").label, "Keep this label"); assert.deepEqual(check(out.doc), []);
-});
-
-test("new grouping ancestry widens the choice and cross-boundary links require the whole page", () => {
-  const doc = page(), candidate = clone(doc); candidate.units[0].children = [{ unit: "u2" }];
-  candidate.units[1].children.push({ region: "p1#r2" }); candidate.units.pop();
-  assert.deepEqual(unitScope(doc, candidate, "r1").regions, ["r1", "r2"]);
-  assert.deepEqual(settle(doc, candidate, types, "units", { region: "r1" }).regions, ["r1", "r2"]);
-  assert.equal(unitScope(notedPage(), notedPage(), "r1"), null);
-});
-
-test("only human-reviewed structural fields contribute scores and stale inputs do not", () => {
-  const doc = page(), candidate = clone(doc); candidate.units[1].number = "12";
-  assert.deepEqual(settledStructureScore(doc, candidate), { reviewed: 0, errors: 0 });
-  const out = settle(doc, candidate, types, "units", { region: "r1" }).doc;
-  assert.deepEqual(settledStructureScore(out, candidate), { reviewed: 1, errors: 0 });
-  assert.deepEqual(settledStructureScore(out, doc), { reviewed: 1, errors: 1 });
-  const renumbered = clone(out), differentlyNamed = clone(candidate);
-  renumbered.page.regions[0].lines[0].spans = [{ kind: "note_marker", id: "m8", start: 5, end: 5, marker: "*" }];
-  differentlyNamed.page.regions[0].lines[0].spans = [{ kind: "note_marker", id: "m1", start: 5, end: 5, marker: "*" }];
-  const reviewedMarkers = settle(renumbered, differentlyNamed, types, "units", { region: "r1" }).doc;
-  assert.deepEqual(settledStructureScore(reviewedMarkers, differentlyNamed), { reviewed: 1, errors: 0 });
-  out.page.regions[0].lines[0].text = "New input";
-  assert.deepEqual(settledStructureScore(out, candidate), { reviewed: 0, errors: 0 });
-});
-
-test("a checked line-join choice preserves the rest of the assignment", () => {
-  const doc = page(), candidate = clone(doc); candidate.page.regions[0].lines[0].end = "join"; candidate.units[1].label = "Do not take";
-  const out = settle(doc, candidate, types, "units", { region: "r1", field: "line_ends" }).doc;
-  assert.equal(out.page.regions[0].lines[0].end, "join"); assert.equal(out.units[1].label, undefined);
-  assert.deepEqual(settledStructureScore(out, candidate), { reviewed: 1, errors: 0 });
 });
 
 test("a single region geometry choice preserves other regions and keeps compatible lines", () => {
@@ -171,4 +132,27 @@ test("review saves recover page edits, evidence and history at every file bounda
     const saved = await reopened.current("p1"); assert.ok(saved.source.review.text["r1:1"]); assert.ok(files.get("work/history/p1.json"));
     assert.equal(saved.source.suggestions.text, undefined); assert.equal(files.has("work/pending-pages.json"), false);
   }
+});
+
+// Pages are stored in the blocks form (0.4): a review changes regions or text only, and keeps or drops the page's overrides.
+test("reviewing a blocks-form page: a region choice keeps its overrides, new page regions drop them and say so", async () => {
+  const { toBlocks, blocksContext } = await import("../js/blocks-format.js");
+  const fixtures = JSON.parse(readFileSync(new URL("./fixtures/blocks-pages.json", import.meta.url)));
+  const run = fixtures.runs.find(value => value.pages.some(doc => doc.units.length)), tl = fixtures.types[run.book];
+  const context = blocksContext(run.pages, fixtures.rules[run.book]);
+  const current = run.pages.map(doc => toBlocks(doc, tl, context)).find(doc => Object.keys(doc.overrides).length) ||
+    { ...toBlocks(run.pages[0], tl, context), overrides: { units: { [`${run.pages[0].page.regions[0].type}@${run.pages[0].page.regions[0].id}`]: { number: "9" } } } };
+  assert.ok(Object.keys(current.overrides).length, "the page has overrides to keep or drop");
+  const candidate = clone(current), rid = current.page.regions[0].id;
+  const one = settle(current, candidate, tl, "regions", { region: rid }).doc;
+  assert.equal(one.schema_version, "0.4");
+  assert.ok(!("units" in one) && !("relations" in one) && !("flows" in one));
+  assert.deepEqual(one.overrides, current.overrides);
+  assert.deepEqual(one.source.review.regions[rid].value, { type: current.page.regions[0].type });
+  const whole = settle(current, candidate, tl, "regions", {}).doc;
+  assert.deepEqual(whole.overrides, {});
+  assert.equal(whole.source.dropped_overrides, true);
+  const kept = settle(current, candidate, tl, "regions", {}, { keep: true }).doc;
+  assert.deepEqual(kept.overrides, current.overrides);
+  assert.throws(() => settle(current, candidate, tl, "units", {}), /Unknown review layer/);
 });

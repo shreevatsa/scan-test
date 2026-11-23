@@ -121,3 +121,15 @@ function madeUpPage(lines, { figure = false } = {}) {
   }
   return { format: "page", schema_version: "0.2", book_id: "test", page: { id: pid, image: `${pid}.png`, width: 1200, height: 1600, regions }, units, flows: { main: ["u1"] } };
 }
+
+test("a page read in another order than its boxes: the check names the pair, and the boxes can follow the reading", async () => {
+  const { readingOrderWarnings } = await import("../js/schema.js");
+  const { orderAsRead } = await import("../js/ops.js");
+  const tl = { types: { paragraph: { region: "paragraph" }, page_number: { region: "page_number", role: "furniture" } } };
+  const doc = { page: { id: "p", regions: [{ id: "r1", type: "paragraph", order: 1 }, { id: "r2", type: "paragraph", order: 2 }, { id: "r3", type: "page_number", order: null }] }, overrides: {} };
+  const read = { page: doc.page, units: [{ id: "u1", type: "paragraph", children: [{ region: "p#r2" }] }, { id: "u2", type: "paragraph", children: [{ region: "p#r1" }] }], flows: { main: ["u1", "u2"] } };
+  assert.deepEqual(readingOrderWarnings(read), ["page p, flow main: The reader shows r2 before r1. The saved box order puts r1 before r2."]);
+  const next = orderAsRead(structuredClone(doc), read, tl);
+  assert.deepEqual(next.page.regions.map(region => [region.id, region.order]), [["r1", 2], ["r2", 1], ["r3", null]]);
+  assert.deepEqual(readingOrderWarnings({ ...read, page: next.page }), []);
+});

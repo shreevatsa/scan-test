@@ -264,19 +264,26 @@ export function checkDocument(doc, tl) {
     }
   }
   errors.push(...relationErrors());
-  if (doc.format === "page") {
-    const p = pages[0];
-    for (const flow of Object.keys(doc.flows)) {
-      const readingOrder = [...depthFirst(units, doc.flows)].filter(([f, x]) => f === flow && x[0] === "region")
-        .map(([, x]) => regions[x[1]]).filter(region => region.order != null);
-      const reversed = readingOrder.findIndex((region, i) => i > 0 && readingOrder[i - 1].order > region.order);
-      if (reversed !== -1) {
-        const first = readingOrder[reversed - 1].id, second = readingOrder[reversed].id;
-        warnings.push(`page ${p.id}, flow ${flow}: The reader shows ${first} before ${second}. The saved box order puts ${second} before ${first}.`);
-      }
+  if (doc.format === "page") warnings.push(...readingOrderWarnings(doc));
+  return [errors, warnings];
+}
+
+// A page whose reading (its units, in each flow) puts two regions in the other order from their saved box order. `doc`
+// has units and flows: a 0.3 page, or a 0.4 page as reading.js derives it.
+export function readingOrderWarnings(doc) {
+  const units = Object.fromEntries(doc.units.map(unit => [unit.id, unit]));
+  const regions = Object.fromEntries(doc.page.regions.map(region => [`${doc.page.id}#${region.id}`, region]));
+  const warnings = [];
+  for (const flow of Object.keys(doc.flows)) {
+    const readingOrder = [...depthFirst(units, doc.flows)].filter(([f, x]) => f === flow && x[0] === "region")
+      .map(([, x]) => regions[x[1]]).filter(region => region && region.order != null);
+    const reversed = readingOrder.findIndex((region, i) => i > 0 && readingOrder[i - 1].order > region.order);
+    if (reversed !== -1) {
+      const first = readingOrder[reversed - 1].id, second = readingOrder[reversed].id;
+      warnings.push(`page ${doc.page.id}, flow ${flow}: The reader shows ${first} before ${second}. The saved box order puts ${second} before ${first}.`);
     }
   }
-  return [errors, warnings];
+  return warnings;
 }
 
 // validate, then the type list's own rules, then check_document, as book.py check_file.

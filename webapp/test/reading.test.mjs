@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { readChaya } from "../js/chayapdf.js";
 import { assembledStructure, blocksContext, toBlocks } from "../js/blocks-format.js";
-import { bookReading, readThroughBlocks } from "../js/reading.js";
+import { bookReading, placeWarnings, readThroughBlocks } from "../js/reading.js";
 import { readingDocuments } from "../js/workflow.js";
 import { bookRules, compileRules, ruleProblems, DEFAULT_RULES } from "../js/rules.js";
 
@@ -85,3 +85,10 @@ for (const [name, file] of [["Kale 1913", "kale-1913"], ["the Rāmāyaṇa-mañj
     assert.equal(through.length, docs.length);
   });
 }
+
+test("assembly warnings name a unit by its first block and type, not by its derived id", () => {
+  const docs = [{ page: { id: "p1" }, units: [{ id: "u1", type: "verse", children: [{ region: "p1#r3" }] }, { id: "g2", type: "verse_group", children: [{ unit: "u1" }] }] },
+    null, { page: { id: "p3" }, units: [{ id: "g1", type: "section", children: [] }] }];
+  assert.deepEqual(placeWarnings(["p1#g2 + p1#u1: inner open ends do not match (p1#u1, None)", "page p3, flow main: open ends do not match (p3#g1, [p9#u1])"], docs),
+    ["p1#r3 (verse group) + p1#r3 (verse): inner open ends do not match (p1#r3 (verse), None)", "page p3, flow main: open ends do not match (p3#g1, [p9#u1])"]);
+});

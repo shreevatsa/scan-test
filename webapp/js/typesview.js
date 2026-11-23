@@ -4,19 +4,20 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
-import { classLabel, classNote } from "./class-labels.js?v=20261123-blocks-b2-4";
+import { classLabel, classNote } from "./class-labels.js?v=20261123-blocks-b2-5";
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261123-blocks-b2-4";
-import { prepare } from "./reader.js?v=20261123-blocks-b2-4";
-import { readThroughBlocks } from "./reading.js?v=20261123-blocks-b2-4";
-import { typeRevision } from "./schema.js?v=20261123-blocks-b2-4";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261123-blocks-b2-4";
-import { newTypeDialog } from "./regionsview.js?v=20261123-blocks-b2-4";
-import { readPendingProposals, pendingItems } from "./type-additions.js?v=20261123-blocks-b2-4";
-import { unusedDraftTypes } from "./draft-types.js?v=20261123-blocks-b2-4";
-import { citedSamplePages } from "./type-revisions.js?v=20261123-blocks-b2-4";
-import { typeExampleIndex } from "./type-examples.js?v=20261123-blocks-b2-4";
-import { regionPath } from "./pageimage.js?v=20261123-blocks-b2-4";
+import { typeForest } from "./type-tree.js?v=20261123-blocks-b2-5";
+import { prepare } from "./reader.js?v=20261123-blocks-b2-5";
+import { readThroughBlocks } from "./reading.js?v=20261123-blocks-b2-5";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-5";
+import { typeRevision } from "./schema.js?v=20261123-blocks-b2-5";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261123-blocks-b2-5";
+import { newTypeDialog } from "./regionsview.js?v=20261123-blocks-b2-5";
+import { readPendingProposals, pendingItems } from "./type-additions.js?v=20261123-blocks-b2-5";
+import { unusedDraftTypes } from "./draft-types.js?v=20261123-blocks-b2-5";
+import { citedSamplePages } from "./type-revisions.js?v=20261123-blocks-b2-5";
+import { typeExampleIndex } from "./type-examples.js?v=20261123-blocks-b2-5";
+import { regionPath } from "./pageimage.js?v=20261123-blocks-b2-5";
 
 // By type: what may contain what (each type name selects its card), the cards with scan examples, then the book's
 // details and the questions to review. Returns what to run when leaving the view.
@@ -49,9 +50,11 @@ export async function renderTypeView(el, app) {
 
 async function renderTypeExamples(el, app, reviewPages, mark) {
   const book = app.book, types = app.tl, token = app.routeToken, state = app.typeOverview;
-  const docs = await book.all();
+  const docs = await book.all(), rules = await book.getRules();
   if (app.book !== book || app.routeToken !== token) return;
-  const index = typeExampleIndex(docs, types), names = Object.keys(types.types);
+  // Containers come from the pages as Read derives them: stored pages have regions and overrides, not units.
+  const derived = readThroughBlocks(readingDocuments(book.pages, docs, id => book.isSkipped?.(id)), types, rules).filter(Boolean);
+  const index = typeExampleIndex(derived, types), names = Object.keys(types.types);
   if (!names.length) {
     el.replaceChildren(h("div", {}, h("p", {}, "Add a type to start assigning page regions."),
       book.writable ? h("button", { onclick: () => newTypeDialog(app) }, "＋ Type") : null));
@@ -182,8 +185,10 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false, 
   const generic = await fetch(new URL("../types/generic.json", import.meta.url)).then(response => response.ok ? response.json() : null).catch(() => null);
   const proposals = pendingItems(await readPendingProposals(book).catch(() => ({ items: [] })), "new_type");
   if (!el.isConnected || app.book !== book || app.tl !== tl) return;
-  const unused = unusedDraftTypes(tl, generic, docs, proposals);
-  const P = prepare(readThroughBlocks(docs, tl, book.rules), tl);
+  // Units are derived (stored pages have regions and overrides), so usage is counted on the pages as Read has them.
+  const derived = readThroughBlocks(docs, tl, book.rules);
+  const unused = unusedDraftTypes(tl, generic, derived, proposals);
+  const P = prepare(derived, tl);
   const n = {}, at = {};
   const add = (obj, k) => { obj[k] = (obj[k] || 0) + 1; };
   for (const u of P.book.units) {

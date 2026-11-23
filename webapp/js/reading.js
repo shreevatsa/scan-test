@@ -5,10 +5,10 @@
 //
 // A reading is kept per type list: asking again with the same page documents (the same objects), rules and dimmed
 // pages gives the same result, and a changed page document, rule or type list makes a new one.
-import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261123-blocks-b2-4";
-import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-4";
-import { noteTypesOf } from "./note-links.js?v=20261123-blocks-b2-4";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-4";
+import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261123-blocks-b2-5";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-5";
+import { noteTypesOf } from "./note-links.js?v=20261123-blocks-b2-5";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-5";
 
 export const isBlocksPage = doc => Boolean(doc) && !doc.units;
 
@@ -23,6 +23,28 @@ const remember = (types, key, parts, make) => {
   slot.set(key, { ...parts, value });
   return value;
 };
+
+// Assembly warnings (assemble.js) name units by the ids the derivation gives them ("page#u3"), which mean nothing to a
+// person: each becomes the unit's first block and type, "page#r5 (verse)". `docs` are the derived pages the warnings are about.
+export function placeWarnings(warnings, docs) {
+  const where = new Map();
+  for (const doc of docs) {
+    if (!doc) continue;
+    const units = new Map(doc.units.map(unit => [unit.id, unit]));
+    const firstBlock = (id, seen = new Set()) => {
+      const unit = units.get(id);
+      if (!unit || seen.has(id)) return null;
+      seen.add(id);
+      for (const child of unit.children) { const rid = child.region ? child.region.split("#").pop() : firstBlock(child.unit, seen); if (rid) return rid; }
+      return null;
+    };
+    for (const unit of doc.units) {
+      const rid = firstBlock(unit.id);
+      if (rid) where.set(`${doc.page.id}#${unit.id}`, `${doc.page.id}#${rid} (${unit.type.replaceAll("_", " ")})`);
+    }
+  }
+  return warnings.map(text => text.replace(/[^\s,:()[\]]+#[^\s,:()[\]]+/g, id => where.get(id) ?? id));
+}
 
 // Page documents in page order (null for a page that is not there) → the same pages with units, flows and relations
 // (0.3-shaped), derived through the blocks form. `rules` is the book's `rules` setting (none: the defaults).

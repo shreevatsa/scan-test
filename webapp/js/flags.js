@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-4";
-import { layerState } from "./layers.js?v=20261123-blocks-b2-4";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-5";
+import { layerState } from "./layers.js?v=20261123-blocks-b2-5";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -91,9 +91,11 @@ export function regionOverlap(a, b) {
   return boxOverlap(a.box, b.box);
 }
 
-// Units settled by completion or by hand decide a page break themselves (Read checks those joins), so the regions'
-// continuation flags are compared only while either page's units are still provisional.
-const unitsSettled = () => false;
+// A page whose structure is settled decides a page break itself (Read checks those joins: assembly warnings), so the
+// regions' continuation flags are compared only while either page has no settled structure. A page in the blocks form
+// (0.4) always has one, derived from its regions, the book's rules and its overrides; an old page has one when its units
+// were completed or made by hand.
+const unitsSettled = doc => Boolean(doc?.overrides) || Boolean(doc?.source?.layers?.units && doc.source.layers.units.state !== "provisional");
 
 // `previous` and `next` are the pages around this one, for its continuation flags: each a page document (or null), or a
 // function that takes a test of the pages to look past and returns the nearest page that fails it, or null where the

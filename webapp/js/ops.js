@@ -65,6 +65,19 @@ function dropOrder(doc, r) {
 function tidyRelations(doc) { if (doc.relations && !doc.relations.length) delete doc.relations; return doc; }
 
 const isFurniture = (tl, type) => (tl.types[type] || {}).role === "furniture";
+
+// The regions' saved box order made to follow the reading: in each flow of `read` (this page as Read has it, with units
+// and flows: reading.js), its regions take that flow's box-order numbers in reading order. Furniture keeps its numbers.
+export function orderAsRead(doc, read, tl) {
+  const units = new Map(read.units.map(unit => [unit.id, unit]));
+  const walk = (uid, out) => { for (const child of units.get(uid)?.children || []) if (child.unit) walk(child.unit, out); else out.push(child.region.split("#").pop()); return out; };
+  for (const tops of Object.values(read.flows)) {
+    const seq = tops.flatMap(uid => walk(uid, [])).map(id => doc.page.regions.find(region => region.id === id)).filter(region => region && !isFurniture(tl, region.type));
+    const numbers = seq.map(region => region.order).filter(Number.isFinite).sort((a, b) => a - b);
+    if (numbers.length === seq.length) seq.forEach((region, i) => { region.order = numbers[i]; });
+  }
+  return doc;
+}
 const printedAs = (tl, type) => (tl.types[type] || {}).region;
 
 // ---------------------------------------------------------------- units
