@@ -1,16 +1,16 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-3";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-3";
-import { bookReading } from "./reading.js?v=20261123-blocks-b2-3";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-3";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-4";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-4";
+import { bookReading } from "./reading.js?v=20261123-blocks-b2-4";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-4";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-b2-3";
+import * as ops from "./ops.js?v=20261123-blocks-b2-4";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-3";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-3";
-import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-3";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-3";
-import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-3";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-3";
+import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-4";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-4";
+import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-4";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-4";
+import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-4";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-4";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

@@ -6,8 +6,8 @@
 // converted its 0.3 structure, everything but the regions, is kept so that it can always be recovered: a record
 // { page, model?, edit? } where model and edit are { units, flows, relations, layers_units } of the page's model
 // document (pages/) and of the person's saved one (edits/). The app writes it to work/pre-0.4/<page id>.json.
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261123-blocks-b2-3";
-import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-3";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261123-blocks-b2-4";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-4";
 
 export const isOldPage = doc => Boolean(doc) && Array.isArray(doc.units);
 
@@ -28,10 +28,10 @@ function blocksPage(doc, types, context) {
   return out;
 }
 
-// models and edits: Map page id → document (0.3 or 0.4). Returns what changed: { models, edits, records }, Maps of the
+// models and edits: Map page id → document (0.3 or 0.4). Resolves to what changed: { models, edits, records }, Maps of the
 // converted documents and of the records to keep, for the pages that were in the old form. `progress(done, total)` is
-// told as pages are done. `failed` lists the pages left as they were, with why.
-export function upgradePages({ pages, models, edits, types, rules, skipped = null, progress = () => {} }) {
+// told as pages are done, and the browser gets to show it every few pages. `failed` lists the pages left as they were, with why.
+export async function upgradePages({ pages, models, edits, types, rules, skipped = null, progress = () => {} }) {
   const out = { models: new Map(), edits: new Map(), records: new Map(), failed: [] };
   const old = pages.filter(page => isOldPage(edits.get(page.id)) || isOldPage(models.get(page.id)));
   if (!old.length) return out;
@@ -60,6 +60,7 @@ export function upgradePages({ pages, models, edits, types, rules, skipped = nul
       out.records.set(page.id, record);
     } catch (error) { out.failed.push({ page: page.id, message: error.message }); }
     progress(++done, old.length);
+    if (done % 20 === 0) await new Promise(resolve => setTimeout(resolve, 0));
   }
   return out;
 }

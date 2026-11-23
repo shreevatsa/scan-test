@@ -7,15 +7,15 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261123-blocks-b2-3";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261123-blocks-b2-3";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261123-blocks-b2-3";
-import { canonical } from "./ops.js?v=20261123-blocks-b2-3";
-import { checkDocument, typeRevision } from "./schema.js?v=20261123-blocks-b2-3";
-import { mergeTextEdit } from "./editing.js?v=20261123-blocks-b2-3";
-import { upgradePages, isOldPage } from "./upgrade.js?v=20261123-blocks-b2-3";
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261123-blocks-b2-3";
-import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-3";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261123-blocks-b2-4";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261123-blocks-b2-4";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261123-blocks-b2-4";
+import { canonical } from "./ops.js?v=20261123-blocks-b2-4";
+import { checkDocument, typeRevision } from "./schema.js?v=20261123-blocks-b2-4";
+import { mergeTextEdit } from "./editing.js?v=20261123-blocks-b2-4";
+import { upgradePages, isOldPage } from "./upgrade.js?v=20261123-blocks-b2-4";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261123-blocks-b2-4";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-4";
 
 const bookWrites = new Map();
 
@@ -418,7 +418,7 @@ export class Book {
       Book.onUpgrade?.(0, this.pages.length);
       await new Promise(resolve => setTimeout(resolve, 30));
     }
-    const done = upgradePages({ pages: this.pages, models, edits, types: this.types, rules: await this.getRules(), skipped: this.skipped,
+    const done = await upgradePages({ pages: this.pages, models, edits, types: this.types, rules: await this.getRules(), skipped: this.skipped,
       progress: (n, total) => Book.onUpgrade?.(n, total) });
     for (const [pid, record] of done.records) {
       const model = done.models.get(pid) || this.models.get(pid), edit = done.edits.get(pid);
