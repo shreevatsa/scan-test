@@ -45,6 +45,71 @@ export function readingSchema(sent) {
   } };
 }
 
+// ---- Method 100: the whole page in one image, its regions listed in the prompt (webapp/README.md, "Reading a page").
+
+export const UNFIT_NOTE = "the reading of this area did not fit its lines";
+
+// The page's text regions in reading order: id, type, number of line pieces and box in thousandths of the page,
+// as [ymin, xmin, ymax, xmax]. `record` is the page's regions record; `sent` is selectPageRegions(...).sent.
+export function wholePageList(record, sent) {
+  const W = record.width, H = record.height, box = s => s.region.model_box || s.region.bounds;
+  // Ordered regions by their order, then the unordered by their top edge (as method 100 listed them).
+  const key = s => s.region.reading_order ?? 1e6 + box(s)[1];
+  return sent.filter(s => s.line_ids.length).sort((a, b) => key(a) - key(b) || box(a)[1] - box(b)[1]).map(s => {
+    const b = box(s);
+    return { id: s.rid, type: s.region.type, lines: s.line_ids.length,
+      box: [b[1] / H, b[0] / W, b[3] / H, b[2] / W].map(v => Math.round(v * 1000)) };
+  });
+}
+
+export function wholePagePrompt(types, list) {
+  const conventions = (types.conventions || []).length ? `Book conventions\n${types.conventions.map(x => `- ${x}`).join("\n")}\n` : "";
+  return `This is one page of a printed book: ${types.title}. ${types.description || ""}
+Read the visible print exactly as printed. The page has these regions, listed in reading order, each with its id, its kind, how many printed lines it has, and its box as [ymin, xmin, ymax, xmax] in thousandths of the page:
+${list.map(r => `- ${r.id}: ${r.type}, ${r.lines} line${r.lines === 1 ? "" : "s"}, box [${r.box.join(", ")}]`).join("\n")}
+For every region, return its printed lines in order, exactly as many as listed, one string per printed line, holding only that region's text.
+Use Unicode NFC in the script printed. Keep spelling, punctuation, digits, dandas and verse numbers exactly as printed; do not correct the text.
+Footnote markers: in the text, a small raised numeral or sign is printed over or just after a word to point to a footnote. Write each such marker in square brackets where it is printed, for example तीर[१]स्य or धन्यतावहम्[३]. Do not put a footnote's own number, at the start of the footnote, in brackets.
+${conventions}Return JSON matching the schema.`;
+}
+
+export function wholePageSchema(list) {
+  return { type: "object", additionalProperties: false, required: ["regions"], properties: {
+    regions: { type: "array", items: { type: "object", additionalProperties: false, required: ["id", "lines"], properties: {
+      id: { type: "string", enum: list.map(r => r.id) }, lines: { type: "array", items: { type: "string" } } } } } } };
+}
+
+export function wholePageContent(prompt, imageBase64, mimeType = "image/png") {
+  return [{ type: "text", text: prompt }, { type: "image", data: imageBase64, mime_type: mimeType, resolution: "high" }];
+}
+
+// The answer in the shape the rest of the app reads (checkReading's): every listed region once, with its lines as
+// {n, text}. A region the answer lacks, or answers with another number of lines than it has line pieces, is `kept`: it
+// holds the page's current text (currentLines: id → marked lines), is flagged, and mergeText leaves its lines alone.
+// An answer that is not the expected object, names an unlisted or repeated region, or fits no region at all is invalid.
+export function checkWholePage(parsed, list, currentLines = {}) {
+  if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.regions)) throw new Error("The reading has no region list.");
+  const given = new Map(), listed = new Set(list.map(r => r.id));
+  for (const region of parsed.regions) {
+    if (!region || !listed.has(region.id) || given.has(region.id)) throw new Error(`Unexpected or repeated reading region ${region?.id}.`);
+    if (!Array.isArray(region.lines) || region.lines.some(line => typeof line !== "string")) throw new Error(`${region.id} has no list of lines.`);
+    given.set(region.id, region.lines);
+  }
+  let fitted = 0;
+  const regions = list.map(r => {
+    const lines = given.get(r.id);
+    if (lines && lines.length === r.lines) {
+      fitted++;
+      return { id: r.id, uncertain: false, note: null, lines: lines.map((text, i) => ({ n: i + 1, text })) };
+    }
+    const old = currentLines[r.id] || [];
+    return { id: r.id, kept: true, returned_lines: lines || null, uncertain: true, note: UNFIT_NOTE,
+      lines: Array.from({ length: r.lines }, (_, i) => ({ n: i + 1, text: old[i] ?? "" })) };
+  });
+  if (!fitted) throw new Error("The reading fits none of the page's regions.");
+  return { regions };
+}
+
 export function readingContent(types, sent, images) {
   const input = [{ type: "text", text: readingPrompt(types) }, { type: "text", text: "The page overview" },
     { type: "image", data: images.overview.split(",")[1], mime_type: "image/png", resolution: "high" }];

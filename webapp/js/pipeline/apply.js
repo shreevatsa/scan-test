@@ -1,9 +1,9 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-tidy-2";
-import { canonical } from "../ops.js?v=20261123-tidy-2";
-import { checkDocument, typeRevision } from "../schema.js?v=20261123-tidy-2";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-hydrogen-1";
+import { canonical } from "../ops.js?v=20261123-hydrogen-1";
+import { checkDocument, typeRevision } from "../schema.js?v=20261123-hydrogen-1";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261123-tidy-2";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261123-tidy-2";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261123-hydrogen-1";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261123-hydrogen-1";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
@@ -87,11 +87,18 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
   const doc = structuredClone(current);
   const selected = regionIds && new Set(regionIds);
   const usedMarkers = new Set(doc.page.regions.flatMap(region => (region.lines || []).flatMap(line => (line.spans || []).map(span => span.id))));
-  let marker = 1;
+  // A region the reading did not fit (`kept`, a whole-page reading's) keeps its text and its marker ids; the others number from past them.
+  const keptIds = new Set(parsed.regions.filter(value => value.kept).map(value => value.id));
+  let marker = 1 + Math.max(0, ...doc.page.regions.filter(region => keptIds.has(region.id)).flatMap(region => (region.lines || [])
+    .flatMap(line => (line.spans || []).map(span => Number(/^m(\d+)$/.exec(span.id || "")?.[1] || 0)))));
   for (const region of doc.page.regions) {
     if (selected && !selected.has(region.id)) continue;
     const input = parsed.regions.find(value => value.id === region.id);
     if (!input) continue;
+    if (input.kept) {
+      region.source = { ...region.source, transcription: { uncertain: true, note: input.note } };
+      continue;
+    }
     const ids = sent.find(value => value.rid === region.id).line_ids;
     const polygons = Object.fromEntries(region.lines.map(line => [line.line, line.polygons]));
     const output = transcribedLines(ids, polygons, input.lines, marker);

@@ -1,16 +1,16 @@
-import { TextPanel, renderInspector } from "./editor.js?v=20261123-tidy-2";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261123-tidy-2";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-tidy-2";
+import { TextPanel, renderInspector } from "./editor.js?v=20261123-hydrogen-1";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261123-hydrogen-1";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-hydrogen-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-tidy-2";
+import * as ops from "./ops.js?v=20261123-hydrogen-1";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-tidy-2";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-tidy-2";
-import { suggestionButton } from "./review-view.js?v=20261123-tidy-2";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-tidy-2";
-import { unitPath } from "./editing.js?v=20261123-tidy-2";
-import { pageReviewState } from "./layers.js?v=20261123-tidy-2";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-tidy-2";
+import { noteProblems } from "./note-links.js?v=20261123-hydrogen-1";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-hydrogen-1";
+import { suggestionButton } from "./review-view.js?v=20261123-hydrogen-1";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-hydrogen-1";
+import { unitPath } from "./editing.js?v=20261123-hydrogen-1";
+import { pageReviewState } from "./layers.js?v=20261123-hydrogen-1";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-hydrogen-1";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

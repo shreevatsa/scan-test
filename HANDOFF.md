@@ -146,7 +146,7 @@ Each task is sized for one session. Finish, test and commit one before starting 
 
 1. **Blocks spike (done).** The comparison works on Kale and the Rāmāyaṇa-mañjarī. See NOTEBOOK.md and the audit command there for the differences to preserve before retiring authored grouping, metadata, joins or line endings.
 2. **Retire what the spike shows unneeded,** one at a time, each with tests. The duplicate reader and editor, stage gates and separate review badges are retired. The three tabs and combined Process pages action are in place. Settings holds models and types. The completion stage has left the UI, while saved structure remains readable. Keep saved grouping, numbering, labels, links, flows and line joins readable when changing how new books are stored.
-3. **The app reads like method 100.** One page image per call with the page's blocks listed, Hydrogen low by default, an updated cost estimate, and markers taken from `[n]`.
+3. **The app reads like method 100 (done, 2026-11-22).** The reader "Gemini 4 Hydrogen · low thinking · whole page" sends one page image with the regions listed, is the default for new books (existing books keep theirs), estimates 1.9 cents a page, and takes markers from `[n]`; tested on saved responses only, never against the live API.
 4. **The structure rules move into the app** as a book's settings (closings, part headings, verse groups, note linking, number checks), with the command-line tools kept for batch work.
 5. **The examples hosting:** a separate small repository with Pages enabled (the user's choice), when the user asks.
 

@@ -1,7 +1,7 @@
-import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261123-tidy-2";
-import { layerView } from "./layers.js?v=20261123-tidy-2";
-import { checkDocument } from "./schema.js?v=20261123-tidy-2";
-import { assemble } from "./assemble.js?v=20261123-tidy-2";
+import { canonical, EditError, placeOf, unitById, setOpen, retypeUnit, setUnitField, wrapUnit, unwrapUnit, unitToFurniture, splitUnit } from "./ops.js?v=20261123-hydrogen-1";
+import { layerView } from "./layers.js?v=20261123-hydrogen-1";
+import { checkDocument } from "./schema.js?v=20261123-hydrogen-1";
+import { assemble } from "./assemble.js?v=20261123-hydrogen-1";
 
 // What the page editor may change. There is one page editor for every stage, and it may change anything: regions,
 // transcription, units, line joins and note links. (The narrower focuses, "text", "units" and "regions", are for the

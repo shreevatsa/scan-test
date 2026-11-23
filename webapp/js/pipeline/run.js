@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261123-tidy-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261123-tidy-2";
+import { typeRevision } from "../schema.js?v=20261123-hydrogen-1";
+import { mappedTypeNames } from "../type-revisions.js?v=20261123-hydrogen-1";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261123-tidy-2";
-import * as I from "./images.js?v=20261123-tidy-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261123-tidy-2";
+import * as S from "./steps.js?v=20261123-hydrogen-1";
+import * as I from "./images.js?v=20261123-hydrogen-1";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261123-hydrogen-1";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261123-tidy-2";
-import { classifyBlocks } from "../local/blocks.js?v=20261123-tidy-2";
-import { finderById, finderPath } from "./finders.js?v=20261123-tidy-2";
-import { finderRequest } from "./finder-requests.js?v=20261123-tidy-2";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261123-tidy-2";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261123-tidy-2";
+import { localReading, localLayout } from "./ocr.js?v=20261123-hydrogen-1";
+import { classifyBlocks } from "../local/blocks.js?v=20261123-hydrogen-1";
+import { finderById, finderPath } from "./finders.js?v=20261123-hydrogen-1";
+import { finderRequest } from "./finder-requests.js?v=20261123-hydrogen-1";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261123-hydrogen-1";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261123-hydrogen-1";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261123-tidy-2";
-import { layerState, noteEdit } from "../layers.js?v=20261123-tidy-2";
-import { provisionalDocument } from "./provisional.js?v=20261123-tidy-2";
-import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261123-tidy-2";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261123-tidy-2";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261123-tidy-2";
-import { isProtected, LAYERS } from "../layers.js?v=20261123-tidy-2";
+import { canonical } from "../ops.js?v=20261123-hydrogen-1";
+import { layerState, noteEdit } from "../layers.js?v=20261123-hydrogen-1";
+import { provisionalDocument } from "./provisional.js?v=20261123-hydrogen-1";
+import { mergeRegions, mergeText, mergeCompletion } from "./apply.js?v=20261123-hydrogen-1";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261123-hydrogen-1";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261123-hydrogen-1";
+import { isProtected, LAYERS } from "../layers.js?v=20261123-hydrogen-1";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -424,7 +424,10 @@ export class Maker {
   async readPage(pid, chosen, profile, { force, progress }) {
     const rec = structuredClone(await this.sourceRegions(pid)), { sent, skipped } = Split.selectPageRegions(rec.regions);
     const file = await this.image(pid), imageHash = await sha256(file);
-    const fingerprint = await jsonHash({ version: Split.SPLIT_VERSION, chosen, profile, imageHash, regions: rec.regions, prompt: Split.readingPrompt(this.book.types) });
+    // A whole-page reader (method 100) sends the page's regions as a list in its prompt; the list is part of the request.
+    const list = profile.whole_page ? Split.wholePageList(rec, sent) : null;
+    const prompt = list ? Split.wholePagePrompt(this.book.types, list) : Split.readingPrompt(this.book.types);
+    const fingerprint = await jsonHash({ version: Split.SPLIT_VERSION, chosen, profile, imageHash, regions: rec.regions, prompt });
     const path = `work/readings/${pid}/${profile.id}.json`;
     this.book.work.delete(path);
     const cached = await this.book.readWork(path), baseline = canonical(cached);
@@ -435,7 +438,7 @@ export class Maker {
       if (!cached.geometry_key) await this.book.writeWork(path, { ...cached, geometry_key: previousKey });
       return { ...cached, geometry_key, cached: true, ...(cached.fingerprint === fingerprint ? {} : { prior_revision: true, requested_fingerprint: fingerprint }) };
     }
-    const plan = planReading(cached, rec, chosen, profile, imageHash, force), targets = plan.request;
+    const plan = planReading(cached, rec, chosen, profile, imageHash, force || Boolean(list)), targets = plan.request;
     const scope = plan.partial ? { partial: true, region_ids: targets.map(source => source.rid),
       base_fingerprint: cached.fingerprint, reused_regions: plan.reused.map(region => region.id) } : {};
     const targetIds = new Set(targets.map(source => source.rid));
@@ -457,6 +460,14 @@ export class Maker {
         result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets),
           (usage, body) => visionCost(body, profile), body => selectTargets(visionReading(body, sent)), scope);
       }
+    } else if (list) {
+      // One call for the whole page: the page image as the app draws it, the regions in the prompt. A region whose answer
+      // does not fit its line pieces holds the page's current text (checkWholePage) and is flagged when applied.
+      const current = await this.book.current(pid);
+      const currentLines = Object.fromEntries((current?.page.regions || []).map(region => [region.id,
+        (region.lines || []).filter(line => line.polygons?.length).map(line => Split.markedText(line))]));
+      const payload = geminiReadingRequest(profile, Split.wholePageContent(prompt, (await dataUrlOf(file)).split(",")[1], file.type || "image/png"), Split.wholePageSchema(list));
+      result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkWholePage(parsed, list, currentLines), null, null, scope);
     } else {
       const imageKey = plan.partial ? await jsonHash({ fingerprint, regions: scope.region_ids, char_h: rec.char_h }) : fingerprint;
       const images = await this.imageSet(pid, file, rec, targets, imageKey);
@@ -609,9 +620,13 @@ function sameReading(a, b) {
   return canonical(content(a)) === canonical(content(b));
 }
 
+// What a saved reading depends on: the page image, the model, the regions' outlines and line pieces and, for a
+// whole-page reader, the regions' boxes and line counts (as its prompt lists them). A changed type or order alone does not
+// make a reading stale.
 async function geometryKey(record, chosen, profile, imageHash) {
-  return jsonHash({ version: Split.SPLIT_VERSION, profile, chosen, imageHash,
-    regions: readingGeometry(record) });
+  const key = { version: Split.SPLIT_VERSION, profile, chosen, imageHash, regions: readingGeometry(record) };
+  if (profile.whole_page) key.boxes = Split.wholePageList(record, Split.selectPageRegions(record.regions).sent).map(({ id, lines, box }) => ({ id, lines, box }));
+  return jsonHash(key);
 }
 
 export async function jsonHash(value) {

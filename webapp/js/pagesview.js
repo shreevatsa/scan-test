@@ -1,13 +1,14 @@
-import { suggestionButton } from "./review-view.js?v=20261123-tidy-2";
+import { suggestionButton } from "./review-view.js?v=20261123-hydrogen-1";
 import { h } from "./render.js";
-import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-tidy-2";
+import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-hydrogen-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-tidy-2";
-import { READERS } from "./pipeline/readers.js?v=20261123-tidy-2";
-import { finderById } from "./pipeline/finders.js?v=20261123-tidy-2";
-import { runBatch } from "./pipeline/batch.js?v=20261123-tidy-2";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-hydrogen-1";
+import { READERS } from "./pipeline/readers.js?v=20261123-hydrogen-1";
+import { pageCost, dollars, costBasis } from "./recipe.js?v=20261123-hydrogen-1";
+import { finderById } from "./pipeline/finders.js?v=20261123-hydrogen-1";
+import { runBatch } from "./pipeline/batch.js?v=20261123-hydrogen-1";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261123-tidy-2";
+import { money } from "./reader-controls.js?v=20261123-hydrogen-1";
 
 export async function renderPages(el, app) {
   const { book, routeToken } = app;
@@ -55,7 +56,7 @@ export async function renderPages(el, app) {
     h("button", { class: "link", onclick: () => { opened = true; refreshSummary(); } }, "Process again…"));
   const panel = h("section", { class: "region-section processing-box" }, full, line, status);
   const waiting = () => book.pages.filter(page => !book.isSkipped(page.id) && stageOf(page.id)).length;
-  let maker, finder, reader;
+  let maker, finder, reader, readerCost = null;
   const requiredModels = ids => ids.some(pid => stageOf(pid) === "regions") ? [finder, reader] : [reader];
   const ready = ids => !!maker && requiredModels(ids).every(profile => profile && maker.credentials.status(profile)?.valid);
   const refreshSummary = () => {
@@ -64,7 +65,9 @@ export async function renderPages(el, app) {
     summary.textContent = `${visible.length} of ${rows.size} pages shown · ${flagged} flagged${book.skipped.size ? ` · ${book.skipped.size} dimmed` : ""}`;
     availability.replaceChildren(
       `${ids.length} ${ids.length === 1 ? "page" : "pages"} to process${selected.size ? " in the selection" : ""}`,
-      ids.length && maker && !ready(ids) ? " · Check this book’s model credentials in Settings" : "");
+      ids.length && maker && !ready(ids) ? " · Check this book’s model credentials in Settings" : "",
+      // The reading's share of the cost: the book's own completed calls of this model, else the measured figure (recipe.js).
+      ids.length && readerCost && readerCost.usd ? ` · reading about ${dollars(readerCost.usd * ids.length)} at ${dollars(readerCost.usd)} a page (${costBasis(readerCost)})` : "");
     process.disabled = busy || !ids.length || !ready(ids);
     const form = processingForm({ waiting: waiting(), busy, opened });
     full.hidden = form !== "full"; line.hidden = form === "full";
@@ -222,6 +225,8 @@ export async function renderPages(el, app) {
     if (!active()) return;
     finder = finderById(chosen.finder);
     reader = READERS.find(profile => profile.id===chosen.reader);
+    const ledger = await book.readWork("work/reader-lab/ledger.json").catch(() => null);
+    readerCost = reader ? pageCost(reader, ledger?.calls || []) : null;
     refreshSummary();
   } catch (error) { status.textContent=error.message; }
 }

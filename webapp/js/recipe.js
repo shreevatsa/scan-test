@@ -2,15 +2,19 @@
 // book"). Comparisons found the recipe; a book uses it unless someone chooses "Change".
 
 // Region finding with GPT-6.1 Terra, proposing new types (method 097: 042's request with the pending proposals, and
-// the current local step), transcription with Gemini 4 Argon at low thinking, and completion with Gemini 4 Argon at
+// the current local step), transcription with Gemini 4 Hydrogen at low thinking, one whole page image per call (method 100; before it, Argon at low
+// thinking with a cut-out for every region), and completion with Gemini 4 Argon at
 // high thinking. Books that saved no finder (before the recipe) keep 042 (finderById's default).
-export const RECIPE = { finder: "terra-proposals", reader: "argon-low", structurer: "argon-structure" };
+export const RECIPE = { finder: "terra-proposals", reader: "hydrogen-low-page", structurer: "argon-structure" };
 
 // Measured cost per page on a 267-page scanned book (the private series, HANDOFF.md, 2026-11-12), used for a model
-// until the book has its own completed calls.
+// until the book has its own completed calls. Hydrogen's 1.9 cents a page is method 100's whole run on the
+// Rāmāyaṇa-mañjarī (519 calls, $9.86).
 // For 097, 042's figure times 1.14, the ratio of their costs on the same 25 public pages (NOTEBOOK, 2026-11-13).
-export const MEASURED_PAGE_COST = { "terra-regions": 0.010, "terra-proposals": 0.011, "argon-low": 0.038, "argon-structure": 0.032 };
+export const MEASURED_PAGE_COST = { "terra-regions": 0.010, "terra-proposals": 0.011, "hydrogen-low-page": 0.019, "argon-low": 0.038, "argon-structure": 0.032 };
 export const MEASURED_BASIS = "measured on a 267-page scanned book";
+// A model measured on another book says so (its `basis`, in what pageCost returns).
+const MEASURED_BASES = { "hydrogen-low-page": "method 100's run on a 519-page book" };
 
 const STAGE_NAMES = { regions: "Regions", text: "Text", read: "Units and links" };
 
@@ -21,7 +25,8 @@ export function pageCost(profile, calls = []) {
   if (profile.provider === "local") return { usd: 0, source: "free", samples: 0 };
   const own = calls.filter(call => call.profile === profile.id && call.status === "completed" && !call.partial && Number.isFinite(call.cost_usd));
   if (own.length) return { usd: own.reduce((sum, call) => sum + call.cost_usd, 0) / own.length, source: "book", samples: own.length };
-  if (Number.isFinite(MEASURED_PAGE_COST[profile.id])) return { usd: MEASURED_PAGE_COST[profile.id], source: "measured", samples: 0 };
+  if (Number.isFinite(MEASURED_PAGE_COST[profile.id])) return { usd: MEASURED_PAGE_COST[profile.id], source: "measured", samples: 0,
+    ...(MEASURED_BASES[profile.id] ? { basis: MEASURED_BASES[profile.id] } : {}) };
   return { usd: null, source: "none", samples: 0 };
 }
 
@@ -40,7 +45,7 @@ export function perPageText(cost) {
 // Where a stage's per-page figure comes from, for its tooltip and the estimate.
 export function costBasis(cost) {
   return cost.source === "book" ? `the mean of this book's ${cost.samples} completed ${cost.samples === 1 ? "call" : "calls"}`
-    : cost.source === "measured" ? MEASURED_BASIS
+    : cost.source === "measured" ? cost.basis || MEASURED_BASIS
       : cost.source === "free" ? "runs on this device"
         : "this model has no measured cost yet; process a few pages, or compare models, to measure it";
 }

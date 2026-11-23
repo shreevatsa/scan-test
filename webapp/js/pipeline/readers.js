@@ -1,9 +1,13 @@
 // Transcription and schema-assignment profiles. Token prices are paid-tier USD per million.
-import { finderById } from "./finders.js?v=20261123-tidy-2";
+import { finderById } from "./finders.js?v=20261123-hydrogen-1";
 // Source fetched 2026-11-08: https://ai.google.dev/gemini-api/docs/pricing
-import { carbonRates, argonRates, flashRates } from "./model-prices.js?v=20261123-tidy-2";
+import { carbonRates, argonRates, flashRates, hydrogenRates } from "./model-prices.js?v=20261123-hydrogen-1";
 
 export const READERS = [
+  // Method 100: one page image per call, the page's regions listed in the prompt (webapp/README.md, "Reading a page").
+  // The id is the profile name method 100 gave its ledger entries.
+  { id: "hydrogen-low-page", label: "Gemini 4 Hydrogen · low thinking · whole page", provider: "gemini", model: "gemini-4-hydrogen", thinking: "low",
+    rates: hydrogenRates, formatting: true, whole_page: true, method: "100-hydrogen-low-whole-page-reading" },
   { id: "argon-low", label: "Gemini 4 Argon · low thinking", provider: "gemini", model: "gemini-4-argon", thinking: "low", rates: argonRates, formatting: true },
   { id: "argon-high", label: "Gemini 4 Argon · high thinking", provider: "gemini", model: "gemini-4-argon", thinking: "high", rates: argonRates, formatting: true },
   { id: "carbon-low", label: "Gemini 4 Carbon · low thinking", provider: "gemini", model: "gemini-4-carbon", thinking: "low", rates: carbonRates, formatting: true,

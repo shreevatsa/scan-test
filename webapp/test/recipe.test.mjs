@@ -6,20 +6,21 @@ import { RECIPE, MEASURED_PAGE_COST, pageCost, dollars, perPageText, recipeLine,
 import { finderById, FINDERS } from "../js/pipeline/finders.js";
 import { readerById, structurerById, readerOptions } from "../js/pipeline/readers.js";
 
-test("the recipe names Terra regions proposing types, Argon low transcription and Argon high completion, and is the default", () => {
+test("the recipe names Terra regions proposing types, Hydrogen low whole-page transcription and Argon high completion, and new books get it", () => {
   assert.equal(finderById(RECIPE.finder).method, "097-terra-regions-proposing-types");
-  assert.equal(readerById(RECIPE.reader).label, "Gemini 4 Argon · low thinking");
+  assert.equal(readerById(RECIPE.reader).label, "Gemini 4 Hydrogen · low thinking · whole page");
   assert.equal(structurerById(RECIPE.structurer).label, "Gemini 4 Argon · high thinking");
   const defaults = readerOptions({}, { languages: ["sa"] });
-  assert.equal(defaults.reader, RECIPE.reader);
+  assert.equal(defaults.reader, "argon-low", "a book that saved no reader keeps the one it had");
   assert.equal(defaults.structurer, RECIPE.structurer);
   assert.equal(finderById().id, "terra-regions", "a book that saved no finder keeps 042");
   assert.deepEqual(readerOptions(RECIPE, {}), { ...RECIPE, ocr_languages: "eng" }, "the recipe saves as reader options");
 });
 
 test("each stage has one line with its model and cost a page", () => {
-  const terra = finderById(RECIPE.finder), argonLow = readerById(RECIPE.reader), argonHigh = structurerById(RECIPE.structurer);
+  const terra = finderById(RECIPE.finder), argonLow = readerById("argon-low"), argonHigh = structurerById(RECIPE.structurer);
   assert.equal(recipeLine("regions", terra, pageCost(terra)), "Regions with GPT-6.1 Terra · reasoning off · proposes new types · about $0.011 a page");
+  assert.equal(recipeLine("text", readerById(RECIPE.reader), pageCost(readerById(RECIPE.reader))), "Text with Gemini 4 Hydrogen · low thinking · whole page · about $0.019 a page");
   assert.equal(recipeLine("text", argonLow, pageCost(argonLow)), "Text with Gemini 4 Argon · low thinking · about $0.038 a page");
   assert.equal(recipeLine("read", argonHigh, pageCost(argonHigh)), "Units and links with Gemini 4 Argon · high thinking · about $0.032 a page");
   assert.equal(recipeLine("regions", null, pageCost(null)), "Regions drawn by hand");

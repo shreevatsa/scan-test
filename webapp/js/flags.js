@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-tidy-2";
-import { layerState } from "./layers.js?v=20261123-tidy-2";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-hydrogen-1";
+import { layerState } from "./layers.js?v=20261123-hydrogen-1";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -237,7 +237,9 @@ export function textFlags(doc, types) {
     if (types.types[region.type]?.region === "figure") continue;
     const missing = (region.lines || []).filter(line => line.polygons?.length && typeof line.text !== "string").length;
     if (missing) flags.push({ code: "missing-text", message: `${region.id} is missing text on ${missing} line pieces`, region: region.id });
-    if (region.source?.transcription?.uncertain) flags.push({ code: "uncertain-text", message: `${region.id} has an uncertain transcription`, region: region.id });
+    const reading = region.source?.transcription;
+    if (reading?.uncertain && /did not fit its lines/.test(reading.note || "")) flags.push({ code: "reading-unfit", message: `${region.id}: the reading of this area did not fit its lines`, region: region.id });
+    else if (reading?.uncertain) flags.push({ code: "uncertain-text", message: `${region.id} has an uncertain transcription`, region: region.id });
   }
   for (const message of doc.source?.problems || []) if (/line.*(count|mismatch)|missing.*line/i.test(message)) flags.push({ code: "line-count", message });
   return flags;
