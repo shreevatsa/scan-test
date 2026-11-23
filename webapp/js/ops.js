@@ -730,7 +730,7 @@ export function deleteMarker(doc, sid) {
   m.line.spans = m.line.spans.filter(s => s !== m.span);
   if (!m.line.spans.length) delete m.line.spans;
   const ref = `${doc.page.id}#${sid}`;
-  doc.relations = (doc.relations || []).filter(rel => rel.from.anchor !== ref);
+  if (doc.relations) doc.relations = doc.relations.filter(rel => rel.from.anchor !== ref);
   return tidyRelations(doc);
 }
 

@@ -1,17 +1,16 @@
-import { TextPanel, renderInspector } from "./editor.js?v=20261123-blocks-b2-1";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-1";
-import { bookReading } from "./reading.js?v=20261123-blocks-b2-1";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-1";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-2";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-2";
+import { bookReading } from "./reading.js?v=20261123-blocks-b2-2";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-2";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-b2-1";
+import * as ops from "./ops.js?v=20261123-blocks-b2-2";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-1";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-1";
-import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-1";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-1";
-import { unitPath } from "./editing.js?v=20261123-blocks-b2-1";
-import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-1";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-1";
+import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-2";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-2";
+import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-2";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-2";
+import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-2";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-2";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -109,6 +108,7 @@ export function blockChecks(app, doc, projection) {
         add(`Check the ${type === "verse" ? "verse" : "episode"} numbers against the scan.`, "Show block", () => openBlock(doc.page.regions.find(region => region.type === type)?.id));
     }
   }
+  if (doc.source?.dropped_overrides) add("A grouping you made here no longer applies.", "OK", () => app.edit(next => { delete next.source.dropped_overrides; }));
   if (Object.keys(doc.source?.suggestions || {}).length) add("A model suggestion is ready to review.", "Review suggestion", () => app.textPanel.showSuggestion());
   const [errors, warnings] = app.check(doc);
   const orderWarning = warning => warning.includes("The saved box order puts ");
@@ -127,8 +127,8 @@ export class BlocksPanel extends TextPanel {
   render() {
     const { app, el } = this, { doc, tl, colors } = app;
     const oldScroll = el.scrollTop;
-    this.projection = app.blocksProjection;
-    this.context = blockContext(this.projection.docs.find(value => value?.page.id === doc.page.id));
+    this.projection = app.reading();
+    this.context = blockContext(app.derivedDoc());
     const review = pageReviewState(doc);
     this.findings = h("div", { class: "block-findings" });
     this.reviewItem = h("div", { class: "block-review-item" });
@@ -291,7 +291,7 @@ export function blockInspector(el, app) {
     return;
   }
   app.pageView.markLine({ pinned: null });
-  if (selection.marker || selection.unit) { renderInspector(el, app); return; }
+  if (selection.marker) { renderInspector(el, app); return; }
   const region = doc.page.regions.find(value => value.id === selection.region);
   if (!region) return;
   const type = tl.types[region.type];
@@ -306,21 +306,18 @@ export function blockInspector(el, app) {
       onchange: event => app.edit(next => {
         const value = ops.regionById(next, region.id);
         value.source = { ...value.source, [key]: event.target.checked };
-        const unit = ops.ownerOf(next, region.id), place = unit && ops.placeOf(next, unit.id);
-        if (place?.index === (end === "start" ? 0 : place.list.length - 1)) ops.setOpen(next, unit.id, end, event.target.checked);
       }) }), name));
   }
   const unit = context?.unit;
   const numbered = type?.region === "page_number" ? app.textPanel.projection.docs.find(value => value?.page.id === doc.page.id)?.page.label : unit?.number;
   if (numbered) fields.push(h("span", {}, "Number ", numbered));
   if (unit?.label) fields.push(h("span", {}, "Label ", unit.label));
-  const owning = ops.ownerOf(doc, region.id);
   const more = h("details", { class: "block-more" }, h("summary", {}, "More…"),
-    ...(owning && book.writable ? unitPath(doc, owning.id).map(unit =>
-      h("button", { onclick: () => app.select({ unit: unit.id }) }, `Edit ${unit.label || blockName(unit.type).toLowerCase()}`)) : []),
     book.writable && type?.region !== "figure" ? h("button", { onclick: () => app.edit(next => ops.addLine(next, region.id, region.lines.length)) }, "Add text line") : null,
     book.writable ? regionTools(app, region) : null);
-  el.append(h("div", { class: "block-fields" }, ...fields), more);
+  el.append(h("div", { class: "block-fields" }, ...fields));
+  structurePanel(el, app, region.id);
+  el.append(more);
 }
 
 export function drawBlock(app, box, event) {

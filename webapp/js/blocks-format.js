@@ -7,13 +7,13 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-1";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-b2-1";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b2-1";
-import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b2-1";
-import { assemble } from "./assemble.js?v=20261123-blocks-b2-1";
-import { textOf } from "./blocks.js?v=20261123-blocks-b2-1";
-import { compileRules } from "./rules.js?v=20261123-blocks-b2-1";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-2";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-b2-2";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b2-2";
+import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b2-2";
+import { assemble } from "./assemble.js?v=20261123-blocks-b2-2";
+import { textOf } from "./blocks.js?v=20261123-blocks-b2-2";
+import { compileRules } from "./rules.js?v=20261123-blocks-b2-2";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];
@@ -167,7 +167,7 @@ function readNode(item, pid, pageRegions, types, nextId) {
 }
 
 // The derived structure with the overrides applied: { units, flows, relations }. `pid` qualifies region references.
-function applyOverrides(base, page, overrides, types) {
+function applyOverrides(base, page, overrides, types, stale = null) {
   const units = clone(base.units), flows = clone(base.flows), relations = clone(base.relations);
   const byId = new Map(units.map(unit => [unit.id, unit]));
   const blocksUnder = id => byId.get(id).children.flatMap(child => child.region ? [ridOf(child.region)] : blocksUnder(child.unit));
@@ -200,7 +200,7 @@ function applyOverrides(base, page, overrides, types) {
   const liveKeys = uniqueKeys(kept, flows), keys = new Map(kept.filter(unit => liveKeys.has(unit.id)).map(unit => [liveKeys.get(unit.id), unit]));
   for (const [key, change] of Object.entries(overrides.units || {})) {
     const unit = keys.get(key);
-    if (!unit) continue;
+    if (!unit) { stale?.units.push(key); continue; }
     for (const [name, value] of Object.entries(change)) {
       if (name === "label_source") { if (value == null) { if (unit.source) delete unit.source.label; } else unit.source = { ...unit.source, label: value }; }
       else if (value == null) delete unit[name];
@@ -208,6 +208,7 @@ function applyOverrides(base, page, overrides, types) {
     }
   }
   for (const [flow, wanted] of Object.entries(overrides.order || {})) {
+    for (const key of wanted) if (!liveKeys.has(key) && ![...liveKeys.values()].includes(key)) stale?.order.push([flow, key]);
     const rank = new Map(wanted.map((key, k) => [key, k]));
     const list = flows[flow] || [];
     flows[flow] = list.map((id, k) => ({ id, k, rank: rank.get(liveKeys.get(id)) ?? Infinity })).sort((a, b) => a.rank - b.rank || a.k - b.k).map(value => value.id);
@@ -223,7 +224,7 @@ function applyOverrides(base, page, overrides, types) {
   for (const link of overrides.links || []) {
     const { to, type, ...from } = link;
     const relation = { type: type || "note", from: clone(from.from), to: { unit: targetOf(to) } };
-    if (to == null) links.delete(fromKey(relation)); else if (relation.to.unit) links.set(fromKey(relation), relation);
+    if (to == null) links.delete(fromKey(relation)); else if (relation.to.unit) links.set(fromKey(relation), relation); else stale?.links.push(link);
   }
   return { units: kept, flows, relations: [...links.values()] };
 }
@@ -234,6 +235,32 @@ function derivedFor(doc, types, context) {
   if (!context.pages.some(page => page?.page.id === doc.page.id)) throw new Error(`page ${doc.page.id} is not in the context`);
   return derive(context, types).get(doc.page.id);
 }
+
+// A 0.4 page whose overrides no longer apply after its regions changed: the overrides that name a block that is gone (or
+// is page furniture now), a unit key that no unit has, a note that is gone, are dropped. Returns { doc, dropped }, doc the
+// page itself when nothing is dropped.
+export function pruneOverrides(doc, types, context) {
+  const overrides = doc.overrides || {};
+  if (!Object.keys(overrides).length) return { doc, dropped: 0 };
+  const tl = types.types, regions = new Map(doc.page.regions.map(region => [region.id, region]));
+  const usable = id => regions.has(id) && tl[regions.get(id).type]?.role !== "furniture";
+  const blocksIn = item => typeof item === "string" ? [item] : [...(item.blocks || []), ...(item.members || []).flatMap(member => member.block ? [member.block] : blocksIn(member))];
+  const groups = (overrides.groups || []).filter(item => blocksIn(item).every(usable));
+  const unowned = (overrides.unowned || []).filter(usable);
+  const anchors = new Set(doc.page.regions.flatMap(region => (region.lines || []).flatMap(line => (line.spans || []).map(span => `${doc.page.id}#${span.id}`))));
+  const linkOk = link => !("anchor" in link.from) || anchors.has(link.from.anchor);
+  let links = (overrides.links || []).filter(linkOk);
+  const kept = { ...overrides };
+  for (const [name, value] of [["groups", groups], ["unowned", unowned], ["links", links]]) if (value.length) kept[name] = value; else delete kept[name];
+  const stale = { units: [], order: [], links: [] }, probe = { ...doc, overrides: kept };
+  applyOverrides(derivedFor(probe, types, context), probe.page, kept, types, stale);
+  if (stale.units.length) { kept.units = Object.fromEntries(Object.entries(kept.units).filter(([key]) => !stale.units.includes(key))); if (!Object.keys(kept.units).length) delete kept.units; }
+  if (stale.order.length) { for (const [flow, key] of stale.order) kept.order[flow] = kept.order[flow].filter(value => value !== key); kept.order = Object.fromEntries(Object.entries(kept.order).filter(([, keys]) => keys.length)); if (!Object.keys(kept.order).length) delete kept.order; }
+  if (stale.links.length) { kept.links = kept.links.filter(link => !stale.links.includes(link)); if (!kept.links.length) delete kept.links; }
+  const dropped = canonicalSize(overrides) - canonicalSize(kept);
+  return dropped ? { doc: { ...doc, overrides: kept }, dropped } : { doc, dropped: 0 };
+}
+const canonicalSize = overrides => JSON.stringify(overrides).length;
 
 // A 0.3 page document → the blocks form. `types` is the book's type list.
 export function toBlocks(doc, types, context) {
