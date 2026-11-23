@@ -1,13 +1,13 @@
-import { suggestionButton } from "./review-view.js?v=20261122-review-actions";
+import { suggestionButton } from "./review-view.js?v=20261123-tidy-1";
 import { h } from "./render.js";
-import { nextProcessingStage, REVIEW_LABELS, noContent } from "./workflow.js?v=20261122-review-actions";
+import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-tidy-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261122-review-actions";
-import { READERS } from "./pipeline/readers.js?v=20261122-review-actions";
-import { finderById } from "./pipeline/finders.js?v=20261122-review-actions";
-import { runBatch } from "./pipeline/batch.js?v=20261122-review-actions";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-tidy-1";
+import { READERS } from "./pipeline/readers.js?v=20261123-tidy-1";
+import { finderById } from "./pipeline/finders.js?v=20261123-tidy-1";
+import { runBatch } from "./pipeline/batch.js?v=20261123-tidy-1";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261122-review-actions";
+import { money } from "./reader-controls.js?v=20261123-tidy-1";
 
 export async function renderPages(el, app) {
   const { book, routeToken } = app;
@@ -43,11 +43,18 @@ export async function renderPages(el, app) {
   const stop = h("button", { disabled: true, onclick: () => { stopped = true; status.textContent = "Stopping after the active call…"; } }, "Stop after the active call");
   const pageOptions = h("div");
   const controls = h("div", { class: "stage-filters" }, stateFilter, filter);
-  const reviewBar = h("div", { class: "actions" });
+  const reviewBar = h("span", { class: "actions" });
+  const selectionRow = h("div", { class: "fields selection-row" }, h("label", {}, "Select pages ", range), reviewBar);
   const settingsLink = h("a", { href: "#settings" }, "Book settings");
-  const panel = h("section", { class: "region-section" },
-    h("div", { class: "fields selection-row" }, h("label", {}, "Select pages ", range), h("label", {}, "Spend threshold $", threshold)),
-    h("div", { class: "actions" }, process, stop, settingsLink), availability, progress.element, status, failures, reviewBar);
+  // The processing box: in full while pages wait to be processed or a run goes (processingForm), else one line.
+  let opened = false;
+  const full = h("div", {},
+    h("div", { class: "fields" }, h("label", {}, "Spend threshold $", threshold)),
+    h("div", { class: "actions" }, process, stop, settingsLink), availability, progress.element, failures);
+  const line = h("p", { class: "processing-line" }, "All pages processed · ",
+    h("button", { class: "link", onclick: () => { opened = true; refreshSummary(); } }, "Process again…"));
+  const panel = h("section", { class: "region-section processing-box" }, full, line, status);
+  const waiting = () => book.pages.filter(page => !book.isSkipped(page.id) && stageOf(page.id)).length;
   let maker, finder, reader;
   const requiredModels = ids => ids.some(pid => stageOf(pid) === "regions") ? [finder, reader] : [reader];
   const ready = ids => !!maker && requiredModels(ids).every(profile => profile && maker.credentials.status(profile)?.valid);
@@ -59,6 +66,9 @@ export async function renderPages(el, app) {
       `${ids.length} ${ids.length === 1 ? "page" : "pages"} to process${selected.size ? " in the selection" : ""}`,
       ids.length && maker && !ready(ids) ? " · Check this book’s model credentials in Settings" : "");
     process.disabled = busy || !ids.length || !ready(ids);
+    const form = processingForm({ waiting: waiting(), busy, opened });
+    full.hidden = form !== "full"; line.hidden = form === "full";
+    panel.dataset.form = form;
     reviewBar.querySelectorAll("button").forEach(button => { button.disabled = busy || !targets().some(pid => stateOf(pid).doc && stateOf(pid).valid); });
   };
   function applyFilters() {
@@ -76,17 +86,13 @@ export async function renderPages(el, app) {
     refreshSummary();
   }
   function refreshCard(pid) {
-    const { element, states, flags, skip } = rows.get(pid), state = stateOf(pid);
-    const progress=!state.doc ? "Awaiting boxes" : noContent(state.doc) ? "No content" : stageOf(pid)==="text" ? "Awaiting text" : "";
-    const count = state.flags.length, dimmed = book.isSkipped(pid);
-    states.replaceChildren();
-    if (!dimmed) {
-      if (!noContent(state.doc)) states.append(h("span", { class: `stage-badge ${state.checked ? "accepted" : ""}` }, REVIEW_LABELS[state.status]));
-      if (progress) states.append(h("span", { class: "meta" }, progress));
-    }
-    flags.textContent = count ? `${count} ${count===1 ? "flag" : "flags"} · ${state.flags[0]}` : "";
-    flags.title=state.flags.join("\n");
-    element.classList.toggle("has-flags",Boolean(count));
+    const { element, states, skip } = rows.get(pid), state = stateOf(pid);
+    const dimmed = book.isSkipped(pid), check = pageCheck(state, dimmed);
+    // One state per card: Checked, N to check (with the first item), Not processed; none on a dimmed page.
+    states.replaceChildren(...check ? [h("span", { class: `stage-badge ${check.kind}` }, check.label),
+      check.items[0] && check.kind !== "checked" ? h("span", { class: "stage-flags" }, ` · ${check.items[0]}`) : ""] : []);
+    states.title = check?.items.join("\n") || "";
+    element.classList.toggle("has-flags", check?.kind === "check" && check.items.length > 0);
     element.classList.toggle("skipped",dimmed);
     if (skip) {
       skip.textContent=dimmed ? "↺" : "×";
@@ -123,12 +129,12 @@ export async function renderPages(el, app) {
       } catch (error) { status.textContent=error.message; }
     } }) : null;
     const image = h("img", { alt: `Page ${index+1}`, width: 120, height: 166 });
-    const states = h("div", { class: "stage-badges" }), flags=h("p", { class: "stage-flags" });
+    const states = h("p", { class: "stage-state" });
     const name = `Page ${index+1}${scan.label ? ` · ${scan.label}` : ""}`;
     const element = h("article", { class: "stage-card", dataset: { page: id } }, skip,
       h("button", { class: "stage-thumbnail", "aria-label": `Open page ${index+1}`, onclick: () => showPreview(id) }, image),
-      select ? h("label", {}, select, " "+name) : h("p", { class: "stage-card-name" },name), states, flags);
-    grid.append(element); rows.set(id,{element, image, select, states, flags, skip}); refreshCard(id);
+      select ? h("label", {}, select, " "+name) : h("p", { class: "stage-card-name" },name), states);
+    grid.append(element); rows.set(id,{element, image, select, states, skip}); refreshCard(id);
   }
   range.onchange = () => {
     try {
@@ -144,7 +150,7 @@ export async function renderPages(el, app) {
   const refreshAll = () => { for (const pid of rows.keys()) refreshCard(pid); applyFilters(); };
   const setBusy = value => {
     busy = app.workflowBusy = value;
-    app.header.inert = grid.inert = controls.inert = pageOptions.inert = value;
+    app.header.inert = grid.inert = controls.inert = pageOptions.inert = reviewBar.inert = value;
     range.disabled = threshold.disabled = value;
     stop.disabled = !value;
     refreshSummary();
@@ -154,7 +160,7 @@ export async function renderPages(el, app) {
     if (busy || app.workflowBusy || !ids.length || !ready(ids)) return;
     if (requiredModels(ids).some(profile => profile.provider!=="local") && !await app.confirmSpending()) return;
     if (!active() || busy || app.workflowBusy) return;
-    stopped = false; setBusy(true); progress.start(ids.length); failures.replaceChildren();
+    stopped = false; opened = true; setBusy(true); progress.start(ids.length); failures.replaceChildren();
     try {
       const outcome=await runBatch({ maker, ids, stage: "pages", stageOf, limit: Number(threshold.value), stopped: () => stopped,
         onProgress: event => { status.textContent=`Page ${book.index[event.pid]+1} · ${money(event.spend)} new spend`; },
@@ -192,7 +198,7 @@ export async function renderPages(el, app) {
     if (details.open) app.renderCheck(pageOptions).catch(error => { pageOptions.textContent=error.message; });
   });
   el.replaceChildren(h("div", { class: "stage-overview" }, h("h1", {}, "Pages"), book.writable ? panel :
-    h("button", { onclick: () => app.continueBook("pages") }, "Make an editable copy"), controls, summary, empty, grid, details, preview));
+    h("button", { onclick: () => app.continueBook("pages") }, "Make an editable copy"), book.writable ? selectionRow : null, controls, summary, empty, grid, details, preview));
   app.onLeaveGrid=() => { observer?.disconnect(); for (const url of urls) URL.revokeObjectURL(url); preview.close(); };
   stateFilter.onchange = filter.onchange = applyFilters;
   showSelection(); applyFilters();

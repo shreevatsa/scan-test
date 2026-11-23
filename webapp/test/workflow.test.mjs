@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { pageStages, hasReading, workflowRoute, workflowAddress, eligible, readingGaps, readingDocuments, movePage, reviewPageStates, stageFlags, currentStage, nextProcessingStage } from "../js/workflow.js";
+import { pageStages, hasReading, workflowRoute, workflowAddress, eligible, readingGaps, readingDocuments, movePage, reviewPageStates, stageFlags, currentStage, nextProcessingStage, pageCheck, nextPageToCheck, processingForm } from "../js/workflow.js";
 import { accept, layerState } from "../js/layers.js";
 import { runBatch } from "../js/pipeline/batch.js";
 import { CredentialChecks } from "../js/key-check.js";
@@ -293,4 +293,42 @@ test("Pages collects review flags and processing follows the available input", (
   assert.equal(states.get("p1").layout, "paragraph");
   assert.equal(states.get("p1").layoutFrequency, 2);
   assert.ok(["p1", "p2", "p3"].every(id => !states.get(id).regionFlags.some(flag => flag.code === "rare-layout")));
+});
+
+test("a page card shows one state: Checked, N to check with the first item, Not processed, or none when dimmed", () => {
+  const checked = accept(accept(accept(page("p2"), "regions"), "text"), "units");
+  const states = new Map([
+    ["p1", { ...pageStages(null, types), flags: [] }],
+    ["p2", { ...pageStages(checked, types), flags: [] }],
+    ["p3", { ...pageStages(page("p3"), types), flags: ["Possible missed line near the top.", "Two scan boxes overlap."] }],
+    ["p4", { ...pageStages(page("p4"), types), flags: [] }],
+    ["p5", { ...pageStages(checked, types), flags: ["Two scan boxes overlap."] }],
+  ]);
+  assert.deepEqual(pageCheck(states.get("p1")), { kind: "unprocessed", label: "Not processed", items: [] });
+  assert.deepEqual(pageCheck(states.get("p2")), { kind: "checked", label: "Checked", items: [] });
+  assert.equal(pageCheck(states.get("p3")).label, "2 to check");
+  assert.equal(pageCheck(states.get("p3")).items[0], "Possible missed line near the top.");
+  assert.deepEqual(pageCheck(states.get("p4")), { kind: "check", label: "To check", items: [] }, "processed and not yet marked checked");
+  assert.equal(pageCheck(states.get("p5")).label, "1 to check", "a checked page with something new to check");
+  assert.equal(pageCheck(states.get("p3"), true), null, "a dimmed page shows no state");
+  const suggested = page("p6");
+  suggested.source.suggestions = { text: {} };
+  assert.equal(pageCheck({ ...pageStages(accept(suggested, "regions"), types), flags: [] }).label, "1 to check");
+  const empty = page("p7");
+  empty.page.regions = [];
+  assert.equal(pageCheck({ ...pageStages(empty, types), flags: [] }).kind, "empty");
+
+  // "Next page to check" follows the same rule: past checked, unprocessed and dimmed pages, round to the start.
+  const pages = ["p1", "p2", "p3", "p4", "p5"].map(id => ({ id }));
+  assert.equal(nextPageToCheck(pages, states, "p1"), "p3");
+  assert.equal(nextPageToCheck(pages, states, "p3", id => id === "p4"), "p5");
+  assert.equal(nextPageToCheck(pages, states, "p5"), "p3");
+  assert.equal(nextPageToCheck(pages, new Map([["p1", states.get("p2")]]), "p1"), null);
+});
+
+test("the processing box is in full while pages wait or a run goes, and otherwise one line until opened", () => {
+  assert.equal(processingForm({ waiting: 3 }), "full");
+  assert.equal(processingForm({ waiting: 0, busy: true }), "full");
+  assert.equal(processingForm({ waiting: 0 }), "line");
+  assert.equal(processingForm({ waiting: 0, opened: true }), "full");
 });

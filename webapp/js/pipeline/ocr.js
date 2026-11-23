@@ -1,6 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
 import { bbox } from "../render.js";
-import { tesseractBlocks } from "../local/blocks.js?v=20261122-review-actions";
+import { tesseractBlocks } from "../local/blocks.js?v=20261123-tidy-1";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 

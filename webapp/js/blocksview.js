@@ -1,15 +1,15 @@
-import { TextPanel, renderInspector } from "./editor.js?v=20261122-review-actions";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261122-review-actions";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261122-review-actions";
+import { TextPanel, renderInspector } from "./editor.js?v=20261123-tidy-1";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261123-tidy-1";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-tidy-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261122-review-actions";
+import * as ops from "./ops.js?v=20261123-tidy-1";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261122-review-actions";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261122-review-actions";
-import { suggestionButton } from "./review-view.js?v=20261122-review-actions";
-import { unitPath } from "./editing.js?v=20261122-review-actions";
-import { pageReviewState } from "./layers.js?v=20261122-review-actions";
-import { noContent, REVIEW_LABELS } from "./workflow.js?v=20261122-review-actions";
+import { noteProblems } from "./note-links.js?v=20261123-tidy-1";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-tidy-1";
+import { suggestionButton } from "./review-view.js?v=20261123-tidy-1";
+import { unitPath } from "./editing.js?v=20261123-tidy-1";
+import { pageReviewState } from "./layers.js?v=20261123-tidy-1";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-tidy-1";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -110,7 +110,7 @@ export class BlocksPanel extends TextPanel {
       h("h2", {}, "Check this page"),
       !app.book.isSkipped(doc.page.id) && !noContent(doc) ? h("div", { class: "block-review-status" }, h("span", {}, REVIEW_LABELS[review.status]),
         app.book.writable ? h("button", { onclick: () => app.setPageReviewed(!review.checked) }, review.checked ? "Reopen review" : "Mark checked") : null) : null,
-      this.findings, this.reviewItem));
+      this.findings, this.reviewItem, h("div", { class: "actions" }, h("button", { onclick: () => this.nextPageToCheck() }, "Next page to check"))));
     this.refreshFindings();
     const ignored = ignoredLines(doc);
     if (ignored.length) el.firstChild.append(h("details", {}, h("summary", {}, `Ignored lines (${ignored.length})`),
@@ -146,19 +146,14 @@ export class BlocksPanel extends TextPanel {
       ? h("ul", {}, ...findings.map(({ text, label, action, leaveOut }) => h("li", {}, h("span", {}, text),
         h("div", { class: "actions" }, h("button", { onclick: action }, label),
           app.book.writable && leaveOut ? h("button", { onclick: leaveOut, title: "This area is outside the printed text." }, "Leave out") : null))))
-      : h("div", { class: "block-check-clear" }, h("span", {}, "Nothing to check here."),
-        h("button", { onclick: () => this.nextPageToCheck() }, "Next page to check")));
+      : h("div", { class: "block-check-clear" }, h("span", {}, "Nothing to check here.")));
   }
 
+  // The next page whose card on Pages has something to check (workflow.js's pageCheck).
   nextPageToCheck() {
-    const { app } = this, { book, pageStates } = app;
-    const from = book.index[app.pid];
-    const remaining = [...book.pages.slice(from + 1), ...book.pages.slice(0, from)];
-    const page = remaining.find(page => {
-      const state = pageStates.get(page.id);
-      return !book.isSkipped(page.id) && state?.doc && !noContent(state.doc) && (!state.checked || state.suggestion || blockChecks(app, state.doc, this.projection).length);
-    });
-    if (page) app.openPage(page.id);
+    const { app } = this, { book } = app;
+    const next = nextPageToCheck(book.pages, app.pageStates, app.pid, pid => book.isSkipped(pid));
+    if (next) app.openPage(next);
     else app.toast("Every page has been checked.");
   }
 

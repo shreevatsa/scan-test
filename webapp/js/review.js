@@ -1,13 +1,13 @@
-import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261122-review-actions";
-import { layerRecords } from "./layers.js?v=20261122-review-actions";
-import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261122-review-actions";
-import { checkDocument } from "./schema.js?v=20261122-review-actions";
+import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261123-tidy-1";
+import { layerRecords } from "./layers.js?v=20261123-tidy-1";
+import { mergeText, mergeCompletion } from "./pipeline/apply.js?v=20261123-tidy-1";
+import { checkDocument } from "./schema.js?v=20261123-tidy-1";
 import { markedText } from "./pipeline/split.js";
 import { structureDecisions } from "./pipeline/structure-compare.js";
-import { unitPath, unitRegionIds } from "./editing.js?v=20261122-review-actions";
-import { regionLayout } from "./pipeline/finders.js?v=20261122-review-actions";
-import { preserveMarkerIds } from "./marker-ids.js?v=20261122-review-actions";
-import { partialTextScope } from "./pipeline/partial-reading.js?v=20261122-review-actions";
+import { unitPath, unitRegionIds } from "./editing.js?v=20261123-tidy-1";
+import { regionLayout } from "./pipeline/finders.js?v=20261123-tidy-1";
+import { preserveMarkerIds } from "./marker-ids.js?v=20261123-tidy-1";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261123-tidy-1";
 
 export const reviewSnapshot = (doc, types) => canonical({ doc, types });
 const freeLayer = (doc, layer) => {

@@ -194,20 +194,21 @@ test("spending waits for a copy outside the browser that has the latest change",
   assert.equal(spendingBlock(copyState({ handle, written_at: 9, changed_at: 10 }, { error: "failed" })), "error");
 });
 
-test("the header names the copy's state, and warns only once the book holds work", () => {
+test("the header says where the book is saved, in plain words, and warns only once the book holds work", () => {
   const time = t => `t${t}`;
   assert.equal(copyLabel(copyState({}), { time }), null, "a new book with nothing in it");
-  assert.deepEqual(copyLabel(copyState({}), { hasWork: true, time }), { text: "No copy on disk", warn: true, action: "choose" });
-  assert.deepEqual(copyLabel(copyState({}), { hasWork: true, canPick: false, time }), { text: "No copy on disk", warn: true, action: "download" });
+  assert.deepEqual(copyLabel(copyState({}), { hasWork: true, time }), { text: "Saved in this browser", warn: true, action: "choose" });
+  assert.deepEqual(copyLabel(copyState({}), { hasWork: true, canPick: false, time }), { text: "Saved in this browser", warn: true, action: "download" });
   assert.deepEqual(copyLabel(copyState({ changed_at: 3, exported_at: 4 }), { canPick: false, time }),
-    { text: "No copy on disk · saved as a file t4", warn: false, action: "download" });
+    { text: "Saved in this browser", warn: false, action: "download" });
   assert.deepEqual(copyLabel(copyState({ changed_at: 5, exported_at: 4 }), { canPick: false, time }),
-    { text: "No copy on disk · saved as a file t4, changed since", warn: true, action: "download" });
+    { text: "Saved in this browser", warn: true, action: "download" });
   const handle = { name: "b.chaya.pdf" };
-  assert.equal(copyLabel(copyState({ handle, written_at: 7, changed_at: 6 }), { time }).text, "Copy on disk · written t7");
-  assert.equal(copyLabel(copyState({ handle, written_at: 7, changed_at: 8 }), { time }).text, "Copy on disk · written t7 · newer changes");
-  assert.equal(copyLabel(copyState({ handle }), { time }).text, "Copy on disk · not written yet");
-  assert.equal(copyLabel(copyState({ handle, written_at: 7 }, { writing: true }), { time }).text, "Copy on disk · writing…");
+  assert.deepEqual(copyLabel(copyState({ handle, name: handle.name, written_at: 7, changed_at: 6 }), { time }),
+    { text: "Saved to b.chaya.pdf", warn: false, action: null, when: "t7" });
+  assert.equal(copyLabel(copyState({ handle, name: handle.name, written_at: 7, changed_at: 8 }), { time }).text, "Saved in this browser · saving to b.chaya.pdf soon");
+  assert.equal(copyLabel(copyState({ handle, name: handle.name }), { time }).text, "Saved in this browser · saving to b.chaya.pdf soon");
+  assert.equal(copyLabel(copyState({ handle, name: handle.name, written_at: 7 }, { writing: true }), { time }).text, "Saving to b.chaya.pdf…");
 });
 
 test("the storage report says whether the browser keeps the books and how much they use", () => {

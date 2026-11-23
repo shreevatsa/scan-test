@@ -41,17 +41,15 @@ export function spendingBlock(state) {
 export function copyLabel(state, { hasWork = false, canPick = true, time = t => new Date(t).toLocaleString() } = {}) {
   const name = state.name || "the file";
   switch (state.kind) {
-    case "current": return { text: `Copy on disk · written ${time(state.writtenAt)}`, warn: false, action: null };
-    case "writing": return { text: "Copy on disk · writing…", warn: false, action: null };
-    case "stale": return state.writtenAt
-      ? { text: `Copy on disk · written ${time(state.writtenAt)} · newer changes`, warn: false, action: null }
-      : { text: "Copy on disk · not written yet", warn: false, action: null };
-    case "permission": return { text: `The browser needs permission again to write the copy on disk (${name})`, warn: true, action: "allow" };
-    case "error": return { text: `The copy on disk was not written: ${state.error}`, warn: true, action: "retry" };
+    case "current": return { text: `Saved to ${name}`, warn: false, action: null, when: state.writtenAt ? time(state.writtenAt) : null };
+    case "writing": return { text: `Saving to ${name}…`, warn: false, action: null };
+    case "stale": return { text: `Saved in this browser · saving to ${name} soon`, warn: false, action: null,
+      when: state.writtenAt ? time(state.writtenAt) : null };
+    case "permission": return { text: `Not saved to ${name}: the browser needs permission again`, warn: true, action: "allow" };
+    case "error": return { text: `Not saved to ${name}: ${state.error}`, warn: true, action: "retry" };
     default: {
       if (!hasWork && !state.changedAt && !state.exportedAt) return null;
-      const saved = state.exportedAt ? ` · saved as a file ${time(state.exportedAt)}${state.unsaved ? ", changed since" : ""}` : "";
-      return { text: `No copy on disk${saved}`, warn: state.unsaved, action: canPick ? "choose" : "download" };
+      return { text: "Saved in this browser", warn: state.unsaved, action: canPick ? "choose" : "download" };
     }
   }
 }

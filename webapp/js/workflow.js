@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261122-review-actions";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-review-actions";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261122-review-actions";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261122-review-actions";
+import { typeRevision } from "./schema.js?v=20261123-tidy-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-tidy-1";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261123-tidy-1";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261123-tidy-1";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
@@ -69,6 +69,31 @@ export function nextProcessingStage(state) {
   if (!state.valid || noContent(state.doc) || state.doc.source?.suggestions?.text) return null;
   return !state.readable || state.missing ? "text" : null;
 }
+
+// The one state a page card shows: null for a dimmed page; "unprocessed" while the page waits to be processed;
+// "check" with the things to check on it (its flags and a waiting suggestion), or with none while a processed page has
+// not been marked checked; "checked"; or "empty" for a page with no content. "Next page to check" follows the same rule.
+export function pageCheck(state, dimmed = false) {
+  if (dimmed) return null;
+  const items = [...(state?.flags || [])];
+  if (!state?.doc || nextProcessingStage(state)) return { kind: "unprocessed", label: "Not processed", items };
+  if (state.suggestion) items.push("A model suggestion is waiting.");
+  if (items.length) return { kind: "check", label: `${items.length} to check`, items };
+  if (noContent(state.doc)) return { kind: "empty", label: "No content", items };
+  if (state.checked) return { kind: "checked", label: "Checked", items };
+  return { kind: "check", label: "To check", items };
+}
+
+// The next page after `fromId` (going round to the start) whose card says there is something to check, or null.
+export function nextPageToCheck(pages, states, fromId, dimmed = () => false) {
+  const from = pages.findIndex(page => page.id === fromId);
+  const order = [...pages.slice(from + 1), ...pages.slice(0, Math.max(from, 0))];
+  return order.find(page => pageCheck(states.get(page.id), dimmed(page.id))?.kind === "check")?.id || null;
+}
+
+// The processing box on Pages is shown in full while pages wait to be processed, while a run goes, or once opened;
+// otherwise it is one line.
+export const processingForm = ({ waiting = 0, busy = false, opened = false } = {}) => waiting || busy || opened ? "full" : "line";
 
 export function workflowRoute(value) {
   const hash = new URLSearchParams(value.replace(/^#/, ""));

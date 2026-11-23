@@ -7,12 +7,12 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261122-review-actions";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261122-review-actions";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261122-review-actions";
-import { canonical } from "./ops.js?v=20261122-review-actions";
-import { checkDocument, typeRevision } from "./schema.js?v=20261122-review-actions";
-import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261122-review-actions";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261123-tidy-1";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261123-tidy-1";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261123-tidy-1";
+import { canonical } from "./ops.js?v=20261123-tidy-1";
+import { checkDocument, typeRevision } from "./schema.js?v=20261123-tidy-1";
+import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261123-tidy-1";
 
 const bookWrites = new Map();
 

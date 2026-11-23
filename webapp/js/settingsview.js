@@ -1,11 +1,11 @@
 import { h } from "./render.js";
-import { settings } from "./store.js?v=20261122-review-actions";
-import { credentialsBox } from "./key-check.js?v=20261122-review-actions";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261122-review-actions";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261122-review-actions";
-import { renderTypeView, surveyBox } from "./typesview.js?v=20261122-review-actions";
-import { renderFinders } from "./findersview.js?v=20261122-review-actions";
-import { proposalsBox } from "./proposals-view.js?v=20261122-review-actions";
+import { settings } from "./store.js?v=20261123-tidy-1";
+import { credentialsBox } from "./key-check.js?v=20261123-tidy-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-tidy-1";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-tidy-1";
+import { renderTypeView, surveyBox } from "./typesview.js?v=20261123-tidy-1";
+import { renderFinders } from "./findersview.js?v=20261123-tidy-1";
+import { proposalsBox } from "./proposals-view.js?v=20261123-tidy-1";
 
 export async function renderBookSettings(el, app) {
   const { book, routeToken } = app;
@@ -83,8 +83,8 @@ export async function renderBookSettings(el, app) {
     };
     comparisons.addEventListener("toggle", showComparison);
     workspace.append(h("div", { class: "fields" }, h("label", {}, "Region finder ", finder),
-      h("label", {}, "Transcription model ", reader), h("label", {}, "OCR language pack ", language)), credentials.element);
-    advanced.append(typeSection, proposals.element, survey?.element,
+      h("label", {}, "Transcription model ", reader)), credentials.element);
+    advanced.append(h("div", { class: "fields" }, h("label", {}, "OCR language pack ", language)), typeSection, proposals.element, survey?.element,
       h("p", {}, h("a", { href: "#settings&view=readers" }, "Compare transcription models")), comparisons);
     workspace.append(advanced);
     await proposals.refresh();

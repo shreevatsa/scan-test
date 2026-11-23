@@ -1,5 +1,5 @@
-import { ownerOf } from "./ops.js?v=20261122-review-actions";
-import { checkPage } from "./schema.js?v=20261122-review-actions";
+import { ownerOf } from "./ops.js?v=20261123-tidy-1";
+import { checkPage } from "./schema.js?v=20261123-tidy-1";
 
 export function readingIssues(docs, types, validate, warnings, canonical) {
   const issues = [];

@@ -1,39 +1,39 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261122-review-actions";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261122-review-actions";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261122-review-actions";
-import { RECIPE } from "./recipe.js?v=20261122-review-actions";
-import { readerOptions } from "./pipeline/readers.js?v=20261122-review-actions";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261123-tidy-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261123-tidy-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261123-tidy-1";
+import { RECIPE } from "./recipe.js?v=20261123-tidy-1";
+import { readerOptions } from "./pipeline/readers.js?v=20261123-tidy-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261122-review-actions";
-import { blockName, readingProjection } from "./blocks.js?v=20261122-review-actions";
-import { PageView } from "./pageimage.js?v=20261122-review-actions";
-import { markerForm } from "./editor.js?v=20261122-review-actions";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261122-review-actions";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261122-review-actions";
-import { renderStyle } from "./styleview.js?v=20261122-review-actions";
-import { typeSetup } from "./type-setup.js?v=20261122-review-actions";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261123-tidy-1";
+import { blockName, readingProjection } from "./blocks.js?v=20261123-tidy-1";
+import { PageView } from "./pageimage.js?v=20261123-tidy-1";
+import { markerForm } from "./editor.js?v=20261123-tidy-1";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261123-tidy-1";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261123-tidy-1";
+import { renderStyle } from "./styleview.js?v=20261123-tidy-1";
+import { typeSetup } from "./type-setup.js?v=20261123-tidy-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261122-review-actions";
-import { EditError } from "./ops.js?v=20261122-review-actions";
-import { Maker, post } from "./pipeline/run.js?v=20261122-review-actions";
-import { CredentialChecks } from "./key-check.js?v=20261122-review-actions";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261122-review-actions";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, stageFlags, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261122-review-actions";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261122-review-actions";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261122-review-actions";
-import { orderedRegions } from "./flags.js?v=20261122-review-actions";
-import { assemble } from "./assemble.js?v=20261122-review-actions";
-import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261122-review-actions";
-import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261122-review-actions";
-import { renderPages } from "./pagesview.js?v=20261122-review-actions";
-import { settings } from "./store.js?v=20261122-review-actions";
-import { renderReaders } from "./readersview.js?v=20261122-review-actions";
-import { renderBookSettings } from "./settingsview.js?v=20261122-review-actions";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261122-review-actions";
-import { pageMenu } from "./page-actions.js?v=20261122-review-actions";
+import * as ops from "./ops.js?v=20261123-tidy-1";
+import { EditError } from "./ops.js?v=20261123-tidy-1";
+import { Maker, post } from "./pipeline/run.js?v=20261123-tidy-1";
+import { CredentialChecks } from "./key-check.js?v=20261123-tidy-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261123-tidy-1";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261123-tidy-1";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-tidy-1";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261123-tidy-1";
+import { orderedRegions } from "./flags.js?v=20261123-tidy-1";
+import { assemble } from "./assemble.js?v=20261123-tidy-1";
+import { assertFocusEdit, editorFocus, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261123-tidy-1";
+import { joinFollowingUnit, unitSnapshot } from "./reading-edit.js?v=20261123-tidy-1";
+import { renderPages } from "./pagesview.js?v=20261123-tidy-1";
+import { settings } from "./store.js?v=20261123-tidy-1";
+import { renderReaders } from "./readersview.js?v=20261123-tidy-1";
+import { renderBookSettings } from "./settingsview.js?v=20261123-tidy-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261123-tidy-1";
+import { pageMenu } from "./page-actions.js?v=20261123-tidy-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -369,9 +369,10 @@ class App {
     el.className = `copy-status${label?.warn ? " warn" : ""}`;
     if (!label) { el.replaceChildren(); return; }
     const state = copy.state;
-    el.title = state.disk ? `${state.name}: written again after each processing run, after review marks change, and at most every five minutes while there are changes.` : "";
+    el.title = state.disk ? `${label.when ? `Last saved to ${state.name} ${label.when}. ` : ""}It is saved again after each processing run, after review marks change, and at most every five minutes while there are changes.`
+      : "Books are kept in this browser’s storage. A file on disk keeps the book if the browser clears it.";
     const actions = {
-      choose: ["Keep a copy on disk…", () => this.chooseDiskCopy()],
+      choose: ["Save to a file…", () => this.chooseDiskCopy()],
       download: ["Download .chaya.pdf", () => this.saveChaya(this.book)],
       allow: ["Allow writing", () => copy.allow()],
       retry: ["Try again", () => copy.write()] };
@@ -395,7 +396,7 @@ class App {
           : `This book has no copy outside this browser${state.exportedAt ? ` with its latest changes (it was last saved as a file ${shortTime(state.exportedAt)})` : ""}. This run spends money on model calls, and if the browser loses its storage the results are lost with it.`;
       const primary = block === "permission" ? ["Allow writing", () => copy.allow()]
         : block === "error" ? ["Try writing it again", () => copy.write()]
-          : window.showSaveFilePicker ? ["Keep a copy on disk…", () => this.chooseDiskCopy()] : ["Download .chaya.pdf", () => this.saveChaya(this.book)];
+          : window.showSaveFilePicker ? ["Save to a file…", () => this.chooseDiskCopy()] : ["Download .chaya.pdf", () => this.saveChaya(this.book)];
       const go = h("button", { class: "primary", onclick: async () => {
         go.disabled = true;
         try {
@@ -712,13 +713,7 @@ class App {
       h("button", { class: "book-settings", onclick: () => this.setMode("settings") }, "Settings"),
       h("span", { class: "nav" }, h("button", { title: "previous page (Alt ←)", onclick: () => this.step(-1) }, "←"), pageSel, h("button", { title: "next page (Alt →)", onclick: () => this.step(1) }, "→")),
       h("span", { class: "undo" }, h("button", { title: "undo (⌘Z)", onclick: () => this.undo() }, "↶"), h("button", { title: "redo (⇧⌘Z)", onclick: () => this.redo() }, "↷")),
-      h("span", { class: "page-stage-links" },
-        h("button", { class: "mini", title: "the next page with flags at the stage it waits at", onclick: () => {
-          // Each page's flags at the stage it waits at, as Pages shows them.
-          const ids = book.pages.filter(page => this.pageStates.get(page.id) && stageFlags(this.pageStates.get(page.id), "pages").length).map(page => page.id);
-          const next = ids.find(pid => book.index[pid] > book.index[this.pid]) || ids[0];
-          if (next) this.openPage(next);
-        } }, "Next flagged page")), this.status, this.copyStatus = h("span", { class: "copy-status" }));
+      this.status, this.copyStatus = h("span", { class: "copy-status" }));
     this.main = h("main", {});
     this.root.replaceChildren(this.header, this.main);
     this.renderCopyStatus();
@@ -1118,7 +1113,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261122-review-actions", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261123-tidy-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
@@ -1299,14 +1294,14 @@ class App {
       const when = "after each processing run, after review marks change, and at most every five minutes while there are changes";
       copySection.replaceChildren(...[h("h3", {}, "Copies of this book"),
         h("p", { class: this.storage?.persisted === false ? "warn" : "meta" }, storageText(this.storage || {})),
-        state?.disk ? [h("p", { class: label.warn ? "warn" : "" }, `${label.text}. The file ${state.name} is written again ${when}.`),
+        state?.disk ? [h("p", { class: label.warn ? "warn" : "" }, `${label.text}. It is saved again ${when}.`),
           h("div", { class: "actions" }, state.kind === "permission" ? h("button", { class: "primary", onclick: () => copy.allow() }, "Allow writing")
             : h("button", { disabled: state.kind === "writing", onclick: () => copy.write() }, "Write it now"),
           h("button", { onclick: () => this.chooseDiskCopy() }, "Choose another file…"),
           h("button", { onclick: () => copy.forget() }, "Stop keeping a copy"))]
-          : window.showSaveFilePicker ? [h("p", { class: label?.warn ? "warn" : "" }, `${label?.text || "No copy on disk"}. Choose a file once, and the book is written to it as a .chaya.pdf ${when}. If this browser loses the book, open that file again.`),
-            h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => this.chooseDiskCopy() }, "Keep a copy on disk…"))]
-            : h("p", { class: label?.warn ? "warn" : "" }, `${label?.text || "No copy on disk"}. This browser cannot keep a file up to date: save the .chaya.pdf below after each session’s work.`)].flat());
+          : window.showSaveFilePicker ? [h("p", { class: label?.warn ? "warn" : "" }, `${label?.text || "Saved in this browser"}. Choose a file once, and the book is written to it as a .chaya.pdf ${when}. If this browser loses the book, open that file again.`),
+            h("div", { class: "actions" }, h("button", { class: "primary", onclick: () => this.chooseDiskCopy() }, "Save to a file…"))]
+            : h("p", { class: label?.warn ? "warn" : "" }, `${label?.text || "Saved in this browser"}. This browser cannot keep a file up to date: save the .chaya.pdf below after each session’s work.`)].flat());
     };
     if (copySection) storagePersistence().then(value => { this.storage = value; this.renderCopySection(); }).catch(() => {});
     el.replaceChildren(h("div", { class: "exportview" },
