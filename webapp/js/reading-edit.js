@@ -1,9 +1,9 @@
-import * as ops from "./ops.js?v=20261123-hydrogen-1";
-import { assertJoinMetadata, joinPageUnits, joinPartnerId } from "./editing.js?v=20261123-hydrogen-1";
-import { layerState } from "./layers.js?v=20261123-hydrogen-1";
-import { checkPage } from "./schema.js?v=20261123-hydrogen-1";
+import * as ops from "./ops.js?v=20261123-blocks-a";
+import { assertJoinMetadata, joinPageUnits, joinPartnerId } from "./editing.js?v=20261123-blocks-a";
+import { layerState } from "./layers.js?v=20261123-blocks-a";
+import { checkPage } from "./schema.js?v=20261123-blocks-a";
 
-export { unitSnapshot } from "./editing.js?v=20261123-hydrogen-1";
+export { unitSnapshot } from "./editing.js?v=20261123-blocks-a";
 
 export async function joinFollowingUnit(app, pid, uid, expected = new Map()) {
   const book = app.book, current = await book.current(pid, { refresh: true }), place = ops.placeOf(current, uid);

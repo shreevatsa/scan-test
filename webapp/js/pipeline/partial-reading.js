@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261123-hydrogen-1";
+import { canonical } from "../ops.js?v=20261123-blocks-a";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {

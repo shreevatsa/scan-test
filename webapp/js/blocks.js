@@ -1,14 +1,14 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-hydrogen-1";
-import { orderedRegions } from "./flags.js?v=20261123-hydrogen-1";
-import { pageLabel } from "./pipeline/steps.js?v=20261123-hydrogen-1";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261123-hydrogen-1";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261123-hydrogen-1";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261123-hydrogen-1";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261123-hydrogen-1";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-a";
+import { orderedRegions } from "./flags.js?v=20261123-blocks-a";
+import { pageLabel } from "./pipeline/steps.js?v=20261123-blocks-a";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261123-blocks-a";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-a";
+import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261123-blocks-a";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261123-blocks-a";
 import { cp, shiftSpans } from "./inline.js";
-import { layerState } from "./layers.js?v=20261123-hydrogen-1";
-import { readingDocuments } from "./workflow.js?v=20261123-hydrogen-1";
+import { layerState } from "./layers.js?v=20261123-blocks-a";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-a";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
@@ -21,10 +21,10 @@ export function blockLineEnd(line, region, types) {
   return "space";
 }
 
-const counts = Object.fromEntries(DEFAULT_COUNTS.split(",").map(pair => pair.split("=")).map(([name, n]) => [name, Number(n)]));
-const partLabels = ["बालकाण्डम् – अयोध्याकाण्डम्", "अरण्यकाण्डम्", "किष्किन्धाकाण्डम्", "सुन्दरकाण्डम्", "युद्धकाण्डम्", "", "उत्तरकाण्डम्"];
+export const counts = Object.fromEntries(DEFAULT_COUNTS.split(",").map(pair => pair.split("=")).map(([name, n]) => [name, Number(n)]));
+export const partLabels = ["बालकाण्डम् – अयोध्याकाण्डम्", "अरण्यकाण्डम्", "किष्किन्धाकाण्डम्", "सुन्दरकाण्डम्", "युद्धकाण्डम्", "", "उत्तरकाण्डम्"];
 const ridOf = ref => ref.split("#").pop();
-const textOf = (doc, unit) => unit.children.filter(child => child.region)
+export const textOf = (doc, unit) => unit.children.filter(child => child.region)
   .flatMap(child => doc.page.regions.find(region => region.id === ridOf(child.region))?.lines || [])
   .map(line => line.text || "").join(" ");
 
@@ -56,10 +56,14 @@ function numberPages(docs, report) {
   }
 }
 
+// The Rāmāyaṇa-mañjarī's own section rules (parts headed by काण्ड, divisions closed by किष्किन्धापर्व).
+export const isRamayana = (tl, firstPageId) => /^ramayanamamjari00ksemuoft(?:$|-)/.test(tl.book_id || firstPageId || "");
+export const ramayanaSections = { partHeading: /काण्ड/, divisionClosing: /किष्किन्धापर्व/ };
+
 export function projectBlocks(pages, saved, types, skipped) {
   const source = readingDocuments(pages, saved, skipped);
   const tl = structuredClone(types);
-  const ramayana = /^ramayanamamjari00ksemuoft(?:$|-)/.test(tl.book_id || pages[0]?.id || "");
+  const ramayana = isRamayana(tl, pages[0]?.id);
   const groupMarkers = Boolean(tl.types.verse_group_marker);
   const closeSections = Boolean(tl.types.section && tl.types.section_closing);
   if (groupMarkers && !tl.types.verse_group) tl.types.verse_group = { flow: "main", contains: ["verse", "verse_group_marker"], description: "A group of verses." };
@@ -95,7 +99,7 @@ export function projectBlocks(pages, saved, types, skipped) {
   }
   if (closeSections) {
     const items = sectionKeys(present, { closing: "section_closing", partClosing: /कथासारे/, textOf,
-      ...(ramayana ? { partHeading: /काण्ड/, divisionClosing: /किष्किन्धापर्व/ } : {}) });
+      ...(ramayana ? ramayanaSections : {}) });
     const byPage = Map.groupBy(items, item => item.pageIndex);
     const section = tl.types.section;
     section.contains = [...new Set([...section.contains, ...items.filter(item => item.part !== null).map(item => item.unit.type)])];

@@ -1,16 +1,16 @@
-import { TextPanel, renderInspector } from "./editor.js?v=20261123-hydrogen-1";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261123-hydrogen-1";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-hydrogen-1";
+import { TextPanel, renderInspector } from "./editor.js?v=20261123-blocks-a";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261123-blocks-a";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-a";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-hydrogen-1";
+import * as ops from "./ops.js?v=20261123-blocks-a";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-hydrogen-1";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-hydrogen-1";
-import { suggestionButton } from "./review-view.js?v=20261123-hydrogen-1";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-hydrogen-1";
-import { unitPath } from "./editing.js?v=20261123-hydrogen-1";
-import { pageReviewState } from "./layers.js?v=20261123-hydrogen-1";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-hydrogen-1";
+import { noteProblems } from "./note-links.js?v=20261123-blocks-a";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-a";
+import { suggestionButton } from "./review-view.js?v=20261123-blocks-a";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-a";
+import { unitPath } from "./editing.js?v=20261123-blocks-a";
+import { pageReviewState } from "./layers.js?v=20261123-blocks-a";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-a";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

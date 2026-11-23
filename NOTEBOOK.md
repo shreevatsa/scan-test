@@ -5285,3 +5285,25 @@ Sent method 097's region request (prompt, page image, schema) to Gemini 4 Hydrog
 ### 2026-11-22 The app reads like method 100
 
 Added the reader "Gemini 4 Hydrogen · low thinking · whole page" (method 100's request: one page image, the regions listed in the prompt) as the first reader and the default for new books. No model was called. Tested on three pages of the Rāmāyaṇa-mañjarī (PDF 25, 60, 150) from method 100's saved calls (`webapp/test/fixtures/method-100-pages.json`): the prompt is method 100's text; applying the saved answer gives the same lines and note markers as the reading in `ramayana-manjari-read.chaya.pdf`, and the same as the finished book in the regions the rule tools leave alone; a line count that differs keeps the old text and is flagged; a person's text turns the result into a suggestion; the saved calls' costs come out at Hydrogen's rates, and a stubbed run enters the ledger before sending and reuses the reading until a box moves. In a fresh headless Chrome, a new book from Kale's PDF chose Hydrogen in Settings and the Pages box read "reading about $4.79 at $0.019 a page" for 252 pages.
+
+## 2026-11-22 Blocks form, stage A (schema 0.4)
+
+Built the blocks form of a page document (`schema/README.md`, "Blocks (draft 0.4)"): the regions unchanged and an `overrides` object holding only what derivation from the regions and the book's rules does not give. `webapp/js/blocks-format.js` has `toBlocks` and `fromBlocks` (units, flows and relations derived with the existing rule modules, as in the reader's projection but with no change to any text), `blocksContext` for the cross-page information, and `assembledStructure` for comparing two sets of pages. The app's storage, editor, reader and exports are unchanged. No model calls.
+
+Proof: for every page of both finished books (edits/ over pages/, dimmed pages left out), `fromBlocks(toBlocks(doc))` gave the same units (types, children, numbers, labels, open flags, styles, languages), flows and note links, the same regions untouched, and the same assembled book and the same assembly warnings (252 of 252 Kale pages, 517 of 517 Rāmāyaṇa-mañjarī pages). Unit ids differ; the comparison is by structure and region membership. Not kept: unit and relation `source` (except the editor's mark on a name), a note link's `from.region` and `from.line` where its anchor is present, and, because the finished books do not store them, derived verse and closing-line numbers.
+
+What the conversion needs (`node webapp/tools/chaya_blocks.mjs IN OUT`):
+
+| Override | Kale 1913 | Rāmāyaṇa-mañjarī |
+|---|---:|---:|
+| Pages with any | 252 of 252 | 11 of 517 |
+| Explicit units (`groups`) | 1,431 (487 containers, 944 single units) | 24, on the four hand-shaped title pages |
+| Unit number | 1,025 (498 differ from the printed number only in digit script, 520 where the rules give none, 7 the rules give and the page lacks) | 0 |
+| Unit label | 463 | 0 |
+| Unit open flag (continuation across a page edge) | 3 | 7 |
+| Note link set / removed | 8 / 7 | 0 / 0 |
+| Flow order, unowned blocks | 0 | 0 |
+
+Size of the stored page documents (JSON bytes, deflated in parentheses): Kale 15,686,752 → 15,447,518 (4,578,053 → 4,539,536); Rāmāyaṇa-mañjarī 21,995,247 → 20,639,171 (5,073,242 → 4,842,927). The units, flows and relations part is 360,111 bytes in Kale and 1,365,084 in the Rāmāyaṇa-mañjarī; the overrides that replace it are 117,349 and 1,770. Polygons dominate the pages, so the whole-file saving is small; the structure that people must keep is what shrinks.
+
+Reading the counts: the Rāmāyaṇa-mañjarī's sections, verse groups, note links and the printed numbers (kept in the text) all come from rules, so only its hand-made front matter and seven page-edge continuations remain. Kale's groups, stanza numbers and labels came from a model and are the authored structure that remains. Line ends stay on the line pieces, so the line joins the 2026-11-21 audit listed are not part of the overrides. Public fixtures: `webapp/test/fixtures/blocks-pages.json` (six runs from both books, polygons removed); `webapp/test/blocks-format.test.mjs` also reads the two private books when present.

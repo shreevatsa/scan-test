@@ -288,3 +288,49 @@ Each example directory has the hand-written `tree.txt` and the generated `tree-p
   The list used by the first run (`book-001`) is saved as `type-list.json` with each of its results.
 - **Ten Princes, Nītiśataka 1896 and 1914, Vavilla and the Gita (the user's review of Claude's drafts):** accepted as drafted ("Yes all this sounds good. Go ahead"), after Claude's summary of each list and its test. That includes a Ten Princes chapter's number and title as one heading, the Nītiśataka below-rule notes as their own flow with one region per note or parallel, and the Gita's speaker lines as plain units rather than containers.
 
+
+## Blocks (draft 0.4, 2026-11-22)
+
+Draft 0.4 is a second form of the page document, for the plan to store only what a person or model produced and to derive the rest. It is built and proved (`webapp/js/blocks-format.js`) but not written by the app yet, and `schema.json` still describes 0.3 only. A 0.4 page document has:
+- `format: "page"`, `schema_version: "0.4"`, `book_id`, `page` and `source`, exactly as in 0.3. The regions (the **blocks**) are unchanged: type, box, polygons, reading order, line pieces with `text`, `spans` and `end`, and `source`, with its `continues_from_earlier` and `continues_later` flags. Line ends and note-marker spans stay on the line pieces;
+- no `units`, `flows` or `relations`;
+- `overrides`, an object (empty `{}` where the rules give the whole structure) holding only what derivation does not give.
+
+**Derivation.** `fromBlocks(page, types, context)` rebuilds `units`, `flows` and `relations` from the regions and the book's rules, with the rule modules the reader already uses:
+1. one unit per block, placed by the type list's containment (`provisionalUnits`), and a unit open at the page edge where its block says it continues (the first and last pages of the book are not open outwards);
+2. verse groups from their markers, and, in a book whose type list has `section` and `section_closing`, the parts and episodes from the closing lines (`verse-group-rules.js`, `section-rules.js`, with the Rāmāyaṇa-mañjarī's own settings);
+3. note links: each marker to the note on its page with the same printed number, and that number on the note unit (`note-links.js`);
+4. the overrides.
+
+`context` is `blocksContext(pages)`: the book's page documents in order (0.3 or 0.4, only their regions are read), null for a page that is not there, with dimmed pages left out. The rules need it for the book's first and last page and for the sections, whose parts and episodes are counted from the start of the book. It derives the whole book once and keeps the result. `toBlocks(doc, types, context)` is the inverse: the overrides are exactly the difference between the saved 0.3 structure and that derivation, so `fromBlocks(toBlocks(doc))` gives back the same structure.
+
+**A unit's key** is its type and its first block, such as `verse@r4`; where a unit contains one of the same type that starts with the same block (an episode opening a part), the inner one is `section@r3#2`. An override names a unit by its key.
+
+**`overrides.groups`** (units the rules do not give). Each is the top of a tree written out in full; it replaces every derived unit that shares a block with it. A group is:
+- a block id, `"r4"`: a unit of that block's type made of that block alone, with no attributes;
+- `{ "type", "blocks": ["r4", "r5"], …attributes }`: a unit made of those blocks (a verse printed in two pieces, or one with a number);
+- `{ "type", "members": [group…], …attributes }`: a container of units. A member `{ "block": "r5" }` is one of its own blocks (a unit that has both blocks and child units);
+- a top-level group has `"flow"` only where the type's own flow is not the one it stands in;
+- attributes: `number`, `label`, `lang`, `style` (as in a unit), `open` (`{ "start": true, "end": true }`, units that continue from or onto another page) and `label_source: "editor"` (the name is the editor's, shown in parentheses).
+
+```json
+"groups": [{ "type": "group", "number": "47", "members": [
+  "r3", { "type": "verse", "blocks": ["r4"], "number": "47" }, { "type": "commentary", "blocks": ["r5"], "open": { "end": true } }],
+  "open": { "end": true } }]
+```
+Why: Kale's groups (a lead-in, a verse and its commentary) and the Rāmāyaṇa-mañjarī's hand-shaped title pages come from a person or model, and no rule reproduces them. A unit that joins several blocks on one page (the printed verse split by a figure) is one too.
+
+**`overrides.unowned`**: block ids that belong to no unit, though the rules would give one (`["r9"]`). None occur in the two books; kept for pages where a block was left out of the structure.
+
+**`overrides.units`**: attributes where the rules give the same units but other attributes. A map from a unit key to `{ attribute: value }`, a value of null meaning the derived attribute is removed. This is how a number, label, language, style or open flag that the rules do not give is stored, including a continuation across the page edge that the block flags do not give.
+```json
+"units": { "footnote@r10": { "number": "1" }, "section@r3": { "open": { "start": true } }, "section_closing@r12": { "label": null } }
+```
+
+**`overrides.order`**: `{ "main": ["section@r3", "heading@r9"] }`, a flow's top-level units in order, where position by reading order does not give the saved order. (None occur.)
+
+**`overrides.links`**: note links that differ from the same-number rule. Each is `{ "from": { "anchor": "<page id>#<span id>", "marker": "१" }, "to": "footnote@r12" }`, the `from` as saved and the note by key; `"to": null` removes a link the rule would make; `"type"` appears only for a relation that is not a note link. A marker with no anchor (a position in a line) keeps its `region`, `line` and `marker`.
+
+**What is not kept.** Unit and relation `source` (the record of which rule made them), except `label_source`; a note link's `from.region` and `from.line` where the anchor is present (they repeat it); the order of the `units` list and generated ids (`u1`, `g1`). The verse and closing-line numbers the reader derives from the printed text are not stored in units, because the finished books do not store them: the text carries them.
+
+The command-line tool `webapp/tools/chaya_blocks.mjs IN OUT` writes a converted copy of a book and prints the counts of each kind of override.

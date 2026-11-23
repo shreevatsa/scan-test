@@ -1,9 +1,9 @@
 import { h } from "./render.js";
-import { settings } from "./store.js?v=20261123-hydrogen-1";
-import { credentialsBox } from "./key-check.js?v=20261123-hydrogen-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-hydrogen-1";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-hydrogen-1";
-import { renderTypeView } from "./typesview.js?v=20261123-hydrogen-1";
+import { settings } from "./store.js?v=20261123-blocks-a";
+import { credentialsBox } from "./key-check.js?v=20261123-blocks-a";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-blocks-a";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-blocks-a";
+import { renderTypeView } from "./typesview.js?v=20261123-blocks-a";
 
 export async function renderBookSettings(el, app) {
   const { book, routeToken } = app;

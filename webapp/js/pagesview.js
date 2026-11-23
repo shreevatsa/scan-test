@@ -1,14 +1,14 @@
-import { suggestionButton } from "./review-view.js?v=20261123-hydrogen-1";
+import { suggestionButton } from "./review-view.js?v=20261123-blocks-a";
 import { h } from "./render.js";
-import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-hydrogen-1";
+import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-blocks-a";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-hydrogen-1";
-import { READERS } from "./pipeline/readers.js?v=20261123-hydrogen-1";
-import { pageCost, dollars, costBasis } from "./recipe.js?v=20261123-hydrogen-1";
-import { finderById } from "./pipeline/finders.js?v=20261123-hydrogen-1";
-import { runBatch } from "./pipeline/batch.js?v=20261123-hydrogen-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-blocks-a";
+import { READERS } from "./pipeline/readers.js?v=20261123-blocks-a";
+import { pageCost, dollars, costBasis } from "./recipe.js?v=20261123-blocks-a";
+import { finderById } from "./pipeline/finders.js?v=20261123-blocks-a";
+import { runBatch } from "./pipeline/batch.js?v=20261123-blocks-a";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261123-hydrogen-1";
+import { money } from "./reader-controls.js?v=20261123-blocks-a";
 
 export async function renderPages(el, app) {
   const { book, routeToken } = app;
