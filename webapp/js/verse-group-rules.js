@@ -1,4 +1,4 @@
-import { splitRegionAt } from "./ops.js?v=20261123-blocks-b2-2";
+import { ownerOf, regionRef, splitRegionAt, splitUnit } from "./ops.js?v=20261123-blocks-b2-3";
 
 export const DEFAULT_COUNTS = "युगलकम्=2,युग्मम्=2,तिलकम्=3,विशेषकम्=3,कलापकम्=4,कुलकम्=5";
 
@@ -12,7 +12,11 @@ export function groupVerses(doc, { counts, markerType = "verse_group_marker", ve
     if (unit.type !== verseType) continue;
     const region = regionOf(unit), last = region?.lines?.at(-1);
     if (!region || region.lines.length < 2 || !word.test(last.text || "") || (last.text || "").replace(word, "").trim()) continue;
-    const id = splitRegionAt(doc, region.id, region.lines.length - 1, true);
+    const id = splitRegionAt(doc, region.id, region.lines.length - 1);
+    // The piece is a unit of its own, right after the verse's.
+    const holder = ownerOf(doc, region.id), at = holder.children.findIndex(c => c.region === regionRef(doc, region.id));
+    holder.children.splice(at + 1, 0, { region: regionRef(doc, id) });
+    splitUnit(doc, holder.id, at + 1);
     const piece = doc.page.regions.find(r => r.id === id);
     piece.type = markerType; piece.source = { ...piece.source, split_from: region.id, by: "webapp/tools/chaya_verse_groups.mjs" };
     const owner = doc.units.find(u => u.children.some(c => c.region?.split("#").pop() === id));

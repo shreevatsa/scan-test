@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 import { makeValidator, checkPage } from "../js/schema.js";
 const rebuildProvisional = doc => doc;
 import { layerState, noteEdit } from "../js/layers.js";
-import { editorFocus, assertFocusEdit } from "../js/editing.js";
+import { editorFocus } from "../js/editing.js";
 import * as ops from "../js/ops.js";
 
 const validate = makeValidator(JSON.parse(readFileSync(new URL("../schema.json", import.meta.url))));

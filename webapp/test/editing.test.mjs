@@ -2,11 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { makeValidator, checkPage } from "../js/schema.js";
-import { editorFocus, assertFocusEdit, assertJoinMetadata, joinPageUnits, nextPageUnit, unitSnapshot, mergeTextEdit, applyUnitAction, applyUnitChanges } from "../js/editing.js";
+import { editorFocus, mergeTextEdit } from "../js/editing.js";
 import { layerState, noteEdit } from "../js/layers.js";
 import { prepare, bookHtml, bookText } from "../js/reader.js";
-import { readingIssues } from "../js/read-panel.js";
-import { joinFollowingUnit } from "../js/reading-edit.js";
 import { Book, idb } from "../js/store.js";
 import * as ops from "../js/ops.js";
 
@@ -24,27 +22,6 @@ function page(pid = "p1") {
     source: { layers: Object.fromEntries(["regions", "text"].map(layer => [layer, { state: "model", types_revision: 1, accepted_at_utc: "reviewed" }])) } };
 }
 
-test("cross-page joins open matching ancestor paths and assemble to one unit without warnings", () => {
-  const left = page(), right = page("p2"), original = ops.clone([left, right]);
-  const [a, b] = joinPageUnits(left, right, types, "u3", check);
-  assert.deepEqual(check(a), []); assert.deepEqual(check(b), []);
-  const P = prepare([a, b], types);
-  assert.deepEqual(P.warnings, []); assert.equal(P.book.units.length, 4);
-  assert.deepEqual(P.unitFragments["p1#u3"], [{ page: "p1", unit: "u3" }, { page: "p2", unit: "u2" }]);
-  assert.equal(P.unitCanonical["p2#u2"], "p1#u3");
-  assert.ok(bookHtml(P).includes('data-ref="p2#r1"')); assert.deepEqual([left, right], original);
-});
-
-test("joining rejects a non-final unit, incompatible continuation and conflicting labels", () => {
-  const a = page(), b = page("p2");
-  assert.throws(() => nextPageUnit(a, b, "u2"), /this page first/);
-  b.units[1].type = "verse"; b.page.regions[0].type = "verse";
-  assert.throws(() => joinPageUnits(a, b, types, "u3", check), /does not continue/);
-  b.units[1].type = "paragraph"; b.page.regions[0].type = "paragraph";
-  a.units[2].label = "A"; b.units[1].label = "B";
-  assert.throws(() => joinPageUnits(a, b, types, "u3", check), /different label/);
-});
-
 test("focused text saves preserve newer grouping and independent text corrections", () => {
   const base = page(), latest = ops.clone(base), incoming = ops.clone(base);
   latest.units[2].open = { end: true }; latest.units[0].open = { end: true };
@@ -55,32 +32,6 @@ test("focused text saves preserve newer grouping and independent text correction
   assert.equal(merged.page.regions[0].lines[0].text, "ಕನ್ನಡ"); assert.deepEqual(check(merged), []);
   latest.page.regions[0].lines[0].text = "Different correction";
   assert.throws(() => mergeTextEdit(latest, incoming, base), /another edit/);
-});
-
-test("semantic fields can be applied to every fragment of an assembled unit", () => {
-  const joined = joinPageUnits(page(), page("p2"), types, "u3", check), P = prepare(joined, types);
-  for (const fragment of P.unitFragments["p1#u3"]) applyUnitAction(joined.find(doc => doc.page.id === fragment.page), types, fragment.unit, "label", "Continued paragraph");
-  assert.equal(prepare(joined, types).units["p1#u3"].label, "Continued paragraph");
-  assert.equal(joined[1].units[1].label, "Continued paragraph");
-});
-
-test("reading problems identify page-unit targets for inline review", () => {
-  const a = page(), b = page("p2"); a.units[0].open = { end: true };
-  const P = prepare([a, b], types), issues = readingIssues([a, b], types, validate, P.warnings, P.unitCanonical);
-  assert.equal(issues.length, 1); assert.ok(issues[0].targets.some(target => target.page === "p2" && target.unit === "u1"));
-});
-
-test("reading-order warnings name the region IDs shown in the editor", () => {
-  const doc = page();
-  Object.assign(doc.page.regions[0], { id: "r16", order: 14 });
-  Object.assign(doc.page.regions[1], { id: "r15", order: 13 });
-  doc.units[1].children[0].region = "p1#r16";
-  doc.units[2].children[0].region = "p1#r15";
-  assert.deepEqual(checkPage(validate, doc, types), [[], [
-    "page p1, flow main: The reader shows r16 before r15. The saved box order puts r15 before r16.",
-  ]]);
-  ops.orderFromUnits(doc, types);
-  assert.deepEqual(checkPage(validate, doc, types), [[], []]);
 });
 
 test("leaving out an unassigned area is a protected, reversible page edit", () => {
@@ -115,13 +66,6 @@ function stored() {
   };
   return { book: create(), files, create };
 }
-
-test("cross-page saves reject physical gaps and unaccepted text", async () => {
-  const { book, files } = stored(); book.pages[1].pdf_page = 3;
-  await assert.rejects(joinFollowingUnit({ book, validate }, "p1", "u3"), /consecutive/);
-  book.pages[1].pdf_page = 2; delete files.get("pages/p2.json").source.layers.text.accepted_at_utc;
-  await assert.rejects(joinFollowingUnit({ book, validate }, "p1", "u3"), /both pages/);
-});
 
 test("a region with no line piece gets one over its outline, so its text can be typed", () => {
   const doc = page(); const r = doc.page.regions[0]; const others = doc.page.regions.flatMap(x => (x.lines || []).map(L => L.line));

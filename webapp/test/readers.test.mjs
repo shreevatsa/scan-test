@@ -7,7 +7,7 @@ import { makeValidator, checkPage } from "../js/schema.js";
 import { readerOptions, readerById, usageCost, projectBookCost, bookCostEstimate, wholePageReading, DEFAULT_TRANSCRIPTION_REFERENCE, STRUCTURER, structurePath } from "../js/pipeline/readers.js";
 import { openaiCost } from "../js/pipeline/steps.js";
 import { visionRequest, visionReading, visionCost } from "../js/pipeline/vision.js";
-import { selectPageRegions, checkReading, combineReading, structureSchema, markedText, plainReading } from "../js/pipeline/split.js";
+import { selectPageRegions, checkReading, combineReading, markedText, plainReading } from "../js/pipeline/split.js";
 import { tesseractWords, wordsToReading } from "../js/pipeline/ocr.js";
 import { layerState } from "../js/layers.js";
 import { reviewCandidate, saveReview } from "../js/review.js";
@@ -546,15 +546,6 @@ test("reading contracts reject missing, duplicate and misnumbered text", () => {
   assert.throws(() => checkReading(broken, sent), /invalid line/);
   const two = selectPageRegions([region(1), region(2, 30)]).sent;
   assert.throws(() => checkReading({ regions: [...reading("Text").regions, ...reading("Text").regions] }, two), /repeated/);
-});
-
-test("the structurer cannot rewrite reader text or supply different line counts", () => {
-  const injected = structuredClone(structure);
-  injected.regions[0].lines = [{ n: 1, text: "Rewritten" }];
-  assert.equal(combineReading(reading("<i>Original</i>[1]"), injected, sent).regions[0].lines[0].text, "<i>Original</i>[1]");
-  assert.equal(structureSchema(types, sent).properties.regions.items.properties.lines, undefined);
-  injected.regions[0].ends = [];
-  assert.throws(() => combineReading(reading("Original"), injected, sent), /line-end/);
 });
 
 test("figures retain geometry while their legacy empty line is excluded", () => {

@@ -56,152 +56,16 @@ function newRegionId(doc) {
   return `r${n + 1}`;
 }
 
-// The top edge of a unit or region on the page (the smallest y of its regions' outlines), for reading order.
-function topOf(doc, item) {
-  const uid = typeof item === "string" ? item : item.unit;
-  if (uid) {
-    const u = doc.units.find(x => x.id === uid);
-    return u ? Math.min(Infinity, ...u.children.map(c => topOf(doc, c))) : Infinity;
-  }
-  const r = doc.page.regions.find(x => x.id === localRegion(item.region));
-  return r ? Math.min(Infinity, ...r.polygons.flat().map(p => p[1])) : Infinity;
-}
 
-// Where a new item with top edge `y` goes in a list of siblings: before the first sibling that starts below it,
-// and never after a last sibling that is open at the page's end.
-function insertionIndex(doc, list, y) {
-  let i = list.findIndex(item => topOf(doc, item) > y);
-  if (i < 0) i = list.length;
-  const openAt = (item, end) => { const uid = item && (typeof item === "string" ? item : item.unit); return uid && (doc.units.find(u => u.id === uid)?.open || {})[end]; };
-  if (i === list.length && openAt(list[list.length - 1], "end")) i = list.length - 1;
-  // Nor before a first sibling that is open at the page's start (it continues from the previous page).
-  if (i === 0 && openAt(list[0], "start")) i = 1;
-  return Math.max(0, Math.min(i, list.length));
-}
-
-// The bottom edge of a unit or region, as topOf.
-function bottomOf(doc, item) {
-  const uid = typeof item === "string" ? item : item.unit;
-  if (uid) {
-    const u = doc.units.find(x => x.id === uid);
-    return u ? Math.max(-Infinity, ...u.children.map(c => bottomOf(doc, c))) : -Infinity;
-  }
-  const r = doc.page.regions.find(x => x.id === localRegion(item.region));
-  return r ? Math.max(-Infinity, ...r.polygons.flat().map(p => p[1])) : -Infinity;
-}
-
-// A page document with units (0.3, as the page editor works on it until it edits overrides) keeps them consistent; a 0.4 one has regions only.
-const unitsSettled = doc => Array.isArray(doc.units);
-
-// Where a unit of `type` may stand: in the list of its parent (a container whose type may contain it) or at the top
-// of its flow.
-function allowedAt(doc, tl, uid, type) {
-  const place = placeOf(doc, uid);
-  if (!place) return false;
-  return place.parent ? (tl.types[place.parent.type]?.contains || []).includes(type) : tl.types[type]?.flow === place.flow;
-}
-
-// Put a new unit of `type` owning region `rid` where it is read on a page whose units are settled: inside `into` (a
-// unit of the same type takes the region itself; a container that may hold the type takes a new unit), else inside
-// the container on the page that the region falls in (one that may hold the type and spans the region's top, the
-// latest starting; else the last that starts above it, for a type with no flow of its own), else at the top level of
-// the type's flow, among its units by position. Returns the unit's id.
-function placeRegionUnit(doc, tl, type, rid, into = null) {
-  const ref = regionRef(doc, rid), y = topOf(doc, { region: ref });
-  const make = list => {
-    const uid = newUnitId(doc);
-    const at = insertionIndex(doc, list, y);
-    const last = list.length && list[list.length - 1], lastUid = last && (typeof last === "string" ? last : last.unit);
-    if (at === list.length && lastUid && doc.units.find(u => u.id === lastUid)?.open?.end)
-      fail(`${lastUid} continues on both the previous and the next page; choose the unit to put the new ${type} in first`);
-    doc.units.push({ id: uid, type, children: [{ region: ref }] });
-    list.splice(at, 0, list === doc.flows[tl.types[type].flow] ? uid : { unit: uid });
-    return uid;
-  };
-  const target = into && doc.units.find(u => u.id === into);
-  if (target?.type === type) { target.children.splice(insertionIndex(doc, target.children, y), 0, { region: ref }); return target.id; }
-  if (target && (tl.types[target.type]?.contains || []).includes(type)) return make(target.children);
-  const homes = doc.units.filter(u => (tl.types[u.type]?.contains || []).includes(type) && u.children.length && placeOf(doc, u.id));
-  // The latest starting; of containers that start together (one inside another), the innermost.
-  const depth = uid => { let n = 0; for (let p = placeOf(doc, uid); p?.parent; p = placeOf(doc, p.parent.id)) n++; return n; };
-  const latest = list => list.reduce((a, b) => {
-    const ta = topOf(doc, a.id), tb = topOf(doc, b.id);
-    return tb > ta || tb === ta && depth(b.id) > depth(a.id) ? b : a;
-  });
-  const spanning = homes.filter(u => topOf(doc, u.id) <= y && y <= bottomOf(doc, u.id));
-  if (spanning.length) return make(latest(spanning).children);
-  const flow = tl.types[type].flow;
-  if (flow) return make(doc.flows[flow] ||= []);
-  const above = homes.filter(u => topOf(doc, u.id) <= y);
-  const home = above.length ? latest(above) : homes[0];
-  if (!home) fail(`a ${type} cannot stand at the top level, and no unit on this page may contain it (${containersFor(tl, type).join(", ")})`);
-  return make(home.children);
-}
-
-// A region's reading-order position on a page whose units are settled, which leaves the other regions' numbers as
-// they are but for closing or opening a gap: dropOrder takes it out of the order; fitOrder gives it the position
-// after the region before it in its flow as the units read them (or before the one after it), moving later ones on.
-function flowRegions(doc, rid) {
-  const walk = (uid, out) => { for (const c of unitById(doc, uid).children) if (c.unit) walk(c.unit, out); else out.push(localRegion(c.region)); return out; };
-  for (const tops of Object.values(doc.flows)) {
-    const seq = tops.flatMap(uid => walk(uid, []));
-    if (seq.includes(rid)) return seq;
-  }
-  return [];
-}
 function dropOrder(doc, r) {
   if (Number.isFinite(r.order)) for (const other of doc.page.regions) if (other !== r && other.order > r.order) other.order--;
   r.order = null;
 }
-function fitOrder(doc, tl, rid) {
-  const r = regionById(doc, rid);
-  dropOrder(doc, r);
-  if (isFurniture(tl, r.type)) return doc;
-  const seq = flowRegions(doc, rid).map(id => regionById(doc, id)), i = seq.indexOf(r);
-  const prev = seq.slice(0, Math.max(0, i)).reverse().find(x => Number.isFinite(x.order)), next = seq.slice(i + 1).find(x => Number.isFinite(x.order));
-  const k = prev ? prev.order + 1 : next ? next.order : Math.max(0, ...doc.page.regions.map(x => x.order || 0)) + 1;
-  for (const other of doc.page.regions) if (other !== r && other.order >= k) other.order++;
-  r.order = k;
-  return doc;
-}
-
-// After reordering on a page whose units are settled: each flow's regions take the numbers they have, in the order
-// the units now read them.
-export function orderFromUnits(doc, tl) {
-  const walk = (uid, out) => { for (const c of unitById(doc, uid).children) if (c.unit) walk(c.unit, out); else out.push(localRegion(c.region)); return out; };
-  for (const tops of Object.values(doc.flows)) {
-    const seq = tops.flatMap(uid => walk(uid, [])).map(id => doc.page.regions.find(x => x.id === id)).filter(x => x && !isFurniture(tl, x.type));
-    const numbers = seq.map(x => x.order).filter(Number.isFinite).sort((a, b) => a - b);
-    if (numbers.length === seq.length) seq.forEach((x, i) => { x.order = numbers[i]; });
-  }
-  return doc;
-}
-
-// Check that units open at the page's start or end are still first or last among their siblings.
-function assertOpenEnds(doc, list) {
-  list.forEach((item, i) => {
-    const uid = typeof item === "string" ? item : item.unit, u = uid && doc.units.find(x => x.id === uid);
-    if (u?.open?.start && i !== 0) fail(`${uid} continues from the previous page, so it stays first`);
-    if (u?.open?.end && i !== list.length - 1) fail(`${uid} goes on to the next page, so it stays last`);
-  });
-}
-
 // Drop the relations list when it is empty.
 function tidyRelations(doc) { if (doc.relations && !doc.relations.length) delete doc.relations; return doc; }
 
 const isFurniture = (tl, type) => (tl.types[type] || {}).role === "furniture";
 const printedAs = (tl, type) => (tl.types[type] || {}).region;
-
-// Types a unit may be given: those printed as regions if it owns regions, containers if it holds units.
-export function retypeChoices(doc, tl, uid) {
-  const u = unitById(doc, uid);
-  const ownsRegions = u.children.some(c => "region" in c), holdsUnits = u.children.some(c => "unit" in c);
-  return Object.entries(tl.types).filter(([, t]) => t.role !== "furniture" &&
-    (!ownsRegions || "region" in t) && (!holdsUnits || (t.contains || []).length)).map(([n]) => n);
-}
-
-// Container types that may hold a unit of `type`.
-export const containersFor = (tl, type) => Object.entries(tl.types).filter(([, t]) => (t.contains || []).includes(type)).map(([n]) => n);
 
 // ---------------------------------------------------------------- units
 
@@ -218,16 +82,6 @@ export function setOpen(doc, uid, end, value) {
   const open = { ...(u.open || {}) };
   if (value) open[end] = true; else delete open[end];
   if (Object.keys(open).length) u.open = open; else delete u.open;
-  return doc;
-}
-
-// Retype a unit; its own regions take the new type with it.
-export function retypeUnit(doc, tl, uid, type) {
-  const u = unitById(doc, uid);
-  if (!tl.types[type] || isFurniture(tl, type)) fail(`${type} is not a unit type`);
-  if (u.children.some(c => "region" in c) && !printedAs(tl, type)) fail(`${type} is a container: it cannot own this unit's regions`);
-  u.type = type;
-  for (const c of u.children) if ("region" in c) regionById(doc, localRegion(c.region)).type = type;
   return doc;
 }
 
@@ -261,27 +115,6 @@ export function joinWithNext(doc, uid) {
   return doc;
 }
 
-// Move an item (unit or region) among its siblings by `delta`.
-export function moveChild(doc, container, index, delta) {
-  const list = container.flow ? doc.flows[container.flow] : unitById(doc, container.unit).children;
-  const j = index + delta;
-  if (j < 0 || j >= list.length) fail("cannot move further");
-  [list[index], list[j]] = [list[j], list[index]];
-  return doc;
-}
-
-// Put a unit inside a new container of `type`, in its place.
-export function wrapUnit(doc, tl, uid, type) {
-  const u = unitById(doc, uid);
-  if (!(tl.types[type]?.contains || []).includes(u.type)) fail(`a ${type} may not contain a ${u.type}`);
-  const place = placeOf(doc, uid) || fail(`${uid} stands nowhere`);
-  const nu = { id: newUnitId(doc), type, children: [{ unit: uid }] };
-  for (const end of ["start", "end"]) if ((u.open || {})[end]) (nu.open ||= {})[end] = true;
-  doc.units.splice(doc.units.indexOf(u), 0, nu);
-  place.list[place.index] = place.flow ? nu.id : { unit: nu.id };
-  return nu.id;
-}
-
 // Replace a container with its child units, in its place.
 export function unwrapUnit(doc, uid) {
   const u = unitById(doc, uid);
@@ -292,33 +125,6 @@ export function unwrapUnit(doc, uid) {
   doc.units.splice(doc.units.indexOf(u), 1);
   doc.relations = (doc.relations || []).filter(rel => rel.from.unit !== uid && rel.to.unit !== uid);
   return doc;
-}
-
-// Delete a unit with everything in it: its child units, and its regions (from the page as well).
-export function deleteUnit(doc, uid) {
-  const u = unitById(doc, uid);
-  for (const c of [...u.children]) {
-    if ("unit" in c) deleteUnit(doc, c.unit);
-    else removeRegionOnly(doc, localRegion(c.region));
-  }
-  const place = placeOf(doc, uid);
-  if (place) place.list.splice(place.index, 1);
-  doc.units.splice(doc.units.indexOf(u), 1);
-  doc.relations = (doc.relations || []).filter(rel => rel.from.unit !== uid && rel.to.unit !== uid);
-  return tidyRelations(doc);
-}
-
-// Remove units left with no children, upwards from `uid`.
-function pruneEmpty(doc, uid) {
-  while (uid) {
-    const u = doc.units.find(x => x.id === uid);
-    if (!u || u.children.length) return;
-    const place = placeOf(doc, uid);
-    if (place) place.list.splice(place.index, 1);
-    doc.units.splice(doc.units.indexOf(u), 1);
-    doc.relations = (doc.relations || []).filter(rel => rel.from.unit !== uid && rel.to.unit !== uid);
-    uid = place && place.parent ? place.parent.id : null;
-  }
 }
 
 // ---------------------------------------------------------------- regions
@@ -333,14 +139,11 @@ function removeRegionOnly(doc, rid) {
   if (doc.relations) doc.relations = doc.relations.filter(rel => rel.from.region !== ref && !anchors.has(rel.from.anchor));
 }
 
-// Delete a region from the page; its unit goes too if it is left empty.
+// Delete a region from the page. The later regions close the gap in the reading order; overrides that named it no longer
+// apply (the page editor drops them).
 export function deleteRegion(doc, rid) {
-  const owner = ownerOf(doc, rid), ref = regionRef(doc, rid);
-  // On a page whose units are settled, the later regions close the gap in the reading order.
-  if (unitsSettled(doc)) dropOrder(doc, regionById(doc, rid));
-  if (owner) owner.children.splice(owner.children.findIndex(c => c.region === ref), 1);
+  dropOrder(doc, regionById(doc, rid));
   removeRegionOnly(doc, rid);
-  if (owner) pruneEmpty(doc, owner.id);
   return tidyRelations(doc);
 }
 
@@ -360,17 +163,7 @@ export function setBox(doc, rid, box, outline = null) {
   return doc;
 }
 
-// Add a region of `type` with `box` and one empty line piece. A text region gets a new unit: inside `into` (a unit
-// of the same type, which takes the region; or a container that may hold the type), else at the top of the type's
-// flow. Returns the new region's id.
-// The unit a region drawn in the page editor may be put into: the selected unit, or the selected region's unit. A drawn
-// region is placed where it is drawn unless the person chooses this unit in the menu that follows the drawing.
-export function drawnInto(doc, selection = {}) {
-  if (selection.unit && doc.units.some(unit => unit.id === selection.unit)) return selection.unit;
-  return (selection.region && doc.page.regions.some(region => region.id === selection.region) && ownerOf(doc, selection.region)?.id) || null;
-}
-
-export function addRegion(doc, tl, type, box, into = null) {
+export function addRegion(doc, tl, type, box) {
   if (!tl.types[type] || !printedAs(tl, type)) fail(`${type} is not printed as regions`);
   const rid = newRegionId(doc);
   // Its line pieces come from the outline step (a region where it finds no line takes one when clicked to type in).
@@ -380,11 +173,6 @@ export function addRegion(doc, tl, type, box, into = null) {
   // A figure has no text of its own (its unit's label says what it shows).
   if (printedAs(tl, type) === "figure") delete r.lines;
   doc.page.regions.push(r);
-  if (!unitsSettled(doc)) return rid;
-  if (isFurniture(tl, type)) return rid;
-  try { placeRegionUnit(doc, tl, type, rid, into); } catch (e) { doc.page.regions.pop(); throw e; }
-  r.order = null;
-  fitOrder(doc, tl, rid);
   return rid;
 }
 
@@ -403,63 +191,15 @@ export function setRegionType(doc, tl, rid, type, into = null) {
     r.lines = clone(r.source.kept_text);
     delete r.source.kept_text;
   }
-  if (!unitsSettled(doc)) {
-    r.type = type;
-    r.order = isFurniture(tl, type) ? null : r.order ?? Math.max(0, ...doc.page.regions.map(region => region.order || 0)) + 1;
-    return doc;
-  }
-  const owner = ownerOf(doc, rid), ref = regionRef(doc, rid);
-  if (isFurniture(tl, type)) {
-    if (owner) { owner.children.splice(owner.children.findIndex(c => c.region === ref), 1); pruneEmpty(doc, owner.id); }
-    r.type = type;
-    dropOrder(doc, r);
-    return doc;
-  }
-  if (!owner) {
-    // Furniture made text: a new unit of its type where it is read.
-    r.type = type;
-    placeRegionUnit(doc, tl, type, rid, into);
-    return fitOrder(doc, tl, rid);
-  }
-  let alone = owner.id;
-  if (owner.children.length > 1) {
-    // Split the region off into its own unit, in its owner's place among the owner's parent's children.
-    const i = owner.children.findIndex(c => c.region === ref);
-    if (i + 1 < owner.children.length) splitUnit(doc, owner.id, i + 1);
-    if (i > 0) { splitUnit(doc, owner.id, i); alone = childUid(placeOf(doc, owner.id).list[placeOf(doc, owner.id).index + 1]); }
-  }
-  // The unit takes the type where it stands if the type list allows it there; otherwise it leaves (its emptied
-  // containers go) and the region gets a new unit of its type where it is read.
-  if (allowedAt(doc, tl, alone, type)) return retypeUnit(doc, tl, alone, type);
-  const place = placeOf(doc, alone);
-  place.list.splice(place.index, 1);
-  doc.units.splice(doc.units.findIndex(u => u.id === alone), 1);
-  doc.relations = (doc.relations || []).filter(rel => rel.from.unit !== alone && rel.to.unit !== alone);
-  tidyRelations(doc);
-  if (place.parent) pruneEmpty(doc, place.parent.id);
   r.type = type;
-  placeRegionUnit(doc, tl, type, rid, into);
-  return fitOrder(doc, tl, rid);
+  r.order = isFurniture(tl, type) ? null : r.order ?? Math.max(0, ...doc.page.regions.map(region => region.order || 0)) + 1;
+  return doc;
 }
 
 export function moveRegionOrder(doc, tl, rid, delta) {
   const region = regionById(doc, rid);
   if (![1, -1].includes(delta)) fail("move a region one position earlier or later");
   if (isFurniture(tl, region.type)) fail("page furniture has no reading-order position");
-  if (unitsSettled(doc)) {
-    // The units say the reading order: the region moves among its unit's regions, or its unit among its siblings.
-    const owner = ownerOf(doc, rid) || fail(`${rid} belongs to no unit`), ref = regionRef(doc, rid);
-    const k = owner.children.findIndex(c => c.region === ref), j = k + delta;
-    if (j >= 0 && j < owner.children.length && owner.children[j].region) {
-      [owner.children[k], owner.children[j]] = [owner.children[j], owner.children[k]];
-    } else {
-      const place = placeOf(doc, owner.id) || fail(`${owner.id} stands nowhere`), to = place.index + delta;
-      if (to < 0 || to >= place.list.length) fail(`${rid} is already the ${delta < 0 ? "first" : "last"} in ${place.parent ? `its ${place.parent.type}` : "its reading flow"}`);
-      [place.list[place.index], place.list[to]] = [place.list[to], place.list[place.index]];
-      assertOpenEnds(doc, place.list);
-    }
-    return orderFromUnits(doc, tl);
-  }
   const ordered = doc.page.regions.filter(value => !isFurniture(tl, value.type))
     .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
   const index = ordered.indexOf(region), destination = index + delta;
@@ -503,18 +243,7 @@ export function mergeRegions(doc, tl, keepRid, otherRid) {
   if (keepRid === otherRid) fail("choose a second region to merge");
   const keep = regionById(doc, keepRid), other = regionById(doc, otherRid);
   if (keep.type !== other.type) fail("give the regions the same type before merging them");
-  const keepOwner = ownerOf(doc, keepRid), otherOwner = ownerOf(doc, otherRid);
-  const provisional = !unitsSettled(doc);
-  if (!provisional && keepOwner?.id !== otherOwner?.id) {
-    if (!keepOwner || !otherOwner || otherOwner.children.length !== 1) fail("merge regions in the same unit or merge a whole neighboring leaf unit");
-    const a = placeOf(doc, keepOwner.id), b = placeOf(doc, otherOwner.id);
-    if (!a || !b || a.list !== b.list) fail("put these units under the same parent in Read before merging their regions");
-    for (const key of ["number", "label", "style"]) if (keepOwner[key] && otherOwner[key] && canonical(keepOwner[key]) !== canonical(otherOwner[key]))
-      fail(`the units have different ${key} values; review them in Read before merging`);
-  }
   const ordered = [keep, other].sort((a, b) => (a.order ?? doc.page.regions.indexOf(a)) - (b.order ?? doc.page.regions.indexOf(b)));
-  const firstOwner = ownerOf(doc, ordered[0].id), lastOwner = ownerOf(doc, ordered[1].id);
-  const open = { ...(firstOwner?.open?.start ? { start: true } : {}), ...(lastOwner?.open?.end ? { end: true } : {}) };
   const lines = mergedLinePieces(ordered.flatMap(region => region.lines || []));
   const a = regionBox(keep), b = regionBox(other);
   keep.box = [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[2], b[2]), Math.max(a[3], b[3])];
@@ -525,41 +254,12 @@ export function mergeRegions(doc, tl, keepRid, otherRid) {
   keep.source = { ...keep.source, merged_from: [...(keep.source?.merged_from || []), clone(other)],
     continues_from_earlier: !!ordered[0].source?.continues_from_earlier, continues_later: !!ordered[1].source?.continues_later,
     outline: "the merged box (outline not recomputed)" };
-  if (keepOwner && otherOwner && keepOwner !== otherOwner) for (const key of ["number", "label", "style"]) {
-    if (!keepOwner[key] && otherOwner[key]) keepOwner[key] = clone(otherOwner[key]);
-  }
-  if (keepOwner) { if (Object.keys(open).length) keepOwner.open = open; else delete keepOwner.open; }
   if (doc.relations) for (const relation of doc.relations) for (const endpoint of [relation.from, relation.to]) {
     if (endpoint.region === regionRef(doc, otherRid)) endpoint.region = regionRef(doc, keepRid);
-    if (otherOwner && keepOwner && otherOwner !== keepOwner && endpoint.unit === otherOwner.id) endpoint.unit = keepOwner.id;
   }
   // Its markers and their links now belong to the merged region.
   other.lines = [];
   deleteRegion(doc, otherRid);
-  return doc;
-}
-
-// Make a unit page furniture of `type` (a furniture type, such as an ornament): its regions take the type and leave
-// the text, and the unit, left empty, goes (with relations to it). Returns the regions' ids.
-export function unitToFurniture(doc, tl, uid, type) {
-  const u = unitById(doc, uid);
-  if (!isFurniture(tl, type)) fail(`${type} is not page furniture`);
-  if (u.children.some(c => "unit" in c)) fail("this unit holds other units; move them out of it first");
-  const rids = u.children.map(c => localRegion(c.region));
-  for (const rid of rids) setRegionType(doc, tl, rid, type);
-  return rids;
-}
-
-// Move a region to another unit: its type becomes the target's type, and the unit it leaves goes if empty.
-export function moveRegionToUnit(doc, tl, rid, targetUid) {
-  const target = unitById(doc, targetUid);
-  if (!printedAs(tl, target.type)) fail(`a ${target.type} owns no regions`);
-  const owner = ownerOf(doc, rid), ref = regionRef(doc, rid);
-  if (owner && owner.id === targetUid) return doc;
-  if (owner) owner.children.splice(owner.children.findIndex(c => c.region === ref), 1);
-  target.children.splice(insertionIndex(doc, target.children, topOf(doc, { region: ref })), 0, { region: ref });
-  regionById(doc, rid).type = target.type;
-  if (owner) pruneEmpty(doc, owner.id);
   return doc;
 }
 
@@ -759,29 +459,6 @@ export function linkMarker(doc, tl, sid, noteUid) {
   return doc;
 }
 
-// Give an unanchored note relation (the model named a line or marker the page document could not match) the anchor
-// of a marker.
-export function anchorRelation(doc, index, sid) {
-  const rel = (doc.relations || [])[index] || fail("no such relation");
-  findMarker(doc, sid) || fail(`no marker ${sid}`);
-  rel.from = { anchor: `${doc.page.id}#${sid}` };
-  return doc;
-}
-
-export function addRelation(doc, tl, type, fromUid, toUid) {
-  if (!(tl.relations || {})[type]) fail(`no relation type ${type}`);
-  unitById(doc, fromUid); unitById(doc, toUid);
-  (doc.relations ||= []).push({ type, from: { unit: fromUid }, to: { unit: toUid } });
-  return doc;
-}
-
-export function removeRelation(doc, index) {
-  if (!(doc.relations || [])[index]) fail("no such relation");
-  doc.relations.splice(index, 1);
-  if (!doc.relations.length) delete doc.relations;
-  return doc;
-}
-
 // The note units a marker may point to: units of a type printed as notes, and the top-level units of flows other
 // than main.
 export function noteTargets(doc, tl) {
@@ -806,15 +483,14 @@ function piecesBounds(lines) {
 const regionBox = r => r.box || boxesOf({ page: { regions: [r] } })[0];
 
 // Split a region before line piece `i`: the pieces from there on go to a new region of the same type right after it.
-// With `newUnit` (the default) the new region starts a new unit of the owner's type right after the owner, taking
-// the owner's later children with it (as for a paragraph that should be two); otherwise it stays in the same unit.
+// The new region is a block of its own, so it is a unit of its own where the rules derive the structure.
 // The two boxes are the old box cut between the pieces; their outlines are the boxes until the outline step runs
 // again. Returns the new region's id.
-export function splitRegionAt(doc, rid, i, newUnit = true) {
+export function splitRegionAt(doc, rid, i) {
   const r = regionById(doc, rid);
   const lines = r.lines || [];
   if (i <= 0 || i >= lines.length) fail("put the caret in a line piece after the region's first, where the new part begins");
-  const owner = ownerOf(doc, rid), ref = regionRef(doc, rid);
+  const ref = regionRef(doc, rid);
   const box = regionBox(r);
   const nid = newRegionId(doc);
   const nr = { id: nid, type: r.type, polygons: [], lines: lines.splice(i), source: { split_from: rid, by: "the user, in the web app" } };
@@ -840,10 +516,6 @@ export function splitRegionAt(doc, rid, i, newUnit = true) {
   const moved = new Set(nr.lines.map(L => L.line).filter(x => x !== undefined));
   for (const relation of doc.relations || []) for (const endpoint of [relation.from, relation.to])
     if (endpoint?.region === ref && moved.has(endpoint.line)) endpoint.region = regionRef(doc, nid);
-  if (!owner) return nid;
-  const k = owner.children.findIndex(c => c.region === ref);
-  owner.children.splice(k + 1, 0, { region: regionRef(doc, nid) });
-  if (newUnit) splitUnit(doc, owner.id, k + 1);
   return nid;
 }
 
@@ -854,11 +526,6 @@ export function addLinePiece(doc, rid) {
   if ((r.lines || []).length) fail("this region has line pieces already");
   const ids = doc.page.regions.flatMap(x => (x.lines || []).map(L => L.line)).filter(Number.isInteger);
   r.lines = [{ line: (ids.length ? Math.max(...ids) : 0) + 1, polygons: [boxRing(regionBox(r))], text: "" }];
-  // It ends as the line before it in its unit does (a title page's lines are kept as lines).
-  const owner = ownerOf(doc, rid), refs = owner ? owner.children.filter(c => c.region).map(c => c.region.split("#").pop()) : [];
-  const before = refs.slice(0, refs.indexOf(rid)).reverse().map(id => doc.page.regions.find(x => x.id === id)).find(x => (x?.lines || []).length);
-  const end = before?.lines.at(-1).end;
-  if (end && refs.indexOf(rid) < refs.length - 1) r.lines[0].end = end;
   r.source = { ...(r.source || {}), line_piece: "added by hand over the region's outline, to type its text" };
   return r.lines[0];
 }
@@ -913,15 +580,6 @@ export function moveRestToColumn(doc, rid, i, offset) {
     col = { id: newRegionId(doc), type: r.type, polygons: [], lines: [], source: { column_of: rid, by: "the user, in the web app" } };
     col.box = [cb[0], cb[1], cb[2], cb[3]];
     doc.page.regions.splice(doc.page.regions.indexOf(r) + 1, 0, col);
-    const owner = ownerOf(doc, rid);
-    if (owner) {
-      const nu = { id: newUnitId(doc), type: owner.type, children: [{ region: regionRef(doc, col.id) }] };
-      doc.units.splice(doc.units.indexOf(owner) + 1, 0, nu);
-      const place = placeOf(doc, owner.id);
-      if (place) place.list.splice(place.index + 1, 0, place.flow ? nu.id : { unit: nu.id });
-      // The two columns are printed side by side.
-      if (place) setRowWithNext(doc, owner.id, true);
-    }
   }
   // In line order: by line id where both have one, else by the top of the outline, else at the end.
   const key = x => (x.line !== undefined ? x.line : piecesBounds([x])?.[1] ?? Infinity);
@@ -935,49 +593,6 @@ export function moveRestToColumn(doc, rid, i, offset) {
 }
 
 // ---------------------------------------------------------------- styles (schema 0.3)
-
-const STYLE_KEYS = new Set(["font", "size_pt", "leading_pt", "weight", "italic", "align", "margin_left_pt", "indent_pt", "space_before_pt", "space_after_pt", "row", "width"]);
-
-// Set one property of a unit's style (presentation only); an empty value removes it, and an empty style goes.
-export function setUnitStyle(doc, uid, key, value) {
-  const u = unitById(doc, uid);
-  if (!STYLE_KEYS.has(key)) fail(`no style property ${key}`);
-  const st = { ...(u.style || {}) };
-  if (value === "" || value === null || value === undefined || (typeof value === "number" && !Number.isFinite(value))) delete st[key];
-  else st[key] = value;
-  if (Object.keys(st).length) u.style = st; else delete u.style;
-  if (u.style && !["0.3"].includes(doc.schema_version)) doc.schema_version = "0.3";
-  return doc;
-}
-
-function newRowId(doc) {
-  let n = 0;
-  for (const u of doc.units) { const m = /^k(\d+)$/.exec(u.style?.row || ""); if (m) n = Math.max(n, +m[1]); }
-  return `k${n + 1}`;
-}
-
-// Print a unit side by side with the next unit among its siblings (the same style.row), or (on = false) take it
-// out of its row; a row left with one unit is dissolved.
-export function setRowWithNext(doc, uid, on) {
-  const u = unitById(doc, uid);
-  const place = placeOf(doc, uid) || fail(`${uid} stands nowhere`);
-  if (on) {
-    const nid = place.index + 1 < place.list.length ? childUid(place.list[place.index + 1]) : null;
-    if (!nid) fail("there is no next unit beside it to share a row with");
-    const n = unitById(doc, nid);
-    const row = u.style?.row || n.style?.row || newRowId(doc);
-    setUnitStyle(doc, uid, "row", row);
-    setUnitStyle(doc, nid, "row", row);
-    return doc;
-  }
-  const row = u.style?.row;
-  if (!row) return doc;
-  setUnitStyle(doc, uid, "row", null);
-  setUnitStyle(doc, uid, "width", null);
-  const members = place.list.map(childUid).filter(id => id && unitById(doc, id).style?.row === row);
-  if (members.length === 1) { setUnitStyle(doc, members[0], "row", null); setUnitStyle(doc, members[0], "width", null); }
-  return doc;
-}
 
 // ---------------------------------------------------------------- text of units
 

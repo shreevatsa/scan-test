@@ -1,39 +1,39 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261123-blocks-b2-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261123-blocks-b2-2";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261123-blocks-b2-2";
-import { RECIPE } from "./recipe.js?v=20261123-blocks-b2-2";
-import { readerOptions } from "./pipeline/readers.js?v=20261123-blocks-b2-2";
+import { makeValidator, checkPage, checkTypes, typeRevision } from "./schema.js?v=20261123-blocks-b2-3";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261123-blocks-b2-3";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261123-blocks-b2-3";
+import { RECIPE } from "./recipe.js?v=20261123-blocks-b2-3";
+import { readerOptions } from "./pipeline/readers.js?v=20261123-blocks-b2-3";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261123-blocks-b2-2";
-import { blockName } from "./blocks.js?v=20261123-blocks-b2-2";
-import { bookReading, readThroughBlocks } from "./reading.js?v=20261123-blocks-b2-2";
-import { PageView } from "./pageimage.js?v=20261123-blocks-b2-2";
-import { markerForm } from "./editor.js?v=20261123-blocks-b2-2";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261123-blocks-b2-2";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261123-blocks-b2-2";
-import { renderStyle } from "./styleview.js?v=20261123-blocks-b2-2";
-import { typeSetup } from "./type-setup.js?v=20261123-blocks-b2-2";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261123-blocks-b2-3";
+import { blockName } from "./blocks.js?v=20261123-blocks-b2-3";
+import { bookReading, readThroughBlocks } from "./reading.js?v=20261123-blocks-b2-3";
+import { PageView } from "./pageimage.js?v=20261123-blocks-b2-3";
+import { markerForm } from "./editor.js?v=20261123-blocks-b2-3";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261123-blocks-b2-3";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261123-blocks-b2-3";
+import { renderStyle } from "./styleview.js?v=20261123-blocks-b2-3";
+import { typeSetup } from "./type-setup.js?v=20261123-blocks-b2-3";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-b2-2";
-import { EditError } from "./ops.js?v=20261123-blocks-b2-2";
-import { Maker, post } from "./pipeline/run.js?v=20261123-blocks-b2-2";
-import { CredentialChecks } from "./key-check.js?v=20261123-blocks-b2-2";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261123-blocks-b2-2";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261123-blocks-b2-2";
-import { pruneOverrides } from "./blocks-format.js?v=20261123-blocks-b2-2";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261123-blocks-b2-2";
-import { orderedRegions } from "./flags.js?v=20261123-blocks-b2-2";
-import { assemble } from "./assemble.js?v=20261123-blocks-b2-2";
-import { assertFocusEdit, editorFocus, mergeTextEdit } from "./editing.js?v=20261123-blocks-b2-2";
-import { overridesAfter } from "./structure.js?v=20261123-blocks-b2-2";
-import { renderPages } from "./pagesview.js?v=20261123-blocks-b2-2";
-import { settings } from "./store.js?v=20261123-blocks-b2-2";
-import { renderBookSettings } from "./settingsview.js?v=20261123-blocks-b2-2";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261123-blocks-b2-2";
-import { pageMenu } from "./page-actions.js?v=20261123-blocks-b2-2";
+import * as ops from "./ops.js?v=20261123-blocks-b2-3";
+import { EditError } from "./ops.js?v=20261123-blocks-b2-3";
+import { Maker, post } from "./pipeline/run.js?v=20261123-blocks-b2-3";
+import { CredentialChecks } from "./key-check.js?v=20261123-blocks-b2-3";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261123-blocks-b2-3";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261123-blocks-b2-3";
+import { pruneOverrides } from "./blocks-format.js?v=20261123-blocks-b2-3";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261123-blocks-b2-3";
+import { orderedRegions } from "./flags.js?v=20261123-blocks-b2-3";
+import { assemble } from "./assemble.js?v=20261123-blocks-b2-3";
+import { editorFocus, mergeTextEdit } from "./editing.js?v=20261123-blocks-b2-3";
+import { overridesAfter } from "./structure.js?v=20261123-blocks-b2-3";
+import { renderPages } from "./pagesview.js?v=20261123-blocks-b2-3";
+import { settings } from "./store.js?v=20261123-blocks-b2-3";
+import { renderBookSettings } from "./settingsview.js?v=20261123-blocks-b2-3";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261123-blocks-b2-3";
+import { pageMenu } from "./page-actions.js?v=20261123-blocks-b2-3";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -980,7 +980,6 @@ class App {
     try {
       fn(next);
       const focus = editorFocus();
-      assertFocusEdit(focus, this.doc, next);
       next = noteEdit(this.doc, next, { focus });
       next = this.droppedOverrides(next);
       if (next.source.layers.regions && layerView(this.doc, "regions") !== layerView(next, "regions"))
@@ -1129,7 +1128,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261123-blocks-b2-2", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261123-blocks-b2-3", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

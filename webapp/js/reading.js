@@ -5,11 +5,10 @@
 //
 // A reading is kept per type list: asking again with the same page documents (the same objects), rules and dimmed
 // pages gives the same result, and a changed page document, rule or type list makes a new one.
-import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261123-blocks-b2-2";
-import { readingProjection } from "./blocks.js?v=20261123-blocks-b2-2";
-import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-2";
-import { noteTypesOf } from "./note-links.js?v=20261123-blocks-b2-2";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-2";
+import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261123-blocks-b2-3";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b2-3";
+import { noteTypesOf } from "./note-links.js?v=20261123-blocks-b2-3";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-3";
 
 export const isBlocksPage = doc => Boolean(doc) && !doc.units;
 
@@ -34,17 +33,15 @@ export function readThroughBlocks(docs, types, rules) {
   });
 }
 
-// What Read, the Book view and the exports show: `readingProjection` where pages have no structure yet (the rules group
-// them), then every page through the blocks form. { docs, types, report, noteTypes, mainTypes } (types: the book's list
-// with what the rules add, which the display needs). `book` gives pages, types, rules and which pages are dimmed.
+// What Read, the Book view and the exports show: every page through the blocks form. { docs, types, report, noteTypes,
+// mainTypes } (docs has the context the derivation used as `docs.context`).
 export function bookReading(pages, saved, types, skipped, rules) {
   const left = typeof skipped === "function" ? skipped : skipped ? id => skipped.has(id) : () => false;
   const dimmed = pages.filter(page => left(page.id)).map(page => page.id).join(",");
   const ordered = readingDocuments(pages, saved, skipped);
   return remember(types, "book", { docs: ordered, rules, extra: dimmed }, () => {
-    const view = readingProjection(pages, saved, types, skipped, rules);
-    const { noteTypes, mainTypes } = noteTypesOf(view.types);
-    for (const [type, path] of regionTypePaths(view.types)) if (view.types.types[type].region && view.types.types[path[0]].flow === "main") mainTypes.add(type);
-    return { ...view, docs: readThroughBlocks(view.docs, types, rules), noteTypes, mainTypes };
+    const { noteTypes, mainTypes } = noteTypesOf(types);
+    for (const [type, path] of regionTypePaths(types)) if (types.types[type].region && types.types[path[0]].flow === "main") mainTypes.add(type);
+    return { docs: readThroughBlocks(ordered, types, rules), types, report: { numberBreaks: {} }, noteTypes, mainTypes };
   });
 }

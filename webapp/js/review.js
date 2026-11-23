@@ -1,13 +1,20 @@
-import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261123-blocks-b2-2";
-import { layerRecords } from "./layers.js?v=20261123-blocks-b2-2";
-import { mergeText } from "./pipeline/apply.js?v=20261123-blocks-b2-2";
-import { checkDocument } from "./schema.js?v=20261123-blocks-b2-2";
+import { canonical, clone, EditError, ownerOf, placeOf, regionById, setLine, setRegionType } from "./ops.js?v=20261123-blocks-b2-3";
+import { layerRecords } from "./layers.js?v=20261123-blocks-b2-3";
+import { mergeText } from "./pipeline/apply.js?v=20261123-blocks-b2-3";
+import { checkDocument } from "./schema.js?v=20261123-blocks-b2-3";
 import { markedText } from "./pipeline/split.js";
 import { structureDecisions } from "./pipeline/structure-compare.js";
-import { unitPath, unitRegionIds } from "./editing.js?v=20261123-blocks-b2-2";
-import { regionLayout } from "./pipeline/finders.js?v=20261123-blocks-b2-2";
-import { preserveMarkerIds } from "./marker-ids.js?v=20261123-blocks-b2-2";
-import { partialTextScope } from "./pipeline/partial-reading.js?v=20261123-blocks-b2-2";
+import { regionLayout } from "./pipeline/finders.js?v=20261123-blocks-b2-3";
+import { preserveMarkerIds } from "./marker-ids.js?v=20261123-blocks-b2-3";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261123-blocks-b2-3";
+
+const unitById = (doc, uid) => doc.units.find(unit => unit.id === uid);
+const unitRegionIds = (doc, uid, seen = new Set()) => seen.has(uid) ? [] : (seen.add(uid), unitById(doc, uid).children.flatMap(child => child.region ? [child.region.split("#")[1]] : unitRegionIds(doc, child.unit, seen)));
+function unitPath(doc, uid) {
+  const path = [];
+  while (uid) { path.unshift(unitById(doc, uid)); uid = placeOf(doc, uid)?.parent?.id; }
+  return path;
+}
 
 export const reviewSnapshot = (doc, types) => canonical({ doc, types });
 const freeLayer = (doc, layer) => {

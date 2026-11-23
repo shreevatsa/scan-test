@@ -1,16 +1,16 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-2";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-2";
-import { bookReading } from "./reading.js?v=20261123-blocks-b2-2";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-2";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-3";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-3";
+import { bookReading } from "./reading.js?v=20261123-blocks-b2-3";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-3";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-b2-2";
+import * as ops from "./ops.js?v=20261123-blocks-b2-3";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-2";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-2";
-import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-2";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-2";
-import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-2";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-2";
+import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-3";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-3";
+import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-3";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-3";
+import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-3";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-3";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -102,10 +102,6 @@ export function blockChecks(app, doc, projection) {
       add(`${notes.length ? `${notes.length} ${notes.length === 1 ? "note has" : "notes have"} no matching marker` : ""}${notes.length && markers.length ? " and " : ""}${markers.length ? `${markers.length} ${markers.length === 1 ? "marker has" : "markers have"} no matching note` : ""}.`,
         "Review notes", () => openBlock(doc.page.regions.find(region => projection.noteTypes.has(region.type))?.id ||
           doc.page.regions.find(region => region.lines?.some(line => line.spans?.some(span => span.kind === "note_marker")))?.id));
-    }
-    for (const [type, entries] of Object.entries(projection.report.numberBreaks)) {
-      if (type !== "page" && entries.some(entry => entry.page === doc.page.id))
-        add(`Check the ${type === "verse" ? "verse" : "episode"} numbers against the scan.`, "Show block", () => openBlock(doc.page.regions.find(region => region.type === type)?.id));
     }
   }
   if (doc.source?.dropped_overrides) add("A grouping you made here no longer applies.", "OK", () => app.edit(next => { delete next.source.dropped_overrides; }));

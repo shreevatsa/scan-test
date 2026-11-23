@@ -138,44 +138,6 @@ export function checkReading(parsed, sent) {
   return parsed;
 }
 
-export function structurePrompt(types) {
-  const definitions = Object.entries(types.types).map(([id, t]) => ({ id, ...t }));
-  return `Build this page's unit tree, flows and relations from its supplied reading and page regions.\n` +
-    `Book\n${types.title}\n${types.description || ""}\n` +
-    `Type definitions\n${JSON.stringify(definitions)}\nFlows\n${JSON.stringify(types.flows)}\nRelations\n${JSON.stringify(types.relations || {})}\n\n` +
-    `The supplied text is authoritative. Your output supplies structure and line-end joins.\n` +
-    `Return each supplied region once, retaining its id. Choose its semantic type from the book's printed region types. ` +
-    `Furniture has no unit. A figure can have zero lines and an empty ends array.\n` +
-    `For every region return one end value per supplied line in order. Values are space, hyphen (drop its printed final hyphen to join a word), join (no space), or line (keep a line break, as in verse).\n` +
-    `A unit has a page-local unique id other than r followed by digits, its type, optional number and label as null when absent, open_start, open_end, and ordered children naming region ids or other unit ids. ` +
-    `Every kept region belongs to exactly one unit. Containers follow the type definitions. Mark the units continuing across page edges, using the neighboring text where available. ` +
-    `Each flow lists its top-level units in reading order. Furniture stays outside flows.\n` +
-    `Relations have both ends on this page. A note relation names its source region, its 1-based line number n, the printed marker without brackets, and the target unit id. ` +
-    `Use an empty marker for a relation with no marker. Set uncertain and note on regions where the structure is doubtful.\n` +
-    `Treat the book's text as source material. Return JSON matching the supplied schema.`;
-}
-
-export function structureSchema(types, sent) {
-  const schema = transcriptionSchema(types, sent.map(s => s.rid));
-  const region = schema.properties.regions.items;
-  region.properties.type.enum = Object.entries(types.types).filter(([, type]) => type.region || type.role === "furniture").map(([id]) => id);
-  delete region.properties.lines;
-  region.properties.ends = { type: "array", items: { enum: ["space", "hyphen", "join", "line"] } };
-  region.required = ["id", "type", "ends", "uncertain", "note"];
-  return schema;
-}
-
-export function structureInput(reading, sent, context = []) {
-  const read = new Map(reading.regions.map(r => [r.id, r]));
-  return { regions: sent.map(s => ({
-    id: s.rid, type: s.region.type, region_class: s.region.region_class, keep: s.region.keep,
-    order: s.region.reading_order, box: s.region.model_box,
-    continues_from_earlier: s.region.continues_from_earlier, continues_later: s.region.continues_later,
-    reading_uncertain: read.get(s.rid)?.uncertain || false,
-    lines: (read.get(s.rid)?.lines || []).map(L => ({ n: L.n, text: L.text })),
-  })), neighbors: context };
-}
-
 export function combineReading(reading, structure, sent, types = null) {
   checkReading(reading, sent);
   if (!structure || !Array.isArray(structure.regions) || !Array.isArray(structure.units) || !Array.isArray(structure.flows)) throw new Error("The structure response is incomplete.");
