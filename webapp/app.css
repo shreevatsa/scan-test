@@ -24,6 +24,11 @@ code { font-size: 12.5px; background: #eee; padding: 0 3px; border-radius: 3px; 
 .box.warn { border-color: #e8c98a; background: #fffaf0; color: var(--ink); }
 .row { margin: 3px 0; }
 .loading { padding: 3em; color: var(--muted); }
+.r-source { position: fixed; z-index: 40; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 6px; box-shadow: 0 6px 24px rgba(0, 0, 0, .18); }
+.r-source[hidden] { display: none; }
+.r-source-crop { background-repeat: no-repeat; border-radius: 3px; }
+.r-source-bar { display: flex; align-items: center; gap: .8em; margin-top: 5px; font-size: 13px; color: var(--muted); }
+.r-source-bar a { margin-left: auto; color: var(--accent); }
 
 /* library */
 .lib { max-width: 760px; margin: 40px auto; padding: 0 20px; }

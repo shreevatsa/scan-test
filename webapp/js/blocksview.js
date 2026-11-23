@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-5";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-5";
-import { bookReading } from "./reading.js?v=20261123-blocks-b2-5";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-5";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-blocks-b2-6";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b2-6";
+import { bookReading } from "./reading.js?v=20261123-blocks-b2-6";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b2-6";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-b2-5";
+import * as ops from "./ops.js?v=20261123-blocks-b2-6";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-5";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-5";
-import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-5";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-5";
-import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-5";
-import { readingOrderWarnings } from "./schema.js?v=20261123-blocks-b2-5";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-5";
+import { noteProblems } from "./note-links.js?v=20261123-blocks-b2-6";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b2-6";
+import { suggestionButton } from "./review-view.js?v=20261123-blocks-b2-6";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b2-6";
+import { pageReviewState } from "./layers.js?v=20261123-blocks-b2-6";
+import { readingOrderWarnings } from "./schema.js?v=20261123-blocks-b2-6";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b2-6";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

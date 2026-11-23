@@ -1,8 +1,8 @@
 import { h } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-b2-5";
-import { REGION_CLASSES } from "./book-types.js?v=20261123-blocks-b2-5";
-import { classSelect } from "./class-labels.js?v=20261123-blocks-b2-5";
-import { editTypeDialog } from "./type-operations.js?v=20261123-blocks-b2-5";
+import * as ops from "./ops.js?v=20261123-blocks-b2-6";
+import { REGION_CLASSES } from "./book-types.js?v=20261123-blocks-b2-6";
+import { classSelect } from "./class-labels.js?v=20261123-blocks-b2-6";
+import { editTypeDialog } from "./type-operations.js?v=20261123-blocks-b2-6";
 
 export function regionTypeSelect(app, current, changed, rid = null) {
   const select = h("select", { "aria-label": "Region type", onchange: async () => {

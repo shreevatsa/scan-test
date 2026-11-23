@@ -7,7 +7,7 @@ Agents preparing a book can use [the portable transcription skill](../skills/tra
 The workflow tabs are **Pages · Read · Export**. **Settings** holds the book's model choices, its structure rules and its types.
 
 - **Pages** browses scans, flags and review marks. **Process pages** finds missing boxes and transcribes pages with valid boxes. Select scans by ticking cards or entering a range such as `1-50, 62`. With no selection it uses displayed undimmed pages. The spend limit applies across finding and reading. A stopped run resumes from the work it saved. **Book checks** expands the checks across pages and notes.
-- **Read** displays the book, including saved work in progress, with its contents and footnotes beside the text. Double-click a passage to open its scan and editable blocks.
+- **Read** displays the book, including saved work in progress, with its contents and footnotes beside the text. Double-click a passage to see it on the scan, beside the text, with a link to the page editor.
 - **Export** saves the book, original PDF, text, or HTML. It also leads to the style sheet and manages the book's copy on disk.
 - **Settings** chooses the region finder and transcription model, with API credentials. **Structure** holds the book's structure rules (below). **Advanced** holds the OCR language pack and the book’s types. Read-only books offer **Make an editable copy** on Pages and Settings.
 

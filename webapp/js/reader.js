@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261123-blocks-b2-5";
+import { assemble } from "./assemble.js?v=20261123-blocks-b2-6";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261123-blocks-b2-5";
-import { layerState } from "./layers.js?v=20261123-blocks-b2-5";
-import { bookReading } from "./reading.js?v=20261123-blocks-b2-5";
+import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261123-blocks-b2-6";
+import { layerState } from "./layers.js?v=20261123-blocks-b2-6";
+import { bookReading } from "./reading.js?v=20261123-blocks-b2-6";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -448,10 +448,14 @@ export async function renderBookView(el, app) {
     if (current()) el.firstChild.textContent = `Loading the pages… ${done} of ${total}`;
   });
   if (!current()) return;
+  // The rest runs in one piece on the page's thread: say which part, and let the message show before each.
+  const say = async text => { el.firstChild.textContent = text; await painted(); return current(); };
+  if (!await say("Putting the book together…")) return;
   const readable = all.filter(doc => hasReading(doc, book.types));
   await book.getRules();
   const projection = bookReading(book.pages, readable, book.types, id => book.isSkipped?.(id), book.rules);
   const P = prepare(projection.docs, projection.types, book.style);
+  if (!await say("Laying out the text…")) return;
   if (!document.getElementById("bookview-css")) document.head.append(h("style", { id: "bookview-css" }, BOOK_CSS));
   if (!P.book.units.length) {
     el.replaceChildren(h("p", { class: "loading" }, "Text appears here as pages are transcribed."));
@@ -462,15 +466,58 @@ export async function renderBookView(el, app) {
   view.innerHTML = `<button class="bv-open" type="button">☰ Contents</button>${bookToc(P)}<article class="reader plain${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>${bookHtml(P, { printed, plain: true })}</article>`;
   const first = P.book.pages[0];
   const editor = h("a", { href: workflowAddress("page", app.pid || first.id) }, "Open page editor");
-  view.addEventListener("dblclick", event => {
-    const ref = event.target.closest(".r-reg")?.dataset.ref;
-    if (!ref || event.target.closest("a")) return;
-    const [pid, region] = ref.split("#");
-    app.openPage(pid, { region });
-  });
   el.replaceChildren(h("div", { class: "blocks-reader-tools" }, editor, h("span", {}, "Double-click text to see its scan.")), view);
+  wireSourceView(view, el, app, P);
   fillFigures(view, app, P);
   wireBookView(view, el);
+}
+
+// Let the browser show what changed (a message) before a long piece of work: after the next frame, or soon in a tab
+// that is not drawing frames.
+const painted = () => new Promise(resolve => {
+  let done = false;
+  const go = () => { if (!done) { done = true; resolve(); } };
+  requestAnimationFrame(() => setTimeout(go, 0));
+  setTimeout(go, 60);
+});
+
+// Double-clicking a passage shows its region on the page image, by the passage, with a link to the page editor.
+// A click elsewhere, Escape or scrolling closes it.
+function wireSourceView(view, el, app, P) {
+  const tip = h("div", { class: "r-source", role: "dialog", "aria-label": "The passage on its page", hidden: true });
+  el.append(tip);
+  let shown = null;
+  const close = () => { tip.hidden = true; tip.replaceChildren(); shown = null; };
+  view.addEventListener("dblclick", async event => {
+    const passage = event.target.closest(".r-reg"), ref = passage?.dataset.ref, R = ref && P.regions[ref];
+    if (!R || event.target.closest("a")) return;
+    getSelection()?.removeAllRanges();
+    shown = ref;
+    const [pid, rid] = ref.split("#"), url = await app.book.imageUrl(pid);
+    if (shown !== ref) return;
+    const [x1, y1, x2, y2] = R.region.box || bbox(R.region.polygons);
+    const pad = 12, bw = x2 - x1 + 2 * pad, bh = y2 - y1 + 2 * pad;
+    const scale = Math.min(1, Math.min(640, innerWidth - 40) / bw, 420 / bh);
+    const crop = h("div", { class: "r-source-crop", title: `${pid} ${rid}` });
+    Object.assign(crop.style, { width: `${bw * scale}px`, height: `${bh * scale}px`, backgroundImage: `url("${url}")`,
+      backgroundSize: `${R.page.width * scale}px ${R.page.height * scale}px`, backgroundPosition: `${-(x1 - pad) * scale}px ${-(y1 - pad) * scale}px` });
+    const pdfPage = `PDF page ${(app.book.index?.[pid] ?? 0) + 1}`, where = R.page.label ? `p. ${R.page.label} · ${pdfPage}` : pdfPage;
+    tip.replaceChildren(crop, h("div", { class: "r-source-bar" }, h("span", {}, where),
+      h("a", { href: workflowAddress("page", pid, { region: rid }) }, "Open in the page editor"),
+      h("button", { class: "mini", type: "button", "aria-label": "Close", onclick: close }, "×")));
+    tip.hidden = false;
+    // Below the passage where it fits, else above it.
+    const rect = passage.getBoundingClientRect(), width = tip.offsetWidth, height = tip.offsetHeight;
+    tip.style.left = `${Math.max(8, Math.min(innerWidth - width - 8, event.clientX - width / 2))}px`;
+    tip.style.top = `${rect.bottom + 8 + height < innerHeight ? rect.bottom + 8 : Math.max(8, Math.min(rect.top, innerHeight) - height - 8)}px`;
+  });
+  view.addEventListener("click", event => { if (!tip.hidden && !tip.contains(event.target)) close(); });
+  el.addEventListener("scroll", () => { if (!tip.hidden) close(); }, { passive: true });
+  const onKey = event => {
+    if (!tip.isConnected) { document.removeEventListener("keydown", onKey); return; }
+    if (event.key === "Escape" && !tip.hidden) close();
+  };
+  document.addEventListener("keydown", onKey);
 }
 
 // The CSS a standalone export needs: the reader's rules for its elements, as printed.
