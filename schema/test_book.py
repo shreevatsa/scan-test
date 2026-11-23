@@ -290,5 +290,45 @@ class InlineTests(unittest.TestCase):
             self.assertTrue(any(expected in e for e in errors), (expected, errors))
 
 
+    def blocks_page(self, overrides=None):
+        """0.4, the blocks form: the regions of page 1 with overrides and no units, flows or relations."""
+        doc = two_pages()[0]
+        for key in ("units", "flows", "relations"):
+            del doc[key]
+        doc.update(schema_version="0.4", overrides=overrides if overrides is not None else {})
+        return doc
+
+    def test_blocks_form_pages(self):
+        for overrides in [{}, {"groups": ["r1", {"type": "story", "members": [{"type": "paragraph", "blocks": ["r2"], "number": "1", "open": {"end": True}}], "flow": "main"}],
+                               "unowned": ["r4"], "units": {"verse@r2": {"number": "2", "label": None, "open": None}}, "order": {"main": ["story@r1"]},
+                               "links": [{"from": {"anchor": "p1#m1", "marker": "1"}, "to": "footnote@r4"}, {"from": {"region": "p1#r1", "line": 0, "marker": "1"}, "to": None}]}]:
+            doc = self.blocks_page(overrides)
+            if "links" in overrides:
+                doc["page"]["regions"][0]["lines"] = [{"line": 0, "text": "text 1", "spans": [{"start": 6, "end": 6, "kind": "note_marker", "id": "m1"}]}]
+            self.assertEqual(errors_of(doc), [], overrides)
+            self.assertEqual(bk.check_document(doc, TYPES)[1], [])
+
+    def test_blocks_form_pages_are_checked(self):
+        cases = {
+            "unexpected property units": lambda d: d.update(units=[]),
+            "missing overrides": lambda d: d.pop("overrides"),
+            "must be '0.4'": lambda d: d.update(schema_version="0.5"),
+            "unexpected property": lambda d: d["overrides"].update(extra=1),
+            "unknown block r9": lambda d: d["overrides"].update(groups=["r9"]),
+            "is furniture": lambda d: d["overrides"].update(unowned=["r3"]),
+            "unknown or furniture type": lambda d: d["overrides"].update(groups=[{"type": "page_number", "blocks": ["r1"]}]),
+            "is also in": lambda d: d["overrides"].update(groups=["r1", {"type": "paragraph", "blocks": ["r1"]}]),
+            "overrides.groups[0]: flow side is not in the type list": lambda d: d["overrides"].update(groups=[{"type": "story", "flow": "side", "members": [{"block": "r1"}]}]),
+            "has no blocks or members": lambda d: d["overrides"].update(groups=[{"type": "story"}]),
+            "unknown anchor": lambda d: d["overrides"].update(links=[{"from": {"anchor": "p1#m5"}, "to": "footnote@r4"}]),
+            "overrides.order: flow side is not in the type list": lambda d: d["overrides"].update(order={"side": []}),
+        }
+        for expected, damage in cases.items():
+            doc = self.blocks_page({})
+            damage(doc)
+            errors = errors_of(doc)
+            self.assertTrue(any(expected in e for e in errors), (expected, errors))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

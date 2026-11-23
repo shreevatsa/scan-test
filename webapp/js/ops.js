@@ -6,7 +6,7 @@
 // is checked with schema.js before it is saved.
 
 import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
-import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-blocks-a";
+import { rebuildProvisional } from "./pipeline/provisional.js?v=20261123-blocks-b1";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };

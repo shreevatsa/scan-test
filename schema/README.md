@@ -291,18 +291,18 @@ Each example directory has the hand-written `tree.txt` and the generated `tree-p
 
 ## Blocks (draft 0.4, 2026-11-22)
 
-Draft 0.4 is a second form of the page document, for the plan to store only what a person or model produced and to derive the rest. It is built and proved (`webapp/js/blocks-format.js`) but not written by the app yet, and `schema.json` still describes 0.3 only. A 0.4 page document has:
+Draft 0.4 is a second form of the page document, for the plan to store only what a person or model produced and to derive the rest. It is built and proved (`webapp/js/blocks-format.js`). The app reads every book through it (`webapp/js/reading.js`) but still writes 0.3 page documents. `schema.json` and `schema/book.py` validate 0.4 pages (below). A 0.4 page document has:
 - `format: "page"`, `schema_version: "0.4"`, `book_id`, `page` and `source`, exactly as in 0.3. The regions (the **blocks**) are unchanged: type, box, polygons, reading order, line pieces with `text`, `spans` and `end`, and `source`, with its `continues_from_earlier` and `continues_later` flags. Line ends and note-marker spans stay on the line pieces;
 - no `units`, `flows` or `relations`;
 - `overrides`, an object (empty `{}` where the rules give the whole structure) holding only what derivation does not give.
 
 **Derivation.** `fromBlocks(page, types, context)` rebuilds `units`, `flows` and `relations` from the regions and the book's rules, with the rule modules the reader already uses:
 1. one unit per block, placed by the type list's containment (`provisionalUnits`), and a unit open at the page edge where its block says it continues (the first and last pages of the book are not open outwards);
-2. verse groups from their markers, and, in a book whose type list has `section` and `section_closing`, the parts and episodes from the closing lines (`verse-group-rules.js`, `section-rules.js`, with the Rāmāyaṇa-mañjarī's own settings);
+2. verse groups from their markers, and, in a book whose type list has `section` and `section_closing`, the parts and episodes from the closing lines (`verse-group-rules.js`, `section-rules.js`, with the book's rules, below);
 3. note links: each marker to the note on its page with the same printed number, and that number on the note unit (`note-links.js`);
 4. the overrides.
 
-`context` is `blocksContext(pages)`: the book's page documents in order (0.3 or 0.4, only their regions are read), null for a page that is not there, with dimmed pages left out. The rules need it for the book's first and last page and for the sections, whose parts and episodes are counted from the start of the book. It derives the whole book once and keeps the result. `toBlocks(doc, types, context)` is the inverse: the overrides are exactly the difference between the saved 0.3 structure and that derivation, so `fromBlocks(toBlocks(doc))` gives back the same structure.
+`context` is `blocksContext(pages, rules)` (`rules` is the book's `rules`, below): the book's page documents in order (0.3 or 0.4, only their regions are read), null for a page that is not there, with dimmed pages left out. The rules need it for the book's first and last page and for the sections, whose parts and episodes are counted from the start of the book. It derives the whole book once and keeps the result. `toBlocks(doc, types, context)` is the inverse: the overrides are exactly the difference between the saved 0.3 structure and that derivation, so `fromBlocks(toBlocks(doc))` gives back the same structure.
 
 **A unit's key** is its type and its first block, such as `verse@r4`; where a unit contains one of the same type that starts with the same block (an episode opening a part), the inner one is `section@r3#2`. An override names a unit by its key.
 
@@ -332,5 +332,33 @@ Why: Kale's groups (a lead-in, a verse and its commentary) and the Rāmāyaṇa-
 **`overrides.links`**: note links that differ from the same-number rule. Each is `{ "from": { "anchor": "<page id>#<span id>", "marker": "१" }, "to": "footnote@r12" }`, the `from` as saved and the note by key; `"to": null` removes a link the rule would make; `"type"` appears only for a relation that is not a note link. A marker with no anchor (a position in a line) keeps its `region`, `line` and `marker`.
 
 **What is not kept.** Unit and relation `source` (the record of which rule made them), except `label_source`; a note link's `from.region` and `from.line` where the anchor is present (they repeat it); the order of the `units` list and generated ids (`u1`, `g1`). The verse and closing-line numbers the reader derives from the printed text are not stored in units, because the finished books do not store them: the text carries them.
+
+**Validation.** `schema.json` has a `page_document_blocks` alternative: `format: "page"`, `schema_version: "0.4"`, `book_id`, `page` (regions as in 0.3), `overrides` (required, possibly `{}`) and `source`, and nothing else (no `units`, `flows` or `relations`). The overrides' shapes are in the schema (`groups`, `unowned`, `units`, `order`, `links`). Beyond the schema, `book.py check` and the app's `checkPage` apply the region and span rules as for 0.3, and check that the overrides name blocks that exist and are not furniture (each block in at most one group), types in the type list that are not furniture, flows and relation types in the type list, and anchors and regions that exist; a group has `blocks` or `members`, not both, and only a top-level group has a `flow`. The unit keys of `overrides.units` and `overrides.order` and the note targets of `overrides.links` are not checked: they refer to the derivation. `book.py assemble` still takes 0.3 documents; the app derives the units first (`fromBlocks`).
+
+## Book rules (`rules` in `book.json`, 2026-11-23)
+
+The settings of the rule modules that derive structure from blocks (`webapp/js/rules.js`; Settings → Structure in the app; `webapp/tools/chaya_rules.mjs` from the command line). A book with no `rules` gets the defaults, which are what the reader does for any book. Each setting is optional; a missing one takes its default.
+
+```json
+"rules": {
+  "sections": {
+    "closing": "section_closing",
+    "partClosing": "कथासारे",
+    "partHeading": "काण्ड",
+    "partAfter": null,
+    "divisionClosing": "किष्किन्धापर्व",
+    "partLabels": ["बालकाण्डम् – अयोध्याकाण्डम्", "अरण्यकाण्डम्", "किष्किन्धाकाण्डम्", "सुन्दरकाण्डम्", "युद्धकाण्डम्", "", "उत्तरकाण्डम्"]
+  },
+  "verseGroups": {
+    "markerType": "verse_group_marker",
+    "counts": { "युगलकम्": 2, "युग्मम्": 2, "तिलकम्": 3, "विशेषकम्": 3, "कलापकम्": 4, "कुलकम्": 5 }
+  }
+}
+```
+- `sections` (`section-rules.js`, used where the type list has `section` and the closing type): `closing`, the type of a line that ends an episode (default `section_closing`); `partClosing`, a regular expression (source text): a closing line that matches also ends its part (default `कथासारे`); `partHeading`: a heading that matches starts a part where the part before has no closing line of its own (default none); `partAfter`: a closing that matches ends its part though the book prints no end, an inferred boundary (default none); `divisionClosing`: a closing that matches stands between episodes inside its part without ending one (default none); `partLabels`: the names of the parts in order, `""` leaving a part untitled; a name given here is the editor's and is marked `source.label: "editor"`.
+- `verseGroups` (`verse-group-rules.js`, used where the type list has the marker type): `markerType` (default `verse_group_marker`) and `counts`, the marker words, each with the number of verses it groups (default the six above).
+- Note links need no setting: each marker is linked to the note on its page with the same printed number (`note-links.js`).
+
+The Rāmāyaṇa-mañjarī carries the example above, the settings its book id used to select in the code. The rules matter wherever a page has no saved structure or is stored as 0.4; for a page stored as 0.3 the conversion keeps the saved structure whatever the rules.
 
 The command-line tool `webapp/tools/chaya_blocks.mjs IN OUT` writes a converted copy of a book and prints the counts of each kind of override.

@@ -1,9 +1,9 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-blocks-a";
-import { canonical } from "../ops.js?v=20261123-blocks-a";
-import { checkDocument, typeRevision } from "../schema.js?v=20261123-blocks-a";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-blocks-b1";
+import { canonical } from "../ops.js?v=20261123-blocks-b1";
+import { checkDocument, typeRevision } from "../schema.js?v=20261123-blocks-b1";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261123-blocks-a";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261123-blocks-a";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261123-blocks-b1";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261123-blocks-b1";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,

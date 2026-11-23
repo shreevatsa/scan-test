@@ -133,6 +133,68 @@ def depth_first(units, flows):
 FORMATTING = {"bold", "italic", "small_caps", "superscript", "subscript", "underline", "spaced"}
 
 
+def override_errors(doc, tl, regions, anchors):
+    """The rules for a 0.4 page's overrides: they name blocks, types, flows and anchors that exist."""
+    errors, types, pid, overrides = [], tl["types"], doc["page"]["id"], doc.get("overrides", {})
+    owner = {}
+
+    def block(bid, where):
+        region = regions.get(f"{pid}#{bid}")
+        if region is None:
+            errors.append(f"{where}: unknown block {bid}")
+        elif types.get(region["type"], {}).get("role") == "furniture":
+            errors.append(f"{where}: block {bid} is furniture")
+
+    def claim(bid, where):
+        block(bid, where)
+        if bid in owner:
+            errors.append(f"{where}: block {bid} is also in {owner[bid]}")
+        else:
+            owner[bid] = where
+
+    def group(item, where, top):
+        if isinstance(item, str):
+            claim(item, where)
+            return
+        t = types.get(item["type"])
+        if t is None or t.get("role") == "furniture":
+            errors.append(f"{where}: unknown or furniture type {item['type']}")
+        if "flow" in item and item["flow"] not in tl["flows"]:
+            errors.append(f"{where}: flow {item['flow']} is not in the type list")
+        if "flow" in item and not top:
+            errors.append(f"{where}: only a top-level group has a flow")
+        if "blocks" in item and "members" in item:
+            errors.append(f"{where}: has both blocks and members")
+        if "blocks" not in item and "members" not in item:
+            errors.append(f"{where}: has no blocks or members")
+        for bid in item.get("blocks", []):
+            claim(bid, where)
+        for k, member in enumerate(item.get("members", [])):
+            if isinstance(member, dict) and "block" in member:
+                claim(member["block"], f"{where}.members[{k}]")
+            else:
+                group(member, f"{where}.members[{k}]", False)
+
+    for k, item in enumerate(overrides.get("groups", [])):
+        group(item, f"overrides.groups[{k}]", True)
+    for bid in overrides.get("unowned", []):
+        block(bid, "overrides.unowned")
+    for flow in overrides.get("order", {}):
+        if flow not in tl["flows"]:
+            errors.append(f"overrides.order: flow {flow} is not in the type list")
+    for k, link in enumerate(overrides.get("links", [])):
+        kind, src = link.get("type", "note"), link["from"]
+        if kind not in tl.get("relations", {}):
+            errors.append(f"overrides.links[{k}]: unknown type {kind}")
+        if "anchor" in src and src["anchor"] not in anchors:
+            errors.append(f"overrides.links[{k}]: unknown anchor {src['anchor']}")
+        if "region" in src and src["region"] not in regions:
+            errors.append(f"overrides.links[{k}]: unknown region {src['region']}")
+        if "anchor" not in src and "region" not in src:
+            errors.append(f"overrides.links[{k}]: from needs an anchor or a region")
+    return errors
+
+
 def check_document(doc, tl):
     """Rules for a page document or a book document. Returns (errors, warnings)."""
     errors, warnings, types = [], [], tl["types"]
@@ -169,6 +231,9 @@ def check_document(doc, tl):
                         if ref in anchors or ref in regions:
                             errors.append(f"{where}: duplicate id {sp['id']}")
                         anchors[ref] = sp
+    # 0.4, the blocks form: no units to check, only that the overrides name blocks, types and flows that exist.
+    if "units" not in doc:
+        return errors + override_errors(doc, tl, regions, anchors), warnings
     units = {}
     for u in doc["units"]:
         if u["id"] in units:

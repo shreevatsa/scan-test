@@ -41,7 +41,7 @@ export async function auditBlocks(path) {
   const { data: { files } } = await readChaya(await readFile(path));
   const manifest = files["book.json"], types = files["types.json"];
   const saved = manifest.pages.map(page => files[`edits/${page.id}.json`] || files[`pages/${page.id}.json`]).filter(Boolean);
-  const { docs, types: derivedTypes, report } = projectBlocks(manifest.pages, saved, types, new Set(manifest.skipped));
+  const { docs, types: derivedTypes, report } = projectBlocks(manifest.pages, saved, types, new Set(manifest.skipped), manifest.rules);
   const byId = new Map(saved.map(doc => [doc.page.id, doc]));
   const counts = {}, details = {};
   const bump = (kind, page, name = "total") => {

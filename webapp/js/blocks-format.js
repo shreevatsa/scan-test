@@ -7,12 +7,13 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-a";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-a";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-a";
-import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-a";
-import { assemble } from "./assemble.js?v=20261123-blocks-a";
-import { counts, partLabels, textOf, isRamayana, ramayanaSections } from "./blocks.js?v=20261123-blocks-a";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b1";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-b1";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b1";
+import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b1";
+import { assemble } from "./assemble.js?v=20261123-blocks-b1";
+import { textOf } from "./blocks.js?v=20261123-blocks-b1";
+import { compileRules } from "./rules.js?v=20261123-blocks-b1";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];
@@ -20,8 +21,9 @@ const ridOf = ref => ref.split("#").pop();
 const clone = value => value === undefined ? value : structuredClone(value);
 const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 
-export function blocksContext(pages) {
-  return { pages: [...pages], derived: null };
+// `rules` are the book's structure rules (book.json `rules`, rules.js); none gives the defaults.
+export function blocksContext(pages, rules) {
+  return { pages: [...pages], rules: compileRules(rules), derived: null };
 }
 
 // ---------------------------------------------------------------------------------------------------- derivation
@@ -31,11 +33,10 @@ export function blocksContext(pages) {
 function derive(context, types) {
   if (context.derived?.types === types) return context.derived.byPage;
   const tl = clone(types);
-  const first = context.pages.find(Boolean)?.page.id;
-  const ramayana = isRamayana(tl, first);
-  const groupMarkers = Boolean(tl.types.verse_group_marker);
-  const closeSections = Boolean(tl.types.section && tl.types.section_closing);
-  if (groupMarkers && !tl.types.verse_group) tl.types.verse_group = { flow: "main", contains: ["verse", "verse_group_marker"] };
+  const { sections: sectionRules, verseGroups: groupRules } = context.rules;
+  const groupMarkers = Boolean(tl.types[groupRules.markerType]);
+  const closeSections = Boolean(tl.types.section && tl.types[sectionRules.closing]);
+  if (groupMarkers && !tl.types.verse_group) tl.types.verse_group = { flow: "main", contains: ["verse", groupRules.markerType] };
   const { noteTypes, mainTypes } = noteTypesOf(tl);
   for (const [type, path] of regionTypePaths(tl)) if (tl.types[type].region && tl.types[path[0]].flow === "main") mainTypes.add(type);
   const last = context.pages.length - 1;
@@ -47,17 +48,18 @@ function derive(context, types) {
   });
   const present = docs.filter(Boolean);
   if (groupMarkers) for (const doc of present) {
-    if (!doc.page.regions.some(region => region.type === "verse_group_marker" ||
-        region.lines?.some(line => /\((?:युगलकम्|तिलकम्|युग्मम्|विशेषकम्|कलापकम्|कुलकम्)\)/.test(line.text || "")))) continue;
-    groupVerses(doc, { counts });
+    if (!doc.page.regions.some(region => region.type === groupRules.markerType ||
+        region.lines?.some(line => groupRules.markerWords.test(line.text || "")))) continue;
+    groupVerses(doc, { counts: groupRules.counts, markerType: groupRules.markerType });
   }
   if (closeSections) {
-    const items = sectionKeys(present, { closing: "section_closing", partClosing: /कथासारे/, textOf, ...(ramayana ? ramayanaSections : {}) });
+    const items = sectionKeys(present, { closing: sectionRules.closing, partClosing: sectionRules.partClosing, partHeading: sectionRules.partHeading,
+      partAfter: sectionRules.partAfter, divisionClosing: sectionRules.divisionClosing, textOf });
     const byPage = Map.groupBy(items, item => item.pageIndex);
     tl.types.section.contains = [...new Set([...tl.types.section.contains, ...items.filter(item => item.part !== null).map(item => item.unit.type)])];
     for (const [index, here] of byPage) {
       const previous = items[items.indexOf(here[0]) - 1], next = items[items.indexOf(here.at(-1)) + 1];
-      groupPage(present[index], here, previous, next, { parts: items.parts, partLabels: ramayana ? partLabels : [] });
+      groupPage(present[index], here, previous, next, { parts: items.parts, partLabels: sectionRules.partLabels });
     }
   }
   const byPage = new Map();

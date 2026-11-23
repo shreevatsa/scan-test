@@ -7,12 +7,12 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261123-blocks-a";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261123-blocks-a";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261123-blocks-a";
-import { canonical } from "./ops.js?v=20261123-blocks-a";
-import { checkDocument, typeRevision } from "./schema.js?v=20261123-blocks-a";
-import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261123-blocks-a";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261123-blocks-b1";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261123-blocks-b1";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261123-blocks-b1";
+import { canonical } from "./ops.js?v=20261123-blocks-b1";
+import { checkDocument, typeRevision } from "./schema.js?v=20261123-blocks-b1";
+import { assertFocusEdit, unitSnapshot, mergeTextEdit, applyUnitChanges } from "./editing.js?v=20261123-blocks-b1";
 
 const bookWrites = new Map();
 
@@ -496,6 +496,33 @@ export class Book {
       await idb.put("settings", ["reader-options", this.key], next);
       this.manifest.reader_options = next;
       this.readerOptionsLoaded = true;
+    }
+  }
+
+  // The book's structure rules (book.json `rules`, webapp/js/rules.js); none means the defaults. A book that cannot be
+  // written keeps its changes in this browser, as reader options.
+  get rules() { return this.manifest.rules; }
+  async getRules() {
+    if (!this.writable && !this.rulesLoaded) {
+      const saved = await idb.get("settings", ["rules", this.key]).catch(() => null);
+      if (saved) this.manifest.rules = saved;
+      this.rulesLoaded = true;
+    }
+    return this.manifest.rules;
+  }
+  async saveRules(rules) {
+    const next = rules ? JSON.parse(JSON.stringify(rules)) : null;
+    if (this.writable) {
+      await this.pageWrite(async () => {
+        const manifest = await this.readJson("book.json") || structuredClone(this.manifest);
+        if (next) manifest.rules = next; else delete manifest.rules;
+        await this.writeFile("book.json", pretty(manifest));
+        this.manifest = manifest;
+      });
+    } else {
+      if (next) await idb.put("settings", ["rules", this.key], next); else await idb.del("settings", ["rules", this.key]);
+      if (next) this.manifest.rules = next; else delete this.manifest.rules;
+      this.rulesLoaded = true;
     }
   }
 

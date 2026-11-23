@@ -1,9 +1,68 @@
 import { h } from "./render.js";
-import { settings } from "./store.js?v=20261123-blocks-a";
-import { credentialsBox } from "./key-check.js?v=20261123-blocks-a";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-blocks-a";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-blocks-a";
-import { renderTypeView } from "./typesview.js?v=20261123-blocks-a";
+import { settings } from "./store.js?v=20261123-blocks-b1";
+import { credentialsBox } from "./key-check.js?v=20261123-blocks-b1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-blocks-b1";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-blocks-b1";
+import { renderTypeView } from "./typesview.js?v=20261123-blocks-b1";
+import { bookRules, ruleProblems } from "./rules.js?v=20261123-blocks-b1";
+
+// Settings → Structure: the book's structure rules (book.json `rules`, webapp/js/rules.js), as plain fields. Changing one
+// saves the rules and reads the book again (Read, the page editor's structure and the checks derive from them).
+export function structureSection(app, active) {
+  const { book } = app;
+  const rules = bookRules(book.rules), s = rules.sections, v = rules.verseGroups;
+  const status = h("p", { role: "status", class: "hint" });
+  const text = (label, value, hint) => {
+    const input = h("input", { type: "text", value: value || "" });
+    return { input, row: h("label", { class: "rule-field", style: "display:block;margin:.5em 0" }, label, " ", input, hint ? h("div", { class: "hint" }, hint) : null) };
+  };
+  const area = (label, value, hint, rows) => {
+    const input = h("textarea", { rows, cols: 40, spellcheck: "false" }, value);
+    return { input, row: h("label", { class: "rule-field", style: "display:block;margin:.5em 0" }, label, h("br"), input, hint ? h("div", { class: "hint" }, hint) : null) };
+  };
+  const closing = text("Closing line type", s.closing, "the type of a line that ends an episode, such as “इति … ॥ ४२ ॥”");
+  const partClosing = text("Closing of a part", s.partClosing, "a pattern; a closing line that matches it also ends its part");
+  const partHeading = text("Heading of a part", s.partHeading, "a pattern; a heading that matches it starts a part");
+  const partAfter = text("End a part after", s.partAfter, "a pattern; a closing line that matches it ends its part, though the book prints no end");
+  const divisionClosing = text("Division closing", s.divisionClosing, "a pattern; a closing that matches stands between episodes without ending one");
+  const partLabels = area("Part names, one per line, in the order of the parts", s.partLabels.join("\n"), "A blank line leaves a part untitled. Names given here are shown in parentheses, as the editor's.", 8);
+  const marker = text("Verse-group marker type", v.markerType, "the type of a marker such as “(युगलकम्)”");
+  const counts = area("Marker words and the number of verses each groups, one per line", Object.entries(v.counts).map(([word, n]) => `${word} = ${n}`).join("\n"), "for example: तिलकम् = 3", 6);
+  const fields = [closing, partClosing, partHeading, partAfter, divisionClosing, partLabels, marker, counts];
+  const read = () => {
+    const lines = value => value.split("\n").map(line => line.replace(/\r$/, ""));
+    const labels = lines(partLabels.input.value);
+    while (labels.length && labels.at(-1).trim() === "") labels.pop();
+    const pairs = lines(counts.input.value).filter(line => line.trim()).map(line => line.split("=").map(part => part.trim()));
+    return { sections: { closing: closing.input.value.trim(), partClosing: partClosing.input.value.trim() || null, partHeading: partHeading.input.value.trim() || null,
+        partAfter: partAfter.input.value.trim() || null, divisionClosing: divisionClosing.input.value.trim() || null, partLabels: labels.map(label => label.trim()) },
+      verseGroups: { markerType: marker.input.value.trim(), counts: Object.fromEntries(pairs.map(([word, n]) => [word, /^\d+$/.test(n || "") ? Number(n) : NaN])) } };
+  };
+  let saving = Promise.resolve();
+  const save = () => {
+    const next = read(), problems = ruleProblems(next);
+    if (problems.length) { status.textContent = `Not saved: ${problems[0]}.`; return; }
+    saving = saving.then(async () => {
+      try {
+        await book.saveRules(next);
+        if (!active()) return;
+        app.blocksProjection = null; app.blocksSource = null;
+        app.refreshWorkflowFlags?.();
+        status.textContent = book.writable ? "Saved. Read and the checks use these rules." : "Saved in this browser. Make an editable copy to keep it in the book.";
+      } catch (error) { status.textContent = error.message; }
+    });
+  };
+  for (const { input } of fields) input.addEventListener("change", save);
+  const reset = h("button", { type: "button", onclick: async () => {
+    await book.saveRules(null);
+    app.blocksProjection = null; app.blocksSource = null;
+    app.setMode("settings");
+  } }, "Use the defaults");
+  return h("details", { class: "region-section", open: true },
+    h("summary", {}, "Structure"),
+    h("p", { class: "hint" }, "How the book's sections, verse groups and notes are made from its blocks. These are kept in the book; a book with none uses the defaults."),
+    ...fields.map(field => field.row), h("div", {}, reset), status);
+}
 
 export async function renderBookSettings(el, app) {
   const { book, routeToken } = app;
@@ -12,6 +71,7 @@ export async function renderBookSettings(el, app) {
   const mode = app.routeView;
   const workspace = h("div", { class: "stage-overview" }, h("h1", {}, "Settings"));
   el.replaceChildren(workspace);
+  await book.getRules();
   const options = book.writable ? await (await app.getMaker()).options() : null;
   if (!active()) return;
 
@@ -62,11 +122,11 @@ export async function renderBookSettings(el, app) {
     };
     finder.onchange = reader.onchange = language.onchange = choose;
     workspace.append(h("div", { class: "fields" }, h("label", {}, "Region finder ", finder),
-      h("label", {}, "Transcription model ", reader)), credentials.element);
+      h("label", {}, "Transcription model ", reader)), credentials.element, structureSection(app, active));
     advanced.append(h("div", { class: "fields" }, h("label", {}, "OCR language pack ", language)), typeSection);
     workspace.append(advanced);
   } else {
-    workspace.append(h("button", { onclick: () => app.continueBook("settings") }, "Make an editable copy"));
+    workspace.append(h("button", { onclick: () => app.continueBook("settings") }, "Make an editable copy"), structureSection(app, active));
     advanced.append(typeSection);
     workspace.append(advanced);
   }

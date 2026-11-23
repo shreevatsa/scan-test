@@ -15,7 +15,7 @@ export function convertBook(files) {
   const manifest = files["book.json"], types = files["types.json"], skipped = new Set(manifest.skipped || []);
   const keys = manifest.pages.filter(page => !skipped.has(page.id)).map(page => files[`edits/${page.id}.json`] ? `edits/${page.id}.json` : files[`pages/${page.id}.json`] ? `pages/${page.id}.json` : null);
   const docs = keys.map(key => key && files[key]);
-  const context = blocksContext(docs);
+  const context = blocksContext(docs, manifest.rules);
   const report = { book: manifest.title, pages: docs.filter(Boolean).length, overrides: {}, pagesWithOverrides: 0, mismatches: [],
     bytes: { before: 0, after: 0, structureBefore: 0, overridesAfter: 0, beforeGzip: 0, afterGzip: 0 } };
   const converted = docs.map(doc => doc && toBlocks(doc, types, context));

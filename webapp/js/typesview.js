@@ -4,18 +4,19 @@
 // prompts that find regions and transcribe pages are written from the type list. Shown here as the tree of what may
 // contain what, from each flow's top level, with how many units of each type the book has, and as each type's card.
 
-import { classLabel, classNote } from "./class-labels.js?v=20261123-blocks-a";
+import { classLabel, classNote } from "./class-labels.js?v=20261123-blocks-b1";
 import { h, cropInto } from "./render.js";
-import { typeForest } from "./type-tree.js?v=20261123-blocks-a";
-import { prepare } from "./reader.js?v=20261123-blocks-a";
-import { typeRevision } from "./schema.js?v=20261123-blocks-a";
-import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261123-blocks-a";
-import { newTypeDialog } from "./regionsview.js?v=20261123-blocks-a";
-import { readPendingProposals, pendingItems } from "./type-additions.js?v=20261123-blocks-a";
-import { unusedDraftTypes } from "./draft-types.js?v=20261123-blocks-a";
-import { citedSamplePages } from "./type-revisions.js?v=20261123-blocks-a";
-import { typeExampleIndex } from "./type-examples.js?v=20261123-blocks-a";
-import { regionPath } from "./pageimage.js?v=20261123-blocks-a";
+import { typeForest } from "./type-tree.js?v=20261123-blocks-b1";
+import { prepare } from "./reader.js?v=20261123-blocks-b1";
+import { readThroughBlocks } from "./reading.js?v=20261123-blocks-b1";
+import { typeRevision } from "./schema.js?v=20261123-blocks-b1";
+import { editTypeDialog, editBookTypesDialog, reviewTypeChange } from "./type-operations.js?v=20261123-blocks-b1";
+import { newTypeDialog } from "./regionsview.js?v=20261123-blocks-b1";
+import { readPendingProposals, pendingItems } from "./type-additions.js?v=20261123-blocks-b1";
+import { unusedDraftTypes } from "./draft-types.js?v=20261123-blocks-b1";
+import { citedSamplePages } from "./type-revisions.js?v=20261123-blocks-b1";
+import { typeExampleIndex } from "./type-examples.js?v=20261123-blocks-b1";
+import { regionPath } from "./pageimage.js?v=20261123-blocks-b1";
 
 // By type: what may contain what (each type name selects its card), the cards with scan examples, then the book's
 // details and the questions to review. Returns what to run when leaving the view.
@@ -182,7 +183,7 @@ export async function renderTypeTree(el, app, { onSelect, removeUnused = false, 
   const proposals = pendingItems(await readPendingProposals(book).catch(() => ({ items: [] })), "new_type");
   if (!el.isConnected || app.book !== book || app.tl !== tl) return;
   const unused = unusedDraftTypes(tl, generic, docs, proposals);
-  const P = prepare(docs, tl);
+  const P = prepare(readThroughBlocks(docs, tl, book.rules), tl);
   const n = {}, at = {};
   const add = (obj, k) => { obj[k] = (obj[k] || 0) + 1; };
   for (const u of P.book.units) {

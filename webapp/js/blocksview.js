@@ -1,21 +1,22 @@
-import { TextPanel, renderInspector } from "./editor.js?v=20261123-blocks-a";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks, readingProjection } from "./blocks.js?v=20261123-blocks-a";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-a";
+import { TextPanel, renderInspector } from "./editor.js?v=20261123-blocks-b1";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-blocks-b1";
+import { bookReading } from "./reading.js?v=20261123-blocks-b1";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-blocks-b1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-blocks-a";
+import * as ops from "./ops.js?v=20261123-blocks-b1";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-blocks-a";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-a";
-import { suggestionButton } from "./review-view.js?v=20261123-blocks-a";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-a";
-import { unitPath } from "./editing.js?v=20261123-blocks-a";
-import { pageReviewState } from "./layers.js?v=20261123-blocks-a";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-a";
+import { noteProblems } from "./note-links.js?v=20261123-blocks-b1";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-blocks-b1";
+import { suggestionButton } from "./review-view.js?v=20261123-blocks-b1";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-blocks-b1";
+import { unitPath } from "./editing.js?v=20261123-blocks-b1";
+import { pageReviewState } from "./layers.js?v=20261123-blocks-b1";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-blocks-b1";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
   const saved = book.pages.map(page => page.id === doc?.page.id ? doc : app.pageStates.get(page.id)?.doc).filter(Boolean);
-  return readingProjection(book.pages, saved, book.types, book.skipped);
+  return bookReading(book.pages, saved, book.types, book.skipped, book.rules);
 }
 
 const tag = (type, colors) => h("span", { class: "block-tag", style: `--block-color:${colors[type] || "#65716c"}` }, blockName(type));

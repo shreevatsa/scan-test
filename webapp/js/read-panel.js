@@ -1,5 +1,5 @@
-import { ownerOf } from "./ops.js?v=20261123-blocks-a";
-import { checkPage } from "./schema.js?v=20261123-blocks-a";
+import { ownerOf } from "./ops.js?v=20261123-blocks-b1";
+import { checkPage } from "./schema.js?v=20261123-blocks-b1";
 
 export function readingIssues(docs, types, validate, warnings, canonical) {
   const issues = [];

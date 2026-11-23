@@ -113,6 +113,42 @@ export function* depthFirst(units, flows) {
 
 const own = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
 
+// The rules for a 0.4 page's overrides, as book.py override_errors.
+function overrideErrors(doc, tl, regions, anchors) {
+  const errors = [], types = tl.types, pid = doc.page.id, overrides = doc.overrides || {};
+  const owner = new Map();
+  const block = (id, where) => {
+    const region = regions[`${pid}#${id}`];
+    if (!region) { errors.push(`${where}: unknown block ${id}`); return; }
+    if ((types[region.type] || {}).role === "furniture") errors.push(`${where}: block ${id} is furniture`);
+  };
+  const claim = (id, where) => {
+    block(id, where);
+    if (owner.has(id)) errors.push(`${where}: block ${id} is also in ${owner.get(id)}`); else owner.set(id, where);
+  };
+  const group = (item, where, top) => {
+    if (typeof item === "string") { claim(item, where); return; }
+    if (!own(types, item.type) || types[item.type].role === "furniture") errors.push(`${where}: unknown or furniture type ${item.type}`);
+    if ("flow" in item && !own(tl.flows, item.flow)) errors.push(`${where}: flow ${item.flow} is not in the type list`);
+    if ("flow" in item && !top) errors.push(`${where}: only a top-level group has a flow`);
+    if ("blocks" in item && "members" in item) errors.push(`${where}: has both blocks and members`);
+    if (!("blocks" in item || "members" in item)) errors.push(`${where}: has no blocks or members`);
+    for (const id of item.blocks || []) claim(id, where);
+    (item.members || []).forEach((member, k) => { if (typeof member === "object" && "block" in member) claim(member.block, `${where}.members[${k}]`); else group(member, `${where}.members[${k}]`, false); });
+  };
+  (overrides.groups || []).forEach((item, k) => group(item, `overrides.groups[${k}]`, true));
+  (overrides.unowned || []).forEach(id => block(id, "overrides.unowned"));
+  for (const flow of Object.keys(overrides.order || {})) if (!own(tl.flows, flow)) errors.push(`overrides.order: flow ${flow} is not in the type list`);
+  (overrides.links || []).forEach((link, k) => {
+    const type = link.type || "note";
+    if (!own(tl.relations || {}, type)) errors.push(`overrides.links[${k}]: unknown type ${type}`);
+    if ("anchor" in link.from && !own(anchors, link.from.anchor)) errors.push(`overrides.links[${k}]: unknown anchor ${link.from.anchor}`);
+    if ("region" in link.from && !own(regions, link.from.region)) errors.push(`overrides.links[${k}]: unknown region ${link.from.region}`);
+    if (!("anchor" in link.from || "region" in link.from)) errors.push(`overrides.links[${k}]: from needs an anchor or a region`);
+  });
+  return errors;
+}
+
 // Rules for a page document or a book document, as book.py check_document. Returns [errors, warnings].
 export function checkDocument(doc, tl) {
   const errors = [], warnings = [], types = tl.types;
@@ -144,6 +180,8 @@ export function checkDocument(doc, tl) {
       }
     });
   }
+  // 0.4, the blocks form: no units to check, only that the overrides name blocks, types and flows that exist.
+  if (!doc.units) return [errors.concat(overrideErrors(doc, tl, regions, anchors)), warnings];
   const units = {};
   for (const u of doc.units) {
     if (own(units, u.id)) errors.push(`unit ${u.id}: duplicate id`);

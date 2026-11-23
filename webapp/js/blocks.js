@@ -1,14 +1,15 @@
 // A reading projection. The temporary units are an adapter for assembly and the reader.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-a";
-import { orderedRegions } from "./flags.js?v=20261123-blocks-a";
-import { pageLabel } from "./pipeline/steps.js?v=20261123-blocks-a";
-import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261123-blocks-a";
-import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-a";
-import { DEFAULT_COUNTS, groupVerses } from "./verse-group-rules.js?v=20261123-blocks-a";
-import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261123-blocks-a";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b1";
+import { orderedRegions } from "./flags.js?v=20261123-blocks-b1";
+import { pageLabel } from "./pipeline/steps.js?v=20261123-blocks-b1";
+import { noteTypesOf, markLine, linkNotes, noteProblems, normal } from "./note-links.js?v=20261123-blocks-b1";
+import { closingName, sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b1";
+import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b1";
+import { compileRules } from "./rules.js?v=20261123-blocks-b1";
+import { verseNumbers, sequenceFixes, pageNumberFixes, toDev } from "./number-rules.js?v=20261123-blocks-b1";
 import { cp, shiftSpans } from "./inline.js";
-import { layerState } from "./layers.js?v=20261123-blocks-a";
-import { readingDocuments } from "./workflow.js?v=20261123-blocks-a";
+import { layerState } from "./layers.js?v=20261123-blocks-b1";
+import { readingDocuments } from "./workflow.js?v=20261123-blocks-b1";
 
 const prose = new Set(["paragraph", "note"]);
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
@@ -21,8 +22,6 @@ export function blockLineEnd(line, region, types) {
   return "space";
 }
 
-export const counts = Object.fromEntries(DEFAULT_COUNTS.split(",").map(pair => pair.split("=")).map(([name, n]) => [name, Number(n)]));
-export const partLabels = ["बालकाण्डम् – अयोध्याकाण्डम्", "अरण्यकाण्डम्", "किष्किन्धाकाण्डम्", "सुन्दरकाण्डम्", "युद्धकाण्डम्", "", "उत्तरकाण्डम्"];
 const ridOf = ref => ref.split("#").pop();
 export const textOf = (doc, unit) => unit.children.filter(child => child.region)
   .flatMap(child => doc.page.regions.find(region => region.id === ridOf(child.region))?.lines || [])
@@ -56,17 +55,13 @@ function numberPages(docs, report) {
   }
 }
 
-// The Rāmāyaṇa-mañjarī's own section rules (parts headed by काण्ड, divisions closed by किष्किन्धापर्व).
-export const isRamayana = (tl, firstPageId) => /^ramayanamamjari00ksemuoft(?:$|-)/.test(tl.book_id || firstPageId || "");
-export const ramayanaSections = { partHeading: /काण्ड/, divisionClosing: /किष्किन्धापर्व/ };
-
-export function projectBlocks(pages, saved, types, skipped) {
+export function projectBlocks(pages, saved, types, skipped, rules) {
+  const { sections: sectionRules, verseGroups: groupRules } = compileRules(rules);
   const source = readingDocuments(pages, saved, skipped);
   const tl = structuredClone(types);
-  const ramayana = isRamayana(tl, pages[0]?.id);
-  const groupMarkers = Boolean(tl.types.verse_group_marker);
-  const closeSections = Boolean(tl.types.section && tl.types.section_closing);
-  if (groupMarkers && !tl.types.verse_group) tl.types.verse_group = { flow: "main", contains: ["verse", "verse_group_marker"], description: "A group of verses." };
+  const groupMarkers = Boolean(tl.types[groupRules.markerType]);
+  const closeSections = Boolean(tl.types.section && tl.types[sectionRules.closing]);
+  if (groupMarkers && !tl.types.verse_group) tl.types.verse_group = { flow: "main", contains: ["verse", groupRules.markerType], description: "A group of verses." };
   const paths = regionTypePaths(tl);
   const { noteTypes, mainTypes } = noteTypesOf(tl);
   for (const [type, path] of paths) if (tl.types[type].region && tl.types[path[0]].flow === "main") mainTypes.add(type);
@@ -88,18 +83,18 @@ export function projectBlocks(pages, saved, types, skipped) {
   // Kale has several independently numbered kinds of verse and its own printed numbering.
   if (closeSections) {
     numberVerses(present, "verse", report);
-    numberVerses(present, "section_closing", report);
+    numberVerses(present, sectionRules.closing, report);
   }
   if (groupMarkers) for (const doc of present) {
-    if (!doc.page.regions.some(region => region.type === "verse_group_marker" ||
-        region.lines?.some(line => /\((?:युगलकम्|तिलकम्|युग्मम्|विशेषकम्|कलापकम्|कुलकम्)\)/.test(line.text || "")))) continue;
-    const { made, problems } = groupVerses(doc, { counts });
+    if (!doc.page.regions.some(region => region.type === groupRules.markerType ||
+        region.lines?.some(line => groupRules.markerWords.test(line.text || "")))) continue;
+    const { made, problems } = groupVerses(doc, { counts: groupRules.counts, markerType: groupRules.markerType });
     report.groups += made.filter(group => group.marker).length;
     report.groupProblems.push(...problems.map(message => ({ page: doc.page.id, message })));
   }
   if (closeSections) {
-    const items = sectionKeys(present, { closing: "section_closing", partClosing: /कथासारे/, textOf,
-      ...(ramayana ? ramayanaSections : {}) });
+    const items = sectionKeys(present, { closing: sectionRules.closing, partClosing: sectionRules.partClosing, partHeading: sectionRules.partHeading,
+      partAfter: sectionRules.partAfter, divisionClosing: sectionRules.divisionClosing, textOf });
     const byPage = Map.groupBy(items, item => item.pageIndex);
     const section = tl.types.section;
     section.contains = [...new Set([...section.contains, ...items.filter(item => item.part !== null).map(item => item.unit.type)])];
@@ -107,7 +102,7 @@ export function projectBlocks(pages, saved, types, skipped) {
     report.episodes = new Set(items.filter(item => item.episode !== null).map(item => item.episode)).size;
     for (const [index, here] of byPage) {
       const previous = items[items.indexOf(here[0]) - 1], next = items[items.indexOf(here.at(-1)) + 1];
-      report.sections += groupPage(present[index], here, previous, next, { parts: items.parts, partLabels: ramayana ? partLabels : [] });
+      report.sections += groupPage(present[index], here, previous, next, { parts: items.parts, partLabels: sectionRules.partLabels });
     }
   }
   for (const doc of present) {
@@ -119,7 +114,7 @@ export function projectBlocks(pages, saved, types, skipped) {
       ids.add(id);
       return id;
     };
-    for (const unit of doc.units) if (unit.type === "section_closing") {
+    for (const unit of doc.units) if (unit.type === sectionRules.closing) {
       const { label } = closingName(textOf(doc, unit));
       if (label) unit.label = label;
     }
@@ -159,16 +154,16 @@ function hasSavedStructure(doc) {
 
 // Keep the structure of existing books. Apply rules to runs of ungrouped pages so
 // a generated section never spans a saved section or a gap in the transcription.
-export function readingProjection(pages, saved, types, skipped) {
+export function readingProjection(pages, saved, types, skipped, rules) {
   const docs = readingDocuments(pages, saved, skipped);
   const report = { numberBreaks: {} };
-  const eligible = doc => doc && doc.page.regions.length && !hasSavedStructure(doc);
+  const eligible = doc => doc && doc.units && doc.page.regions.length && !hasSavedStructure(doc);   // a blocks-form page (no units) derives its own
   for (let start = 0; start < docs.length;) {
     if (!eligible(docs[start])) { start++; continue; }
     let end = start + 1;
     while (end < docs.length && eligible(docs[end])) end++;
     const run = docs.slice(start, end);
-    const view = projectBlocks(run.map(doc => doc.page), run, types);
+    const view = projectBlocks(run.map(doc => doc.page), run, types, null, rules);
     types = view.types;
     for (const [index, doc] of view.docs.entries()) {
       const label = run[index].page.label;
