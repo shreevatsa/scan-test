@@ -1,0 +1,100 @@
+{
+ "method": "101-hydrogen-low-regions",
+ "model": "gemini-4-hydrogen",
+ "thinking": "LOW",
+ "box_order": "yxyx",
+ "replayed_from": "smoke-001",
+ "baselines": {
+  "097": "outputs/surveys/097-terra-regions-proposing-types/reference-001/comparison.json",
+  "042": "042 regions, 094 local step (regression-001)"
+ },
+ "known_cost_usd": 0.0,
+ "pages": [
+  {
+   "page": "cole-1903-page-003",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0,
+   "seconds": 17.921049667,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3307,
+    "candidatesTokenCount": 1387,
+    "totalTokenCount": 5841,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1092
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 2215
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 1387
+     }
+    ],
+    "thoughtsTokenCount": 1147
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "page_number": 1,
+    "running_header": 1,
+    "paragraph": 7,
+    "formula": 4,
+    "footnote": 1
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "page_number": 1,
+    "running_header": 1,
+    "paragraph": 7,
+    "formula": 4,
+    "footnote": 1
+   },
+   "cost_usd_097": 0.0134805,
+   "totals_101": {
+    "other_passages_ink_included": 28373,
+    "own_ink_left_out": 51068,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 51068,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_101": {
+    "page_number": 1,
+    "running_header": 1,
+    "paragraph": 7,
+    "formula": 4,
+    "footnote": 1
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  }
+ ]
+}

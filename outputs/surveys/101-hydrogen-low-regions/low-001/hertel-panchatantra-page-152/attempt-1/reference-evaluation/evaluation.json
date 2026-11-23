@@ -1,0 +1,229 @@
+{
+ "created_at_utc": "2026-11-23T04:19:58.330540+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/hertel-panchatantra-page-152.png",
+  "sha256": "e50c430933d334e870c1ba491c7502bee14ecc6e9f13acf45d6bd987460f0318"
+ },
+ "reference": {
+  "path": "references/hertel-panchatantra-page-152",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation (method 035's builder), before any model output for this page was opened; not yet human-reviewed",
+  "labels_png_sha256": "3b77d257db5c7d3e9d9d171cd71b98e93802c949666afdb73cf001027557e386",
+  "spec_sha256": "bccc182f53740692dd57f8e849112dfe91cd157358c7910e14d6c21310a09515"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "101-hydrogen-low-regions",
+   "path": "outputs/surveys/101-hydrogen-low-regions/low-001/hertel-panchatantra-page-152/attempt-1/regions.json",
+   "sha256": "dba2f0c0b87a284389622a74bb4e039916cf5162ef0e15bdf94aef3d56fb70f4",
+   "totals": {
+    "other_passages_ink_included": 2614207,
+    "own_ink_left_out": 321642,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 321642,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "verse-348"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     3
+    ]
+   },
+   "passages": {
+    "prose-1": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 117899,
+     "other_included": {
+      "running-header": 13803,
+      "page-number": 696,
+      "verse-345": 45739,
+      "lead-in-1": 1720,
+      "verse-346": 45640,
+      "prose-2": 114172,
+      "verse-347": 51121,
+      "prose-3": 29764,
+      "margin-line-numbers": 494
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 117899
+    },
+    "verse-345": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 22994,
+     "other_included": {
+      "running-header": 13803,
+      "page-number": 696,
+      "prose-1": 210929,
+      "lead-in-1": 1720,
+      "verse-346": 45640,
+      "prose-2": 114172,
+      "verse-347": 51121,
+      "prose-3": 29764,
+      "margin-line-numbers": 494
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 22994
+    },
+    "lead-in-1": {
+     "matched_region_id": 1,
+     "region_kind": "polygon",
+     "own_left_out": 1720,
+     "other_included": {
+      "prose-1": 14488,
+      "prose-2": 12616
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 1720
+    },
+    "verse-346": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 19704,
+     "other_included": {
+      "running-header": 13803,
+      "page-number": 696,
+      "prose-1": 210929,
+      "verse-345": 45739,
+      "lead-in-1": 1720,
+      "prose-2": 114172,
+      "verse-347": 51121,
+      "prose-3": 29764,
+      "margin-line-numbers": 494
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 19704
+    },
+    "prose-2": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 76406,
+     "other_included": {
+      "running-header": 13803,
+      "page-number": 696,
+      "prose-1": 210929,
+      "verse-345": 45739,
+      "lead-in-1": 1720,
+      "verse-346": 45640,
+      "verse-347": 51121,
+      "prose-3": 29764,
+      "margin-line-numbers": 494
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 76406
+    },
+    "verse-347": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 14129,
+     "other_included": {
+      "running-header": 13803,
+      "page-number": 696,
+      "prose-1": 210929,
+      "verse-345": 45739,
+      "lead-in-1": 1720,
+      "verse-346": 45640,
+      "prose-2": 114172,
+      "prose-3": 29764,
+      "margin-line-numbers": 494
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 14129
+    },
+    "prose-3": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 8454,
+     "other_included": {
+      "running-header": 13803,
+      "page-number": 696,
+      "prose-1": 210929,
+      "verse-345": 45739,
+      "lead-in-1": 1720,
+      "verse-346": 45640,
+      "prose-2": 114172,
+      "verse-347": 51121,
+      "margin-line-numbers": 494
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 8454
+    },
+    "verse-348": {
+     "matched_region_id": null,
+     "own_left_out": 60336
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "prose-1",
+     "lower": "verse-345",
+     "upper_region_takes_lower_ink": 45739,
+     "lower_region_takes_upper_ink": 210929
+    },
+    {
+     "upper": "verse-345",
+     "lower": "lead-in-1",
+     "upper_region_takes_lower_ink": 1720,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "lead-in-1",
+     "lower": "verse-346",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 1720
+    },
+    {
+     "upper": "verse-346",
+     "lower": "prose-2",
+     "upper_region_takes_lower_ink": 114172,
+     "lower_region_takes_upper_ink": 45640
+    },
+    {
+     "upper": "prose-2",
+     "lower": "verse-347",
+     "upper_region_takes_lower_ink": 51121,
+     "lower_region_takes_upper_ink": 114172
+    },
+    {
+     "upper": "verse-347",
+     "lower": "prose-3",
+     "upper_region_takes_lower_ink": 29764,
+     "lower_region_takes_upper_ink": 51121
+    },
+    {
+     "upper": "prose-3",
+     "lower": "verse-348",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": null
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

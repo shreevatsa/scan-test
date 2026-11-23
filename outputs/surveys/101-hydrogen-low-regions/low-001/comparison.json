@@ -1,0 +1,834 @@
+{
+ "method": "101-hydrogen-low-regions",
+ "model": "gemini-4-hydrogen",
+ "thinking": "LOW",
+ "box_order": "xyxy",
+ "replayed_from": null,
+ "baselines": {
+  "097": "outputs/surveys/097-terra-regions-proposing-types/reference-001/comparison.json",
+  "042": "042 regions, 094 local step (regression-001)"
+ },
+ "known_cost_usd": 0.191799,
+ "pages": [
+  {
+   "page": "cole-1903-page-003",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.0190005,
+   "seconds": 15.594263542,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3307,
+    "candidatesTokenCount": 871,
+    "totalTokenCount": 5179,
+    "cachedContentTokenCount": 1253,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2215
+     },
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1092
+     }
+    ],
+    "cacheTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 413
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 840
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 871
+     }
+    ],
+    "thoughtsTokenCount": 1001
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "page_number": 1,
+    "running_header": 1,
+    "paragraph": 7,
+    "formula": 4,
+    "footnote": 1
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "page_number": 1,
+    "running_header": 1,
+    "paragraph": 7,
+    "formula": 4,
+    "footnote": 1
+   },
+   "cost_usd_097": 0.0134805,
+   "totals_101": {
+    "other_passages_ink_included": 714642,
+    "own_ink_left_out": 235473,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 234771,
+    "passages_split_in_reading_order": [
+     "text-2",
+     "display-1"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     9
+    ]
+   },
+   "types_101": {
+    "page_number": 1,
+    "running_header": 1,
+    "paragraph": 7,
+    "formula": 4,
+    "footnote": 1
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  },
+  {
+   "page": "dutt-mahabharata-17f-chapter-001-page-002",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.0384,
+   "seconds": 32.155315958,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 2855,
+    "candidatesTokenCount": 2826,
+    "totalTokenCount": 7404,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1064
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 1791
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2826
+     }
+    ],
+    "thoughtsTokenCount": 1723
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 15,
+    "translation": 10,
+    "speaker": 2
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 15,
+    "translation": 10,
+    "speaker": 2
+   },
+   "cost_usd_097": 0.0180055,
+   "totals_101": {
+    "other_passages_ink_included": 1339393,
+    "own_ink_left_out": 294660,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 294660,
+    "passages_split_in_reading_order": [
+     "translation-1"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "verse-18",
+     "verse-25"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     5,
+     13,
+     16,
+     19,
+     24
+    ]
+   },
+   "types_101": {
+    "page_number": 1,
+    "running_header": 1,
+    "verse": 15,
+    "translation": 10,
+    "speaker": 2
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  },
+  {
+   "page": "gopinath-1896-page-123",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.018501,
+   "seconds": 12.25369325,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 4054,
+    "candidatesTokenCount": 1002,
+    "totalTokenCount": 5710,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2988
+     },
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1066
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 1002
+     }
+    ],
+    "thoughtsTokenCount": 654
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "running_header": 1,
+    "verse": 1,
+    "hindi_translation": 1,
+    "heading": 1,
+    "bhavartha": 1,
+    "english_translation": 1,
+    "note": 4
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "running_header": 1,
+    "verse": 1,
+    "hindi_translation": 1,
+    "heading": 1,
+    "bhavartha": 1,
+    "english_translation": 1,
+    "note": 4
+   },
+   "cost_usd_097": 0.01124925,
+   "totals_101": {
+    "other_passages_ink_included": 757367,
+    "own_ink_left_out": 301808,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 301808,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     6
+    ]
+   },
+   "types_101": {
+    "running_header": 1,
+    "verse": 1,
+    "hindi_translation": 1,
+    "heading": 1,
+    "bhavartha": 1,
+    "english_translation": 1,
+    "note": 4
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  },
+  {
+   "page": "gopinath-1914-page-258",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.0144105,
+   "seconds": 8.998950250000002,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3997,
+    "candidatesTokenCount": 444,
+    "totalTokenCount": 5119,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1066
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 2931
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 444
+     }
+    ],
+    "thoughtsTokenCount": 678
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 1,
+    "hindi_translation": 1,
+    "english_translation": 1,
+    "note": 2
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 1,
+    "hindi_translation": 1,
+    "english_translation": 1,
+    "note": 2
+   },
+   "cost_usd_097": 0.010238,
+   "totals_101": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_101": {
+    "running_header": 1,
+    "page_number": 1,
+    "verse": 1,
+    "hindi_translation": 1,
+    "english_translation": 1,
+    "note": 2
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  },
+  {
+   "page": "hertel-panchatantra-page-152",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.0291765,
+   "seconds": 22.691317750000003,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3036,
+    "candidatesTokenCount": 1770,
+    "totalTokenCount": 6319,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1080
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 1956
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 1770
+     }
+    ],
+    "thoughtsTokenCount": 1513
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "running_header": 1,
+    "page_number": 1,
+    "paragraph": 3,
+    "verse": 4,
+    "lead_in": 1,
+    "line_number": 8
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "running_header": 2,
+    "page_number": 1,
+    "paragraph": 3,
+    "verse": 4,
+    "lead_in": 1,
+    "line_number": 8
+   },
+   "cost_usd_097": 0.01648675,
+   "totals_101": {
+    "other_passages_ink_included": 2614207,
+    "own_ink_left_out": 321642,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 321642,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "verse-348"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     3
+    ]
+   },
+   "types_101": {
+    "running_header": 1,
+    "page_number": 1,
+    "paragraph": 3,
+    "line_number": 8,
+    "verse": 4,
+    "lead_in": 1
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  },
+  {
+   "page": "kale-1913-page-106",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.024432,
+   "seconds": 16.728769542,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3768,
+    "candidatesTokenCount": 1281,
+    "totalTokenCount": 6272,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1066
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 2702
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 1281
+     }
+    ],
+    "thoughtsTokenCount": 1223
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "verse": 3,
+    "footnote": 4
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "verse": 3,
+    "footnote": 4
+   },
+   "cost_usd_097": 0.0104955,
+   "totals_101": {
+    "other_passages_ink_included": 53441,
+    "own_ink_left_out": 75749,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 75749,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "footnote-1",
+     "footnote-2",
+     "footnote-3",
+     "footnote-4"
+    ],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_101": {
+    "running_header": 1,
+    "page_number": 1,
+    "commentary": 4,
+    "verse": 3,
+    "footnote": 4
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  },
+  {
+   "page": "ryder-ten-princes-1927-page-030",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.0151875,
+   "seconds": 10.673248083999999,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3205,
+    "candidatesTokenCount": 800,
+    "totalTokenCount": 4589,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1092
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 2113
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 800
+     }
+    ],
+    "thoughtsTokenCount": 584
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "page_number": 2,
+    "running_header": 2,
+    "paragraph": 4
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "page_number": 2,
+    "running_header": 2,
+    "paragraph": 4
+   },
+   "cost_usd_097": 0.00710925,
+   "totals_101": {
+    "other_passages_ink_included": 36366,
+    "own_ink_left_out": 70798,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 70798,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "paragraph-1"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_101": {
+    "page_number": 2,
+    "running_header": 2,
+    "paragraph": 4
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  },
+  {
+   "page": "telang-dli-page-108",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.0184425,
+   "seconds": 12.408912124999999,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3750,
+    "candidatesTokenCount": 578,
+    "totalTokenCount": 5459,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2675
+     },
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1075
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 578
+     }
+    ],
+    "thoughtsTokenCount": 1131
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   },
+   "cost_usd_097": 0.01072925,
+   "totals_101": {
+    "other_passages_ink_included": 10296,
+    "own_ink_left_out": 10296,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 10296,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_101": {
+    "page_number": 1,
+    "verse": 4,
+    "apparatus_entry": 4
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  },
+  {
+   "page": "vavilla-page-034",
+   "status": "completed",
+   "attempts": 1,
+   "cost_usd": 0.0142485,
+   "seconds": 9.183586250000001,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3339,
+    "candidatesTokenCount": 711,
+    "totalTokenCount": 4571,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2259
+     },
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1080
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 711
+     }
+    ],
+    "thoughtsTokenCount": 521
+   },
+   "totals_042": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_042": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 2,
+    "verse": 2,
+    "metre": 1
+   },
+   "totals_097": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_097": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 2,
+    "verse": 2,
+    "metre": 1
+   },
+   "cost_usd_097": 0.00883175,
+   "totals_101": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 23084,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 9695,
+    "passages_split_in_reading_order": [
+     "verse-25"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "metre-24"
+    ],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "types_101": {
+    "page_number": 1,
+    "running_header": 1,
+    "commentary": 2,
+    "verse": 2,
+    "metre": 1
+   },
+   "proposals": [],
+   "plain_other_101": 0,
+   "warnings": []
+  }
+ ]
+}

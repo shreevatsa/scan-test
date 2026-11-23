@@ -1,0 +1,188 @@
+{
+ "model": "gemini-4-hydrogen",
+ "thinking": "LOW",
+ "box_order": "yxyx",
+ "http_status": 200,
+ "seconds": 15.594263542,
+ "cost_usd": 0,
+ "usage": {
+  "promptTokenCount": 3307,
+  "candidatesTokenCount": 871,
+  "totalTokenCount": 5179,
+  "cachedContentTokenCount": 1253,
+  "trafficType": "ON_DEMAND",
+  "promptTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 2215
+   },
+   {
+    "modality": "IMAGE",
+    "tokenCount": 1092
+   }
+  ],
+  "cacheTokensDetails": [
+   {
+    "modality": "IMAGE",
+    "tokenCount": 413
+   },
+   {
+    "modality": "TEXT",
+    "tokenCount": 840
+   }
+  ],
+  "candidatesTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 871
+   }
+  ],
+  "thoughtsTokenCount": 1001
+ },
+ "finish_reason": "STOP",
+ "model_version": "gemini-4-hydrogen",
+ "response_id": "d74Da_-GL8-L6tkP_vrF4QM",
+ "text": "{\"new_types\":[],\"regions\":[{\"type\":\"page_number\",\"proposed_type\":\"\",\"box_1000\":[122,178,138,218],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"running_header\",\"proposed_type\":\"\",\"box_1000\":[121,293,138,822],\"keep\":false,\"reading_order\":null,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"proposed_type\":\"\",\"box_1000\":[156,178,279,822],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":false},{\"type\":\"paragraph\",\"proposed_type\":\"\",\"box_1000\":[285,203,301,391],\"keep\":true,\"reading_order\":2,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"formula\",\"proposed_type\":\"\",\"box_1000\":[310,310,326,687],\"keep\":true,\"reading_order\":3,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"proposed_type\":\"\",\"box_1000\":[336,178,369,822],\"keep\":true,\"reading_order\":4,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true},{\"type\":\"formula\",\"proposed_type\":\"\",\"box_1000\":[380,178,434,822],\"keep\":true,\"reading_order\":5,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"proposed_type\":\"\",\"box_1000\":[440,178,492,822],\"keep\":true,\"reading_order\":6,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"proposed_type\":\"\",\"box_1000\":[493,178,631,822],\"keep\":true,\"reading_order\":7,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"proposed_type\":\"\",\"box_1000\":[632,203,648,517],\"keep\":true,\"reading_order\":8,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":true},{\"type\":\"formula\",\"proposed_type\":\"\",\"box_1000\":[655,304,675,694],\"keep\":true,\"reading_order\":9,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"paragraph\",\"proposed_type\":\"\",\"box_1000\":[681,178,717,822],\"keep\":true,\"reading_order\":10,\"uncertain\":false,\"continues_from_earlier\":true,\"continues_later\":true},{\"type\":\"formula\",\"proposed_type\":\"\",\"box_1000\":[722,204,775,796],\"keep\":true,\"reading_order\":11,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false},{\"type\":\"footnote\",\"proposed_type\":\"\",\"box_1000\":[792,178,868,822],\"keep\":true,\"reading_order\":12,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}",
+ "request": {
+  "prompt": "Inspect this scanned book page and divide it into regions, one per text unit, for cropping and reassembly.\n\nThe book: Cole (1903), On the factoring of large numbers: four pages of the Bulletin of the American Mathematical Society. Journal pages of English prose with inline and displayed mathematics. An article can begin or end anywhere on a page: it opens with its title, byline and a note on where it was read, and closes with the author's address and date, and a short rule separates it from the next article. The pages hold the end of the previous article, Cole's article, divided into numbered sections, and the beginning of the next article. Footnotes, marked *, † and so on, sit below a rule at the foot of the page and restart on each page.\n\nReturn JSON only. Use bounding boxes [x1,y1,x2,y2] normalized to 0..1000,\nwith the origin at the top-left. Give each region a type, a keep flag, and\nreading_order among content regions. Furniture regions may have null order.\n\nMake each region exactly one unit: the finest unit that the page sets apart visually. The types for this book:\n- heading: The title of an article, in capitals, such as ON THE FACTORING OF LARGE NUMBERS. A title of two lines is one heading.\n- byline: The author's line under the title, in small capitals, such as BY PROFESSOR F. N. COLE.\n- read_before: The line in parentheses under the byline saying where and when the paper was read, such as (Read before the American Mathematical Society, October 31, 1903.)\n- paragraph: A paragraph of prose with inline mathematics. Its first line is indented, and the first paragraph of a section begins with the section's number. A paragraph often contains displayed formulas, and its sentence goes on after them, as in …reduce N to the form [formula] the factors u and v being so chosen…; a line such as and between two formulas is the paragraph's text. Text after a formula that begins at the margin, not indented, belongs to the same paragraph. One region per paragraph, including one continued from the previous page or onto the next.\n- formula: Mathematics displayed on lines of its own, set apart from the prose: an equation, a chain of equations or congruences, or a list of numbers running over several lines. Lines that continue one another (for example a chain of = or ≡) form one region; displays separated by prose or by space are separate.\n- signoff: The author's address and date at the end of an article, in small capitals and italics, such as COLUMBIA UNIVERSITY, October, 1903., on two lines. One region for both lines.\n- footnote: One footnote below the rule, marked *, † or ‡. Include its marker. Separate neighboring notes even when they share a printed line.\n- running_header: The running title and the bracketed month or year beside it, such as THE FACTORING OF LARGE NUMBERS. [Dec., or 1903.] ON THE p-DISCRIMINANT. One region for both. Page furniture, keep=false.\n- page_number: The printed page number at the outer corner of the head, such as 134. Page furniture, keep=false.\n- other: Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.\n\nLarger units of this book are made of the regions above. They are listed so that you know the book's structure; never return them as regions:\n- article: One article: its title, byline and the note on where it was read, its text, and the author's address and date at the end.\n- section: A numbered section of an article. Its number, such as 1., begins its first paragraph.\n\n- Include every visible glyph of the unit, with its diacritics, marks above and below the line, and punctuation. Add modest padding without swallowing a neighboring unit.\n- Ignore scanner borders, digitization watermarks, speckles, decorative frames, ornaments and rules.\n- A region holds the text of one unit only. Where one unit contains another, as with a formula inside a paragraph, the inner unit is its own region, and the outer unit's text before it and after it are separate regions of the outer unit.\n- Continuation: give each region two flags.\n  continues_from_earlier is true if the region does not begin its unit: the unit began in an earlier region, on a previous page, in a previous column, or before something that interrupts it. Examples: a paragraph that starts mid-sentence without indentation at the top of a page or column; the second half of a verse after an interrupting translation; a note continued from the previous page's notes.\n  continues_later is true if the unit does not end in this region: it goes on in a later region, on the next page or column, or after an interruption. Examples: a paragraph whose last line ends mid-sentence or with a hyphenated word at the bottom of a page or column; a verse that has not reached its number or end mark.\n  Both are false for a unit that is complete in its region, and for page furniture.\n- Number content regions in the order a reader reads them. On a page with columns, finish each column from top to bottom before starting the next, unless the layout clearly says otherwise.\n- New types: if a region is a text unit that fits none of the types above, do not force it into the nearest type. Give it type other and name a new type in its proposed_type, and define that type once in new_types: a name in the style of the book's type names above, a one-line definition that would let someone recognize the unit on other pages, and the region class it is printed as (one of verse, paragraph, heading, lead_in, list_item, formula, note, table, figure, caption, running_header, page_number). Use one name for every region of that kind on this page. Propose a type only for a kind of unit a reader would want kept apart throughout the book, never for one that differs from a listed type only by its place on this page, and never for a larger unit listed above. Leave proposed_type empty for every other region, and for marks that are not text units (printer's signature marks, catchwords, stray marks), which stay other.\n- Flag uncertain grouping with uncertain=true instead of silently dropping or merging material.\n- Do not transcribe, translate, or regenerate the text. Only propose regions.\n\nSchema:\n{\"new_types\":[{\"name\":\"\",\"definition\":\"\",\"region_class\":\"\"}],\n\"regions\":[{\"type\":\"heading|byline|read_before|paragraph|formula|signoff|footnote|running_header|page_number|other\",\"proposed_type\":\"\",\n\"box_1000\":[0,0,1000,1000],\"keep\":true,\"reading_order\":1,\"uncertain\":false,\"continues_from_earlier\":false,\"continues_later\":false}]}\n",
+  "response_schema": {
+   "type": "object",
+   "required": [
+    "new_types",
+    "regions"
+   ],
+   "properties": {
+    "new_types": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "name",
+       "definition",
+       "region_class"
+      ],
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "definition": {
+        "type": "string"
+       },
+       "region_class": {
+        "type": "string",
+        "enum": [
+         "verse",
+         "paragraph",
+         "heading",
+         "lead_in",
+         "list_item",
+         "formula",
+         "note",
+         "table",
+         "figure",
+         "caption",
+         "running_header",
+         "page_number"
+        ]
+       }
+      },
+      "propertyOrdering": [
+       "name",
+       "definition",
+       "region_class"
+      ]
+     }
+    },
+    "regions": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "required": [
+       "type",
+       "proposed_type",
+       "box_1000",
+       "keep",
+       "reading_order",
+       "uncertain",
+       "continues_from_earlier",
+       "continues_later"
+      ],
+      "properties": {
+       "type": {
+        "type": "string",
+        "enum": [
+         "heading",
+         "byline",
+         "read_before",
+         "paragraph",
+         "formula",
+         "signoff",
+         "footnote",
+         "running_header",
+         "page_number",
+         "other"
+        ]
+       },
+       "proposed_type": {
+        "type": "string"
+       },
+       "box_1000": {
+        "type": "array",
+        "items": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 1000
+        },
+        "minItems": 4,
+        "maxItems": 4
+       },
+       "keep": {
+        "type": "boolean"
+       },
+       "reading_order": {
+        "type": "integer",
+        "nullable": true,
+        "minimum": 1
+       },
+       "uncertain": {
+        "type": "boolean"
+       },
+       "continues_from_earlier": {
+        "type": "boolean"
+       },
+       "continues_later": {
+        "type": "boolean"
+       }
+      },
+      "propertyOrdering": [
+       "type",
+       "proposed_type",
+       "box_1000",
+       "keep",
+       "reading_order",
+       "uncertain",
+       "continues_from_earlier",
+       "continues_later"
+      ]
+     }
+    }
+   },
+   "propertyOrdering": [
+    "new_types",
+    "regions"
+   ]
+  },
+  "image": "inputs/cole-1903-page-003.png as sent by 097 (original PNG)",
+  "generation_config": {
+   "responseMimeType": "application/json",
+   "responseSchema": "response_schema above",
+   "mediaResolution": "MEDIA_RESOLUTION_HIGH",
+   "maxOutputTokens": 16384,
+   "thinkingConfig": {
+    "thinkingLevel": "LOW"
+   }
+  }
+ },
+ "replayed_from": "outputs/surveys/101-hydrogen-low-regions/low-001/cole-1903-page-003/attempt-1/vertex-call.json",
+ "original_cost_usd": 0.0190005
+}

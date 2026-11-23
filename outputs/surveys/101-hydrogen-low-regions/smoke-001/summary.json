@@ -1,0 +1,62 @@
+{
+ "attempts": [
+  {
+   "page": "cole-1903-page-003",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.0239655,
+   "seconds": 17.921049667,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3307,
+    "candidatesTokenCount": 1387,
+    "totalTokenCount": 5841,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1092
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 2215
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 1387
+     }
+    ],
+    "thoughtsTokenCount": 1147
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 543430,
+    "own_ink_left_out": 241445,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 240901,
+    "passages_split_in_reading_order": [
+     "text-2",
+     "display-1"
+    ],
+    "passages_split_out_of_order": [
+     "display-4"
+    ],
+    "kept_passages_without_region": [
+     "footnote"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     9
+    ]
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/smoke-001/cole-1903-page-003/attempt-1/regions.json",
+   "attempt": 1
+  }
+ ],
+ "known_cost_usd": 0.0239655
+}

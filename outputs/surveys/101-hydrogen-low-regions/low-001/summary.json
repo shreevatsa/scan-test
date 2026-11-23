@@ -1,0 +1,474 @@
+{
+ "attempts": [
+  {
+   "page": "cole-1903-page-003",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.0190005,
+   "seconds": 15.594263542,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3307,
+    "candidatesTokenCount": 871,
+    "totalTokenCount": 5179,
+    "cachedContentTokenCount": 1253,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2215
+     },
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1092
+     }
+    ],
+    "cacheTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 413
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 840
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 871
+     }
+    ],
+    "thoughtsTokenCount": 1001
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 714642,
+    "own_ink_left_out": 235473,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 234771,
+    "passages_split_in_reading_order": [
+     "text-2",
+     "display-1"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     9
+    ]
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/cole-1903-page-003/attempt-1/regions.json",
+   "attempt": 1
+  },
+  {
+   "page": "dutt-mahabharata-17f-chapter-001-page-002",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.0384,
+   "seconds": 32.155315958,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 2855,
+    "candidatesTokenCount": 2826,
+    "totalTokenCount": 7404,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1064
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 1791
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2826
+     }
+    ],
+    "thoughtsTokenCount": 1723
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 1339393,
+    "own_ink_left_out": 294660,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 294660,
+    "passages_split_in_reading_order": [
+     "translation-1"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "verse-18",
+     "verse-25"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     5,
+     13,
+     16,
+     19,
+     24
+    ]
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/dutt-mahabharata-17f-chapter-001-page-002/attempt-1/regions.json",
+   "attempt": 1
+  },
+  {
+   "page": "gopinath-1896-page-123",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.018501,
+   "seconds": 12.25369325,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 4054,
+    "candidatesTokenCount": 1002,
+    "totalTokenCount": 5710,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2988
+     },
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1066
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 1002
+     }
+    ],
+    "thoughtsTokenCount": 654
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 757367,
+    "own_ink_left_out": 301808,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 301808,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     6
+    ]
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/gopinath-1896-page-123/attempt-1/regions.json",
+   "attempt": 1
+  },
+  {
+   "page": "gopinath-1914-page-258",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.0144105,
+   "seconds": 8.998950250000002,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3997,
+    "candidatesTokenCount": 444,
+    "totalTokenCount": 5119,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1066
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 2931
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 444
+     }
+    ],
+    "thoughtsTokenCount": 678
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 0,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 0,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/gopinath-1914-page-258/attempt-1/regions.json",
+   "attempt": 1
+  },
+  {
+   "page": "hertel-panchatantra-page-152",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.0291765,
+   "seconds": 22.691317750000003,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3036,
+    "candidatesTokenCount": 1770,
+    "totalTokenCount": 6319,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1080
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 1956
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 1770
+     }
+    ],
+    "thoughtsTokenCount": 1513
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 2614207,
+    "own_ink_left_out": 321642,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 321642,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "verse-348"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     3
+    ]
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/hertel-panchatantra-page-152/attempt-1/regions.json",
+   "attempt": 1
+  },
+  {
+   "page": "kale-1913-page-106",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.024432,
+   "seconds": 16.728769542,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3768,
+    "candidatesTokenCount": 1281,
+    "totalTokenCount": 6272,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1066
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 2702
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 1281
+     }
+    ],
+    "thoughtsTokenCount": 1223
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 53441,
+    "own_ink_left_out": 75749,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 75749,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "footnote-1",
+     "footnote-2",
+     "footnote-3",
+     "footnote-4"
+    ],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/kale-1913-page-106/attempt-1/regions.json",
+   "attempt": 1
+  },
+  {
+   "page": "ryder-ten-princes-1927-page-030",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.0151875,
+   "seconds": 10.673248083999999,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3205,
+    "candidatesTokenCount": 800,
+    "totalTokenCount": 4589,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1092
+     },
+     {
+      "modality": "TEXT",
+      "tokenCount": 2113
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 800
+     }
+    ],
+    "thoughtsTokenCount": 584
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 36366,
+    "own_ink_left_out": 70798,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 70798,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "paragraph-1"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/ryder-ten-princes-1927-page-030/attempt-1/regions.json",
+   "attempt": 1
+  },
+  {
+   "page": "telang-dli-page-108",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.0184425,
+   "seconds": 12.408912124999999,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3750,
+    "candidatesTokenCount": 578,
+    "totalTokenCount": 5459,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2675
+     },
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1075
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 578
+     }
+    ],
+    "thoughtsTokenCount": 1131
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 10296,
+    "own_ink_left_out": 10296,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 10296,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/telang-dli-page-108/attempt-1/regions.json",
+   "attempt": 1
+  },
+  {
+   "page": "vavilla-page-034",
+   "model": "gemini-4-hydrogen",
+   "thinking": "LOW",
+   "cost_usd": 0.0142485,
+   "seconds": 9.183586250000001,
+   "finish_reason": "STOP",
+   "usage": {
+    "promptTokenCount": 3339,
+    "candidatesTokenCount": 711,
+    "totalTokenCount": 4571,
+    "trafficType": "ON_DEMAND",
+    "promptTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 2259
+     },
+     {
+      "modality": "IMAGE",
+      "tokenCount": 1080
+     }
+    ],
+    "candidatesTokensDetails": [
+     {
+      "modality": "TEXT",
+      "tokenCount": 711
+     }
+    ],
+    "thoughtsTokenCount": 521
+   },
+   "status": "completed",
+   "proposals": [],
+   "warnings": [],
+   "other_regions": 0,
+   "totals": {
+    "other_passages_ink_included": 0,
+    "own_ink_left_out": 23084,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 9695,
+    "passages_split_in_reading_order": [
+     "verse-25"
+    ],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "metre-24"
+    ],
+    "regions_matched_by_several_kept_passages": []
+   },
+   "result": "outputs/surveys/101-hydrogen-low-regions/low-001/vavilla-page-034/attempt-1/regions.json",
+   "attempt": 1
+  }
+ ],
+ "known_cost_usd": 0.191799
+}

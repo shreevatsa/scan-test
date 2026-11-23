@@ -1,0 +1,208 @@
+{
+ "created_at_utc": "2026-11-23T04:24:02.628582+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/telang-dli-page-108.png",
+  "sha256": "52fa687d0eb0fd992aea64cfbe6b875ccb8d6ecffe4f160149e0f46092889517"
+ },
+ "reference": {
+  "path": "references/telang-dli-page-108",
+  "status": "proposed by Claude from visual inspection of the page and the method 032 line segmentation, before looking at any model or method 033 output for this page; not yet human-reviewed",
+  "labels_png_sha256": "fc0a75c959e2074b84dee658fc89b525ff43e3b6debdc587172126fda755b5c4",
+  "spec_sha256": "bf686ac5865e1e3d9c01d4039e24e023ceb7ad0ac127734fb389d390bd046615"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "101-hydrogen-low-regions",
+   "path": "outputs/surveys/101-hydrogen-low-regions/low-001-yxyx/telang-dli-page-108/attempt-1/regions.json",
+   "sha256": "717dcb067c6edf4e973276ba6323a635231450bb24d0774ebe2edcefffb7d357",
+   "totals": {
+    "other_passages_ink_included": 425429,
+    "own_ink_left_out": 236099,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 236099,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [],
+    "kept_passages_without_region": [
+     "apparatus-82"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     7
+    ]
+   },
+   "passages": {
+    "verse-79-end": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 18408,
+     "other_included": {
+      "verse-80": 19401,
+      "verse-81": 13842,
+      "verse-82-start": 17575,
+      "apparatus-80": 29356,
+      "apparatus-81": 5325
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 18408
+    },
+    "verse-80": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 30998,
+     "other_included": {
+      "verse-79-end": 4231,
+      "verse-81": 13842,
+      "verse-82-start": 17575,
+      "apparatus-80": 29356,
+      "apparatus-81": 5325
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 30998
+    },
+    "verse-81": {
+     "matched_region_id": 4,
+     "region_kind": "polygon",
+     "own_left_out": 37005,
+     "other_included": {
+      "verse-79-end": 2594,
+      "verse-80": 11634,
+      "verse-82-start": 2179,
+      "apparatus-80": 18487,
+      "apparatus-81": 2267
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 37005
+    },
+    "verse-82-start": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 11577,
+     "other_included": {
+      "verse-79-end": 4231,
+      "verse-80": 19401,
+      "verse-81": 13842,
+      "apparatus-80": 29356,
+      "apparatus-81": 5325
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 11577
+    },
+    "apparatus-79": {
+     "matched_region_id": 2,
+     "region_kind": "polygon",
+     "own_left_out": 12233,
+     "other_included": {
+      "verse-80": 1150,
+      "verse-81": 2851,
+      "verse-82-start": 1507,
+      "apparatus-80": 8749,
+      "apparatus-81": 1249
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 12233
+    },
+    "apparatus-80": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 75775,
+     "other_included": {
+      "verse-79-end": 4231,
+      "verse-80": 19401,
+      "verse-81": 13842,
+      "verse-82-start": 17575,
+      "apparatus-81": 5325
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 75775
+    },
+    "apparatus-81": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 38477,
+     "other_included": {
+      "verse-79-end": 4231,
+      "verse-80": 19401,
+      "verse-81": 13842,
+      "verse-82-start": 17575,
+      "apparatus-80": 29356
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 38477
+    },
+    "apparatus-82": {
+     "matched_region_id": null,
+     "own_left_out": 11626
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-79-end",
+     "lower": "verse-80",
+     "upper_region_takes_lower_ink": 19401,
+     "lower_region_takes_upper_ink": 4231
+    },
+    {
+     "upper": "verse-80",
+     "lower": "verse-81",
+     "upper_region_takes_lower_ink": 13842,
+     "lower_region_takes_upper_ink": 11634
+    },
+    {
+     "upper": "verse-81",
+     "lower": "verse-82-start",
+     "upper_region_takes_lower_ink": 2179,
+     "lower_region_takes_upper_ink": 13842
+    },
+    {
+     "upper": "verse-82-start",
+     "lower": "apparatus-79",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 1507
+    },
+    {
+     "upper": "apparatus-79",
+     "lower": "apparatus-80",
+     "upper_region_takes_lower_ink": 8749,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "apparatus-80",
+     "lower": "apparatus-81",
+     "upper_region_takes_lower_ink": 5325,
+     "lower_region_takes_upper_ink": 29356
+    },
+    {
+     "upper": "apparatus-81",
+     "lower": "apparatus-82",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": null
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

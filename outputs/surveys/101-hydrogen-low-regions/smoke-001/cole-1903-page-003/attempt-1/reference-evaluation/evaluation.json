@@ -1,0 +1,328 @@
+{
+ "created_at_utc": "2026-11-23T04:17:06.908643+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/cole-1903-page-003.png",
+  "sha256": "d4ea9bd561c16f7feda5eafd23eeb0620771202182cf0c5bd7e966e2271a99a2"
+ },
+ "reference": {
+  "path": "references/cole-1903-page-003",
+  "status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+  "labels_png_sha256": "823e6cbf7d0b9937a1e40d0d357c77c77e6188122abf2ad06aa6f3e70151892f",
+  "spec_sha256": "6f9694fa4aa91fb85b2fc439abcddebaf079c969ee9dc97988754178441ae1cb"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "101-hydrogen-low-regions",
+   "path": "outputs/surveys/101-hydrogen-low-regions/smoke-001/cole-1903-page-003/attempt-1/regions.json",
+   "sha256": "6a57ab939b183c85e19672258f29481715f225bdd4ee37bf6cdb1d6f6a1b9427",
+   "totals": {
+    "other_passages_ink_included": 543430,
+    "own_ink_left_out": 241445,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 240901,
+    "passages_split_in_reading_order": [
+     "text-2",
+     "display-1"
+    ],
+    "passages_split_out_of_order": [
+     "display-4"
+    ],
+    "kept_passages_without_region": [
+     "footnote"
+    ],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     9
+    ]
+   },
+   "passages": {
+    "text-1": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 73514,
+     "other_included": {
+      "text-2": 1938,
+      "text-3": 3646,
+      "display-2": 6606,
+      "text-4": 8117,
+      "text-5": 25182,
+      "text-6": 2838,
+      "text-7": 3478
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 73514
+    },
+    "text-2": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 1034,
+     "other_included": {
+      "text-1": 1783,
+      "text-3": 3646,
+      "display-2": 6606,
+      "text-4": 8117,
+      "text-5": 25182,
+      "text-6": 2838,
+      "text-7": 3478
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      4
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 761
+    },
+    "display-1": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 2641,
+     "other_included": {
+      "text-3": 2968,
+      "display-2": 5420,
+      "text-4": 4208,
+      "text-5": 23261,
+      "text-6": 224,
+      "display-3": 2758,
+      "text-7": 8356,
+      "display-4": 10022
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      10
+     ],
+     "split_in_reading_order": true,
+     "own_left_out_beyond_reading_order_splits": 2370
+    },
+    "text-3": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 8569,
+     "other_included": {
+      "text-1": 1783,
+      "text-2": 1938,
+      "display-2": 6606,
+      "text-4": 8117,
+      "text-5": 25182,
+      "text-6": 2838,
+      "text-7": 3478
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 8569
+    },
+    "display-2": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 13181,
+     "other_included": {
+      "text-1": 1783,
+      "text-2": 1938,
+      "text-3": 3646,
+      "text-4": 8117,
+      "text-5": 25182,
+      "text-6": 2838,
+      "text-7": 3478
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 13181
+    },
+    "text-4": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 13985,
+     "other_included": {
+      "text-1": 1783,
+      "text-2": 1938,
+      "text-3": 3646,
+      "display-2": 6606,
+      "text-5": 25182,
+      "text-6": 2838,
+      "text-7": 3478
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 13985
+    },
+    "text-5": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 60573,
+     "other_included": {
+      "text-1": 1783,
+      "text-2": 1938,
+      "text-3": 3646,
+      "display-2": 6606,
+      "text-4": 8117,
+      "text-6": 2838,
+      "text-7": 3478
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 60573
+    },
+    "text-6": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 2364,
+     "other_included": {
+      "text-1": 1783,
+      "text-2": 1938,
+      "text-3": 3646,
+      "display-2": 6606,
+      "text-4": 8117,
+      "text-5": 25182,
+      "text-7": 3478
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 2364
+    },
+    "display-3": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 2100,
+     "other_included": {
+      "display-1": 3564,
+      "text-3": 2968,
+      "display-2": 5420,
+      "text-4": 4208,
+      "text-5": 23261,
+      "text-6": 224,
+      "text-7": 8356,
+      "display-4": 10022
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 2100
+    },
+    "text-7": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 9710,
+     "other_included": {
+      "display-1": 3564,
+      "text-3": 2968,
+      "display-2": 5420,
+      "text-4": 4208,
+      "text-5": 23261,
+      "text-6": 224,
+      "display-3": 2758,
+      "display-4": 10022
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 9710
+    },
+    "display-4": {
+     "matched_region_id": 9,
+     "region_kind": "polygon",
+     "own_left_out": 8773,
+     "other_included": {
+      "display-1": 3564,
+      "text-3": 2968,
+      "display-2": 5420,
+      "text-4": 4208,
+      "text-5": 23261,
+      "text-6": 224,
+      "display-3": 2758,
+      "text-7": 8356
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      12
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 8773
+    },
+    "footnote": {
+     "matched_region_id": null,
+     "own_left_out": 45001
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "text-1",
+     "lower": "text-2",
+     "upper_region_takes_lower_ink": 1938,
+     "lower_region_takes_upper_ink": 1783
+    },
+    {
+     "upper": "text-2",
+     "lower": "display-1",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "display-1",
+     "lower": "text-3",
+     "upper_region_takes_lower_ink": 2968,
+     "lower_region_takes_upper_ink": 0
+    },
+    {
+     "upper": "text-3",
+     "lower": "display-2",
+     "upper_region_takes_lower_ink": 6606,
+     "lower_region_takes_upper_ink": 3646
+    },
+    {
+     "upper": "display-2",
+     "lower": "text-4",
+     "upper_region_takes_lower_ink": 8117,
+     "lower_region_takes_upper_ink": 6606
+    },
+    {
+     "upper": "text-4",
+     "lower": "text-5",
+     "upper_region_takes_lower_ink": 25182,
+     "lower_region_takes_upper_ink": 8117
+    },
+    {
+     "upper": "text-5",
+     "lower": "text-6",
+     "upper_region_takes_lower_ink": 2838,
+     "lower_region_takes_upper_ink": 25182
+    },
+    {
+     "upper": "text-6",
+     "lower": "display-3",
+     "upper_region_takes_lower_ink": 0,
+     "lower_region_takes_upper_ink": 224
+    },
+    {
+     "upper": "display-3",
+     "lower": "text-7",
+     "upper_region_takes_lower_ink": 8356,
+     "lower_region_takes_upper_ink": 2758
+    },
+    {
+     "upper": "text-7",
+     "lower": "display-4",
+     "upper_region_takes_lower_ink": 10022,
+     "lower_region_takes_upper_ink": 8356
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}

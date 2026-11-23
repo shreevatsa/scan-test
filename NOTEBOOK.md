@@ -5277,3 +5277,7 @@ Verified Pages, Read, Export and Settings in a separate headless profile on Kale
 ### 2026-11-22 Review actions
 
 In a fresh headless profile on the Rāmāyaṇa-mañjarī, dismissed the three unassigned areas and two possible lines on the copyright page through the five Leave out controls. Restored a dismissed area, cleared the order warning on scan 51 with Use reader order and checked that dimmed Pages cards carry no review badge. Opened all 252 Kale pages and verified its 279 saved verse groups in Read. The area-dismissal regression checks that the saved edit is protected and reversible. No model calls.
+
+## Hydrogen as a region finder — method 101, 2026-11-22
+
+Sent method 097's region request (prompt, page image, schema) to Gemini 4 Hydrogen low on Vertex AI for the nine public reference pages, through 097's own parsing and the 094 local step, scored with method 043's evaluator ([README](methods/101-hydrogen-low-regions/README.md)). $0.1918 for the nine pages (2.1¢ a page; 097 1.2¢), $0.2158 with a smoke test. Summed over the nine pages: 5,525,712 pixels of other passages' ink included and 1,319,419 of own ink left out with the boxes read as asked (x, y); 2,857,499 / 1,110,863 with the same answers read in Gemini's native (y, x) order (replayed, no cost); 097 and 042: 0 / 0 on every page. Hydrogen mixes the two box orders from page to page, and the better order for each page still leaves merged or missing passages on seven pages. Regions stay with Terra; a book needs an OpenAI key for regions and a Gemini key for text.

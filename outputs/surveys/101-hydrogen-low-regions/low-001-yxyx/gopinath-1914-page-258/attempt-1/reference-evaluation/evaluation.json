@@ -1,0 +1,135 @@
+{
+ "created_at_utc": "2026-11-23T04:23:42.722569+00:00",
+ "api_calls": 0,
+ "input": {
+  "path": "inputs/gopinath-1914-page-258.png",
+  "sha256": "7d1fb165f28d2a846898d10b8ad007c12acef6c89f0f3360a7afa7505256b2cc"
+ },
+ "reference": {
+  "path": "references/gopinath-1914-page-258",
+  "status": "version 2, revised by Claude on 2026-11-04 after the user's review of version 1, which found missing and wrongly labeled ink, and after a check of every unlabeled text component on the page; not yet re-reviewed by the user",
+  "labels_png_sha256": "bcc99ded754a578a0ec21b31b12e1acfec7ec6a5f3077b880940dd9b4ed813b2",
+  "spec_sha256": "91d08d9e5f6c81057ec0ce98b4aac82854ca830f54694e399f77e5fbe609fc70"
+ },
+ "rules": {
+  "box_pixels": "pixels touching the box (floor/ceil), as in method 032",
+  "polygon_pixels": "closed polygon including boundary pixels",
+  "match": "each reference passage is matched to the region containing most of its ink"
+ },
+ "results": [
+  {
+   "label": "101-hydrogen-low-regions",
+   "path": "outputs/surveys/101-hydrogen-low-regions/low-001-yxyx/gopinath-1914-page-258/attempt-1/regions.json",
+   "sha256": "1ff765a691e2ba09dd6861af7a1d87426cfb717faf9a218e302cf1053d506546",
+   "totals": {
+    "other_passages_ink_included": 119671,
+    "own_ink_left_out": 221027,
+    "separator_pixels_included": 0,
+    "own_ink_left_out_beyond_reading_order_splits": 221027,
+    "passages_split_in_reading_order": [],
+    "passages_split_out_of_order": [
+     "english-translation-81"
+    ],
+    "kept_passages_without_region": [],
+    "regions_matched_by_several_kept_passages": [
+     3,
+     7
+    ]
+   },
+   "passages": {
+    "verse-81": {
+     "matched_region_id": 5,
+     "region_kind": "polygon",
+     "own_left_out": 41714,
+     "other_included": {
+      "hindi-translation-81": 9579,
+      "english-translation-81": 8755
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 41714
+    },
+    "hindi-translation-81": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 48772,
+     "other_included": {
+      "verse-81": 9266,
+      "english-translation-81": 6376,
+      "note-source": 3231,
+      "note-comment": 11278
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 48772
+    },
+    "english-translation-81": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 46426,
+     "other_included": {
+      "hindi-translation-81": 8875,
+      "note-source": 10884
+     },
+     "separator_included": 0,
+     "split_region_ids": [
+      1,
+      6
+     ],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 46426
+    },
+    "note-source": {
+     "matched_region_id": 3,
+     "region_kind": "polygon",
+     "own_left_out": 31380,
+     "other_included": {
+      "hindi-translation-81": 8875,
+      "english-translation-81": 13721
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 31380
+    },
+    "note-comment": {
+     "matched_region_id": 7,
+     "region_kind": "polygon",
+     "own_left_out": 52735,
+     "other_included": {
+      "verse-81": 9266,
+      "hindi-translation-81": 9958,
+      "english-translation-81": 6376,
+      "note-source": 3231
+     },
+     "separator_included": 0,
+     "split_region_ids": [],
+     "split_in_reading_order": false,
+     "own_left_out_beyond_reading_order_splits": 52735
+    }
+   },
+   "boundaries": [
+    {
+     "upper": "verse-81",
+     "lower": "hindi-translation-81",
+     "upper_region_takes_lower_ink": 9579,
+     "lower_region_takes_upper_ink": 9266
+    },
+    {
+     "upper": "hindi-translation-81",
+     "lower": "english-translation-81",
+     "upper_region_takes_lower_ink": 6376,
+     "lower_region_takes_upper_ink": 8875
+    }
+   ],
+   "ownership": null
+  }
+ ],
+ "code_sha256": {
+  "evaluate.py": "43f4e7183c17ddb22cd1db468426493423f022321372f224484386f1241cdbab",
+  "ownership.py": "b1751206e3b294604a6e953709eafa7cf5b9ed94ef36ce5654a0cf6873bdc9f0",
+  "analysis.py": "adb4bd055c35074b017ac56c3a50295603b730a843da4e730d7b687c58fbb05a"
+ }
+}
