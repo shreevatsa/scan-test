@@ -7,15 +7,15 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-images-1";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-images-1";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-images-1";
-import { canonical } from "./ops.js?v=20261124-images-1";
-import { checkDocument, typeRevision } from "./schema.js?v=20261124-images-1";
-import { mergeTextEdit } from "./editing.js?v=20261124-images-1";
-import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-images-1";
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-images-1";
-import { readingDocuments } from "./workflow.js?v=20261124-images-1";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-images-2";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-images-2";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-images-2";
+import { canonical } from "./ops.js?v=20261124-images-2";
+import { checkDocument, typeRevision } from "./schema.js?v=20261124-images-2";
+import { mergeTextEdit } from "./editing.js?v=20261124-images-2";
+import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-images-2";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-images-2";
+import { readingDocuments } from "./workflow.js?v=20261124-images-2";
 
 const bookWrites = new Map();
 
@@ -101,7 +101,10 @@ async function readJsonFile(dir, path) {
   let d = dir;
   for (const p of parts.slice(0, -1)) d = await d.getDirectoryHandle(p);
   const fh = await d.getFileHandle(parts[parts.length - 1]);
-  return JSON.parse(await (await fh.getFile()).text());
+  const text = await (await fh.getFile()).text();
+  // A file just created and not yet written is empty (a write commits only when it closes): it is not there yet.
+  if (!text.trim()) throw new DOMException(`${path} is not written yet`, "NotFoundError");
+  return JSON.parse(text);
 }
 
 async function fileFrom(dir, path) {
