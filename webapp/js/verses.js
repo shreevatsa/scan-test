@@ -234,10 +234,20 @@ export function verseExport(book, tl, manifest = {}) {
   const place = (page, region, polygons) => ({ page: page.id, pdf_page: pdfPage.get(page.id) ?? null, label: page.label ?? null,
     box: polygons?.length ? box(polygons) : region.box || null, width: page.width, height: page.height });
   const refsOf = uid => (units.get(uid)?.children || []).flatMap(child => child.region ? [child.region] : refsOf(child.unit));
+  // A block's text: a verse line by line; prose as the reader joins its lines (a space, a hyphen dropped where the word
+  // goes on, nothing, or a line break, as each line piece ends), across its pages.
+  const textOf = (uid, refs) => {
+    const lines = refs.flatMap(({ region }) => (region.lines || []).filter(line => line.text));
+    if (tl.types[units.get(uid)?.type]?.region === "verse") return lines.map(line => line.text).join("\n").trim();
+    return lines.map((line, i) => {
+      if (i === lines.length - 1) return line.text;
+      const end = line.end || "space";
+      return end === "hyphen" ? line.text.replace(/[-‐]$/u, "") : line.text + (end === "line" ? "\n" : end === "join" ? "" : " ");
+    }).join("").trim();
+  };
   const part = (role, uid) => {
     const refs = refsOf(uid).map(regionOf).filter(found => found?.region);
-    return { role, type: units.get(uid)?.type, number: units.get(uid)?.number ?? null,
-      text: refs.map(({ region }) => (region.lines || []).filter(line => line.text).map(line => line.text).join("\n")).join("\n").trim(),
+    return { role, type: units.get(uid)?.type, number: units.get(uid)?.number ?? null, text: textOf(uid, refs),
       regions: refs.map(({ page, region }) => place(page, region, region.polygons)) };
   };
   return [...groups.values()].map(g => ({ key: g.key, parts: [

@@ -1,7 +1,7 @@
 // A śataka edition's verses and what belongs to each, under keys as the Bhartṛhari site's (js/verses.js).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { verseGroups } from "../js/verses.js";
+import { verseGroups, verseExport } from "../js/verses.js";
 
 const tl = { types: { shataka: { flow: "main", contains: ["heading", "verse", "lead_in"] }, notes: { flow: "main", contains: ["heading", "stanza_note"] },
   heading: { region: "heading" }, verse: { region: "verse" }, lead_in: { region: "lead_in" }, stanza_note: { region: "paragraph" }, footnote: { region: "note", flow: "notes" } } };
@@ -101,4 +101,15 @@ test("a number fused to a verse's last word; a misread one between verses quoted
   assert.deepEqual(groups.get("N012").verse, [idOf("ग घ ॥ १५ ॥")], "the misread number, past the quoted verse before it");
   assert.deepEqual(groups.get("N013").verse, [idOf("ङ चमिति१३")]);
   assert.ok(groups.get("N012").follow.includes(idOf("अन्यः श्लोकः ” १२")), "the quotation with its source's number goes with the verse before it");
+});
+
+test("the export: a verse line by line, prose joined as the reader joins it", () => {
+  const b = book([["shataka", "नीतिशतकम्", [["heading", null, "अथ नीतिशतकम्"], ["verse", "1", "x"], ["stanza_note", null, "x"], ["verse", "2", "y"], ["stanza_note", null, "y"]]]]);
+  // The first verse in two lines; the prose after it in three, the first ending in a hyphen the word goes on past.
+  b.pages[0].regions[1].lines = [{ line: 1, text: "क ख ग ।" }, { line: 2, text: "घ ङ च ॥ १ ॥" }];
+  b.pages[0].regions[2].lines = [{ line: 1, text: "Hard to under-", end: "hyphen" }, { line: 2, text: "stand, its" }, { line: 3, text: "sense is plain." }];
+  const [first] = verseExport(b, tl);
+  assert.equal(first.key, "N001");
+  assert.equal(first.parts.find(part => part.type === "verse").text, "क ख ग ।\nघ ङ च ॥ १ ॥");
+  assert.equal(first.parts.find(part => part.type === "stanza_note").text, "Hard to understand, its sense is plain.");
 });
