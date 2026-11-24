@@ -1,28 +1,28 @@
-import { typeRevision } from "../schema.js?v=20261124-floats-3";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-floats-3";
+import { typeRevision } from "../schema.js?v=20261124-noink-1";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-noink-1";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-floats-3";
-import * as I from "./images.js?v=20261124-floats-3";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-floats-3";
+import * as S from "./steps.js?v=20261124-noink-1";
+import * as I from "./images.js?v=20261124-noink-1";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-noink-1";
 import * as Split from "./split.js";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-floats-3";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-floats-3";
-import { finderById, finderPath } from "./finders.js?v=20261124-floats-3";
-import { finderRequest } from "./finder-requests.js?v=20261124-floats-3";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-floats-3";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-floats-3";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-noink-1";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-noink-1";
+import { finderById, finderPath } from "./finders.js?v=20261124-noink-1";
+import { finderRequest } from "./finder-requests.js?v=20261124-noink-1";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-noink-1";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-noink-1";
 import { bbox } from "../render.js";
-import { pdfFollows } from "./pdf.js?v=20261124-floats-3";
-import { canonical } from "../ops.js?v=20261124-floats-3";
-import { layerState, noteEdit } from "../layers.js?v=20261124-floats-3";
-import { provisionalDocument } from "./provisional.js?v=20261124-floats-3";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-floats-3";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-floats-3";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-floats-3";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-floats-3";
+import { pdfFollows } from "./pdf.js?v=20261124-noink-1";
+import { canonical } from "../ops.js?v=20261124-noink-1";
+import { layerState, noteEdit } from "../layers.js?v=20261124-noink-1";
+import { provisionalDocument } from "./provisional.js?v=20261124-noink-1";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-noink-1";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-noink-1";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-noink-1";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-noink-1";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -314,7 +314,9 @@ export class Maker {
         reading_order: r.order ?? null, uncertain: r.source?.uncertain || false,
         continues_from_earlier: r.source?.continues_from_earlier || false, continues_later: r.source?.continues_later || false,
         region_class: classes[r.type] || "other", model_box: r.box || bounds,
-        status: bounds ? "ok" : "no_ink", polygons: r.polygons, bounds,
+        // A region kept with no ink found (outlined by its box, nothing to read) is no_ink here as on the page, where it
+        // takes no part in reading (apply.js geometry); "ok" made every reading of the page fail to apply, unreported.
+        status: bounds && !(r.source?.no_ink && !(r.lines || []).some(L => L.polygons?.length)) ? "ok" : "no_ink", polygons: r.polygons, bounds,
         lines: (r.lines || []).filter(L => L.polygons?.length).map(L => ({ line_id: L.line, polygons: L.polygons })),
       };
       // Keep the original precision and request metadata when the current page agrees.

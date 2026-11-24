@@ -691,3 +691,14 @@ test("read-only books persist reader settings and trial records in their exporte
     assert.ok(!JSON.stringify(exported).includes("test-key"));
   } finally { Object.assign(idb, originals); }
 });
+
+test("a region kept with no ink found is no_ink in the record a reading is made from, as on the page", async () => {
+  const { Maker } = await import("../js/pipeline/run.js");
+  const types = { types: { paragraph: { region: "paragraph", flow: "main" }, figure: { region: "figure", flow: "main" } }, flows: { main: "Main" } };
+  const box = [[[10, 10], [90, 10], [90, 50], [10, 50]]];
+  const doc = { page: { id: "p1", width: 100, height: 100, regions: [
+    { id: "r1", type: "paragraph", order: 1, polygons: box, box: [10, 10, 90, 50], lines: [{ line: 1, polygons: box }], source: {} },
+    { id: "r2", type: "figure", order: 2, polygons: box, box: [10, 10, 90, 50], lines: [], source: { no_ink: true } }] }, source: {} };
+  const record = await Maker.prototype.sourceRegions.call({ regions: async () => null, stageCurrent: async () => doc, book: { types } }, "p1");
+  assert.deepEqual(record.regions.map(region => [region.document_region_id, region.status]), [["r1", "ok"], ["r2", "no_ink"]]);
+});
