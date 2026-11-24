@@ -47,4 +47,6 @@ test("a reading that does not fit a region's line pieces fills an empty region w
   assert.deepEqual(spreadLines(["one two three four", "five six"], 3), ["one two", "three four", "five six"]);
   assert.deepEqual(spreadLines(["x² + y²"], 3), ["x²", "+", "y²"]);
   assert.equal(spreadLines(["a b c d e f g h"], 2).join(" "), "a b c d e f g h", "no word is lost");
+  assert.deepEqual(spreadLines(["I am the taste in water; sound", "In ether; none the less"], 3, { whole: true }), ["I am the taste in water; sound", "In ether; none the less", ""], "a verse keeps its printed lines");
+  assert.deepEqual(spreadLines(["one", "two", "three"], 2, { whole: true }), ["one", "two three"]);
 });

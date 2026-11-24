@@ -1,10 +1,10 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-marks-1";
-import { canonical } from "../ops.js?v=20261123-marks-1";
-import { checkDocument, typeRevision } from "../schema.js?v=20261123-marks-1";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-marks-2";
+import { canonical } from "../ops.js?v=20261123-marks-2";
+import { checkDocument, typeRevision } from "../schema.js?v=20261123-marks-2";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261123-marks-1";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261123-marks-1";
-import { blockLineEnd } from "../blocks.js?v=20261123-marks-1";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261123-marks-2";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261123-marks-2";
+import { blockLineEnd } from "../blocks.js?v=20261123-marks-2";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
@@ -106,7 +106,9 @@ export function restoredText(doc, reading, types, regionIds) {
 
 // Lines of text spread over `n` line pieces in order: the words, in about equal shares of characters. For a region whose
 // reading gave another number of lines than the scan's pieces: the text is all there, its line breaks approximate.
-export function spreadLines(lines, n) {
+export function spreadLines(lines, n, { whole = false } = {}) {
+  // Whole lines (verse): one to a piece in order, the last piece taking any lines left over; pieces left over stay empty.
+  if (whole) return Array.from({ length: n }, (_, i) => i < n - 1 ? lines[i] ?? "" : lines.slice(n - 1).join(" "));
   const words = lines.join(" ").split(/\s+/).filter(Boolean);
   const total = words.reduce((sum, word) => sum + word.length + 1, 0), out = Array.from({ length: n }, () => []);
   let used = 0;
@@ -155,8 +157,10 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
         region.source = { ...region.source, transcription: { uncertain: true, note: input.note } };
         continue;
       }
+      // A block whose printed lines are lines (a verse) keeps them whole, one to a piece; prose is spread evenly.
+      const whole = blockLineEnd({ text: "" }, region, types) === "line";
       input = { id: input.id, uncertain: true, note: `The reading's ${input.returned_lines.length} lines are spread over this area's ${ids.length} line pieces; check the line breaks.`,
-        lines: spreadLines(input.returned_lines, ids.length).map((text, i) => ({ n: i + 1, text })) };
+        lines: spreadLines(input.returned_lines, ids.length, { whole }).map((text, i) => ({ n: i + 1, text })) };
     }
     const polygons = Object.fromEntries(region.lines.map(line => [line.line, line.polygons]));
     const output = transcribedLines(ids, polygons, input.lines, marker);
