@@ -38,6 +38,8 @@ export function bookRules(stored) {
     },
     verseGroups: { markerType: v.markerType || DEFAULT_RULES.verseGroups.markerType, counts: { ...(v.counts && Object.keys(v.counts).length ? v.counts : DEFAULT_COUNTS) } },
     headings: (Array.isArray(stored?.headings) ? stored.headings : []).map(level => ({ heading: String(level?.heading || "").trim(), container: String(level?.container || "").trim() })),
+    // A page break marked on one side only is settled by the text (blocks-format.js settleBreaks); false keeps the marks.
+    settleBreaks: stored?.settleBreaks !== false,
   };
 }
 
@@ -68,6 +70,7 @@ export function compileRules(stored) {
       partAfter: re(rules.sections.partAfter), divisionClosing: re(rules.sections.divisionClosing), partLabels: rules.sections.partLabels },
     verseGroups: { markerType: rules.verseGroups.markerType, counts: rules.verseGroups.counts, markerWords: new RegExp(`\\((?:${words.join("|")})\\)`) },
     headings: rules.headings.filter(level => level.heading && level.container),
+    settleBreaks: rules.settleBreaks,
   };
   if (stored && typeof stored === "object") compiled.set(stored, out);
   return out;

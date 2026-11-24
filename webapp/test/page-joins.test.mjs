@@ -51,7 +51,8 @@ const type = region => region.type;
 // Every list of pages assembled here, for the parity test with schema/book.py at the end.
 const scenarios = [];
 const record = (types, docs) => { scenarios.push({ types, docs: structuredClone(docs) }); return docs; };
-const book = (types, specs) => record(types, readThroughBlocks(specs.map((regions, k) => page(types, k + 1, regions)), types));
+// The marks as the finder left them (no settling of one-sided page breaks by the text: these cases are about the marks).
+const book = (types, specs) => record(types, readThroughBlocks(specs.map((regions, k) => page(types, k + 1, regions)), types, { settleBreaks: false }));
 const pagesOf = docs => docs.map((doc, k) => ({ id: doc.page.id, pdf_page: k + 1 }));
 // The pages of the book each of its units has regions on, by type.
 const spans = assembled => assembled.units.filter(unit => unit.children.some(child => child.region))

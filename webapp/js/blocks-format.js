@@ -7,14 +7,14 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261124-vision-4";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261124-vision-4";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261124-vision-4";
-import { groupVerses } from "./verse-group-rules.js?v=20261124-vision-4";
-import { headingSections } from "./heading-rules.js?v=20261124-vision-4";
-import { assemble } from "./assemble.js?v=20261124-vision-4";
-import { textOf } from "./blocks.js?v=20261124-vision-4";
-import { compileRules } from "./rules.js?v=20261124-vision-4";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261124-breaks-1";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261124-breaks-1";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261124-breaks-1";
+import { groupVerses } from "./verse-group-rules.js?v=20261124-breaks-1";
+import { headingSections } from "./heading-rules.js?v=20261124-breaks-1";
+import { assemble } from "./assemble.js?v=20261124-breaks-1";
+import { textOf } from "./blocks.js?v=20261124-breaks-1";
+import { compileRules } from "./rules.js?v=20261124-breaks-1";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];
@@ -29,6 +29,42 @@ export function blocksContext(pages, rules) {
 
 // ---------------------------------------------------------------------------------------------------- derivation
 
+// A page break where one side only is marked as going on (the last block of a page "continues later", or the first of the
+// next "continues from earlier", but not both) between two blocks of one type is settled by the text: if the earlier
+// block's last line ends a sentence (. । ॥ ? ! and the like) the mark is dropped, as a finder's slip; otherwise the other
+// side is marked too and they join. The region finder marks each page alone, and one side is often missing or
+// wrong. Returns Map page index → the page with its marks settled (a copy), for the pages changed.
+const ENDS_SENTENCE = /[.।॥?!;:”"’)\]]\s*[0-9०-९೦-೯]*\s*[.।॥)]*\s*$/u;
+function settleBreaks(pages, tl, mainTypes) {
+  const out = new Map();
+  const page = index => out.get(index) || pages[index]?.page;
+  const edge = (index, last) => {
+    const regions = (page(index)?.regions || []).filter(region => mainTypes.has(region.type) && tl[region.type]?.region !== "figure" && (region.lines || []).some(line => line.text?.trim()));
+    regions.sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
+    return last ? regions.at(-1) : regions[0];
+  };
+  const edit = (index, rid, change) => {
+    if (!out.has(index)) out.set(index, clone(pages[index].page));
+    const region = out.get(index).regions.find(value => value.id === rid);
+    region.source = { ...region.source, ...change };
+  };
+  for (let i = 0; i + 1 < pages.length; i++) {
+    if (!pages[i] || !pages[i + 1] || pages[i].source?.sample?.consecutive_next === false) continue;
+    const a = edge(i, true), b = edge(i + 1, false);
+    if (!a || !b) continue;
+    const later = Boolean(a.source?.continues_later), earlier = Boolean(b.source?.continues_from_earlier);
+    // Only two blocks of one type meet here; across a plate or a block of another type, assembly looks further.
+    if (later === earlier || a.type !== b.type) continue;
+    const ends = ENDS_SENTENCE.test((a.lines.filter(line => line.text?.trim()).at(-1)?.text || "").trim());
+    if (ends) {
+      if (later) edit(i, a.id, { continues_later: false, continuation_settled: "the text before the break ends a sentence" });
+      else edit(i + 1, b.id, { continues_from_earlier: false, continuation_settled: "the text before the break ends a sentence" });
+    } else if (later) edit(i + 1, b.id, { continues_from_earlier: true, continuation_settled: "the text before the break goes on" });
+    else edit(i, a.id, { continues_later: true, continuation_settled: "the text before the break goes on" });
+  }
+  return out;
+}
+
 // The units, flows and note links the rules give for every page of the book, before any override: Map page id →
 // { units, flows, relations }.
 function derive(context, types) {
@@ -41,9 +77,11 @@ function derive(context, types) {
   const { noteTypes, mainTypes } = noteTypesOf(tl);
   for (const [type, path] of regionTypePaths(tl)) if (tl.types[type].region && tl.types[path[0]].flow === "main") mainTypes.add(type);
   const last = context.pages.length - 1;
+  // The marks of a page break where only one side says the text goes on, settled by the text (settleBreaks).
+  const settled = context.rules.settleBreaks ? settleBreaks(context.pages, tl, mainTypes) : new Map();
   const docs = context.pages.map((doc, index) => {
     if (!doc) return null;
-    const page = clone(doc.page);
+    const page = settled.get(index) || clone(doc.page);
     const sample = doc.source?.sample;   // pages sampled from a book that do not follow each other are not open across the gap
     const { units, flows } = provisionalUnits(page.id, page.regions, tl, { firstPage: index === 0 || sample?.consecutive_previous === false, lastPage: index === last || sample?.consecutive_next === false });
     return { page, units, flows };

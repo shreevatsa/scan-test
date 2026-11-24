@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261124-vision-4";
+import { typeRevision } from "../schema.js?v=20261124-breaks-1";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
@@ -20,6 +20,10 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
   const units = [], flows = Object.fromEntries(Object.keys(types.flows).map(flow => [flow, []])), problems = [];
   const stacks = new Map(), pending = new Map(), byId = new Map(), byRegion = new Map();
   const joinedStart = new Set(), joinedEnd = new Set();
+  // The text block placed last in each flow (figures and captions aside): a piece joins the earlier piece of its block
+  // only if that is it, so that a paragraph interrupted by a quoted verse stays as printed (paragraph, verse, paragraph).
+  const lastText = new Map();
+  const isText = type => !["figure", "caption"].includes(definitions[type]?.region);
   const ordered = regions.map((region, index) => ({ region, index })).filter(({ region }) => definitions[region.type]?.role !== "furniture")
     .sort((a, b) => (a.region.order ?? Infinity) - (b.region.order ?? Infinity) || a.index - b.index);
   const makeUnit = (type, children, stack, flow) => {
@@ -37,12 +41,15 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
     stacks.set(flow, stack);
     const key = JSON.stringify([flow, region.type]), earlier = pending.get(key) || [];
     let unit;
-    if (region.source?.continues_from_earlier && earlier.length) {
+    if (region.source?.continues_from_earlier && earlier.length && earlier.at(-1).id === lastText.get(flow)) {
       const previous = earlier.pop();
       unit = byRegion.get(previous.id);
       unit.children.push({ region: `${pid}#${region.id}` });
       joinedStart.add(region.id); joinedEnd.add(previous.id);
     } else {
+      // A piece whose earlier piece is on this page but not just before it (a verse quoted in between): its own unit,
+      // the two marks met here.
+      if (region.source?.continues_from_earlier && earlier.length) { const previous = earlier.pop(); joinedStart.add(region.id); joinedEnd.add(previous.id); }
       let shared = 0;
       while (shared < containers.length && shared < stack.length && stack[shared].type === containers[shared]) shared++;
       if (shared === containers.length && shared > 0 && definitions[region.type].region === "heading" &&
@@ -52,6 +59,7 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
       unit = makeUnit(region.type, [{ region: `${pid}#${region.id}` }], stack, flow);
     }
     byRegion.set(region.id, unit);
+    if (isText(region.type)) lastText.set(flow, region.id);
     if (region.source?.continues_later) earlier.push(region);
     pending.set(key, earlier);
   }
