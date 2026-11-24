@@ -53,21 +53,27 @@ export function contentsTitles(pages, skipTypes = new Set(), headingTypes = skip
     const pairs = entryBlocks.slice(1).map((entry, i) => [entryBlocks[i], entry]).filter(([a, b]) => a.group === b.group);
     const rising = pairs.filter(([a, b]) => referenceNumber(b.text) >= referenceNumber(a.text)).length;
     if (rising < 0.75 * pairs.length) continue;
-    const entries = (titledEntries ? blocks : entryBlocks).map(({ text }) => text);
-    const pageTitles = entries.map(text => normalTitle(text.replace(PAGE_REF, "").replace(/^[\s.—–-]*[0-9०-९೦-೯]+\s*[.)]+[\s.…—–-]*/u, ""))).filter(title => title.length >= 2);
+    // Each entry's title, with the number of headings before it on the page.
+    const entries = (titledEntries ? blocks : entryBlocks).map(({ text, group }) =>
+      [normalTitle(text.replace(PAGE_REF, "").replace(/^[\s.—–-]*[0-9०-९೦-೯]+\s*[.)]+[\s.…—–-]*/u, "")), group]).filter(([title]) => title.length >= 2);
+    const pageTitles = entries.map(([title]) => title);
     // An index lists its entries in alphabetical order.
     const sorted = pageTitles.slice(1).filter((title, i) => title.localeCompare(pageTitles[i]) >= 0).length;
     if (pageTitles.length >= 6 && sorted >= 0.8 * (pageTitles.length - 1)) continue;
-    const headings = doc.page.regions.filter(region => headingTypes.has(region.type)).map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" ")));
-    found.push({ index, titles: pageTitles, groups: headings.slice(1).filter(title => title.length >= 2) });
+    // The headings grouping the entries (after the contents' own title), each with the number of entries before it.
+    const headings = doc.page.regions.filter(region => headingTypes.has(region.type)).sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
+      .map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" ")));
+    const groups = headings.slice(1).map((title, j) => ({ title, before: entries.filter(([, group]) => group <= j + 1).length })).filter(({ title }) => title.length >= 2);
+    found.push({ index, titles: pageTitles, groups });
   }
   // A book with its contents at the front: a list in its second half is another (a list of its subheadings with their
   // pages, at the back), not the contents.
   const front = found.some(page => page.index < 0.2 * pages.length);
+  titles.groupAt = [];   // each group heading's place among the titles: the number of titles before it
   for (const page of found) {
     if (front && page.index > 0.5 * pages.length) continue;
     titles.pages.add(page.index);
-    titles.groups.push(...page.groups);
+    for (const { title, before } of page.groups) { titles.groups.push(title); titles.groupAt.push(titles.length + before); }
     titles.push(...page.titles);
   }
   return titles;
@@ -86,15 +92,22 @@ const editDistance = (a, b) => {
 // the start or the end of it (a title printed on two lines, one of which was lost; a heading ending in a dash is the
 // start of a title going on).
 export function inContents(titles, text) {
+  return contentsIndex(titles, text) >= 0;
+}
+// The index of the title a heading names (inContents), the first from `from` on if one there does, else the first; -1
+// for none.
+export function contentsIndex(titles, text, from = 0) {
   const heading = normalTitle(text);
-  if (heading.length < 2) return false;
+  if (heading.length < 2) return -1;
   const broken = /[-–—]\s*$/u.test(String(text || "").trim());
-  return titles.some(title => {
+  const names = title => {
     const [short, long] = heading.length <= title.length ? [heading, title] : [title, heading];
     if (long.startsWith(short) && short.length >= (broken && short === heading ? 0.6 : 0.75) * long.length) return true;
     if (long.endsWith(short) && short.length >= 0.75 * long.length) return true;
     return editDistance(heading, title) <= Math.max(1, Math.floor(0.15 * long.length));
-  });
+  };
+  const ahead = titles.findIndex((title, index) => index >= from && names(title));
+  return ahead >= 0 ? ahead : titles.findIndex(names);
 }
 
 const idOf = (doc, base) => { let n = 1; const taken = new Set(doc.units.map(unit => unit.id)); while (taken.has(`${base}${n}`)) n++; return `${base}${n}`; };
@@ -111,8 +124,18 @@ function sectionPaths(pages, levels, textOf, contents = null, recurring = new Se
     if (level === undefined || !contents) return level;
     if (contents.pages.has(pageIndex) && !firstHeading) return undefined;
     // Where the contents group their entries under headings, those name the chapters and the entries their sections.
-    return inContents(contents.groups.length >= 2 ? contents.groups : contents, textOf(doc, unit)) ? 0 : 1;
+    // The chapters come in the contents' order: a heading naming an entry before the open chapter's (a chapter's title
+    // repeated in an appendix's list of subheadings) is a section of the open chapter.
+    const titles = contents.groups.length >= 2 ? contents.groups : contents;
+    const index = contentsIndex(titles, textOf(doc, unit), reached);
+    if (index >= 0 && index >= reached) { reached = index; return 0; }
+    // A lone heading grouping entries on the contents page ("Appendix"), printed in the book too, is a division of it,
+    // after the entries listed before it.
+    const group = titles === contents ? contentsIndex(contents.groups, textOf(doc, unit)) : -1;
+    if (index < 0 && group >= 0) { reached = Math.max(reached, contents.groupAt[group]); return 0; }
+    return 1;
   };
+  let reached = 0;
   const items = [];
   let stack = [], next = 0, titling = null;   // titling: the section whose headings are all it has so far
   pages.forEach((doc, pageIndex) => {
@@ -169,8 +192,9 @@ export function headingSections(pages, levels, { textOf, types }) {
   // A heading among a contents' entries names a chapter only where the book prints it as a heading too: not a column's
   // header ("Page"), nor a heading of a page taken for contents (an imprint with its prices and addresses).
   if (contents?.groups.length) {
-    const normal = elsewhere.map(normalTitle);
-    contents.groups = contents.groups.filter(group => inContents(normal, group));
+    const normal = elsewhere.map(normalTitle), kept = contents.groups.map(group => inContents(normal, group));
+    contents.groupAt = contents.groupAt.filter((_, i) => kept[i]);
+    contents.groups = contents.groups.filter((_, i) => kept[i]);
   }
   // A heading whose text recurs three times or more ("PURPORT." before each verse's explanation, a book's title repeated
   // at the head of its pages) is a label, not a section's title: it starts no section.

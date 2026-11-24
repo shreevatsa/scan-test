@@ -145,3 +145,14 @@ test("contents that name few of the book's headings (in another language) are no
   assert.deepEqual(more.slice(1, 5).map(entry => Object.keys(entry)[0]), ["section “First talk”", "section “Second talk”", "section “Third talk”", "section “Fourth talk”"]);
   assert.deepEqual(more[1]["section “First talk”"].at(-1), { "section “On rivers”": ["heading", "paragraph"] });
 });
+
+test("chapters come in the contents' order: an appendix repeating the chapters' titles holds them as its sections", () => {
+  // The contents: three chapters, then a heading grouping the appendix's entry; the appendix lists the chapters' titles.
+  const contents = page([["heading", "Contents"], ["list_item", "The River . . 2"], ["list_item", "The Hill . . 3"], ["list_item", "The Town . . 4"],
+    ["heading", "Appendix"], ["list_item", "Verses quoted . . 5"]]);
+  const docs = [contents, page([["heading", "The River"], ["paragraph", "a"]]), page([["heading", "The Hill"], ["paragraph", "b"]]),
+    page([["heading", "The Town"], ["paragraph", "c"]]), page([["heading", "Appendix"], ["heading", "The River"], ["list_item", "x"], ["heading", "The Hill"], ["list_item", "y"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  assert.deepEqual(tree.slice(1).map(entry => Object.keys(entry)[0]), ["section “The River”", "section “The Hill”", "section “The Town”", "section “Appendix”"]);
+  assert.deepEqual(tree[4]["section “Appendix”"].slice(1).map(entry => Object.keys(entry)[0]), ["section “The River”", "section “The Hill”"]);
+});

@@ -6,8 +6,8 @@
 // converted its 0.3 structure, everything but the regions, is kept so that it can always be recovered: a record
 // { page, model?, edit? } where model and edit are { units, flows, relations, layers_units } of the page's model
 // document (pages/) and of the person's saved one (edits/). The app writes it to work/pre-0.4/<page id>.json.
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-contents-1";
-import { readingDocuments } from "./workflow.js?v=20261124-contents-1";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-contents-2";
+import { readingDocuments } from "./workflow.js?v=20261124-contents-2";
 
 export const isOldPage = doc => Boolean(doc) && Array.isArray(doc.units);
 
