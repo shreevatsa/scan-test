@@ -1,29 +1,29 @@
-import { typeRevision } from "../schema.js?v=20261124-verses-4";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-verses-4";
+import { typeRevision } from "../schema.js?v=20261124-verses-5";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-verses-5";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-verses-4";
-import * as I from "./images.js?v=20261124-verses-4";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-verses-4";
+import * as S from "./steps.js?v=20261124-verses-5";
+import * as I from "./images.js?v=20261124-verses-5";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-verses-5";
 import * as Split from "./split.js";
-import { markersFromQuotes } from "../note-links.js?v=20261124-verses-4";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-verses-4";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-verses-4";
-import { finderById, finderPath } from "./finders.js?v=20261124-verses-4";
-import { finderRequest } from "./finder-requests.js?v=20261124-verses-4";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-verses-4";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-verses-4";
+import { markersFromQuotes } from "../note-links.js?v=20261124-verses-5";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-verses-5";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-verses-5";
+import { finderById, finderPath } from "./finders.js?v=20261124-verses-5";
+import { finderRequest } from "./finder-requests.js?v=20261124-verses-5";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-verses-5";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-verses-5";
 import { bbox } from "../render.js";
-import { pdfFollows } from "./pdf.js?v=20261124-verses-4";
-import { canonical } from "../ops.js?v=20261124-verses-4";
-import { layerState, noteEdit } from "../layers.js?v=20261124-verses-4";
-import { provisionalDocument } from "./provisional.js?v=20261124-verses-4";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-verses-4";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-verses-4";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-verses-4";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-verses-4";
+import { pdfFollows } from "./pdf.js?v=20261124-verses-5";
+import { canonical } from "../ops.js?v=20261124-verses-5";
+import { layerState, noteEdit } from "../layers.js?v=20261124-verses-5";
+import { provisionalDocument } from "./provisional.js?v=20261124-verses-5";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-verses-5";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-verses-5";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-verses-5";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-verses-5";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

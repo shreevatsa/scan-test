@@ -48,3 +48,21 @@ test("a misread or repeated number does not start a numbering again; a book with
   assert.equal(groups.get("V003").companions.notes.length, 1, "8 between 2 and 4 is 3");
   assert.equal(verseGroups(book([["shataka", "", verses([1, 2, 3])]]), tl).groups.size, 0);
 });
+
+test("a śataka set out verse by verse: the number printed at the verse's end, the prose after it, the notes on its page", () => {
+  // One verse a page: the verse, its meaning and translation after it, an unmarked note at the foot.
+  const page = (pid, n) => ({ id: pid, regions: [{ id: "r1", type: "verse", lines: [{ line: 1, text: `श्लोकस्य पादाः ॥ ${"०१२३४५६७८९"[n]} ॥` }] },
+    { id: "r2", type: "paragraph", lines: [{ line: 1, text: "अर्थ" }] }, { id: "r3", type: "paragraph", lines: [{ line: 1, text: "Meaning" }] },
+    { id: "r4", type: "footnote", lines: [{ line: 1, text: "Cf. …" }] }, { id: "r5", type: "running_header", lines: [{ line: 1, text: "नीतिशतकम् ।" }] }] });
+  const pages = [page("p1", 7), page("p2", 8)];
+  const units = pages.flatMap(p => ["r1", "r2", "r3", "r4"].map(r => ({ id: `${p.id}#${r}`, type: p.regions.find(x => x.id === r).type, children: [{ region: `${p.id}#${r}` }] })));
+  const b = { pages, units, flows: { main: units.filter(u => u.type !== "footnote").map(u => u.id), notes: units.filter(u => u.type === "footnote").map(u => u.id) }, relations: [] };
+  const types = { types: { ...tl.types, running_header: { region: "running_header", role: "furniture" } } };
+  const { groups } = verseGroups(b, types);
+  assert.deepEqual([...groups.keys()], ["N007", "N008"]);
+  assert.deepEqual(groups.get("N007").follow, ["p1#r2", "p1#r3"]);
+  assert.deepEqual(groups.get("N008").footnotes, ["p2#r4"]);
+  // The same without a śataka's name (a story book's verses among its prose): none.
+  const story = { ...b, pages: pages.map(p => ({ ...p, regions: p.regions.filter(r => r.type !== "running_header") })) };
+  assert.equal(verseGroups(story, types).groups.size, 0);
+});

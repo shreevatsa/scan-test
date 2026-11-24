@@ -37,12 +37,30 @@ export function verseGroups(book, tl) {
   const textOf = unit => unit.children.map(child => child.region ? (lines.get(child.region) || []).map(line => line.text || "").join(" ") : textOf(units.get(child.unit) || { children: [] })).join(" ");
   const holdsVerse = unit => regionClass(unit.type) === "verse" || unit.children.some(child => child.unit && units.get(child.unit) && holdsVerse(units.get(child.unit)));
 
-  // Each stream's entries, with the letter of the heading last seen before each.
-  const series = [];
+  // A verse with no number of its own takes the one printed at its end ("… ॥ ३७ ॥").
+  const printed = unit => {
+    if (regionClass(unit.type) !== "verse") return null;
+    const match = /(?<![०-९0-9])([०-९0-9]{1,3})\s*(?:॥|\|\|)\s*$/u.exec(textOf(unit).trim());
+    return match ? numbersOf(match[1]) : null;
+  };
+  const entryNumbers = unit => regionClass(unit.type) === "list_item" || /contents|index/i.test(unit.type) ? null : numbersOf(unit.number) || printed(unit);
+  const holdsEntries = unit => unit.children.some(child => { const kid = child.unit && units.get(child.unit); return kid && (entryNumbers(kid) || holdsEntries(kid)); });
+
+  // The streams: each container at the top of the main flow, and each run of top-level blocks (a book set out flat, verse
+  // by verse). Each stream's entries, with the letter of the heading last seen before each, and the blocks that follow an
+  // entry up to the next or a heading (a flat book's translation and comment after its verse).
+  const streams = [];
   for (const id of book.flows.main || []) {
     const top = units.get(id);
     if (!top || /contents|index/i.test(top.type)) continue;
-    let letter = null, current = null;
+    // A container with no entries in it (a passage's "PURPORT.") is part of the run it stands in.
+    if (top.children.some(child => child.unit) && holdsEntries(top)) streams.push(top);
+    else if (streams.at(-1)?.flat) streams.at(-1).children.push({ unit: id });
+    else streams.push({ id: "main", type: "main", label: null, flat: true, children: [{ unit: id }] });
+  }
+  const series = [];
+  for (const top of streams) {
+    let letter = null, current = null, previous = null, pending = [];
     // A numbering starts again only from 1 (2 or 3, its first number misread or missing): a smaller number past that is
     // a misreading or a repeat, settled below.
     const add = entry => {
@@ -50,19 +68,26 @@ export function verseGroups(book, tl) {
       if (entry.letter) current.letters.push(entry.letter);
       current.entries.push(entry);
     };
+    const flush = () => { if (previous) previous.follow.push(...pending); pending = []; };
     const walk = unit => unit.children.forEach((child, index) => {
       const kid = child.unit && units.get(child.unit);
       if (!kid) return;
-      if (regionClass(kid.type) === "heading") { letter = letterOf(textOf(kid)) || letter; return; }
-      const numbers = numbersOf(kid.number);
-      if (numbers && regionClass(kid.type) !== "list_item" && !/contents|index/i.test(kid.type)) {
+      if (regionClass(kid.type) === "heading") { letter = letterOf(textOf(kid)) || letter; flush(); previous = null; return; }
+      const numbers = entryNumbers(kid);
+      if (numbers) {
         const before = index > 0 && unit.children[index - 1].unit && units.get(unit.children[index - 1].unit);
-        add({ uid: kid.id, n: numbers[0], more: numbers.slice(1), letter, verse: holdsVerse(kid), lead: before && regionClass(before.type) === "lead_in" && !before.number ? before.id : null });
+        const lead = before && regionClass(before.type) === "lead_in" && !before.number ? before.id : null;
+        if (lead) pending = pending.filter(id => id !== lead);
+        flush();
+        previous = { uid: kid.id, n: numbers[0], more: numbers.slice(1), letter, verse: holdsVerse(kid), lead, follow: [] };
+        add(previous);
         return;
       }
-      walk(kid);
+      if (holdsEntries(kid)) { flush(); previous = null; walk(kid); return; }
+      pending.push(kid.id);
     });
     walk(top);
+    flush();
   }
 
   // A number that breaks the run its neighbours agree on is misread ("58" between 67 and 69).
@@ -73,15 +98,20 @@ export function verseGroups(book, tl) {
 
   // The text's series, keyed; the others go with them.
   const text = series.filter(s => s.entries.filter(e => e.verse).length > s.entries.length / 2);
-  const offsets = new Map();
+  const offsets = new Map(), last = new Map();
   for (const s of text) {
     s.letter = letterOf(s.stream.label) || letterOf(textOf(s.stream).slice(0, 200)) || s.letters[0] || "N";
-    s.offset = offsets.get(s.letter) || 0;
-    offsets.set(s.letter, s.offset + Math.max(...s.entries.map(e => e.n)));
+    // A series that goes on from the last one's numbers (a passage set in a section of its own) continues it; one that
+    // starts again goes on from the last number.
+    const before = last.get(s.letter);
+    s.offset = before && s.entries[0].n > before.top ? before.offset : offsets.get(s.letter) || 0;
+    const top = Math.max(...s.entries.map(e => e.n));
+    offsets.set(s.letter, Math.max(offsets.get(s.letter) || 0, s.offset + top));
+    last.set(s.letter, { offset: s.offset, top });
   }
   const keyOf = new Map(), groups = new Map();
   const group = key => {
-    if (!groups.has(key)) groups.set(key, { key, verse: [], lead: [], companions: {}, readings: [], footnotes: [] });
+    if (!groups.has(key)) groups.set(key, { key, verse: [], lead: [], follow: [], companions: {}, readings: [], footnotes: [] });
     return groups.get(key);
   };
   for (const s of text) for (const e of s.entries) {
@@ -89,6 +119,7 @@ export function verseGroups(book, tl) {
     keyOf.set(e.uid, key);
     group(key).verse.push(e.uid);
     if (e.lead) { group(key).lead.push(e.lead); keyOf.set(e.lead, key); }
+    for (const uid of e.follow) { group(key).follow.push(uid); keyOf.set(uid, key); }
   }
   const byStream = new Map();
   for (const s of series.filter(s => !text.includes(s))) byStream.set(s.stream, [...(byStream.get(s.stream) || []), s]);
@@ -126,9 +157,26 @@ export function verseGroups(book, tl) {
       if (key) group(key).footnotes.push(relation.to.unit);
     }
   }
-  // A book whose verses have nothing gathered to them (no translation, notes or readings by number) has no verse groups:
-  // its numbers are its own (an epic's verses within each episode).
-  if (![...groups.values()].some(g => Object.keys(g.companions).length || g.readings.length)) return { keyOf: new Map(), groups: new Map() };
+  // A note no marker points to, on a page with one verse, is that verse's (a page of the verse, its translation, notes).
+  const linked = new Set((book.relations || []).filter(relation => relation.type === "note").map(relation => relation.to?.unit));
+  const firstPage = uid => regionsOf(uid)[0]?.split("#")[0];
+  const versesOnPage = new Map();
+  for (const g of groups.values()) for (const uid of g.verse) { const page = firstPage(uid); if (page) versesOnPage.set(page, [...(versesOnPage.get(page) || []), g.key]); }
+  for (const [flow, ids] of Object.entries(book.flows)) if (flow !== "main") for (const id of ids) {
+    if (linked.has(id) || keyOf.has(id)) continue;
+    const here = versesOnPage.get(firstPage(id));
+    if (here?.length === 1) { group(here[0]).footnotes.push(id); keyOf.set(id, here[0]); }
+  }
+  // A book whose verses have nothing gathered to them by number (translation, notes, readings) has verse groups only if it
+  // names a śataka (a label, a heading, a running header) and most of its verses have prose after them (a translation
+  // and comment set after each verse); other books' numbers are their own (an epic's verses within each episode, a story
+  // book's verses among its prose).
+  const prose = g => g.follow.some(uid => !["verse", "heading"].includes(regionClass(units.get(uid)?.type)));
+  const all = [...groups.values()];
+  const shataka = book.units.some(unit => letterOf(unit.label)) ||
+    book.pages.some(page => page.regions.some(region => ["heading", "running_header"].includes(regionClass(region.type)) && letterOf((region.lines || []).map(line => line.text || "").join(" "))));
+  if (!all.some(g => Object.keys(g.companions).length || g.readings.length) && !(shataka && all.filter(prose).length >= 0.5 * all.length))
+    return { keyOf: new Map(), groups: new Map() };
   return { keyOf, groups };
 }
 
@@ -159,6 +207,7 @@ export function verseExport(book, tl, manifest = {}) {
       const kids = (units.get(uid)?.children || []).filter(child => child.unit).map(child => child.unit);
       return kids.length ? kids.map(kid => part(tl.types[units.get(kid)?.type]?.region === "verse" ? "verse" : units.get(kid)?.type || "part", kid)) : [part("verse", uid)];
     }),
+    ...g.follow.map(uid => part(units.get(uid)?.type || "follow", uid)),
     ...Object.entries(g.companions).flatMap(([type, list]) => list.map(uid => part(type, uid))),
     ...g.readings.map(({ region: ref, line }) => {
       const found = regionOf(ref), L = found?.region?.lines?.find(value => value.line === line);
