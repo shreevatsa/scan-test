@@ -41,3 +41,10 @@ test("an area with no saved text, or another proposed type, is handled as it sho
   assert.deepEqual(other.restored, []);
   assert.equal(other.doc.source.omitted_regions.length, 1);
 });
+
+test("a reading that does not fit a region's line pieces fills an empty region with its text spread over them", async () => {
+  const { spreadLines } = await import("../js/pipeline/apply.js");
+  assert.deepEqual(spreadLines(["one two three four", "five six"], 3), ["one two", "three four", "five six"]);
+  assert.deepEqual(spreadLines(["x² + y²"], 3), ["x²", "+", "y²"]);
+  assert.equal(spreadLines(["a b c d e f g h"], 2).join(" "), "a b c d e f g h", "no word is lost");
+});

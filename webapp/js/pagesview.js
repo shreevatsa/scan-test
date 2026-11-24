@@ -1,14 +1,14 @@
-import { suggestionButton } from "./review-view.js?v=20261123-proposed-3";
+import { suggestionButton } from "./review-view.js?v=20261123-spread-1";
 import { h } from "./render.js";
-import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-proposed-3";
+import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-spread-1";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-proposed-3";
-import { READERS } from "./pipeline/readers.js?v=20261123-proposed-3";
-import { pageCost, dollars, costBasis } from "./recipe.js?v=20261123-proposed-3";
-import { finderById } from "./pipeline/finders.js?v=20261123-proposed-3";
-import { runBatch } from "./pipeline/batch.js?v=20261123-proposed-3";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-spread-1";
+import { READERS } from "./pipeline/readers.js?v=20261123-spread-1";
+import { pageCost, dollars, costBasis } from "./recipe.js?v=20261123-spread-1";
+import { finderById } from "./pipeline/finders.js?v=20261123-spread-1";
+import { runBatch } from "./pipeline/batch.js?v=20261123-spread-1";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261123-proposed-3";
+import { money } from "./reader-controls.js?v=20261123-spread-1";
 
 export async function renderPages(el, app) {
   const { book, routeToken } = app;

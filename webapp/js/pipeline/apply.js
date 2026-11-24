@@ -1,10 +1,10 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-proposed-3";
-import { canonical } from "../ops.js?v=20261123-proposed-3";
-import { checkDocument, typeRevision } from "../schema.js?v=20261123-proposed-3";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-spread-1";
+import { canonical } from "../ops.js?v=20261123-spread-1";
+import { checkDocument, typeRevision } from "../schema.js?v=20261123-spread-1";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261123-proposed-3";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261123-proposed-3";
-import { blockLineEnd } from "../blocks.js?v=20261123-proposed-3";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261123-spread-1";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261123-spread-1";
+import { blockLineEnd } from "../blocks.js?v=20261123-spread-1";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
@@ -104,6 +104,20 @@ export function restoredText(doc, reading, types, regionIds) {
   return filled;
 }
 
+// Lines of text spread over `n` line pieces in order: the words, in about equal shares of characters. For a region whose
+// reading gave another number of lines than the scan's pieces: the text is all there, its line breaks approximate.
+export function spreadLines(lines, n) {
+  const words = lines.join(" ").split(/\s+/).filter(Boolean);
+  const total = words.reduce((sum, word) => sum + word.length + 1, 0), out = Array.from({ length: n }, () => []);
+  let used = 0;
+  for (const word of words) {
+    const piece = Math.min(n - 1, Math.floor((used + word.length / 2) / (total / n)));   // by the word's middle
+    out[piece].push(word);
+    used += word.length + 1;
+  }
+  return out.map(piece => piece.join(" "));
+}
+
 export function mergeText(current, reading, types, check = doc => checkDocument(doc, types), { regionIds = null } = {}) {
   const sent = sentRegions(current, types);
   let parsed = reading.parsed || reading;
@@ -130,13 +144,20 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
     .flatMap(line => (line.spans || []).map(span => Number(/^m(\d+)$/.exec(span.id || "")?.[1] || 0)))));
   for (const region of doc.page.regions) {
     if (selected && !selected.has(region.id)) continue;
-    const input = parsed.regions.find(value => value.id === region.id);
+    let input = parsed.regions.find(value => value.id === region.id);
     if (!input) continue;
-    if (input.kept) {
-      region.source = { ...region.source, transcription: { uncertain: true, note: input.note } };
-      continue;
-    }
     const ids = sent.find(value => value.rid === region.id).line_ids;
+    if (input.kept) {
+      // The reading gave this region another number of lines than the scan's line pieces. A region with no text yet takes
+      // the reading's text, spread over its line pieces in order (to be checked); one with text keeps it.
+      const empty = !(region.lines || []).some(line => typeof line.text === "string" && line.text.trim());
+      if (!empty || !input.returned_lines?.length || !ids.length) {
+        region.source = { ...region.source, transcription: { uncertain: true, note: input.note } };
+        continue;
+      }
+      input = { id: input.id, uncertain: true, note: `The reading's ${input.returned_lines.length} lines are spread over this area's ${ids.length} line pieces; check the line breaks.`,
+        lines: spreadLines(input.returned_lines, ids.length).map((text, i) => ({ n: i + 1, text })) };
+    }
     const polygons = Object.fromEntries(region.lines.map(line => [line.line, line.polygons]));
     const output = transcribedLines(ids, polygons, input.lines, marker);
     marker = output.nextMarker;

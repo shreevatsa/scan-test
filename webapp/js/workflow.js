@@ -1,6 +1,6 @@
-import { typeRevision } from "./schema.js?v=20261123-proposed-3";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261123-proposed-3";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261123-proposed-3";
+import { typeRevision } from "./schema.js?v=20261123-spread-1";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261123-spread-1";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261123-spread-1";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
