@@ -22,7 +22,12 @@ function sectionPaths(pages, levels, textOf) {
       const level = levelOf.get(unit?.type);
       // A heading of the same level straight after its section's heading (a title in two parts, a subtitle, an epigraph
       // set as a heading) belongs to that section; one of another level starts its own (a section opening a chapter).
-      if (level !== undefined && titling && level === titling.level) { items.push({ pageIndex, id, path: stack }); continue; }
+      if (level !== undefined && titling && level === titling.level) {
+        // A section whose first heading has no text (an ornament, a line not read) takes its name from the next.
+        titling.label ||= (textOf(doc, unit) || "").replace(/\s+/g, " ").trim() || null;
+        items.push({ pageIndex, id, path: stack });
+        continue;
+      }
       if (level === undefined) titling = null;
       if (level !== undefined) {
         // A new array each time: earlier units keep the path they had.

@@ -66,6 +66,9 @@ test("a heading straight after its section's heading is a subtitle of that secti
   const docs = [page([["heading", "Canto VI"], ["heading", "Peace is a reward"], ["paragraph", "a"], ["heading", "Canto VII"], ["paragraph", "b"]])];
   assert.deepEqual(read(docs, { headings: [{ heading: "heading", container: "section" }] }).tree,
     [{ "section “Canto VI”": ["heading", "heading", "paragraph"] }, { "section “Canto VII”": ["heading", "paragraph"] }]);
+  const blankFirst = [page([["heading", ""], ["heading", "DRONA PARVA"], ["paragraph", "a"]])];
+  assert.deepEqual(read(blankFirst, { headings: [{ heading: "heading", container: "section" }] }).tree, [{ "section “DRONA PARVA”": ["heading", "heading", "paragraph"] }],
+    "a first heading with no text leaves the name to the next");
   const nested = [page([["chapter_heading", "I"], ["heading", "1.1"], ["paragraph", "a"]])];
   assert.deepEqual(read(nested, { headings: [{ heading: "chapter_heading", container: "chapter" }, { heading: "heading", container: "section" }] }).tree,
     [{ "chapter “I”": ["chapter_heading", { "section “1.1”": ["heading", "paragraph"] }] }], "a section opening a chapter is its own");
