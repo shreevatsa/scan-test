@@ -2,14 +2,14 @@
 // plain-PDF link with &proposal=<url>, which preloads a saved whole-list proposal (methods 077, 078, 091, 092) for review.
 // Types for a book that exists are edited in Settings → Book types; this form is only for a new book.
 import { h } from "./render.js";
-import { checkTypes } from "./schema.js?v=20261124-verses-3";
-import { money } from "./reader-controls.js?v=20261124-verses-3";
-import { renderPage } from "./pipeline/pdf.js?v=20261124-verses-3";
-import { samplePages, discoveryStore } from "./pipeline/type-discovery.js?v=20261124-verses-3";
-import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261124-verses-3";
-import { readerById, structurerById } from "./pipeline/readers.js?v=20261124-verses-3";
-import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261124-verses-3";
-import { citedSamplePages } from "./type-revisions.js?v=20261124-verses-3";
+import { checkTypes } from "./schema.js?v=20261124-verses-4";
+import { money } from "./reader-controls.js?v=20261124-verses-4";
+import { renderPage } from "./pipeline/pdf.js?v=20261124-verses-4";
+import { samplePages, discoveryStore } from "./pipeline/type-discovery.js?v=20261124-verses-4";
+import { proposalPackage, checkProposalPackage, keepProposalPackage } from "./type-proposal.js?v=20261124-verses-4";
+import { readerById, structurerById } from "./pipeline/readers.js?v=20261124-verses-4";
+import { pageBrowser, pageSelectionText } from "./page-browser.js?v=20261124-verses-4";
+import { citedSamplePages } from "./type-revisions.js?v=20261124-verses-4";
 
 export function typeSetup({ app, title, bookId, description, index, template, proposalUrl = null, onBusy = () => {} }) {
   let pdf = null, store = null, result = null;

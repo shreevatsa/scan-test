@@ -131,3 +131,39 @@ export function verseGroups(book, tl) {
   if (![...groups.values()].some(g => Object.keys(g.companions).length || g.readings.length)) return { keyOf: new Map(), groups: new Map() };
   return { keyOf, groups };
 }
+
+// The verse groups as data for another site: for each key, every part (its role, type and text) with the regions it is
+// printed in (page id, PDF page, printed page number, box in the page's pixels and the page's size, so that the region
+// can be cut from the page image). An apparatus reading is one line of its region. `manifest` (book.json) gives the
+// PDF pages.
+export function verseExport(book, tl, manifest = {}) {
+  const { groups } = verseGroups(book, tl);
+  const units = new Map(book.units.map(unit => [unit.id, unit]));
+  const pageOf = new Map(book.pages.map(page => [page.id, page]));
+  const pdfPage = new Map((manifest.pages || []).map(page => [page.id, page.pdf_page ?? null]));
+  const regionOf = ref => { const [pid, rid] = ref.split("#"); const page = pageOf.get(pid); return page && { page, region: page.regions.find(r => r.id === rid) }; };
+  const box = polygons => { const xs = polygons.flat().map(p => p[0]), ys = polygons.flat().map(p => p[1]); return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]; };
+  const place = (page, region, polygons) => ({ page: page.id, pdf_page: pdfPage.get(page.id) ?? null, label: page.label ?? null,
+    box: polygons?.length ? box(polygons) : region.box || null, width: page.width, height: page.height });
+  const refsOf = uid => (units.get(uid)?.children || []).flatMap(child => child.region ? [child.region] : refsOf(child.unit));
+  const part = (role, uid) => {
+    const refs = refsOf(uid).map(regionOf).filter(found => found?.region);
+    return { role, type: units.get(uid)?.type, number: units.get(uid)?.number ?? null,
+      text: refs.map(({ region }) => (region.lines || []).map(line => line.text || "").join("\n")).join("\n").trim(),
+      regions: refs.map(({ page, region }) => place(page, region, region.polygons)) };
+  };
+  return [...groups.values()].map(g => ({ key: g.key, parts: [
+    // A verse that is a group (Kale's lead-in, verse and commentary) gives a part for each of its own units.
+    ...g.lead.map(uid => part("lead_in", uid)),
+    ...g.verse.flatMap(uid => {
+      const kids = (units.get(uid)?.children || []).filter(child => child.unit).map(child => child.unit);
+      return kids.length ? kids.map(kid => part(tl.types[units.get(kid)?.type]?.region === "verse" ? "verse" : units.get(kid)?.type || "part", kid)) : [part("verse", uid)];
+    }),
+    ...Object.entries(g.companions).flatMap(([type, list]) => list.map(uid => part(type, uid))),
+    ...g.readings.map(({ region: ref, line }) => {
+      const found = regionOf(ref), L = found?.region?.lines?.find(value => value.line === line);
+      return { role: "readings", type: found?.region?.type, text: L?.text || "", regions: found && L ? [place(found.page, found.region, L.polygons)] : [] };
+    }),
+    ...g.footnotes.map(uid => part("footnote", uid)),
+  ] }));
+}
