@@ -5,7 +5,7 @@ import { blockChecks, proposedTypeName } from "../js/blocksview.js";
 const types = { flows: { main: "Main" }, types: { verse: { region: "paragraph", flow: "main" }, colophon_line: { region: "paragraph", flow: "main" } } };
 const doc = region => ({ page: { id: "p1", regions: [] }, source: { omitted_regions: [region] } });
 const app = (page, calls = []) => ({ tl: types, regionFlagContext: () => ({}), edit: fn => { calls.push("edit"); fn(page); return true; },
-  select: value => calls.push(["select", value]), recoverOmitted: (index, type) => calls.push(["recover", index, type]), book: { writable: true },
+  select: value => calls.push(["select", value]), recoverOmitted: (index, type) => calls.push(["recover", index, type]), restoreProposed: (name, type) => calls.push(["restore all", name, type]), book: { writable: true },
   pageView: {}, textPanel: {}, check: () => [[], []], selection: {} });
 
 test("a region the finder proposed a type for becomes an Add type check with Review area and Leave out", () => {
@@ -26,7 +26,7 @@ test("a proposed name already in the type list offers that type, and a region wi
   const [item] = blockChecks(app(known, calls), known, null);
   assert.equal(item.label, "Use type colophon_line");
   item.action();
-  assert.deepEqual(calls, [["recover", 0, "colophon_line"]]);
+  assert.deepEqual(calls, [["restore all", "colophon line", "colophon_line"]], "every area waiting for the type in the book, in one decision");
   const plain = doc({ region: "r9", type: "other", box: [1, 2, 3, 4] });
   const [other] = blockChecks(app(plain), plain, null);
   assert.equal(other.text, "An area on the scan needs a type.");

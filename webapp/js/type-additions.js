@@ -1,7 +1,7 @@
 // Pending proposals for the type list: what the region finder (method 097) proposes to add, kept in the book's work
 // records (work/type-proposals/pending.json, which older books may also hold survey items in). Nothing here changes the
 // type list; the page editor's "Add type X" does that through the book's add-type operation.
-import { REGION_CLASSES } from "./book-types.js?v=20261123-headings-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261123-proposed-1";
 export const PENDING_PATH = "work/type-proposals/pending.json";
 const empty = () => ({ format: "pending-type-proposals", version: 1, items: [] });
 
@@ -99,3 +99,26 @@ export function proposalAssignments(record, types) {
 // The unassigned regions of a page that carry a proposed name in `keys` (normalized names).
 export const waitingRegions = (doc, keys) => (doc?.source?.omitted_regions || [])
   .map((region, index) => ({ ...region, index })).filter(region => region.proposed_type && keys.has(normalizeTypeName(region.proposed_type)));
+
+// A page with its waiting areas of one proposed type (`key`, a normalized name) made blocks of type `type`: each with
+// the outline and line pieces the region finder drew (its saved record), and the text the page's saved reading has for
+// it. Returns { doc, restored, withText } (ids). An area whose record is gone is left waiting.
+export function restoreWaiting(doc, record, reading, key, type, types, restoredText) {
+  const next = structuredClone(doc), restored = [];
+  const waiting = waitingRegions(next, new Set([key])).sort((a, b) => b.index - a.index);
+  for (const area of waiting) {
+    const original = record?.regions?.find(value => (value.document_region_id || `r${value.region_id}`) === area.region);
+    if (!original?.polygons?.length || next.page.regions.some(region => region.id === area.region)) continue;
+    next.page.regions.push({ id: area.region, type, polygons: structuredClone(original.polygons), box: (original.model_box || original.bounds).map(Math.round),
+      order: original.reading_order ?? null,
+      lines: types.types[type]?.region === "figure" ? undefined : (original.lines || []).filter(line => line.polygons?.length).map(line => ({ line: line.line_id, polygons: structuredClone(line.polygons) })),
+      source: { region_id: original.region_id, method_type: original.type, region_class: original.region_class, proposed_type: original.proposed_type,
+        continues_from_earlier: Boolean(original.continues_from_earlier), continues_later: Boolean(original.continues_later), added_by: "the person, adding a proposed type" } });
+    if (next.page.regions.at(-1).lines === undefined) delete next.page.regions.at(-1).lines;
+    next.source.omitted_regions.splice(area.index, 1);
+    restored.push(area.region);
+  }
+  if (next.source.omitted_regions && !next.source.omitted_regions.length) delete next.source.omitted_regions;
+  const withText = restored.length && reading ? restoredText(next, reading, types, restored) : [];
+  return { doc: next, restored, withText };
+}

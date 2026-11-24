@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261123-headings-1";
-import { mappedTypeNames } from "../type-revisions.js?v=20261123-headings-1";
+import { typeRevision } from "../schema.js?v=20261123-proposed-1";
+import { mappedTypeNames } from "../type-revisions.js?v=20261123-proposed-1";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261123-headings-1";
-import * as I from "./images.js?v=20261123-headings-1";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261123-headings-1";
+import * as S from "./steps.js?v=20261123-proposed-1";
+import * as I from "./images.js?v=20261123-proposed-1";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261123-proposed-1";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261123-headings-1";
-import { classifyBlocks } from "../local/blocks.js?v=20261123-headings-1";
-import { finderById, finderPath } from "./finders.js?v=20261123-headings-1";
-import { finderRequest } from "./finder-requests.js?v=20261123-headings-1";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261123-headings-1";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261123-headings-1";
+import { localReading, localLayout } from "./ocr.js?v=20261123-proposed-1";
+import { classifyBlocks } from "../local/blocks.js?v=20261123-proposed-1";
+import { finderById, finderPath } from "./finders.js?v=20261123-proposed-1";
+import { finderRequest } from "./finder-requests.js?v=20261123-proposed-1";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261123-proposed-1";
+import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261123-proposed-1";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261123-headings-1";
-import { layerState, noteEdit } from "../layers.js?v=20261123-headings-1";
-import { provisionalDocument } from "./provisional.js?v=20261123-headings-1";
-import { mergeRegions, mergeText } from "./apply.js?v=20261123-headings-1";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261123-headings-1";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261123-headings-1";
-import { isProtected, LAYERS } from "../layers.js?v=20261123-headings-1";
+import { canonical } from "../ops.js?v=20261123-proposed-1";
+import { layerState, noteEdit } from "../layers.js?v=20261123-proposed-1";
+import { provisionalDocument } from "./provisional.js?v=20261123-proposed-1";
+import { mergeRegions, mergeText } from "./apply.js?v=20261123-proposed-1";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261123-proposed-1";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261123-proposed-1";
+import { isProtected, LAYERS } from "../layers.js?v=20261123-proposed-1";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -298,6 +298,13 @@ export class Maker {
       }
       return region;
     });
+    // An area the finder gave a type the book does not have yet (a proposed type, waiting for the person's decision) is
+    // not on the page, but it is read with the page, so that its text is there when the type is added (restoreWaiting).
+    const onPage = new Set(regions.map(region => region.document_region_id));
+    for (const area of doc.source?.omitted_regions || []) {
+      const original = saved?.regions.find(value => (value.document_region_id || `r${value.region_id}`) === area.region);
+      if (original && !onPage.has(area.region)) regions.push(structuredClone(original));
+    }
     if (saved && canonical(regions) === canonical(saved.regions)) return saved;
     return { ...saved, format: "page-regions", page: pid, width: doc.page.width, height: doc.page.height,
       char_h: doc.source?.char_h ?? saved?.char_h ?? Math.max(8, doc.page.height / 70), regions,

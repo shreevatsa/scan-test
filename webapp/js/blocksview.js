@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-headings-1";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-headings-1";
-import { bookReading } from "./reading.js?v=20261123-headings-1";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-headings-1";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-proposed-1";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-proposed-1";
+import { bookReading } from "./reading.js?v=20261123-proposed-1";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-proposed-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-headings-1";
+import * as ops from "./ops.js?v=20261123-proposed-1";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-headings-1";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-headings-1";
-import { suggestionButton } from "./review-view.js?v=20261123-headings-1";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261123-headings-1";
-import { pageReviewState } from "./layers.js?v=20261123-headings-1";
-import { readingOrderWarnings } from "./schema.js?v=20261123-headings-1";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-headings-1";
+import { noteProblems } from "./note-links.js?v=20261123-proposed-1";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-proposed-1";
+import { suggestionButton } from "./review-view.js?v=20261123-proposed-1";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261123-proposed-1";
+import { pageReviewState } from "./layers.js?v=20261123-proposed-1";
+import { readingOrderWarnings } from "./schema.js?v=20261123-proposed-1";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-proposed-1";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -38,7 +38,7 @@ export async function addProposedType(app, name, region, index) {
   const record = await readPendingProposals(app.book).catch(() => null);
   const item = record?.items.find(item => item.kind === "new_type" && itemNames(item).some(value => normalizeTypeName(value) === key));
   const proposal = item?.proposal || {};
-  newTypeDialog(app, type => app.recoverOmitted(index, type), true, { name, description: proposal.description || "",
+  newTypeDialog(app, type => app.restoreProposed(region.proposed_type || name, type), true, { name, description: proposal.description || "",
     region: proposal.region, furniture: proposal.furniture });
 }
 
@@ -63,10 +63,13 @@ export function blockChecks(app, doc, projection) {
   };
   // A region the finder could not match to a listed type carries `proposed_type`: it can be added to the type list, and
   // the region given that type, or reviewed or left out as any unassigned area.
+  // One decision for the book: adding (or using) the type makes every area waiting for it a block, with its text.
+  const waitingInBook = name => [...(app.pageStates?.values() || [])].reduce((n, state) => n + waitingRegions(state.doc, new Set([normalizeTypeName(name)])).length, 0);
   const addProposed = (proposed, text, region, index, leave) => {
-    const known = tl.types[proposed]?.region;
-    findings.push({ text, leaveOut: leave, label: known ? `Use type ${proposed}` : `Add type ${proposed}`,
-      action: () => known ? app.recoverOmitted(index, proposed) : addProposedType(app, proposed, region, index),
+    const known = tl.types[proposed]?.region, count = waitingInBook(region.proposed_type || proposed);
+    findings.push({ text: count > 1 ? `${text} The finder marked ${count} areas in the book this way.` : text, leaveOut: leave,
+      label: known ? `Use type ${proposed}` : `Add type ${proposed}`,
+      action: () => known ? app.restoreProposed(region.proposed_type || proposed, proposed) : addProposedType(app, proposed, region, index),
       extra: [{ label: "Review area", action: () => app.select({ omitted: index }) }] });
   };
   const flags = [...regionFlags(doc, tl, app.regionFlagContext(doc)), ...textFlags(doc, tl)];

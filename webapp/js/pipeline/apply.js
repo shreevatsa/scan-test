@@ -1,10 +1,10 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-headings-1";
-import { canonical } from "../ops.js?v=20261123-headings-1";
-import { checkDocument, typeRevision } from "../schema.js?v=20261123-headings-1";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261123-proposed-1";
+import { canonical } from "../ops.js?v=20261123-proposed-1";
+import { checkDocument, typeRevision } from "../schema.js?v=20261123-proposed-1";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261123-headings-1";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261123-headings-1";
-import { blockLineEnd } from "../blocks.js?v=20261123-headings-1";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261123-proposed-1";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261123-proposed-1";
+import { blockLineEnd } from "../blocks.js?v=20261123-proposed-1";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
@@ -67,6 +67,41 @@ function markersOf(doc) {
       { region: `${doc.page.id}#${region.id}`, line: line.line, start: span.start, marker: span.marker });
   }
   return markers;
+}
+
+// The text a saved reading has for some regions of a page (`regionIds`), put into those regions of `doc` (changed in
+// place), whatever the state of the page's text layer: for blocks just made from areas the finder drew (an area whose
+// proposed type the person has now added), which had no text of their own to protect. A region is filled only where its
+// outline and line pieces are the ones the reading was made for. Returns the ids filled.
+export function restoredText(doc, reading, types, regionIds) {
+  const parsed = reading?.parsed, record = reading?.regions_record;
+  if (!parsed?.regions || !record) return [];
+  const original = new Map(selectPageRegions(record.regions).sent.map(value => [value.rid, value]));
+  const usedMarkers = new Set(doc.page.regions.flatMap(region => (region.lines || []).flatMap(line => (line.spans || []).map(span => span.id))));
+  let marker = 1 + Math.max(0, ...[...usedMarkers].map(id => Number(/^m(\d+)$/.exec(id || "")?.[1] || 0)));
+  const filled = [];
+  for (const id of regionIds) {
+    const region = doc.page.regions.find(value => value.id === id), input = parsed.regions.find(value => value.id === id), sent = original.get(id);
+    if (!region || !input || input.kept || !sent) continue;
+    const lines = (region.lines || []).filter(line => line.polygons?.length);
+    const same = canonical(region.polygons) === canonical(sent.region.polygons) &&
+      canonical(lines.map(line => [line.line, line.polygons])) === canonical(sent.region.lines.filter(line => line.polygons?.length).map(line => [line.line_id, line.polygons]));
+    if (!same || input.lines.length !== lines.length) continue;
+    const output = transcribedLines(lines.map(line => line.line), Object.fromEntries(lines.map(line => [line.line, line.polygons])), input.lines, marker);
+    marker = output.nextMarker;
+    for (const line of output.lines) {
+      const target = region.lines.find(value => value.line === line.line);
+      target.text = line.text;
+      delete target.spans;
+      const spans = preserveMarkerIds([], line.spans || [], usedMarkers);
+      if (spans.length) target.spans = spans;
+      const end = blockLineEnd(target, region, types);
+      if (!target.end && end !== "space") target.end = end;
+    }
+    region.source = { ...region.source, transcription: { uncertain: input.uncertain, note: input.note, from: reading.profile?.id } };
+    filled.push(id);
+  }
+  return filled;
 }
 
 export function mergeText(current, reading, types, check = doc => checkDocument(doc, types), { regionIds = null } = {}) {
