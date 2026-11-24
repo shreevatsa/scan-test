@@ -7,14 +7,14 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261124-frame-2";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261124-frame-2";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261124-frame-2";
-import { groupVerses } from "./verse-group-rules.js?v=20261124-frame-2";
-import { headingSections } from "./heading-rules.js?v=20261124-frame-2";
-import { assemble } from "./assemble.js?v=20261124-frame-2";
-import { textOf } from "./blocks.js?v=20261124-frame-2";
-import { compileRules } from "./rules.js?v=20261124-frame-2";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261124-frame-3";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261124-frame-3";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261124-frame-3";
+import { groupVerses } from "./verse-group-rules.js?v=20261124-frame-3";
+import { headingSections } from "./heading-rules.js?v=20261124-frame-3";
+import { assemble } from "./assemble.js?v=20261124-frame-3";
+import { textOf } from "./blocks.js?v=20261124-frame-3";
+import { compileRules } from "./rules.js?v=20261124-frame-3";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];

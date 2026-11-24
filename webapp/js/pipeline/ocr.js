@@ -1,6 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
 import { bbox } from "../render.js";
-import { tesseractBlocks } from "../local/blocks.js?v=20261124-frame-2";
+import { tesseractBlocks } from "../local/blocks.js?v=20261124-frame-3";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 
@@ -60,7 +60,7 @@ export function wordsToReading(words, sent, note = "Local OCR supplies plain tex
     }
     // A word only partly on a line and not centred in it is not that line's: print showing through from the other side
     // of the leaf lies between the lines, and the OCR reads it too ("caricane" amid Kannada).
-    if (best && bestScore >= 0.5) best.words.push(word);
+    if (best && bestScore >= 0.5) { best.words.push(word); word.placed = true; }
   }
   return { regions: sent.filter(s => s.line_ids.length).map(s => {
     const mine = targets.filter(t => t.rid === s.rid);

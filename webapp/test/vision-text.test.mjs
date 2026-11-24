@@ -25,8 +25,9 @@ test("what Vision read in the printed lines outside all regions comes back with 
     confidence: 0.9, boundingBox: { vertices: [{ x, y }, { x: x + 40, y }, { x: x + 40, y: y + 20 }, { x, y: y + 20 }] } });
   const body = { responses: [{ fullTextAnnotation: { pages: [{ blocks: [{ paragraphs: [{ words: [word("ಒಳಗೆ", 10, 10), word("--", 100, 100), word("*", 150, 100), word("--", 200, 100)] }] }] }] } }] };
   const sent = [{ rid: "r1", line_ids: [1], region: { lines: [{ line_id: 1, polygons: [[[0, 0], [300, 0], [300, 40], [0, 40]]] }] } }];
-  const reading = visionReading(body, sent, [{ line_id: 9, box: [90, 95, 260, 125] }, { line_id: 10, box: [0, 300, 100, 330] }]);
-  assert.deepEqual(reading.uncovered, [{ line_id: 9, text: "-- * --", confidence: 0.9 }, { line_id: 10, text: "" }], "with how sure Vision is of the line's words");
+  const reading = visionReading(body, sent, [{ line_id: 9, box: [90, 95, 260, 125] }, { line_id: 10, box: [0, 300, 100, 330] }, { line_id: 11, box: [0, 0, 400, 35] }]);
+  assert.deepEqual(reading.uncovered, [{ line_id: 9, text: "-- * --", confidence: 0.9 }, { line_id: 10, text: "" }, { line_id: 11, text: "" }],
+    "with how sure Vision is of the line's words; a longer piece over a region's line holds none of the words that line took");
   assert.equal(visionReading(body, sent).uncovered, undefined, "none asked, none returned");
 });
 

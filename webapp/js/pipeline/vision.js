@@ -2,7 +2,7 @@
 // API and standard paid-tier pricing checked 2026-11-08.
 // https://docs.cloud.google.com/vision/docs/fulltext-annotations
 // https://cloud.google.com/vision/pricing
-import { wordsToReading } from "./ocr.js?v=20261124-frame-2";
+import { wordsToReading } from "./ocr.js?v=20261124-frame-3";
 
 export function visionRequest(profile, imageDataUrl) {
   const content = imageDataUrl.split(",")[1];
@@ -11,7 +11,7 @@ export function visionRequest(profile, imageDataUrl) {
 }
 
 // What a reading from Cloud Vision is parsed with; a saved response is parsed again when this changes (run.js).
-export const VISION_PARSE = 14;
+export const VISION_PARSE = 15;
 
 // Cloud Vision's habits in Indic text: the avagraha (ಽ, ऽ) read as a Latin "s", standing apart ("ಯೋ s ಪಾಕರೋತ್");
 // dandas as ASCII bars. In a line written mostly in an Indic script, a lone "s" (or "ss") between letters becomes the
@@ -109,7 +109,8 @@ export function visionReading(body, sent, uncovered = []) {
   if (!uncovered?.length) return reading;
   return { ...reading, uncovered: uncovered.filter(line => line.box).map(line => {
     const [x0, y0, x1, y1] = line.box;
-    const inside = words.filter(word => { const x = (word.bbox.x0 + word.bbox.x1) / 2, y = (word.bbox.y0 + word.bbox.y1) / 2; return x >= x0 && x <= x1 && y >= y0 && y <= y1; })
+    // Only words no region's line took: the line analysis may make a second, longer piece of a line a region has.
+    const inside = words.filter(word => { const x = (word.bbox.x0 + word.bbox.x1) / 2, y = (word.bbox.y0 + word.bbox.y1) / 2; return !word.placed && x >= x0 && x <= x1 && y >= y0 && y <= y1; })
       .sort((a, b) => a.bbox.x0 - b.bbox.x0);
     // How sure Vision is of the line's words (by their length): a page's ornamental frame is read as letters too
     // ("NANANANA"), but at well under the confidence of print (under 0.8, print 0.9 and over).
