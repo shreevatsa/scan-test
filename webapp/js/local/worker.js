@@ -4,9 +4,9 @@
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
 
 import { analyzePage } from "./ink.js";
-import { regionsFromBoxes } from "./regions.js?v=20261123-proposed-1";
+import { regionsFromBoxes } from "./regions.js?v=20261123-proposed-2";
 import { LINES, OWNERSHIP } from "./config.js";
-import { lineBlocks } from "./blocks.js?v=20261123-proposed-1";
+import { lineBlocks } from "./blocks.js?v=20261123-proposed-2";
 
 const cache = new Map();
 
@@ -39,7 +39,13 @@ onmessage = async e => {
         angle: 0, warnings: [`Local line analysis found too little text (${a.status}). Check the scan for omitted material.`], seconds: (performance.now() - t0) / 1000 });
       return;
     }
-    if (a.status !== "ok") throw new Error(`the page's line analysis failed (${a.status})`);
+    // Boxes on a page with too little ink to analyse (a nearly blank page, a stamp, faint print): each is kept as a box with
+    // no ink found, for the person to check, instead of the page failing.
+    if (a.status !== "ok") {
+      postMessage({ id, geometry: boxes.map(() => ({ rings: [], lines: [] })), uncovered: [], method: "094-illumination-flattened-ink", charH: a.charH,
+        angle: 0, warnings: [`Local line analysis found too little text (${a.status}); the boxes are kept with no ink found.`], seconds: (performance.now() - t0) / 1000 });
+      return;
+    }
     const blocks = boxes === null ? lineBlocks(a) : null;
     const { geometry, uncovered } = regionsFromBoxes(a, blocks ? blocks.map(block => block.box) : boxes, OWNERSHIP);
     postMessage({ id, geometry, uncovered, blocks, method: "094-illumination-flattened-ink", charH: a.charH, angle: a.angle, lines: a.seg.lines.length, seconds: (performance.now() - t0) / 1000 });

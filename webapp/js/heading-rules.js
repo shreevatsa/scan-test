@@ -14,15 +14,20 @@ const idOf = (doc, base) => { let n = 1; const taken = new Set(doc.units.map(uni
 function sectionPaths(pages, levels, textOf) {
   const levelOf = new Map(levels.map((level, index) => [level.heading, index]));
   const items = [];
-  let stack = [], next = 0;
+  let stack = [], next = 0, titling = null;   // titling: the section whose headings are all it has so far
   pages.forEach((doc, pageIndex) => {
-    if (!doc) { stack = []; return; }
+    if (!doc) { stack = []; titling = null; return; }
     for (const id of doc.flows.main || []) {
       const unit = doc.units.find(value => value.id === id);
       const level = levelOf.get(unit?.type);
+      // A heading of the same level straight after its section's heading (a title in two parts, a subtitle, an epigraph
+      // set as a heading) belongs to that section; one of another level starts its own (a section opening a chapter).
+      if (level !== undefined && titling && level === titling.level) { items.push({ pageIndex, id, path: stack }); continue; }
+      if (level === undefined) titling = null;
       if (level !== undefined) {
         // A new array each time: earlier units keep the path they had.
         stack = [...stack.filter(section => section.level < level), { id: next++, level, label: (textOf(doc, unit) || "").replace(/\s+/g, " ").trim() || null }];
+        titling = stack.at(-1);
       }
       items.push({ pageIndex, id, path: stack });
     }
