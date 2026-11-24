@@ -264,15 +264,18 @@ export function checkDocument(doc, tl) {
     }
   }
   errors.push(...relationErrors());
-  if (doc.format === "page") warnings.push(...readingOrderWarnings(doc));
+  if (doc.format === "page") warnings.push(...readingOrderWarnings(doc, tl));
   return [errors, warnings];
 }
 
 // A page whose reading (its units, in each flow) puts two regions in the other order from their saved box order. `doc`
 // has units and flows: a 0.3 page, or a 0.4 page as reading.js derives it.
-export function readingOrderWarnings(doc) {
+// A figure or caption floats (Read may set it before or after the text around it, provisional.js), so with the type
+// list `tl` it is left out of the comparison.
+export function readingOrderWarnings(doc, tl = null) {
   const units = Object.fromEntries(doc.units.map(unit => [unit.id, unit]));
-  const regions = Object.fromEntries(doc.page.regions.map(region => [`${doc.page.id}#${region.id}`, region]));
+  const floats = region => ["figure", "caption"].includes(tl?.types[region.type]?.region);
+  const regions = Object.fromEntries(doc.page.regions.filter(region => !floats(region)).map(region => [`${doc.page.id}#${region.id}`, region]));
   const warnings = [];
   for (const flow of Object.keys(doc.flows)) {
     const readingOrder = [...depthFirst(units, doc.flows)].filter(([f, x]) => f === flow && x[0] === "region")

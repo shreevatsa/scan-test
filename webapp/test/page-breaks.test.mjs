@@ -48,3 +48,31 @@ test("a paragraph interrupted by a quoted verse on its page stays as printed, an
     page([["paragraph", "which is the root.", { from: true }]])];
   assert.deepEqual(read(docs), { flow: ["paragraph 1r1", "verse 1r2", "paragraph 1r3+2r1"], warnings: 0 });
 });
+
+test("a figure and its caption at the foot of a page, between a paragraph's two pieces: the figure floats and the paragraph joins", () => {
+  const docs = [page([["paragraph", "The child lies", { later: true }], ["figure", ""], ["caption", "(Figure 1)"]]), page([["paragraph", "within the womb.", { from: true }]])];
+  assert.deepEqual(read(docs), { flow: ["figure 1r2", "caption 1r3", "paragraph 1r1+2r1"], warnings: 0 });
+});
+
+test("a paragraph, the verse it quotes across the break, and the paragraph going on after it stay as printed", () => {
+  const forward = [page([["paragraph", "When dharma declines,", { later: true }]]), page([["verse", "यदा यदा हि धर्मस्य"], ["paragraph", "as the Gita says."]])];
+  assert.deepEqual(read(forward), { flow: ["paragraph 1r1", "verse 2r1", "paragraph 2r2"], warnings: 0 });
+  const backward = [page([["paragraph", "Manu says"], ["verse", "पिता रक्षति कौमारे"]]), page([["paragraph", "so said Manu.", { from: true }]])];
+  assert.deepEqual(read(backward), { flow: ["paragraph 1r1", "verse 1r2", "paragraph 2r1"], warnings: 0 });
+});
+
+test("blocks of two types at the break, the earlier ending a sentence: the one mark is a slip", () => {
+  assert.deepEqual(read([page([["paragraph", "It is so.", { later: true }]]), page([["verse", "सह वीर्यं करवावहै"]])]), { flow: ["paragraph 1r1", "verse 2r1"], warnings: 0 });
+  assert.deepEqual(read([page([["paragraph", "It is so."]]), page([["verse", "सह वीर्यं करवावहै", { from: true }]])]), { flow: ["paragraph 1r1", "verse 2r1"], warnings: 0 });
+});
+
+test("both sides marked, the pieces typed differently: the later piece takes the earlier's type and they join", () => {
+  const docs = [page([["list_item", "2. Then he showed the gait", { later: true }]]), page([["paragraph", "of the three gods.", { from: true }]])];
+  assert.deepEqual(read(docs), { flow: ["list_item 1r1+2r1"], warnings: 0 });
+});
+
+test("footnotes across the break are settled as the main text is", () => {
+  const docs = [page([["paragraph", "Text."], ["footnote", "* A judge went to court, and", { later: true }]]), page([["paragraph", "More."], ["footnote", "everyone looked at him."]])];
+  assert.equal(read(docs).warnings, 0);
+  assert.equal(read(docs, { settleBreaks: false }).warnings, 1, "as marked, the break does not match");
+});

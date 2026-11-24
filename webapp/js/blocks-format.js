@@ -7,14 +7,14 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261124-labels-1";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261124-labels-1";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261124-labels-1";
-import { groupVerses } from "./verse-group-rules.js?v=20261124-labels-1";
-import { headingSections } from "./heading-rules.js?v=20261124-labels-1";
-import { assemble } from "./assemble.js?v=20261124-labels-1";
-import { textOf } from "./blocks.js?v=20261124-labels-1";
-import { compileRules } from "./rules.js?v=20261124-labels-1";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261124-floats-2";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261124-floats-2";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261124-floats-2";
+import { groupVerses } from "./verse-group-rules.js?v=20261124-floats-2";
+import { headingSections } from "./heading-rules.js?v=20261124-floats-2";
+import { assemble } from "./assemble.js?v=20261124-floats-2";
+import { textOf } from "./blocks.js?v=20261124-floats-2";
+import { compileRules } from "./rules.js?v=20261124-floats-2";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];
@@ -33,29 +33,56 @@ export function blocksContext(pages, rules) {
 // next "continues from earlier", but not both) between two blocks of one type is settled by the text: if the earlier
 // block's last line ends a sentence (. । ॥ ? ! and the like) the mark is dropped, as a finder's slip; otherwise the other
 // side is marked too and they join. The region finder marks each page alone, and one side is often missing or
-// wrong. Returns Map page index → the page with its marks settled (a copy), for the pages changed.
+// wrong. Between blocks of two types, a mark is dropped where the earlier block ends a sentence, and where a quotation
+// stands at the break with the marked block's type on its other side (a paragraph, the verse it quotes across the
+// break, and the paragraph going on after it): that stays as printed, as it does within a page (provisional.js). Where
+// both sides are marked but the pieces' types differ, the later piece takes the earlier's type (source.type_settled).
+// Returns Map page index → the page with its marks settled (a copy), for the pages changed.
 const ENDS_SENTENCE = /[.।॥?!;:”"’)\]]\s*[0-9०-९೦-೯]*\s*[.।॥)]*\s*$/u;
-function settleBreaks(pages, tl, mainTypes) {
+function settleBreaks(pages, tl, mainTypes, noteTypes = new Set()) {
   const out = new Map();
   const page = index => out.get(index) || pages[index]?.page;
-  const edge = (index, last) => {
-    const regions = (page(index)?.regions || []).filter(region => mainTypes.has(region.type) && tl[region.type]?.region !== "figure" && (region.lines || []).some(line => line.text?.trim()));
-    regions.sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
-    return last ? regions.at(-1) : regions[0];
+  // A page's text blocks in reading order, of the main text or of the notes (`kinds`, the flow's types): figures and
+  // captions float (provisional.js) and stand at no edge.
+  let kinds = mainTypes;
+  const blocks = index => (page(index)?.regions || []).filter(region => kinds.has(region.type) && !["figure", "caption"].includes(tl.types[region.type]?.region) && (region.lines || []).some(line => line.text?.trim()))
+    .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
+  const edge = (index, last) => last ? blocks(index).at(-1) : blocks(index)[0];
+  // Blocks of other types (not headings) at a page's edge, then one of `type`: a quotation with the text going on past it.
+  const quotation = (index, type, last) => {
+    const list = last ? blocks(index).reverse() : blocks(index);
+    const beyond = list.findIndex(region => region.type === type || tl.types[region.type]?.region === "heading");
+    return beyond > 0 && list[beyond].type === type;
   };
   const edit = (index, rid, change) => {
     if (!out.has(index)) out.set(index, clone(pages[index].page));
     const region = out.get(index).regions.find(value => value.id === rid);
     region.source = { ...region.source, ...change };
   };
-  for (let i = 0; i + 1 < pages.length; i++) {
+  for (let i = 0; i + 1 < pages.length; i++) for (kinds of [mainTypes, noteTypes]) {
     if (!pages[i] || !pages[i + 1] || pages[i].source?.sample?.consecutive_next === false) continue;
     const a = edge(i, true), b = edge(i + 1, false);
     if (!a || !b) continue;
     const later = Boolean(a.source?.continues_later), earlier = Boolean(b.source?.continues_from_earlier);
-    // Only two blocks of one type meet here; across a plate or a block of another type, assembly looks further.
-    if (later === earlier || a.type !== b.type) continue;
+    // Both sides marked, the two pieces typed differently (a list item's or a verse's second piece, without its number
+    // or its start, taken for a paragraph): the later piece is the earlier's type.
+    if (later && earlier && a.type !== b.type && ![a, b].some(region => tl.types[region.type]?.region === "heading")) {
+      if (!out.has(i + 1)) out.set(i + 1, clone(pages[i + 1].page));
+      const region = out.get(i + 1).regions.find(value => value.id === b.id);
+      region.source = { ...region.source, type_settled: { from: region.type, reason: `it goes on from a ${a.type.replaceAll("_", " ")} on the page before` } };
+      region.type = a.type;
+    }
+    if (later === earlier) continue;
     const ends = ENDS_SENTENCE.test((a.lines.filter(line => line.text?.trim()).at(-1)?.text || "").trim());
+    if (a.type !== b.type) {
+      // Otherwise, across a plate or a block of another type, assembly looks further.
+      if (ends) {
+        if (later) edit(i, a.id, { continues_later: false, continuation_settled: "the text before the break ends a sentence" });
+        else edit(i + 1, b.id, { continues_from_earlier: false, continuation_settled: "the text before the break ends a sentence" });
+      } else if (later && quotation(i + 1, a.type, false)) edit(i, a.id, { continues_later: false, continuation_settled: "a quotation follows the break, and the text goes on after it" });
+      else if (earlier && quotation(i, b.type, true)) edit(i + 1, b.id, { continues_from_earlier: false, continuation_settled: "a quotation stands before the break, after the text it goes on from" });
+      continue;
+    }
     if (ends) {
       if (later) edit(i, a.id, { continues_later: false, continuation_settled: "the text before the break ends a sentence" });
       else edit(i + 1, b.id, { continues_from_earlier: false, continuation_settled: "the text before the break ends a sentence" });
@@ -78,7 +105,7 @@ function derive(context, types) {
   for (const [type, path] of regionTypePaths(tl)) if (tl.types[type].region && tl.types[path[0]].flow === "main") mainTypes.add(type);
   const last = context.pages.length - 1;
   // The marks of a page break where only one side says the text goes on, settled by the text (settleBreaks).
-  const settled = context.rules.settleBreaks ? settleBreaks(context.pages, tl, mainTypes) : new Map();
+  const settled = context.rules.settleBreaks ? settleBreaks(context.pages, tl, mainTypes, noteTypes) : new Map();
   const docs = context.pages.map((doc, index) => {
     if (!doc) return null;
     const page = settled.get(index) || clone(doc.page);

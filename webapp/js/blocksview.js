@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261124-labels-1";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261124-labels-1";
-import { bookReading } from "./reading.js?v=20261124-labels-1";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261124-labels-1";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261124-floats-2";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261124-floats-2";
+import { bookReading } from "./reading.js?v=20261124-floats-2";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261124-floats-2";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261124-labels-1";
+import * as ops from "./ops.js?v=20261124-floats-2";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261124-labels-1";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261124-labels-1";
-import { suggestionButton } from "./review-view.js?v=20261124-labels-1";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261124-labels-1";
-import { pageReviewState } from "./layers.js?v=20261124-labels-1";
-import { readingOrderWarnings } from "./schema.js?v=20261124-labels-1";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261124-labels-1";
+import { noteProblems } from "./note-links.js?v=20261124-floats-2";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261124-floats-2";
+import { suggestionButton } from "./review-view.js?v=20261124-floats-2";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261124-floats-2";
+import { pageReviewState } from "./layers.js?v=20261124-floats-2";
+import { readingOrderWarnings } from "./schema.js?v=20261124-floats-2";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261124-floats-2";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -118,7 +118,7 @@ export function blockChecks(app, doc, projection) {
   const [errors, warnings] = app.check(doc);
   const orderWarning = warning => warning.includes("The saved box order puts ");
   // A page in the blocks form is read as reading.js derives it, so its order is checked there.
-  const order = warnings.find(orderWarning) || (doc.overrides && derived ? readingOrderWarnings(derived)[0] : undefined);
+  const order = warnings.find(orderWarning) || (doc.overrides && derived ? readingOrderWarnings(derived, app.tl)[0] : undefined);
   if (order && app.book.writable && derived) add(order.replace(/^page .+?, flow .+?: /, ""), "Use reader order",
     () => app.edit(next => ops.orderAsRead(next, derived, app.tl)));
   if (errors.length || warnings.some(warning => !orderWarning(warning)) || !app.book.writable && warnings.length)

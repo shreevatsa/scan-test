@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261124-labels-1";
+import { typeRevision } from "../schema.js?v=20261124-floats-2";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
@@ -64,6 +64,30 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
     pending.set(key, earlier);
   }
   const regionMap = new Map(regions.map(region => [`${pid}#${region.id}`, region]));
+  // A figure or caption set after a block that goes on to the next page (or before one that comes from the previous
+  // page) floats: it is placed before that block (after it), which is then at the page's edge and joins its other piece,
+  // as across a plate page. Containers along the edge are settled from the inside out.
+  const isFloat = id => { const unit = id && byId.get(id); return Boolean(unit) && !isText(unit.type) && !unit.children.some(child => child.unit); };
+  const edgeRegion = (id, end) => {
+    for (let unit = byId.get(id); unit;) {
+      const child = unit.children.at(end ? -1 : 0);
+      if (!child?.unit) return regionMap.get(child?.region);
+      unit = byId.get(child.unit);
+    }
+    return null;
+  };
+  const settleFloats = (list, idOf, end) => {
+    let k = end ? list.length : -1;
+    if (end) while (k > 0 && isFloat(idOf(list[k - 1]))) k--;
+    else while (k + 1 < list.length && isFloat(idOf(list[k + 1]))) k++;
+    const at = end ? k - 1 : k + 1, id = at >= 0 && at < list.length ? idOf(list[at]) : null;
+    if (!id) return;
+    settleFloats(byId.get(id).children, child => child.unit ?? null, end);
+    if (!edgeRegion(id, end)?.source?.[end ? "continues_later" : "continues_from_earlier"]) return;
+    if (end && k < list.length) list.splice(at, 0, ...list.splice(k));
+    else if (!end && k >= 0) list.splice(1, 0, ...list.splice(0, k + 1));
+  };
+  for (const roots of Object.values(flows)) for (const end of [true, false]) settleFloats(roots, id => id, end);
   for (const [side, first, last, boundary] of [["start", 0, false, firstPage], ["end", -1, true, lastPage]]) {
     for (const roots of Object.values(flows)) {
       let unit = byId.get(roots.at(first)), allowed = !boundary;
