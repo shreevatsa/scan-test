@@ -1,6 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261124-oauth-1";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261124-oauth-1";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261124-oauth-1";
+import { typeRevision } from "./schema.js?v=20261124-spreads-2";
+import { pdfFollows } from "./pipeline/pdf.js?v=20261124-spreads-2";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261124-spreads-2";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261124-spreads-2";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
@@ -153,7 +154,7 @@ export function pageWalker(pages, index, docOf, delta) {
   return (lookPast = () => false) => {
     for (let k = index; ; k += delta) {
       const here = pages[k], other = pages[k + delta];
-      if (!other || here.pdf_page && other.pdf_page && other.pdf_page !== here.pdf_page + delta) return null;
+      if (!other || !pdfFollows(here, other, delta)) return null;
       if (docOf(here.id)?.source?.sample?.[`consecutive_${delta < 0 ? "previous" : "next"}`] === false) return null;
       const doc = docOf(other.id);
       if (!doc || !lookPast(doc)) return doc || null;

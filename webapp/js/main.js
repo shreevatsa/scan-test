@@ -1,42 +1,42 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261124-oauth-1";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261124-oauth-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261124-oauth-1";
-import { RECIPE } from "./recipe.js?v=20261124-oauth-1";
-import { readerOptions } from "./pipeline/readers.js?v=20261124-oauth-1";
+import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261124-spreads-2";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261124-spreads-2";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261124-spreads-2";
+import { RECIPE } from "./recipe.js?v=20261124-spreads-2";
+import { readerOptions } from "./pipeline/readers.js?v=20261124-spreads-2";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261124-oauth-1";
-import { blockName } from "./blocks.js?v=20261124-oauth-1";
-import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261124-oauth-1";
-import { headingDefaults } from "./rules.js?v=20261124-oauth-1";
-import { normalizeTypeName, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261124-oauth-1";
-import { restoredText } from "./pipeline/apply.js?v=20261124-oauth-1";
-import { PageView } from "./pageimage.js?v=20261124-oauth-1";
-import { markerForm } from "./editor.js?v=20261124-oauth-1";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261124-oauth-1";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261124-oauth-1";
-import { renderStyle } from "./styleview.js?v=20261124-oauth-1";
-import { typeSetup } from "./type-setup.js?v=20261124-oauth-1";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261124-spreads-2";
+import { blockName } from "./blocks.js?v=20261124-spreads-2";
+import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261124-spreads-2";
+import { headingDefaults } from "./rules.js?v=20261124-spreads-2";
+import { normalizeTypeName, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261124-spreads-2";
+import { restoredText } from "./pipeline/apply.js?v=20261124-spreads-2";
+import { PageView } from "./pageimage.js?v=20261124-spreads-2";
+import { markerForm } from "./editor.js?v=20261124-spreads-2";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261124-spreads-2";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261124-spreads-2";
+import { renderStyle } from "./styleview.js?v=20261124-spreads-2";
+import { typeSetup } from "./type-setup.js?v=20261124-spreads-2";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261124-oauth-1";
-import { EditError } from "./ops.js?v=20261124-oauth-1";
-import { Maker, post } from "./pipeline/run.js?v=20261124-oauth-1";
-import { CredentialChecks } from "./key-check.js?v=20261124-oauth-1";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261124-oauth-1";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261124-oauth-1";
-import { pruneOverrides } from "./blocks-format.js?v=20261124-oauth-1";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261124-oauth-1";
-import { orderedRegions } from "./flags.js?v=20261124-oauth-1";
-import { assemble } from "./assemble.js?v=20261124-oauth-1";
-import { editorFocus, mergeTextEdit } from "./editing.js?v=20261124-oauth-1";
-import { overridesAfter } from "./structure.js?v=20261124-oauth-1";
-import { renderPages } from "./pagesview.js?v=20261124-oauth-1";
-import { settings } from "./store.js?v=20261124-oauth-1";
-import { renderBookSettings } from "./settingsview.js?v=20261124-oauth-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261124-oauth-1";
-import { pageMenu } from "./page-actions.js?v=20261124-oauth-1";
+import * as ops from "./ops.js?v=20261124-spreads-2";
+import { EditError } from "./ops.js?v=20261124-spreads-2";
+import { Maker, post } from "./pipeline/run.js?v=20261124-spreads-2";
+import { CredentialChecks } from "./key-check.js?v=20261124-spreads-2";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261124-spreads-2";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261124-spreads-2";
+import { pruneOverrides } from "./blocks-format.js?v=20261124-spreads-2";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261124-spreads-2";
+import { orderedRegions } from "./flags.js?v=20261124-spreads-2";
+import { assemble } from "./assemble.js?v=20261124-spreads-2";
+import { editorFocus, mergeTextEdit } from "./editing.js?v=20261124-spreads-2";
+import { overridesAfter } from "./structure.js?v=20261124-spreads-2";
+import { renderPages } from "./pagesview.js?v=20261124-spreads-2";
+import { settings } from "./store.js?v=20261124-spreads-2";
+import { renderBookSettings } from "./settingsview.js?v=20261124-spreads-2";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261124-spreads-2";
+import { pageMenu } from "./page-actions.js?v=20261124-spreads-2";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -427,6 +427,7 @@ class App {
     const description = h("textarea", { rows: 4, cols: 80, placeholder: "what the book is: its parts, languages and scripts, and how its pages are laid out" });
     for (const field of [title, bookId, description]) field.addEventListener("input", () => { field.dataset.edited = "1"; });
     const files = h("input", { type: "file", accept: "application/pdf,.pdf" });
+    const splitSpreads = h("input", { type: "checkbox", checked: true });
     const info = h("span", { class: "meta" });
     const progress = h("div", { class: "meta" });
     let pdfDoc = null, pdfFile = null, pdfSha = null, opening = null, creating = false;
@@ -455,7 +456,7 @@ class App {
       if (!pdfFile) return;
       info.textContent = "Opening the PDF…";
       try {
-        const { openPdf } = await import("./pipeline/pdf.js");
+        const { openPdf } = await import("./pipeline/pdf.js?v=20261124-spreads-2");
         const selected = pdfFile;
         const doc = await openPdf(selected);
         const sha = await sha256hex(new Uint8Array(await selected.arrayBuffer()));
@@ -485,20 +486,34 @@ class App {
         if (errs.length) throw new Error(`the type list: ${errs[0]}`);
         if (!pdfFile) throw new Error("choose the book's PDF");
         if (!pdfDoc) throw new Error("the PDF is not open yet");
-        const { pageInfo, drawnSize } = await import("./pipeline/pdf.js");
+        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261124-spreads-2");
         // Every page of the PDF is in the book. A page that is not part of it (a library's cover, a blank page) is
         // left with no regions ("No content on this page" in Regions).
         const numbers = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
         // Each page's make-up and the size it is drawn at (its regions are measured in that size's pixels).
-        const pages = [];
+        const infos = [];
         for (const [i, n] of numbers.entries()) {
           progress.textContent = `Looking at page ${i + 1} of ${numbers.length}…`;
-          const pi = await pageInfo(pdfDoc, n);
-          const size = drawnSize(pi);
-          pages.push({ pdfPage: n, width: size.width, height: size.height,
-                       source: { render: { library: "pdf.js", effective_dpi: size.dpi, page_kind: pi.kind, scan_image: pi.scan_image, page_size_points: pi.size_points,
-                                           rule: "a scanned page (an image covering at least half of it) at 300 dpi, or the scan's own resolution when lower; other pages at 300 dpi" },
-                                 text_layer: { characters: pi.text_characters }, images: pi.images } });
+          infos.push(await pageInfo(pdfDoc, n));
+        }
+        // A scan of an open book, two pages side by side: where most scanned pages are wider than tall, each such page
+        // with a fold found (spreadFold) is two pages of the book, its left and its right side.
+        const scans = infos.filter(pi => pi.kind === "scan"), wide = pi => pi.kind === "scan" && pi.size_points[0] > 1.2 * pi.size_points[1];
+        const spreads = splitSpreads.checked && scans.length > 0 && scans.filter(wide).length >= scans.length / 2;
+        const pages = [];
+        for (const [i, n] of numbers.entries()) {
+          const pi = infos[i];
+          const render = size => ({ library: "pdf.js", effective_dpi: size.dpi, page_kind: pi.kind, scan_image: pi.scan_image, page_size_points: pi.size_points,
+            rule: "a scanned page (an image covering at least half of it) at 300 dpi, or the scan's own resolution when lower; other pages at 300 dpi" });
+          let fold = null;
+          if (spreads && wide(pi)) { progress.textContent = `Finding the fold of page ${i + 1} of ${numbers.length}…`; fold = await spreadFold(pdfDoc, n); }
+          const parts = fold ? [["left", [0, fold]], ["right", [fold, 1]]] : [[null, null]];
+          for (const [side, part] of parts) {
+            const size = drawnSize(pi, 300, part);
+            pages.push({ pdfPage: n, ...(part ? { part } : {}), width: size.width, height: size.height,
+                         source: { render: { ...render(size), ...(part ? { spread: { side, part, rule: "the side of a two-page spread, cut at its fold (pdf.js spreadFold)" } } : {}) },
+                                   text_layer: { characters: pi.text_characters }, images: pi.images } });
+          }
         }
         progress.textContent = "Putting the book into this browser…";
         const dir = await newBrowserBookDir(id);
@@ -521,6 +536,7 @@ class App {
     const bookFields = h("div", { class: "fields col" },
       pdfGiven ? h("label", {}, "PDF ", h("b", {}, pdfGiven.name), " ", info) : h("label", {}, "PDF ", files, " ", info),
       h("label", {}, "Title ", title),
+      h("label", { class: "check" }, splitSpreads, " Split two-page spreads into their pages (a scan of an open book, two pages side by side)"),
       idDetails,
       full ? h("label", { class: "stack" }, "Description of the book, for the models ", description) : null);
     const formFields = h("fieldset", { class: "new-book-fields" }, bookFields, setup.element);
@@ -1197,7 +1213,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261124-oauth-1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261124-spreads-2", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

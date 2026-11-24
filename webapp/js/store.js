@@ -7,15 +7,15 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-oauth-1";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-oauth-1";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-oauth-1";
-import { canonical } from "./ops.js?v=20261124-oauth-1";
-import { checkDocument, typeRevision } from "./schema.js?v=20261124-oauth-1";
-import { mergeTextEdit } from "./editing.js?v=20261124-oauth-1";
-import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-oauth-1";
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-oauth-1";
-import { readingDocuments } from "./workflow.js?v=20261124-oauth-1";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-spreads-2";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-spreads-2";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-spreads-2";
+import { canonical } from "./ops.js?v=20261124-spreads-2";
+import { checkDocument, typeRevision } from "./schema.js?v=20261124-spreads-2";
+import { mergeTextEdit } from "./editing.js?v=20261124-spreads-2";
+import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-spreads-2";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-spreads-2";
+import { readingDocuments } from "./workflow.js?v=20261124-spreads-2";
 
 const bookWrites = new Map();
 
@@ -609,7 +609,7 @@ export class Book {
   // The PDF, opened with pdf.js (once).
   pdf() {
     this.pdfPromise ||= (async () => {
-      const { openPdfData } = await import("./pipeline/pdf.js");
+      const { openPdfData } = await import("./pipeline/pdf.js?v=20261124-spreads-2");
       return openPdfData(this.kind === "chaya" ? this.pdfBytes.slice() : await this.originalPdf());
     })();
     return this.pdfPromise;
@@ -637,9 +637,9 @@ export class Book {
     if (!this.manifest.pdf && this.kind !== "chaya") throw new Error(`${pid} has no image, and the book no PDF to draw it from`);
     let W = p.width, H = p.height;
     if (!W) { const d = await this.model(pid); W = d?.page.width; H = d?.page.height; }
-    const { renderPageSized } = await import("./pipeline/pdf.js");
-    let blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H);
-    if (!await decodes(blob)) blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H);
+    const { renderPageSized } = await import("./pipeline/pdf.js?v=20261124-spreads-2");
+    let blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H, p.pdf_part);
+    if (!await decodes(blob)) blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H, p.pdf_part);
     if (!await decodes(blob)) throw new Error(`page ${this.index[pid] + 1} could not be drawn from the PDF`);
     if (this.browser) await this.writeFile(cache, blob).catch(e => console.warn("the image cache", e));
     return blob;
@@ -854,12 +854,14 @@ export class Book {
   saveStage(pid, doc, valid) { return this.updateStage(pid, () => ({ doc, valid })); }
 
   // A new book in an empty directory, from a PDF: the PDF itself (source.pdf, the book's source), the manifest and
-  // the type list. pdf: {file, sha256, pageCount}; pages: [{pdfPage, width, height, source}] (the size each page is
-  // drawn at, and how it was analyzed); the page images are drawn from the PDF when they are needed.
+  // the type list. pdf: {file, sha256, pageCount}; pages: [{pdfPage, part, width, height, source}] (the size each page is
+  // drawn at, and how it was analyzed; `part`, for one side of a two-page spread, the [x0, x1] fractions of the PDF
+  // page's width it is drawn from); the page images are drawn from the PDF when they are needed.
   static async create(handle, { title, bookId, types, pdf, pages: items, browser = false }) {
     const pages = items.map((item, i) => {
       const id = `${bookId}-page-${String(i + 1).padStart(3, "0")}`;
-      return { id, document: `pages/${id}.json`, label: null, valid: null, pdf_page: item.pdfPage, width: item.width, height: item.height, source: item.source };
+      return { id, document: `pages/${id}.json`, label: null, valid: null, pdf_page: item.pdfPage, ...(item.part ? { pdf_part: item.part } : {}),
+        width: item.width, height: item.height, source: item.source };
     });
     const manifest = { format: "book-folder", version: 1, schema_version: "0.2", book_id: bookId, title, types: "types.json",
                        pdf: { path: "source.pdf", name: pdf.file.name, sha256: pdf.sha256, page_count: pdf.pageCount }, pages, page_schema: "0.4",

@@ -28,7 +28,9 @@ export async function rescale(bytes, dpi = 300) {
   for (const page of manifest.pages) {
     const points = page.source?.render?.page_size_points;
     if (!points) continue;
-    const width = Math.round(points[0] * dpi / 72), height = Math.round(points[1] * dpi / 72);
+    // A side of a two-page spread is its part of the PDF page's width.
+    const share = page.pdf_part ? page.pdf_part[1] - page.pdf_part[0] : 1;
+    const width = Math.round(points[0] * share * dpi / 72), height = Math.round(points[1] * dpi / 72);
     if (width === page.width && height === page.height) continue;
     const fx = width / page.width, fy = height / page.height;
     for (const path of [`pages/${page.id}.json`, `edits/${page.id}.json`]) {

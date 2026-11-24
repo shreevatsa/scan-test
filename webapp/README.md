@@ -25,6 +25,8 @@ The workflow tabs are **Pages · Read · Export**. **Settings** holds the book's
 
 **Dimming pages.** On Pages, a small × on each page's preview marks it not interesting: it is shown faded in every grid (↺ brings it back), and runs and moves that default to the displayed pages skip it. The page stays in the scan list and counts, while the readers and text exports leave it out. Ticking it in a stage grid includes it in a run (a typed range does not). The Pages summary counts the dimmed pages and the page filter has "Dimmed". The list is saved in `book.json` as `skipped` (page ids, in page order), so it survives a reload and a `.chaya.pdf`, and writing it makes the copy on disk be written again. A read-only book cannot dim pages. A page that should not be in the text at all is given no content (below).
 
+**Two-page spreads.** A scan of an open book has two pages side by side on each PDF page. Where most scanned pages of a new book's PDF are wider than tall (and "Split two-page spreads into their pages" is left checked), each such page with a fold found becomes two pages of the book, its left and right sides (`pdf_part`, the part of the PDF page's width each is drawn from). The fold is found on the page drawn small: the quiet band (columns with few changes between light and dark from top to bottom, no text) nearest the middle (`pipeline/pdf.js` spreadFold). A page with text across its middle, or with nothing to cut by, stays whole. Text joins across the two sides as across consecutive PDF pages. On two photographed books, 161 of 165 spreads were cut (the others are front matter), none of those looked at through text.
+
 **A page with no content.** A new book has every page of its PDF. A page that is not part of the book (a library's cover, a blank page, another work bound in) is kept with no regions. In the page editor, **Page ▾ → No content on this page** removes every region of the page as one editing step, with the printed lines outside the regions, unassigned regions and the region finder’s notes. It asks first when a region has text or the page has the person's edits, and undo brings the regions back while the page is open. A page with no regions has the layout "Blank page". It has nothing to transcribe or complete, so Text and Read count it as done (its badge says "No content"), and their runs and cost estimates leave it out. Read shows nothing of it, and a paragraph that goes on across it is one unit, as across any page with no unit of its type (Read, below).
 
 The editor can draw, retype, move, split and merge boxes. Keys 1–9 assign a type to the selection. Tab and Shift+Tab move between blocks.
@@ -164,7 +166,8 @@ A book is a folder of files (in the browser's storage, or inside its `.chaya.pdf
 ```
 book.json     {format: "book-folder", version: 1, book_id, title, types: "types.json", style: "style.json" (optional),
                pdf: {path: "source.pdf", name, sha256, page_count},
-               pages: [{id, document, label, valid, pdf_page, width, height, image (optional), source}]}
+               pages: [{id, document, label, valid, pdf_page, pdf_part (a side of a spread: [x0, x1] of the PDF page's width),
+                        width, height, image (optional), source}]}
 source.pdf    the book's source PDF, exactly as given
 types.json    the book's type list
 style.json    optional: the book's style sheet (schema 0.3), named in book.json as style

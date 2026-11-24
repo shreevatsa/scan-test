@@ -1,16 +1,16 @@
-import { suggestionButton } from "./review-view.js?v=20261124-oauth-1";
+import { suggestionButton } from "./review-view.js?v=20261124-spreads-2";
 import { h } from "./render.js";
-import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261124-oauth-1";
-import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261124-oauth-1";
-import { READERS } from "./pipeline/readers.js?v=20261124-oauth-1";
-import { pageCost, dollars, costBasis } from "./recipe.js?v=20261124-oauth-1";
-import { finderById } from "./pipeline/finders.js?v=20261124-oauth-1";
-import { runBatch } from "./pipeline/batch.js?v=20261124-oauth-1";
+import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261124-spreads-2";
+import { pageRange, renderPage } from "./pipeline/pdf.js?v=20261124-spreads-2";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261124-spreads-2";
+import { READERS } from "./pipeline/readers.js?v=20261124-spreads-2";
+import { pageCost, dollars, costBasis } from "./recipe.js?v=20261124-spreads-2";
+import { finderById } from "./pipeline/finders.js?v=20261124-spreads-2";
+import { runBatch } from "./pipeline/batch.js?v=20261124-spreads-2";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261124-oauth-1";
-import { normalizeTypeName, typeNameStyle } from "./type-additions.js?v=20261124-oauth-1";
-import { addProposedType } from "./blocksview.js?v=20261124-oauth-1";
+import { money } from "./reader-controls.js?v=20261124-spreads-2";
+import { normalizeTypeName, typeNameStyle } from "./type-additions.js?v=20261124-spreads-2";
+import { addProposedType } from "./blocksview.js?v=20261124-spreads-2";
 
 export async function renderPages(el, app) {
   const { book, routeToken } = app;
@@ -231,7 +231,7 @@ export async function renderPages(el, app) {
       if (!active()) return;
       const pid = target.dataset.page, page = book.page(pid), row = rows.get(pid);
       try {
-        const blob = page.pdf_page && !page.image ? (await renderPage(await book.pdf(), page.pdf_page, 36)).blob : await book.imageBlob(pid);
+        const blob = page.pdf_page && !page.image ? (await renderPage(await book.pdf(), page.pdf_page, 36, page.pdf_part)).blob : await book.imageBlob(pid);
         if (!active()) return;
         const url = URL.createObjectURL(blob); urls.add(url); row.image.src = url;
       } catch (error) { row.image.alt = row.image.parentElement.title = `Preview unavailable · ${error.message}`; }

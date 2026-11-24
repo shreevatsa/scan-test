@@ -77,15 +77,15 @@ export function scanImage(images) {
 
 // Page n (from 1) as a PNG blob, with how it was rendered: a scanned page at 300 dpi, or at the scan's own resolution
 // when that is lower; any other page (a digital page, with text and at most small pictures) at 300 dpi.
-export async function renderPage(doc, n, maxDpi = 300) {
+export async function renderPage(doc, n, maxDpi = 300, part = null) {
   const L = await pdfjs();
   const info = await pageInfo(doc, n);
   const page = await doc.getPage(n);
-  const base = page.getViewport({ scale: 1 });
+  const base = page.getViewport({ scale: 1 }), [x0, x1] = part || [0, 1];
   let scale = maxDpi / 72;
   if (info.scan_image?.dpi) scale = Math.min(scale, info.scan_image.dpi / 72);
-  const viewport = page.getViewport({ scale });
-  const W = Math.round(viewport.width), H = Math.round(viewport.height);
+  const viewport = page.getViewport({ scale, offsetX: -x0 * base.width * scale });
+  const W = Math.round(base.width * (x1 - x0) * scale), H = Math.round(viewport.height);
   const canvas = new OffscreenCanvas(W, H);
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "#fff";
@@ -100,26 +100,87 @@ export async function renderPage(doc, n, maxDpi = 300) {
 }
 
 // Page n drawn at exactly W × H pixels (the size its regions are measured in), as a PNG blob.
-export async function renderPageSized(doc, n, W, H) {
+// `part`: a book page that is one side of a two-page spread is drawn from that part of the PDF page, [x0, x1] as
+// fractions of its width (the store's page.pdf_part); W × H is then the size of the part.
+export async function renderPageSized(doc, n, W, H, part = null) {
+  return (await drawPage(doc, n, W, H, part)).convertToBlob({ type: "image/png" });
+}
+
+async function drawPage(doc, n, W, H, part = null) {
   const page = await doc.getPage(n);
-  const base = page.getViewport({ scale: 1 });
-  if (!W || !H) { W = Math.round(base.width * 300 / 72); H = Math.round(base.height * 300 / 72); }
-  const viewport = page.getViewport({ scale: W / base.width });
+  const base = page.getViewport({ scale: 1 }), [x0, x1] = part || [0, 1];
+  if (!W || !H) { W = Math.round(base.width * (x1 - x0) * 300 / 72); H = Math.round(base.height * 300 / 72); }
+  const scale = W / (base.width * (x1 - x0));
+  const viewport = page.getViewport({ scale, offsetX: -x0 * base.width * scale });
   const canvas = new OffscreenCanvas(W, H);
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, W, H);
   await page.render({ canvas, canvasContext: ctx, viewport, background: "#ffffff" }).promise;
   page.cleanup();
-  return canvas.convertToBlob({ type: "image/png" });
+  return canvas;
+}
+
+// A two-page spread (a photograph or scan of an open book, two pages side by side) is cut into its pages at the fold:
+// where, as a fraction of the page's width. Drawn small, each column of the page is scored by its changes between
+// light and dark from top to bottom: a column of text has many, the margins and the shadow of the fold few. The cut is
+// in the quiet band nearest the middle, within the middle 30–70%: at the middle if that is quiet, else at the centre of
+// the nearest quiet run; null where no column there is far quieter than text (text crosses the middle: not a spread).
+export async function spreadFold(doc, n) {
+  const page = await doc.getPage(n);
+  const base = page.getViewport({ scale: 1 });
+  page.cleanup();
+  const W = Math.max(60, Math.round(base.width * 40 / 72)), H = Math.max(40, Math.round(base.height * 40 / 72));
+  const canvas = await drawPage(doc, n, W, H);
+  return foldOf(canvas.getContext("2d").getImageData(0, 0, W, H));
+}
+
+// The fold of a spread from its pixels ({ width, height, data } as ImageData), as spreadFold.
+export function foldOf({ width: W, height: H, data }) {
+  const grey = (x, y) => { const i = (y * W + x) * 4; return 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]; };
+  const changes = Array.from({ length: W }, (_, x) => {
+    let sum = 0;
+    for (let y = 1; y < H; y++) { const d = Math.abs(grey(x, y) - grey(x, y - 1)); if (d > 40) sum += d; }
+    return sum;
+  });
+  const score = changes.map((_, x) => (changes[Math.max(0, x - 1)] + changes[x] + changes[Math.min(W - 1, x + 1)]) / 3);
+  const level = [...score].sort((a, b) => a - b)[Math.floor(0.8 * W)];
+  if (!level) return null;
+  const lo = Math.floor(0.3 * W), hi = Math.ceil(0.7 * W), mid = Math.round(W / 2);
+  // Quiet: near the quietest column of the middle (a photograph's paper is never quite still), which must itself be far
+  // quieter than text.
+  const least = Math.min(...score.slice(lo, hi + 1));
+  if (least > 0.2 * level) return null;
+  const quiet = x => score[x] <= Math.max(0.08 * level, 2 * least);
+  let at = null;
+  for (let d = 0; at === null && (mid - d >= lo || mid + d <= hi); d++) {
+    if (mid - d >= lo && quiet(mid - d)) at = mid - d;
+    else if (mid + d <= hi && quiet(mid + d)) at = mid + d;
+  }
+  if (at === null) return null;
+  if (at === mid) return 0.5;
+  let a = at, b = at;
+  while (a - 1 >= lo && quiet(a - 1)) a--;
+  while (b + 1 <= hi && quiet(b + 1)) b++;
+  return Math.round(((a + b) / 2 / W) * 1000) / 1000;
+}
+
+// Whether the page `other` comes straight after (delta 1) or before (delta -1) the page `here` in their PDF, for joining
+// text across them: pages of the PDF one apart, or the two sides of one spread (a right side counting half a page on).
+// Pages with no PDF page (a book of images) are taken to follow.
+const pdfPosition = page => page.pdf_page + (page.pdf_part?.[0] > 0 ? 0.5 : 0);
+export function pdfFollows(here, other, delta) {
+  if (!here?.pdf_page || !other?.pdf_page) return true;
+  const step = delta * (pdfPosition(other) - pdfPosition(here));
+  return step > 0 && step <= 1;
 }
 
 // The size a page is drawn at, by the rule renderPage uses, from its analysis (pageInfo).
-export function drawnSize(info, maxDpi = 300) {
+export function drawnSize(info, maxDpi = 300, part = null) {
   let dpi = maxDpi;
   if (info.scan_image?.dpi) dpi = Math.min(dpi, info.scan_image.dpi);
-  const scale = dpi / 72;
-  return { width: Math.round(info.size_points[0] * scale), height: Math.round(info.size_points[1] * scale), dpi: Math.round(dpi * 100) / 100 };
+  const scale = dpi / 72, [x0, x1] = part || [0, 1];
+  return { width: Math.round(info.size_points[0] * (x1 - x0) * scale), height: Math.round(info.size_points[1] * scale), dpi: Math.round(dpi * 100) / 100 };
 }
 
 // Page numbers from a range like "1-20, 25, 30-" (from 1, inclusive), within 1..count; empty means all.

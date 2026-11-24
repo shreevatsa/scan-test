@@ -1,27 +1,28 @@
-import { typeRevision } from "../schema.js?v=20261124-oauth-1";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-oauth-1";
+import { typeRevision } from "../schema.js?v=20261124-spreads-2";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-spreads-2";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-oauth-1";
-import * as I from "./images.js?v=20261124-oauth-1";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-oauth-1";
+import * as S from "./steps.js?v=20261124-spreads-2";
+import * as I from "./images.js?v=20261124-spreads-2";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-spreads-2";
 import * as Split from "./split.js";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-oauth-1";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-oauth-1";
-import { finderById, finderPath } from "./finders.js?v=20261124-oauth-1";
-import { finderRequest } from "./finder-requests.js?v=20261124-oauth-1";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-oauth-1";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-oauth-1";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-spreads-2";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-spreads-2";
+import { finderById, finderPath } from "./finders.js?v=20261124-spreads-2";
+import { finderRequest } from "./finder-requests.js?v=20261124-spreads-2";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-spreads-2";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-spreads-2";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261124-oauth-1";
-import { layerState, noteEdit } from "../layers.js?v=20261124-oauth-1";
-import { provisionalDocument } from "./provisional.js?v=20261124-oauth-1";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-oauth-1";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-oauth-1";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-oauth-1";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-oauth-1";
+import { pdfFollows } from "./pdf.js?v=20261124-spreads-2";
+import { canonical } from "../ops.js?v=20261124-spreads-2";
+import { layerState, noteEdit } from "../layers.js?v=20261124-spreads-2";
+import { provisionalDocument } from "./provisional.js?v=20261124-spreads-2";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-spreads-2";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-spreads-2";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-spreads-2";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-spreads-2";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -623,7 +624,7 @@ export class Maker {
       const page = this.book.pages[this.book.index[pid] + step];
       if (!page) continue;
       const sourcePage = this.book.page(pid);
-      if (sourcePage.pdf_page && page.pdf_page && page.pdf_page !== sourcePage.pdf_page + step) continue;
+      if (!pdfFollows(sourcePage, page, step)) continue;
       const saved = await this.book.readWork(`work/readings/${page.id}/${options.reader}.json`);
       const neighbor = await this.stageCurrent(page.id, { ignoreInvalidDraft: true });
       const doc = neighbor && layerState(neighbor, "text") ? neighbor : null;
