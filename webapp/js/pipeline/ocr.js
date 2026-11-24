@@ -1,6 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
 import { bbox } from "../render.js";
-import { tesseractBlocks } from "../local/blocks.js?v=20261123-levels-3";
+import { tesseractBlocks } from "../local/blocks.js?v=20261124-vision-1";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 
@@ -41,7 +41,8 @@ export function tesseractWords(data) {
   return words;
 }
 
-export function wordsToReading(words, sent, note = "Local OCR supplies plain text. Review inline formatting and note markers.") {
+// A word with `space: false` is followed by no space (as the OCR detected it); `clean` tidies each line's text.
+export function wordsToReading(words, sent, note = "Local OCR supplies plain text. Review inline formatting and note markers.", clean = text => text) {
   const targets = sent.flatMap(s => s.line_ids.map((id, i) => {
     const line = s.region.lines.find(L => L.line_id === id);
     return { rid: s.rid, n: i + 1, rings: line.polygons, box: bbox(line.polygons), words: [] };
@@ -60,7 +61,7 @@ export function wordsToReading(words, sent, note = "Local OCR supplies plain tex
   }
   return { regions: sent.filter(s => s.line_ids.length).map(s => {
     const lines = targets.filter(t => t.rid === s.rid).map(t => ({ n: t.n,
-      text: t.words.sort((a, b) => a.bbox.x0 - b.bbox.x0).map(w => w.text).join(" ").normalize("NFC") }));
+      text: clean(t.words.sort((a, b) => a.bbox.x0 - b.bbox.x0).map((w, i, all) => w.text + (i < all.length - 1 && w.space !== false ? " " : "")).join("").normalize("NFC")) }));
     return { id: s.rid, lines, uncertain: lines.some(L => !L.text),
       note };
   }) };

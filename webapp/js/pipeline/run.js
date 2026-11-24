@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261123-levels-3";
-import { mappedTypeNames } from "../type-revisions.js?v=20261123-levels-3";
+import { typeRevision } from "../schema.js?v=20261124-vision-1";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-1";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261123-levels-3";
-import * as I from "./images.js?v=20261123-levels-3";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261123-levels-3";
+import * as S from "./steps.js?v=20261124-vision-1";
+import * as I from "./images.js?v=20261124-vision-1";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-1";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261123-levels-3";
-import { classifyBlocks } from "../local/blocks.js?v=20261123-levels-3";
-import { finderById, finderPath } from "./finders.js?v=20261123-levels-3";
-import { finderRequest } from "./finder-requests.js?v=20261123-levels-3";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261123-levels-3";
-import { visionRequest, visionReading, visionCost } from "./vision.js?v=20261123-levels-3";
+import { localReading, localLayout } from "./ocr.js?v=20261124-vision-1";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-1";
+import { finderById, finderPath } from "./finders.js?v=20261124-vision-1";
+import { finderRequest } from "./finder-requests.js?v=20261124-vision-1";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-1";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-1";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261123-levels-3";
-import { layerState, noteEdit } from "../layers.js?v=20261123-levels-3";
-import { provisionalDocument } from "./provisional.js?v=20261123-levels-3";
-import { mergeRegions, mergeText } from "./apply.js?v=20261123-levels-3";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261123-levels-3";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261123-levels-3";
-import { isProtected, LAYERS } from "../layers.js?v=20261123-levels-3";
+import { canonical } from "../ops.js?v=20261124-vision-1";
+import { layerState, noteEdit } from "../layers.js?v=20261124-vision-1";
+import { provisionalDocument } from "./provisional.js?v=20261124-vision-1";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-1";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-1";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-1";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-1";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -440,7 +440,9 @@ export class Maker {
     const geometry_key = await geometryKey(rec, chosen, profile, imageHash);
     const previousKey = cached?.geometry_key || (cached?.regions_record && await geometryKey(cached.regions_record,
       cached.options, cached.profile, cached.image_sha256));
-    if (!force && readingFits(cached, rec, imageHash) && (cached.fingerprint === fingerprint || previousKey === geometry_key)) {
+    // A Cloud Vision reading parsed by an earlier version is parsed again from its saved response (no new call).
+    const reparse = profile.provider === "vision" && cached?.response && (cached.vision_parse || 1) !== VISION_PARSE;
+    if (!force && !reparse && readingFits(cached, rec, imageHash) && (cached.fingerprint === fingerprint || previousKey === geometry_key)) {
       if (!cached.geometry_key) await this.book.writeWork(path, { ...cached, geometry_key: previousKey });
       return { ...cached, geometry_key, cached: true, ...(cached.fingerprint === fingerprint ? {} : { prior_revision: true, requested_fingerprint: fingerprint }) };
     }
@@ -480,7 +482,7 @@ export class Maker {
       const payload = geminiReadingRequest(profile, Split.readingContent(this.book.types, targets, images), Split.readingSchema(targets));
       result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets), null, null, scope);
     }
-    const reading = { ...result, format: "page-reading", version: 1, page: pid, profile, options: chosen, fingerprint,
+    const reading = { ...result, ...(profile.provider === "vision" ? { vision_parse: VISION_PARSE } : {}), format: "page-reading", version: 1, page: pid, profile, options: chosen, fingerprint,
       image_sha256: imageHash, geometry_key, regions_record: rec, skipped };
     if (plan.partial) {
       const archive = `work/reading-history/${pid}/${profile.id}/${await jsonHash(cached)}.json`;
