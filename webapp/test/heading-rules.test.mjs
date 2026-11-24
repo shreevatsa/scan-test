@@ -103,3 +103,9 @@ test("a heading whose text recurs (a label before each verse's explanation) star
   assert.deepEqual(tree, [{ "section “Canto I”": ["heading", "verse", "heading", "paragraph", "verse", "heading", "paragraph"] },
     { "section “Canto II”": ["heading", "verse", "heading", "paragraph"] }]);
 });
+
+test("a section's title printed again while it is open (a running header typed as a heading) starts no new section", () => {
+  const docs = [page([["heading", "Pulse"], ["paragraph", "a"]]), page([["heading", "Pulse"], ["paragraph", "b"], ["heading", "Diet"], ["paragraph", "c"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  assert.deepEqual(tree, [{ "section “Pulse”": ["heading", "paragraph", "heading", "paragraph"] }, { "section “Diet”": ["heading", "paragraph"] }]);
+});

@@ -35,7 +35,7 @@ export function contentsTitles(pages, skipTypes = new Set(), headingTypes = skip
     // The blocks, each with the number of headings before it on the page (references may start again under each).
     let group = 0;
     const blocks = [];
-    for (const region of doc.page.regions) {
+    for (const region of [...doc.page.regions].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))) {
       if (headingTypes.has(region.type)) group++;
       if (skipTypes.has(region.type)) continue;
       const text = (region.lines || []).map(line => line.text || "").join(" ").replace(/\s+/g, " ").trim();
@@ -115,6 +115,10 @@ function sectionPaths(pages, levels, textOf, contents = null, recurring = new Se
         continue;
       }
       if (level === undefined) titling = null;
+      // The title of the section open at its level, printed again (a running header typed as a heading, a part's title
+      // repeated on its first page): it stays in that section.
+      const repeated = level !== undefined && stack.find(section => section.level === level);
+      if (repeated && repeated.label && labelKey(repeated.label) === labelKey(textOf(doc, unit))) { items.push({ pageIndex, id, path: stack }); continue; }
       if (level !== undefined) {
         // A new array each time: earlier units keep the path they had.
         stack = [...stack.filter(section => section.level < level), { id: next++, level, label: (textOf(doc, unit) || "").replace(/\s+/g, " ").trim() || null }];
@@ -141,12 +145,17 @@ export function headingSections(pages, levels, { textOf, types }) {
   if (contents) levels = [levels[0], levels[0]];
   // A heading whose text recurs three times or more ("PURPORT." before each verse's explanation, a book's title repeated
   // at the head of its pages) is a label, not a section's title: it starts no section.
-  const counts = new Map();
+  const counts = new Map(), printed = new Map();
   for (const doc of pages) for (const id of doc?.flows.main || []) {
     const unit = doc.units.find(value => value.id === id);
-    if (headingTypes.has(unit?.type)) { const key = labelKey(textOf(doc, unit)); if (key) counts.set(key, (counts.get(key) || 0) + 1); }
+    if (!headingTypes.has(unit?.type)) continue;
+    const text = textOf(doc, unit), key = labelKey(text);
+    if (key) { counts.set(key, (counts.get(key) || 0) + 1); printed.set(key, text); }
   }
-  const recurring = new Set([...counts].filter(([, count]) => count >= 3).map(([key]) => key));
+  // A heading the printed contents name is a chapter's or a section's title however often it is printed (a title on the
+  // title page, a half-title and the part's first page).
+  const named = key => Boolean(contents) && inContents([...contents.groups, ...contents], printed.get(key));
+  const recurring = new Set([...counts].filter(([key, count]) => count >= 3 && !named(key)).map(([key]) => key));
   const items = sectionPaths(pages, levels, textOf, contents, recurring);
   const byPage = Map.groupBy(items, item => item.pageIndex);
   let made = 0;
