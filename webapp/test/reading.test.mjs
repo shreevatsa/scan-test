@@ -14,7 +14,10 @@ const fixtures = JSON.parse(await readFile(new URL("./fixtures/blocks-pages.json
 function assertSameReading(docs, types, rules, label) {
   const through = readThroughBlocks(docs, types, rules);
   assert.deepEqual(assembledStructure(through, types), assembledStructure(docs, types), `${label}: units, flows, relations and warnings`);
-  assert.deepEqual(through.map(doc => doc && doc.page), docs.map(doc => doc && doc.page), `${label}: regions`);
+  // A page number the scan's number block did not give, filled in from the neighbours (settleLabels), is the reading's
+  // addition, not a difference in the regions.
+  const page = doc => { if (!doc) return doc; const { label: printed, label_from: from, ...rest } = doc.page; return from === "neighbours" ? rest : doc.page; };
+  assert.deepEqual(through.map(page), docs.map(doc => doc && doc.page), `${label}: regions`);
   return through;
 }
 

@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-quota-1";
-import { layerState } from "./layers.js?v=20261124-quota-1";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-labels-3";
+import { layerState } from "./layers.js?v=20261124-labels-3";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -258,7 +258,9 @@ export function textFlags(doc, types) {
     if (missing) flags.push({ code: "missing-text", message: `${region.id} is missing text on ${missing} line pieces`, region: region.id });
     const reading = region.source?.transcription;
     if (reading?.uncertain && /did not fit its lines/.test(reading.note || "")) flags.push({ code: "reading-unfit", message: `${region.id}: the reading of this area did not fit its lines`, region: region.id });
-    else if (reading?.uncertain) flags.push({ code: "uncertain-text", message: `${region.id} has an uncertain transcription`, region: region.id });
+    // Furniture (a page number, a running header) is not the book's text: an uncertain reading of it is not listed (a
+    // book printing its page numbers in Kannada digits, which Cloud Vision misses, would list one on every page).
+    else if (reading?.uncertain && types.types[region.type]?.role !== "furniture") flags.push({ code: "uncertain-text", message: `${region.id} has an uncertain transcription`, region: region.id });
   }
   for (const message of doc.source?.problems || []) if (/line.*(count|mismatch)|missing.*line/i.test(message)) flags.push({ code: "line-count", message });
   return flags;

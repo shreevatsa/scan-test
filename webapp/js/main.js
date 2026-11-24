@@ -1,42 +1,42 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261124-quota-1";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261124-quota-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261124-quota-1";
-import { RECIPE } from "./recipe.js?v=20261124-quota-1";
-import { readerOptions } from "./pipeline/readers.js?v=20261124-quota-1";
+import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261124-labels-3";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261124-labels-3";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261124-labels-3";
+import { RECIPE } from "./recipe.js?v=20261124-labels-3";
+import { readerOptions } from "./pipeline/readers.js?v=20261124-labels-3";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261124-quota-1";
-import { blockName } from "./blocks.js?v=20261124-quota-1";
-import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261124-quota-1";
-import { headingDefaults } from "./rules.js?v=20261124-quota-1";
-import { normalizeTypeName, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261124-quota-1";
-import { restoredText } from "./pipeline/apply.js?v=20261124-quota-1";
-import { PageView } from "./pageimage.js?v=20261124-quota-1";
-import { markerForm } from "./editor.js?v=20261124-quota-1";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261124-quota-1";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261124-quota-1";
-import { renderStyle } from "./styleview.js?v=20261124-quota-1";
-import { typeSetup } from "./type-setup.js?v=20261124-quota-1";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261124-labels-3";
+import { blockName } from "./blocks.js?v=20261124-labels-3";
+import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261124-labels-3";
+import { headingDefaults } from "./rules.js?v=20261124-labels-3";
+import { normalizeTypeName, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261124-labels-3";
+import { restoredText } from "./pipeline/apply.js?v=20261124-labels-3";
+import { PageView } from "./pageimage.js?v=20261124-labels-3";
+import { markerForm } from "./editor.js?v=20261124-labels-3";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261124-labels-3";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261124-labels-3";
+import { renderStyle } from "./styleview.js?v=20261124-labels-3";
+import { typeSetup } from "./type-setup.js?v=20261124-labels-3";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261124-quota-1";
-import { EditError } from "./ops.js?v=20261124-quota-1";
-import { Maker, post } from "./pipeline/run.js?v=20261124-quota-1";
-import { CredentialChecks } from "./key-check.js?v=20261124-quota-1";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261124-quota-1";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261124-quota-1";
-import { pruneOverrides } from "./blocks-format.js?v=20261124-quota-1";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261124-quota-1";
-import { orderedRegions } from "./flags.js?v=20261124-quota-1";
-import { assemble } from "./assemble.js?v=20261124-quota-1";
-import { editorFocus, mergeTextEdit } from "./editing.js?v=20261124-quota-1";
-import { overridesAfter } from "./structure.js?v=20261124-quota-1";
-import { renderPages } from "./pagesview.js?v=20261124-quota-1";
-import { settings } from "./store.js?v=20261124-quota-1";
-import { renderBookSettings } from "./settingsview.js?v=20261124-quota-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261124-quota-1";
-import { pageMenu } from "./page-actions.js?v=20261124-quota-1";
+import * as ops from "./ops.js?v=20261124-labels-3";
+import { EditError } from "./ops.js?v=20261124-labels-3";
+import { Maker, post } from "./pipeline/run.js?v=20261124-labels-3";
+import { CredentialChecks } from "./key-check.js?v=20261124-labels-3";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261124-labels-3";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261124-labels-3";
+import { pruneOverrides } from "./blocks-format.js?v=20261124-labels-3";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261124-labels-3";
+import { orderedRegions } from "./flags.js?v=20261124-labels-3";
+import { assemble } from "./assemble.js?v=20261124-labels-3";
+import { editorFocus, mergeTextEdit } from "./editing.js?v=20261124-labels-3";
+import { overridesAfter } from "./structure.js?v=20261124-labels-3";
+import { renderPages } from "./pagesview.js?v=20261124-labels-3";
+import { settings } from "./store.js?v=20261124-labels-3";
+import { renderBookSettings } from "./settingsview.js?v=20261124-labels-3";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261124-labels-3";
+import { pageMenu } from "./page-actions.js?v=20261124-labels-3";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -456,7 +456,7 @@ class App {
       if (!pdfFile) return;
       info.textContent = "Opening the PDF…";
       try {
-        const { openPdf } = await import("./pipeline/pdf.js?v=20261124-quota-1");
+        const { openPdf } = await import("./pipeline/pdf.js?v=20261124-labels-3");
         const selected = pdfFile;
         const doc = await openPdf(selected);
         const sha = await sha256hex(new Uint8Array(await selected.arrayBuffer()));
@@ -486,7 +486,7 @@ class App {
         if (errs.length) throw new Error(`the type list: ${errs[0]}`);
         if (!pdfFile) throw new Error("choose the book's PDF");
         if (!pdfDoc) throw new Error("the PDF is not open yet");
-        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261124-quota-1");
+        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261124-labels-3");
         // Every page of the PDF is in the book. A page that is not part of it (a library's cover, a blank page) is
         // left with no regions ("No content on this page" in Regions).
         const numbers = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
@@ -1213,7 +1213,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261124-quota-1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261124-labels-3", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

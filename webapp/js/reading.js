@@ -5,10 +5,10 @@
 //
 // A reading is kept per type list: asking again with the same page documents (the same objects), rules and dimmed
 // pages gives the same result, and a changed page document, rule or type list makes a new one.
-import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261124-quota-1";
-import { readingDocuments } from "./workflow.js?v=20261124-quota-1";
-import { noteTypesOf } from "./note-links.js?v=20261124-quota-1";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-quota-1";
+import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261124-labels-3";
+import { readingDocuments } from "./workflow.js?v=20261124-labels-3";
+import { noteTypesOf } from "./note-links.js?v=20261124-labels-3";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-labels-3";
 
 export const isBlocksPage = doc => Boolean(doc) && !doc.units;
 
@@ -51,14 +51,17 @@ export function placeWarnings(warnings, docs) {
 export function readThroughBlocks(docs, types, rules) {
   return remember(types, "docs", { docs, rules, extra: "" }, () => {
     const context = blocksContext(docs, rules);
-    return Object.assign(settleLabels(docs.map(doc => doc && fromBlocks(isBlocksPage(doc) ? doc : toBlocks(doc, types, context), types, context))), { context });
+    return Object.assign(settleLabels(docs.map(doc => doc && fromBlocks(isBlocksPage(doc) ? doc : toBlocks(doc, types, context), types, context)), types), { context });
   });
 }
 
 // A printed page number read from the scan is sometimes wrong, a mark beside it read as a digit ("8137" for 137, "566"
 // for 56). A page whose number breaks the run its nearest numbered neighbours (within 3 pages each side) agree on, and
 // holds the number the run expects among its digits, is labelled with that number; `label_as_printed` keeps what was read.
-export function settleLabels(docs) {
+// A page whose printed number was not read at all (it has a page number block, with no digits) is labelled with the
+// number the run expects (`label_from: "neighbours"`).
+export function settleLabels(docs, types = null) {
+  const numberBlock = doc => Boolean(types) && doc.page.regions.some(region => types.types[region.type]?.region === "page_number");
   const numbers = docs.map(doc => /^\d+$/.test(String(doc?.page.label ?? "")) ? Number(doc.page.label) : null);
   const nearest = (from, step) => {
     for (let at = from + step; at >= 0 && at < docs.length && Math.abs(at - from) <= 3; at += step) if (numbers[at] !== null) return at;
@@ -66,8 +69,9 @@ export function settleLabels(docs) {
   };
   return docs.map((doc, index) => {
     const number = numbers[index], before = nearest(index, -1), after = nearest(index, 1);
-    if (number === null || before === null || after === null || numbers[after] - numbers[before] !== after - before) return doc;
+    if (!doc || before === null || after === null || numbers[after] - numbers[before] !== after - before) return doc;
     const expected = numbers[before] + index - before;
+    if (number === null) return doc.page.label == null && numberBlock(doc) ? { ...doc, page: { ...doc.page, label: String(expected), label_from: "neighbours" } } : doc;
     if (number === expected || !String(number).includes(String(expected))) return doc;
     return { ...doc, page: { ...doc.page, label: String(expected), label_as_printed: doc.page.label } };
   });
