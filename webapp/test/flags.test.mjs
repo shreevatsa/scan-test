@@ -176,3 +176,13 @@ test("a page where the region finder kept nothing has one check for all its mark
   const withText = { ...empty, page: { ...empty.page, regions: [{ id: "r1", type: "paragraph", order: 1, box: [0, 0, 10, 10], polygons: [], lines: [] }] }, source: { ...empty.source, uncovered_lines: marks.slice(0, 2) } };
   assert.deepEqual(regionFlags(withText, types).filter(flag => flag.code === "uncovered").length, 2, "a page with blocks lists each missed line");
 });
+
+test("a mark narrower than a character at the very edge of the scan is no missed line", () => {
+  const types = { types: { paragraph: { region: "paragraph" } } };
+  const region = { id: "r1", type: "paragraph", order: 1, box: [100, 100, 900, 200], polygons: [], lines: [] };
+  const doc = { page: { id: "p", width: 1000, height: 1600, regions: [region] }, source: { char_h: 30, uncovered_lines: [
+    { line_id: 1, box: [990, 1400, 998, 1440] },   // a speck at the right edge
+    { line_id: 2, box: [500, 1400, 515, 1440] },   // a narrow mark in the page (a numeral, perhaps)
+    { line_id: 3, box: [100, 1500, 900, 1540] } ] } };
+  assert.deepEqual(regionFlags(doc, types).filter(flag => flag.code === "uncovered").map(flag => flag.line_id), [2, 3]);
+});

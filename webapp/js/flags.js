@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-marks-2";
-import { layerState } from "./layers.js?v=20261123-marks-2";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261123-marks-3";
+import { layerState } from "./layers.js?v=20261123-marks-3";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -157,7 +157,11 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
     add("no-ink", `Region ${skipped.region_id}${skipped.type ? ` (${skipped.type})` : ""} was left out: ${what}`, null, skipped.model_box || null);
   }
   const ignored = ignoredLines(doc);
-  const marks = (doc.source?.uncovered_lines || []).filter(line => !lineIgnored(ignored, line));
+  // A mark narrower than a character at the very edge of the scan (a speck, the shadow of the binding) is no printed line.
+  const charH = doc.source?.char_h || 0, W = doc.page.width || 0, H = doc.page.height || 0;
+  const speck = line => Boolean(charH && W && line.box) && line.box[2] - line.box[0] < charH &&
+    Math.min(line.box[0], W - line.box[2], line.box[1], H - line.box[3]) < 0.03 * W;
+  const marks = (doc.source?.uncovered_lines || []).filter(line => !lineIgnored(ignored, line) && !speck(line));
   // A page where the region finder kept nothing (a cover, a library's notice or stamp, a blank leaf) has one check for
   // all its marks, not one for each speck the line analysis found.
   const keptNothing = !regions.length && !(doc.source?.omitted_regions || []).length && Boolean(doc.source?.layers?.regions || doc.source?.regions_method || doc.source?.method);
