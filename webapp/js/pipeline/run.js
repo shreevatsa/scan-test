@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261124-vision-8b";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-8b";
+import { typeRevision } from "../schema.js?v=20261124-vision-9";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-9";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-vision-8b";
-import * as I from "./images.js?v=20261124-vision-8b";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-8b";
+import * as S from "./steps.js?v=20261124-vision-9";
+import * as I from "./images.js?v=20261124-vision-9";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-9";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261124-vision-8b";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-8b";
-import { finderById, finderPath } from "./finders.js?v=20261124-vision-8b";
-import { finderRequest } from "./finder-requests.js?v=20261124-vision-8b";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-8b";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-8b";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-vision-9";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-9";
+import { finderById, finderPath } from "./finders.js?v=20261124-vision-9";
+import { finderRequest } from "./finder-requests.js?v=20261124-vision-9";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-9";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-9";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261124-vision-8b";
-import { layerState, noteEdit } from "../layers.js?v=20261124-vision-8b";
-import { provisionalDocument } from "./provisional.js?v=20261124-vision-8b";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-8b";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-8b";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-8b";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-8b";
+import { canonical } from "../ops.js?v=20261124-vision-9";
+import { layerState, noteEdit } from "../layers.js?v=20261124-vision-9";
+import { provisionalDocument } from "./provisional.js?v=20261124-vision-9";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-9";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-9";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-9";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-9";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -73,6 +73,18 @@ async function compactDataUrl(blob, limit = 9500000) {
   return url;
 }
 
+// The Tesseract language for a text by its main script (the bundled kan, san and eng), or null for no letters.
+function scriptLanguage(text) {
+  const counts = { kan: 0, san: 0, eng: 0 };
+  for (const ch of text || "") {
+    if (/\p{Script=Kannada}/u.test(ch)) counts.kan++;
+    else if (/\p{Script=Devanagari}/u.test(ch)) counts.san++;
+    else if (/\p{Script=Latin}/u.test(ch)) counts.eng++;
+  }
+  const [best, count] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return count ? best : null;
+}
+
 async function sha256(blob) {
   const d = new Uint8Array(await crypto.subtle.digest("SHA-256", await blob.arrayBuffer()));
   return [...d].map(b => b.toString(16).padStart(2, "0")).join("");
@@ -97,7 +109,7 @@ export async function post(provider, payload, key, auth = {}) {
 
 export class Maker {
   // outlines(pid, url, boxes) runs the local step (the app's worker); check(doc) runs the schema checks.
-  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, layout = localLayout, onCost = () => {}, onSaved = () => {} }) {
+  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, layout = localLayout, readLines = localLines, onCost = () => {}, onSaved = () => {} }) {
     this.book = book;
     this.outlines = outlines;
     this.keys = keys;
@@ -105,6 +117,7 @@ export class Maker {
     this.request = request;
     this.images = images;
     this.recognize = recognize;
+    this.readLines = readLines;
     this.layout = layout;
     this.onCost = onCost;
     this.onSaved = onSaved;
@@ -444,6 +457,38 @@ export class Maker {
     return reading;
   }
 
+  // Lines a whole-page reader left empty that are lines, not fragments (wordsToReading `missed`), are read alone by the
+  // local OCR, in the language of the block's script. The block stays uncertain, its note naming the lines so read.
+  async fillMissed(file, parsed, sent) {
+    const wanted = [];
+    for (const region of parsed.regions) for (const n of region.missed || []) {
+      const source = sent.find(value => value.rid === region.id), id = source?.line_ids[n - 1];
+      const polygons = source?.region.lines.find(line => line.line_id === id)?.polygons;
+      if (!polygons?.length) continue;
+      const [x0, y0, x1, y1] = bbox(polygons), pad = 0.2 * (y1 - y0);
+      wanted.push({ key: `${region.id}#${n}`, box: [Math.max(0, x0 - 2 * pad), Math.max(0, y0 - pad), x1 + 2 * pad, y1 + pad], region, n });
+    }
+    if (!wanted.length) return parsed;
+    const page = parsed.regions.flatMap(region => region.lines.map(line => line.text)).join(" ");
+    const byLanguage = new Map();
+    for (const item of wanted) {
+      const language = scriptLanguage(item.region.lines.map(line => line.text).join(" ")) || scriptLanguage(page) || "eng";
+      byLanguage.set(language, [...(byLanguage.get(language) || []), item]);
+    }
+    for (const [language, items] of byLanguage) {
+      let read;
+      try { read = await this.readLines(file, items, language); } catch (error) { console.warn("Reading missed lines failed", error); continue; }
+      for (const { key, region, n } of items) {
+        const text = read.get(key)?.trim();
+        if (!text) continue;
+        region.lines[n - 1].text = text;
+        region.filled = [...(region.filled || []), n];
+      }
+    }
+    for (const region of parsed.regions) if (region.filled) region.note = `${region.note || ""} Line ${region.filled.join(", ")} was read by Tesseract (${[...byLanguage.keys()].join(", ")}), as Cloud Vision found no words there: check it.`.trim();
+    return parsed;
+  }
+
   async readPage(pid, chosen, profile, { force, progress }) {
     const rec = structuredClone(await this.sourceRegions(pid)), { sent, skipped } = Split.selectPageRegions(rec.regions);
     const file = await this.image(pid), imageHash = await sha256(file);
@@ -464,7 +509,7 @@ export class Maker {
       for (const callPath of [cached.path, ...(cached.parts || []).map(part => part.path).reverse()].filter(Boolean)) {
         const call = await this.book.readWork(callPath);
         if (!call?.response?.responses) continue;
-        const parsed = Split.checkReading(visionReading(call.response, sent, rec.uncovered_lines), sent.filter(source => source.line_ids.length));
+        const parsed = Split.checkReading(await this.fillMissed(file, visionReading(call.response, sent, rec.uncovered_lines), sent), sent.filter(source => source.line_ids.length));
         const reading = { ...cached, parsed, vision_parse: VISION_PARSE, reparsed_from: callPath, regions_record: rec, geometry_key, fingerprint };
         delete reading.partial; delete reading.region_ids; delete reading.reused_regions; delete reading.base_fingerprint;
         await this.book.updateWork(path, () => reading);
@@ -497,6 +542,7 @@ export class Maker {
         result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets),
           (usage, body) => visionCost(body, profile), body => selectTargets(visionReading(body, sent, plan.partial ? [] : rec.uncovered_lines)), scope);
       }
+      if (result.parsed) result.parsed = await this.fillMissed(file, result.parsed, sent);
     } else if (list) {
       // One call for the whole page: the page image as the app draws it, the regions in the prompt. A region whose answer
       // does not fit its line pieces holds the page's current text (checkWholePage) and is flagged when applied.

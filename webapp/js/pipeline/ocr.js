@@ -1,6 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
 import { bbox } from "../render.js";
-import { tesseractBlocks } from "../local/blocks.js?v=20261124-vision-8b";
+import { tesseractBlocks } from "../local/blocks.js?v=20261124-vision-9";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 
@@ -63,19 +63,26 @@ export function wordsToReading(words, sent, note = "Local OCR supplies plain tex
     if (best && bestScore >= 0.5) best.words.push(word);
   }
   return { regions: sent.filter(s => s.line_ids.length).map(s => {
-    const lines = targets.filter(t => t.rid === s.rid).map(t => ({ n: t.n,
-      text: clean(t.words.filter(w => keep(w, t.words)).sort((a, b) => a.bbox.x0 - b.bbox.x0).map((w, i, all) => w.text + (i < all.length - 1 && w.space !== false ? " " : "")).join("").normalize("NFC")) }));
-    return { id: s.rid, lines, uncertain: lines.some(L => !L.text),
-      note };
+    const mine = targets.filter(t => t.rid === s.rid);
+    for (const t of mine) t.text = clean(t.words.filter(w => keep(w, t.words)).sort((a, b) => a.bbox.x0 - b.bbox.x0).map((w, i, all) => w.text + (i < all.length - 1 && w.space !== false ? " " : "")).join("").normalize("NFC"));
+    // A piece that got no words is a line the reader missed, unless it is a fragment of the lines beside it (a vowel
+    // sign or a subscript the line analysis cut off): narrow, and lying mostly within a neighbouring line's height.
+    const fragment = t => {
+      const width = piece => piece.box[2] - piece.box[0], height = Math.max(1, t.box[3] - t.box[1]);
+      const overlap = Math.max(0, ...mine.filter(o => o !== t && o.text).map(o => Math.min(t.box[3], o.box[3]) - Math.max(t.box[1], o.box[1])));
+      return width(t) < 0.15 * Math.max(...mine.map(width)) && overlap >= 0.4 * height;
+    };
+    const missed = mine.filter(t => !t.text && !fragment(t)).map(t => t.n);
+    return { id: s.rid, lines: mine.map(t => ({ n: t.n, text: t.text })), uncertain: missed.length > 0, note, ...(missed.length ? { missed } : {}) };
   }) };
 }
 
-function recognizeQueued(image, languages, segmentation, progress, convert) {
+function recognizeQueued(image, languages, segmentation, progress, convert, options = {}) {
   const job = queue.catch(() => {}).then(async () => {
     try {
       const worker = await workerFor(languages, progress);
       await worker.setParameters({ tessedit_pageseg_mode: segmentation });
-      const { data } = await worker.recognize(image, {}, { text: true, blocks: true });
+      const { data } = await worker.recognize(image, options, { text: true, blocks: true });
       return convert(data);
     } catch (error) {
       const failed = workerPromise;
@@ -94,6 +101,21 @@ export function localReading(image, sent, languages, progress) {
     if (!words.length && sent.some(s => s.line_ids.length)) throw new Error("Tesseract returned no words for the page.");
     return { reading: wordsToReading(words, sent), words: words.length, confidence: data.confidence };
   });
+}
+
+// Single lines, each read alone within its box: [{ key, box: [x0, y0, x1, y1] }] → Map key → text. Words Tesseract is
+// unsure of (confidence under 50) are left out: print showing through from the other side of the leaf is often inside a
+// line's box. Page segmentation 6 (a uniform block), not 7 (one line): with show-through beside the word, 7 is unsure
+// of it (5-22) and 6 sure (96).
+export async function localLines(image, lines, languages, progress) {
+  const out = new Map();
+  for (const { key, box } of lines) {
+    const [left, top, right, bottom] = box.map(Math.round);
+    out.set(key, await recognizeQueued(image, languages, "6", progress,
+      data => tesseractWords(data).filter(word => !(word.confidence < 50)).map(word => word.text).join(" ").normalize("NFC"),
+      { rectangle: { left, top, width: right - left, height: bottom - top } }));
+  }
+  return out;
 }
 
 export function localLayout(image, languages, progress) {

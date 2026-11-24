@@ -2,7 +2,7 @@
 // API and standard paid-tier pricing checked 2026-11-08.
 // https://docs.cloud.google.com/vision/docs/fulltext-annotations
 // https://cloud.google.com/vision/pricing
-import { wordsToReading } from "./ocr.js?v=20261124-vision-8b";
+import { wordsToReading } from "./ocr.js?v=20261124-vision-9";
 
 export function visionRequest(profile, imageDataUrl) {
   const content = imageDataUrl.split(",")[1];
@@ -11,7 +11,7 @@ export function visionRequest(profile, imageDataUrl) {
 }
 
 // What a reading from Cloud Vision is parsed with; a saved response is parsed again when this changes (run.js).
-export const VISION_PARSE = 8;
+export const VISION_PARSE = 9;
 
 // Cloud Vision's habits in Indic text: the avagraha (ಽ, ऽ) read as a Latin "s", standing apart ("ಯೋ s ಪಾಕರೋತ್");
 // dandas as ASCII bars. In a line written mostly in an Indic script, a lone "s" (or "ss") between letters becomes the
@@ -32,7 +32,7 @@ export function indicLine(text) {
 
 // Print showing through from the other side of the leaf is read too, with little confidence: a word Vision gives less
 // than 0.3, or a Latin word below 0.6 in a line written mostly in another script, is left out. An English word given in
-// parentheses after its Kannada spelling ("ವಾಚ್ (watch)") is printed, though Vision is often unsure of it.
+// parentheses after its Kannada spelling ("ಬಸ್ (bus)") is printed, though Vision is often unsure of it.
 const LATIN = /\p{Script=Latin}/u, OTHER_LETTER = /(?!\p{Script=Latin})\p{L}/u;
 function inParentheses(word, line) {
   const sorted = [...line].sort((a, b) => (a.bbox?.x0 ?? 0) - (b.bbox?.x0 ?? 0)), at = sorted.indexOf(word);
