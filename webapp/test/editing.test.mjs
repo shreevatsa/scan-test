@@ -76,3 +76,8 @@ test("a region with no line piece gets one over its outline, so its text can be 
   assert.equal(piece.text, "");
   assert.throws(() => ops.addLinePiece(doc, r.id), /already/);
 });
+
+test("an empty line piece adds nothing to a block's text, not even a space", () => {
+  assert.equal(ops.joinLines([{ text: "the first" }, { text: "" }, { text: "the sec-", end: "hyphen" }, {}, { text: "ond line" }]), "the first the second line");
+  assert.equal(ops.joinLines([{ text: "a verse,", end: "line" }, { text: "" }, { text: "its end" }, { text: "" }]), "a verse,\nits end");
+});

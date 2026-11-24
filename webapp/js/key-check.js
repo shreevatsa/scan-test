@@ -1,5 +1,5 @@
-import { post } from "./pipeline/run.js?v=20261124-frame-3";
-import { openaiText, geminiText } from "./pipeline/steps.js?v=20261124-frame-3";
+import { post } from "./pipeline/run.js?v=20261124-empty-1";
+import { openaiText, geminiText } from "./pipeline/steps.js?v=20261124-empty-1";
 import { h } from "./render.js";
 
 // Generated blank PNG. Credential checks never contain a book page.

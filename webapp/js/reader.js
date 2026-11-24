@@ -4,14 +4,17 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261124-frame-3";
+import { assemble } from "./assemble.js?v=20261124-empty-1";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import { verseGroups } from "./verses.js?v=20261124-frame-3";
+import { verseGroups } from "./verses.js?v=20261124-empty-1";
 import { css, unitStyle, baseCss } from "./style.js";
-import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261124-frame-3";
-import { layerState } from "./layers.js?v=20261124-frame-3";
-import { bookReading } from "./reading.js?v=20261124-frame-3";
+import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261124-empty-1";
+import { layerState } from "./layers.js?v=20261124-empty-1";
+import { bookReading } from "./reading.js?v=20261124-empty-1";
+
+// A line piece with something in it (as ops.js joinLines): an empty one adds nothing to a block's text, not even a space.
+const spoken = line => Boolean(line.text) || Boolean(line.spans?.length);
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -214,7 +217,7 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
     refs.forEach((ref, k) => {
       const R = regions[ref];
       if (!R) { out += `<span class="bad">?? ${esc(ref)}</span>`; return; }
-      const pid = R.page.id, lines = R.region.lines || [];
+      const pid = R.page.id, lines = (R.region.lines || []).filter(spoken);
       out += pageMark(pid) + `<span class="r-reg" data-ref="${esc(ref)}">`;
       lines.forEach((L, i) => {
         const last = k === refs.length - 1 && i === lines.length - 1;
@@ -661,7 +664,7 @@ export function bookText(P) {
     if (!R) return "";
     let out = "";
     if (R.page.id !== lastPage) { lastPage = R.page.id; out += `[${R.page.label ? "p. " + R.page.label : R.page.id}] `; }
-    const ls = R.region.lines || [];
+    const ls = (R.region.lines || []).filter(spoken);
     ls.forEach((L, i) => {
       const last = isLastRegion && i === ls.length - 1;
       const end = P.provisionalPages?.has(R.page.id) ? "space" : L.end || (cls === "verse" || cls === "table" ? "line" : "space");

@@ -609,9 +609,14 @@ export function moveRestToColumn(doc, rid, i, offset) {
 
 // ---------------------------------------------------------------- text of units
 
+// A line piece with something in it: one with no text (a piece the reader found nothing in: the strip of a line's
+// subscripts, a piece straddling two lines) adds nothing to a block's text, not even the space after it.
+export const spoken = line => Boolean(line.text) || Boolean(line.spans?.length);
+
 // The joined text of a list of line pieces: a space between pieces, a dropped hyphen, nothing, or a line break.
 export function joinLines(lines, newline = "\n") {
   let out = "";
+  lines = lines.filter(spoken);
   lines.forEach((L, k) => {
     let t = L.text || "";
     const end = L.end || "space";

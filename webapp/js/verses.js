@@ -197,7 +197,7 @@ export function verseExport(book, tl, manifest = {}) {
   const part = (role, uid) => {
     const refs = refsOf(uid).map(regionOf).filter(found => found?.region);
     return { role, type: units.get(uid)?.type, number: units.get(uid)?.number ?? null,
-      text: refs.map(({ region }) => (region.lines || []).map(line => line.text || "").join("\n")).join("\n").trim(),
+      text: refs.map(({ region }) => (region.lines || []).filter(line => line.text).map(line => line.text).join("\n")).join("\n").trim(),
       regions: refs.map(({ page, region }) => place(page, region, region.polygons)) };
   };
   return [...groups.values()].map(g => ({ key: g.key, parts: [
