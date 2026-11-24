@@ -7,15 +7,15 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-noink-1";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-noink-1";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-noink-1";
-import { canonical } from "./ops.js?v=20261124-noink-1";
-import { checkDocument, typeRevision } from "./schema.js?v=20261124-noink-1";
-import { mergeTextEdit } from "./editing.js?v=20261124-noink-1";
-import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-noink-1";
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-noink-1";
-import { readingDocuments } from "./workflow.js?v=20261124-noink-1";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-quota-1";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-quota-1";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-quota-1";
+import { canonical } from "./ops.js?v=20261124-quota-1";
+import { checkDocument, typeRevision } from "./schema.js?v=20261124-quota-1";
+import { mergeTextEdit } from "./editing.js?v=20261124-quota-1";
+import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-quota-1";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-quota-1";
+import { readingDocuments } from "./workflow.js?v=20261124-quota-1";
 
 const bookWrites = new Map();
 
@@ -50,6 +50,16 @@ export const idb = {
   del: (store, key) => tx(store, "readwrite", s => s.delete(key)),
   keys: store => tx(store, "readonly", s => s.getAllKeys()),
 };
+
+// Whether the browser's storage has room to cache a page image of `size` bytes and still keep half its quota free for
+// the books themselves. Drawn pages are a cache: a book of large colour scans can fill a small quota (a private window, a
+// browser driven by a script), and then saving the book's own files fails. Where the browser cannot tell, there is room.
+async function roomFor(size) {
+  try {
+    const { usage, quota } = await navigator.storage.estimate();
+    return !quota || usage + size < 0.5 * quota;
+  } catch { return true; }
+}
 
 // Whether an image decodes (where the browser can tell; elsewhere it is taken as fine).
 async function decodes(blob) {
@@ -609,7 +619,7 @@ export class Book {
   // The PDF, opened with pdf.js (once).
   pdf() {
     this.pdfPromise ||= (async () => {
-      const { openPdfData } = await import("./pipeline/pdf.js?v=20261124-noink-1");
+      const { openPdfData } = await import("./pipeline/pdf.js?v=20261124-quota-1");
       return openPdfData(this.kind === "chaya" ? this.pdfBytes.slice() : await this.originalPdf());
     })();
     return this.pdfPromise;
@@ -637,11 +647,11 @@ export class Book {
     if (!this.manifest.pdf && this.kind !== "chaya") throw new Error(`${pid} has no image, and the book no PDF to draw it from`);
     let W = p.width, H = p.height;
     if (!W) { const d = await this.model(pid); W = d?.page.width; H = d?.page.height; }
-    const { renderPageSized } = await import("./pipeline/pdf.js?v=20261124-noink-1");
+    const { renderPageSized } = await import("./pipeline/pdf.js?v=20261124-quota-1");
     let blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H, p.pdf_part);
     if (!await decodes(blob)) blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H, p.pdf_part);
     if (!await decodes(blob)) throw new Error(`page ${this.index[pid] + 1} could not be drawn from the PDF`);
-    if (this.browser) await this.writeFile(cache, blob).catch(e => console.warn("the image cache", e));
+    if (this.browser && await roomFor(blob.size)) await this.writeFile(cache, blob).catch(e => console.warn("the image cache", e));
     return blob;
   }
 
