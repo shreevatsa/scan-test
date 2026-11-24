@@ -57,6 +57,20 @@ test("a line piece that got no words: missed if it is a line, not if it is a fra
   assert.equal(whole.missed, undefined);
 });
 
+test("a line piece that got no words is not missed if it straddles two lines, repeats a line, or is a line's subscripts", async () => {
+  const { wordsToReading } = await import("../js/pipeline/ocr.js");
+  const piece = (id, x0, y0, x1, y1) => ({ line_id: id, polygons: [[[x0, y0], [x1, y0], [x1, y1], [x0, y1]]] });
+  const word = (text, x0, y0, x1, y1) => ({ text, bbox: { x0, y0, x1, y1 } });
+  // Lines 60 high, 60 apart. Piece 2 straddles lines 1 and 3 (line 1's words centred within it); piece 4 is the strip
+  // under line 3 (its subscripts: 30 high, overlapping it); piece 6 is a line the reader did miss.
+  const region = { lines: [piece(1, 0, 0, 1000, 60), piece(2, 40, 20, 1000, 90), piece(3, 0, 60, 1000, 120), piece(4, 100, 110, 700, 140),
+    piece(5, 0, 120, 1000, 180), piece(6, 0, 240, 1000, 300)] };
+  const words = [word("ಮೊದಲ", 0, 10, 500, 50), word("ಸಾಲು", 520, 10, 990, 50), word("ಎರಡನೆಯ", 0, 70, 990, 110), word("ಮೂರನೆಯ", 0, 130, 990, 170)];
+  const [read] = wordsToReading(words, [{ rid: "r1", line_ids: [1, 2, 3, 4, 5, 6], region }]).regions;
+  assert.deepEqual(read.missed, [6]);
+  assert.deepEqual(read.lines.map(line => line.text), ["ಮೊದಲ ಸಾಲು", "", "ಎರಡನೆಯ", "", "ಮೂರನೆಯ", ""]);
+});
+
 test("a note marker Vision read as a number or sign standing apart becomes a marker, if a note on the page has it", async () => {
   const { Maker } = await import("../js/pipeline/run.js");
   const types = { types: { paragraph: { region: "paragraph", flow: "main" }, verse: { region: "verse", flow: "main" }, footnote: { region: "note", flow: "notes" } } };

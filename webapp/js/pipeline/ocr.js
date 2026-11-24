@@ -1,6 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
 import { bbox } from "../render.js";
-import { tesseractBlocks } from "../local/blocks.js?v=20261124-verses-5";
+import { tesseractBlocks } from "../local/blocks.js?v=20261124-missed-1";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 
@@ -67,12 +67,27 @@ export function wordsToReading(words, sent, note = "Local OCR supplies plain tex
     for (const t of mine) t.text = clean(t.words.filter(w => keep(w, t.words)).sort((a, b) => a.bbox.x0 - b.bbox.x0).map((w, i, all) => w.text + (i < all.length - 1 && w.space !== false ? " " : "")).join("").normalize("NFC"));
     // A piece that got no words is a line the reader missed, unless it is a fragment of the lines beside it (a vowel
     // sign or a subscript the line analysis cut off): narrow, and lying mostly within a neighbouring line's height.
+    // So is a thin piece (well under the lines' usual height) overlapping a line with text: the strip of that line's
+    // subscript consonants or vowel signs, which the reader read with the line's words (Tesseract made junk of it).
+    const heights = mine.filter(o => o.text).map(o => o.box[3] - o.box[1]).sort((a, b) => a - b);
+    const usual = heights[Math.floor(heights.length / 2)] || 0;
     const fragment = t => {
       const width = piece => piece.box[2] - piece.box[0], height = Math.max(1, t.box[3] - t.box[1]);
       const overlap = Math.max(0, ...mine.filter(o => o !== t && o.text).map(o => Math.min(t.box[3], o.box[3]) - Math.max(t.box[1], o.box[1])));
-      return width(t) < 0.15 * Math.max(...mine.map(width)) && overlap >= 0.4 * height;
+      return (width(t) < 0.15 * Math.max(...mine.map(width)) && overlap >= 0.4 * height) || (height < 0.7 * usual && overlap > 0);
     };
-    const missed = mine.filter(t => !t.text && !fragment(t)).map(t => t.n);
+    // Nor is a piece over which other pieces' words lie (their centres within it, across half its width): the line
+    // analysis made a piece straddling two lines, or a second piece of one line, whose text is read already (reading it
+    // again repeated the lines' words).
+    const readElsewhere = t => {
+      const [x0, y0, x1, y1] = t.box;
+      const over = targets.filter(o => o !== t).flatMap(o => o.words).filter(w => {
+        const x = (w.bbox.x0 + w.bbox.x1) / 2, y = (w.bbox.y0 + w.bbox.y1) / 2;
+        return x >= x0 && x <= x1 && y >= y0 && y <= y1;
+      });
+      return over.reduce((sum, w) => sum + Math.max(0, Math.min(x1, w.bbox.x1) - Math.max(x0, w.bbox.x0)), 0) >= 0.5 * (x1 - x0);
+    };
+    const missed = mine.filter(t => !t.text && !fragment(t) && !readElsewhere(t)).map(t => t.n);
     return { id: s.rid, lines: mine.map(t => ({ n: t.n, text: t.text })), uncertain: missed.length > 0, note, ...(missed.length ? { missed } : {}) };
   }) };
 }
