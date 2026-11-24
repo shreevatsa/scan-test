@@ -7,15 +7,15 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-breaks-1";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-breaks-1";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-breaks-1";
-import { canonical } from "./ops.js?v=20261124-breaks-1";
-import { checkDocument, typeRevision } from "./schema.js?v=20261124-breaks-1";
-import { mergeTextEdit } from "./editing.js?v=20261124-breaks-1";
-import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-breaks-1";
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-breaks-1";
-import { readingDocuments } from "./workflow.js?v=20261124-breaks-1";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-images-1";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-images-1";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-images-1";
+import { canonical } from "./ops.js?v=20261124-images-1";
+import { checkDocument, typeRevision } from "./schema.js?v=20261124-images-1";
+import { mergeTextEdit } from "./editing.js?v=20261124-images-1";
+import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-images-1";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-images-1";
+import { readingDocuments } from "./workflow.js?v=20261124-images-1";
 
 const bookWrites = new Map();
 
@@ -50,6 +50,12 @@ export const idb = {
   del: (store, key) => tx(store, "readwrite", s => s.delete(key)),
   keys: store => tx(store, "readonly", s => s.getAllKeys()),
 };
+
+// Whether an image decodes (where the browser can tell; elsewhere it is taken as fine).
+async function decodes(blob) {
+  if (typeof createImageBitmap !== "function") return true;
+  try { const bitmap = await createImageBitmap(blob); bitmap.close?.(); return true; } catch { return false; }
+}
 
 export const settings = {
   get: key => idb.get("settings", key),
@@ -609,16 +615,29 @@ export class Book {
   // A page's image: its file where it has one (a book folder made by the repository's tools), else drawn from its PDF
   // page at the size its regions are measured in. A book in this browser keeps what it draws in images/ (a cache:
   // not part of the book's data, and left out of a .chaya.pdf).
-  async imageBlob(pid) {
+  // A page's image. Requests for the same page while it is being drawn share the drawing, so that one never reads the
+  // cached file while another writes it; an image that does not decode (a cache left half written) is drawn again.
+  imageBlob(pid) {
+    this.imageJobs ||= new Map();
+    if (!this.imageJobs.has(pid)) this.imageJobs.set(pid, this.pageImage(pid).finally(() => this.imageJobs.delete(pid)));
+    return this.imageJobs.get(pid);
+  }
+
+  async pageImage(pid) {
     const p = this.page(pid);
     if (p.image && this.kind === "folder") { try { return await fileFrom(this.where, p.image); } catch (e) { if (e.name !== "NotFoundError") throw e; } }
     const cache = `images/${pid}.png`;
-    if (this.browser) { try { return await fileFrom(this.where, cache); } catch (e) { if (e.name !== "NotFoundError") throw e; } }
+    if (this.browser) {
+      try { const file = await fileFrom(this.where, cache); if (await decodes(file)) return file; }
+      catch (e) { if (e.name !== "NotFoundError") throw e; }
+    }
     if (!this.manifest.pdf && this.kind !== "chaya") throw new Error(`${pid} has no image, and the book no PDF to draw it from`);
     let W = p.width, H = p.height;
     if (!W) { const d = await this.model(pid); W = d?.page.width; H = d?.page.height; }
     const { renderPageSized } = await import("./pipeline/pdf.js");
-    const blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H);
+    let blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H);
+    if (!await decodes(blob)) blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H);
+    if (!await decodes(blob)) throw new Error(`page ${this.index[pid] + 1} could not be drawn from the PDF`);
     if (this.browser) await this.writeFile(cache, blob).catch(e => console.warn("the image cache", e));
     return blob;
   }
