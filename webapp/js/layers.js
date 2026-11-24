@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261123-blocks-b2-6";
-import { typeRevision } from "./schema.js?v=20261123-blocks-b2-6";
+import { canonical } from "./ops.js?v=20261123-headings-1";
+import { typeRevision } from "./schema.js?v=20261123-headings-1";
 
 export const LAYERS = ["regions", "text"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));

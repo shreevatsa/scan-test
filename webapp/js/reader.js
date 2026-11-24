@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261123-blocks-b2-6";
+import { assemble } from "./assemble.js?v=20261123-headings-1";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261123-blocks-b2-6";
-import { layerState } from "./layers.js?v=20261123-blocks-b2-6";
-import { bookReading } from "./reading.js?v=20261123-blocks-b2-6";
+import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261123-headings-1";
+import { layerState } from "./layers.js?v=20261123-headings-1";
+import { bookReading } from "./reading.js?v=20261123-headings-1";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -317,22 +317,27 @@ export function bookToc(P) {
   const tops = book.flows.main || [];
   const name = unit => `<span class="num">${esc(unit.number || "")}</span>${esc(unit.label || unit.number || "…")}`;
   const link = (uid, html, cls = "") => `<a href="#u-${safeId(uid)}"${cls ? ` class="${cls}"` : ""}>${html}</a>`;
-  const first = tops.findIndex(uid => units[uid]?.type === "section");
+  // The entries: the sections at the top of the main flow, or, in a book with none, its named containers (the chapters
+  // its headings start); inside each, the sections or named containers it holds.
+  const sectioned = tops.some(uid => units[uid]?.type === "section");
+  const isEntry = unit => Boolean(unit) && (sectioned ? unit.type === "section" : Boolean(unit.label) && unit.children.some(child => child.unit));
+  const isKid = unit => Boolean(unit) && (unit.type === "section" || !sectioned && Boolean(unit.label) && unit.children.some(child => child.unit));
+  const first = tops.findIndex(uid => isEntry(units[uid]));
   let out = "";
   if (first > 0) out += link(tops[0], "Front matter", "front");
   const contents = tops.slice(0, first < 0 ? tops.length : first).find(uid => /toc/.test(units[uid]?.type || ""));
   if (contents) out += link(contents, "Contents (as printed)", "front");
   for (const uid of tops) {
     const unit = units[uid];
-    if (unit?.type !== "section") continue;
-    const kids = unit.children.map(child => units[child.unit]).filter(kid => kid?.type === "section");
+    if (!isEntry(unit)) continue;
+    const kids = unit.children.map(child => units[child.unit]).filter(isKid);
     // A part the book gives no name keeps none here either.
     // A name the editor gave (not printed as the part's name) is in parentheses and lighter.
     const title = !unit.label ? `<span class="untitled">untitled in the book</span>`
       : unit.source?.label === "editor" ? `<span class="editorial">(${esc(unit.label)})</span>` : esc(unit.label);
     out += `<details class="part" open><summary>${link(uid, title)}</summary>${kids.map(kid => link(kid.id, name(kid), "ep")).join("")}</details>`;
   }
-  const last = tops.findLastIndex(uid => units[uid]?.type === "section");
+  const last = tops.findLastIndex(uid => isEntry(units[uid]));
   if (last >= 0 && last < tops.length - 1) out += link(tops[last + 1], "End", "front");
   return `<nav class="bv-toc" aria-label="Contents">${out}</nav>`;
 }

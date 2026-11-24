@@ -1,16 +1,17 @@
 import { h } from "./render.js";
-import { settings } from "./store.js?v=20261123-blocks-b2-6";
-import { credentialsBox } from "./key-check.js?v=20261123-blocks-b2-6";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-blocks-b2-6";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-blocks-b2-6";
-import { renderTypeView } from "./typesview.js?v=20261123-blocks-b2-6";
-import { bookRules, ruleProblems } from "./rules.js?v=20261123-blocks-b2-6";
+import { settings } from "./store.js?v=20261123-headings-1";
+import { credentialsBox } from "./key-check.js?v=20261123-headings-1";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261123-headings-1";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261123-headings-1";
+import { renderTypeView } from "./typesview.js?v=20261123-headings-1";
+import { bookRules, ruleProblems } from "./rules.js?v=20261123-headings-1";
 
 // Settings → Structure: the book's structure rules (book.json `rules`, webapp/js/rules.js), as plain fields. Changing one
 // saves the rules and reads the book again (Read, the page editor's structure and the checks derive from them).
 export function structureSection(app, active) {
   const { book } = app;
   const rules = bookRules(book.rules), s = rules.sections, v = rules.verseGroups;
+  const headingTypes = Object.entries(book.types.types).filter(([, type]) => type.region === "heading").map(([name]) => name);
   const status = h("p", { role: "status", class: "hint" });
   const text = (label, value, hint) => {
     const input = h("input", { type: "text", value: value || "" });
@@ -28,7 +29,10 @@ export function structureSection(app, active) {
   const partLabels = area("Part names, one per line, in the order of the parts", s.partLabels.join("\n"), "A blank line leaves a part untitled. Names given here are shown in parentheses, as the editor's.", 8);
   const marker = text("Verse-group marker type", v.markerType, "the type of a marker such as “(युगलकम्)”");
   const counts = area("Marker words and the number of verses each groups, one per line", Object.entries(v.counts).map(([word, n]) => `${word} = ${n}`).join("\n"), "for example: तिलकम् = 3", 6);
-  const fields = [closing, partClosing, partHeading, partAfter, divisionClosing, partLabels, marker, counts];
+  const headings = area("Headings that start sections, one level per line, outermost first: heading type = section type",
+    rules.headings.map(level => `${level.heading} = ${level.container}`).join("\n"),
+    `A heading of the type starts a section, which holds what follows it up to the next heading of the same or a higher level, across pages, and is named by the heading's text. For example: chapter_heading = chapter, then section_heading = section. This book's heading types: ${headingTypes.join(", ") || "none"}.`, 3);
+  const fields = [headings, closing, partClosing, partHeading, partAfter, divisionClosing, partLabels, marker, counts];
   const read = () => {
     const lines = value => value.split("\n").map(line => line.replace(/\r$/, ""));
     const labels = lines(partLabels.input.value);
@@ -36,7 +40,8 @@ export function structureSection(app, active) {
     const pairs = lines(counts.input.value).filter(line => line.trim()).map(line => line.split("=").map(part => part.trim()));
     return { sections: { closing: closing.input.value.trim(), partClosing: partClosing.input.value.trim() || null, partHeading: partHeading.input.value.trim() || null,
         partAfter: partAfter.input.value.trim() || null, divisionClosing: divisionClosing.input.value.trim() || null, partLabels: labels.map(label => label.trim()) },
-      verseGroups: { markerType: marker.input.value.trim(), counts: Object.fromEntries(pairs.map(([word, n]) => [word, /^\d+$/.test(n || "") ? Number(n) : NaN])) } };
+      verseGroups: { markerType: marker.input.value.trim(), counts: Object.fromEntries(pairs.map(([word, n]) => [word, /^\d+$/.test(n || "") ? Number(n) : NaN])) },
+      headings: lines(headings.input.value).filter(line => line.trim()).map(line => { const [heading, container] = line.split("=").map(part => (part || "").trim()); return { heading, container }; }) };
   };
   let saving = Promise.resolve();
   const save = () => {

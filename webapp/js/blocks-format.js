@@ -7,13 +7,14 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-blocks-b2-6";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-blocks-b2-6";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-blocks-b2-6";
-import { groupVerses } from "./verse-group-rules.js?v=20261123-blocks-b2-6";
-import { assemble } from "./assemble.js?v=20261123-blocks-b2-6";
-import { textOf } from "./blocks.js?v=20261123-blocks-b2-6";
-import { compileRules } from "./rules.js?v=20261123-blocks-b2-6";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261123-headings-1";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261123-headings-1";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261123-headings-1";
+import { groupVerses } from "./verse-group-rules.js?v=20261123-headings-1";
+import { headingSections } from "./heading-rules.js?v=20261123-headings-1";
+import { assemble } from "./assemble.js?v=20261123-headings-1";
+import { textOf } from "./blocks.js?v=20261123-headings-1";
+import { compileRules } from "./rules.js?v=20261123-headings-1";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];
@@ -53,6 +54,11 @@ function derive(context, types) {
         region.lines?.some(line => groupRules.markerWords.test(line.text || "")))) continue;
     groupVerses(doc, { counts: groupRules.counts, markerType: groupRules.markerType });
   }
+  // Headings that start sections (the book's rules name them; none by default). A level whose heading type the type list
+  // does not have is left out; a container type it does not have is added to the derivation's copy, in the main flow.
+  const headingLevels = context.rules.headings.filter(level => tl.types[level.heading]?.region);
+  for (const level of headingLevels) tl.types[level.container] ||= { flow: "main", contains: [] };
+  if (headingLevels.length) headingSections(docs, headingLevels, { textOf, types: tl });
   if (closeSections) {
     const items = sectionKeys(present, { closing: sectionRules.closing, partClosing: sectionRules.partClosing, partHeading: sectionRules.partHeading,
       partAfter: sectionRules.partAfter, divisionClosing: sectionRules.divisionClosing, textOf });
