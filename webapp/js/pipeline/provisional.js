@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261124-verses-8";
+import { typeRevision } from "../schema.js?v=20261124-contents-4";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {

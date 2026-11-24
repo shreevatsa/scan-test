@@ -45,10 +45,11 @@ export function contentsTitles(pages, skipTypes = new Set(), headingTypes = skip
     }
     const entryBlocks = blocks.filter(({ text }) => PAGE_REF.test(text) && (referenceNumber(text) ?? Infinity) <= Math.max(1000, pages.length * 3));
     // A page its own heading calls the contents ("CONTENTS.", "ವಿಷಯಸೂಚಿ") is one, though few of its page numbers were
-    // read (a reader that misses numbers in Kannada digits): every block after the heading is an entry.
+    // read (a reader that misses numbers in Kannada digits): every block after the heading is an entry, with a number
+    // read or not (the first entries' numbers are often the ones missed).
     const titled = doc.page.regions.filter(region => headingTypes.has(region.type)).sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
       .slice(0, 1).some(region => CONTENTS_TITLE.test((region.lines || []).map(line => line.text || "").join(" ").trim()));
-    const titledEntries = titled && blocks.length >= 3 && !(entryBlocks.length >= 4 && entryBlocks.length >= blocks.length / 2);
+    const titledEntries = titled && blocks.length >= 3;
     if (!titledEntries && (entryBlocks.length < 4 || entryBlocks.length < blocks.length / 2)) continue;
     const pairs = entryBlocks.slice(1).map((entry, i) => [entryBlocks[i], entry]).filter(([a, b]) => a.group === b.group);
     const rising = pairs.filter(([a, b]) => referenceNumber(b.text) >= referenceNumber(a.text)).length;
@@ -57,9 +58,10 @@ export function contentsTitles(pages, skipTypes = new Set(), headingTypes = skip
     const entries = (titledEntries ? blocks : entryBlocks).map(({ text, group }) =>
       [normalTitle(text.replace(PAGE_REF, "").replace(/^[\s.—–-]*[0-9०-९೦-೯]+\s*[.)]+[\s.…—–-]*/u, "")), group]).filter(([title]) => title.length >= 2);
     const pageTitles = entries.map(([title]) => title);
-    // An index lists its entries in alphabetical order.
-    const sorted = pageTitles.slice(1).filter((title, i) => title.localeCompare(pageTitles[i]) >= 0).length;
-    if (pageTitles.length >= 6 && sorted >= 0.8 * (pageTitles.length - 1)) continue;
+    // An index lists its entries in alphabetical order (judged by neighbours that differ: a talk in three parts is one
+    // title three times).
+    const steps = pageTitles.slice(1).map((title, i) => title.localeCompare(pageTitles[i])).filter(step => step !== 0);
+    if (steps.length >= 5 && steps.filter(step => step > 0).length >= 0.8 * steps.length) continue;
     // The headings grouping the entries (after the contents' own title), each with the number of entries before it.
     const headings = doc.page.regions.filter(region => headingTypes.has(region.type)).sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
       .map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" ")));

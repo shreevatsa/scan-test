@@ -7,15 +7,15 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-verses-8";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-verses-8";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-verses-8";
-import { canonical } from "./ops.js?v=20261124-verses-8";
-import { checkDocument, typeRevision } from "./schema.js?v=20261124-verses-8";
-import { mergeTextEdit } from "./editing.js?v=20261124-verses-8";
-import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-verses-8";
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-verses-8";
-import { readingDocuments } from "./workflow.js?v=20261124-verses-8";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-contents-4";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-contents-4";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-contents-4";
+import { canonical } from "./ops.js?v=20261124-contents-4";
+import { checkDocument, typeRevision } from "./schema.js?v=20261124-contents-4";
+import { mergeTextEdit } from "./editing.js?v=20261124-contents-4";
+import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-contents-4";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-contents-4";
+import { readingDocuments } from "./workflow.js?v=20261124-contents-4";
 
 const bookWrites = new Map();
 
@@ -619,7 +619,7 @@ export class Book {
   // The PDF, opened with pdf.js (once).
   pdf() {
     this.pdfPromise ||= (async () => {
-      const { openPdfData } = await import("./pipeline/pdf.js?v=20261124-verses-8");
+      const { openPdfData } = await import("./pipeline/pdf.js?v=20261124-contents-4");
       return openPdfData(this.kind === "chaya" ? this.pdfBytes.slice() : await this.originalPdf());
     })();
     return this.pdfPromise;
@@ -647,7 +647,7 @@ export class Book {
     if (!this.manifest.pdf && this.kind !== "chaya") throw new Error(`${pid} has no image, and the book no PDF to draw it from`);
     let W = p.width, H = p.height;
     if (!W) { const d = await this.model(pid); W = d?.page.width; H = d?.page.height; }
-    const { renderPageSized } = await import("./pipeline/pdf.js?v=20261124-verses-8");
+    const { renderPageSized } = await import("./pipeline/pdf.js?v=20261124-contents-4");
     let blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H, p.pdf_part);
     if (!await decodes(blob)) blob = await renderPageSized(await this.pdf(), p.pdf_page, W, H, p.pdf_part);
     if (!await decodes(blob)) throw new Error(`page ${this.index[pid] + 1} could not be drawn from the PDF`);

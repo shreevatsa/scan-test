@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-verses-8";
-import { layerState } from "./layers.js?v=20261124-verses-8";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-contents-4";
+import { layerState } from "./layers.js?v=20261124-contents-4";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))

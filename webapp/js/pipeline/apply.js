@@ -1,10 +1,10 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261124-verses-8";
-import { canonical } from "../ops.js?v=20261124-verses-8";
-import { checkDocument, typeRevision } from "../schema.js?v=20261124-verses-8";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261124-contents-4";
+import { canonical } from "../ops.js?v=20261124-contents-4";
+import { checkDocument, typeRevision } from "../schema.js?v=20261124-contents-4";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261124-verses-8";
-import { preserveMarkerIds, carryMarkers } from "../marker-ids.js?v=20261124-verses-8";
-import { blockLineEnd } from "../blocks.js?v=20261124-verses-8";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261124-contents-4";
+import { preserveMarkerIds, carryMarkers } from "../marker-ids.js?v=20261124-contents-4";
+import { blockLineEnd } from "../blocks.js?v=20261124-contents-4";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,

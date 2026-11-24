@@ -156,3 +156,15 @@ test("chapters come in the contents' order: an appendix repeating the chapters' 
   assert.deepEqual(tree.slice(1).map(entry => Object.keys(entry)[0]), ["section “The River”", "section “The Hill”", "section “The Town”", "section “Appendix”"]);
   assert.deepEqual(tree[4]["section “Appendix”"].slice(1).map(entry => Object.keys(entry)[0]), ["section “The River”", "section “The Hill”"]);
 });
+
+test("a titled contents page: its entries name chapters though their numbers were not read; a talk in parts is no index", () => {
+  // The first chapter's number was not read; three parts of one talk ("Talk 1", "Talk 2", "Talk 3") are one title three
+  // times, not an alphabetical list.
+  const contents = page([["heading", "Contents"], ["list_item", "Preface"], ["list_item", "Grammar"], ["list_item", "Talk 1 . . 20"],
+    ["list_item", "Talk 2 . . 30"], ["list_item", "Talk 3 . . 40"], ["list_item", "Afterword . . 50"]]);
+  const docs = [contents, page([["heading", "Grammar"], ["paragraph", "a"], ["heading", "Its sounds"], ["paragraph", "b"]]),
+    page([["heading", "Talk 1"], ["paragraph", "c"], ["heading", "The first question"], ["paragraph", "d"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  assert.deepEqual(tree.slice(1).map(entry => Object.keys(entry)[0]), ["section “Grammar”", "section “Talk 1”"]);
+  assert.deepEqual(tree[1]["section “Grammar”"].at(-1), { "section “Its sounds”": ["heading", "paragraph"] });
+});
