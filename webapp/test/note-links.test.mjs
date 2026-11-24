@@ -58,3 +58,12 @@ test("note numbers in Kannada digits are the same numbers", async () => {
   assert.equal(normal("೧೦"), "10");
   assert.equal(NOTE_NUMBER.exec("೩. ಟಿಪ್ಪಣಿ")[1], "೩");
 });
+
+test("a note's lost marker is placed by the words it quotes (in quotation marks or before a colon), in the notes' order", async () => {
+  const { markersFromQuotes } = await import("../js/note-links.js");
+  const lines = [{ text: "ನಾವು ಹಳೆಯ ಊರಿನ ದೇವಸ್ಥಾನಕ್ಕೆ ಹೋದೆವು." }, { text: "ಅಲ್ಲಿ ದೊಡ್ಡ ತೇರು ಎಳೆಯುತ್ತಿದ್ದರು, ಜನ ನೆರೆದಿದ್ದರು." }];
+  const placed = markersFromQuotes(lines, [{ key: "1", first: "1. ಊರಿನ ದೇವಸ್ಥಾನ : ಹಳ್ಳಿಯ ಗುಡಿ." }, { key: "2", first: "2. ‘ದೊಡ್ಡ ತೇರು’ ಎಂದರೆ ರಥ." },
+    { key: "3", first: "3. ಆಕಾಶದ ನಕ್ಷತ್ರಗಳು : ಇಲ್ಲಿ ಇಲ್ಲ." }]);
+  assert.deepEqual(placed, ["1", "2"]);
+  assert.deepEqual(lines.map(line => line.text), ["ನಾವು ಹಳೆಯ ಊರಿನ ದೇವಸ್ಥಾನಕ್ಕೆ[1] ಹೋದೆವು.", "ಅಲ್ಲಿ ದೊಡ್ಡ ತೇರು[2] ಎಳೆಯುತ್ತಿದ್ದರು, ಜನ ನೆರೆದಿದ್ದರು."]);
+});

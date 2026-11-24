@@ -177,6 +177,57 @@ export function placeFromQuotes(doc, noteTypes, mainTypes, newId, { most = 0.35,
   return keep.map(placed => ({ number: placed.note.number, quote: placed.quote, word: words[placed.at].word, score: placed.score }));
 }
 
+// For a reading that lost the page's note markers (Cloud Vision drops a small raised number): each note that quotes what
+// it explains, in quotation marks or before its first colon ("1. ‘X’ …", "1. X : …"), has its marker written, as
+// `[key]`, after the word that ends the stretch of running text closest to the quote, where that is clearly the closest
+// (as placeFromQuotes) and the markers keep the notes' order. Any script. `lines`: the page's running text in reading
+// order ({ text }, changed in place); `notes`: [{ key, first }] in the notes' order (the marker each wants, its first
+// line). Returns the keys placed.
+export function markersFromQuotes(lines, notes, { most = 0.35, margin = 0.15, letters = 5 } = {}) {
+  const letter = /[\p{L}\p{M}]/u;
+  const bareText = word => word.normalize("NFC").replace(/[\u200c\u200d]/g, "").replace(/[^\p{L}\p{M}]/gu, "");
+  const words = [];
+  lines.forEach((line, index) => {
+    for (const match of (line.text || "").matchAll(/\S+/g)) {
+      const word = bareText(match[0]);
+      if (!word) continue;
+      let end = match.index + match[0].length;
+      while (end > match.index && !letter.test(line.text[end - 1])) end--;
+      words.push({ index, word, end });
+    }
+  });
+  const found = [];
+  for (const note of notes) {
+    const rest = note.first.replace(NOTE_NUMBER, "");
+    const quote = QUOTE.exec(rest)?.[1] || /^\s*([^:：]{2,80}?)\s*[:：]/u.exec(rest)?.[1];
+    if (!quote) continue;
+    const parts = quote.split(/\s+/).map(bareText).filter(Boolean), target = parts.join("");
+    if (parts.length > 8 || [...target].length < letters) continue;
+    const best = new Map();
+    for (let i = 0; i < words.length; i++) for (let n = 1; n <= parts.length && n <= i + 1; n++) {
+      const edits = distanceIn(target, words.slice(i - n + 1, i + 1).map(value => value.word).join(""));
+      if (!best.has(i) || edits < best.get(i)) best.set(i, edits);
+    }
+    const ranked = [...best].map(([i, edits]) => ({ i, edits, score: edits / [...target].length })).sort((a, b) => a.score - b.score);
+    const [first, second] = ranked;
+    if (!first || first.score > most || [...target].length - first.edits < letters || (second && second.score - first.score < margin)) continue;
+    found.push({ key: note.key, at: first.i });
+  }
+  // The longest run of placements in the notes' order.
+  const chain = [];
+  for (let k = 0; k < found.length; k++) {
+    let longest = [];
+    for (let j = 0; j < k; j++) if (found[j].at < found[k].at && chain[j].length > longest.length) longest = chain[j];
+    chain.push([...longest, found[k]]);
+  }
+  const keep = chain.reduce((a, b) => b.length > a.length ? b : a, []);
+  for (const placed of [...keep].sort((a, b) => b.at - a.at)) {
+    const word = words[placed.at], line = lines[word.index];
+    line.text = `${line.text.slice(0, word.end)}[${placed.key}]${line.text.slice(word.end)}`;
+  }
+  return keep.map(placed => placed.key);
+}
+
 // Markers that point to no note and notes no marker points to, on one page.
 export function noteProblems(doc, noteTypes, mainTypes) {
   const { text, notes } = pageParts(doc, noteTypes, mainTypes);

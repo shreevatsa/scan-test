@@ -2,7 +2,7 @@
 // API and standard paid-tier pricing checked 2026-11-08.
 // https://docs.cloud.google.com/vision/docs/fulltext-annotations
 // https://cloud.google.com/vision/pricing
-import { wordsToReading } from "./ocr.js?v=20261124-toc-2";
+import { wordsToReading } from "./ocr.js?v=20261124-notes-2";
 
 export function visionRequest(profile, imageDataUrl) {
   const content = imageDataUrl.split(",")[1];
@@ -11,7 +11,7 @@ export function visionRequest(profile, imageDataUrl) {
 }
 
 // What a reading from Cloud Vision is parsed with; a saved response is parsed again when this changes (run.js).
-export const VISION_PARSE = 10;
+export const VISION_PARSE = 11;
 
 // Cloud Vision's habits in Indic text: the avagraha (ಽ, ऽ) read as a Latin "s", standing apart ("ಯೋ s ಪಾಕರೋತ್");
 // dandas as ASCII bars. In a line written mostly in an Indic script, a lone "s" (or "ss") between letters becomes the

@@ -71,4 +71,7 @@ test("a note marker Vision read as a number or sign standing apart becomes a mar
   assert.deepEqual(parsed.regions[0].lines.map(line => line.text), ["ನಾವು ಊರಿಗೆ ಹೋದೆವು.[1] ಅಲ್ಲಿ 25 ಜನರಿದ್ದರು,", "ಅವರಲ್ಲಿ ಒಬ್ಬರು[*] ಹಾಡಿದರು 3 - 4 ದಿನ"]);
   assert.equal(parsed.regions[1].lines[0].text, "ಸತ್ಯಂ ವದ ಧರ್ಮಂ ಚರ ॥ 2 ॥", "a verse's number between dandas is no marker");
   assert.equal(parsed.regions[2].lines[0].text, "1. ನಮ್ಮ ಊರು.", "the notes keep their numbers");
+  const fused = { regions: [region("r1", "ಅವರು 12ಹಾಡು ಹೇಳಿದರು, 5ಜನ ಕೇಳಿದರು."), region("r2", ""), region("r3", "12. ಹಳೆಯ ಹಾಡು.")] };
+  Maker.prototype.markNoteNumbers.call({ book: { types } }, fused, sent);
+  assert.equal(fused.regions[0].lines[0].text, "ಅವರು [12]ಹಾಡು ಹೇಳಿದರು, 5ಜನ ಕೇಳಿದರು.", "a note's number fused to the next word, as Vision reads it; another number is not");
 });

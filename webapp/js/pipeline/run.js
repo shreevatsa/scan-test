@@ -1,28 +1,29 @@
-import { typeRevision } from "../schema.js?v=20261124-toc-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-toc-2";
+import { typeRevision } from "../schema.js?v=20261124-notes-2";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-notes-2";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-toc-2";
-import * as I from "./images.js?v=20261124-toc-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-toc-2";
+import * as S from "./steps.js?v=20261124-notes-2";
+import * as I from "./images.js?v=20261124-notes-2";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-notes-2";
 import * as Split from "./split.js";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-toc-2";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-toc-2";
-import { finderById, finderPath } from "./finders.js?v=20261124-toc-2";
-import { finderRequest } from "./finder-requests.js?v=20261124-toc-2";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-toc-2";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-toc-2";
+import { markersFromQuotes } from "../note-links.js?v=20261124-notes-2";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-notes-2";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-notes-2";
+import { finderById, finderPath } from "./finders.js?v=20261124-notes-2";
+import { finderRequest } from "./finder-requests.js?v=20261124-notes-2";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-notes-2";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-notes-2";
 import { bbox } from "../render.js";
-import { pdfFollows } from "./pdf.js?v=20261124-toc-2";
-import { canonical } from "../ops.js?v=20261124-toc-2";
-import { layerState, noteEdit } from "../layers.js?v=20261124-toc-2";
-import { provisionalDocument } from "./provisional.js?v=20261124-toc-2";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-toc-2";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-toc-2";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-toc-2";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-toc-2";
+import { pdfFollows } from "./pdf.js?v=20261124-notes-2";
+import { canonical } from "../ops.js?v=20261124-notes-2";
+import { layerState, noteEdit } from "../layers.js?v=20261124-notes-2";
+import { provisionalDocument } from "./provisional.js?v=20261124-notes-2";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-notes-2";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-notes-2";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-notes-2";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-notes-2";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -503,20 +504,31 @@ export class Maker {
     const isNote = id => types[typeOf.get(id)]?.region === "note";
     const keys = [];
     for (const region of parsed.regions) if (isNote(region.id)) {
-      const found = /^\s*([0-9೦-೯०-९]{1,2}|[*†]{1,3})\s*[.)]?\s/u.exec(region.lines[0]?.text || "");
+      const found = /^\s*([0-9೦-೯०-९]{1,3}|[*†]{1,3})\s*[.)]?\s/u.exec(region.lines[0]?.text || "");
       if (found) keys.push(normalMarker(found[1]));
     }
     if (!keys.length) return parsed;
     const order = new Map(sent.map((source, index) => [source.rid, source.region.reading_order ?? 1e6 + index]));
     let last = 0;
     for (const region of parsed.regions.filter(value => !isNote(value.id) && types[typeOf.get(value.id)]?.role !== "furniture").sort((a, b) => order.get(a.id) - order.get(b.id)))
-      for (const line of region.lines) line.text = line.text.replace(/(\S)\s([0-9೦-೯०-९]{1,2}|[*†]{1,3})(?=\s|$)/gu, (whole, before, token, offset, text) => {
-        const key = normalMarker(token), after = text.slice(offset + whole.length).trimStart()[0] || "";
-        if (/[।॥|=\-–—]/u.test(before) || /[।॥|=\-–—]/u.test(after) || !keys.includes(key) || /\d/.test(key) && Number(key) < last) return whole;
+      // Standing apart ("… so. 2 Then"), or fused to the start of the next word ("15ಹರಿಗಡಿ"), as Vision reads a raised number.
+      for (const line of region.lines) line.text = line.text.replace(/(\S)\s([0-9೦-೯०-९]{1,3}|[*†]{1,3})(?=\s|$)|(^|\s)([0-9೦-೯०-९]{1,3})(?=[\p{L}\p{M}])/gu, (whole, before, token, start, fused, offset, text) => {
+        const key = normalMarker(token ?? fused), after = text.slice(offset + whole.length).trimStart()[0] || "";
+        if (token !== undefined && (/[।॥|=\-–—]/u.test(before) || /[।॥|=\-–—]/u.test(after))) return whole;
+        if (!keys.includes(key) || /\d/.test(key) && Number(key) < last) return whole;
         keys.splice(keys.indexOf(key), 1);
         if (/\d/.test(key)) last = Number(key);
-        return `${before}[${key}]`;
+        return token !== undefined ? `${before}[${key}]` : `${start}[${key}]`;
       });
+    // Notes whose marker Vision dropped altogether: by the words they quote (note-links.js markersFromQuotes).
+    if (keys.length) {
+      const running = parsed.regions.filter(value => !isNote(value.id) && types[typeOf.get(value.id)]?.role !== "furniture")
+        .sort((a, b) => order.get(a.id) - order.get(b.id)).flatMap(region => region.lines);
+      const notes = parsed.regions.filter(value => isNote(value.id)).sort((a, b) => order.get(a.id) - order.get(b.id))
+        .map(region => ({ first: region.lines[0]?.text || "", key: normalMarker(/^\s*([0-9೦-೯०-९]{1,2}|[*†]{1,3})/u.exec(region.lines[0]?.text || "")?.[1] || "") }))
+        .filter(note => note.key && keys.includes(note.key));
+      markersFromQuotes(running, notes);
+    }
     return parsed;
   }
 
