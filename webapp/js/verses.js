@@ -44,7 +44,8 @@ export function verseGroups(book, tl) {
   // single ones ("।। ३५ ।।"), or the dandas half lost ("…भिः।६"), or a number in the script's digits alone ("… ११").
   const printed = unit => {
     if (regionClass(unit.type) !== "verse") return null;
-    const text = textOf(unit).trim();
+    // A colophon after the last verse's number ("॥ ११० ॥ इति नीतिशतकम् ॥", thus the Nīti śataka) is set aside.
+    const text = textOf(unit).trim().replace(/(?<=[।॥|])\s*(?:इति|ಇತಿ)\s[^।॥|]*[।॥|]*\s*$/u, "").trim();
     const match = /(?<![०-९0-9])([०-९0-9]{1,3})\s*(?:॥|\|\||।\s*।)\s*$/u.exec(text) || /[।॥|]\s*([०-९೦-೯0-9]{1,3})\s*[।|]?\s*$/u.exec(text) ||
       /\s([०-९೦-೯]{1,3})\s*$/u.exec(text);
     return match ? numbersOf(match[1]) : null;
