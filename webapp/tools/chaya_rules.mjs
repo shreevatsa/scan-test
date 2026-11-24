@@ -2,7 +2,8 @@
 // the input is never changed. Only what is given is set: the other settings keep their value (or the default).
 //   node webapp/tools/chaya_rules.mjs IN.chaya.pdf OUT.chaya.pdf [--closing=TYPE] [--part-closing=PATTERN]
 //     [--part-heading=PATTERN] [--part-after=PATTERN] [--division-closing=PATTERN] [--part-labels=A,B,…]
-//     [--marker-type=TYPE] [--counts=WORD=N,WORD=N,…] [--clear]
+//     [--marker-type=TYPE] [--counts=WORD=N,WORD=N,…] [--headings=HEADING=CONTAINER,…] [--clear]
+// --headings lists, outermost first, the heading types that start sections and their container types ("" for none).
 // A pattern of "" removes that setting; --part-labels uses a comma between names and an empty name for an untitled part.
 // For the Rāmāyaṇa-mañjarī (the same settings methods/100-hydrogen-low-whole-page-reading/pipeline.sh gives chaya_sections.mjs):
 //   node webapp/tools/chaya_rules.mjs in.chaya.pdf out.chaya.pdf --part-closing='कथासारे' --part-heading='काण्ड' \
@@ -19,6 +20,7 @@ export function setRules(manifest, opt) {
   set("partClosing", "part-closing"); set("partHeading", "part-heading"); set("partAfter", "part-after"); set("divisionClosing", "division-closing");
   if ("part-labels" in opt) s.partLabels = opt["part-labels"] === "" ? [] : opt["part-labels"].split(",");
   if (opt["marker-type"]) rules.verseGroups.markerType = opt["marker-type"];
+  if ("headings" in opt) rules.headings = opt.headings === "" ? [] : opt.headings.split(",").map(pair => { const [heading, container] = pair.split("="); return { heading, container }; });
   if (opt.counts) rules.verseGroups.counts = Object.fromEntries(opt.counts.split(",").map(pair => { const [word, n] = pair.split("="); return [word, Number(n)]; }));
   const problems = ruleProblems(rules);
   if (problems.length) throw new Error(problems.join("; "));
