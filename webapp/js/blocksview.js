@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-spread-2";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-spread-2";
-import { bookReading } from "./reading.js?v=20261123-spread-2";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-spread-2";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-marks-1";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-marks-1";
+import { bookReading } from "./reading.js?v=20261123-marks-1";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-marks-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-spread-2";
+import * as ops from "./ops.js?v=20261123-marks-1";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-spread-2";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-spread-2";
-import { suggestionButton } from "./review-view.js?v=20261123-spread-2";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261123-spread-2";
-import { pageReviewState } from "./layers.js?v=20261123-spread-2";
-import { readingOrderWarnings } from "./schema.js?v=20261123-spread-2";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-spread-2";
+import { noteProblems } from "./note-links.js?v=20261123-marks-1";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-marks-1";
+import { suggestionButton } from "./review-view.js?v=20261123-marks-1";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261123-marks-1";
+import { pageReviewState } from "./layers.js?v=20261123-marks-1";
+import { readingOrderWarnings } from "./schema.js?v=20261123-marks-1";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-marks-1";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -84,6 +84,11 @@ export function blockChecks(app, doc, projection) {
         scan(flag.box);
         app.textPanel.reviewFinding(line);
       }, () => app.edit(next => ops.ignoreLine(next, line)));
+    } else if (flag.code === "marks-only") {
+      add("The region finder kept nothing on this page, though the scan has some marks. A cover, a library's notice or a blank leaf is best left out of the book.",
+        app.book.writable && !app.book.isSkipped(doc.page.id) ? "Leave the page out" : "Show the marks",
+        app.book.writable && !app.book.isSkipped(doc.page.id) ? async () => { await app.book.setSkipped([doc.page.id], true); await app.refreshWorkflowPage(doc.page.id); app.refreshWorkflowFlags(); app.toast("The page is left out of the book (Pages: ↺ brings it back)."); app.textPanel?.render(); }
+          : () => app.pageView.markLine({ pinned: doc.source.uncovered_lines[0]?.box }));
     } else if (flag.code === "omitted") {
       const index = doc.source.omitted_regions.findIndex(region => region.region === flag.region);
       const region = doc.source.omitted_regions[index], proposed = proposedTypeName(region);

@@ -165,3 +165,14 @@ test("A region left out for want of ink says where the model drew it, when that 
   assert.deepEqual(regionFlags(drawn, types).filter(flag => flag.code === "no-ink" && flag.message.startsWith("Region 1 ")), [],
     "a region drawn over the same place replaces the left-out one");
 });
+
+test("a page where the region finder kept nothing has one check for all its marks", () => {
+  const types = { types: { paragraph: { region: "paragraph" } } };
+  const marks = Array.from({ length: 170 }, (_, i) => ({ line_id: i + 1, box: [100, 10 * i, 900, 10 * i + 6] }));
+  const empty = { page: { id: "p", width: 1000, height: 1800, regions: [] }, source: { layers: { regions: { state: "model" } }, uncovered_lines: marks } };
+  const flags = regionFlags(empty, types);
+  assert.deepEqual(flags.map(flag => flag.code), ["marks-only"]);
+  assert.match(flags[0].message, /kept nothing on this page, though the scan has 170 marks/);
+  const withText = { ...empty, page: { ...empty.page, regions: [{ id: "r1", type: "paragraph", order: 1, box: [0, 0, 10, 10], polygons: [], lines: [] }] }, source: { ...empty.source, uncovered_lines: marks.slice(0, 2) } };
+  assert.deepEqual(regionFlags(withText, types).filter(flag => flag.code === "uncovered").length, 2, "a page with blocks lists each missed line");
+});
