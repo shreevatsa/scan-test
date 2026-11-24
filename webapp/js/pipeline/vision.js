@@ -2,7 +2,7 @@
 // API and standard paid-tier pricing checked 2026-11-08.
 // https://docs.cloud.google.com/vision/docs/fulltext-annotations
 // https://cloud.google.com/vision/pricing
-import { wordsToReading } from "./ocr.js?v=20261124-frame-1";
+import { wordsToReading } from "./ocr.js?v=20261124-frame-2";
 
 export function visionRequest(profile, imageDataUrl) {
   const content = imageDataUrl.split(",")[1];
@@ -11,7 +11,7 @@ export function visionRequest(profile, imageDataUrl) {
 }
 
 // What a reading from Cloud Vision is parsed with; a saved response is parsed again when this changes (run.js).
-export const VISION_PARSE = 13;
+export const VISION_PARSE = 14;
 
 // Cloud Vision's habits in Indic text: the avagraha (ಽ, ऽ) read as a Latin "s", standing apart ("ಯೋ s ಪಾಕರೋತ್");
 // dandas as ASCII bars. In a line written mostly in an Indic script, a lone "s" (or "ss") between letters becomes the
@@ -53,7 +53,35 @@ export function likelyWord(word, line) {
     const letters = line.filter(w => !(w.confidence < 0.6)).flatMap(w => [...w.text].filter(ch => /\p{L}/u.test(ch)));
     if (letters.filter(ch => LATIN.test(ch)).length < 0.4 * letters.length) return false;
   }
+  // A word Vision is unsure of and set apart from the line's text, in a paragraph of its own, that looks foreign to the
+  // line (a letter or two, or Latin in a line of another script): a page frame's side read as a column of letters ("V",
+  // "Z"), or a letter showing through from the other side of the leaf, which the line runs over. Numbers and signs stay,
+  // and so does a word of the line's own script.
+  if (word.confidence < 0.7 && word.paragraph !== undefined && foreign(word, line)) {
+    const weight = new Map();
+    for (const other of line) weight.set(other.paragraph, (weight.get(other.paragraph) || 0) + other.text.length);
+    const total = [...weight.values()].reduce((a, b) => a + b, 0);
+    if (weight.get(word.paragraph) < 0.2 * total) return false;
+  }
   return true;
+}
+function foreign(word, line) {
+  const text = word.text, letters = [...text].filter(ch => /[\p{L}\p{M}]/u.test(ch));
+  // Not a number or a sign: a note marker (raised, Vision sets it apart; kept for markNoteNumbers), an index's column
+  // of entry numbers, a bracket.
+  if (!letters.length) return false;
+  const others = line.filter(other => other !== word).flatMap(other => [...other.text].filter(ch => /\p{L}/u.test(ch)));
+  const latinLine = others.filter(ch => LATIN.test(ch)).length >= 0.4 * others.length;
+  if (letters.length <= 2) {
+    // In a Latin line, capitals only (a frame's "V", "VE"; not "A", "I", nor a short word, "by"); elsewhere, any but a
+    // lone vowel letter of an Indic script (a word, "this"), unless it repeats the start or end of a word beside it.
+    if (latinLine) return /^[A-Z]{1,2}$/.test(text) && !/^[AIO]$/.test(text);
+    const sorted = [...line].sort((a, b) => a.bbox.x0 - b.bbox.x0), at = sorted.indexOf(word);
+    const echo = (sorted[at + 1]?.text || "").startsWith(text) || (sorted[at - 1]?.text || "").endsWith(text);
+    const code = text.codePointAt(0), vowel = [...text].length === 1 && code >= 0x900 && code < 0xE00 && (code & 0x7F) >= 0x05 && (code & 0x7F) <= 0x14;
+    return echo || !vowel;
+  }
+  return LATIN.test(text) && !latinLine;
 }
 
 // `uncovered`, the page's printed lines outside all regions (regions record uncovered_lines): Vision reads the whole page,
@@ -64,8 +92,9 @@ export function visionReading(body, sent, uncovered = []) {
   const response = body.responses[0];
   if (response.error) throw new Error(`Cloud Vision OCR failed. ${response.error.message || response.error.code}`);
   const words = [];
+  let paragraphs = 0;   // each word's paragraph, as Vision grouped them, numbered through the page
   for (const page of response.fullTextAnnotation?.pages || []) for (const block of page.blocks || [])
-    for (const paragraph of block.paragraphs || []) for (const word of paragraph.words || []) {
+    for (const paragraph of block.paragraphs || []) for (const word of (paragraphs++, paragraph.words || [])) {
       const text = (word.symbols || []).map(symbol => symbol.text || "").join("");
       // Whether a space follows the word, as Vision detected it (punctuation follows its word with none).
       const after = word.symbols?.at(-1)?.property?.detectedBreak?.type;
@@ -73,7 +102,7 @@ export function visionReading(body, sent, uncovered = []) {
       if (!text || vertices.length !== 4) continue;
       const xs = vertices.map(v => v.x ?? 0), ys = vertices.map(v => v.y ?? 0);
       if (![...xs, ...ys].every(Number.isFinite)) throw new Error("Cloud Vision returned invalid word coordinates.");
-      words.push({ text, confidence: word.confidence, space: Boolean(after) && after !== "HYPHEN", bbox: { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) } });
+      words.push({ text, confidence: word.confidence, space: Boolean(after) && after !== "HYPHEN", paragraph: paragraphs, bbox: { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) } });
     }
   if (!words.length && sent.some(s => s.line_ids.length)) throw new Error("Cloud Vision returned no word geometry for the page.");
   const reading = wordsToReading(words, sent, "Cloud Vision supplies plain text. Review inline formatting and note markers.", indicLine, likelyWord);

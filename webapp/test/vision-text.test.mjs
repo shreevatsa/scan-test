@@ -43,6 +43,35 @@ test("words Vision is unsure of: very unsure ones, and Latin ones in a line of a
     "an English word in parentheses after its Kannada spelling stays, though Vision is unsure of it");
 });
 
+test("an unsure letter Vision set apart in a paragraph of its own (a page frame, show-through) is left out of the line", () => {
+  // Each word: [text, x, confidence, paragraph, y]; a space after each.
+  const visionWord = ([text, x, confidence, , y]) => ({ confidence,
+    symbols: [...text].map((ch, i, all) => ({ text: ch, ...(i === all.length - 1 ? { property: { detectedBreak: { type: "SPACE" } } } : {}) })),
+    boundingBox: { vertices: [{ x, y }, { x: x + 10 * [...text].length, y }, { x: x + 10 * [...text].length, y: y + 20 }, { x, y: y + 20 }] } });
+  const body = lines => {
+    const blocks = [...Map.groupBy(lines.flat(), word => word[3]).values()].map(words => ({ paragraphs: [{ words: words.map(visionWord) }] }));
+    return { responses: [{ fullTextAnnotation: { pages: [{ blocks }] } }] };
+  };
+  const sent = [{ rid: "r1", line_ids: [1, 2], region: { lines: [1, 2].map(id => ({ line_id: id, polygons: [[[0, 40 * id - 40], [900, 40 * id - 40], [900, 40 * id - 10], [0, 40 * id - 10]]] })) } }];
+  const english = [[["V", 0, 0.59, 9, 5], ["The", 40, 0.99, 1, 5], ["old", 90, 0.99, 1, 5], ["king", 140, 0.99, 1, 5], ["by", 200, 0.52, 7, 5], ["A.", 230, 0.6, 7, 5]],
+    [["Z", 0, 0.65, 9, 45], ["was", 40, 0.98, 1, 45], ["glad", 90, 0.99, 1, 45], ["12", 140, 0.5, 8, 45], ["here", 170, 0.97, 1, 45]]];
+  assert.deepEqual(visionReading(body(english), sent).regions[0].lines.map(line => line.text), ["The old king by A.", "was glad 12 here"],
+    "a frame's capitals go; a short word, a capital that is a word, and a number (a note marker) stay");
+  const kannada = [[["ನಾವು", 0, 0.95, 1, 5], ["ಸ", 60, 0.5, 5, 5], ["ಊರಿಗೆ", 80, 0.95, 1, 5], ["ಈ", 150, 0.6, 5, 5], ["ಮನೆಗೆ", 170, 0.95, 1, 5]],
+    [["ಅವನು", 0, 0.95, 1, 45], ["ಬ", 60, 0.6, 6, 45], ["ಬಂದನು", 80, 0.96, 1, 45], ["hot", 150, 0.6, 7, 45], ["ಎಂದು", 190, 0.95, 1, 45]]];
+  assert.deepEqual(visionReading(body(kannada), sent).regions[0].lines.map(line => line.text), ["ನಾವು ಊರಿಗೆ ಈ ಮನೆಗೆ", "ಅವನು ಬಂದನು ಎಂದು"],
+    "a consonant alone goes, and one repeating the next word's start; a lone vowel is a word and stays; Latin amid Kannada goes");
+});
+
+test("a word left out of a line keeps the space after it", async () => {
+  const { wordsToReading } = await import("../js/pipeline/ocr.js");
+  const region = { lines: [{ line_id: 1, polygons: [[[0, 0], [900, 0], [900, 40], [0, 40]]] }] };
+  const word = (text, x0, space) => ({ text, space, bbox: { x0, y0: 5, x1: x0 + 50, y1: 35 } });
+  const words = [word("Title", 0, false), word("....", 60, true), word("14", 120, false)];
+  const [read] = wordsToReading(words, [{ rid: "r1", line_ids: [1], region }], "", text => text, w => w.text !== "....").regions;
+  assert.equal(read.lines[0].text, "Title 14");
+});
+
 test("a line piece that got no words: missed if it is a line, not if it is a fragment of the lines beside it", async () => {
   const { wordsToReading } = await import("../js/pipeline/ocr.js");
   const piece = (id, x0, y0, x1, y1) => ({ line_id: id, polygons: [[[x0, y0], [x1, y0], [x1, y1], [x0, y1]]] });

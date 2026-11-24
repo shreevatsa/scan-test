@@ -1,6 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
 import { bbox } from "../render.js";
-import { tesseractBlocks } from "../local/blocks.js?v=20261124-frame-1";
+import { tesseractBlocks } from "../local/blocks.js?v=20261124-frame-2";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 
@@ -64,7 +64,15 @@ export function wordsToReading(words, sent, note = "Local OCR supplies plain tex
   }
   return { regions: sent.filter(s => s.line_ids.length).map(s => {
     const mine = targets.filter(t => t.rid === s.rid);
-    for (const t of mine) t.text = clean(t.words.filter(w => keep(w, t.words)).sort((a, b) => a.bbox.x0 - b.bbox.x0).map((w, i, all) => w.text + (i < all.length - 1 && w.space !== false ? " " : "")).join("").normalize("NFC"));
+    // A word left out keeps the space after it (dot leaders between a title and its page: "Title 14", not "Title14").
+    for (const t of mine) {
+      const kept = [];
+      for (const w of [...t.words].sort((a, b) => a.bbox.x0 - b.bbox.x0)) {
+        if (keep(w, t.words)) kept.push({ ...w });
+        else if (kept.length && w.space !== false) kept.at(-1).space = true;
+      }
+      t.text = clean(kept.map((w, i, all) => w.text + (i < all.length - 1 && w.space !== false ? " " : "")).join("").normalize("NFC"));
+    }
     // A piece that got no words is a line the reader missed, unless it is a fragment of the lines beside it (a vowel
     // sign or a subscript the line analysis cut off): narrow, and lying mostly within a neighbouring line's height.
     // So is a thin piece (well under the lines' usual height) overlapping a line with text: the strip of that line's
