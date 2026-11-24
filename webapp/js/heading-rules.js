@@ -186,16 +186,18 @@ export function headingSections(pages, levels, { textOf, types }) {
   // headed in Sanskrit: one junk heading would take a chapter's place) are not used: under two, or under a quarter.
   const elsewhere = pages.flatMap((doc, index) => !doc || titles.pages?.has(index) ? [] : doc.page.regions
     .filter(region => headingTypes.has(region.type)).map(region => (region.lines || []).map(line => line.text || "").join(" ")));
-  const namedCount = titles.length >= 3 ? titles.filter(title => elsewhere.some(heading => inContents([title], heading))).length : 0;
-  const contents = titles.length >= 3 && namedCount >= 2 && namedCount >= 0.25 * titles.length ? titles : null;
-  if (contents) levels = [levels[0], levels[0]];
   // A heading among a contents' entries names a chapter only where the book prints it as a heading too: not a column's
   // header ("Page"), nor a heading of a page taken for contents (an imprint with its prices and addresses).
-  if (contents?.groups.length) {
-    const normal = elsewhere.map(normalTitle), kept = contents.groups.map(group => inContents(normal, group));
-    contents.groupAt = contents.groupAt.filter((_, i) => kept[i]);
-    contents.groups = contents.groups.filter((_, i) => kept[i]);
+  if (titles.groups?.length) {
+    const kept = titles.groups.map(group => elsewhere.some(heading => inContents([group], heading)));
+    titles.groupAt = titles.groupAt.filter((_, i) => kept[i]);
+    titles.groups = titles.groups.filter((_, i) => kept[i]);
   }
+  // The titles that name chapters: the grouping headings where there are two or more, else the entries.
+  const naming = titles.groups?.length >= 2 ? titles.groups : titles;
+  const namedCount = titles.length >= 3 ? naming.filter(title => elsewhere.some(heading => inContents([title], heading))).length : 0;
+  const contents = titles.length >= 3 && namedCount >= 2 && namedCount >= 0.25 * naming.length ? titles : null;
+  if (contents) levels = [levels[0], levels[0]];
   // A heading whose text recurs three times or more ("PURPORT." before each verse's explanation, a book's title repeated
   // at the head of its pages) is a label, not a section's title: it starts no section.
   const counts = new Map(), printed = new Map();

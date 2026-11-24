@@ -5,10 +5,10 @@
 //
 // A reading is kept per type list: asking again with the same page documents (the same objects), rules and dimmed
 // pages gives the same result, and a changed page document, rule or type list makes a new one.
-import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261124-contents-2";
-import { readingDocuments } from "./workflow.js?v=20261124-contents-2";
-import { noteTypesOf } from "./note-links.js?v=20261124-contents-2";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-contents-2";
+import { blocksContext, toBlocks, fromBlocks } from "./blocks-format.js?v=20261124-contents-3";
+import { readingDocuments } from "./workflow.js?v=20261124-contents-3";
+import { noteTypesOf } from "./note-links.js?v=20261124-contents-3";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-contents-3";
 
 export const isBlocksPage = doc => Boolean(doc) && !doc.units;
 
@@ -61,6 +61,13 @@ export function readThroughBlocks(docs, types, rules) {
 // A page with no number (none printed, as on a chapter's first page, or none read) inside a run its neighbours agree on is
 // labelled with the number the run gives it, and the page just before a run of three with the number before the run's
 // (`label_from: "neighbours"`).
+// A printed number that holds the one expected, or its digits in another order ("8137" for 137, "41" for 14, "283" for
+// 328: a number printed in parts, read out of order).
+const misread = (number, expected) => {
+  const [a, b] = [String(number), String(expected)];
+  return a.includes(b) || [...a].sort().join("") === [...b].sort().join("");
+};
+
 export function settleLabels(docs) {
   const numbers = docs.map(doc => /^\d+$/.test(String(doc?.page.label ?? "")) ? Number(doc.page.label) : null);
   const nearest = (from, step) => {
@@ -79,8 +86,16 @@ export function settleLabels(docs) {
     // A page printed without its number, or whose number was not read, inside a run its neighbours agree on.
     if (number === null) return doc.page.label == null ? { ...doc, page: { ...doc.page, label: String(expected), label_from: "neighbours" } } : doc;
     // A number its neighbours, agreeing, do not allow: misread (a stray digit, one digit for another, a digit dropped).
-    // A plate or an unnumbered page between them would have broken their run.
+    // A plate or an unnumbered page between them would have broken their run. One that does not even hold the number
+    // they expect (nor its digits in another order) needs more of the run: half the numbered pages within four either
+    // side fit it, and three or all of them, not just the two beside it (in a stretch of misread numbers, two may agree
+    // by chance).
     if (number === expected) return doc;
+    if (!misread(number, expected)) {
+      const near = numbers.map((value, at) => [value, at]).filter(([value, at]) => value !== null && at !== index && Math.abs(at - index) <= 4);
+      const fit = near.filter(([value, at]) => value === expected + at - index || misread(value, expected + at - index)).length;
+      if (fit < near.length / 2 || (fit < 3 && fit < near.length)) return doc;
+    }
     return { ...doc, page: { ...doc.page, label: String(expected), label_as_printed: doc.page.label } };
   });
 }

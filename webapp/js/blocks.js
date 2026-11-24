@@ -1,4 +1,4 @@
-import { orderedRegions } from "./flags.js?v=20261124-contents-2";
+import { orderedRegions } from "./flags.js?v=20261124-contents-3";
 // What the page editor and the reader know about a page's blocks: their type's way of ending lines, the units around them.
 
 const prose = new Set(["paragraph", "note"]);

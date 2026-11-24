@@ -1,7 +1,7 @@
 // Pending proposals for the type list: what the region finder (method 097) proposes to add, kept in the book's work
 // records (work/type-proposals/pending.json, which older books may also hold survey items in). Nothing here changes the
 // type list; the page editor's "Add type X" does that through the book's add-type operation.
-import { REGION_CLASSES } from "./book-types.js?v=20261124-contents-2";
+import { REGION_CLASSES } from "./book-types.js?v=20261124-contents-3";
 export const PENDING_PATH = "work/type-proposals/pending.json";
 const empty = () => ({ format: "pending-type-proposals", version: 1, items: [] });
 
