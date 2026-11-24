@@ -17,22 +17,44 @@ export const normalTitle = text => String(text || "").normalize("NFC").replace(R
 // Headings (`headingTypes`) are not entries: "CANTO 1" ends with a number but names a group of entries. Returns the titles,
 // with `pages` the indices of the contents pages and `groups` the titles of the headings that group entries there (all
 // but a page's first heading, the contents' own title).
-export function contentsTitles(pages, headingTypes = new Set()) {
+// A page reference as a number (a roman numeral, of the front matter, as 0), or null.
+const DIGITS = { "०": 0x966, "೦": 0xCE6 };
+function referenceNumber(text) {
+  const ref = PAGE_REF.exec(text)?.[0] || "";
+  const digits = ref.replace(/[०-९]/g, c => c.charCodeAt(0) - DIGITS["०"]).replace(/[೦-೯]/g, c => c.charCodeAt(0) - DIGITS["೦"]).match(/\d+/);
+  return digits ? Number(digits[0]) : /[ivxlcdm]/i.test(ref) ? 0 : null;
+}
+// `skipTypes`: headings and verses are not entries (a verse ends with its number). A contents page lists its entries in
+// the order of their pages: its references mostly increase under each heading (an index's, alphabetical, do not; a
+// canto's verse numbers start again), and none is far beyond the book (a year, a price).
+export function contentsTitles(pages, skipTypes = new Set(), headingTypes = skipTypes) {
   const titles = [];
   titles.pages = new Set(); titles.groups = [];
   for (const [index, doc] of pages.entries()) {
     if (!doc) continue;
-    const blocks = doc.page.regions.filter(region => !headingTypes.has(region.type))
-      .map(region => (region.lines || []).map(line => line.text || "").join(" ").replace(/\s+/g, " ").trim()).filter(Boolean);
-    const entries = blocks.filter(text => PAGE_REF.test(text));
-    if (entries.length < 4 || entries.length < blocks.length / 2) continue;
+    // The blocks, each with the number of headings before it on the page (references may start again under each).
+    let group = 0;
+    const blocks = [];
+    for (const region of doc.page.regions) {
+      if (headingTypes.has(region.type)) group++;
+      if (skipTypes.has(region.type)) continue;
+      const text = (region.lines || []).map(line => line.text || "").join(" ").replace(/\s+/g, " ").trim();
+      if (text) blocks.push({ text, group });
+    }
+    const entryBlocks = blocks.filter(({ text }) => PAGE_REF.test(text) && (referenceNumber(text) ?? Infinity) <= Math.max(1000, pages.length * 3));
+    if (entryBlocks.length < 4 || entryBlocks.length < blocks.length / 2) continue;
+    const pairs = entryBlocks.slice(1).map((entry, i) => [entryBlocks[i], entry]).filter(([a, b]) => a.group === b.group);
+    const rising = pairs.filter(([a, b]) => referenceNumber(b.text) >= referenceNumber(a.text)).length;
+    if (rising < 0.75 * pairs.length) continue;
+    const entries = entryBlocks.map(({ text }) => text);
+    const pageTitles = entries.map(text => normalTitle(text.replace(PAGE_REF, "").replace(/^[\s.—–-]*[0-9०-९೦-೯]+\s*[.)]+[\s.…—–-]*/u, ""))).filter(title => title.length >= 2);
+    // An index lists its entries in alphabetical order.
+    const sorted = pageTitles.slice(1).filter((title, i) => title.localeCompare(pageTitles[i]) >= 0).length;
+    if (pageTitles.length >= 6 && sorted >= 0.8 * (pageTitles.length - 1)) continue;
     titles.pages.add(index);
     const headings = doc.page.regions.filter(region => headingTypes.has(region.type)).map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" ")));
     titles.groups.push(...headings.slice(1).filter(title => title.length >= 2));
-    for (const text of entries) {
-      const title = normalTitle(text.replace(PAGE_REF, "").replace(/^[\s.—–-]*[0-9०-९೦-೯]+\s*[.)]+[\s.…—–-]*/u, ""));
-      if (title.length >= 2) titles.push(title);
-    }
+    titles.push(...pageTitles);
   }
   return titles;
 }
@@ -71,8 +93,7 @@ function sectionPaths(pages, levels, textOf, contents = null) {
     if (level === undefined || !contents) return level;
     if (contents.pages.has(pageIndex) && !firstHeading) return undefined;
     // Where the contents group their entries under headings, those name the chapters and the entries their sections.
-    if (contents.groups.length >= 2) return inContents(contents.groups, textOf(doc, unit)) ? 0 : 1;
-    return inContents(contents, textOf(doc, unit)) ? 0 : 1;
+    return inContents(contents.groups.length >= 2 ? contents.groups : contents, textOf(doc, unit)) ? 0 : 1;
   };
   const items = [];
   let stack = [], next = 0, titling = null;   // titling: the section whose headings are all it has so far
@@ -106,7 +127,9 @@ function sectionPaths(pages, levels, textOf, contents = null) {
 export function headingSections(pages, levels, { textOf, types }) {
   if (!levels?.length) return 0;
   // One level and a printed contents: two levels, the contents' entries being the chapters.
-  const titles = levels.length === 1 ? contentsTitles(pages, new Set(levels.map(level => level.heading))) : [];
+  const headingTypes = new Set(levels.map(level => level.heading));
+  const verseTypes = Object.entries(types.types).filter(([, type]) => type.region === "verse").map(([name]) => name);
+  const titles = levels.length === 1 ? contentsTitles(pages, new Set([...headingTypes, ...verseTypes]), headingTypes) : [];
   const contents = titles.length >= 3 ? titles : null;
   if (contents) levels = [levels[0], levels[0]];
   const items = sectionPaths(pages, levels, textOf, contents);
