@@ -1,5 +1,5 @@
-import { canonical } from "./ops.js?v=20261124-vision-9b";
-import { typeRevision } from "./schema.js?v=20261124-vision-9b";
+import { canonical } from "./ops.js?v=20261124-vision-10";
+import { typeRevision } from "./schema.js?v=20261124-vision-10";
 
 export const LAYERS = ["regions", "text"];
 const fields = (value, names) => Object.fromEntries(names.filter(name => value[name] !== undefined).map(name => [name, value[name]]));

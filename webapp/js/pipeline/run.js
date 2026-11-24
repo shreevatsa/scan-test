@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261124-vision-9b";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-9b";
+import { typeRevision } from "../schema.js?v=20261124-vision-10";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-10";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-vision-9b";
-import * as I from "./images.js?v=20261124-vision-9b";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-9b";
+import * as S from "./steps.js?v=20261124-vision-10";
+import * as I from "./images.js?v=20261124-vision-10";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-10";
 import * as Split from "./split.js";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-vision-9b";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-9b";
-import { finderById, finderPath } from "./finders.js?v=20261124-vision-9b";
-import { finderRequest } from "./finder-requests.js?v=20261124-vision-9b";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-9b";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-9b";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-vision-10";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-10";
+import { finderById, finderPath } from "./finders.js?v=20261124-vision-10";
+import { finderRequest } from "./finder-requests.js?v=20261124-vision-10";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-10";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-10";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261124-vision-9b";
-import { layerState, noteEdit } from "../layers.js?v=20261124-vision-9b";
-import { provisionalDocument } from "./provisional.js?v=20261124-vision-9b";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-9b";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-9b";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-9b";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-9b";
+import { canonical } from "../ops.js?v=20261124-vision-10";
+import { layerState, noteEdit } from "../layers.js?v=20261124-vision-10";
+import { provisionalDocument } from "./provisional.js?v=20261124-vision-10";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-10";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-10";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-10";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-10";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -72,6 +72,8 @@ async function compactDataUrl(blob, limit = 9500000) {
   }
   return url;
 }
+
+const normalMarker = token => [...token].map(c => "೦೧೨೩೪೫೬೭೮೯".includes(c) ? String("೦೧೨೩೪೫೬೭೮೯".indexOf(c)) : "०१२३४५६७८९".includes(c) ? String("०१२३४५६७८९".indexOf(c)) : c).join("").replace(/^0+(?=\d)/, "");
 
 // The Tesseract language for a text by its main script (the bundled kan, san and eng), or null for no letters.
 function scriptLanguage(text) {
@@ -489,6 +491,32 @@ export class Maker {
     return parsed;
   }
 
+  // Cloud Vision reads a note marker as an ordinary number or sign standing apart ("... it was so. 2 Then ..."), or not at
+  // all. A number or sign standing alone in the text (not beside a danda or a dash: a verse's number, a range) that a
+  // note on the page begins with is written as a marker, [2], in the notes' order: the reading's lines make it a marker
+  // span, which the book's note rule links to the note with that number.
+  markNoteNumbers(parsed, sent) {
+    const types = this.book.types.types, typeOf = new Map(sent.map(source => [source.rid, source.region.type]));
+    const isNote = id => types[typeOf.get(id)]?.region === "note";
+    const keys = [];
+    for (const region of parsed.regions) if (isNote(region.id)) {
+      const found = /^\s*([0-9೦-೯०-९]{1,2}|[*†]{1,3})\s*[.)]?\s/u.exec(region.lines[0]?.text || "");
+      if (found) keys.push(normalMarker(found[1]));
+    }
+    if (!keys.length) return parsed;
+    const order = new Map(sent.map((source, index) => [source.rid, source.region.reading_order ?? 1e6 + index]));
+    let last = 0;
+    for (const region of parsed.regions.filter(value => !isNote(value.id) && types[typeOf.get(value.id)]?.role !== "furniture").sort((a, b) => order.get(a.id) - order.get(b.id)))
+      for (const line of region.lines) line.text = line.text.replace(/(\S)\s([0-9೦-೯०-९]{1,2}|[*†]{1,3})(?=\s|$)/gu, (whole, before, token, offset, text) => {
+        const key = normalMarker(token), after = text.slice(offset + whole.length).trimStart()[0] || "";
+        if (/[।॥|=\-–—]/u.test(before) || /[।॥|=\-–—]/u.test(after) || !keys.includes(key) || /\d/.test(key) && Number(key) < last) return whole;
+        keys.splice(keys.indexOf(key), 1);
+        if (/\d/.test(key)) last = Number(key);
+        return `${before}[${key}]`;
+      });
+    return parsed;
+  }
+
   async readPage(pid, chosen, profile, { force, progress }) {
     const rec = structuredClone(await this.sourceRegions(pid)), { sent, skipped } = Split.selectPageRegions(rec.regions);
     const file = await this.image(pid), imageHash = await sha256(file);
@@ -509,7 +537,7 @@ export class Maker {
       for (const callPath of [cached.path, ...(cached.parts || []).map(part => part.path).reverse()].filter(Boolean)) {
         const call = await this.book.readWork(callPath);
         if (!call?.response?.responses) continue;
-        const parsed = Split.checkReading(await this.fillMissed(file, visionReading(call.response, sent, rec.uncovered_lines), sent), sent.filter(source => source.line_ids.length));
+        const parsed = Split.checkReading(this.markNoteNumbers(await this.fillMissed(file, visionReading(call.response, sent, rec.uncovered_lines), sent), sent), sent.filter(source => source.line_ids.length));
         const reading = { ...cached, parsed, vision_parse: VISION_PARSE, reparsed_from: callPath, regions_record: rec, geometry_key, fingerprint };
         delete reading.partial; delete reading.region_ids; delete reading.reused_regions; delete reading.base_fingerprint;
         await this.book.updateWork(path, () => reading);
@@ -546,7 +574,7 @@ export class Maker {
         result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets),
           (usage, body) => visionCost(body, profile), body => selectTargets(visionReading(body, sent, plan.partial ? [] : rec.uncovered_lines)), scope);
       }
-      if (result.parsed) result.parsed = await this.fillMissed(file, result.parsed, sent);
+      if (result.parsed) result.parsed = this.markNoteNumbers(await this.fillMissed(file, result.parsed, sent), sent);
     } else if (list) {
       // One call for the whole page: the page image as the app draws it, the regions in the prompt. A region whose answer
       // does not fit its line pieces holds the page's current text (checkWholePage) and is flagged when applied.

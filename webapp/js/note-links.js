@@ -8,9 +8,9 @@
 //    and the placed markers keep the notes' order.
 //  - linkNotes: each marker is linked to the note on its page with the same printed number.
 //  - noteProblems: markers with no note and notes with no marker, page by page.
-const DEV = "०१२३४५६७८९", SUP = { "¹": "1", "²": "2", "³": "3", "⁴": "4", "⁵": "5", "⁶": "6", "⁷": "7", "⁸": "8", "⁹": "9", "⁰": "0" };
-export const normal = marker => [...String(marker)].map(c => DEV.includes(c) ? String(DEV.indexOf(c)) : SUP[c] ?? c).join("").replace(/^0+(?=\d)/, "");
-const SIGN = /^(?:[0-9०-९]{1,3}|[*†‡§]{1,3})$/;
+const DEV = "०१२३४५६७८९", KAN = "೦೧೨೩೪೫೬೭೮೯", SUP = { "¹": "1", "²": "2", "³": "3", "⁴": "4", "⁵": "5", "⁶": "6", "⁷": "7", "⁸": "8", "⁹": "9", "⁰": "0" };
+export const normal = marker => [...String(marker)].map(c => DEV.includes(c) ? String(DEV.indexOf(c)) : KAN.includes(c) ? String(KAN.indexOf(c)) : SUP[c] ?? c).join("").replace(/^0+(?=\d)/, "");
+const SIGN = /^(?:[0-9०-९೦-೯]{1,3}|[*†‡§]{1,3})$/;
 // A letter of Devanagari (signs and vowel marks included; not the dandas, which come before a verse number, nor digits).
 const LETTER = "\\u0900-\\u0963\\u0970-\\u097F";
 const GLUED = new RegExp(`(?<=[${LETTER}])([०-९]{1,2}|[0-9]{1,2})(?![०-९0-9])|([०-९]{1,2})(?=[${LETTER}])`, "g");
@@ -64,7 +64,7 @@ export function markLine(line, newId) {
   return made;
 }
 
-export const NOTE_NUMBER = /^\s*[(\[]?\s*([0-9०-९]{1,3}|[*†‡§]{1,3})\s*[.)\]:]?/;
+export const NOTE_NUMBER = /^\s*[(\[]?\s*([0-9०-९೦-೯]{1,3}|[*†‡§]{1,3})\s*[.)\]:]?/;
 
 // Links each marker on the page with no link yet to the note on the page with the same printed number, in reading order
 // where a number is used twice; a note with no number of its own (one continued from an earlier page) is not linked.

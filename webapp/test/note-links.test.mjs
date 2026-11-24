@@ -51,3 +51,10 @@ test("a note that quotes a reading gets its marker after the clearly closest wor
   linkNotes(doc, noteTypes, mainTypes);
   assert.deepEqual(doc.relations.map(r => r.to.unit), ["u3"]);
 });
+
+test("note numbers in Kannada digits are the same numbers", async () => {
+  const { NOTE_NUMBER } = await import("../js/note-links.js");
+  assert.equal(normal("೨"), "2");
+  assert.equal(normal("೧೦"), "10");
+  assert.equal(NOTE_NUMBER.exec("೩. ಟಿಪ್ಪಣಿ")[1], "೩");
+});

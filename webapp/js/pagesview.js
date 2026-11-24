@@ -1,16 +1,16 @@
-import { suggestionButton } from "./review-view.js?v=20261124-vision-9b";
+import { suggestionButton } from "./review-view.js?v=20261124-vision-10";
 import { h } from "./render.js";
-import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261124-vision-9b";
+import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261124-vision-10";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261124-vision-9b";
-import { READERS } from "./pipeline/readers.js?v=20261124-vision-9b";
-import { pageCost, dollars, costBasis } from "./recipe.js?v=20261124-vision-9b";
-import { finderById } from "./pipeline/finders.js?v=20261124-vision-9b";
-import { runBatch } from "./pipeline/batch.js?v=20261124-vision-9b";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261124-vision-10";
+import { READERS } from "./pipeline/readers.js?v=20261124-vision-10";
+import { pageCost, dollars, costBasis } from "./recipe.js?v=20261124-vision-10";
+import { finderById } from "./pipeline/finders.js?v=20261124-vision-10";
+import { runBatch } from "./pipeline/batch.js?v=20261124-vision-10";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261124-vision-9b";
-import { normalizeTypeName, typeNameStyle } from "./type-additions.js?v=20261124-vision-9b";
-import { addProposedType } from "./blocksview.js?v=20261124-vision-9b";
+import { money } from "./reader-controls.js?v=20261124-vision-10";
+import { normalizeTypeName, typeNameStyle } from "./type-additions.js?v=20261124-vision-10";
+import { addProposedType } from "./blocksview.js?v=20261124-vision-10";
 
 export async function renderPages(el, app) {
   const { book, routeToken } = app;

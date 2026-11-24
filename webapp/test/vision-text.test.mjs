@@ -56,3 +56,19 @@ test("a line piece that got no words: missed if it is a line, not if it is a fra
   assert.equal(whole.uncertain, false, "the fragment alone leaves the block certain");
   assert.equal(whole.missed, undefined);
 });
+
+test("a note marker Vision read as a number or sign standing apart becomes a marker, if a note on the page has it", async () => {
+  const { Maker } = await import("../js/pipeline/run.js");
+  const types = { types: { paragraph: { region: "paragraph", flow: "main" }, verse: { region: "verse", flow: "main" }, footnote: { region: "note", flow: "notes" } } };
+  const sent = [["r1", "paragraph", 1], ["r2", "verse", 2], ["r3", "footnote", 3], ["r4", "footnote", 4], ["r5", "footnote", 5]]
+    .map(([rid, type, order]) => ({ rid, line_ids: [1], region: { type, reading_order: order } }));
+  const region = (id, ...lines) => ({ id, lines: lines.map((text, i) => ({ n: i + 1, text })), uncertain: false, note: null });
+  const parsed = { regions: [
+    region("r1", "ನಾವು ಊರಿಗೆ ಹೋದೆವು. 1 ಅಲ್ಲಿ 25 ಜನರಿದ್ದರು,", "ಅವರಲ್ಲಿ ಒಬ್ಬರು * ಹಾಡಿದರು 3 - 4 ದಿನ"),
+    region("r2", "ಸತ್ಯಂ ವದ ಧರ್ಮಂ ಚರ ॥ 2 ॥"),
+    region("r3", "1. ನಮ್ಮ ಊರು."), region("r4", "2. ಇನ್ನೊಂದು."), region("r5", "* ಹಾಡು.")] };
+  Maker.prototype.markNoteNumbers.call({ book: { types } }, parsed, sent);
+  assert.deepEqual(parsed.regions[0].lines.map(line => line.text), ["ನಾವು ಊರಿಗೆ ಹೋದೆವು.[1] ಅಲ್ಲಿ 25 ಜನರಿದ್ದರು,", "ಅವರಲ್ಲಿ ಒಬ್ಬರು[*] ಹಾಡಿದರು 3 - 4 ದಿನ"]);
+  assert.equal(parsed.regions[1].lines[0].text, "ಸತ್ಯಂ ವದ ಧರ್ಮಂ ಚರ ॥ 2 ॥", "a verse's number between dandas is no marker");
+  assert.equal(parsed.regions[2].lines[0].text, "1. ನಮ್ಮ ಊರು.", "the notes keep their numbers");
+});
