@@ -14,6 +14,9 @@
 // heading names a śataka ("VAIRÂGYAS'ATAKA."), else the next one.
 const SHATAKA = [["N", /नीति|N[IÎĪ]T[IÎĪ]/iu], ["V", /वैराग्य|VAIR[AÂĀ]/iu], ["S", /शृङ्गार|शृंगार|[SŚ]['′]?R[IĪ]?[NṄ]G[AĀÂ]R/iu]];
 const letterOf = text => SHATAKA.find(([, pattern]) => pattern.test(text || ""))?.[0] || null;
+// A heading names a śataka where it says "śataka" too ("अथ शृङ्गारशतकम्", "NITI S'ATAKA."): not a commentary's heading
+// that mentions one of the three themes ("भावार्थ (वैराग्य पक्ष)", the meaning on the side of renunciation).
+const titleLetterOf = text => /शतक|[SŚ]['′’]?\s*A?TAK/iu.test(text || "") ? letterOf(text) : null;
 const DIGITS = ["०१२३४५६७८९", "೦೧೨೩೪೫೬೭೮೯"];
 // A unit's number as verse numbers: one, or each of a short range ("6-7": a note on two stanzas); else none.
 const numbersOf = value => {
@@ -37,10 +40,13 @@ export function verseGroups(book, tl) {
   const textOf = unit => unit.children.map(child => child.region ? (lines.get(child.region) || []).map(line => line.text || "").join(" ") : textOf(units.get(child.unit) || { children: [] })).join(" ");
   const holdsVerse = unit => regionClass(unit.type) === "verse" || unit.children.some(child => child.unit && units.get(child.unit) && holdsVerse(units.get(child.unit)));
 
-  // A verse with no number of its own takes the one printed at its end ("… ॥ ३७ ॥").
+  // A verse with no number of its own takes the one printed at its end: "… ॥ ३७ ॥", the double danda read as two
+  // single ones ("।। ३५ ।।"), or the dandas half lost ("…भिः।६"), or a number in the script's digits alone ("… ११").
   const printed = unit => {
     if (regionClass(unit.type) !== "verse") return null;
-    const match = /(?<![०-९0-9])([०-९0-9]{1,3})\s*(?:॥|\|\|)\s*$/u.exec(textOf(unit).trim());
+    const text = textOf(unit).trim();
+    const match = /(?<![०-९0-9])([०-९0-9]{1,3})\s*(?:॥|\|\||।\s*।)\s*$/u.exec(text) || /[।॥|]\s*([०-९೦-೯0-9]{1,3})\s*[।|]?\s*$/u.exec(text) ||
+      /\s([०-९೦-೯]{1,3})\s*$/u.exec(text);
     return match ? numbersOf(match[1]) : null;
   };
   const entryNumbers = unit => regionClass(unit.type) === "list_item" || /contents|index/i.test(unit.type) ? null : numbersOf(unit.number) || printed(unit);
@@ -64,7 +70,8 @@ export function verseGroups(book, tl) {
     // A numbering starts again only from 1 (2 or 3, its first number misread or missing): a smaller number past that is
     // a misreading or a repeat, settled below.
     const add = entry => {
-      if (!current || entry.n <= 3 && entry.n <= current.entries.at(-1).n) series.push(current = { stream: top, letters: [], entries: [] });
+      const lastN = current?.entries.findLast(other => other.n !== null)?.n;
+      if (!current || entry.n !== null && lastN !== undefined && entry.n <= 3 && entry.n <= lastN) series.push(current = { stream: top, letters: [], entries: [] });
       if (entry.letter) current.letters.push(entry.letter);
       current.entries.push(entry);
     };
@@ -72,7 +79,7 @@ export function verseGroups(book, tl) {
     const walk = unit => unit.children.forEach((child, index) => {
       const kid = child.unit && units.get(child.unit);
       if (!kid) return;
-      if (regionClass(kid.type) === "heading") { letter = letterOf(textOf(kid)) || letter; flush(); previous = null; return; }
+      if (regionClass(kid.type) === "heading") { letter = titleLetterOf(textOf(kid)) || letter; flush(); previous = null; return; }
       const numbers = entryNumbers(kid);
       if (numbers) {
         const before = index > 0 && unit.children[index - 1].unit && units.get(unit.children[index - 1].unit);
@@ -84,23 +91,52 @@ export function verseGroups(book, tl) {
         return;
       }
       if (holdsEntries(kid)) { flush(); previous = null; walk(kid); return; }
+      // A verse whose number was not read (misread as letters, lost at the scan's edge) is an entry still; its number
+      // is settled below, from its neighbours.
+      if (regionClass(kid.type) === "verse" && (previous?.verse || current?.entries.at(-1)?.verse)) {
+        flush();
+        previous = { uid: kid.id, n: null, more: [], letter, verse: true, lead: null, follow: [], unread: true };
+        add(previous);
+        return;
+      }
       pending.push(kid.id);
     });
     walk(top);
     flush();
   }
 
-  // A number that breaks the run its neighbours agree on is misread ("58" between 67 and 69).
-  for (const s of series) s.entries.forEach((e, i, all) => {
-    const before = all[i - 1], after = all[i + 1];
-    if (before && after && e.n !== before.n + 1 && after.n === before.n + 2) { e.n = before.n + 1; e.more = []; }
-  });
+  // A number that breaks the run its neighbours agree on is misread ("58" between 67 and 69); a verse whose number was
+  // not read takes the one its neighbours leave for it, and is no entry if they leave none (a verse quoted between two
+  // of the text's: its block goes with the verse before it).
+  for (const [index, s] of series.entries()) {
+    s.entries.forEach((e, i, all) => {
+      // The entry before the first is the last of the series before (a section's heading may start a series).
+      const before = i ? all[i - 1] : series[index - 1]?.entries.at(-1), after = all[i + 1];
+      if (before && after && e.n !== null && before.n !== null && e.n !== before.n + 1 && after.n === before.n + 2) { e.n = before.n + 1; e.more = []; }
+      // Between two numbers that follow on, a number of its own (not either of theirs repeated, nor the next) is no verse
+      // of the text's: a verse quoted with its source's number ("… ॥ १७६ ॥", from an anthology) among a verse's notes.
+      else if (before && after && e.n !== null && before.n !== null && ![before.n, before.n + 1, after.n].includes(e.n) && after.n === (before.more.at(-1) ?? before.n) + 1) { e.n = null; e.more = []; }
+    });
+    for (let i = 0; i < s.entries.length; i++) {
+      if (s.entries[i].n !== null) continue;
+      let j = i;
+      while (j < s.entries.length && s.entries[j].n === null) j++;
+      const before = s.entries[i - 1], after = s.entries[j], count = j - i;
+      if (before && after && after.n - (before.more.at(-1) ?? before.n) === count + 1) s.entries.slice(i, j).forEach((e, k) => { e.n = (before.more.at(-1) ?? before.n) + k + 1; });
+      i = j - 1;
+    }
+    s.entries.filter(e => e.n === null).forEach(e => {
+      const at = s.entries.indexOf(e), host = s.entries.slice(0, at).reverse().find(other => other.n !== null);
+      if (host) host.follow.push(e.uid, ...e.follow);
+    });
+    s.entries = s.entries.filter(e => e.n !== null);
+  }
 
   // The text's series, keyed; the others go with them.
   const text = series.filter(s => s.entries.filter(e => e.verse).length > s.entries.length / 2);
   const offsets = new Map(), last = new Map();
   for (const s of text) {
-    s.letter = letterOf(s.stream.label) || letterOf(textOf(s.stream).slice(0, 200)) || s.letters[0] || "N";
+    s.letter = titleLetterOf(s.stream.label) || titleLetterOf(textOf(s.stream).slice(0, 200)) || s.letters[0] || text[text.indexOf(s) - 1]?.letter || "N";
     // A series that goes on from the last one's numbers (a passage set in a section of its own) continues it; one that
     // starts again goes on from the last number.
     const before = last.get(s.letter);

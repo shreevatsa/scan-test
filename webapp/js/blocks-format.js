@@ -7,14 +7,14 @@
 // there; dimmed pages are left out of the list), made by blocksContext(pages). It is used for the first and last page
 // (a unit is not open past the book's ends) and for the sections, whose parts and episodes are counted from the
 // start of the book. It is derived once and cached on the context.
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261124-empty-1";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261124-empty-1";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261124-empty-1";
-import { groupVerses } from "./verse-group-rules.js?v=20261124-empty-1";
-import { headingSections } from "./heading-rules.js?v=20261124-empty-1";
-import { assemble } from "./assemble.js?v=20261124-empty-1";
-import { textOf } from "./blocks.js?v=20261124-empty-1";
-import { compileRules } from "./rules.js?v=20261124-empty-1";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261124-verses-6";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261124-verses-6";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261124-verses-6";
+import { groupVerses } from "./verse-group-rules.js?v=20261124-verses-6";
+import { headingSections } from "./heading-rules.js?v=20261124-verses-6";
+import { assemble } from "./assemble.js?v=20261124-verses-6";
+import { textOf } from "./blocks.js?v=20261124-verses-6";
+import { compileRules } from "./rules.js?v=20261124-verses-6";
 
 export const BLOCKS_VERSION = "0.4";
 const ATTRS = ["number", "label", "lang", "style", "open"];
@@ -65,8 +65,14 @@ function settleBreaks(pages, tl, mainTypes, noteTypes = new Set()) {
     if (!a || !b) continue;
     const later = Boolean(a.source?.continues_later), earlier = Boolean(b.source?.continues_from_earlier);
     // Both sides marked, the two pieces typed differently (a list item's or a verse's second piece, without its number
-    // or its start, taken for a paragraph): the later piece is the earlier's type.
-    if (later && earlier && a.type !== b.type && ![a, b].some(region => tl.types[region.type]?.region === "heading")) {
+    // or its start, taken for a paragraph): the later piece is the earlier's type. Only a piece taken for a paragraph: a
+    // verse printed whole with its number ("… ॥ ५७ ॥") after prose is a verse of its own, its mark a finder's slip.
+    if (later && earlier && a.type !== b.type && tl.types[b.type]?.region === "verse" && tl.types[a.type]?.region !== "verse" &&
+      /[।॥|]\s*[0-9०-९೦-೯]{1,3}\s*[।॥|]+\s*$/u.test((b.lines.filter(line => line.text?.trim()).at(-1)?.text || "").trim())) {
+      edit(i + 1, b.id, { continues_from_earlier: false, continuation_settled: "a verse printed whole, with its number, does not go on from prose" });
+      continue;
+    }
+    if (later && earlier && a.type !== b.type && tl.types[b.type]?.region === "paragraph" && ![a, b].some(region => tl.types[region.type]?.region === "heading")) {
       if (!out.has(i + 1)) out.set(i + 1, clone(pages[i + 1].page));
       const region = out.get(i + 1).regions.find(value => value.id === b.id);
       region.source = { ...region.source, type_settled: { from: region.type, reason: `it goes on from a ${a.type.replaceAll("_", " ")} on the page before` } };

@@ -75,6 +75,12 @@ test("both sides marked, the pieces typed differently: the later piece takes the
   assert.deepEqual(read(docs), { flow: ["list_item 1r1+2r1"], warnings: 0 });
 });
 
+test("both sides marked, a verse printed whole with its number after prose: the verse's mark is the slip", () => {
+  const docs = [page([["paragraph", "the moon by day, a pond without lotuses,", { later: true }]]), page([["verse", "कोऽपि न कश्चित् । स्पृष्टो दहति पावकः ॥ ५७ ॥", { from: true }]])];
+  const { flow } = read(docs);
+  assert.deepEqual(flow, ["paragraph 1r1", "verse 2r1"], "the verse stays a verse of its own");
+});
+
 test("footnotes across the break are settled as the main text is", () => {
   const docs = [page([["paragraph", "Text."], ["footnote", "* A judge went to court, and", { later: true }]]), page([["paragraph", "More."], ["footnote", "everyone looked at him."]])];
   assert.equal(read(docs).warnings, 0);

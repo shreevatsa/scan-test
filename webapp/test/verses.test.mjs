@@ -66,3 +66,23 @@ test("a śataka set out verse by verse: the number printed at the verse's end, t
   const story = { ...b, pages: pages.map(p => ({ ...p, regions: p.regions.filter(r => r.type !== "running_header") })) };
   assert.equal(verseGroups(story, types).groups.size, 0);
 });
+
+test("a verse's number as printed in other forms, lost, or a quoted verse's own; a commentary heading naming a theme", () => {
+  // Verses numbered only in their text: "॥ १ ॥", "।। २ ।।" (two single dandas), "।३" (a danda lost), "… ४" (digits
+  // alone); the fifth's number lost; a verse quoted with its anthology's number (१७६) among the sixth's notes; a heading
+  // of the commentary that names renunciation ("वैराग्य") is not the Vairāgya śataka. Each verse has its prose after it.
+  const verses = ["क ख ॥ १ ॥", "ग घ ।। २ ।।", "ङ च।३", "छ ज ४", "झ ञ ।", "ट ठ ॥ ६ ॥", "Cf. ड ढ ॥ १७६ ॥", "ण त ॥ ७ ॥"];
+  const kids = [["heading", null, "अथ शृङ्गारशतकम्"]];
+  verses.forEach((text, i) => {
+    if (i === 4) kids.push(["heading", null, "भावार्थ (वैराग्य पक्ष)"]);
+    kids.push(["verse", null, text]);
+    if (i !== 6) kids.push(["stanza_note", null, `the meaning of verse ${i + 1}`]);
+  });
+  const b = book([["shataka", "शृङ्गारशतकम्", kids]]);
+  const idOf = text => b.units.find(unit => unit.children[0]?.region && b.pages[0].regions.find(r => `p#${r.id}` === unit.children[0].region).lines[0].text === text).id;
+  const { groups } = verseGroups(b, tl);
+  assert.deepEqual([...groups.keys()], ["S001", "S002", "S003", "S004", "S005", "S006", "S007"]);
+  assert.deepEqual(groups.get("S005").verse, [idOf("झ ञ ।")], "the verse whose number was lost takes the one its neighbours leave");
+  assert.ok(groups.get("S006").follow.includes(idOf("Cf. ड ढ ॥ १७६ ॥")), "the quoted verse goes with the verse before it");
+  assert.deepEqual(groups.get("S007").verse, [idOf("ण त ॥ ७ ॥")]);
+});
