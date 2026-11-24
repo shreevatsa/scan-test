@@ -7,19 +7,66 @@
 // Only the units at the top of a page's main flow take part (a heading the type list already puts inside a container
 // stays where it is). A page that is not there (null) ends every open section: nothing joins across it, as in assembly.
 
+// The book's printed contents, as the titles of its entries: on a page where most blocks end with a page reference (a
+// number, a range, a roman numeral: "3. ಆಯುರ್ವೇದ ಮತ್ತು ಯೋಗ - 1   1-31"), each such block's text without its numbering
+// and its page reference. Titles are compared normalized: no spaces, punctuation or digits, NFC.
+const PAGE_REF = /[\s.…·_–—-]+(?:[0-9०-९೦-೯]{1,4}(?:\s*[-–]\s*[0-9०-९೦-೯]{1,4})?|[ivxlcdm]{1,6})\s*$/iu;
+export const normalTitle = text => String(text || "").normalize("NFC").replace(/[\s\p{P}\p{S}0-9०-९೦-೯]+/gu, "");
+export function contentsTitles(pages) {
+  const titles = [];
+  for (const doc of pages) {
+    if (!doc) continue;
+    const blocks = doc.page.regions.map(region => (region.lines || []).map(line => line.text || "").join(" ").replace(/\s+/g, " ").trim()).filter(Boolean);
+    const entries = blocks.filter(text => PAGE_REF.test(text));
+    if (entries.length < 4 || entries.length < blocks.length / 2) continue;
+    for (const text of entries) {
+      const title = normalTitle(text.replace(PAGE_REF, "").replace(/^[\s.—–-]*[0-9०-९೦-೯]+\s*[.)]+[\s.…—–-]*/u, ""));
+      if (title.length >= 2) titles.push(title);
+    }
+  }
+  return titles;
+}
+const editDistance = (a, b) => {
+  a = [...a]; b = [...b];
+  let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const current = [i];
+    for (let j = 1; j <= b.length; j++) current[j] = Math.min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    previous = current;
+  }
+  return previous[b.length];
+};
+// A heading named in the contents: the same title, or nearly (a letter or two misread, a part number left out).
+export function inContents(titles, text) {
+  const heading = normalTitle(text);
+  if (heading.length < 2) return false;
+  return titles.some(title => {
+    const [short, long] = heading.length <= title.length ? [heading, title] : [title, heading];
+    if (long.startsWith(short) && short.length >= 0.75 * long.length) return true;
+    return editDistance(heading, title) <= Math.max(1, Math.floor(0.15 * long.length));
+  });
+}
+
 const idOf = (doc, base) => { let n = 1; const taken = new Set(doc.units.map(unit => unit.id)); while (taken.has(`${base}${n}`)) n++; return `${base}${n}`; };
 
 // For every top-level unit of the main flow, in book order: { pageIndex, id, path }, where path lists the open sections
 // from the outermost in ({ id, level, label }).
-function sectionPaths(pages, levels, textOf) {
+function sectionPaths(pages, levels, textOf, contents = null) {
   const levelOf = new Map(levels.map((level, index) => [level.heading, index]));
+  // With one level and a printed contents, a heading the contents name opens a chapter (level 0) and any other heading
+  // a section inside the chapter (level 1, of the same container type).
+  const levelFor = (doc, unit) => {
+    const level = levelOf.get(unit?.type);
+    if (level === undefined || !contents) return level;
+    return inContents(contents, textOf(doc, unit)) ? 0 : 1;
+  };
   const items = [];
   let stack = [], next = 0, titling = null;   // titling: the section whose headings are all it has so far
   pages.forEach((doc, pageIndex) => {
     if (!doc) { stack = []; titling = null; return; }
     for (const id of doc.flows.main || []) {
       const unit = doc.units.find(value => value.id === id);
-      const level = levelOf.get(unit?.type);
+      const level = levelFor(doc, unit);
       // A heading of the same level straight after its section's heading (a title in two parts, a subtitle, an epigraph
       // set as a heading) belongs to that section; one of another level starts its own (a section opening a chapter).
       if (level !== undefined && titling && level === titling.level) {
@@ -43,7 +90,11 @@ function sectionPaths(pages, levels, textOf) {
 // Group each page's top-level units into the sections the headings start. Returns the number of sections made.
 export function headingSections(pages, levels, { textOf, types }) {
   if (!levels?.length) return 0;
-  const items = sectionPaths(pages, levels, textOf);
+  // One level and a printed contents: two levels, the contents' entries being the chapters.
+  const titles = levels.length === 1 ? contentsTitles(pages) : [];
+  const contents = titles.length >= 3 ? titles : null;
+  if (contents) levels = [levels[0], levels[0]];
+  const items = sectionPaths(pages, levels, textOf, contents);
   const byPage = Map.groupBy(items, item => item.pageIndex);
   let made = 0;
   for (const [pageIndex, here] of byPage) {

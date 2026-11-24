@@ -73,3 +73,14 @@ test("a heading straight after its section's heading is a subtitle of that secti
   assert.deepEqual(read(nested, { headings: [{ heading: "chapter_heading", container: "chapter" }, { heading: "heading", container: "section" }] }).tree,
     [{ "chapter “I”": ["chapter_heading", { "section “1.1”": ["heading", "paragraph"] }] }], "a section opening a chapter is its own");
 });
+
+test("with one heading level and a printed contents, the headings it names are chapters and the others their sections", () => {
+  const contents = page([["heading", "Contents"], ["list_item", "1. Preface vii"], ["list_item", "2. Yoga 1-31"], ["list_item", "3. Naadi 32-68"], ["list_item", "4. Appendix 69-70"]]);
+  const docs = [contents, page([["heading", "Preface"], ["paragraph", "p"], ["heading", "Yoga"], ["paragraph", "a"], ["heading", "Asana"], ["paragraph", "b"]]),
+    page([["paragraph", "c"], ["heading", "Pranayama"], ["paragraph", "d"], ["heading", "Naadi - 2"], ["heading", "Naadi vishaya"], ["paragraph", "e"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  assert.deepEqual(tree, [{ "section “Contents”": ["heading", "list_item", "list_item", "list_item", "list_item"] },
+    { "section “Preface”": ["heading", "paragraph"] },
+    { "section “Yoga”": ["heading", "paragraph", { "section “Asana”": ["heading", "paragraph", "paragraph"] }, { "section “Pranayama”": ["heading", "paragraph"] }] },
+    { "section “Naadi - 2”": ["heading", { "section “Naadi vishaya”": ["heading", "paragraph"] }] }]);
+});

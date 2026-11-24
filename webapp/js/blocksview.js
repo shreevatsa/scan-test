@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-marks-3";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-marks-3";
-import { bookReading } from "./reading.js?v=20261123-marks-3";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-marks-3";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-levels-1";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-levels-1";
+import { bookReading } from "./reading.js?v=20261123-levels-1";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-levels-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-marks-3";
+import * as ops from "./ops.js?v=20261123-levels-1";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-marks-3";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-marks-3";
-import { suggestionButton } from "./review-view.js?v=20261123-marks-3";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261123-marks-3";
-import { pageReviewState } from "./layers.js?v=20261123-marks-3";
-import { readingOrderWarnings } from "./schema.js?v=20261123-marks-3";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-marks-3";
+import { noteProblems } from "./note-links.js?v=20261123-levels-1";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-levels-1";
+import { suggestionButton } from "./review-view.js?v=20261123-levels-1";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261123-levels-1";
+import { pageReviewState } from "./layers.js?v=20261123-levels-1";
+import { readingOrderWarnings } from "./schema.js?v=20261123-levels-1";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-levels-1";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
