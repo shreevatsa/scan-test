@@ -156,7 +156,7 @@ Each task is sized for one session. Finish, test and commit one before starting 
 5. **What the sample books still show** (NOTEBOOK.md, 2026-11-23), roughly in order of value:
    - photographed two-page spreads (Ryder) should be split into pages before finding regions;
    - printed lines outside every region ("Possible missed line": the Gita 18, Gopinath 22) could join the region beside them without a decision;
-   - heading levels: one heading type cannot tell a division from a chapter (Dutt) or a commentary label from a heading (Gopinath); a second heading type, proposed by the finder or set by a person, gives two levels;
+   - heading levels: one heading type cannot tell a division from a chapter (Dutt) or a commentary label from a heading (Gopinath); a second heading type, proposed by the finder or set by a person, gives two levels (the size of a heading's lines does not tell them apart: on a sample, most headings are 0.9–1.1 times the body's line height, with no gap between titles and sub-headings);
    - a formula's line pieces take its text in the first piece; English verse indentation could come from the line pieces' outlines.
 6. **The examples hosting:** a separate small repository with Pages enabled (the user's choice), when the user asks.
 
