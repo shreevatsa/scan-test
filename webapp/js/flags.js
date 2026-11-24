@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-labels-3";
-import { layerState } from "./layers.js?v=20261124-labels-3";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-marks-1";
+import { layerState } from "./layers.js?v=20261124-marks-1";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -148,7 +148,19 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
     if (types.types[region.type]?.role !== "furniture" && !Number.isFinite(region.order)) add("missing-order", `${region.id} has no reading order`, region.id);
     if (region.source?.no_ink && !regionHasText(region)) add("no-ink", `${region.id} has no detected ink`, region.id, region.box);
   }
-  for (const omitted of doc.source?.omitted_regions || []) add("omitted", `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`, omitted.region, omitted.box);
+  // A small area the finder could not type ("other", no type proposed), at most two characters high and wide, in the top
+  // or bottom 15% of the page and clear of every text block (a printer’s signature mark at the foot of each gathering’s first
+  // page, a library's stamp), is no content to decide on.
+  const textRegions = regions.filter(region => types.types[region.type]?.role !== "furniture" && region.box);
+  const pageH = doc.page.height || 0;
+  const margin = omitted => {
+    const charH = doc.source?.char_h || 0, box = omitted.box;
+    return omitted.type === "other" && !omitted.proposed_type && charH > 0 && pageH > 0 && box?.length === 4 &&
+      box[2] - box[0] <= 2 * charH && box[3] - box[1] <= 2 * charH && (box[1] >= 0.85 * pageH || box[3] <= 0.15 * pageH) &&
+      !textRegions.some(region => boxOverlap(region.box, box) > 0.25);
+  };
+  for (const omitted of doc.source?.omitted_regions || []) if (!margin(omitted))
+    add("omitted", `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`, omitted.region, omitted.box);
   for (const warning of regionWarnings(doc)) add("region-warning", warning);
   for (const skipped of doc.source?.regions_skipped || []) {
     // A region the person has since drawn over the same place replaces it: nothing is left to report.

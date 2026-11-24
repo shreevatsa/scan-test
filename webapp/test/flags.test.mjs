@@ -198,3 +198,9 @@ test("a mark narrower than a character at the very edge of the scan is no missed
     { line_id: 3, box: [100, 1500, 900, 1540] } ] } };
   assert.deepEqual(regionFlags(doc, types).filter(flag => flag.code === "uncovered").map(flag => flag.line_id), [2, 3]);
 });
+test("A small untyped mark below the page's text (a printer's signature mark) asks for no type; one in the text does", () => {
+  const page = doc(); page.source.char_h = 30; page.page.height = 2500; page.page.width = 1460; page.page.regions[0].box = [50, 200, 1250, 2170];
+  page.source.omitted_regions = [{ region: "r8", type: "other", box: [190, 2188, 232, 2238] }, { region: "r9", type: "other", box: [190, 1000, 232, 1050] },
+    { region: "r10", type: "other", box: [100, 2200, 900, 2260] }, { region: "r11", type: "other", proposed_type: "stamp", box: [190, 2300, 232, 2350] }];
+  assert.deepEqual(regionFlags(page, types).filter(flag => flag.code === "omitted").map(flag => flag.region), ["r9", "r10", "r11"]);
+});
