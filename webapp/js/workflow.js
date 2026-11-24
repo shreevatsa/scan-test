@@ -1,6 +1,6 @@
-import { typeRevision } from "./schema.js?v=20261124-vision-8";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261124-vision-8";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261124-vision-8";
+import { typeRevision } from "./schema.js?v=20261124-vision-8b";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261124-vision-8b";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261124-vision-8b";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };

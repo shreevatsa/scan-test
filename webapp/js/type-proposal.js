@@ -1,6 +1,6 @@
-import { makeValidator, checkTypes } from "./schema.js?v=20261124-vision-8";
-import { discoverySchema } from "./pipeline/type-discovery.js?v=20261124-vision-8";
-import { readerOptions } from "./pipeline/readers.js?v=20261124-vision-8";
+import { makeValidator, checkTypes } from "./schema.js?v=20261124-vision-8b";
+import { discoverySchema } from "./pipeline/type-discovery.js?v=20261124-vision-8b";
+import { readerOptions } from "./pipeline/readers.js?v=20261124-vision-8b";
 
 export function proposalPackage(result, callRecord = null) {
   return { format: "unit-type-proposal", version: 1, ...structuredClone(result), call_record: callRecord };

@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261124-vision-8";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261124-vision-8";
-import { bookReading } from "./reading.js?v=20261124-vision-8";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261124-vision-8";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261124-vision-8b";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261124-vision-8b";
+import { bookReading } from "./reading.js?v=20261124-vision-8b";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261124-vision-8b";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261124-vision-8";
+import * as ops from "./ops.js?v=20261124-vision-8b";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261124-vision-8";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261124-vision-8";
-import { suggestionButton } from "./review-view.js?v=20261124-vision-8";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261124-vision-8";
-import { pageReviewState } from "./layers.js?v=20261124-vision-8";
-import { readingOrderWarnings } from "./schema.js?v=20261124-vision-8";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261124-vision-8";
+import { noteProblems } from "./note-links.js?v=20261124-vision-8b";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261124-vision-8b";
+import { suggestionButton } from "./review-view.js?v=20261124-vision-8b";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261124-vision-8b";
+import { pageReviewState } from "./layers.js?v=20261124-vision-8b";
+import { readingOrderWarnings } from "./schema.js?v=20261124-vision-8b";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261124-vision-8b";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

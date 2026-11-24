@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261124-vision-8";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-8";
+import { typeRevision } from "../schema.js?v=20261124-vision-8b";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-8b";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-vision-8";
-import * as I from "./images.js?v=20261124-vision-8";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-8";
+import * as S from "./steps.js?v=20261124-vision-8b";
+import * as I from "./images.js?v=20261124-vision-8b";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-8b";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261124-vision-8";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-8";
-import { finderById, finderPath } from "./finders.js?v=20261124-vision-8";
-import { finderRequest } from "./finder-requests.js?v=20261124-vision-8";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-8";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-8";
+import { localReading, localLayout } from "./ocr.js?v=20261124-vision-8b";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-8b";
+import { finderById, finderPath } from "./finders.js?v=20261124-vision-8b";
+import { finderRequest } from "./finder-requests.js?v=20261124-vision-8b";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-8b";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-8b";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261124-vision-8";
-import { layerState, noteEdit } from "../layers.js?v=20261124-vision-8";
-import { provisionalDocument } from "./provisional.js?v=20261124-vision-8";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-8";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-8";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-8";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-8";
+import { canonical } from "../ops.js?v=20261124-vision-8b";
+import { layerState, noteEdit } from "../layers.js?v=20261124-vision-8b";
+import { provisionalDocument } from "./provisional.js?v=20261124-vision-8b";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-8b";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-8b";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-8b";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-8b";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -54,6 +54,23 @@ async function dataUrlOf(blob) {
   let s = "";
   for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
   return `data:${blob.type || "image/png"};base64,${btoa(s)}`;
+}
+
+// A page image for a request with a size limit (Cloud Vision's 10 MB of JSON): as it is if it fits, else the same pixels
+// as JPEG, at the same size so that the coordinates read from it are the page's. A colour scan rendered as PNG can be
+// too large.
+async function compactDataUrl(blob, limit = 9500000) {
+  const url = await dataUrlOf(blob);
+  if (url.length - url.indexOf(",") - 1 <= limit) return url;
+  const bitmap = await createImageBitmap(blob);
+  const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+  canvas.getContext("2d").drawImage(bitmap, 0, 0);
+  bitmap.close?.();
+  for (const quality of [0.92, 0.85, 0.75]) {
+    const jpeg = await dataUrlOf(await canvas.convertToBlob({ type: "image/jpeg", quality }));
+    if (jpeg.length - jpeg.indexOf(",") - 1 <= limit) return jpeg;
+  }
+  return url;
 }
 
 async function sha256(blob) {
@@ -476,7 +493,7 @@ export class Maker {
         result = { status: "completed", parsed: Split.checkReading(selectTargets(visionReading(cached.response, sent, plan.partial ? [] : rec.uncovered_lines)), targets),
           cost_usd: cached.cost_usd, seconds: cached.seconds, path: cached.path, response: cached.response, cached: true, ocr_reused: true };
       } else {
-        const payload = visionRequest(profile, await dataUrlOf(file));
+        const payload = visionRequest(profile, await compactDataUrl(file));
         result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets),
           (usage, body) => visionCost(body, profile), body => selectTargets(visionReading(body, sent, plan.partial ? [] : rec.uncovered_lines)), scope);
       }
