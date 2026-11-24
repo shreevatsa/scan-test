@@ -83,7 +83,7 @@ const idOf = (doc, base) => { let n = 1; const taken = new Set(doc.units.map(uni
 
 // For every top-level unit of the main flow, in book order: { pageIndex, id, path }, where path lists the open sections
 // from the outermost in ({ id, level, label }).
-function sectionPaths(pages, levels, textOf, contents = null) {
+function sectionPaths(pages, levels, textOf, contents = null, recurring = new Set()) {
   const levelOf = new Map(levels.map((level, index) => [level.heading, index]));
   // With one level and a printed contents, a heading the contents name opens a chapter (level 0) and any other heading
   // a section inside the chapter (level 1, of the same container type).
@@ -102,7 +102,10 @@ function sectionPaths(pages, levels, textOf, contents = null) {
     let headings = 0;
     for (const id of doc.flows.main || []) {
       const unit = doc.units.find(value => value.id === id);
-      const level = levelFor(doc, unit, pageIndex, levelOf.has(unit?.type) && headings++ === 0);
+      const first = levelOf.has(unit?.type) && headings++ === 0;
+      // A recurring label goes in the section open where it stands, and a section's title run goes on past it.
+      if (levelOf.has(unit?.type) && recurring.has(labelKey(textOf(doc, unit)))) { items.push({ pageIndex, id, path: stack }); continue; }
+      const level = levelFor(doc, unit, pageIndex, first);
       // A heading of the same level straight after its section's heading (a title in two parts, a subtitle, an epigraph
       // set as a heading) belongs to that section; one of another level starts its own (a section opening a chapter).
       if (level !== undefined && titling && level === titling.level) {
@@ -123,6 +126,10 @@ function sectionPaths(pages, levels, textOf, contents = null) {
   return items;
 }
 
+// A heading's text as printed, for telling repeats: spaces and closing punctuation aside, numbers kept ("CANTO VI" and
+// "CANTO VII" differ).
+const labelKey = text => String(text || "").normalize("NFC").replace(/\s+/g, " ").replace(/[\s.:;,।॥|-]+$/u, "").trim().toLowerCase();
+
 // Group each page's top-level units into the sections the headings start. Returns the number of sections made.
 export function headingSections(pages, levels, { textOf, types }) {
   if (!levels?.length) return 0;
@@ -132,7 +139,15 @@ export function headingSections(pages, levels, { textOf, types }) {
   const titles = levels.length === 1 ? contentsTitles(pages, new Set([...headingTypes, ...verseTypes]), headingTypes) : [];
   const contents = titles.length >= 3 ? titles : null;
   if (contents) levels = [levels[0], levels[0]];
-  const items = sectionPaths(pages, levels, textOf, contents);
+  // A heading whose text recurs three times or more ("PURPORT." before each verse's explanation, a book's title repeated
+  // at the head of its pages) is a label, not a section's title: it starts no section.
+  const counts = new Map();
+  for (const doc of pages) for (const id of doc?.flows.main || []) {
+    const unit = doc.units.find(value => value.id === id);
+    if (headingTypes.has(unit?.type)) { const key = labelKey(textOf(doc, unit)); if (key) counts.set(key, (counts.get(key) || 0) + 1); }
+  }
+  const recurring = new Set([...counts].filter(([, count]) => count >= 3).map(([key]) => key));
+  const items = sectionPaths(pages, levels, textOf, contents, recurring);
   const byPage = Map.groupBy(items, item => item.pageIndex);
   let made = 0;
   for (const [pageIndex, here] of byPage) {

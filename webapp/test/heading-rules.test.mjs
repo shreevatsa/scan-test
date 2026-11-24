@@ -95,3 +95,11 @@ test("contents that group their entries under headings: those name the chapters,
     { "section “CANTO I”": ["heading", { "section “Arjuna hesitates”": ["heading", "paragraph"] }, { "section “Krishna replies”": ["heading", "paragraph"] }] },
     { "section “CANTO II”": ["heading", "paragraph"] }], "the contents' own headings start no section; a canto holds its sections");
 });
+
+test("a heading whose text recurs (a label before each verse's explanation) starts no section", () => {
+  const docs = [page([["heading", "Canto I"], ["verse", "a"], ["heading", "Purport."], ["paragraph", "b"]]),
+    page([["verse", "c"], ["heading", "Purport"], ["paragraph", "d"]]), page([["heading", "Canto II"], ["verse", "e"], ["heading", "PURPORT."], ["paragraph", "f"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  assert.deepEqual(tree, [{ "section “Canto I”": ["heading", "verse", "heading", "paragraph", "verse", "heading", "paragraph"] },
+    { "section “Canto II”": ["heading", "verse", "heading", "paragraph"] }]);
+});
