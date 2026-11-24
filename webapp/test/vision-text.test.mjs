@@ -27,4 +27,8 @@ test("words Vision is unsure of: very unsure ones, and Latin ones in a line of a
   assert.deepEqual(line.filter(word => likelyWord(word, line)).map(word => word.text), ["ಅರ್ಥ-ಕಾಮ-ಮೋಕ್ಷ", "ಇವುಗಳೊಡನೆ", "ಷರ್ಟ್", "School", "ನಡೆದಾಗ"]);
   const english = [{ text: "The", confidence: 0.95 }, { text: "fyrst", confidence: 0.45 }];
   assert.equal(english.filter(word => likelyWord(word, english)).length, 2, "an unsure word in an English line stays");
+  const gloss = [{ text: "ಕೆಟ್ಟು", confidence: 0.9 }, { text: "ವಾಚ್", confidence: 0.92 }, { text: "(", confidence: 0.8 }, { text: "watch", confidence: 0.59 },
+    { text: ")", confidence: 0.8 }, { text: "ಅನ್ನು", confidence: 0.9 }, { text: "no", confidence: 0.54 }, { text: "ಹಾರಾಡುವ", confidence: 0.9 }];
+  assert.deepEqual(gloss.filter(word => likelyWord(word, gloss)).map(word => word.text), ["ಕೆಟ್ಟು", "ವಾಚ್", "(", "watch", ")", "ಅನ್ನು", "ಹಾರಾಡುವ"],
+    "an English word in parentheses after its Kannada spelling stays, though Vision is unsure of it");
 });

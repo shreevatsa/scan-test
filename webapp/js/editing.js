@@ -1,4 +1,4 @@
-import { canonical, EditError } from "./ops.js?v=20261124-contents-1";
+import { canonical, EditError } from "./ops.js?v=20261124-vision-7";
 
 // What the page editor may change: everything on the page, regions, transcription, structure overrides, line joins and
 // note links. (A save made from an editor that was open while the page changed elsewhere merges text only: mergeTextEdit.)
