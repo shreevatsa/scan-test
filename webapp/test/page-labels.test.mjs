@@ -20,12 +20,13 @@ test("a number left alone: it fits, its neighbours disagree, it does not hold th
   assert.ok(settleLabels(docs).every((doc, i) => doc === docs[i]), "pages that need nothing are the same objects");
 });
 
-test("a page whose printed number was not read takes the number its neighbours expect, if it has a page number block", () => {
-  const types = { types: { page_number: { region: "page_number", role: "furniture" }, paragraph: { region: "paragraph", flow: "main" } } };
-  const withBlock = (label, block = true) => ({ page: { id: "p", ...(label === undefined ? {} : { label }), regions: block ? [{ id: "r1", type: "page_number" }] : [] } });
-  const docs = [withBlock("20"), withBlock(undefined), withBlock("22"), withBlock(undefined, false), withBlock("24")];
-  const settled = settleLabels(docs, types);
-  assert.deepEqual(settled.map(doc => doc.page.label), ["20", "21", "22", undefined, "24"], "a page with no page number block is left alone");
+test("a page with no number inside a run its neighbours agree on takes the run's number; a run's unnumbered first page too", () => {
+  const page = label => ({ page: { id: "p", ...(label === undefined ? {} : { label }), regions: [] } });
+  const settled = settleLabels(["20", undefined, "22", undefined, "24"].map(page));
+  assert.deepEqual(settled.map(doc => doc.page.label), ["20", "21", "22", "23", "24"]);
   assert.equal(settled[1].page.label_from, "neighbours");
-  assert.equal(settleLabels(docs)[1].page.label, undefined, "without the types, as before");
+  // A chapter's first page, printed without its number, before pages 2, 3, 4; front matter before it is left alone.
+  assert.deepEqual(settleLabels([undefined, undefined, undefined, "2", "3", "4"].map(page)).map(doc => doc.page.label), [undefined, undefined, "1", "2", "3", "4"]);
+  // A plate between pages 88 and 89 breaks the run: no number for it.
+  assert.deepEqual(settleLabels(["87", "88", undefined, "89", "90"].map(page)).map(doc => doc.page.label), ["87", "88", undefined, "89", "90"]);
 });

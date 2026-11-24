@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261124-carry-1";
+import { assemble } from "./assemble.js?v=20261124-pagerefs-1";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261124-carry-1";
-import { layerState } from "./layers.js?v=20261124-carry-1";
-import { bookReading } from "./reading.js?v=20261124-carry-1";
+import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261124-pagerefs-1";
+import { layerState } from "./layers.js?v=20261124-pagerefs-1";
+import { bookReading } from "./reading.js?v=20261124-pagerefs-1";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -23,8 +23,46 @@ function dropHyphen(L) {
 const SEP = { space: " ", hyphen: "", join: "", line: "<br>" };
 
 export const safeId = value => String(value).replace(/[^A-Za-z0-9_-]/g, "_");
-const DEV_DIGITS = "०१२३४५६७८९";
-const asciiDigits = value => [...String(value)].map(c => DEV_DIGITS.includes(c) ? DEV_DIGITS.indexOf(c) : c).join("");
+const DEV_DIGITS = "०१२३४५६७८९", KAN_DIGITS = "೦೧೨೩೪೫೬೭೮೯";
+const asciiDigits = value => [...String(value)].map(c => DEV_DIGITS.includes(c) ? DEV_DIGITS.indexOf(c) : KAN_DIGITS.includes(c) ? KAN_DIGITS.indexOf(c) : c).join("");
+
+// Page numbers printed at the end of a block ("… 161", "… 3, 46, 131", "… 1-31"): the pages they name, among the book's
+// page labels (a range names its first page). `byLabel`: label → page id.
+const PAGE_TAIL = /((?:[0-9०-९೦-೯]{1,4}\s*[,–-]\s*)*[0-9०-९೦-೯]{1,4})(\s*[.)]?\s*(?:<\/[^>]+>\s*)*)$/u;
+function tailPages(text, byLabel) {
+  const match = PAGE_TAIL.exec(text || "");
+  if (!match || /[\p{L}\p{M}\p{N}]/u.test(text.slice(match.index - 1, match.index))) return null;
+  const numbers = match[1].split(/\s*[,–-]\s*/), range = /[–-]/.test(match[1]) && !match[1].includes(",");
+  const pages = (range ? numbers.slice(0, 1) : numbers).map(number => ({ number, pid: byLabel.get(asciiDigits(number)) }));
+  return pages.some(page => page.pid) ? { match, pages, range } : null;
+}
+
+// The pages of a printed contents or index: three or more of their blocks, and 40% or more, end with page numbers of
+// this book. On them those numbers link to where their pages start in Read (#pb-…), roughly where the passage is.
+function referencePages(P) {
+  const byLabel = new Map();
+  for (const page of P.book.pages) if (page.label && !byLabel.has(asciiDigits(page.label))) byLabel.set(asciiDigits(page.label), page.id);
+  const counts = new Map();
+  for (const R of Object.values(P.regions)) {
+    const cls = P.tl.types[R.region.type]?.region;
+    if (!R.region.lines?.length || ["heading", "page_number", "running_header", "figure", "caption", "verse", "note"].includes(cls)) continue;
+    const text = R.region.lines.map(line => line.text || "").join(" ").trim();
+    const count = counts.get(R.page.id) || { blocks: 0, hits: 0 };
+    count.blocks++;
+    if (tailPages(text, byLabel)) count.hits++;
+    counts.set(R.page.id, count);
+  }
+  const pages = new Set([...counts].filter(([, count]) => count.hits >= 3 && count.hits >= 0.4 * count.blocks).map(([pid]) => pid));
+  return { pages, link: html => {
+    const found = tailPages(html, byLabel);
+    if (!found) return html;
+    const { match, pages: named, range } = found;
+    const linked = named.map(({ number, pid }) => pid ? `<a class="r-pageref" href="#pb-${safeId(pid)}" title="page ${esc(number)}">${number}</a>` : number);
+    const rest = range ? match[1].slice(named[0].number.length) : "";
+    const joined = range ? linked[0] + rest : match[1].split(/(\s*,\s*)/).map((part, i) => i % 2 ? part : linked[i / 2]).join("");
+    return html.slice(0, match.index) + joined + match[2];
+  } };
+}
 const bareLetters = value => String(value).normalize("NFC").replace(/[^\p{L}\p{M}]/gu, "");
 function editDistance(a, b) {
   a = [...a]; b = [...b];
@@ -143,6 +181,7 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
   // Plain (the Book view and the HTML export): no page numbers in the text, only anchors; each note beside its marker,
   // and a note no marker points to beside the start of its page.
   const notes = plain ? plainNotes(P) : null;
+  const references = referencePages(P);
   const renderedNotes = new Set();
   const sidenote = (uid, cls = "") => {
     if (renderedNotes.has(uid)) return "";
@@ -294,7 +333,9 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
     if (cls === "verse") return `<div class="r-verse" ${attrs}${styleAttr(st)}>${regionsText(refs, cls, tail)}</div>`;
     if (cls === "table") return `<div class="r-tablewrap" ${attrs}${styleAttr(st)}>${tableHtml(refs)}</div>`;
     if (cls === "note") return `<div class="r-note" id="note-${esc(uid)}" ${attrs}${styleAttr(st)}>${regionsText(refs, cls)}${back}</div>`;
-    return `<p class="r-para r-${esc(cls)}" ${attrs}${styleAttr(st)}>${regionsText(refs, cls)}${back}</p>`;
+    const text = regionsText(refs, cls);
+    const linked = refs.length && refs.every(ref => regions[ref] && references.pages.has(regions[ref].page.id)) ? references.link(text) : text;
+    return `<p class="r-para r-${esc(cls)}" ${attrs}${styleAttr(st)}>${linked}${back}</p>`;
   };
   let html = "";
   const flows = Object.keys(book.flows).sort((a, b) => (a === "main" ? -1 : b === "main" ? 1 : 0));
@@ -541,6 +582,7 @@ body { margin: 0; background: #fdfdfb; color: #1d1d1b; }
 .r-figimg { max-width: 100%; height: auto; }
 .r-figure figcaption { display: none; }
 .r-pb { font: 10px system-ui, sans-serif; color: #aaa; text-decoration: none; margin: 0 .4em; vertical-align: 2px; }
+.r-pageref { color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; }
 .r-mk { color: inherit; text-decoration: none; font-size: .7em; vertical-align: super; padding: 0 1px; }
 .r-mk::before { content: attr(data-sign); }
 .r-back { font-size: .8em; text-decoration: none; margin-left: 4px; }
