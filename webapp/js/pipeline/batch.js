@@ -35,7 +35,9 @@ export async function runBatch({ maker, ids, stage, stageOf, limit, force = fals
         if (value.cached) result.reused++;
       } catch (failure) { error = failure; result.failed++; }
       result.processed++;
-      await onPage(pid, value, error);
+      // Showing the page's new state is not part of the processing: a failure there (a read that met a file being written)
+      // is reported and the run goes on.
+      try { await onPage(pid, value, error); } catch (failure) { console.warn(`page ${pid}: ${failure.message}`); }
       onProgress({ ...result, pid, error, value });
     }
     result.paused ||= Boolean(shouldStop());
