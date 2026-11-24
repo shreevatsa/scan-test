@@ -49,9 +49,13 @@ test("a paragraph interrupted by a quoted verse on its page stays as printed, an
   assert.deepEqual(read(docs), { flow: ["paragraph 1r1", "verse 1r2", "paragraph 1r3+2r1"], warnings: 0 });
 });
 
-test("a figure and its caption at the foot of a page, between a paragraph's two pieces: the figure floats and the paragraph joins", () => {
+test("a figure and its caption at a page's edge, by a paragraph's piece: the figure floats and the paragraph joins", () => {
   const docs = [page([["paragraph", "The child lies", { later: true }], ["figure", ""], ["caption", "(Figure 1)"]]), page([["paragraph", "within the womb.", { from: true }]])];
-  assert.deepEqual(read(docs), { flow: ["figure 1r2", "caption 1r3", "paragraph 1r1+2r1"], warnings: 0 });
+  assert.deepEqual(read(docs), { flow: ["paragraph 1r1+2r1", "figure 1r2", "caption 1r3"], warnings: 0 });
+  // A page whose one block goes on both ways, a figure above it.
+  const both = [page([["paragraph", "It began", { later: true }]]), page([["figure", ""], ["paragraph", "and went on", { from: true, later: true }]]),
+    page([["paragraph", "to the end.", { from: true }]])];
+  assert.deepEqual(read(both), { flow: ["paragraph 1r1+2r2+3r1", "figure 2r1"], warnings: 0 });
 });
 
 test("a paragraph, the verse it quotes across the break, and the paragraph going on after it stay as printed", () => {

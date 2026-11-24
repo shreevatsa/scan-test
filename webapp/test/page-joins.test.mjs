@@ -76,6 +76,14 @@ for (const [name, types] of [["flat", FLAT], ["in chapters", NESTED]]) {
     assert.deepEqual(continuation(docs, types), [[], [], []]);
   });
 
+  test(`${name}: a figure or caption at a page's edge floats: the paragraph on either side of it joins, the figure after`, () => {
+    const docs = book(types, [[["paragraph", { later: true }], ["figure"], ["caption"]], [["figure"], ["paragraph", { from: true, later: true }]], [PARA_GOES_ON]]);
+    const [assembled, warnings] = assemble(docs, types);
+    assert.deepEqual(warnings, []);
+    assert.deepEqual(spans(assembled), ["paragraph 1+2+3", "figure 1", "caption 1", "figure 2"]);
+    assert.deepEqual(continuation(docs, types), [[], [], []]);
+  });
+
   test(`${name}: a paragraph split by a plate is one unit, and the plate's figure and caption follow it`, () => {
     for (const plate of [[["figure"]], PLATE]) {
       const docs = book(types, [[PARA_ENDS], plate, [PARA_GOES_ON]]);

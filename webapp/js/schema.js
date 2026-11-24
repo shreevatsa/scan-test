@@ -248,18 +248,20 @@ export function checkDocument(doc, tl) {
   if (errors.length) return [errors.concat(relationErrors()), warnings];
   const seen = [...depthFirst(units, doc.flows)].filter(x => x[1][0] === "unit").map(x => x[1][1]);
   if (seen.length !== new Set(seen).size || seen.length !== Object.keys(units).length) errors.push("units do not form a tree");
+  const isFloat = id => { const t = units[id]; return Boolean(t) && !(t.open?.start || t.open?.end) && ["figure", "caption"].includes(types[t.type]?.region); };
   for (const [uid, u] of Object.entries(units)) {
     const siblings = own(parent, uid) ? units[parent[uid]].children : null;
     for (const [end, word] of [["start", "first"], ["end", "last"]]) {
       if (!(u.open || {})[end]) continue;
       if (siblings === null) {
         const tops = doc.flows[inFlow[uid]];
-        if (end === "end" && tops[tops.length - 1] !== uid) errors.push(`unit ${uid}: open at the end but not the last unit of flow ${inFlow[uid]}`);
+        if (end === "end" && tops.findLast(t => !isFloat(t)) !== uid) errors.push(`unit ${uid}: open at the end but not the last unit of flow ${inFlow[uid]}`);
         if (end === "start" && tops.filter(t => (units[t].open || {}).start).length > 1) errors.push(`flow ${inFlow[uid]}: more than one unit open at the start`);
         continue;
       }
-      const sib = end === "start" ? siblings[0] : siblings[siblings.length - 1];
-      if (sib.unit !== uid) errors.push(`unit ${uid}: open at the ${end} but not the ${word} child of ${parent[uid]}`);
+      // A figure or caption at the edge with no open end of its own floats (assemble.js): the unit open is the first or last past it.
+      const sib = end === "start" ? siblings.find(child => !isFloat(child.unit)) : siblings.findLast(child => !isFloat(child.unit));
+      if (sib?.unit !== uid) errors.push(`unit ${uid}: open at the ${end} but not the ${word} child of ${parent[uid]}`);
       if (!(units[parent[uid]].open || {})[end]) errors.push(`unit ${uid}: open at the ${end} but its parent ${parent[uid]} is not`);
     }
   }

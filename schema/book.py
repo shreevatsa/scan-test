@@ -319,6 +319,12 @@ def check_document(doc, tl):
     seen = [x for _, x, _ in depth_first(units, doc["flows"]) if x[0] == "unit"]
     if len(seen) != len(set(seen)) or len(seen) != len(units):
         errors.append("units do not form a tree")
+
+    def is_float(uid):
+        t = units.get(uid)
+        return bool(t) and not (t.get("open", {}).get("start") or t.get("open", {}).get("end")) and \
+            tl["types"].get(t["type"], {}).get("region") in ("figure", "caption")
+
     for uid, u in units.items():
         siblings = units[parent[uid]]["children"] if uid in parent else None
         for end, index, word in (("start", 0, "first"), ("end", -1, "last")):
@@ -326,12 +332,15 @@ def check_document(doc, tl):
                 continue
             if siblings is None:
                 tops = doc["flows"][in_flow[uid]]
-                if end == "end" and tops[-1] != uid:
+                if end == "end" and next((t for t in reversed(tops) if not is_float(t)), None) != uid:
                     errors.append(f"unit {uid}: open at the end but not the last unit of flow {in_flow[uid]}")
                 if end == "start" and sum(units[t].get("open", {}).get("start", False) for t in tops) > 1:
                     errors.append(f"flow {in_flow[uid]}: more than one unit open at the start")
                 continue
-            if siblings[index].get("unit") != uid:
+            # A figure or caption at the edge with no open end of its own floats (assemble): the unit open is the first
+            # or last past it.
+            edge = siblings if index == 0 else list(reversed(siblings))
+            if next((k.get("unit") for k in edge if not is_float(k.get("unit"))), None) != uid:
                 errors.append(f"unit {uid}: open at the {end} but not the {word} child of {parent[uid]}")
             if not units[parent[uid]].get("open", {}).get(end):
                 errors.append(f"unit {uid}: open at the {end} but its parent {parent[uid]} is not")
@@ -382,8 +391,9 @@ def assemble(page_docs, tl):
     A unit open at its end joins the unit open at its start on a later page of its flow, level by level, when the two
     have the same type and every page between has no unit of that type there and no open end of its own (a blank page,
     a plate with its caption, a page whose units are all of other types). The pages between keep their units, after the
-    joined one. A None in page_docs is a page that is not there: nothing joins across it, as at the start or end of the
-    book."""
+    joined one. A figure or caption at a page's edge (with no open end of its own) floats: the unit open at the end may
+    stand before it, the unit open at the start after it; it stays where it is, after the joined unit. A None in
+    page_docs is a page that is not there: nothing joins across it, as at the start or end of the book."""
     units, start_open, end_open, merged_into, warnings = {}, {}, {}, {}, []
     flows = {f: [] for f in tl["flows"]}
     # Per flow, since the start or the last page that is not there: carry, the unit open at its end that a later page
@@ -399,9 +409,20 @@ def assemble(page_docs, tl):
     def flagged(uid):
         return bool(start_open[uid] or end_open[uid])
 
+    def is_float(uid):
+        return not flagged(uid) and tl["types"].get(type_of(uid), {}).get("region") in ("figure", "caption")
+
     def open_last(children):
-        uid = children[-1].get("unit") if children else None
-        return uid if uid and end_open[uid] else None
+        """The child open at the end, past any floats after it."""
+        for k in reversed(children):
+            uid = k.get("unit")
+            if not uid:
+                return None
+            if end_open[uid]:
+                return uid
+            if not is_float(uid):
+                return None
+        return None
 
     def final(uid):
         while uid in merged_into:
@@ -415,7 +436,9 @@ def assemble(page_docs, tl):
         del units[b]
         merged_into[b] = a
         kids = B["children"]
-        first = kids[0].get("unit") if kids else None
+        # The first child past any floats before it.
+        at = next((i for i, k in enumerate(kids) if not (k.get("unit") and is_float(k["unit"]))), -1)
+        first = kids[at].get("unit") if at >= 0 else None
         # B's page sits between open_ and its continuation: B goes on, and its children are units of other types with
         # no open end of their own.
         passes = bool(open_) and bool(end_open[b]) and all(
@@ -425,7 +448,7 @@ def assemble(page_docs, tl):
             merge(open_, first)
             if carried == first:
                 carried = open_
-            kids = kids[1:]
+            kids = [k for i, k in enumerate(kids) if i != at]
         elif open_ and not passes:
             warnings.append(f"{a} + {b}: inner open ends do not match ({open_}, {first})")
         elif first and start_open[first]:
@@ -460,7 +483,7 @@ def assemble(page_docs, tl):
             kinds, marked = {type_of(t) for t in tops}, any(flagged(t) for t in tops)
             # This page sits between open_ and its continuation: no unit of its type here and no open end of its own.
             passes = bool(open_) and not marked and type_of(open_) not in kinds
-            last = open_ if passes else (tops[-1] if tops else None)
+            last = open_ if passes else next((t for t in reversed(tops) if not is_float(t)), None)
             if open_ and starts and type_of(open_) == type_of(starts[0]):
                 merge(open_, starts[0])
                 if last == starts[0]:

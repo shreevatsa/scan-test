@@ -2,7 +2,9 @@
 // [book, warnings]. A unit open at its end joins the unit open at its start on a later page of its flow, level by
 // level, when the two have the same type and every page between has no unit of that type there and no open end of its
 // own (a blank page, a plate with its caption, a page whose units are all of other types). The pages between keep
-// their units, after the joined one. A null in pageDocs is a page that is not there (Read leaves out pages awaiting transcription): nothing joins across it, as at the start or end of the book.
+// their units, after the joined one. A figure or caption at a page's edge (with no open end of its own) floats: the
+// unit open at the end may stand before it, the unit open at the start after it; it stays where it is, after the
+// joined unit. A null in pageDocs is a page that is not there (Read leaves out pages awaiting transcription): nothing joins across it, as at the start or end of the book.
 
 const clone = x => (x === undefined ? x : JSON.parse(JSON.stringify(x)));
 
@@ -18,7 +20,17 @@ export function assemble(pageDocs, tl, source = {}, { onMerge = () => {} } = {})
   const inner = new Map();
   const typeOf = uid => units.get(uid).type;
   const flagged = uid => startOpen[uid] || endOpen[uid];
-  const openLast = children => { const uid = children[children.length - 1]?.unit; return uid && endOpen[uid] ? uid : null; };
+  const isFloat = uid => !flagged(uid) && ["figure", "caption"].includes(tl.types?.[typeOf(uid)]?.region);
+  // The child open at the end, past any floats after it.
+  const openLast = children => {
+    for (let i = children.length - 1; i >= 0; i--) {
+      const uid = children[i].unit;
+      if (!uid) return null;
+      if (endOpen[uid]) return uid;
+      if (!isFloat(uid)) return null;
+    }
+    return null;
+  };
 
   const final = uid => { while (uid in mergedInto) uid = mergedInto[uid]; return uid; };
 
@@ -30,7 +42,9 @@ export function assemble(pageDocs, tl, source = {}, { onMerge = () => {} } = {})
     mergedInto[b] = a;
     onMerge(a, b);
     let kids = B.children;
-    const first = kids[0]?.unit ?? null;
+    // The first child past any floats before it.
+    const at = kids.findIndex(k => !(k.unit && isFloat(k.unit)));
+    const first = at >= 0 ? kids[at].unit ?? null : null;
     // B's page sits between `open` and its continuation: B goes on, and its children are units of other types with no
     // open end of their own.
     const passes = !!open && endOpen[b] && kids.every(k => "unit" in k && !flagged(k.unit) && typeOf(k.unit) !== typeOf(open));
@@ -38,7 +52,7 @@ export function assemble(pageDocs, tl, source = {}, { onMerge = () => {} } = {})
     if (open && first && startOpen[first] && typeOf(open) === typeOf(first)) {
       merge(open, first);
       if (carried === first) carried = open;
-      kids = kids.slice(1);
+      kids = kids.filter((_, i) => i !== at);
     } else if (open && !passes) {
       warnings.push(`${a} + ${b}: inner open ends do not match (${open}, ${first ?? "None"})`);
     } else if (first && startOpen[first]) {
@@ -71,7 +85,7 @@ export function assemble(pageDocs, tl, source = {}, { onMerge = () => {} } = {})
       const kinds = new Set(tops.map(typeOf)), marked = tops.some(flagged);
       // This page sits between `open` and its continuation: no unit of its type here and no open end of its own.
       const passes = !!open && !marked && !kinds.has(typeOf(open));
-      let last = passes ? open : tops[tops.length - 1] ?? null;
+      let last = passes ? open : tops.findLast(t => !isFloat(t)) ?? null;
       if (open && starts.length && typeOf(open) === typeOf(starts[0])) {
         merge(open, starts[0]);
         if (last === starts[0]) last = open;

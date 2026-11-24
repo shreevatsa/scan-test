@@ -1,5 +1,5 @@
-import { checkTypes, typeRevision } from "./schema.js?v=20261124-headings-3";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-headings-3";
+import { checkTypes, typeRevision } from "./schema.js?v=20261124-floats-3";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-floats-3";
 
 export const REGION_CLASSES = ["verse", "paragraph", "heading", "lead_in", "list_item", "formula", "note", "table", "figure", "caption", "running_header", "page_number", "other"];
 

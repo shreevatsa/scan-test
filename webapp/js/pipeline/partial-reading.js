@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261124-headings-3";
+import { canonical } from "../ops.js?v=20261124-floats-3";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {
