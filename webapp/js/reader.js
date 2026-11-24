@@ -4,13 +4,14 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261124-pagerefs-1";
+import { assemble } from "./assemble.js?v=20261124-verses-3";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
+import { verseGroups } from "./verses.js?v=20261124-verses-3";
 import { css, unitStyle, baseCss } from "./style.js";
-import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261124-pagerefs-1";
-import { layerState } from "./layers.js?v=20261124-pagerefs-1";
-import { bookReading } from "./reading.js?v=20261124-pagerefs-1";
+import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261124-verses-3";
+import { layerState } from "./layers.js?v=20261124-verses-3";
+import { bookReading } from "./reading.js?v=20261124-verses-3";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -267,7 +268,29 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
     return out;
   };
   const label = u => [u.type.replace(/_/g, " "), u.number, u.label ? `“${u.label}”` : ""].filter(Boolean).join(" ");
-  const unitHtml = (uid, depth, tail = "") => {
+  // A verse (verses.js) has an anchor, v-N001, and below it links to its translation and notes; each of those an anchor,
+  // v-notes-N001, and a link back to its verse.
+  const verses = verseGroups(P.book, tl), anchored = new Set();
+  const streamName = type => type.replaceAll("_", " ");
+  const withVerse = (uid, html) => {
+    const key = verses.keyOf.get(uid), g = key && verses.groups.get(key);
+    if (!g) return html;
+    let before = "", after = "";
+    const anchor = id => { if (anchored.has(id)) return ""; anchored.add(id); return `<span class="r-vanchor" id="${esc(id)}"></span>`; };
+    if (uid === (g.lead[0] || g.verse[0])) before = anchor(`v-${key}`);
+    if (uid === g.verse[0]) {
+      const links = Object.keys(g.companions).map(type => `<a href="#v-${esc(type)}-${esc(key)}">${esc(streamName(type))}</a>`);
+      after = `<div class="r-vlinks"><span class="r-vkey">${esc(key)}</span>${links.length ? " · " + links.join(" · ") : ""}</div>`;
+    }
+    for (const [type, list] of Object.entries(g.companions)) if (list.includes(uid)) {
+      const keys = [...verses.groups.values()].filter(other => other.companions[type]?.includes(uid)).map(other => other.key);
+      before = keys.map(k => anchor(`v-${type}-${k}`)).join("");
+      after = `<div class="r-vlinks">${keys.map(k => `<a href="#v-${esc(k)}" title="the verse">↑ ${esc(k)}</a>`).join(" · ")}</div>`;
+    }
+    return before + html + after;
+  };
+  const unitHtml = (uid, depth, tail = "") => withVerse(uid, unitBody(uid, depth, tail));
+  const unitBody = (uid, depth, tail = "") => {
     const u = units[uid];
     if (!u) return "";
     const t = tl.types[u.type] || {}, cls = t.region;
@@ -483,7 +506,11 @@ export const BOOK_CSS = `
   .bookview .bv-inline-note { margin: .2em 0 .7em 1.5em; padding: .35em .6em; font-size: 14px; line-height: 1.45; color: #555; background: #f6f3ea; border-left: 3px solid #d9cfb5; }
 }
 @media print { .bv-toc, .bv-open { display: none; } .bookview { display: block; } }
-`;
+
+.bookview .r-pageref { color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; }
+.bookview .r-vlinks { font: 11px/1.4 system-ui, -apple-system, sans-serif; color: #8a8170; margin: .1em 0 .9em; text-indent: 0; }
+.bookview .r-vlinks a { color: inherit; }
+.bookview .r-vkey { font-variant-numeric: tabular-nums; letter-spacing: .02em; }`;
 
 export async function renderBookView(el, app) {
   const { book, routeToken } = app;
@@ -518,6 +545,10 @@ export async function renderBookView(el, app) {
   wireSourceView(view, el, app, P);
   fillFigures(view, app, P);
   wireBookView(view, el);
+  // An address naming a verse (#read&v=N001, from outside: the Bhartṛhari site) opens Read at it.
+  const verse = new URLSearchParams(location.hash.replace(/^#/, "")).get("v");
+  const target = verse && view.querySelector(`[id="v-${CSS.escape(verse)}"]`);
+  if (target) { target.scrollIntoView({ block: "start" }); el.scrollTop -= 8; }
 }
 
 // Let the browser show what changed (a message) before a long piece of work: after the next frame, or soon in a tab
@@ -583,6 +614,9 @@ body { margin: 0; background: #fdfdfb; color: #1d1d1b; }
 .r-figure figcaption { display: none; }
 .r-pb { font: 10px system-ui, sans-serif; color: #aaa; text-decoration: none; margin: 0 .4em; vertical-align: 2px; }
 .r-pageref { color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; }
+.r-vlinks { font: 11px/1.4 system-ui, sans-serif; color: #8a8170; margin: .1em 0 .9em; }
+.r-vlinks a { color: inherit; }
+.r-vkey { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
 .r-mk { color: inherit; text-decoration: none; font-size: .7em; vertical-align: super; padding: 0 1px; }
 .r-mk::before { content: attr(data-sign); }
 .r-back { font-size: .8em; text-decoration: none; margin-left: 4px; }

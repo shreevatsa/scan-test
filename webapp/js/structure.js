@@ -3,8 +3,8 @@
 // regions, the book's rules and the page's overrides) with the small editing functions below, and the overrides that give
 // the changed structure are what is stored: toBlocks keeps exactly the difference from the derivation. So the structure
 // always re-derives from the regions, and a change to a region moves it along.
-import { toBlocks } from "./blocks-format.js?v=20261124-pagerefs-1";
-import { EditError, joinWithNext, linkMarker, noteTargets, ownerOf, placeOf, setOpen, setUnitField, splitUnit, unitById, unwrapUnit } from "./ops.js?v=20261124-pagerefs-1";
+import { toBlocks } from "./blocks-format.js?v=20261124-verses-3";
+import { EditError, joinWithNext, linkMarker, noteTargets, ownerOf, placeOf, setOpen, setUnitField, splitUnit, unitById, unwrapUnit } from "./ops.js?v=20261124-verses-3";
 
 export { noteTargets };
 const fail = message => { throw new EditError(message); };

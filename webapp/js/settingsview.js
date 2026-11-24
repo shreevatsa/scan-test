@@ -1,10 +1,10 @@
 import { h } from "./render.js";
-import { settings } from "./store.js?v=20261124-pagerefs-1";
-import { credentialsBox } from "./key-check.js?v=20261124-pagerefs-1";
-import { FINDERS, finderById } from "./pipeline/finders.js?v=20261124-pagerefs-1";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261124-pagerefs-1";
-import { renderTypeView } from "./typesview.js?v=20261124-pagerefs-1";
-import { bookRules, ruleProblems } from "./rules.js?v=20261124-pagerefs-1";
+import { settings } from "./store.js?v=20261124-verses-3";
+import { credentialsBox } from "./key-check.js?v=20261124-verses-3";
+import { FINDERS, finderById } from "./pipeline/finders.js?v=20261124-verses-3";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261124-verses-3";
+import { renderTypeView } from "./typesview.js?v=20261124-verses-3";
+import { bookRules, ruleProblems } from "./rules.js?v=20261124-verses-3";
 
 // Settings → Structure: the book's structure rules (book.json `rules`, webapp/js/rules.js), as plain fields. Changing one
 // saves the rules and reads the book again (Read, the page editor's structure and the checks derive from them).
