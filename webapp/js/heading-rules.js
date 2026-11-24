@@ -143,6 +143,13 @@ export function headingSections(pages, levels, { textOf, types }) {
   const titles = levels.length === 1 ? contentsTitles(pages, new Set([...headingTypes, ...verseTypes]), headingTypes) : [];
   const contents = titles.length >= 3 ? titles : null;
   if (contents) levels = [levels[0], levels[0]];
+  // A heading among a contents' entries names a chapter only where the book prints it as a heading too: not a column's
+  // header ("Page"), nor a heading of a page taken for contents (an imprint with its prices and addresses).
+  if (contents?.groups.length) {
+    const elsewhere = pages.flatMap((doc, index) => !doc || contents.pages.has(index) ? [] : doc.page.regions
+      .filter(region => headingTypes.has(region.type)).map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" "))));
+    contents.groups = contents.groups.filter(group => inContents(elsewhere, group));
+  }
   // A heading whose text recurs three times or more ("PURPORT." before each verse's explanation, a book's title repeated
   // at the head of its pages) is a label, not a section's title: it starts no section.
   const counts = new Map(), printed = new Map();
