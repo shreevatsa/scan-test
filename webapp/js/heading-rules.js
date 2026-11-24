@@ -11,14 +11,24 @@
 // number, a range, a roman numeral: "3. ಆಯುರ್ವೇದ ಮತ್ತು ಯೋಗ - 1   1-31"), each such block's text without its numbering
 // and its page reference. Titles are compared normalized: no spaces, punctuation or digits, NFC.
 const PAGE_REF = /[\s.…·_–—-]+(?:[0-9०-९೦-೯]{1,4}(?:\s*[-–]\s*[0-9०-९೦-೯]{1,4})?|[ivxlcdm]{1,6})\s*$/iu;
-export const normalTitle = text => String(text || "").normalize("NFC").replace(/[\s\p{P}\p{S}0-9०-९೦-೯]+/gu, "");
-export function contentsTitles(pages) {
+// A roman numeral standing as a word ("CANTO VI") goes too, so that the contents' "CANTO 1" and the heading "CANTO VI" agree.
+const ROMAN = /(?<![\p{L}\p{M}])(?=[mdclxvi])m*(?:c[md]|d?c{0,3})(?:x[cl]|l?x{0,3})(?:i[xv]|v?i{0,3})(?![\p{L}\p{M}])/giu;
+export const normalTitle = text => String(text || "").normalize("NFC").replace(ROMAN, "").replace(/[\s\p{P}\p{S}0-9०-९೦-೯]+/gu, "");
+// Headings (`headingTypes`) are not entries: "CANTO 1" ends with a number but names a group of entries. Returns the titles,
+// with `pages` the indices of the contents pages and `groups` the titles of the headings that group entries there (all
+// but a page's first heading, the contents' own title).
+export function contentsTitles(pages, headingTypes = new Set()) {
   const titles = [];
-  for (const doc of pages) {
+  titles.pages = new Set(); titles.groups = [];
+  for (const [index, doc] of pages.entries()) {
     if (!doc) continue;
-    const blocks = doc.page.regions.map(region => (region.lines || []).map(line => line.text || "").join(" ").replace(/\s+/g, " ").trim()).filter(Boolean);
+    const blocks = doc.page.regions.filter(region => !headingTypes.has(region.type))
+      .map(region => (region.lines || []).map(line => line.text || "").join(" ").replace(/\s+/g, " ").trim()).filter(Boolean);
     const entries = blocks.filter(text => PAGE_REF.test(text));
     if (entries.length < 4 || entries.length < blocks.length / 2) continue;
+    titles.pages.add(index);
+    const headings = doc.page.regions.filter(region => headingTypes.has(region.type)).map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" ")));
+    titles.groups.push(...headings.slice(1).filter(title => title.length >= 2));
     for (const text of entries) {
       const title = normalTitle(text.replace(PAGE_REF, "").replace(/^[\s.—–-]*[0-9०-९೦-೯]+\s*[.)]+[\s.…—–-]*/u, ""));
       if (title.length >= 2) titles.push(title);
@@ -55,18 +65,23 @@ function sectionPaths(pages, levels, textOf, contents = null) {
   const levelOf = new Map(levels.map((level, index) => [level.heading, index]));
   // With one level and a printed contents, a heading the contents name opens a chapter (level 0) and any other heading
   // a section inside the chapter (level 1, of the same container type).
-  const levelFor = (doc, unit) => {
+  // On a contents page only its first heading (the contents' own title) starts a section; the others group its entries.
+  const levelFor = (doc, unit, pageIndex, firstHeading) => {
     const level = levelOf.get(unit?.type);
     if (level === undefined || !contents) return level;
+    if (contents.pages.has(pageIndex) && !firstHeading) return undefined;
+    // Where the contents group their entries under headings, those name the chapters and the entries their sections.
+    if (contents.groups.length >= 2) return inContents(contents.groups, textOf(doc, unit)) ? 0 : 1;
     return inContents(contents, textOf(doc, unit)) ? 0 : 1;
   };
   const items = [];
   let stack = [], next = 0, titling = null;   // titling: the section whose headings are all it has so far
   pages.forEach((doc, pageIndex) => {
     if (!doc) { stack = []; titling = null; return; }
+    let headings = 0;
     for (const id of doc.flows.main || []) {
       const unit = doc.units.find(value => value.id === id);
-      const level = levelFor(doc, unit);
+      const level = levelFor(doc, unit, pageIndex, levelOf.has(unit?.type) && headings++ === 0);
       // A heading of the same level straight after its section's heading (a title in two parts, a subtitle, an epigraph
       // set as a heading) belongs to that section; one of another level starts its own (a section opening a chapter).
       if (level !== undefined && titling && level === titling.level) {
@@ -91,7 +106,7 @@ function sectionPaths(pages, levels, textOf, contents = null) {
 export function headingSections(pages, levels, { textOf, types }) {
   if (!levels?.length) return 0;
   // One level and a printed contents: two levels, the contents' entries being the chapters.
-  const titles = levels.length === 1 ? contentsTitles(pages) : [];
+  const titles = levels.length === 1 ? contentsTitles(pages, new Set(levels.map(level => level.heading))) : [];
   const contents = titles.length >= 3 ? titles : null;
   if (contents) levels = [levels[0], levels[0]];
   const items = sectionPaths(pages, levels, textOf, contents);

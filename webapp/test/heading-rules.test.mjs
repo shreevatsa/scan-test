@@ -84,3 +84,14 @@ test("with one heading level and a printed contents, the headings it names are c
     { "section “Yoga”": ["heading", "paragraph", { "section “Asana”": ["heading", "paragraph", "paragraph"] }, { "section “Pranayama”": ["heading", "paragraph"] }] },
     { "section “Naadi - 2”": ["heading", { "section “Naadi vishaya”": ["heading", "paragraph"] }] }]);
 });
+
+test("contents that group their entries under headings: those name the chapters, the entries their sections", () => {
+  const contents = page([["heading", "Contents"], ["heading", "CANTO 1"], ["list_item", "Arjuna hesitates . . . 1–47"], ["list_item", "Krishna replies . . . 48–60"],
+    ["heading", "CANTO 2"], ["list_item", "Why work at all? . . . 1, 2"], ["list_item", "Necessity of sacrifice . . . 8–16"]]);
+  const docs = [contents, page([["heading", "CANTO I"], ["heading", "Arjuna hesitates"], ["paragraph", "a"], ["heading", "Krishna replies"], ["paragraph", "b"]]),
+    page([["heading", "CANTO II"], ["paragraph", "c"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  assert.deepEqual(tree, [{ "section “Contents”": ["heading", "heading", "list_item", "list_item", "heading", "list_item", "list_item"] },
+    { "section “CANTO I”": ["heading", { "section “Arjuna hesitates”": ["heading", "paragraph"] }, { "section “Krishna replies”": ["heading", "paragraph"] }] },
+    { "section “CANTO II”": ["heading", "paragraph"] }], "the contents' own headings start no section; a canto holds its sections");
+});
