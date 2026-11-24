@@ -87,3 +87,18 @@ test("a verse's number as printed in other forms, lost, or a quoted verse's own;
   assert.ok(groups.get("S006").follow.includes(idOf("Cf. ड ढ ॥ १७६ ॥")), "the quoted verse goes with the verse before it");
   assert.deepEqual(groups.get("S007").verse, [idOf("ण त ॥ ७ ॥ इति शृङ्गारशतकम् ॥")], "the last verse's number before the colophon");
 });
+
+test("a number fused to a verse's last word; a misread one between verses quoted in the notes; a quotation's own source number", () => {
+  // Verse 11; a verse quoted in its notes (no number); verse 12 misread "१५"; another quote ending with its source's
+  // number after the closing quotation mark ("” १२"); verse 13 with its number fused to its last word.
+  const kids = [["heading", null, "अथ नीतिशतकम्"], ["verse", null, "क ख ॥ ११ ॥"], ["stanza_note", null, "the meaning of verse 11"], ["verse", null, "उद्धृतः श्लोकः"],
+    ["verse", null, "ग घ ॥ १५ ॥"], ["stanza_note", null, "the meaning of verse 12"], ["verse", null, "अन्यः श्लोकः ” १२"], ["verse", null, "ङ चमिति१३"],
+    ["stanza_note", null, "the meaning of verse 13"]];
+  const b = book([["shataka", "नीतिशतकम्", kids]]);
+  const idOf = text => b.units.find(unit => unit.children[0]?.region && b.pages[0].regions.find(r => `p#${r.id}` === unit.children[0].region).lines[0].text === text).id;
+  const { groups } = verseGroups(b, tl);
+  assert.deepEqual([...groups.keys()], ["N011", "N012", "N013"]);
+  assert.deepEqual(groups.get("N012").verse, [idOf("ग घ ॥ १५ ॥")], "the misread number, past the quoted verse before it");
+  assert.deepEqual(groups.get("N013").verse, [idOf("ङ चमिति१३")]);
+  assert.ok(groups.get("N012").follow.includes(idOf("अन्यः श्लोकः ” १२")), "the quotation with its source's number goes with the verse before it");
+});

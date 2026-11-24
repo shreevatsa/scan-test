@@ -1,4 +1,4 @@
-import { ownerOf, regionRef, splitRegionAt, splitUnit } from "./ops.js?v=20261124-contents-3";
+import { ownerOf, regionRef, splitRegionAt, splitUnit } from "./ops.js?v=20261124-verses-8";
 
 export const DEFAULT_COUNTS = "युगलकम्=2,युग्मम्=2,तिलकम्=3,विशेषकम्=3,कलापकम्=4,कुलकम्=5";
 

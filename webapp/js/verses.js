@@ -41,13 +41,14 @@ export function verseGroups(book, tl) {
   const holdsVerse = unit => regionClass(unit.type) === "verse" || unit.children.some(child => child.unit && units.get(child.unit) && holdsVerse(units.get(child.unit)));
 
   // A verse with no number of its own takes the one printed at its end: "… ॥ ३७ ॥", the double danda read as two
-  // single ones ("।। ३५ ।।"), or the dandas half lost ("…भिः।६"), or a number in the script's digits alone ("… ११").
+  // single ones ("।। ३५ ।।"), or the dandas half lost ("…भिः।६"), or a number in the script's digits alone ("… ११",
+  // "…से५०").
   const printed = unit => {
     if (regionClass(unit.type) !== "verse") return null;
     // A colophon after the last verse's number ("॥ ११० ॥ इति नीतिशतकम् ॥", thus the Nīti śataka) is set aside.
     const text = textOf(unit).trim().replace(/(?<=[।॥|])\s*(?:इति|ಇತಿ)\s[^।॥|]*[।॥|]*\s*$/u, "").trim();
     const match = /(?<![०-९0-9])([०-९0-9]{1,3})\s*(?:॥|\|\||।\s*।)\s*$/u.exec(text) || /[।॥|]\s*([०-९೦-೯0-9]{1,3})\s*[।|]?\s*$/u.exec(text) ||
-      /\s([०-९೦-೯]{1,3})\s*$/u.exec(text);
+      /[\p{L}\p{M}]\s*([०-९೦-೯]{1,3})\s*$/u.exec(text);   // after the verse's own words, or fused to the last ("…से५०"); not a quotation's source ("…” १५")
     return match ? numbersOf(match[1]) : null;
   };
   const entryNumbers = unit => regionClass(unit.type) === "list_item" || /contents|index/i.test(unit.type) ? null : numbersOf(unit.number) || printed(unit);
@@ -111,8 +112,10 @@ export function verseGroups(book, tl) {
   // of the text's: its block goes with the verse before it).
   for (const [index, s] of series.entries()) {
     s.entries.forEach((e, i, all) => {
-      // The entry before the first is the last of the series before (a section's heading may start a series).
-      const before = i ? all[i - 1] : series[index - 1]?.entries.at(-1), after = all[i + 1];
+      // The nearest numbered entries either side (past verses whose numbers were not read: verses quoted in the notes);
+      // before the first, the last of the series before (a section's heading may start a series).
+      const before = all.slice(0, i).findLast(other => other.n !== null) || series[index - 1]?.entries.findLast(other => other.n !== null);
+      const after = all.slice(i + 1).find(other => other.n !== null);
       if (before && after && e.n !== null && before.n !== null && e.n !== before.n + 1 && after.n === before.n + 2) { e.n = before.n + 1; e.more = []; }
       // Between two numbers that follow on, a number of its own (not either of theirs repeated, nor the next) is no verse
       // of the text's: a verse quoted with its source's number ("… ॥ १७६ ॥", from an anthology) among a verse's notes.
