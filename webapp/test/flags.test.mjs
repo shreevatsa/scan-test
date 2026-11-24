@@ -136,6 +136,18 @@ test("An uncovered line is described by where it is, not by its number", () => {
   const flagged = doc(); flagged.page.width = 100; flagged.page.height = 300; flagged.source.uncovered_lines = [{ line_id: 5, box: [4, 5, 90, 15] }];
   assert.equal(regionFlags(flagged, types)[0].message, "A printed line outside all regions, near the top of the page");
 });
+test("A line outside all regions that a whole-page reader read as an ornament or a rule raises no flag; one with text says it", () => {
+  const page = doc(); page.page.width = 1000; page.page.height = 1500; page.source.char_h = 20;
+  const line = (line_id, text) => ({ line_id, box: [400, 100 * line_id, 600, 100 * line_id + 25], ...(text === undefined ? {} : { text }) });
+  page.source.uncovered_lines = [line(1, "-- * --"), line(2, "00000"), line(3, ""), line(4, "* * * *"), line(5, "ಹಿಂದಿನ ಪುಟದಿಂದ"), line(6), line(7, "12")];
+  assert.deepEqual(regionFlags(page, types).filter(flag => flag.code === "uncovered").map(flag => flag.line_id), [5, 6, 7]);
+  assert.match(regionFlags(page, types).find(flag => flag.line_id === 5).message, /, reading “ಹಿಂದಿನ ಪುಟದಿಂದ”$/);
+});
+test("A hairline outside all regions (the scan's edge, a fold) raises no flag, wherever it is", () => {
+  const page = doc(); page.page.width = 2480; page.page.height = 3508; page.source.char_h = 54;
+  page.source.uncovered_lines = [{ line_id: 1, box: [2340, 1076, 2346, 1247] }, { line_id: 2, box: [2160, 970, 2177, 1072] }, { line_id: 3, box: [1131, 3357, 1164, 3405] }];
+  assert.deepEqual(regionFlags(page, types).filter(flag => flag.code === "uncovered").map(flag => flag.line_id), [3]);
+});
 test("Ignored lines raise no flag, restoring brings it back, and ignoring counts as a regions edit", () => {
   const model = doc(); model.source.uncovered_lines = [{ line_id: 5, box: [4, 5, 70, 15] }, { line_id: 6, box: [4, 200, 70, 215] }];
   const edited = structuredClone(model); ops.ignoreLine(edited, { line_id: 5, box: [4, 5, 70, 15] });

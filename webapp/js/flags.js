@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-floats-2";
-import { layerState } from "./layers.js?v=20261124-floats-2";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-vision-8";
+import { layerState } from "./layers.js?v=20261124-vision-8";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -109,9 +109,9 @@ export function linePosition(box, page) {
   return `near the ${band} of the page${side ? `, on the ${side}` : ""}`;
 }
 
-export function uncoveredMessage(box, page) {
-  const where = linePosition(box, page);
-  return `A printed line outside all regions${where ? `, ${where}` : ""}`;
+export function uncoveredMessage(box, page, text = null) {
+  const where = linePosition(box, page), read = text?.trim() ? `, reading “${text.trim().slice(0, 60)}”` : "";
+  return `A printed line outside all regions${where ? `, ${where}` : ""}${read}`;
 }
 
 // Ignored lines are {line_id, box} (a plain id is also accepted). A line is ignored when one of them lies over it, so a
@@ -157,16 +157,27 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
     add("no-ink", `Region ${skipped.region_id}${skipped.type ? ` (${skipped.type})` : ""} was left out: ${what}`, null, skipped.model_box || null);
   }
   const ignored = ignoredLines(doc);
-  // A mark narrower than a character at the very edge of the scan (a speck, the shadow of the binding) is no printed line.
+  // A mark narrower than a character at the very edge of the scan (a speck, the shadow of the binding), or a hairline
+  // anywhere (under half a character wide and at least twice as tall: the scan's edge, a fold, a rule), is no printed line.
   const charH = doc.source?.char_h || 0, W = doc.page.width || 0, H = doc.page.height || 0;
-  const speck = line => Boolean(charH && W && line.box) && line.box[2] - line.box[0] < charH &&
-    Math.min(line.box[0], W - line.box[2], line.box[1], H - line.box[3]) < 0.03 * W;
-  const marks = (doc.source?.uncovered_lines || []).filter(line => !lineIgnored(ignored, line) && !speck(line));
+  const speck = line => {
+    if (!charH || !W || !line.box) return false;
+    const width = line.box[2] - line.box[0], height = line.box[3] - line.box[1];
+    return width < charH && Math.min(line.box[0], W - line.box[2], line.box[1], H - line.box[3]) < 0.03 * W || width < 0.5 * charH && height >= 2 * width;
+  };
+  // A line a whole-page reader read with no letters or digits, or only one repeated ("* * *", "-- * --", a row of rings
+  // read as "00000"), or with nothing at all, is an ornament or a rule.
+  const ornament = line => {
+    if (typeof line.text !== "string") return false;
+    const signs = line.text.replace(/[^\p{L}\p{N}]/gu, "");
+    return !signs || signs.length >= 3 && /^(.)\1*$/u.test(signs);
+  };
+  const marks = (doc.source?.uncovered_lines || []).filter(line => !lineIgnored(ignored, line) && !speck(line) && !ornament(line));
   // A page where the region finder kept nothing (a cover, a library's notice or stamp, a blank leaf) has one check for
   // all its marks, not one for each speck the line analysis found.
   const keptNothing = !regions.length && !(doc.source?.omitted_regions || []).length && Boolean(doc.source?.layers?.regions || doc.source?.regions_method || doc.source?.method);
   if (keptNothing && marks.length) add("marks-only", `The region finder kept nothing on this page, though the scan has ${marks.length} ${marks.length === 1 ? "mark" : "marks"} that may be print`, null, null, { count: marks.length });
-  else for (const line of marks) add("uncovered", uncoveredMessage(line.box, doc.page), null, line.box, { line_id: line.line_id });
+  else for (const line of marks) add("uncovered", uncoveredMessage(line.box, doc.page, line.text), null, line.box, { line_id: line.line_id });
   for (const problem of doc.source?.provisional_problems || []) add("provisional", problem);
   if (doc.source?.geometry_error) add("geometry", doc.source.geometry_error);
   if (doc.source?.type_review?.regions) add("type-revision", "Find regions again after the figure-class change");

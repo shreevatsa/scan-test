@@ -2,7 +2,7 @@
 // API and standard paid-tier pricing checked 2026-11-08.
 // https://docs.cloud.google.com/vision/docs/fulltext-annotations
 // https://cloud.google.com/vision/pricing
-import { wordsToReading } from "./ocr.js?v=20261124-floats-2";
+import { wordsToReading } from "./ocr.js?v=20261124-vision-8";
 
 export function visionRequest(profile, imageDataUrl) {
   const content = imageDataUrl.split(",")[1];
@@ -11,7 +11,7 @@ export function visionRequest(profile, imageDataUrl) {
 }
 
 // What a reading from Cloud Vision is parsed with; a saved response is parsed again when this changes (run.js).
-export const VISION_PARSE = 7;
+export const VISION_PARSE = 8;
 
 // Cloud Vision's habits in Indic text: the avagraha (ಽ, ऽ) read as a Latin "s", standing apart ("ಯೋ s ಪಾಕರೋತ್");
 // dandas as ASCII bars. In a line written mostly in an Indic script, a lone "s" (or "ss") between letters becomes the
@@ -56,7 +56,10 @@ export function likelyWord(word, line) {
   return true;
 }
 
-export function visionReading(body, sent) {
+// `uncovered`, the page's printed lines outside all regions (regions record uncovered_lines): Vision reads the whole page,
+// so what it read inside each is returned too ({ line_id, text }), to tell an ornament or a rule (no letters) from text
+// the region finder missed.
+export function visionReading(body, sent, uncovered = []) {
   if (body.responses?.length !== 1) throw new Error("Cloud Vision returned an unexpected number of image responses.");
   const response = body.responses[0];
   if (response.error) throw new Error(`Cloud Vision OCR failed. ${response.error.message || response.error.code}`);
@@ -73,7 +76,14 @@ export function visionReading(body, sent) {
       words.push({ text, confidence: word.confidence, space: Boolean(after) && after !== "HYPHEN", bbox: { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) } });
     }
   if (!words.length && sent.some(s => s.line_ids.length)) throw new Error("Cloud Vision returned no word geometry for the page.");
-  return wordsToReading(words, sent, "Cloud Vision supplies plain text. Review inline formatting and note markers.", indicLine, likelyWord);
+  const reading = wordsToReading(words, sent, "Cloud Vision supplies plain text. Review inline formatting and note markers.", indicLine, likelyWord);
+  if (!uncovered?.length) return reading;
+  return { ...reading, uncovered: uncovered.filter(line => line.box).map(line => {
+    const [x0, y0, x1, y1] = line.box;
+    const inside = words.filter(word => { const x = (word.bbox.x0 + word.bbox.x1) / 2, y = (word.bbox.y0 + word.bbox.y1) / 2; return x >= x0 && x <= x1 && y >= y0 && y <= y1; })
+      .sort((a, b) => a.bbox.x0 - b.bbox.x0);
+    return { line_id: line.line_id, text: inside.map((word, i) => word.text + (i < inside.length - 1 && word.space !== false ? " " : "")).join("").normalize("NFC") };
+  }) };
 }
 
 export function visionCost(body, profile) {

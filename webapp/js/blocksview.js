@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261124-floats-2";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261124-floats-2";
-import { bookReading } from "./reading.js?v=20261124-floats-2";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261124-floats-2";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261124-vision-8";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261124-vision-8";
+import { bookReading } from "./reading.js?v=20261124-vision-8";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261124-vision-8";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261124-floats-2";
+import * as ops from "./ops.js?v=20261124-vision-8";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261124-floats-2";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261124-floats-2";
-import { suggestionButton } from "./review-view.js?v=20261124-floats-2";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261124-floats-2";
-import { pageReviewState } from "./layers.js?v=20261124-floats-2";
-import { readingOrderWarnings } from "./schema.js?v=20261124-floats-2";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261124-floats-2";
+import { noteProblems } from "./note-links.js?v=20261124-vision-8";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261124-vision-8";
+import { suggestionButton } from "./review-view.js?v=20261124-vision-8";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261124-vision-8";
+import { pageReviewState } from "./layers.js?v=20261124-vision-8";
+import { readingOrderWarnings } from "./schema.js?v=20261124-vision-8";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261124-vision-8";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -80,7 +80,7 @@ export function blockChecks(app, doc, projection) {
     see.add(key);
     if (flag.code === "uncovered") {
       const line = doc.source.uncovered_lines.find(line => line.line_id === flag.line_id);
-      add(`Possible missed line ${linePosition(flag.box, doc.page)}.`, "Review line", () => {
+      add(`Possible missed line ${linePosition(flag.box, doc.page)}${line?.text?.trim() ? `: “${line.text.trim().slice(0, 60)}”` : ""}.`, "Review line", () => {
         scan(flag.box);
         app.textPanel.reviewFinding(line);
       }, () => app.edit(next => ops.ignoreLine(next, line)));

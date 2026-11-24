@@ -1,10 +1,10 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261124-floats-2";
-import { canonical } from "../ops.js?v=20261124-floats-2";
-import { checkDocument, typeRevision } from "../schema.js?v=20261124-floats-2";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261124-vision-8";
+import { canonical } from "../ops.js?v=20261124-vision-8";
+import { checkDocument, typeRevision } from "../schema.js?v=20261124-vision-8";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261124-floats-2";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261124-floats-2";
-import { blockLineEnd } from "../blocks.js?v=20261124-floats-2";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261124-vision-8";
+import { preserveMarkerIds } from "../marker-ids.js?v=20261124-vision-8";
+import { blockLineEnd } from "../blocks.js?v=20261124-vision-8";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
@@ -176,6 +176,11 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
       if (!target.end && end !== "space") target.end = end;
     }
     region.source = { ...region.source, transcription: { uncertain: input.uncertain, note: input.note } };
+  }
+  // What a whole-page reader read in the printed lines outside all regions (vision.js), kept with each line.
+  if (Array.isArray(parsed.uncovered) && doc.source?.uncovered_lines?.length) {
+    const read = new Map(parsed.uncovered.map(line => [line.line_id, line.text]));
+    doc.source.uncovered_lines = doc.source.uncovered_lines.map(line => read.has(line.line_id) ? { ...line, text: read.get(line.line_id) } : line);
   }
   const label = pageLabel(doc.page.regions);
   if (label) doc.page.label = label;

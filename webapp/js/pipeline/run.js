@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261124-floats-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-floats-2";
+import { typeRevision } from "../schema.js?v=20261124-vision-8";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-8";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-floats-2";
-import * as I from "./images.js?v=20261124-floats-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-floats-2";
+import * as S from "./steps.js?v=20261124-vision-8";
+import * as I from "./images.js?v=20261124-vision-8";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-8";
 import * as Split from "./split.js";
-import { localReading, localLayout } from "./ocr.js?v=20261124-floats-2";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-floats-2";
-import { finderById, finderPath } from "./finders.js?v=20261124-floats-2";
-import { finderRequest } from "./finder-requests.js?v=20261124-floats-2";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-floats-2";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-floats-2";
+import { localReading, localLayout } from "./ocr.js?v=20261124-vision-8";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-8";
+import { finderById, finderPath } from "./finders.js?v=20261124-vision-8";
+import { finderRequest } from "./finder-requests.js?v=20261124-vision-8";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-8";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-8";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261124-floats-2";
-import { layerState, noteEdit } from "../layers.js?v=20261124-floats-2";
-import { provisionalDocument } from "./provisional.js?v=20261124-floats-2";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-floats-2";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-floats-2";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-floats-2";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-floats-2";
+import { canonical } from "../ops.js?v=20261124-vision-8";
+import { layerState, noteEdit } from "../layers.js?v=20261124-vision-8";
+import { provisionalDocument } from "./provisional.js?v=20261124-vision-8";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-8";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-8";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-8";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-8";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -447,7 +447,7 @@ export class Maker {
       for (const callPath of [cached.path, ...(cached.parts || []).map(part => part.path).reverse()].filter(Boolean)) {
         const call = await this.book.readWork(callPath);
         if (!call?.response?.responses) continue;
-        const parsed = Split.checkReading(visionReading(call.response, sent), sent.filter(source => source.line_ids.length));
+        const parsed = Split.checkReading(visionReading(call.response, sent, rec.uncovered_lines), sent.filter(source => source.line_ids.length));
         const reading = { ...cached, parsed, vision_parse: VISION_PARSE, reparsed_from: callPath, regions_record: rec, geometry_key, fingerprint };
         delete reading.partial; delete reading.region_ids; delete reading.reused_regions; delete reading.base_fingerprint;
         await this.book.updateWork(path, () => reading);
@@ -462,7 +462,7 @@ export class Maker {
     const scope = plan.partial ? { partial: true, region_ids: targets.map(source => source.rid),
       base_fingerprint: cached.fingerprint, reused_regions: plan.reused.map(region => region.id) } : {};
     const targetIds = new Set(targets.map(source => source.rid));
-    const selectTargets = parsed => ({ regions: parsed.regions.filter(region => targetIds.has(region.id)) });
+    const selectTargets = parsed => ({ ...(parsed.uncovered ? { uncovered: parsed.uncovered } : {}), regions: parsed.regions.filter(region => targetIds.has(region.id)) });
     let result;
     if (!targets.some(s => s.line_ids.length)) result = { status: "completed", parsed: { regions: [] }, cost_usd: 0, seconds: 0, cached: true };
     else if (profile.provider === "local") {
@@ -473,12 +473,12 @@ export class Maker {
         seconds: (performance.now() - started) / 1000, local: { words: local.words, confidence: local.confidence } };
     } else if (profile.provider === "vision") {
       if (!force && sameReadingSource(cached, rec, chosen, profile, imageHash) && cached.response) {
-        result = { status: "completed", parsed: Split.checkReading(selectTargets(visionReading(cached.response, sent)), targets),
+        result = { status: "completed", parsed: Split.checkReading(selectTargets(visionReading(cached.response, sent, plan.partial ? [] : rec.uncovered_lines)), targets),
           cost_usd: cached.cost_usd, seconds: cached.seconds, path: cached.path, response: cached.response, cached: true, ocr_reused: true };
       } else {
         const payload = visionRequest(profile, await dataUrlOf(file));
         result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets),
-          (usage, body) => visionCost(body, profile), body => selectTargets(visionReading(body, sent)), scope);
+          (usage, body) => visionCost(body, profile), body => selectTargets(visionReading(body, sent, plan.partial ? [] : rec.uncovered_lines)), scope);
       }
     } else if (list) {
       // One call for the whole page: the page image as the app draws it, the regions in the prompt. A region whose answer

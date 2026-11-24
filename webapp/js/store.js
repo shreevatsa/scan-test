@@ -7,15 +7,15 @@
 // drawn from the PDF. Drafts, versions that do not pass the checks yet, are always kept in IndexedDB.
 
 import { readChaya, recoverOriginal, writeChaya, sha256hex } from "./chayapdf.js";
-import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-floats-2";
-import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-floats-2";
-import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-floats-2";
-import { canonical } from "./ops.js?v=20261124-floats-2";
-import { checkDocument, typeRevision } from "./schema.js?v=20261124-floats-2";
-import { mergeTextEdit } from "./editing.js?v=20261124-floats-2";
-import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-floats-2";
-import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-floats-2";
-import { readingDocuments } from "./workflow.js?v=20261124-floats-2";
+import { LAYERS, isProtected, noteEdit, withPageReview, preservePageReview } from "./layers.js?v=20261124-vision-8";
+import { addBookType, initialBookTypes } from "./book-types.js?v=20261124-vision-8";
+import { planTypeRevision, mappedTypeNames, migrateTypeDocument } from "./type-revisions.js?v=20261124-vision-8";
+import { canonical } from "./ops.js?v=20261124-vision-8";
+import { checkDocument, typeRevision } from "./schema.js?v=20261124-vision-8";
+import { mergeTextEdit } from "./editing.js?v=20261124-vision-8";
+import { upgradePages, isOldPage } from "./upgrade.js?v=20261124-vision-8";
+import { blocksContext, toBlocks } from "./blocks-format.js?v=20261124-vision-8";
+import { readingDocuments } from "./workflow.js?v=20261124-vision-8";
 
 const bookWrites = new Map();
 

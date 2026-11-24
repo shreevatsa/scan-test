@@ -20,6 +20,16 @@ test("words are joined as Vision detected the spaces: none before punctuation", 
   assert.equal(visionReading(body, sent).regions[0].lines[0].text, "ಸಿಗೋಲ್ಲ. ಒಳಗೆ (Pin)");
 });
 
+test("what Vision read in the printed lines outside all regions comes back with the reading", () => {
+  const word = (text, x, y) => ({ symbols: [...text].map((ch, i, all) => ({ text: ch, ...(i === all.length - 1 ? { property: { detectedBreak: { type: "SPACE" } } } : {}) })),
+    confidence: 0.9, boundingBox: { vertices: [{ x, y }, { x: x + 40, y }, { x: x + 40, y: y + 20 }, { x, y: y + 20 }] } });
+  const body = { responses: [{ fullTextAnnotation: { pages: [{ blocks: [{ paragraphs: [{ words: [word("ಒಳಗೆ", 10, 10), word("--", 100, 100), word("*", 150, 100), word("--", 200, 100)] }] }] }] } }] };
+  const sent = [{ rid: "r1", line_ids: [1], region: { lines: [{ line_id: 1, polygons: [[[0, 0], [300, 0], [300, 40], [0, 40]]] }] } }];
+  const reading = visionReading(body, sent, [{ line_id: 9, box: [90, 95, 260, 125] }, { line_id: 10, box: [0, 300, 100, 330] }]);
+  assert.deepEqual(reading.uncovered, [{ line_id: 9, text: "-- * --" }, { line_id: 10, text: "" }]);
+  assert.equal(visionReading(body, sent).uncovered, undefined, "none asked, none returned");
+});
+
 test("words Vision is unsure of: very unsure ones, and Latin ones in a line of another script, are left out", async () => {
   const { likelyWord } = await import("../js/pipeline/vision.js");
   const line = [{ text: "ಅರ್ಥ-ಕಾಮ-ಮೋಕ್ಷ", confidence: 0.9 }, { text: "ಇವುಗಳೊಡನೆ", confidence: 0.93 }, { text: "caricane", confidence: 0.15 }, { text: "ACCEO", confidence: 0.48 },
