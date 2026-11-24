@@ -320,8 +320,22 @@ test("Cloud Vision reuses saved full-page word geometry for repairs and charges 
   assert.equal(calls.length, 2);
   assert.deepEqual(calls[0].payload, calls[1].payload);
 
-  // Older caches may lack the full response. Recover a paid repair even if the box moved again.
+  // A reading without the response finds it in its call record: a repair needs no new call.
+  const saved = await book.readWork("work/readings/p1/vision-document.json");
+  assert.equal(saved.response, undefined, "the response is kept in the call record only");
+  const moved = book.work.get("work/p1.regions.json").regions[1];
+  moved.polygons = polygon(60); moved.lines[0].polygons = polygon(60);
+  const reused = await maker.read("p1", { reader: "vision-document" });
+  assert.equal(reused.ocr_reused, true);
+  assert.equal(calls.length, 2);
+  moved.polygons = polygon(45); moved.lines[0].polygons = polygon(45);
+  await maker.read("p1", { reader: "vision-document" });
+
+  // Older caches may lack the full response anywhere. Recover a paid repair even if the box moved again.
   delete fresh.response;
+  const call = await book.readWork(fresh.path);
+  delete call.response;
+  await book.writeWork(fresh.path, call);
   await book.writeWork("work/readings/p1/vision-document.json", fresh);
   const source = book.work.get("work/p1.regions.json").regions[1];
   source.polygons = polygon(70); source.lines[0].polygons = polygon(70);

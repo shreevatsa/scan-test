@@ -1,27 +1,27 @@
-import { typeRevision } from "../schema.js?v=20261124-labels-2";
-import { mappedTypeNames } from "../type-revisions.js?v=20261124-labels-2";
+import { typeRevision } from "../schema.js?v=20261124-vision-9b";
+import { mappedTypeNames } from "../type-revisions.js?v=20261124-vision-9b";
 // Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
 // Save each stage independently so retries can reuse completed work.
 
 import * as P from "./prompts.js";
-import * as S from "./steps.js?v=20261124-labels-2";
-import * as I from "./images.js?v=20261124-labels-2";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-labels-2";
+import * as S from "./steps.js?v=20261124-vision-9b";
+import * as I from "./images.js?v=20261124-vision-9b";
+import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261124-vision-9b";
 import * as Split from "./split.js";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-labels-2";
-import { classifyBlocks } from "../local/blocks.js?v=20261124-labels-2";
-import { finderById, finderPath } from "./finders.js?v=20261124-labels-2";
-import { finderRequest } from "./finder-requests.js?v=20261124-labels-2";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-labels-2";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-labels-2";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261124-vision-9b";
+import { classifyBlocks } from "../local/blocks.js?v=20261124-vision-9b";
+import { finderById, finderPath } from "./finders.js?v=20261124-vision-9b";
+import { finderRequest } from "./finder-requests.js?v=20261124-vision-9b";
+import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261124-vision-9b";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261124-vision-9b";
 import { bbox } from "../render.js";
-import { canonical } from "../ops.js?v=20261124-labels-2";
-import { layerState, noteEdit } from "../layers.js?v=20261124-labels-2";
-import { provisionalDocument } from "./provisional.js?v=20261124-labels-2";
-import { mergeRegions, mergeText } from "./apply.js?v=20261124-labels-2";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-labels-2";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-labels-2";
-import { isProtected, LAYERS } from "../layers.js?v=20261124-labels-2";
+import { canonical } from "../ops.js?v=20261124-vision-9b";
+import { layerState, noteEdit } from "../layers.js?v=20261124-vision-9b";
+import { provisionalDocument } from "./provisional.js?v=20261124-vision-9b";
+import { mergeRegions, mergeText } from "./apply.js?v=20261124-vision-9b";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261124-vision-9b";
+import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261124-vision-9b";
+import { isProtected, LAYERS } from "../layers.js?v=20261124-vision-9b";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
@@ -534,9 +534,13 @@ export class Maker {
       result = { status: "completed", parsed: Split.checkReading(selectTargets(local.reading), targets), cost_usd: 0,
         seconds: (performance.now() - started) / 1000, local: { words: local.words, confidence: local.confidence } };
     } else if (profile.provider === "vision") {
-      if (!force && sameReadingSource(cached, rec, chosen, profile, imageHash) && cached.response) {
-        result = { status: "completed", parsed: Split.checkReading(selectTargets(visionReading(cached.response, sent, plan.partial ? [] : rec.uncovered_lines)), targets),
-          cost_usd: cached.cost_usd, seconds: cached.seconds, path: cached.path, response: cached.response, cached: true, ocr_reused: true };
+      // The same page image read before: its words are placed on the new regions, no new call. The response is in the
+      // reading's call record (a reading saved before 2026-11-24 holds it too).
+      const earlier = !force && sameReadingSource(cached, rec, chosen, profile, imageHash) &&
+        (cached.response || (cached.path && (await this.book.readWork(cached.path))?.response));
+      if (earlier?.responses) {
+        result = { status: "completed", parsed: Split.checkReading(selectTargets(visionReading(earlier, sent, plan.partial ? [] : rec.uncovered_lines)), targets),
+          cost_usd: cached.cost_usd, seconds: cached.seconds, path: cached.path, cached: true, ocr_reused: true };
       } else {
         const payload = visionRequest(profile, await compactDataUrl(file));
         result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkReading(parsed, targets),
@@ -559,6 +563,8 @@ export class Maker {
     }
     const reading = { ...result, ...(profile.provider === "vision" && !plan.partial ? { vision_parse: VISION_PARSE } : {}), format: "page-reading", version: 1, page: pid, profile, options: chosen, fingerprint,
       image_sha256: imageHash, geometry_key, regions_record: rec, skipped };
+    // Cloud Vision's response (some 200 kB a page) stays in its call record only.
+    if (profile.provider === "vision" && reading.path) delete reading.response;
     if (plan.partial) {
       const archive = `work/reading-history/${pid}/${profile.id}/${await jsonHash(cached)}.json`;
       if (!await this.book.readWork(archive)) await this.book.writeWork(archive, cached);

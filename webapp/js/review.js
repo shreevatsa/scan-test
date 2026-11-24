@@ -1,11 +1,11 @@
-import { canonical, clone, EditError, regionById, setLine, setRegionType } from "./ops.js?v=20261124-labels-2";
-import { layerRecords } from "./layers.js?v=20261124-labels-2";
-import { mergeText } from "./pipeline/apply.js?v=20261124-labels-2";
-import { checkDocument } from "./schema.js?v=20261124-labels-2";
+import { canonical, clone, EditError, regionById, setLine, setRegionType } from "./ops.js?v=20261124-vision-9b";
+import { layerRecords } from "./layers.js?v=20261124-vision-9b";
+import { mergeText } from "./pipeline/apply.js?v=20261124-vision-9b";
+import { checkDocument } from "./schema.js?v=20261124-vision-9b";
 import { markedText } from "./pipeline/split.js";
-import { regionLayout } from "./pipeline/finders.js?v=20261124-labels-2";
-import { preserveMarkerIds } from "./marker-ids.js?v=20261124-labels-2";
-import { partialTextScope } from "./pipeline/partial-reading.js?v=20261124-labels-2";
+import { regionLayout } from "./pipeline/finders.js?v=20261124-vision-9b";
+import { preserveMarkerIds } from "./marker-ids.js?v=20261124-vision-9b";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261124-vision-9b";
 
 export const reviewSnapshot = (doc, types) => canonical({ doc, types });
 const freeLayer = (doc, layer) => {
