@@ -2,7 +2,7 @@
 // API and standard paid-tier pricing checked 2026-11-08.
 // https://docs.cloud.google.com/vision/docs/fulltext-annotations
 // https://cloud.google.com/vision/pricing
-import { wordsToReading } from "./ocr.js?v=20261124-missed-2";
+import { wordsToReading } from "./ocr.js?v=20261124-frame-1";
 
 export function visionRequest(profile, imageDataUrl) {
   const content = imageDataUrl.split(",")[1];
@@ -11,7 +11,7 @@ export function visionRequest(profile, imageDataUrl) {
 }
 
 // What a reading from Cloud Vision is parsed with; a saved response is parsed again when this changes (run.js).
-export const VISION_PARSE = 12;
+export const VISION_PARSE = 13;
 
 // Cloud Vision's habits in Indic text: the avagraha (ಽ, ऽ) read as a Latin "s", standing apart ("ಯೋ s ಪಾಕರೋತ್");
 // dandas as ASCII bars. In a line written mostly in an Indic script, a lone "s" (or "ss") between letters becomes the
@@ -82,7 +82,13 @@ export function visionReading(body, sent, uncovered = []) {
     const [x0, y0, x1, y1] = line.box;
     const inside = words.filter(word => { const x = (word.bbox.x0 + word.bbox.x1) / 2, y = (word.bbox.y0 + word.bbox.y1) / 2; return x >= x0 && x <= x1 && y >= y0 && y <= y1; })
       .sort((a, b) => a.bbox.x0 - b.bbox.x0);
-    return { line_id: line.line_id, text: inside.map((word, i) => word.text + (i < inside.length - 1 && word.space !== false ? " " : "")).join("").normalize("NFC") };
+    // How sure Vision is of the line's words (by their length): a page's ornamental frame is read as letters too
+    // ("NANANANA"), but at well under the confidence of print (under 0.8, print 0.9 and over).
+    const letters = inside.reduce((sum, word) => sum + word.text.length, 0);
+    const confidence = inside.every(word => typeof word.confidence === "number") && letters
+      ? Number((inside.reduce((sum, word) => sum + word.confidence * word.text.length, 0) / letters).toFixed(2)) : undefined;
+    return { line_id: line.line_id, text: inside.map((word, i) => word.text + (i < inside.length - 1 && word.space !== false ? " " : "")).join("").normalize("NFC"),
+      ...(confidence !== undefined ? { confidence } : {}) };
   }) };
 }
 

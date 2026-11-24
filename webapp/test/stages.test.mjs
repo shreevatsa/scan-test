@@ -66,6 +66,16 @@ test("provisional documents validate on all nine public region references withou
   }
 });
 
+test("what a whole-page reader read in the lines outside all regions is kept with each line, with its confidence", () => {
+  const doc = provisionalDocument(pid, page, types, { ...record(), regions: [] });
+  doc.source.uncovered_lines = [{ line_id: 1, box: [10, 10, 500, 40] }, { line_id: 2, box: [10, 60, 500, 90], text: "old", confidence: 0.4 }, { line_id: 3, box: [10, 110, 500, 140] }];
+  const parsed = { profile: { id: "vision-document" }, parsed: { regions: [], uncovered: [{ line_id: 1, text: "NANANA FYFY", confidence: 0.52 }, { line_id: 2, text: "a printed line" }] } };
+  const merged = mergeText(doc, parsed, types).doc;
+  valid(merged);
+  assert.deepEqual(merged.source.uncovered_lines, [{ line_id: 1, box: [10, 10, 500, 40], text: "NANANA FYFY", confidence: 0.52 },
+    { line_id: 2, box: [10, 60, 500, 90], text: "a printed line" }, { line_id: 3, box: [10, 110, 500, 140] }]);
+});
+
 test("empty pages, figures, omitted types and missing ink retain their stage and review evidence", () => {
   for (const regions of [[], [region(1, "figure")]]) {
     const doc = provisionalDocument(pid, page, types, { ...record(), regions });

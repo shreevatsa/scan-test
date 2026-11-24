@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-missed-2";
-import { layerState } from "./layers.js?v=20261124-missed-2";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261124-frame-1";
+import { layerState } from "./layers.js?v=20261124-frame-1";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -178,11 +178,12 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
     return width < charH && Math.min(line.box[0], W - line.box[2], line.box[1], H - line.box[3]) < 0.03 * W || width < 0.5 * charH && height >= 2 * width;
   };
   // A line a whole-page reader read with no letters or digits, or only one repeated ("* * *", "-- * --", a row of rings
-  // read as "00000"), or with nothing at all, is an ornament or a rule.
+  // read as "00000"), or with nothing at all, is an ornament or a rule; so is one it read with little confidence (a
+  // page's ornamental frame read as rows of letters, "NANANANA FYFYF", at under 0.8; print is read at 0.9 and over).
   const ornament = line => {
     if (typeof line.text !== "string") return false;
     const signs = line.text.replace(/[^\p{L}\p{N}]/gu, "");
-    return !signs || signs.length >= 3 && /^(.)\1*$/u.test(signs);
+    return !signs || signs.length >= 3 && /^(.)\1*$/u.test(signs) || typeof line.confidence === "number" && line.confidence < 0.8;
   };
   const marks = (doc.source?.uncovered_lines || []).filter(line => !lineIgnored(ignored, line) && !speck(line) && !ornament(line));
   // A page where the region finder kept nothing (a cover, a library's notice or stamp, a blank leaf) has one check for

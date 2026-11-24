@@ -1,5 +1,5 @@
 import { h } from "./render.js";
-import { pageRange } from "./pipeline/pdf.js?v=20261124-missed-2";
+import { pageRange } from "./pipeline/pdf.js?v=20261124-frame-1";
 
 export function lazyThumbnails(root, load) {
   const observer = new IntersectionObserver(entries => {

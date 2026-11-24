@@ -139,8 +139,10 @@ test("An uncovered line is described by where it is, not by its number", () => {
 test("A line outside all regions that a whole-page reader read as an ornament or a rule raises no flag; one with text says it", () => {
   const page = doc(); page.page.width = 1000; page.page.height = 1500; page.source.char_h = 20;
   const line = (line_id, text) => ({ line_id, box: [400, 100 * line_id, 600, 100 * line_id + 25], ...(text === undefined ? {} : { text }) });
-  page.source.uncovered_lines = [line(1, "-- * --"), line(2, "00000"), line(3, ""), line(4, "* * * *"), line(5, "ಹಿಂದಿನ ಪುಟದಿಂದ"), line(6), line(7, "12")];
-  assert.deepEqual(regionFlags(page, types).filter(flag => flag.code === "uncovered").map(flag => flag.line_id), [5, 6, 7]);
+  page.source.uncovered_lines = [line(1, "-- * --"), line(2, "00000"), line(3, ""), line(4, "* * * *"), line(5, "ಹಿಂದಿನ ಪುಟದಿಂದ"), line(6), line(7, "12"),
+    { ...line(8, "NANANANAMAN FYFYFV"), confidence: 0.52 }, { ...line(9, "a line of print"), confidence: 0.97 }];
+  assert.deepEqual(regionFlags(page, types).filter(flag => flag.code === "uncovered").map(flag => flag.line_id), [5, 6, 7, 9],
+    "an ornamental frame read as letters at low confidence is an ornament");
   assert.match(regionFlags(page, types).find(flag => flag.line_id === 5).message, /, reading “ಹಿಂದಿನ ಪುಟದಿಂದ”$/);
 });
 test("A hairline outside all regions (the scan's edge, a fold) raises no flag, wherever it is", () => {
