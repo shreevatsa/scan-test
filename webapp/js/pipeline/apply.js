@@ -1,10 +1,10 @@
-import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261124-notes-2";
-import { canonical } from "../ops.js?v=20261124-notes-2";
-import { checkDocument, typeRevision } from "../schema.js?v=20261124-notes-2";
+import { LAYERS, isProtected, layerRecords, layerState, layerView } from "../layers.js?v=20261124-carry-1";
+import { canonical } from "../ops.js?v=20261124-carry-1";
+import { checkDocument, typeRevision } from "../schema.js?v=20261124-carry-1";
 import { checkReading, readingFromDocument, selectPageRegions } from "./split.js";
-import { pageLabel, transcribedLines } from "./steps.js?v=20261124-notes-2";
-import { preserveMarkerIds } from "../marker-ids.js?v=20261124-notes-2";
-import { blockLineEnd } from "../blocks.js?v=20261124-notes-2";
+import { pageLabel, transcribedLines } from "./steps.js?v=20261124-carry-1";
+import { preserveMarkerIds, carryMarkers } from "../marker-ids.js?v=20261124-carry-1";
+import { blockLineEnd } from "../blocks.js?v=20261124-carry-1";
 
 function geometry(doc) {
   return canonical({ id: doc.page.id, image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
@@ -139,6 +139,7 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
   checkReading(parsed, sent);
   const doc = structuredClone(current);
   const selected = regionIds && new Set(regionIds);
+  const markerBlind = ["vision", "local"].includes(reading.profile?.provider);
   const usedMarkers = new Set(doc.page.regions.flatMap(region => (region.lines || []).flatMap(line => (line.spans || []).map(span => span.id))));
   // A region the reading did not fit (`kept`, a whole-page reading's) keeps its text and its marker ids; the others number from past them.
   const keptIds = new Set(parsed.regions.filter(value => value.kept).map(value => value.id));
@@ -168,6 +169,8 @@ export function mergeText(current, reading, types, check = doc => checkDocument(
     for (const line of output.lines) {
       const target = region.lines.find(value => value.line === line.line);
       if (selected) line.spans = preserveMarkerIds(target.spans || [], line.spans || [], usedMarkers);
+      // A reader that cannot see note markers keeps the markers the line had (marker-ids.js carryMarkers).
+      if (markerBlind && target.spans?.length) line.spans = carryMarkers(target.text || "", target.spans, line.text, line.spans);
       target.text = line.text;
       delete target.spans;
       if (line.spans) target.spans = line.spans;
