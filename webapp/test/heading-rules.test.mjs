@@ -119,3 +119,29 @@ test("a section's title printed again while it is open (a running header typed a
   const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
   assert.deepEqual(tree, [{ "section “Pulse”": ["heading", "paragraph", "heading", "paragraph"] }, { "section “Diet”": ["heading", "paragraph"] }]);
 });
+
+test("a page its heading calls the contents is the contents, though its numbers were not read; a broken title still names its heading", () => {
+  // Entries without their page numbers; the first chapter's title printed on two lines of which the heading has the
+  // first ("The Old Grey -"), the second's the second ("High Hill Fort", "The" lost).
+  const contents = page([["heading", "CONTENTS"], ["list_item", "The Old Grey River"], ["list_item", "The High Hill Fort"], ["list_item", "The Town"]]);
+  const docs = [contents, page([["heading", "The Old Grey -"], ["paragraph", "a"], ["heading", "Its source"], ["paragraph", "b"]]),
+    page([["heading", "High Hill Fort"], ["paragraph", "c"], ["heading", "The climb"], ["paragraph", "d"]]), page([["heading", "The Town"], ["paragraph", "e"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  assert.deepEqual(tree.slice(1).map(entry => Object.keys(entry)[0]), ["section “The Old Grey -”", "section “High Hill Fort”", "section “The Town”"]);
+  assert.deepEqual(tree[1]["section “The Old Grey -”"].at(-1), { "section “Its source”": ["heading", "paragraph"] });
+});
+
+test("contents that name few of the book's headings (in another language) are not used; a list at the back is not the contents", () => {
+  const english = page([["heading", "CONTENTS."], ["list_item", "Preface . . 1"], ["list_item", "The Text . . 5"], ["list_item", "Notes . . 9"], ["list_item", "Index . . 12"]]);
+  const docs = [english, page([["heading", "Preface"], ["paragraph", "a"]]), page([["heading", "अथ ग्रन्थः"], ["paragraph", "b"], ["heading", "प्रथमः"], ["paragraph", "c"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  assert.deepEqual(tree.slice(1).map(entry => Object.keys(entry)[0]), ["section “Preface”", "section “अथ ग्रन्थः”", "section “प्रथमः”"], "each heading its own section");
+  // Contents at the front, and at the back a list of every subheading with its page: the subheadings stay sections.
+  const front = page([["heading", "Contents"], ["list_item", "First talk . . 2"], ["list_item", "Second talk . . 4"], ["list_item", "Third talk . . 6"], ["list_item", "Fourth talk . . 8"]]);
+  const body = [["First talk", "On rivers"], ["Second talk", "On hills"], ["Third talk", "On towns"], ["Fourth talk", "On roads"]]
+    .flatMap(([talk, part]) => [page([["heading", talk], ["paragraph", "x"]]), page([["heading", part], ["paragraph", "y"]])]);
+  const back = page([["heading", "Subheadings"], ["list_item", "On rivers . . 3"], ["list_item", "On hills . . 5"], ["list_item", "On towns . . 7"], ["list_item", "On roads . . 9"]]);
+  const more = read([front, ...body, back], { headings: [{ heading: "heading", container: "section" }] }).tree;
+  assert.deepEqual(more.slice(1, 5).map(entry => Object.keys(entry)[0]), ["section “First talk”", "section “Second talk”", "section “Third talk”", "section “Fourth talk”"]);
+  assert.deepEqual(more[1]["section “First talk”"].at(-1), { "section “On rivers”": ["heading", "paragraph"] });
+});

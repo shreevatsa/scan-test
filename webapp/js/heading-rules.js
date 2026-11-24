@@ -7,6 +7,8 @@
 // Only the units at the top of a page's main flow take part (a heading the type list already puts inside a container
 // stays where it is). A page that is not there (null) ends every open section: nothing joins across it, as in assembly.
 
+// A contents page's own title: "Contents", "Table of contents", "विषयसूची", "अनुक्रमणिका", "ವಿಷಯಸೂಚಿ", "ಪರಿವಿಡಿ".
+const CONTENTS_TITLE = /^[\s\p{P}]*(?:(?:table\s+of\s+)?contents|विषय\s*-?\s*सूच|अनुक्रम|ವಿಷಯ\s*-?\s*ಸೂಚ|ಪರಿವಿಡಿ|ಅನುಕ್ರಮ)/iu;
 // The book's printed contents, as the titles of its entries: on a page where most blocks end with a page reference (a
 // number, a range, a roman numeral: "3. ಆಯುರ್ವೇದ ಮತ್ತು ಯೋಗ - 1   1-31"), each such block's text without its numbering
 // and its page reference. Titles are compared normalized: no spaces, punctuation or digits, NFC.
@@ -28,7 +30,7 @@ function referenceNumber(text) {
 // the order of their pages: its references mostly increase under each heading (an index's, alphabetical, do not; a
 // canto's verse numbers start again), and none is far beyond the book (a year, a price).
 export function contentsTitles(pages, skipTypes = new Set(), headingTypes = skipTypes) {
-  const titles = [];
+  const titles = [], found = [];
   titles.pages = new Set(); titles.groups = [];
   for (const [index, doc] of pages.entries()) {
     if (!doc) continue;
@@ -37,24 +39,36 @@ export function contentsTitles(pages, skipTypes = new Set(), headingTypes = skip
     const blocks = [];
     for (const region of [...doc.page.regions].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))) {
       if (headingTypes.has(region.type)) group++;
-      if (skipTypes.has(region.type)) continue;
+      if (skipTypes.has(region.type) || /^(page_number|running_(header|footer)|signature_mark)$/.test(region.type)) continue;
       const text = (region.lines || []).map(line => line.text || "").join(" ").replace(/\s+/g, " ").trim();
       if (text) blocks.push({ text, group });
     }
     const entryBlocks = blocks.filter(({ text }) => PAGE_REF.test(text) && (referenceNumber(text) ?? Infinity) <= Math.max(1000, pages.length * 3));
-    if (entryBlocks.length < 4 || entryBlocks.length < blocks.length / 2) continue;
+    // A page its own heading calls the contents ("CONTENTS.", "ವಿಷಯಸೂಚಿ") is one, though few of its page numbers were
+    // read (a reader that misses numbers in Kannada digits): every block after the heading is an entry.
+    const titled = doc.page.regions.filter(region => headingTypes.has(region.type)).sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
+      .slice(0, 1).some(region => CONTENTS_TITLE.test((region.lines || []).map(line => line.text || "").join(" ").trim()));
+    const titledEntries = titled && blocks.length >= 3 && !(entryBlocks.length >= 4 && entryBlocks.length >= blocks.length / 2);
+    if (!titledEntries && (entryBlocks.length < 4 || entryBlocks.length < blocks.length / 2)) continue;
     const pairs = entryBlocks.slice(1).map((entry, i) => [entryBlocks[i], entry]).filter(([a, b]) => a.group === b.group);
     const rising = pairs.filter(([a, b]) => referenceNumber(b.text) >= referenceNumber(a.text)).length;
     if (rising < 0.75 * pairs.length) continue;
-    const entries = entryBlocks.map(({ text }) => text);
+    const entries = (titledEntries ? blocks : entryBlocks).map(({ text }) => text);
     const pageTitles = entries.map(text => normalTitle(text.replace(PAGE_REF, "").replace(/^[\s.—–-]*[0-9०-९೦-೯]+\s*[.)]+[\s.…—–-]*/u, ""))).filter(title => title.length >= 2);
     // An index lists its entries in alphabetical order.
     const sorted = pageTitles.slice(1).filter((title, i) => title.localeCompare(pageTitles[i]) >= 0).length;
     if (pageTitles.length >= 6 && sorted >= 0.8 * (pageTitles.length - 1)) continue;
-    titles.pages.add(index);
     const headings = doc.page.regions.filter(region => headingTypes.has(region.type)).map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" ")));
-    titles.groups.push(...headings.slice(1).filter(title => title.length >= 2));
-    titles.push(...pageTitles);
+    found.push({ index, titles: pageTitles, groups: headings.slice(1).filter(title => title.length >= 2) });
+  }
+  // A book with its contents at the front: a list in its second half is another (a list of its subheadings with their
+  // pages, at the back), not the contents.
+  const front = found.some(page => page.index < 0.2 * pages.length);
+  for (const page of found) {
+    if (front && page.index > 0.5 * pages.length) continue;
+    titles.pages.add(page.index);
+    titles.groups.push(...page.groups);
+    titles.push(...page.titles);
   }
   return titles;
 }
@@ -68,13 +82,17 @@ const editDistance = (a, b) => {
   }
   return previous[b.length];
 };
-// A heading named in the contents: the same title, or nearly (a letter or two misread, a part number left out).
+// A heading named in the contents: the same title, or nearly (a letter or two misread, a part number left out), or
+// the start or the end of it (a title printed on two lines, one of which was lost; a heading ending in a dash is the
+// start of a title going on).
 export function inContents(titles, text) {
   const heading = normalTitle(text);
   if (heading.length < 2) return false;
+  const broken = /[-–—]\s*$/u.test(String(text || "").trim());
   return titles.some(title => {
     const [short, long] = heading.length <= title.length ? [heading, title] : [title, heading];
-    if (long.startsWith(short) && short.length >= 0.75 * long.length) return true;
+    if (long.startsWith(short) && short.length >= (broken && short === heading ? 0.6 : 0.75) * long.length) return true;
+    if (long.endsWith(short) && short.length >= 0.75 * long.length) return true;
     return editDistance(heading, title) <= Math.max(1, Math.floor(0.15 * long.length));
   });
 }
@@ -141,14 +159,18 @@ export function headingSections(pages, levels, { textOf, types }) {
   const headingTypes = new Set(levels.map(level => level.heading));
   const verseTypes = Object.entries(types.types).filter(([, type]) => type.region === "verse").map(([name]) => name);
   const titles = levels.length === 1 ? contentsTitles(pages, new Set([...headingTypes, ...verseTypes]), headingTypes) : [];
-  const contents = titles.length >= 3 ? titles : null;
+  // The headings outside the contents pages. Contents whose titles name few of them (a contents in English for a text
+  // headed in Sanskrit: one junk heading would take a chapter's place) are not used: under two, or under a quarter.
+  const elsewhere = pages.flatMap((doc, index) => !doc || titles.pages?.has(index) ? [] : doc.page.regions
+    .filter(region => headingTypes.has(region.type)).map(region => (region.lines || []).map(line => line.text || "").join(" ")));
+  const namedCount = titles.length >= 3 ? titles.filter(title => elsewhere.some(heading => inContents([title], heading))).length : 0;
+  const contents = titles.length >= 3 && namedCount >= 2 && namedCount >= 0.25 * titles.length ? titles : null;
   if (contents) levels = [levels[0], levels[0]];
   // A heading among a contents' entries names a chapter only where the book prints it as a heading too: not a column's
   // header ("Page"), nor a heading of a page taken for contents (an imprint with its prices and addresses).
   if (contents?.groups.length) {
-    const elsewhere = pages.flatMap((doc, index) => !doc || contents.pages.has(index) ? [] : doc.page.regions
-      .filter(region => headingTypes.has(region.type)).map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" "))));
-    contents.groups = contents.groups.filter(group => inContents(elsewhere, group));
+    const normal = elsewhere.map(normalTitle);
+    contents.groups = contents.groups.filter(group => inContents(normal, group));
   }
   // A heading whose text recurs three times or more ("PURPORT." before each verse's explanation, a book's title repeated
   // at the head of its pages) is a label, not a section's title: it starts no section.
