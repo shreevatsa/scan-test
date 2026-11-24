@@ -154,7 +154,8 @@ test("credential checks use small content-free requests and preserve provider er
     assert.equal(JSON.stringify(requests[0][1]).includes("Printed"), false);
     if (provider === "vision") assert.deepEqual(requests[0][3], { mode: "oauth", project: "quota-project" });
     keys[provider] = "new-secret";
-    assert.equal(checks.status(profile), undefined);
+    if (provider === "vision") assert.equal(checks.status(profile)?.valid, true, "a refreshed OAuth token is the same credential");
+    else assert.equal(checks.status(profile), undefined);
     checks.request = async () => { throw Error("Provider rejected new-secret"); };
     assert.equal((await checks.check(profile)).message, "Provider rejected [redacted]");
   }

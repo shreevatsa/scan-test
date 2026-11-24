@@ -53,3 +53,20 @@ test("a failed check removes the saved success; without a cache nothing is kept"
   await plain.ready; await plain.check(terra);
   assert.equal(plain.cache, null);
 });
+
+test("a Cloud Vision OAuth check stands while the token is refreshed; an API key's does not outlive the key", async () => {
+  const vision = { provider: "vision", model: "DOCUMENT_TEXT_DETECTION", label: "Cloud Vision" };
+  const okVision = async () => ({ body: { responses: [{}] } });
+  const oauth = new CredentialChecks({ vision: "token-1", vision_auth: "oauth", vision_project: "proj" }, okVision);
+  assert.equal((await oauth.check(vision)).valid, true);
+  oauth.keys.vision = "token-2";
+  assert.equal(oauth.status(vision)?.valid, true, "a fresh token of the same project");
+  oauth.keys.vision_project = "other";
+  assert.equal(oauth.status(vision), undefined, "another project is another credential");
+  oauth.keys.vision_project = "proj"; oauth.keys.vision = "";
+  assert.equal(oauth.status(vision), undefined, "no token, nothing checked");
+  const key = new CredentialChecks({ vision: "key-1", vision_auth: "key" }, okVision);
+  await key.check(vision);
+  key.keys.vision = "key-2";
+  assert.equal(key.status(vision), undefined, "a new API key is checked again");
+});

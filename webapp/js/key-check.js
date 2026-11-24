@@ -1,5 +1,5 @@
-import { post } from "./pipeline/run.js?v=20261124-vision-10";
-import { openaiText, geminiText } from "./pipeline/steps.js?v=20261124-vision-10";
+import { post } from "./pipeline/run.js?v=20261124-oauth-1";
+import { openaiText, geminiText } from "./pipeline/steps.js?v=20261124-oauth-1";
 import { h } from "./render.js";
 
 // Generated blank PNG. Credential checks never contain a book page.
@@ -14,23 +14,29 @@ export class CredentialChecks {
     this.ready = cache ? this.hydrate().catch(() => {}) : Promise.resolve();
   }
   extras(provider) { return provider === "vision" ? [this.keys.vision_auth || null, this.keys.vision_project || null] : null; }
+  // What a check stands for: the key; for Cloud Vision with OAuth, any token of the same project (a token lasts an hour
+  // and is replaced by a fresh one, which is the same credential: a token that fails still fails on its first call).
+  credential(provider) {
+    const key = this.keys[provider];
+    return provider === "vision" && this.keys.vision_auth === "oauth" ? (key ? "an OAuth token" : "") : key;
+  }
   async keyDigest(provider, key) {
     const bytes = new TextEncoder().encode(`${provider}\n${key}`);
     return [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(b => b.toString(16).padStart(2, "0")).join("");
   }
   async hydrate() {
     for (const record of await this.cache.load()) {
-      const key = this.keys[record.provider];
+      const key = this.credential(record.provider);
       if (!key || record.keyDigest !== await this.keyDigest(record.provider, key)) continue;
       if (JSON.stringify(record.extras ?? null) !== JSON.stringify(this.extras(record.provider))) continue;
-      const identity = JSON.stringify([record.provider, record.model, key, this.extras(record.provider)]);
+      const identity = JSON.stringify([record.provider, record.model, key, record.provider === "vision" ? this.extras("vision") : null]);
       if (!this.results.has(identity)) this.results.set(identity, { valid: true, cached: true,
         message: `Key checked successfully for this model (checked ${new Date(record.at).toLocaleDateString()}).` });
     }
   }
   async remember(profile, valid) {
     if (!this.cache) return;
-    const provider = profile.provider, key = this.keys[provider];
+    const provider = profile.provider, key = this.credential(provider);
     if (!key) return;
     const keyDigest = await this.keyDigest(provider, key), extras = this.extras(provider);
     const same = record => record.provider === provider && record.model === profile.model && record.keyDigest === keyDigest
@@ -40,8 +46,8 @@ export class CredentialChecks {
     await this.cache.save(records);
   }
   identity(profile) {
-    return JSON.stringify([profile.provider, profile.model, this.keys[profile.provider],
-      profile.provider === "vision" ? [this.keys.vision_auth, this.keys.vision_project] : null]);
+    return JSON.stringify([profile.provider, profile.model, this.credential(profile.provider),
+      profile.provider === "vision" ? this.extras("vision") : null]);
   }
   status(profile) { return profile.provider === "local" ? { valid: true } : this.results.get(this.identity(profile)); }
   group(profiles) {
