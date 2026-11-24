@@ -81,6 +81,15 @@ test("both sides marked, a verse printed whole with its number after prose: the 
   assert.deepEqual(flow, ["paragraph 1r1", "verse 2r1"], "the verse stays a verse of its own");
 });
 
+test("both sides marked, prose introducing the verse it quotes on the next page: both stand as printed", () => {
+  for (const [prose, verse] of [["as the old book has it -", "नदी वहति सागरम्"], ["having sung his praise,", "“गिरिः स्थितः पुरा"]]) {
+    const docs = [page([["paragraph", prose, { later: true }]]), page([["verse", verse, { from: true }]])];
+    assert.deepEqual(read(docs), { flow: ["paragraph 1r1", "verse 2r1"], warnings: 0 }, prose);
+  }
+  const docs = [page([["paragraph", "the five rivers: the first, the second,", { later: true }]]), page([["verse", "the third, the fourth । they meet at the sea ।", { from: true }]])];
+  assert.deepEqual(read(docs), { flow: ["paragraph 1r1+2r1"], warnings: 0 }, "a verse going on from prose, neither quoted nor whole, takes its type");
+});
+
 test("footnotes across the break are settled as the main text is", () => {
   const docs = [page([["paragraph", "Text."], ["footnote", "* A judge went to court, and", { later: true }]]), page([["paragraph", "More."], ["footnote", "everyone looked at him."]])];
   assert.equal(read(docs).warnings, 0);
