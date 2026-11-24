@@ -4,13 +4,13 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261124-marks-1";
+import { assemble } from "./assemble.js?v=20261124-toc-2";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
 import { css, unitStyle, baseCss } from "./style.js";
-import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261124-marks-1";
-import { layerState } from "./layers.js?v=20261124-marks-1";
-import { bookReading } from "./reading.js?v=20261124-marks-1";
+import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261124-toc-2";
+import { layerState } from "./layers.js?v=20261124-toc-2";
+import { bookReading } from "./reading.js?v=20261124-toc-2";
 
 // A line piece's text and spans with a trailing hyphen dropped (end "hyphen", not the unit's last piece).
 function dropHyphen(L) {
@@ -400,7 +400,9 @@ export const BOOK_CSS = `
 .bv-toc details.part { margin: .5em 0; }
 .bv-toc summary { cursor: pointer; font-weight: 600; list-style-position: outside; }
 .bv-toc summary a { display: inline; }
-.bv-toc a.ep { padding-left: 1.2em; }
+/* The number (or its empty column) hangs: an entry's wrapped lines line up with its first line's text. */
+.bv-toc a.ep { padding-left: 3em; text-indent: -1.8em; }
+.bv-toc a.ep .num { text-indent: 0; }
 .bv-toc .num { color: #999; display: inline-block; min-width: 1.8em; }
 .bv-toc .untitled { font-weight: normal; font-style: italic; color: #888; }
 .bv-toc .editorial { font-weight: normal; color: #7a7466; }
