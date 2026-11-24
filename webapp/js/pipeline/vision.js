@@ -2,7 +2,7 @@
 // API and standard paid-tier pricing checked 2026-11-08.
 // https://docs.cloud.google.com/vision/docs/fulltext-annotations
 // https://cloud.google.com/vision/pricing
-import { wordsToReading } from "./ocr.js?v=20261124-images-2";
+import { wordsToReading } from "./ocr.js?v=20261124-vision-5";
 
 export function visionRequest(profile, imageDataUrl) {
   const content = imageDataUrl.split(",")[1];
@@ -11,7 +11,7 @@ export function visionRequest(profile, imageDataUrl) {
 }
 
 // What a reading from Cloud Vision is parsed with; a saved response is parsed again when this changes (run.js).
-export const VISION_PARSE = 4;
+export const VISION_PARSE = 6;
 
 // Cloud Vision's habits in Indic text: the avagraha (ಽ, ऽ) read as a Latin "s", standing apart ("ಯೋ s ಪಾಕರೋತ್");
 // dandas as ASCII bars. In a line written mostly in an Indic script, a lone "s" (or "ss") between letters becomes the
@@ -28,6 +28,20 @@ export function indicLine(text) {
       .replace(/\s*\|\s*\|/g, " ॥").replace(/\s*\|/g, " ।").replace(/^ /, "");
   }
   return text;
+}
+
+// Print showing through from the other side of the leaf is read too, with little confidence: a word Vision gives less
+// than 0.3, or a Latin word below 0.6 in a line written mostly in another script, is left out.
+const LATIN = /\p{Script=Latin}/u;
+export function likelyWord(word, line) {
+  if (!Number.isFinite(word.confidence)) return true;
+  if (word.confidence < 0.3) return false;
+  if (word.confidence < 0.6 && LATIN.test(word.text)) {
+    // The line's script, by the words Vision is sure of.
+    const letters = line.filter(w => !(w.confidence < 0.6)).flatMap(w => [...w.text].filter(ch => /\p{L}/u.test(ch)));
+    if (letters.filter(ch => LATIN.test(ch)).length < 0.4 * letters.length) return false;
+  }
+  return true;
 }
 
 export function visionReading(body, sent) {
@@ -47,7 +61,7 @@ export function visionReading(body, sent) {
       words.push({ text, confidence: word.confidence, space: Boolean(after) && after !== "HYPHEN", bbox: { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) } });
     }
   if (!words.length && sent.some(s => s.line_ids.length)) throw new Error("Cloud Vision returned no word geometry for the page.");
-  return wordsToReading(words, sent, "Cloud Vision supplies plain text. Review inline formatting and note markers.", indicLine);
+  return wordsToReading(words, sent, "Cloud Vision supplies plain text. Review inline formatting and note markers.", indicLine, likelyWord);
 }
 
 export function visionCost(body, profile) {

@@ -19,3 +19,12 @@ test("words are joined as Vision detected the spaces: none before punctuation", 
   const sent = [{ rid: "r1", line_ids: [1], region: { lines: [{ line_id: 1, polygons: [[[0, 0], [300, 0], [300, 40], [0, 40]]] }] } }];
   assert.equal(visionReading(body, sent).regions[0].lines[0].text, "ಸಿಗೋಲ್ಲ. ಒಳಗೆ (Pin)");
 });
+
+test("words Vision is unsure of: very unsure ones, and Latin ones in a line of another script, are left out", async () => {
+  const { likelyWord } = await import("../js/pipeline/vision.js");
+  const line = [{ text: "ಅರ್ಥ-ಕಾಮ-ಮೋಕ್ಷ", confidence: 0.9 }, { text: "ಇವುಗಳೊಡನೆ", confidence: 0.93 }, { text: "caricane", confidence: 0.15 }, { text: "ACCEO", confidence: 0.48 },
+    { text: "ಷರ್ಟ್", confidence: 0.49 }, { text: "School", confidence: 0.9 }, { text: "ನಡೆದಾಗ", confidence: 0.95 }];
+  assert.deepEqual(line.filter(word => likelyWord(word, line)).map(word => word.text), ["ಅರ್ಥ-ಕಾಮ-ಮೋಕ್ಷ", "ಇವುಗಳೊಡನೆ", "ಷರ್ಟ್", "School", "ನಡೆದಾಗ"]);
+  const english = [{ text: "The", confidence: 0.95 }, { text: "fyrst", confidence: 0.45 }];
+  assert.equal(english.filter(word => likelyWord(word, english)).length, 2, "an unsure word in an English line stays");
+});

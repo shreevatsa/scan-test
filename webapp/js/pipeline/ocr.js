@@ -1,6 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
 import { bbox } from "../render.js";
-import { tesseractBlocks } from "../local/blocks.js?v=20261124-images-2";
+import { tesseractBlocks } from "../local/blocks.js?v=20261124-vision-5";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 
@@ -42,7 +42,8 @@ export function tesseractWords(data) {
 }
 
 // A word with `space: false` is followed by no space (as the OCR detected it); `clean` tidies each line's text.
-export function wordsToReading(words, sent, note = "Local OCR supplies plain text. Review inline formatting and note markers.", clean = text => text) {
+// `keep(word, lineWords)` may leave out a word of a line (Cloud Vision's unlikely words, vision.js).
+export function wordsToReading(words, sent, note = "Local OCR supplies plain text. Review inline formatting and note markers.", clean = text => text, keep = () => true) {
   const targets = sent.flatMap(s => s.line_ids.map((id, i) => {
     const line = s.region.lines.find(L => L.line_id === id);
     return { rid: s.rid, n: i + 1, rings: line.polygons, box: bbox(line.polygons), words: [] };
@@ -57,11 +58,13 @@ export function wordsToReading(words, sent, note = "Local OCR supplies plain tex
       const score = overlap / area + (inside(x, y, target.rings) ? 1 : 0);
       if (score > bestScore) { best = target; bestScore = score; }
     }
-    if (best) best.words.push(word);
+    // A word only partly on a line and not centred in it is not that line's: print showing through from the other side
+    // of the leaf lies between the lines, and the OCR reads it too ("caricane" amid Kannada).
+    if (best && bestScore >= 0.5) best.words.push(word);
   }
   return { regions: sent.filter(s => s.line_ids.length).map(s => {
     const lines = targets.filter(t => t.rid === s.rid).map(t => ({ n: t.n,
-      text: clean(t.words.sort((a, b) => a.bbox.x0 - b.bbox.x0).map((w, i, all) => w.text + (i < all.length - 1 && w.space !== false ? " " : "")).join("").normalize("NFC")) }));
+      text: clean(t.words.filter(w => keep(w, t.words)).sort((a, b) => a.bbox.x0 - b.bbox.x0).map((w, i, all) => w.text + (i < all.length - 1 && w.space !== false ? " " : "")).join("").normalize("NFC")) }));
     return { id: s.rid, lines, uncertain: lines.some(L => !L.text),
       note };
   }) };
