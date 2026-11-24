@@ -78,7 +78,9 @@ export function settleLabels(docs) {
     const expected = numbers[before] + index - before;
     // A page printed without its number, or whose number was not read, inside a run its neighbours agree on.
     if (number === null) return doc.page.label == null ? { ...doc, page: { ...doc.page, label: String(expected), label_from: "neighbours" } } : doc;
-    if (number === expected || !String(number).includes(String(expected))) return doc;
+    // A number its neighbours, agreeing, do not allow: misread (a stray digit, one digit for another, a digit dropped).
+    // A plate or an unnumbered page between them would have broken their run.
+    if (number === expected) return doc;
     return { ...doc, page: { ...doc.page, label: String(expected), label_as_printed: doc.page.label } };
   });
 }
