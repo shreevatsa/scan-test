@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-spread-1";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-spread-1";
-import { bookReading } from "./reading.js?v=20261123-spread-1";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-spread-1";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261123-spread-2";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261123-spread-2";
+import { bookReading } from "./reading.js?v=20261123-spread-2";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261123-spread-2";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261123-spread-1";
+import * as ops from "./ops.js?v=20261123-spread-2";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261123-spread-1";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-spread-1";
-import { suggestionButton } from "./review-view.js?v=20261123-spread-1";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261123-spread-1";
-import { pageReviewState } from "./layers.js?v=20261123-spread-1";
-import { readingOrderWarnings } from "./schema.js?v=20261123-spread-1";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-spread-1";
+import { noteProblems } from "./note-links.js?v=20261123-spread-2";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261123-spread-2";
+import { suggestionButton } from "./review-view.js?v=20261123-spread-2";
+import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261123-spread-2";
+import { pageReviewState } from "./layers.js?v=20261123-spread-2";
+import { readingOrderWarnings } from "./schema.js?v=20261123-spread-2";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261123-spread-2";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;

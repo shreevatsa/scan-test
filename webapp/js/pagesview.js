@@ -1,14 +1,16 @@
-import { suggestionButton } from "./review-view.js?v=20261123-spread-1";
+import { suggestionButton } from "./review-view.js?v=20261123-spread-2";
 import { h } from "./render.js";
-import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-spread-1";
+import { nextProcessingStage, REVIEW_LABELS, noContent, pageCheck, processingForm } from "./workflow.js?v=20261123-spread-2";
 import { pageRange, renderPage } from "./pipeline/pdf.js";
-import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-spread-1";
-import { READERS } from "./pipeline/readers.js?v=20261123-spread-1";
-import { pageCost, dollars, costBasis } from "./recipe.js?v=20261123-spread-1";
-import { finderById } from "./pipeline/finders.js?v=20261123-spread-1";
-import { runBatch } from "./pipeline/batch.js?v=20261123-spread-1";
+import { lazyThumbnails, pageSelectionText } from "./page-browser.js?v=20261123-spread-2";
+import { READERS } from "./pipeline/readers.js?v=20261123-spread-2";
+import { pageCost, dollars, costBasis } from "./recipe.js?v=20261123-spread-2";
+import { finderById } from "./pipeline/finders.js?v=20261123-spread-2";
+import { runBatch } from "./pipeline/batch.js?v=20261123-spread-2";
 import { runProgress } from "./run-progress.js";
-import { money } from "./reader-controls.js?v=20261123-spread-1";
+import { money } from "./reader-controls.js?v=20261123-spread-2";
+import { normalizeTypeName, typeNameStyle } from "./type-additions.js?v=20261123-spread-2";
+import { addProposedType } from "./blocksview.js?v=20261123-spread-2";
 
 export async function renderPages(el, app) {
   const { book, routeToken } = app;
@@ -200,7 +202,25 @@ export async function renderPages(el, app) {
   details.addEventListener("toggle", () => {
     if (details.open) app.renderCheck(pageOptions).catch(error => { pageOptions.textContent=error.message; });
   });
-  el.replaceChildren(h("div", { class: "stage-overview" }, h("h1", {}, "Pages"), book.writable ? panel :
+  // The types the region finder proposed for areas of the book, waiting for one decision each.
+  const proposals = new Map();
+  for (const page of book.pages) for (const [index, area] of (stateOf(page.id)?.doc?.source?.omitted_regions || []).entries()) {
+    if (!area.proposed_type) continue;
+    const key = normalizeTypeName(area.proposed_type), entry = proposals.get(key) || { name: area.proposed_type, areas: 0, pages: [] };
+    entry.areas++; if (!entry.pages.includes(page.id)) entry.pages.push(page.id);
+    proposals.set(key, entry);
+  }
+  const proposalBox = proposals.size && book.writable ? h("section", { class: "box proposals" },
+    h("p", {}, `The region finder proposes ${proposals.size === 1 ? "a new type" : `${proposals.size} new types`} for areas of this book. Adding one makes every such area a block, with its text; leaving one out drops those areas from the text (each page's checks can bring one back).`),
+    ...[...proposals.values()].sort((a, b) => b.areas - a.areas).map(entry => {
+      const name = typeNameStyle(entry.name), known = book.types.types[name]?.region;
+      return h("div", { class: "actions proposal-row" }, h("b", {}, name.replaceAll("_", " ")),
+        h("span", { class: "meta" }, ` ${entry.areas} ${entry.areas === 1 ? "area" : "areas"} on ${entry.pages.length} ${entry.pages.length === 1 ? "page" : "pages"} `),
+        h("button", { onclick: () => known ? app.restoreProposed(entry.name, name) : addProposedType(app, name, { proposed_type: entry.name }, null) }, known ? `Use type ${name}` : `Add type ${name}`),
+        h("button", { onclick: () => app.leaveOutProposed(entry.name) }, "Leave them out"),
+        h("button", { class: "link", onclick: () => app.openPage(entry.pages[0]) }, "See one"));
+    })) : null;
+  el.replaceChildren(h("div", { class: "stage-overview" }, h("h1", {}, "Pages"), proposalBox, book.writable ? panel :
     h("button", { onclick: () => app.continueBook("pages") }, "Make an editable copy"), book.writable ? selectionRow : null, controls, summary, empty, grid, details, preview));
   app.onLeaveGrid=() => { observer?.disconnect(); for (const url of urls) URL.revokeObjectURL(url); preview.close(); };
   stateFilter.onchange = filter.onchange = applyFilters;
