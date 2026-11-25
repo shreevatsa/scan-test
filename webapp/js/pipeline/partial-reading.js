@@ -1,4 +1,4 @@
-import { canonical } from "../ops.js?v=20261125-alltext-1";
+import { canonical } from "../ops.js?v=20261125-examples-1";
 import { selectPageRegions, checkReading } from "./split.js";
 
 export function regionGeometry(source) {
