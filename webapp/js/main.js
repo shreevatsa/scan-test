@@ -1,44 +1,47 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261125-leaveout-2";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261125-leaveout-2";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261125-leaveout-2";
-import { RECIPE } from "./recipe.js?v=20261125-leaveout-2";
-import { READERS, readerOptions } from "./pipeline/readers.js?v=20261125-leaveout-2";
+import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261125-leaveout-3";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261125-leaveout-3";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261125-leaveout-3";
+import { RECIPE } from "./recipe.js?v=20261125-leaveout-3";
+import { READERS, readerOptions } from "./pipeline/readers.js?v=20261125-leaveout-3";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261125-leaveout-2";
-import { blockName } from "./blocks.js?v=20261125-leaveout-2";
-import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261125-leaveout-2";
-import { headingDefaults } from "./rules.js?v=20261125-leaveout-2";
-import { keepWaiting, keptProposed, normalizeTypeName, proposedOnPage, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261125-leaveout-2";
-import { keptType } from "./pipeline/provisional.js?v=20261125-leaveout-2";
-import { restoredText } from "./pipeline/apply.js?v=20261125-leaveout-2";
-import { PageView } from "./pageimage.js?v=20261125-leaveout-2";
-import { markerForm } from "./editor.js?v=20261125-leaveout-2";
-import { verseExport } from "./verses.js?v=20261125-leaveout-2";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261125-leaveout-2";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261125-leaveout-2";
-import { renderStyle } from "./styleview.js?v=20261125-leaveout-2";
-import { typeSetup } from "./type-setup.js?v=20261125-leaveout-2";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261125-leaveout-3";
+import { blockName } from "./blocks.js?v=20261125-leaveout-3";
+import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261125-leaveout-3";
+import { headingDefaults } from "./rules.js?v=20261125-leaveout-3";
+import { keepWaiting, keptProposed, normalizeTypeName, proposedOnPage, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261125-leaveout-3";
+import { keptType } from "./pipeline/provisional.js?v=20261125-leaveout-3";
+import { restoredText } from "./pipeline/apply.js?v=20261125-leaveout-3";
+import { PageView } from "./pageimage.js?v=20261125-leaveout-3";
+import { markerForm } from "./editor.js?v=20261125-leaveout-3";
+import { verseExport } from "./verses.js?v=20261125-leaveout-3";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261125-leaveout-3";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261125-leaveout-3";
+import { renderStyle } from "./styleview.js?v=20261125-leaveout-3";
+import { typeSetup } from "./type-setup.js?v=20261125-leaveout-3";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261125-leaveout-2";
-import { EditError } from "./ops.js?v=20261125-leaveout-2";
-import { Maker, post } from "./pipeline/run.js?v=20261125-leaveout-2";
-import { CredentialChecks } from "./key-check.js?v=20261125-leaveout-2";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261125-leaveout-2";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261125-leaveout-2";
-import { pruneOverrides } from "./blocks-format.js?v=20261125-leaveout-2";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261125-leaveout-2";
-import { orderedRegions } from "./flags.js?v=20261125-leaveout-2";
-import { assemble } from "./assemble.js?v=20261125-leaveout-2";
-import { editorFocus, mergeTextEdit } from "./editing.js?v=20261125-leaveout-2";
-import { overridesAfter } from "./structure.js?v=20261125-leaveout-2";
-import { renderPages } from "./pagesview.js?v=20261125-leaveout-2";
-import { settings } from "./store.js?v=20261125-leaveout-2";
-import { renderBookSettings } from "./settingsview.js?v=20261125-leaveout-2";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261125-leaveout-2";
-import { pageMenu } from "./page-actions.js?v=20261125-leaveout-2";
+import * as ops from "./ops.js?v=20261125-leaveout-3";
+import { EditError } from "./ops.js?v=20261125-leaveout-3";
+import { Maker, post } from "./pipeline/run.js?v=20261125-leaveout-3";
+import { CredentialChecks } from "./key-check.js?v=20261125-leaveout-3";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261125-leaveout-3";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261125-leaveout-3";
+import { pruneOverrides } from "./blocks-format.js?v=20261125-leaveout-3";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261125-leaveout-3";
+import { orderedRegions } from "./flags.js?v=20261125-leaveout-3";
+import { assemble } from "./assemble.js?v=20261125-leaveout-3";
+import { editorFocus, mergeTextEdit } from "./editing.js?v=20261125-leaveout-3";
+import { overridesAfter } from "./structure.js?v=20261125-leaveout-3";
+import { renderPages } from "./pagesview.js?v=20261125-leaveout-3";
+import { settings } from "./store.js?v=20261125-leaveout-3";
+import { renderBookSettings } from "./settingsview.js?v=20261125-leaveout-3";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261125-leaveout-3";
+import { pageMenu } from "./page-actions.js?v=20261125-leaveout-3";
+
+// The longest the outline step may take for a page before it is stopped (and the page says so).
+const OUTLINE_LIMIT = 120000;
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -458,7 +461,7 @@ class App {
       if (!pdfFile) return;
       info.textContent = "Opening the PDF…";
       try {
-        const { openPdf } = await import("./pipeline/pdf.js?v=20261125-leaveout-2");
+        const { openPdf } = await import("./pipeline/pdf.js?v=20261125-leaveout-3");
         const selected = pdfFile;
         const doc = await openPdf(selected);
         const sha = await sha256hex(new Uint8Array(await selected.arrayBuffer()));
@@ -488,7 +491,7 @@ class App {
         if (errs.length) throw new Error(`the type list: ${errs[0]}`);
         if (!pdfFile) throw new Error("choose the book's PDF");
         if (!pdfDoc) throw new Error("the PDF is not open yet");
-        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261125-leaveout-2");
+        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261125-leaveout-3");
         // Every page of the PDF is in the book. A page that is not part of it (a library's cover, a blank page) is
         // left with no regions ("No content on this page" in Regions).
         const numbers = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
@@ -1102,8 +1105,16 @@ class App {
   renderChecks() {
     const [errors] = this.check(this.doc);
     this.lastErrors = errors;
+    if (this.outlineBusy) return this.showOutlineStatus();
     const message = errors.length ? "Draft needs review" : this.dirty ? "Saving…" : this.book.writable ? "Saved" : "Read only";
     this.status.replaceChildren(h("span", {}, message));
+  }
+
+  // While the page's outlines are computed: the time taken so far, and the most it will take (OUTLINE_LIMIT).
+  showOutlineStatus() {
+    const clock = ms => { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+    this.status.replaceChildren(h("span", { class: "pending", title: `The outlines of the page's blocks are found again from their boxes. If this takes over ${clock(OUTLINE_LIMIT)}, it stops and says so.` },
+      `computing the outlines… ${clock(Date.now() - this.outlineStarted)} (up to ${clock(OUTLINE_LIMIT)})`));
   }
 
   select(sel, { keepFocus = false } = {}) {
@@ -1307,11 +1318,11 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261125-leaveout-2", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261125-leaveout-3", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
-    // A worker that does not answer in two minutes is stopped (its other jobs answered with the error) and made again
+    // A worker that does not answer in OUTLINE_LIMIT is stopped (its other jobs answered with the error) and made again
     // for the next job.
     return new Promise(resolve => {
       const timer = setTimeout(() => {
@@ -1320,7 +1331,7 @@ class App {
         this.worker?.terminate();
         this.worker = null;
         for (const job of jobs) job({ error: "The outline step did not answer in two minutes." });
-      }, 120000);
+      }, OUTLINE_LIMIT);
       this.outlineJobs.set(id, data => { clearTimeout(timer); resolve(data); });
       this.worker.postMessage({ id, pid, url, boxes });
     });
@@ -1329,7 +1340,7 @@ class App {
   // Recompute the page's outlines from its boxes, as one step with the edit that changed a box. One computation at a
   // time: an edit made while one runs has the page computed once more when it ends (its result, for a page since
   // changed, is not used).
-  async recompute() {
+  async recompute({ since = Date.now() } = {}) {
     if (this.outlineBusy) { this.outlineAgain = this.pid; return; }
     const pid = this.pid, doc = this.doc, boxes = ops.boxesOf(doc);
     // The result holds for the page as it is when its regions and their boxes are those it was computed for (a save in
@@ -1338,17 +1349,19 @@ class App {
       && ops.canonical(ops.boxesOf(this.doc)) === ops.canonical(boxes);
     this.outlineBusy = true;
     this.outlineAgain = null;
-    this.status.replaceChildren(h("span", { class: "pending" }, "computing the outlines…"));
+    this.outlineStarted = since;   // a computation done again for an edit made meanwhile: its clock goes on
+    this.showOutlineStatus();
+    const ticker = setInterval(() => { if (this.outlineBusy) this.showOutlineStatus(); }, 1000);
     let res;
     try { res = await this.outlines(pid, await this.book.imageUrl(pid), boxes); }
     catch (error) { res = { error: error.message }; }
-    finally { this.outlineBusy = false; }
+    finally { this.outlineBusy = false; clearInterval(ticker); if (this.mode === "page" && this.doc) this.renderChecks(); }
     // This page's boxes changed meanwhile, or another page is open and was asked for meanwhile (`outlineAgain`: the page
     // it was asked for): once more, for the page as it is now.
     const again = this.outlineAgain;
     this.outlineAgain = null;
     if (this.pid !== pid ? again === this.pid : !sameBoxes()) {
-      if (this.mode === "page" && this.doc) this.recompute();
+      if (this.mode === "page" && this.doc) this.recompute({ since: this.pid === pid ? since : Date.now() });
       return;
     }
     if (this.pid !== pid) return;

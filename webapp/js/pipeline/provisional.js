@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261125-leaveout-2";
+import { typeRevision } from "../schema.js?v=20261125-leaveout-3";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
