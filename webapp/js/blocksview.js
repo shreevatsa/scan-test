@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261125-leaveout-1";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261125-leaveout-1";
-import { bookReading } from "./reading.js?v=20261125-leaveout-1";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261125-leaveout-1";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261125-leaveout-2";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261125-leaveout-2";
+import { bookReading } from "./reading.js?v=20261125-leaveout-2";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261125-leaveout-2";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261125-leaveout-1";
+import * as ops from "./ops.js?v=20261125-leaveout-2";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261125-leaveout-1";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261125-leaveout-1";
-import { suggestionButton } from "./review-view.js?v=20261125-leaveout-1";
-import { itemNames, normalizeTypeName, proposedOnPage, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261125-leaveout-1";
-import { pageReviewState } from "./layers.js?v=20261125-leaveout-1";
-import { readingOrderWarnings } from "./schema.js?v=20261125-leaveout-1";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261125-leaveout-1";
+import { noteProblems } from "./note-links.js?v=20261125-leaveout-2";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261125-leaveout-2";
+import { suggestionButton } from "./review-view.js?v=20261125-leaveout-2";
+import { itemNames, normalizeTypeName, proposedOnPage, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261125-leaveout-2";
+import { pageReviewState } from "./layers.js?v=20261125-leaveout-2";
+import { readingOrderWarnings } from "./schema.js?v=20261125-leaveout-2";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261125-leaveout-2";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -235,13 +235,15 @@ export class BlocksPanel extends TextPanel {
     return out;
   }
 
-  // The checks about one place (`key`), in a popup beside its "!" (`anchor`, else its "!" on the scan); the place is
-  // selected.
+  // The checks about one place (`key`), in a popup beside its "!" (`anchor`; else the "!" on its block, scrolled into
+  // view, or for a place with no block the "!" on the scan); the place is selected.
   openCheck(key, anchor = null) {
     const { app } = this, place = this.placed?.get(key);
     document.querySelectorAll(".check-pop").forEach(pop => pop.remove());
     if (!place) return;
-    if (place.at.region) app.select({ region: place.at.region });
+    const cardBadge = place.at.region && this.el.querySelector(`.block-card[data-rid="${CSS.escape(place.at.region)}"] > .block-check-badge`);
+    if (!anchor && cardBadge) anchor = cardBadge;
+    if (place.at.region) app.select({ region: place.at.region }, { keepFocus: anchor === cardBadge });
     else if (place.at.omitted !== undefined) app.select({ omitted: place.at.omitted });
     else { app.select({}); app.pageView.markLine({ pinned: place.box }); app.pageView.revealBox(place.box); }
     anchor ||= app.pageView.marks.querySelector(`.pv-badge[data-key="${CSS.escape(key)}"]`);
@@ -254,12 +256,21 @@ export class BlocksPanel extends TextPanel {
     // An action taken closes it (the page is drawn again).
     pop.addEventListener("click", event => { if (event.target.closest("button")) setTimeout(close); });
     pop.addEventListener("change", () => setTimeout(close));
-    document.body.append(pop);
-    requestAnimationFrame(() => {
-      const r = anchor.getBoundingClientRect();
-      pop.style.left = `${Math.max(8, Math.min(r.right + 6, innerWidth - pop.offsetWidth - 8))}px`;
-      pop.style.top = `${Math.max(8, Math.min(r.top - 4, innerHeight - pop.offsetHeight - 8))}px`;
-    });
+    const card = anchor.closest(".block-card");
+    if (card) {
+      // In the text column: inside the block's card, above its text, which moves down for it.
+      pop.className = "check-pop check-inline";
+      anchor.after(pop);
+      card.scrollIntoView({ block: "nearest" });
+    } else {
+      // Beside its "!" on the scan.
+      document.body.append(pop);
+      requestAnimationFrame(() => {
+        const r = anchor.getBoundingClientRect();
+        pop.style.left = `${Math.max(8, Math.min(r.right + 6, innerWidth - pop.offsetWidth - 8))}px`;
+        pop.style.top = `${Math.max(8, Math.min(r.top - 4, innerHeight - pop.offsetHeight - 8))}px`;
+      });
+    }
     setTimeout(() => document.addEventListener("pointerdown", outside, true));
   }
 

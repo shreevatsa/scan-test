@@ -4,14 +4,14 @@
 // their label; the printed page number is shown where each page starts.
 // Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
 
-import { assemble } from "./assemble.js?v=20261125-leaveout-1";
+import { assemble } from "./assemble.js?v=20261125-leaveout-2";
 import { cp } from "./inline.js";
 import { lineHtml, esc, h, bbox, cropInto } from "./render.js";
-import { verseGroups } from "./verses.js?v=20261125-leaveout-1";
+import { verseGroups } from "./verses.js?v=20261125-leaveout-2";
 import { css, unitStyle, baseCss } from "./style.js";
-import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261125-leaveout-1";
-import { layerState } from "./layers.js?v=20261125-leaveout-1";
-import { bookReading } from "./reading.js?v=20261125-leaveout-1";
+import { workflowAddress, hasReading, noContent } from "./workflow.js?v=20261125-leaveout-2";
+import { layerState } from "./layers.js?v=20261125-leaveout-2";
+import { bookReading } from "./reading.js?v=20261125-leaveout-2";
 
 // A line piece with something in it (as ops.js joinLines): an empty one adds nothing to a block's text, not even a space.
 const spoken = line => Boolean(line.text) || Boolean(line.spans?.length);
