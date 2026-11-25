@@ -168,3 +168,20 @@ test("a titled contents page: its entries name chapters though their numbers wer
   assert.deepEqual(tree.slice(1).map(entry => Object.keys(entry)[0]), ["section “Grammar”", "section “Talk 1”"]);
   assert.deepEqual(tree[1]["section “Grammar”"].at(-1), { "section “Its sounds”": ["heading", "paragraph"] });
 });
+
+test("a titled contents page is the contents, not an imprint's rising numbers; a part whose heading is not printed", () => {
+  // An imprint with prices and addresses (numbers that rise, under a heading of its own), then the titled contents: a
+  // music part (its heading not printed in the book), a hymn part and an appendix grouping the talks. The talks name
+  // the chapters, each holding its sections.
+  const imprint = page([["heading", "Branches"], ["list_item", "4th Cross . . 625"], ["list_item", "5th Cross . . 650"],
+    ["list_item", "Hanumanthanagar . . 700"], ["list_item", "Basavanagudi . . 720"]]);
+  const contents = page([["heading", "Contents"], ["heading", "Music part"], ["list_item", "On music . . 1"], ["list_item", "On ragas . . 3"],
+    ["heading", "Hymn part"], ["list_item", "On hymns . . 5"], ["heading", "Appendix"], ["list_item", "Glossary . . 7"]]);
+  const docs = [imprint, contents, page([["heading", "On music"], ["paragraph", "a"], ["heading", "What is music"], ["paragraph", "b"]]),
+    page([["heading", "On ragas"], ["paragraph", "c"]]), page([["heading", "Hymn part"], ["heading", "On hymns"], ["paragraph", "d"]]),
+    page([["heading", "Appendix"], ["heading", "Glossary"], ["paragraph", "e"]])];
+  const { tree } = read(docs, { headings: [{ heading: "heading", container: "section" }] });
+  const top = tree.filter(entry => typeof entry === "object").map(entry => Object.keys(entry)[0]);
+  assert.ok(top.includes("section “On music”") && top.includes("section “On ragas”") && !top.includes("section “What is music”"), top.join(" | "));
+  assert.deepEqual(tree.find(entry => entry["section “On music”"])["section “On music”"].at(-1), { "section “What is music”": ["heading", "paragraph"] });
+});

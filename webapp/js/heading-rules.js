@@ -66,14 +66,19 @@ export function contentsTitles(pages, skipTypes = new Set(), headingTypes = skip
     const headings = doc.page.regions.filter(region => headingTypes.has(region.type)).sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
       .map(region => normalTitle((region.lines || []).map(line => line.text || "").join(" ")));
     const groups = headings.slice(1).map((title, j) => ({ title, before: entries.filter(([, group]) => group <= j + 1).length })).filter(({ title }) => title.length >= 2);
-    found.push({ index, titles: pageTitles, groups });
+    found.push({ index, titles: pageTitles, groups, titled });
   }
   // A book with its contents at the front: a list in its second half is another (a list of its subheadings with their
-  // pages, at the back), not the contents.
+  // pages, at the back), not the contents. A book with a page its heading calls the contents: that page and those
+  // straight after it are the contents, not another page with numbers that rise (an imprint, its prices and
+  // addresses, whose headings would be taken for the groups naming the chapters).
   const front = found.some(page => page.index < 0.2 * pages.length);
+  const named = new Set();
+  for (const page of found) if (page.titled || named.has(page.index - 1)) named.add(page.index);
   titles.groupAt = [];   // each group heading's place among the titles: the number of titles before it
   for (const page of found) {
     if (front && page.index > 0.5 * pages.length) continue;
+    if (named.size && !named.has(page.index)) continue;
     titles.pages.add(page.index);
     for (const { title, before } of page.groups) { titles.groups.push(title); titles.groupAt.push(titles.length + before); }
     titles.push(...page.titles);
@@ -128,7 +133,7 @@ function sectionPaths(pages, levels, textOf, contents = null, recurring = new Se
     // Where the contents group their entries under headings, those name the chapters and the entries their sections.
     // The chapters come in the contents' order: a heading naming an entry before the open chapter's (a chapter's title
     // repeated in an appendix's list of subheadings) is a section of the open chapter.
-    const titles = contents.groups.length >= 2 ? contents.groups : contents;
+    const titles = contents.byGroups ? contents.groups : contents;
     const index = contentsIndex(titles, textOf(doc, unit), reached);
     if (index >= 0 && index >= reached) { reached = index; return 0; }
     // A lone heading grouping entries on the contents page ("Appendix"), printed in the book too, is a division of it,
@@ -190,13 +195,16 @@ export function headingSections(pages, levels, { textOf, types }) {
     .filter(region => headingTypes.has(region.type)).map(region => (region.lines || []).map(line => line.text || "").join(" ")));
   // A heading among a contents' entries names a chapter only where the book prints it as a heading too: not a column's
   // header ("Page"), nor a heading of a page taken for contents (an imprint with its prices and addresses).
+  const groupNames = new Set(titles.groups || []);
   if (titles.groups?.length) {
     const kept = titles.groups.map(group => elsewhere.some(heading => inContents([group], heading)));
     titles.groupAt = titles.groupAt.filter((_, i) => kept[i]);
     titles.groups = titles.groups.filter((_, i) => kept[i]);
   }
-  // The titles that name chapters: the grouping headings where there are two or more, else the entries.
-  const naming = titles.groups?.length >= 2 ? titles.groups : titles;
+  // The titles that name chapters: the grouping headings, where there are two or more and the book prints each (a
+  // part whose heading is not printed would leave its chapters loose at the top), else the entries.
+  titles.byGroups = (titles.groups || []).length >= 2 && new Set(titles.groups).size === groupNames.size;
+  const naming = titles.byGroups ? titles.groups : titles;
   const namedCount = titles.length >= 3 ? naming.filter(title => elsewhere.some(heading => inContents([title], heading))).length : 0;
   const contents = titles.length >= 3 && namedCount >= 2 && namedCount >= 0.25 * naming.length ? titles : null;
   if (contents) levels = [levels[0], levels[0]];

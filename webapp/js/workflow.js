@@ -1,7 +1,7 @@
-import { typeRevision } from "./schema.js?v=20261124-contents-4";
-import { pdfFollows } from "./pipeline/pdf.js?v=20261124-contents-4";
-import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261124-contents-4";
-import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261124-contents-4";
+import { typeRevision } from "./schema.js?v=20261125-contents-5";
+import { pdfFollows } from "./pipeline/pdf.js?v=20261125-contents-5";
+import { layerState, layerRecords, accept, sendBack, noteEdit, pageReviewState } from "./layers.js?v=20261125-contents-5";
+import { layoutCounts, layoutSignature, regionFlags, regionWarnings, textFlags, readFlags, RARE_LAYOUT } from "./flags.js?v=20261125-contents-5";
 
 export const STAGES = ["pages", "regions", "text", "read", "export"];
 export const REVIEW_LABELS = { unchecked: "Unchecked", checked: "Checked", suggestion: "Suggestion waiting" };
