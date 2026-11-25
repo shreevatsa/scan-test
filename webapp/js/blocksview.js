@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261125-contents-5";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261125-contents-5";
-import { bookReading } from "./reading.js?v=20261125-contents-5";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261125-contents-5";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261125-alltext-1";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261125-alltext-1";
+import { bookReading } from "./reading.js?v=20261125-alltext-1";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261125-alltext-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261125-contents-5";
+import * as ops from "./ops.js?v=20261125-alltext-1";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261125-contents-5";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261125-contents-5";
-import { suggestionButton } from "./review-view.js?v=20261125-contents-5";
-import { itemNames, normalizeTypeName, readPendingProposals, typeNameStyle, waitingRegions } from "./type-additions.js?v=20261125-contents-5";
-import { pageReviewState } from "./layers.js?v=20261125-contents-5";
-import { readingOrderWarnings } from "./schema.js?v=20261125-contents-5";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261125-contents-5";
+import { noteProblems } from "./note-links.js?v=20261125-alltext-1";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261125-alltext-1";
+import { suggestionButton } from "./review-view.js?v=20261125-alltext-1";
+import { itemNames, normalizeTypeName, proposedOnPage, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261125-alltext-1";
+import { pageReviewState } from "./layers.js?v=20261125-alltext-1";
+import { readingOrderWarnings } from "./schema.js?v=20261125-alltext-1";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261125-alltext-1";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -64,13 +64,13 @@ export function blockChecks(app, doc, projection) {
   // A region the finder could not match to a listed type carries `proposed_type`: it can be added to the type list, and
   // the region given that type, or reviewed or left out as any unassigned area.
   // One decision for the book: adding (or using) the type makes every area waiting for it a block, with its text.
-  const waitingInBook = name => [...(app.pageStates?.values() || [])].reduce((n, state) => n + waitingRegions(state.doc, new Set([normalizeTypeName(name)])).length, 0);
-  const addProposed = (proposed, text, region, index, leave) => {
+  const waitingInBook = name => [...(app.pageStates?.values() || [])].reduce((n, state) => n + proposedOnPage(state.doc, new Set([normalizeTypeName(name)])), 0);
+  const addProposed = (proposed, text, region, index, leave, { review, leaveLabel } = {}) => {
     const known = tl.types[proposed]?.region, count = waitingInBook(region.proposed_type || proposed);
-    findings.push({ text: count > 1 ? `${text} The finder marked ${count} areas in the book this way.` : text, leaveOut: leave,
+    findings.push({ text: count > 1 ? `${text} The finder marked ${count} areas in the book this way.` : text, leaveOut: leave, leaveLabel,
       label: known ? `Use type ${proposed}` : `Add type ${proposed}`,
       action: () => known ? app.restoreProposed(region.proposed_type || proposed, proposed) : addProposedType(app, proposed, region, index),
-      extra: [{ label: "Review area", action: () => app.select({ omitted: index }) }] });
+      extra: [{ label: review ? "Show block" : "Review area", action: review || (() => app.select({ omitted: index })) }] });
   };
   const flags = [...regionFlags(doc, tl, app.regionFlagContext(doc)), ...textFlags(doc, tl)];
   const see = new Set();
@@ -95,6 +95,13 @@ export function blockChecks(app, doc, projection) {
       const leave = () => app.edit(next => { ops.ignoreOmittedRegion(next, index); app.selection = {}; });
       if (proposed) addProposed(proposed, `An area may be a new type, “${region.proposed_type}”.`, region, index, leave);
       else add("An area on the scan needs a type.", "Review area", () => app.select({ omitted: index }), leave);
+    } else if (flag.code === "proposed") {
+      // A block kept under a type of its kind while the type proposed for it waits: add that type (for every such block of
+      // the book), or keep the block as it is.
+      const region = doc.page.regions.find(value => value.id === flag.region), proposed = typeNameStyle(region.source.proposed_type);
+      const keep = () => app.edit(next => { const block = next.page.regions.find(value => value.id === region.id); if (block) delete block.source.kept_as; });
+      addProposed(proposed, `This block may be a new type, “${region.source.proposed_type}”; it is a ${region.type.replaceAll("_", " ")} meanwhile.`,
+        { proposed_type: region.source.proposed_type }, null, keep, { review: () => openBlock(region.id), leaveLabel: `Keep as ${region.type.replaceAll("_", " ")}` });
     } else if (plain[flag.code]) {
       add(plain[flag.code], flag.region ? "Show block" : flag.box ? "Show scan" : "Review",
         flag.region ? () => openBlock(flag.region) : flag.box ? () => scan(flag.box) : details);
@@ -175,10 +182,10 @@ export class BlocksPanel extends TextPanel {
     const { app } = this;
     const findings = blockChecks(app, app.doc, this.projection);
     this.findings.replaceChildren(findings.length
-      ? h("ul", {}, ...findings.map(({ text, label, action, leaveOut, extra }) => h("li", {}, h("span", {}, text),
+      ? h("ul", {}, ...findings.map(({ text, label, action, leaveOut, leaveLabel, extra }) => h("li", {}, h("span", {}, text),
         h("div", { class: "actions" }, h("button", { onclick: action }, label),
           ...(extra || []).map(item => h("button", { onclick: item.action }, item.label)),
-          app.book.writable && leaveOut ? h("button", { onclick: leaveOut, title: "This area is outside the printed text." }, "Leave out") : null))))
+          app.book.writable && leaveOut ? h("button", { onclick: leaveOut, title: leaveLabel ? "Keep this block's type; the proposal is dropped." : "This area is outside the printed text." }, leaveLabel || "Leave out") : null))))
       : h("div", { class: "block-check-clear" }, h("span", {}, "Nothing to check here.")));
   }
 

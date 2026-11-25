@@ -1,7 +1,7 @@
 // Pending proposals for the type list: what the region finder (method 097) proposes to add, kept in the book's work
 // records (work/type-proposals/pending.json, which older books may also hold survey items in). Nothing here changes the
 // type list; the page editor's "Add type X" does that through the book's add-type operation.
-import { REGION_CLASSES } from "./book-types.js?v=20261125-contents-5";
+import { REGION_CLASSES } from "./book-types.js?v=20261125-alltext-1";
 export const PENDING_PATH = "work/type-proposals/pending.json";
 const empty = () => ({ format: "pending-type-proposals", version: 1, items: [] });
 
@@ -100,11 +100,25 @@ export function proposalAssignments(record, types) {
 export const waitingRegions = (doc, keys) => (doc?.source?.omitted_regions || [])
   .map((region, index) => ({ ...region, index })).filter(region => region.proposed_type && keys.has(normalizeTypeName(region.proposed_type)));
 
+// The blocks of a page kept under a type of their kind while the type the finder proposed for them waits (provisional.js
+// keeps every area with text in the book): those whose proposed name is in `keys`, still of the type they were kept as.
+export const keptProposed = (doc, keys) => (doc?.page?.regions || []).filter(region => region.source?.proposed_type &&
+  region.source.kept_as === region.type && keys.has(normalizeTypeName(region.source.proposed_type)));
+// What a page has waiting for a proposed type: its unassigned areas and its kept blocks.
+export const proposedOnPage = (doc, keys) => waitingRegions(doc, keys).length + keptProposed(doc, keys).length;
+
 // A page with its waiting areas of one proposed type (`key`, a normalized name) made blocks of type `type`: each with
 // the outline and line pieces the region finder drew (its saved record), and the text the page's saved reading has for
-// it. Returns { doc, restored, withText } (ids). An area whose record is gone is left waiting.
+// it; and its blocks kept under another type meanwhile given type `type`, their text as it is. Returns { doc, restored,
+// withText } (ids). An area whose record is gone is left waiting.
 export function restoreWaiting(doc, record, reading, key, type, types, restoredText) {
-  const next = structuredClone(doc), restored = [];
+  const next = structuredClone(doc), restored = [], retyped = [];
+  for (const region of keptProposed(next, new Set([key]))) {
+    region.type = type;
+    delete region.source.kept_as;
+    region.source.added_by = "the person, adding a proposed type";
+    retyped.push(region.id);
+  }
   const waiting = waitingRegions(next, new Set([key])).sort((a, b) => b.index - a.index);
   for (const area of waiting) {
     const original = record?.regions?.find(value => (value.document_region_id || `r${value.region_id}`) === area.region);
@@ -120,5 +134,6 @@ export function restoreWaiting(doc, record, reading, key, type, types, restoredT
   }
   if (next.source.omitted_regions && !next.source.omitted_regions.length) delete next.source.omitted_regions;
   const withText = restored.length && reading ? restoredText(next, reading, types, restored) : [];
-  return { doc: next, restored, withText };
+  const hasText = id => (next.page.regions.find(region => region.id === id)?.lines || []).some(line => (line.text || "").trim());
+  return { doc: next, restored: [...retyped, ...restored], withText: [...retyped.filter(hasText), ...withText] };
 }

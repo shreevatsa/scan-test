@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261125-contents-5";
-import { layerState } from "./layers.js?v=20261125-contents-5";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261125-alltext-1";
+import { layerState } from "./layers.js?v=20261125-alltext-1";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -147,6 +147,8 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
     if (!Object.hasOwn(types.types, region.type)) add("unknown-type", `${region.id} needs a known type`, region.id, region.box);
     if (types.types[region.type]?.role !== "furniture" && !Number.isFinite(region.order)) add("missing-order", `${region.id} has no reading order`, region.id);
     if (region.source?.no_ink && !regionHasText(region)) add("no-ink", `${region.id} has no detected ink`, region.id, region.box);
+    if (region.source?.proposed_type && region.source.kept_as === region.type)
+      add("proposed", `${region.id} may be a new type (proposed: ${region.source.proposed_type})`, region.id);
   }
   // A small area the finder could not type ("other", no type proposed), at most two characters high and wide, in the top
   // or bottom 15% of the page and clear of every text block (a printer’s signature mark at the foot of each gathering’s first

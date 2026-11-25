@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261125-contents-5";
+import { typeRevision } from "../schema.js?v=20261125-alltext-1";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
@@ -100,6 +100,15 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
   return { units, flows, problems };
 }
 
+// The book's type for a region of a proposed type, by its kind (region class): the type named for the class, else the
+// first of that class; none for a region of no proposed type or of no known kind.
+export function keptType(region, types) {
+  const kind = region.region_class;
+  if (!region.proposed_type || !kind || kind === "other") return null;
+  if (types.types[kind]?.region === kind) return kind;
+  return Object.entries(types.types).find(([, type]) => type.region === kind)?.[0] || null;
+}
+
 export function provisionalDocument(pid, page, types, record, boundary = {}) {
   const { sent, skipped } = selectPageRegions(record.regions);
   const regions = [], omitted = [], kept = new Set();
@@ -108,13 +117,18 @@ export function provisionalDocument(pid, page, types, record, boundary = {}) {
     continues_later: Boolean(region.continues_later), model_box: structuredClone(region.model_box),
     ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) });
   for (const { rid, region, line_ids: lineIds } of sent) {
-    if (!types.types[region.type]) {
+    // An area the finder proposed a new type for is in the book meanwhile, as a block of the book's type of its kind (a
+    // paragraph, a verse), so that its text is: the proposal waits on it (source.kept_as), for the person to add the
+    // type or keep it as it is. An area of no known kind ("other", a mark the finder could not place) is left out.
+    const kept = !types.types[region.type] && keptType(region, types);
+    if (!types.types[region.type] && !kept) {
       omitted.push({ region: rid, type: region.type, box: structuredClone(region.model_box), ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) });
       continue;
     }
     const lines = new Map(region.lines.map(line => [line.line_id, line.polygons]));
-    regions.push({ id: rid, type: region.type, polygons: structuredClone(region.polygons), box: region.model_box.map(Math.round),
-      order: region.reading_order, lines: lineIds.map(line => ({ line, polygons: structuredClone(lines.get(line)) })), source: sourceOf(region) });
+    regions.push({ id: rid, type: kept || region.type, polygons: structuredClone(region.polygons), box: region.model_box.map(Math.round),
+      order: region.reading_order, lines: lineIds.map(line => ({ line, polygons: structuredClone(lines.get(line)) })),
+      source: { ...sourceOf(region), ...(kept ? { kept_as: kept } : {}) } });
   }
   // A region the finder drew where the scan has no ink is kept, outlined by its box and marked, as the editor does for a
   // region drawn by hand over blank paper: the person sees it in the list and on the scan and decides (delete it, retype

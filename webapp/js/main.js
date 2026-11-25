@@ -1,43 +1,43 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261125-contents-5";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261125-contents-5";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261125-contents-5";
-import { RECIPE } from "./recipe.js?v=20261125-contents-5";
-import { readerOptions } from "./pipeline/readers.js?v=20261125-contents-5";
+import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261125-alltext-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261125-alltext-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261125-alltext-1";
+import { RECIPE } from "./recipe.js?v=20261125-alltext-1";
+import { readerOptions } from "./pipeline/readers.js?v=20261125-alltext-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261125-contents-5";
-import { blockName } from "./blocks.js?v=20261125-contents-5";
-import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261125-contents-5";
-import { headingDefaults } from "./rules.js?v=20261125-contents-5";
-import { normalizeTypeName, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261125-contents-5";
-import { restoredText } from "./pipeline/apply.js?v=20261125-contents-5";
-import { PageView } from "./pageimage.js?v=20261125-contents-5";
-import { markerForm } from "./editor.js?v=20261125-contents-5";
-import { verseExport } from "./verses.js?v=20261125-contents-5";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261125-contents-5";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261125-contents-5";
-import { renderStyle } from "./styleview.js?v=20261125-contents-5";
-import { typeSetup } from "./type-setup.js?v=20261125-contents-5";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261125-alltext-1";
+import { blockName } from "./blocks.js?v=20261125-alltext-1";
+import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261125-alltext-1";
+import { headingDefaults } from "./rules.js?v=20261125-alltext-1";
+import { keptProposed, normalizeTypeName, proposedOnPage, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261125-alltext-1";
+import { restoredText } from "./pipeline/apply.js?v=20261125-alltext-1";
+import { PageView } from "./pageimage.js?v=20261125-alltext-1";
+import { markerForm } from "./editor.js?v=20261125-alltext-1";
+import { verseExport } from "./verses.js?v=20261125-alltext-1";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261125-alltext-1";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261125-alltext-1";
+import { renderStyle } from "./styleview.js?v=20261125-alltext-1";
+import { typeSetup } from "./type-setup.js?v=20261125-alltext-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261125-contents-5";
-import { EditError } from "./ops.js?v=20261125-contents-5";
-import { Maker, post } from "./pipeline/run.js?v=20261125-contents-5";
-import { CredentialChecks } from "./key-check.js?v=20261125-contents-5";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261125-contents-5";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261125-contents-5";
-import { pruneOverrides } from "./blocks-format.js?v=20261125-contents-5";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261125-contents-5";
-import { orderedRegions } from "./flags.js?v=20261125-contents-5";
-import { assemble } from "./assemble.js?v=20261125-contents-5";
-import { editorFocus, mergeTextEdit } from "./editing.js?v=20261125-contents-5";
-import { overridesAfter } from "./structure.js?v=20261125-contents-5";
-import { renderPages } from "./pagesview.js?v=20261125-contents-5";
-import { settings } from "./store.js?v=20261125-contents-5";
-import { renderBookSettings } from "./settingsview.js?v=20261125-contents-5";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261125-contents-5";
-import { pageMenu } from "./page-actions.js?v=20261125-contents-5";
+import * as ops from "./ops.js?v=20261125-alltext-1";
+import { EditError } from "./ops.js?v=20261125-alltext-1";
+import { Maker, post } from "./pipeline/run.js?v=20261125-alltext-1";
+import { CredentialChecks } from "./key-check.js?v=20261125-alltext-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261125-alltext-1";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261125-alltext-1";
+import { pruneOverrides } from "./blocks-format.js?v=20261125-alltext-1";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261125-alltext-1";
+import { orderedRegions } from "./flags.js?v=20261125-alltext-1";
+import { assemble } from "./assemble.js?v=20261125-alltext-1";
+import { editorFocus, mergeTextEdit } from "./editing.js?v=20261125-alltext-1";
+import { overridesAfter } from "./structure.js?v=20261125-alltext-1";
+import { renderPages } from "./pagesview.js?v=20261125-alltext-1";
+import { settings } from "./store.js?v=20261125-alltext-1";
+import { renderBookSettings } from "./settingsview.js?v=20261125-alltext-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261125-alltext-1";
+import { pageMenu } from "./page-actions.js?v=20261125-alltext-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -457,7 +457,7 @@ class App {
       if (!pdfFile) return;
       info.textContent = "Opening the PDF…";
       try {
-        const { openPdf } = await import("./pipeline/pdf.js?v=20261125-contents-5");
+        const { openPdf } = await import("./pipeline/pdf.js?v=20261125-alltext-1");
         const selected = pdfFile;
         const doc = await openPdf(selected);
         const sha = await sha256hex(new Uint8Array(await selected.arrayBuffer()));
@@ -487,7 +487,7 @@ class App {
         if (errs.length) throw new Error(`the type list: ${errs[0]}`);
         if (!pdfFile) throw new Error("choose the book's PDF");
         if (!pdfDoc) throw new Error("the PDF is not open yet");
-        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261125-contents-5");
+        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261125-alltext-1");
         // Every page of the PDF is in the book. A page that is not part of it (a library's cover, a blank page) is
         // left with no regions ("No content on this page" in Regions).
         const numbers = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
@@ -725,7 +725,7 @@ class App {
     const book = this.book, key = normalizeTypeName(name);
     await this.flush();
     if (this.dirty) return this.toast("Save this page's changes first.", "warn");
-    const ids = book.pages.map(page => page.id).filter(pid => waitingRegions(this.pageStates.get(pid)?.doc, new Set([key])).length);
+    const ids = book.pages.map(page => page.id).filter(pid => proposedOnPage(this.pageStates.get(pid)?.doc, new Set([key])));
     if (!ids.length) return 0;
     const maker = await this.getMaker(), options = await maker.options();
     const saved = new Map();
@@ -749,6 +749,28 @@ class App {
     this.toast(`${restored} ${restored === 1 ? "area" : "areas"} on ${ids.length} ${ids.length === 1 ? "page" : "pages"} became ${type.replaceAll("_", " ")}` +
       (unread ? `; ${unread} still ${unread === 1 ? "needs" : "need"} reading (Page → Read again).` : ", with their text."));
     return restored;
+  }
+
+  // Every block of the book kept under a type of its kind while the type `name` was proposed for it, kept as it is: the
+  // proposal is dropped.
+  async keepProposed(name) {
+    const book = this.book, key = normalizeTypeName(name);
+    await this.flush();
+    if (this.dirty) return this.toast("Save this page's changes first.", "warn");
+    const ids = book.pages.map(page => page.id).filter(pid => keptProposed(this.pageStates.get(pid)?.doc, new Set([key])).length);
+    let kept = 0;
+    try {
+      await book.editPages(ids, async docs => {
+        for (const pid of ids) for (const block of keptProposed(docs.get(pid), new Set([key]))) { delete block.source.kept_as; kept++; }
+        return docs;
+      }, { archive: true });
+    } catch (error) { this.toast(error.message, "bad"); return 0; }
+    for (const pid of ids) await this.refreshWorkflowPage(pid);
+    this.refreshWorkflowFlags();
+    if (this.mode === "page") { this.doc = null; this.pageBuilt = false; }
+    await this.route();
+    this.toast(`${kept} ${kept === 1 ? "block keeps its type" : "blocks keep their types"}; the proposal “${name}” is dropped.`);
+    return kept;
   }
 
   // Every area in the book waiting for the proposed type `name`, left out (kept among the page's ignored areas, from
@@ -1216,7 +1238,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261125-contents-5", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261125-alltext-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;

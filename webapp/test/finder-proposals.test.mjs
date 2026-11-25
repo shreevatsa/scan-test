@@ -7,7 +7,8 @@ import { makeValidator, checkPage } from "../js/schema.js";
 import { finderById } from "../js/pipeline/finders.js";
 import { proposingPrompt, proposingSchema, scaleProposingRegions, offeredProposals } from "../js/pipeline/proposing-finder.js";
 import { PENDING_PATH, addPendingProposals, readPendingProposals, pendingItems, decideProposal, recordFinderProposals,
-  proposalAssignments, normalizeTypeName, typeNameStyle, waitingRegions } from "../js/type-additions.js";
+  proposalAssignments, normalizeTypeName, typeNameStyle, waitingRegions, keptProposed, restoreWaiting } from "../js/type-additions.js";
+import { regionFlags } from "../js/flags.js";
 import { writeChaya, readChaya } from "../js/chayapdf.js";
 import { isProtected } from "../js/layers.js";
 import { movePage } from "../js/workflow.js";
@@ -122,6 +123,29 @@ function fixture(responses) {
       charH: 15, angle: 0, method: "094-illumination-flattened-ink" }) });
   return { book, maker, calls, files };
 }
+
+test("an area of a proposed type is in the book meanwhile, as a block of its kind's type; adding the type retypes it", async () => {
+  // A colophon (a paragraph's kind) and a ghost of no known kind: the colophon is kept as a paragraph, its text read with
+  // the page, the proposal waiting on it; the ghost is left out, as before.
+  const { book, maker } = fixture([{ new_types: [{ name: "colophon", definition: "A closing line.", region_class: "paragraph" }],
+    regions: [box(0, { type: "other", proposed_type: "colophon" }), box(300, { type: "other", proposed_type: "ghost", reading_order: 2 })] }]);
+  await maker.findRegions("p1");
+  const doc = await book.current("p1");
+  assert.deepEqual(doc.page.regions.map(region => [region.type, region.source.proposed_type, region.source.kept_as]), [["paragraph", "colophon", "paragraph"]]);
+  assert.deepEqual(doc.source.omitted_regions.map(area => area.proposed_type), ["ghost"]);
+  assert.deepEqual(regionFlags(doc, book.types).filter(flag => flag.code === "proposed").map(flag => flag.message), ["r1 may be a new type (proposed: colophon)"]);
+  assert.equal(keptProposed(doc, new Set(["colophon"])).length, 1);
+  // Adding the type: the kept block takes it, its text as it is.
+  doc.page.regions[0].lines[0].text = "Here ends the book.";
+  const types2 = structuredClone(book.types); types2.types.colophon = { description: "A closing line.", region: "paragraph", flow: "main" };
+  const out = restoreWaiting(doc, null, null, "colophon", "colophon", types2, () => []);
+  assert.deepEqual(out.doc.page.regions.map(region => [region.type, region.source.kept_as, region.lines[0].text]), [["colophon", undefined, "Here ends the book."]]);
+  assert.deepEqual([out.restored, out.withText], [["r1"], ["r1"]]);
+  assert.equal(regionFlags(out.doc, types2).filter(flag => flag.code === "proposed").length, 0);
+  // Given another type by hand, a block no longer waits on the proposal.
+  doc.page.regions[0].type = "page_number";
+  assert.equal(regionFlags(doc, book.types).filter(flag => flag.code === "proposed").length, 0);
+});
 
 test("a page rebuilt for a second added type keeps the first one", async () => {
   const { book, maker } = fixture([{ new_types: [{ name: "colophon", definition: "A closing line.", region_class: "paragraph" },
