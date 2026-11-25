@@ -1,5 +1,5 @@
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261125-examples-1";
-import { layerState } from "./layers.js?v=20261125-examples-1";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261125-leaveout-1";
+import { layerState } from "./layers.js?v=20261125-leaveout-1";
 
 export function orderedRegions(doc, types, furniture = true) {
   return (doc?.page.regions || []).map((region, index) => ({ region, index }))
@@ -170,7 +170,8 @@ export function regionFlags(doc, types, { errors = [], previous = null, next = n
     const what = skipped.status === "no_ink" || !skipped.status ? "no ink was found inside its box" : skipped.status;
     add("no-ink", `Region ${skipped.region_id}${skipped.type ? ` (${skipped.type})` : ""} was left out: ${what}`, null, skipped.model_box || null);
   }
-  const ignored = ignoredLines(doc);
+  // A line under an area the person left out (source.ignored_regions) is no line to check either.
+  const ignored = [...ignoredLines(doc), ...(doc.source?.ignored_regions || []).filter(area => area.box).map(area => ({ box: area.box }))];
   // A mark narrower than a character at the very edge of the scan (a speck, the shadow of the binding), or a hairline
   // anywhere (under half a character wide and at least twice as tall: the scan's edge, a fold, a rule), is no printed line.
   const charH = doc.source?.char_h || 0, W = doc.page.width || 0, H = doc.page.height || 0;

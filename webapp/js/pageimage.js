@@ -1,6 +1,9 @@
-// The page image with its regions' and line pieces' outlines. Click a region to select it; a selected region shows
-// its editable box with handles (drag a corner or an edge to resize, the middle to move). In drawing mode, drag a
-// rectangle to add a region.
+// The page image with its regions' and line pieces' outlines. Click a region to select it (shift-click adds it to the
+// selection); a selected region shows its editable box with handles (drag a corner or an edge to resize, the middle to
+// move). Drag across the scan to select every region in a box. In drawing mode, drag a rectangle to add a region.
+// Over the scan: a "!" beside each region (or line) a check is about (setChecks), and on the region under the pointer
+// or selected an × that leaves it out of the book; an area left out stays on the scan, grey, with a ↺ that brings it
+// back.
 
 import { bbox, pathD } from "./render.js";
 
@@ -21,9 +24,12 @@ const svgEl = (tag, attrs = {}) => {
 };
 
 export class PageView {
-  constructor(el, { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, onHoverRegion, editable = true, typeLabel = null }) {
+  constructor(el, { onSelectRegion, onSelectOmitted, onSelectMany, onBox, onDraw, onHoverLine, onHoverRegion, onLeaveOut, onRestore, onCheck,
+    editable = true, typeLabel = null }) {
     this.el = el;
-    this.cb = { onSelectRegion, onSelectOmitted, onBox, onDraw, onHoverLine, onHoverRegion };
+    this.cb = { onSelectRegion, onSelectOmitted, onSelectMany, onBox, onDraw, onHoverLine, onHoverRegion, onLeaveOut, onRestore, onCheck };
+    this.checks = [];
+    this.many = { regions: [], omitted: [] };
     this.zoom = 1;
     this.fit = "width";        // "width", "height" (kept as the pane or the page changes), or null after zooming
     this.drawing = false;
@@ -36,7 +42,24 @@ export class PageView {
     this.img.alt = "page image";
     this.img.draggable = false;
     this.svg = svgEl("svg", { preserveAspectRatio: "none" });
-    this.wrap.append(this.img, this.svg);
+    // The "!" of the checks and the one ×/↺ button, over the scan; placed in percentages of the page, so they follow the zoom.
+    this.marks = document.createElement("div");
+    this.marks.className = "pv-marks";
+    this.tool = document.createElement("button");
+    this.tool.className = "pv-tool";
+    this.tool.hidden = true;
+    this.tool.addEventListener("pointerenter", () => clearTimeout(this.toolTimer));
+    this.tool.addEventListener("pointerleave", () => this.hideTool());
+    this.tool.addEventListener("pointerdown", event => event.stopPropagation());
+    this.tool.addEventListener("click", event => {
+      event.stopPropagation();
+      const target = this.toolTarget;
+      this.tool.hidden = true;
+      this.tooltip.hidden = true;
+      if (target?.restore !== undefined) this.cb.onRestore?.(target.restore);
+      else if (target) this.cb.onLeaveOut?.(target.region ? { regions: [target.region] } : { omitted: [target.omitted] });
+    });
+    this.wrap.append(this.img, this.svg, this.marks);
     this.tooltip = document.createElement("div");
     this.tooltip.className = "pv-tooltip";
     this.tooltip.setAttribute("role", "tooltip");
@@ -49,6 +72,8 @@ export class PageView {
       if (this.clearOnClick) this.cb.onSelectRegion(null);
       this.clearOnClick = false;
     });
+    // The click that ends a drag across the scan (a box selection) selects nothing more.
+    el.addEventListener("click", event => { if (this.dragged) { event.stopPropagation(); this.dragged = false; } }, true);
     el.addEventListener("wheel", e => {
       if (!(e.ctrlKey || e.metaKey)) return;
       e.preventDefault();
@@ -109,7 +134,7 @@ export class PageView {
   redraw() {
     const svg = this.svg, doc = this.doc;
     svg.replaceChildren();
-    svg.append(hatchPattern("pv-omitted-hatch"));
+    svg.append(hatchPattern("pv-omitted-hatch"), hatchPattern("pv-ignored-hatch", "#8d8d93"));
     this.regionEls = {};
     for (const r of doc.page.regions) {
       const col = this.colors[r.type] || "#888";
@@ -125,15 +150,16 @@ export class PageView {
       (r.lines || []).forEach((L, i) => {
         if (L.polygons) g.append(svgEl("path", { d: pathD(L.polygons), class: "pv-ln", "data-line": `${r.id}:${i}` }));
       });
-      g.addEventListener("click", e => { if (!this.drawing) { e.stopPropagation(); this.cb.onSelectRegion(r.id); } });
+      g.addEventListener("click", e => { if (!this.drawing) { e.stopPropagation(); this.cb.onSelectRegion(r.id, { add: e.shiftKey || e.metaKey || e.ctrlKey }); } });
       g.addEventListener("pointerenter", event => {
         this.cb.onHoverRegion?.(r.id, true);
         this.tooltip.textContent = label;
         this.tooltip.hidden = false;
         this.positionTooltip(event);
+        this.showTool({ region: r.id }, r.box || boundsOf(r.polygons));
       });
       g.addEventListener("pointermove", event => this.positionTooltip(event));
-      g.addEventListener("pointerleave", () => { this.cb.onHoverRegion?.(r.id, false); this.tooltip.hidden = true; });
+      g.addEventListener("pointerleave", () => { this.cb.onHoverRegion?.(r.id, false); this.tooltip.hidden = true; this.hideTool(); });
       g.addEventListener("mouseover", e => { const k = e.target.dataset?.line; if (k) this.cb.onHoverLine(k, true); });
       g.addEventListener("mouseout", e => { const k = e.target.dataset?.line; if (k) this.cb.onHoverLine(k, false); });
       svg.append(g);
@@ -143,15 +169,79 @@ export class PageView {
       const [x1, y1, x2, y2] = omitted.box;
       const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-omitted", fill: "url(#pv-omitted-hatch)", "data-omitted": index });
       const title = svgEl("title"); title.textContent = this.typeLabel ? "Area without a type" : `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`; rect.append(title);
-      rect.addEventListener("click", event => { event.stopPropagation(); this.cb.onSelectOmitted?.(index); });
+      rect.addEventListener("click", event => { event.stopPropagation(); this.cb.onSelectOmitted?.(index, { add: event.shiftKey || event.metaKey || event.ctrlKey }); });
+      rect.addEventListener("pointerenter", () => this.showTool({ omitted: index }, omitted.box));
+      rect.addEventListener("pointerleave", () => this.hideTool());
+      if (this.many.omitted.includes(index)) rect.classList.add("sel");
       svg.append(rect);
+    }
+    // The areas left out of the book: grey, under a ↺ that brings each back.
+    for (const [index, area] of (doc.source?.ignored_regions || []).entries()) if (area.box && this.editable) {
+      const [x1, y1, x2, y2] = area.box;
+      const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-ignored", fill: "url(#pv-ignored-hatch)" });
+      const title = svgEl("title"); title.textContent = "Left out of the book"; rect.append(title);
+      rect.addEventListener("pointerenter", () => this.showTool({ restore: index }, area.box));
+      rect.addEventListener("pointerleave", () => this.hideTool());
+      svg.insertBefore(rect, svg.querySelector("g[data-rid]"));
     }
     this.boxLayer = svgEl("g", { class: "pv-box" });
     svg.append(this.boxLayer);
     this.lineLayer = svgEl("g", { class: "pv-linebox-layer" });
     svg.append(this.lineLayer);
     this.drawLineBox();
-    this.select(this.selected);
+    this.select(this.selected, this.many);
+    this.drawChecks();
+  }
+
+  // The checks to mark on the scan: [{ key, box, count, title }]. A click on one's "!" calls onCheck(key, element).
+  setChecks(checks) {
+    this.checks = checks;
+    this.drawChecks();
+  }
+
+  drawChecks() {
+    if (!this.doc) return;
+    const { width: W, height: H } = this.doc.page;
+    this.marks.replaceChildren(this.tool, ...this.checks.filter(check => check.box).map(check => {
+      const [x1, y1] = check.box;
+      const badge = document.createElement("button");
+      badge.className = "pv-badge" + (x1 / W < 0.04 ? " inside" : "");
+      badge.textContent = "!";
+      badge.title = check.title;
+      badge.setAttribute("aria-label", `Check: ${check.title}`);
+      badge.style.left = `${100 * x1 / W}%`;
+      badge.style.top = `${100 * y1 / H}%`;
+      badge.dataset.key = check.key;
+      badge.addEventListener("pointerdown", event => event.stopPropagation());
+      badge.addEventListener("click", event => { event.stopPropagation(); this.cb.onCheck?.(check.key, badge); });
+      return badge;
+    }));
+  }
+
+  // The × (leave out) or ↺ (bring back) button at the top right of the region, area or left-out area under the pointer;
+  // after the pointer leaves, the selected region's ×, if one is selected.
+  showTool(target, box) {
+    clearTimeout(this.toolTimer);
+    if (!this.editable || this.drawing || !box || !this.cb.onLeaveOut) return;
+    const { width: W, height: H } = this.doc.page, restore = target.restore !== undefined;
+    this.toolTarget = target;
+    this.tool.textContent = restore ? "↺" : "×";
+    this.tool.title = restore ? "Bring this back into the book" : "Leave this out of the book (Delete)";
+    this.tool.setAttribute("aria-label", this.tool.title);
+    this.tool.classList.toggle("restore", restore);
+    this.tool.classList.toggle("inside", box[2] / W > 0.95);
+    this.tool.style.left = `${100 * box[2] / W}%`;
+    this.tool.style.top = `${100 * box[1] / H}%`;
+    this.tool.hidden = false;
+  }
+
+  hideTool() {
+    clearTimeout(this.toolTimer);
+    this.toolTimer = setTimeout(() => {
+      const r = this.selected && !this.many.regions.length && this.doc.page.regions.find(x => x.id === this.selected);
+      if (r) this.showTool({ region: r.id }, r.box || boundsOf(r.polygons));
+      else this.tool.hidden = true;
+    }, 350);
   }
 
   // A printed line outside all regions: a dashed outline of its box, while hovered (`hover`) or kept after a click
@@ -175,13 +265,17 @@ export class PageView {
     if (top < this.el.scrollTop || top > this.el.scrollTop + this.el.clientHeight - 80) this.el.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
   }
 
-  select(rid) {
+  // Select one region (its box with handles), or several (`many`: { regions, omitted }, outlined, no handles).
+  select(rid, many = null) {
     this.selected = rid;
-    for (const [id, g] of Object.entries(this.regionEls || {})) g.classList.toggle("sel", id === rid);
+    this.many = { regions: many?.regions || [], omitted: many?.omitted || [] };
+    for (const [id, g] of Object.entries(this.regionEls || {})) g.classList.toggle("sel", id === rid || this.many.regions.includes(id));
+    this.svg.querySelectorAll(".pv-omitted").forEach(rect => rect.classList.toggle("sel", this.many.omitted.includes(Number(rect.dataset.omitted))));
     this.boxLayer.replaceChildren();
     const r = rid && this.doc.page.regions.find(x => x.id === rid);
-    if (!r || !this.editable) return;
+    if (!r || !this.editable) { if (this.toolTarget?.region) this.tool.hidden = true; return; }
     const box = r.box || boundsOf(r.polygons);
+    if (!this.many.regions.length) this.showTool({ region: r.id }, box);
     this.drawBox(box);
   }
 
@@ -211,7 +305,7 @@ export class PageView {
     if (!this.editable) return;
     const handle = e.target.dataset?.h;
     if (this.drawing) return this.startDraw(e);
-    if (!handle) return;
+    if (!handle) return this.startSelect(e);
     e.preventDefault();
     e.stopPropagation();
     const r = this.doc.page.regions.find(x => x.id === this.selected);
@@ -232,6 +326,36 @@ export class PageView {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
       if (box !== box0) this.cb.onBox(this.selected, box);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  // A drag across the scan (from anywhere but a handle) selects the regions and areas mostly inside the box it makes;
+  // a press that hardly moves is a click.
+  startSelect(e) {
+    if (e.button !== 0) return;
+    const start = this.toPage(e), x0 = e.clientX, y0 = e.clientY;
+    let rect = null, end = start;
+    const move = ev => {
+      if (!rect && Math.hypot(ev.clientX - x0, ev.clientY - y0) < 6) return;
+      if (!rect) { rect = svgEl("rect", { class: "pv-marquee" }); this.svg.append(rect); this.tooltip.hidden = true; this.tool.hidden = true; }
+      end = this.toPage(ev);
+      rect.setAttribute("x", Math.min(start[0], end[0])); rect.setAttribute("y", Math.min(start[1], end[1]));
+      rect.setAttribute("width", Math.abs(end[0] - start[0])); rect.setAttribute("height", Math.abs(end[1] - start[1]));
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      if (!rect) return;
+      rect.remove();
+      this.dragged = true;
+      setTimeout(() => { this.dragged = false; }, 0);
+      const box = [Math.min(start[0], end[0]), Math.min(start[1], end[1]), Math.max(start[0], end[0]), Math.max(start[1], end[1])];
+      const inside = b => b && shareInside(b, box) >= 0.5;
+      const regions = this.doc.page.regions.filter(r => inside(r.box || boundsOf(r.polygons))).map(r => r.id);
+      const omitted = (this.doc.source?.omitted_regions || []).map((area, index) => inside(area.box) ? index : null).filter(index => index !== null);
+      this.cb.onSelectMany?.({ regions, omitted });
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
@@ -291,9 +415,16 @@ export class PageView {
   }
 }
 
-function hatchPattern(id) {
+// The share of box `a` inside box `b`.
+function shareInside(a, b) {
+  const w = Math.min(a[2], b[2]) - Math.max(a[0], b[0]), h = Math.min(a[3], b[3]) - Math.max(a[1], b[1]);
+  const area = (a[2] - a[0]) * (a[3] - a[1]);
+  return w > 0 && h > 0 && area > 0 ? w * h / area : 0;
+}
+
+function hatchPattern(id, color = "#b77916") {
   const defs = svgEl("defs"), pattern = svgEl("pattern", { id, width: 10, height: 10, patternUnits: "userSpaceOnUse" });
-  pattern.append(svgEl("path", { d: "M-2,2 L2,-2 M0,10 L10,0 M8,12 L12,8", stroke: "#b77916", "stroke-width": 1 }));
+  pattern.append(svgEl("path", { d: "M-2,2 L2,-2 M0,10 L10,0 M8,12 L12,8", stroke: color, "stroke-width": 1 }));
   defs.append(pattern);
   return defs;
 }

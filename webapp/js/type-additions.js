@@ -1,7 +1,7 @@
 // Pending proposals for the type list: what the region finder (method 097) proposes to add, kept in the book's work
 // records (work/type-proposals/pending.json, which older books may also hold survey items in). Nothing here changes the
 // type list; the page editor's "Add type X" does that through the book's add-type operation.
-import { REGION_CLASSES } from "./book-types.js?v=20261125-examples-1";
+import { REGION_CLASSES } from "./book-types.js?v=20261125-leaveout-1";
 export const PENDING_PATH = "work/type-proposals/pending.json";
 const empty = () => ({ format: "pending-type-proposals", version: 1, items: [] });
 
@@ -121,14 +121,9 @@ export function restoreWaiting(doc, record, reading, key, type, types, restoredT
   }
   const waiting = waitingRegions(next, new Set([key])).sort((a, b) => b.index - a.index);
   for (const area of waiting) {
-    const original = record?.regions?.find(value => (value.document_region_id || `r${value.region_id}`) === area.region);
+    const original = originalOf(record, area);
     if (!original?.polygons?.length || next.page.regions.some(region => region.id === area.region)) continue;
-    next.page.regions.push({ id: area.region, type, polygons: structuredClone(original.polygons), box: (original.model_box || original.bounds).map(Math.round),
-      order: original.reading_order ?? null,
-      lines: types.types[type]?.region === "figure" ? undefined : (original.lines || []).filter(line => line.polygons?.length).map(line => ({ line: line.line_id, polygons: structuredClone(line.polygons) })),
-      source: { region_id: original.region_id, method_type: original.type, region_class: original.region_class, proposed_type: original.proposed_type,
-        continues_from_earlier: Boolean(original.continues_from_earlier), continues_later: Boolean(original.continues_later), added_by: "the person, adding a proposed type" } });
-    if (next.page.regions.at(-1).lines === undefined) delete next.page.regions.at(-1).lines;
+    next.page.regions.push(areaBlock(area, original, type, types, { added_by: "the person, adding a proposed type" }));
     next.source.omitted_regions.splice(area.index, 1);
     restored.push(area.region);
   }
@@ -136,4 +131,41 @@ export function restoreWaiting(doc, record, reading, key, type, types, restoredT
   const withText = restored.length && reading ? restoredText(next, reading, types, restored) : [];
   const hasText = id => (next.page.regions.find(region => region.id === id)?.lines || []).some(line => (line.text || "").trim());
   return { doc: next, restored: [...retyped, ...restored], withText: [...retyped.filter(hasText), ...withText] };
+}
+
+// The region finder's record of a waiting area.
+const originalOf = (record, area) => record?.regions?.find(value => (value.document_region_id || `r${value.region_id}`) === area.region);
+
+// A waiting area as a block of `type`: the outline and line pieces the region finder drew (its record), no text yet.
+function areaBlock(area, original, type, types, extra) {
+  const block = { id: area.region, type, polygons: structuredClone(original.polygons), box: (original.model_box || original.bounds).map(Math.round),
+    order: original.reading_order ?? null,
+    lines: types.types[type]?.region === "figure" ? undefined : (original.lines || []).filter(line => line.polygons?.length).map(line => ({ line: line.line_id, polygons: structuredClone(line.polygons) })),
+    source: { region_id: original.region_id, method_type: original.type, region_class: original.region_class, proposed_type: original.proposed_type,
+      continues_from_earlier: Boolean(original.continues_from_earlier), continues_later: Boolean(original.continues_later), ...extra } };
+  if (block.lines === undefined) delete block.lines;
+  return block;
+}
+
+// A page made before every area with text was kept in the book (pipeline/provisional.js): each area still waiting for
+// the type the finder proposed for it made a block of a type of its kind (`keptType(region, types)`: its class as the
+// finder's record has it, a paragraph where the record has none), with the text the page's saved reading has for it,
+// and marked as kept (source.kept_as) while the proposal waits, as a page made now has it. Returns { doc, kept, withText }
+// (ids); an area of no known kind, or whose record is gone, is left waiting.
+export function keepWaiting(doc, record, reading, types, restoredText, keptType) {
+  const next = structuredClone(doc), kept = [];
+  const waiting = (next.source?.omitted_regions || []).map((region, index) => ({ ...region, index })).filter(region => region.proposed_type)
+    .sort((a, b) => b.index - a.index);
+  for (const area of waiting) {
+    const original = originalOf(record, area);
+    if (!original?.polygons?.length || next.page.regions.some(region => region.id === area.region)) continue;
+    const type = keptType({ proposed_type: area.proposed_type, region_class: original.region_class || area.region_class || "paragraph" }, types);
+    if (!type) continue;
+    next.page.regions.push(areaBlock(area, original, type, types, { proposed_type: area.proposed_type, kept_as: type }));
+    next.source.omitted_regions.splice(area.index, 1);
+    kept.push(area.region);
+  }
+  if (next.source?.omitted_regions && !next.source.omitted_regions.length) delete next.source.omitted_regions;
+  const withText = kept.length && reading ? restoredText(next, reading, types, kept) : [];
+  return { doc: next, kept, withText };
 }

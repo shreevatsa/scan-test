@@ -1,43 +1,44 @@
 // The app: a library of book folders, and for a book the page editor, the reader, the checks and the exports.
 // Processing runs in the browser, with optional calls using the user's model API keys.
 
-import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261125-examples-1";
-import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261125-examples-1";
-import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261125-examples-1";
-import { RECIPE } from "./recipe.js?v=20261125-examples-1";
-import { readerOptions } from "./pipeline/readers.js?v=20261125-examples-1";
+import { makeValidator, checkPage, checkTypes, readingOrderWarnings, typeRevision } from "./schema.js?v=20261125-leaveout-1";
+import { Book, browserBooks, newBrowserBookDir, deleteBrowserBook, importChaya, copyRecords, storagePersistence, restoreChaya } from "./store.js?v=20261125-leaveout-1";
+import { DiskCopy, copyState, copyLabel, spendingBlock, storageText } from "./disk-copy.js?v=20261125-leaveout-1";
+import { RECIPE } from "./recipe.js?v=20261125-leaveout-1";
+import { READERS, readerOptions } from "./pipeline/readers.js?v=20261125-leaveout-1";
 import { readChaya, sha256hex } from "./chayapdf.js";
-import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261125-examples-1";
-import { blockName } from "./blocks.js?v=20261125-examples-1";
-import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261125-examples-1";
-import { headingDefaults } from "./rules.js?v=20261125-examples-1";
-import { keptProposed, normalizeTypeName, proposedOnPage, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261125-examples-1";
-import { restoredText } from "./pipeline/apply.js?v=20261125-examples-1";
-import { PageView } from "./pageimage.js?v=20261125-examples-1";
-import { markerForm } from "./editor.js?v=20261125-examples-1";
-import { verseExport } from "./verses.js?v=20261125-examples-1";
-import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261125-examples-1";
-import { noteTypesOf, noteProblems } from "./note-links.js?v=20261125-examples-1";
-import { renderStyle } from "./styleview.js?v=20261125-examples-1";
-import { typeSetup } from "./type-setup.js?v=20261125-examples-1";
+import { BlocksPanel, blockInspector, drawBlock, projectOpenBook } from "./blocksview.js?v=20261125-leaveout-1";
+import { blockName } from "./blocks.js?v=20261125-leaveout-1";
+import { bookReading, placeWarnings, readThroughBlocks } from "./reading.js?v=20261125-leaveout-1";
+import { headingDefaults } from "./rules.js?v=20261125-leaveout-1";
+import { keepWaiting, keptProposed, normalizeTypeName, proposedOnPage, restoreWaiting, waitingRegions } from "./type-additions.js?v=20261125-leaveout-1";
+import { keptType } from "./pipeline/provisional.js?v=20261125-leaveout-1";
+import { restoredText } from "./pipeline/apply.js?v=20261125-leaveout-1";
+import { PageView } from "./pageimage.js?v=20261125-leaveout-1";
+import { markerForm } from "./editor.js?v=20261125-leaveout-1";
+import { verseExport } from "./verses.js?v=20261125-leaveout-1";
+import { renderBookView, prepare, bookText, bookDocument } from "./reader.js?v=20261125-leaveout-1";
+import { noteTypesOf, noteProblems } from "./note-links.js?v=20261125-leaveout-1";
+import { renderStyle } from "./styleview.js?v=20261125-leaveout-1";
+import { typeSetup } from "./type-setup.js?v=20261125-leaveout-1";
 import { h, typeColors, esc } from "./render.js";
-import * as ops from "./ops.js?v=20261125-examples-1";
-import { EditError } from "./ops.js?v=20261125-examples-1";
-import { Maker, post } from "./pipeline/run.js?v=20261125-examples-1";
-import { CredentialChecks } from "./key-check.js?v=20261125-examples-1";
-import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261125-examples-1";
-import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261125-examples-1";
-import { pruneOverrides } from "./blocks-format.js?v=20261125-examples-1";
-import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261125-examples-1";
-import { orderedRegions } from "./flags.js?v=20261125-examples-1";
-import { assemble } from "./assemble.js?v=20261125-examples-1";
-import { editorFocus, mergeTextEdit } from "./editing.js?v=20261125-examples-1";
-import { overridesAfter } from "./structure.js?v=20261125-examples-1";
-import { renderPages } from "./pagesview.js?v=20261125-examples-1";
-import { settings } from "./store.js?v=20261125-examples-1";
-import { renderBookSettings } from "./settingsview.js?v=20261125-examples-1";
-import { reviewPageWithAI } from "./page-review-view.js?v=20261125-examples-1";
-import { pageMenu } from "./page-actions.js?v=20261125-examples-1";
+import * as ops from "./ops.js?v=20261125-leaveout-1";
+import { EditError } from "./ops.js?v=20261125-leaveout-1";
+import { Maker, post } from "./pipeline/run.js?v=20261125-leaveout-1";
+import { CredentialChecks } from "./key-check.js?v=20261125-leaveout-1";
+import { loadExamples, exampleHref, exampleSize } from "./examples.js?v=20261125-leaveout-1";
+import { pageStages, workflowRoute, workflowAddress, reviewPageStates, currentStage, pageWalker, readingDocuments } from "./workflow.js?v=20261125-leaveout-1";
+import { pruneOverrides } from "./blocks-format.js?v=20261125-leaveout-1";
+import { layerState, layerView, noteEdit, preservePageReview } from "./layers.js?v=20261125-leaveout-1";
+import { orderedRegions } from "./flags.js?v=20261125-leaveout-1";
+import { assemble } from "./assemble.js?v=20261125-leaveout-1";
+import { editorFocus, mergeTextEdit } from "./editing.js?v=20261125-leaveout-1";
+import { overridesAfter } from "./structure.js?v=20261125-leaveout-1";
+import { renderPages } from "./pagesview.js?v=20261125-leaveout-1";
+import { settings } from "./store.js?v=20261125-leaveout-1";
+import { renderBookSettings } from "./settingsview.js?v=20261125-leaveout-1";
+import { reviewPageWithAI } from "./page-review-view.js?v=20261125-leaveout-1";
+import { pageMenu } from "./page-actions.js?v=20261125-leaveout-1";
 
 const $ = sel => document.querySelector(sel);
 const FORMAT_BUTTONS = [["bold", "B", "bold (⌘B)"], ["italic", "I", "italic (⌘I)"], ["small_caps", "Sᴄ", "small capitals"],
@@ -457,7 +458,7 @@ class App {
       if (!pdfFile) return;
       info.textContent = "Opening the PDF…";
       try {
-        const { openPdf } = await import("./pipeline/pdf.js?v=20261125-examples-1");
+        const { openPdf } = await import("./pipeline/pdf.js?v=20261125-leaveout-1");
         const selected = pdfFile;
         const doc = await openPdf(selected);
         const sha = await sha256hex(new Uint8Array(await selected.arrayBuffer()));
@@ -487,7 +488,7 @@ class App {
         if (errs.length) throw new Error(`the type list: ${errs[0]}`);
         if (!pdfFile) throw new Error("choose the book's PDF");
         if (!pdfDoc) throw new Error("the PDF is not open yet");
-        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261125-examples-1");
+        const { pageInfo, drawnSize, spreadFold } = await import("./pipeline/pdf.js?v=20261125-leaveout-1");
         // Every page of the PDF is in the book. A page that is not part of it (a library's cover, a blank page) is
         // left with no regions ("No content on this page" in Regions).
         const numbers = Array.from({ length: pdfDoc.numPages }, (_, i) => i + 1);
@@ -576,6 +577,7 @@ class App {
     await book.all();
     await book.getRules();
     await Promise.all(book.pages.map(page => this.refreshWorkflowPage(page.id)));
+    if (book.writable) await this.keepWaitingAreas();
     this.workflowLoading = false;
     this.refreshWorkflowFlags();
     const tlErrors = [...this.validate(this.tl)];
@@ -749,6 +751,38 @@ class App {
     this.toast(`${restored} ${restored === 1 ? "area" : "areas"} on ${ids.length} ${ids.length === 1 ? "page" : "pages"} became ${type.replaceAll("_", " ")}` +
       (unread ? `; ${unread} still ${unread === 1 ? "needs" : "need"} reading (Page → Read again).` : ", with their text."));
     return restored;
+  }
+
+  // A book made before every area with text was kept in the book: its areas still waiting for a type the finder
+  // proposed made blocks of a type of their kind, with their text from the page's saved reading (type-additions.js
+  // keepWaiting), as a page made now has them. Run as the book opens; the proposals still wait on the blocks.
+  async keepWaitingAreas() {
+    const book = this.book;
+    const waiting = pid => (this.pageStates.get(pid)?.doc?.source?.omitted_regions || []).some(area => area.proposed_type);
+    let ids = book.pages.map(page => page.id).filter(waiting);
+    if (!ids.length) return;
+    let kept = 0;
+    try {
+      const maker = await this.getMaker(), options = await maker.options(), saved = new Map();
+      for (const pid of ids) {
+        let reading = null;
+        for (const reader of new Set([options.reader, ...READERS.map(profile => profile.id)]))
+          if (!reading?.parsed) reading = await book.readWork(`work/readings/${pid}/${reader}.json`).catch(() => null);
+        saved.set(pid, { record: await maker.regions(pid).catch(() => null), reading });
+      }
+      ids = ids.filter(pid => keepWaiting(this.pageStates.get(pid).doc, saved.get(pid).record, null, book.types, restoredText, keptType).kept.length);
+      if (!ids.length) return;
+      await book.editPages(ids, async (docs, types) => {
+        for (const pid of ids) {
+          const { record, reading } = saved.get(pid);
+          const out = keepWaiting(docs.get(pid), record, reading, types, restoredText, keptType);
+          docs.set(pid, out.doc); kept += out.kept.length;
+        }
+        return docs;
+      });
+    } catch (error) { console.warn("The areas waiting for a type were left as they were:", error); return; }
+    for (const pid of ids) await this.refreshWorkflowPage(pid);
+    this.toast(`${kept} ${kept === 1 ? "area" : "areas"} waiting for a new type ${kept === 1 ? "is" : "are"} now in the book as ${kept === 1 ? "a block" : "blocks"} (marked !).`);
   }
 
   // Every block of the book kept under a type of its kind while the type `name` was proposed for it, kept as it is: the
@@ -1024,8 +1058,12 @@ class App {
     this.pageView = new PageView(image, {
       editable: this.book.writable,
       typeLabel: blockName,
-      onSelectRegion: rid => this.select(rid ? { region: rid } : {}),
-      onSelectOmitted: index => this.select({ omitted: index }),
+      onSelectRegion: (rid, { add = false } = {}) => add && rid ? this.toggleSelected("regions", rid) : this.select(rid ? { region: rid } : {}),
+      onSelectOmitted: (index, { add = false } = {}) => add ? this.toggleSelected("omitted", index) : this.select({ omitted: index }),
+      onSelectMany: many => this.selectMany(many),
+      onLeaveOut: target => this.leaveOut(target),
+      onRestore: index => { if (this.edit(next => ops.restoreOmittedRegion(next, index))) this.recompute(); },
+      onCheck: (key, badge) => this.textPanel.openCheck(key, badge),
       onBox: (rid, box) => { if (this.edit(doc => ops.setBox(doc, rid, box))) this.recompute(); },
       onDraw: (box, event) => drawBlock(this, box, event),
       onHoverRegion: (rid, on) => this.hoverRegion(rid, on, true),
@@ -1052,7 +1090,7 @@ class App {
   }
 
   afterRender() {
-    this.pageView.select(this.selection.region || (this.selection.marker && ops.findMarker(this.doc, this.selection.marker)?.region.id) || null);
+    this.pageView.select(this.selection.region || (this.selection.marker && ops.findMarker(this.doc, this.selection.marker)?.region.id) || null, this.selection.many);
     this.renderPageInspector();
     this.renderChecks();
   }
@@ -1073,10 +1111,41 @@ class App {
     if (!this.textPanel) return;
     const target = this.textPanel.markSelection();
     const rid = sel.region || (sel.marker && ops.findMarker(this.doc, sel.marker)?.region.id);
-    this.pageView.select(rid || null);
+    this.pageView.select(rid || null, sel.many);
     if (rid) this.pageView.reveal(rid);
     if (target && !keepFocus) target.scrollIntoView({ block: "nearest", behavior: "smooth" });
     this.renderPageInspector();
+  }
+
+  // Several blocks and areas selected at once (a box dragged across the scan, shift-clicks): one is selected as usual.
+  selectMany({ regions = [], omitted = [] }) {
+    const n = regions.length + omitted.length;
+    if (n <= 1) return this.select(regions.length ? { region: regions[0] } : omitted.length ? { omitted: omitted[0] } : {});
+    this.select({ many: { regions, omitted } });
+  }
+
+  // A block (`kind` "regions") or an area without a type ("omitted") added to the selection, or taken from it.
+  toggleSelected(kind, id) {
+    const s = this.selection, many = s.many ? structuredClone(s.many)
+      : { regions: s.region ? [s.region] : [], omitted: Number.isInteger(s.omitted) ? [s.omitted] : [] };
+    const list = many[kind], at = list.indexOf(id);
+    if (at >= 0) list.splice(at, 1); else list.push(id);
+    this.selectMany(many);
+  }
+
+  // Leave blocks and areas out of the book, as one step (undo brings them back, as does ↺ on the scan): each block kept
+  // whole among the page's areas left out (ops.leaveOutRegion), each area without a type with them.
+  leaveOut({ regions = [], omitted = [] }) {
+    const n = regions.length + omitted.length;
+    if (!this.book.writable || !n) return;
+    if (!this.edit(next => {
+      for (const index of [...omitted].sort((a, b) => b - a)) ops.ignoreOmittedRegion(next, index);
+      for (const rid of regions) ops.leaveOutRegion(next, rid);
+      this.selection = {};
+    })) return;
+    document.querySelectorAll(".check-pop").forEach(pop => pop.remove());
+    if (regions.length) this.recompute();
+    this.toast(`${n === 1 ? "Left" : `${n} left`} out of the book. ↺ on the scan, or ⌘Z, brings ${n === 1 ? "it" : "them"} back.`);
   }
 
   hoverRegion(rid, on, revealText = false) {
@@ -1238,7 +1307,7 @@ class App {
   // Method 063's local step in a worker: outlines and complete glyph lines for the current boxes.
   outlines(pid, url, boxes) {
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261125-examples-1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261125-leaveout-1", import.meta.url), { type: "module" });
       this.worker.onmessage = e => { const job = this.outlineJobs.get(e.data.id); this.outlineJobs.delete(e.data.id); if (job) job(e.data); };
     }
     const id = ++this.outlineSeq;
@@ -1273,6 +1342,10 @@ class App {
     if (e.altKey && e.key === "ArrowRight" && this.mode === "page") { e.preventDefault(); this.step(1); }
     if (e.key === "Escape") { this.pageView?.setDrawing(false); document.querySelectorAll(".popup").forEach(p => p.remove()); }
     if (this.mode !== "page" || mod || e.altKey || e.target.closest("input,select,textarea,button,dialog,[contenteditable]")) return;
+    if ((e.key === "Delete" || e.key === "Backspace") && this.book.writable) {
+      const s = this.selection, target = s.many || (s.region ? { regions: [s.region] } : Number.isInteger(s.omitted) ? { omitted: [s.omitted] } : null);
+      if (target) { e.preventDefault(); this.leaveOut(target); return; }
+    }
     if (/^[1-9]$/.test(e.key) && this.selection.region) {
       const type = Object.entries(this.tl.types).filter(([, value]) => value.region)[Number(e.key) - 1]?.[0];
       if (type) { e.preventDefault(); this.retypeRegion(this.selection.region, type); }

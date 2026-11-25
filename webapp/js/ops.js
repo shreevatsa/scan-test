@@ -643,13 +643,34 @@ export function ignoreOmittedRegion(doc, index) {
   (source.ignored_regions ||= []).push(region);
 }
 
+// An area left out is brought back as it was: a block with its type, outline and text (leaveOutRegion), else an area
+// waiting for a type.
 export function restoreOmittedRegion(doc, index) {
   const source = doc.source;
   if (!source?.ignored_regions?.[index]) fail("This area has already been restored.");
   const [region] = source.ignored_regions.splice(index, 1);
-  (source.omitted_regions ||= []).push(region);
+  if (region.block && !doc.page.regions.some(value => value.id === region.block.id)) {
+    const block = structuredClone(region.block);
+    // Back in its place in the reading order: the blocks from there on move one later.
+    if (Number.isFinite(block.order)) for (const other of doc.page.regions) if (Number.isFinite(other.order) && other.order >= block.order) other.order++;
+    doc.page.regions.push(block);
+  } else if (!region.block) (source.omitted_regions ||= []).push(region);
   if (!source.ignored_regions.length) delete source.ignored_regions;
 }
+
+// Leave a block out of the book: it goes from the page's blocks to its areas left out (source.ignored_regions), kept
+// whole (type, outline, lines, text, place in the reading order) so that restoreOmittedRegion brings it back as it was.
+// Its notes' links and the overrides that named it go, as for a deleted block.
+export function leaveOutRegion(doc, rid) {
+  const region = structuredClone(regionById(doc, rid));
+  deleteRegion(doc, rid);
+  doc.source = doc.source || {};
+  (doc.source.ignored_regions ||= []).push({ region: rid, type: region.type, box: region.box || bboxOf(region.polygons), block: region });
+}
+const bboxOf = rings => {
+  const points = (rings || []).flat();
+  return [Math.min(...points.map(p => p[0])), Math.min(...points.map(p => p[1])), Math.max(...points.map(p => p[0])), Math.max(...points.map(p => p[1]))];
+};
 
 export function ignoreLine(doc, line) {
   const entry = typeof line === "number" ? { line_id: line } : { line_id: line.line_id, box: line.box };

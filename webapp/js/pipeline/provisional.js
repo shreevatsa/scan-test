@@ -1,4 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261125-examples-1";
+import { typeRevision } from "../schema.js?v=20261125-leaveout-1";
 import { selectPageRegions } from "./split.js";
 
 export function regionTypePaths(types) {
@@ -101,12 +101,13 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
 }
 
 // The book's type for a region of a proposed type, by its kind (region class): the type named for the class, else the
-// first of that class; none for a region of no proposed type or of no known kind.
+// first of that class, else (a kind the book has no type for, a lead-in say) a paragraph, so that its text is in the
+// book; none for a region of no proposed type, of no known kind, or a figure the book has no type for.
 export function keptType(region, types) {
   const kind = region.region_class;
   if (!region.proposed_type || !kind || kind === "other") return null;
-  if (types.types[kind]?.region === kind) return kind;
-  return Object.entries(types.types).find(([, type]) => type.region === kind)?.[0] || null;
+  const ofKind = kind => types.types[kind]?.region === kind ? kind : Object.entries(types.types).find(([, type]) => type.region === kind)?.[0] || null;
+  return ofKind(kind) || (kind === "figure" ? null : ofKind("paragraph"));
 }
 
 export function provisionalDocument(pid, page, types, record, boundary = {}) {

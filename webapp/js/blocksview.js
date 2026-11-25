@@ -1,17 +1,17 @@
-import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261125-examples-1";
-import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261125-examples-1";
-import { bookReading } from "./reading.js?v=20261125-examples-1";
-import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261125-examples-1";
+import { TextPanel, renderInspector, structurePanel } from "./editor.js?v=20261125-leaveout-1";
+import { blockContext, blockLineEnd, blockName, isProseBlock, pageBlocks } from "./blocks.js?v=20261125-leaveout-1";
+import { bookReading } from "./reading.js?v=20261125-leaveout-1";
+import { ignoredLines, linePosition, regionFlags, regionHasText, textFlags } from "./flags.js?v=20261125-leaveout-1";
 import { h, bbox, cropInto } from "./render.js";
-import * as ops from "./ops.js?v=20261125-examples-1";
+import * as ops from "./ops.js?v=20261125-leaveout-1";
 import { cp, MARKER, shiftSpans } from "./inline.js";
-import { noteProblems } from "./note-links.js?v=20261125-examples-1";
-import { newTypeDialog, regionTools } from "./regionsview.js?v=20261125-examples-1";
-import { suggestionButton } from "./review-view.js?v=20261125-examples-1";
-import { itemNames, normalizeTypeName, proposedOnPage, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261125-examples-1";
-import { pageReviewState } from "./layers.js?v=20261125-examples-1";
-import { readingOrderWarnings } from "./schema.js?v=20261125-examples-1";
-import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261125-examples-1";
+import { noteProblems } from "./note-links.js?v=20261125-leaveout-1";
+import { newTypeDialog, regionTools } from "./regionsview.js?v=20261125-leaveout-1";
+import { suggestionButton } from "./review-view.js?v=20261125-leaveout-1";
+import { itemNames, normalizeTypeName, proposedOnPage, readPendingProposals, typeNameStyle } from "./type-additions.js?v=20261125-leaveout-1";
+import { pageReviewState } from "./layers.js?v=20261125-leaveout-1";
+import { readingOrderWarnings } from "./schema.js?v=20261125-leaveout-1";
+import { nextPageToCheck, noContent, REVIEW_LABELS } from "./workflow.js?v=20261125-leaveout-1";
 
 export function projectOpenBook(app) {
   const { book, doc } = app;
@@ -42,9 +42,13 @@ export async function addProposedType(app, name, region, index) {
     region: proposal.region, furniture: proposal.furniture });
 }
 
+// The page's checks: [{ text, label, action, leaveOut?, leaveLabel?, extra?, at?, selects? }]. `at` is what the check is
+// about, where it has a place on the scan ({ region } a block, { omitted } an area without a type, { box } a line):
+// such a check is marked "!" there (and on its block); the others are listed at the top of the page. `selects` marks
+// an action that only selects that place, which a click on its "!" does already.
 export function blockChecks(app, doc, projection) {
   const { tl } = app;
-  const findings = [], add = (text, label, action, leaveOut) => findings.push({ text, label, action, leaveOut });
+  const findings = [], add = (text, label, action, leaveOut, at = null, selects = false) => findings.push({ text, label, action, leaveOut, at, selects });
   const openBlock = rid => rid && app.select({ region: rid });
   const scan = box => { app.pageView.markLine({ pinned: box }); app.pageView.revealBox(box); };
   const details = () => app.textPanel.showDetails(doc);
@@ -65,12 +69,12 @@ export function blockChecks(app, doc, projection) {
   // the region given that type, or reviewed or left out as any unassigned area.
   // One decision for the book: adding (or using) the type makes every area waiting for it a block, with its text.
   const waitingInBook = name => [...(app.pageStates?.values() || [])].reduce((n, state) => n + proposedOnPage(state.doc, new Set([normalizeTypeName(name)])), 0);
-  const addProposed = (proposed, text, region, index, leave, { review, leaveLabel } = {}) => {
+  const addProposed = (proposed, text, region, index, leave, { review, leaveLabel, at = null } = {}) => {
     const known = tl.types[proposed]?.region, count = waitingInBook(region.proposed_type || proposed);
-    findings.push({ text: count > 1 ? `${text} The finder marked ${count} areas in the book this way.` : text, leaveOut: leave, leaveLabel,
+    findings.push({ text: count > 1 ? `${text} The finder marked ${count} areas in the book this way.` : text, leaveOut: leave, leaveLabel, at,
       label: known ? `Use type ${proposed}` : `Add type ${proposed}`,
       action: () => known ? app.restoreProposed(region.proposed_type || proposed, proposed) : addProposedType(app, proposed, region, index),
-      extra: [{ label: review ? "Show block" : "Review area", action: review || (() => app.select({ omitted: index })) }] });
+      extra: [{ label: review ? "Show block" : "Review area", action: review || (() => app.select({ omitted: index })), selects: true }] });
   };
   const flags = [...regionFlags(doc, tl, app.regionFlagContext(doc)), ...textFlags(doc, tl)];
   const see = new Set();
@@ -83,7 +87,8 @@ export function blockChecks(app, doc, projection) {
       add(`Possible missed line ${linePosition(flag.box, doc.page)}${line?.text?.trim() ? `: “${line.text.trim().slice(0, 60)}”` : ""}.`, "Review line", () => {
         scan(flag.box);
         app.textPanel.reviewFinding(line);
-      }, () => app.edit(next => ops.ignoreLine(next, line)));
+      }, () => app.edit(next => ops.ignoreLine(next, line)), flag.box ? { box: flag.box, line: flag.line_id } : null);
+      if (line) Object.assign(findings.at(-1), { addAs: type => app.addRegionOverLine(line.line_id, type), selects: true });
     } else if (flag.code === "marks-only") {
       add("The region finder kept nothing on this page, though the scan has some marks. A cover, a library's notice or a blank leaf is best left out of the book.",
         app.book.writable && !app.book.isSkipped(doc.page.id) ? "Leave the page out" : "Show the marks",
@@ -93,23 +98,24 @@ export function blockChecks(app, doc, projection) {
       const index = doc.source.omitted_regions.findIndex(region => region.region === flag.region);
       const region = doc.source.omitted_regions[index], proposed = proposedTypeName(region);
       const leave = () => app.edit(next => { ops.ignoreOmittedRegion(next, index); app.selection = {}; });
-      if (proposed) addProposed(proposed, `An area may be a new type, “${region.proposed_type}”.`, region, index, leave);
-      else add("An area on the scan needs a type.", "Review area", () => app.select({ omitted: index }), leave);
+      if (proposed) addProposed(proposed, `An area may be a new type, “${region.proposed_type}”.`, region, index, leave, { at: { omitted: index } });
+      else add("An area on the scan needs a type.", "Review area", () => app.select({ omitted: index }), leave, { omitted: index }, true);
     } else if (flag.code === "proposed") {
       // A block kept under a type of its kind while the type proposed for it waits: add that type (for every such block of
       // the book), or keep the block as it is.
       const region = doc.page.regions.find(value => value.id === flag.region), proposed = typeNameStyle(region.source.proposed_type);
       const keep = () => app.edit(next => { const block = next.page.regions.find(value => value.id === region.id); if (block) delete block.source.kept_as; });
       addProposed(proposed, `This block may be a new type, “${region.source.proposed_type}”; it is a ${region.type.replaceAll("_", " ")} meanwhile.`,
-        { proposed_type: region.source.proposed_type }, null, keep, { review: () => openBlock(region.id), leaveLabel: `Keep as ${region.type.replaceAll("_", " ")}` });
+        { proposed_type: region.source.proposed_type }, null, keep, { review: () => openBlock(region.id), leaveLabel: `Keep as ${region.type.replaceAll("_", " ")}`, at: { region: region.id } });
     } else if (plain[flag.code]) {
       add(plain[flag.code], flag.region ? "Show block" : flag.box ? "Show scan" : "Review",
-        flag.region ? () => openBlock(flag.region) : flag.box ? () => scan(flag.box) : details);
+        flag.region ? () => openBlock(flag.region) : flag.box ? () => scan(flag.box) : details, null,
+        flag.region ? { region: flag.region } : flag.box ? { box: flag.box } : null, Boolean(flag.region || flag.box));
     }
   }
   for (const region of pageBlocks(doc, tl)) {
     if (tl.types[region.type]?.region === "figure" || regionHasText(region)) continue;
-    if (!see.has(`missing-text:${region.id}`) && !see.has(`no-ink:${region.id}`)) add(`This ${blockName(region.type).toLowerCase()} needs text.`, "Show block", () => openBlock(region.id));
+    if (!see.has(`missing-text:${region.id}`) && !see.has(`no-ink:${region.id}`)) add(`This ${blockName(region.type).toLowerCase()} needs text.`, "Show block", () => openBlock(region.id), null, { region: region.id }, true);
   }
   const derived = projection?.docs.find(item => item?.page.id === doc.page.id);
   if (derived) {
@@ -133,6 +139,14 @@ export function blockChecks(app, doc, projection) {
   return findings;
 }
 
+// The key of a check's place (`at`), and its box on the scan.
+const checkKey = at => at.region ? `r:${at.region}` : at.omitted !== undefined ? `o:${at.omitted}` : `b:${at.box.join(",")}`;
+function placeBox(doc, at) {
+  if (at.region) { const region = doc.page.regions.find(value => value.id === at.region); return region && (region.box || bbox(region.polygons)); }
+  if (at.omitted !== undefined) return doc.source?.omitted_regions?.[at.omitted]?.box;
+  return at.box;
+}
+
 export class BlocksPanel extends TextPanel {
   get textEditable() { return this.app.book.writable && super.textEditable; }
   get unitsEditable() { return false; }
@@ -146,11 +160,11 @@ export class BlocksPanel extends TextPanel {
     this.findings = h("div", { class: "block-findings" });
     this.reviewItem = h("div", { class: "block-review-item" });
     el.replaceChildren(h("section", { class: "block-check" },
-      h("h2", {}, "Check this page"),
-      !app.book.isSkipped(doc.page.id) && !noContent(doc) ? h("div", { class: "block-review-status" }, h("span", {}, REVIEW_LABELS[review.status]),
-        app.book.writable ? h("button", { onclick: () => app.setPageReviewed(!review.checked) }, review.checked ? "Reopen review" : "Mark checked") : null) : null,
-      this.findings, this.reviewItem, h("div", { class: "actions" }, h("button", { onclick: () => this.nextPageToCheck() }, "Next page to check"))));
-    this.refreshFindings();
+      h("div", { class: "block-check-head" }, h("h2", {}, "Check this page"),
+        !app.book.isSkipped(doc.page.id) && !noContent(doc) ? h("div", { class: "block-review-status" }, h("span", {}, REVIEW_LABELS[review.status]),
+          app.book.writable ? h("button", { onclick: () => app.setPageReviewed(!review.checked) }, review.checked ? "Reopen review" : "Mark checked") : null) : null,
+        h("button", { onclick: () => this.nextPageToCheck() }, "Next page to check")),
+      this.findings, this.reviewItem));
     const ignored = ignoredLines(doc);
     if (ignored.length) el.firstChild.append(h("details", {}, h("summary", {}, `Ignored lines (${ignored.length})`),
       ...ignored.map(entry => {
@@ -159,8 +173,8 @@ export class BlocksPanel extends TextPanel {
           app.book.writable ? h("button", { onclick: () => app.edit(next => ops.restoreLine(next, entry)) }, "Restore") : null);
       })));
     const ignoredRegions = doc.source?.ignored_regions || [];
-    if (ignoredRegions.length) el.firstChild.append(h("details", {}, h("summary", {}, `Ignored areas (${ignoredRegions.length})`),
-      ...ignoredRegions.map((region, index) => h("p", {}, `Area ${linePosition(region.box, doc.page) || "on the scan"} `,
+    if (ignoredRegions.length) el.firstChild.append(h("details", {}, h("summary", {}, `Left out of the book (${ignoredRegions.length})`),
+      ...ignoredRegions.map((region, index) => h("p", {}, `${region.block ? `A ${blockName(region.block.type).toLowerCase()}` : "An area"} ${linePosition(region.box, doc.page) || "on the scan"}${region.block && regionHasText(region.block) ? `: “${(region.block.lines || []).map(line => line.text || "").join(" ").trim().slice(0, 50)}”` : ""} `,
         app.book.writable ? h("button", { onclick: () => app.edit(next => ops.restoreOmittedRegion(next, index)) }, "Restore") : null))));
     const blocks = pageBlocks(doc, tl, this.context);
     let prior = [];
@@ -174,19 +188,85 @@ export class BlocksPanel extends TextPanel {
       el.append(block);
     }
     if (!blocks.length) el.append(h("p", { class: "hint" }, "There are no blocks on this page."));
+    this.refreshFindings();
     el.scrollTop = oldScroll;
     this.markSelection();
   }
 
+  // The page's checks: those about a place on the scan marked "!" there and on their block (a click opens them:
+  // openCheck), the others listed at the top.
   refreshFindings() {
-    const { app } = this;
-    const findings = blockChecks(app, app.doc, this.projection);
-    this.findings.replaceChildren(findings.length
-      ? h("ul", {}, ...findings.map(({ text, label, action, leaveOut, leaveLabel, extra }) => h("li", {}, h("span", {}, text),
-        h("div", { class: "actions" }, h("button", { onclick: action }, label),
-          ...(extra || []).map(item => h("button", { onclick: item.action }, item.label)),
-          app.book.writable && leaveOut ? h("button", { onclick: leaveOut, title: leaveLabel ? "Keep this block's type; the proposal is dropped." : "This area is outside the printed text." }, leaveLabel || "Leave out") : null))))
-      : h("div", { class: "block-check-clear" }, h("span", {}, "Nothing to check here.")));
+    const { app } = this, doc = app.doc;
+    const findings = blockChecks(app, doc, this.projection), loose = [];
+    this.placed = new Map();
+    for (const finding of findings) {
+      const box = finding.at && placeBox(doc, finding.at);
+      if (!box) { loose.push(finding); continue; }
+      const key = checkKey(finding.at);
+      if (!this.placed.has(key)) this.placed.set(key, { key, at: finding.at, box, findings: [] });
+      this.placed.get(key).findings.push(finding);
+    }
+    const places = [...this.placed.values()].sort((a, b) => a.box[1] - b.box[1] || a.box[0] - b.box[0]);
+    app.pageView.setChecks(places.map(place => ({ key: place.key, box: place.box, title: place.findings.map(finding => finding.text).join("\n") })));
+    this.el.querySelectorAll(".block-check-badge").forEach(badge => badge.remove());
+    for (const place of places) if (place.at.region) {
+      const label = this.el.querySelector(`.block-card[data-rid="${CSS.escape(place.at.region)}"] > .block-label`);
+      label?.after(h("button", { class: "block-check-badge", title: place.findings.map(finding => finding.text).join("\n"),
+        "aria-label": `Check: ${place.findings[0].text}`, onclick: event => { event.stopPropagation(); this.openCheck(place.key, event.currentTarget); } }, "!"));
+    }
+    const n = places.length;
+    this.findings.replaceChildren(...[
+      loose.length ? h("ul", {}, ...loose.map(finding => h("li", {}, h("span", {}, finding.text), h("div", { class: "actions" }, ...this.findingButtons(finding))))) : null,
+      n ? h("p", { class: "block-check-placed" }, h("span", { class: "check-mark" }, "!"),
+        ` ${n === 1 ? "One place" : `${n} places`} on the scan ${n === 1 ? "has" : "have"} something to check. `,
+        h("button", { class: "link", onclick: () => this.openCheck(places[0].key) }, n === 1 ? "Show it" : "Show the first")) : null,
+      !loose.length && !n ? h("div", { class: "block-check-clear" }, h("span", {}, "Nothing to check here.")) : null].filter(Boolean));
+  }
+
+  // A check's buttons; in its "!"'s popup (`popup`), without those that only select its place, and with a type menu for a
+  // line outside the blocks.
+  findingButtons(finding, popup = false) {
+    const { app } = this, out = [];
+    if (popup && finding.addAs && app.book.writable) out.push(typesMenu(app, "", finding.addAs));
+    if (!(popup && finding.selects)) out.push(h("button", { onclick: finding.action }, finding.label));
+    for (const item of finding.extra || []) if (!(popup && item.selects)) out.push(h("button", { onclick: item.action }, item.label));
+    if (app.book.writable && finding.leaveOut) out.push(h("button", { onclick: finding.leaveOut,
+      title: finding.leaveLabel ? "Keep this block's type; the proposal is dropped." : "This is outside the printed text." }, finding.leaveLabel || "Leave out"));
+    return out;
+  }
+
+  // The checks about one place (`key`), in a popup beside its "!" (`anchor`, else its "!" on the scan); the place is
+  // selected.
+  openCheck(key, anchor = null) {
+    const { app } = this, place = this.placed?.get(key);
+    document.querySelectorAll(".check-pop").forEach(pop => pop.remove());
+    if (!place) return;
+    if (place.at.region) app.select({ region: place.at.region });
+    else if (place.at.omitted !== undefined) app.select({ omitted: place.at.omitted });
+    else { app.select({}); app.pageView.markLine({ pinned: place.box }); app.pageView.revealBox(place.box); }
+    anchor ||= app.pageView.marks.querySelector(`.pv-badge[data-key="${CSS.escape(key)}"]`);
+    if (!anchor) return;
+    const pop = h("div", { class: "popup check-pop", role: "dialog", "aria-label": "Check" },
+      ...place.findings.map(finding => h("div", { class: "check-pop-item" }, h("p", {}, finding.text),
+        h("div", { class: "actions" }, ...this.findingButtons(finding, true)))));
+    const close = () => { pop.remove(); document.removeEventListener("pointerdown", outside, true); };
+    const outside = event => { if (!pop.contains(event.target) && !event.target.closest?.(".pv-badge, .block-check-badge")) close(); };
+    // An action taken closes it (the page is drawn again).
+    pop.addEventListener("click", event => { if (event.target.closest("button")) setTimeout(close); });
+    pop.addEventListener("change", () => setTimeout(close));
+    document.body.append(pop);
+    requestAnimationFrame(() => {
+      const r = anchor.getBoundingClientRect();
+      pop.style.left = `${Math.max(8, Math.min(r.right + 6, innerWidth - pop.offsetWidth - 8))}px`;
+      pop.style.top = `${Math.max(8, Math.min(r.top - 4, innerHeight - pop.offsetHeight - 8))}px`;
+    });
+    setTimeout(() => document.addEventListener("pointerdown", outside, true));
+  }
+
+  markSelection() {
+    const target = super.markSelection(), many = this.app.selection.many;
+    for (const rid of many?.regions || []) this.el.querySelector(`.region[data-rid="${CSS.escape(rid)}"]`)?.classList.add("sel");
+    return target;
   }
 
   // The next page whose card on Pages has something to check (workflow.js's pageCheck).
@@ -291,6 +371,14 @@ function nextId(doc, pending) {
 export function blockInspector(el, app) {
   const { selection, doc, book, tl } = app;
   el.replaceChildren();
+  if (selection.many) {
+    const n = selection.many.regions.length + selection.many.omitted.length;
+    app.pageView.markLine({ pinned: null });
+    el.append(h("h3", {}, `${n} selected`),
+      h("p", { class: "hint" }, "Shift-click a block on the scan to add it or take it away. The Delete key leaves them out."),
+      book.writable && n ? h("button", { onclick: () => app.leaveOut(selection.many) }, `Leave ${n === 1 ? "it" : `these ${n}`} out of the book`) : null);
+    return;
+  }
   const omitted = doc.source?.omitted_regions?.[selection.omitted];
   if (omitted) {
     app.pageView.markLine({ pinned: omitted.box });
