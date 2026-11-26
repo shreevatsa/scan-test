@@ -49,14 +49,21 @@ test("the migration preserves joined prose, numbered groups, linked footnotes an
       { type: "note", from: { anchor: "second#m4", marker: "*", region: "second#r2", line: 1 }, to: { unit: "n" } },
     ]),
   };
+  files["book.json"] = { ...files["book.json"], title: "Internal run name" };
+  files["types.json"] = { ...files["types.json"], title: "Printed edition" };
   const { book, report } = migrateFiles(files);
+  assert.equal(book.title, "Printed edition");
   assert.equal(report.passed, true, JSON.stringify(report.comparisons));
   assert.equal(book.pages[0].regions.find(r => r.id === "r1").continues, true);
   assert.equal(book.pages[0].regions.find(r => r.id === "r1").lines[0].end, "space");
-  assert.equal(book.pages[0].regions.find(r => r.id === "r2").out, true);
+  assert.equal(book.pages[0].regions.find(r => r.id === "r2").ignored, true);
   assert.equal(book.pages[0].regions.find(r => r.id === "r2").lines[0].text, "Library stamp");
   assert.equal(book.pages[0].regions.find(r => r.id === "r3").proposed, "ownership_mark");
   assert.equal(book.pages[1].regions.find(r => r.id === "r2").lines[0].spans[0].to, "2/r3");
+  assert.equal(book.pages[1].regions[0].from_previous, undefined);
+  const note = book.pages[1].regions.find(r => r.id === "r2").lines[0].spans[0];
+  assert.equal(Object.hasOwn(note, "id"), false);
+  assert.equal(Object.hasOwn(note, "link"), false);
   const next = toPageDocs(book);
   const [assembled] = assemble(next.docs, next.types);
   assert.equal(assembled.units.find(u => u.type === "group").number, "7");
@@ -67,7 +74,7 @@ test("the migration preserves joined prose, numbered groups, linked footnotes an
 test("v1 uses stored paths and allows a different kind of unit between continued blocks", () => {
   const fraction = [0.1, 0.2, 0.5, 0.7];
   const stored = { chaya: 1, title: "A book",
-    types: { paragraph: { kind: "paragraph" }, verse: { kind: "verse" }, section: { contains: ["verse", "paragraph"] } },
+    types: { paragraph: {}, verse: { lines: true }, section: { contains: ["verse", "paragraph"] } },
     containers: { c1: { type: "section" } }, pages: [{ id: "page", regions: [
       { id: "a", type: "paragraph", box: fraction, in: ["c1"], continues: true, lines: [{ text: "inter‐" }] },
       { id: "b", type: "verse", box: fraction, in: ["c1"], lines: [{ text: "A verse." }] },
@@ -79,6 +86,6 @@ test("v1 uses stored paths and allows a different kind of unit between continued
   assert.deepEqual(p.children, [ref("page", "a"), ref("page", "c")]);
   assert.deepEqual(next.docs[0].page.regions.map(r => r.lines[0].end), ["hyphen", "line", "space"]);
   assert.equal(Object.hasOwn(next.docs[0].page.regions[2].lines[1], "text"), false);
-  assert.equal(effectiveEnd({ text: "word-", end: "space" }, "paragraph"), "space");
-  assert.equal(effectiveEnd({ text: "cell-" }, "table"), "line");
+  assert.equal(effectiveEnd({ text: "word-", end: "space" }, {}), "space");
+  assert.equal(effectiveEnd({ text: "cell-" }, { lines: true }), "line");
 });

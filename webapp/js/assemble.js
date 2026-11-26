@@ -81,6 +81,7 @@ export function assemble(pageDocs, tl, source = {}, { onMerge = () => {} } = {})
     for (const [flow, tops0] of Object.entries(pd.flows)) {
       const tops = tops0.map(bid);
       const list = flows[flow] || (flows[flow] = []), pages = since[flow] || (since[flow] = []);
+      if (pd.joinsResolved) { list.push(...tops); continue; }
       const open = carry[flow] ?? null, starts = tops.filter(t => startOpen[t]);
       const kinds = new Set(tops.map(typeOf)), marked = tops.some(flagged);
       // This page sits between `open` and its continuation: no unit of its type here and no open end of its own.

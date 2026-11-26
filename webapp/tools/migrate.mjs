@@ -9,12 +9,12 @@ import { pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
 import { assemble } from "../js/assemble.js";
 import { blocksContext, fromBlocks } from "../js/blocks-format.js";
-import { effectiveEnd, toPageDocs } from "../js/chaya-book.js";
+import { toPageDocs } from "../js/chaya-book.js";
 import { readBook, readChaya, writeBook } from "../js/chayapdf.js";
 import { canonical } from "../js/ops.js";
 import { bookText, prepare } from "../js/reader.js";
 import { bookReading, isBlocksPage } from "../js/reading.js";
-import { bbox } from "../js/render.js";
+import { collectTree, moveLinks, orderRegions, regionBox, regionKey, validBox, writeRegion } from "../js/chaya-materialize.js?v=20261125-leaveout-3";
 import { verseExport } from "../js/verses.js";
 import { convertBook } from "./chaya_blocks.mjs";
 
@@ -22,10 +22,6 @@ const verseBooks = new Set(["kale-1913", "telang-dli", "gopinath-1914-full", "go
 const pagePath = (files, id) => files[`edits/${id}.json`] ? `edits/${id}.json` : `pages/${id}.json`;
 const pick = (object, keys) => Object.fromEntries(keys.filter(key => Object.hasOwn(object, key)).map(key => [key, object[key]]));
 const unitAttrs = unit => pick(unit, ["number", "label", "lang", "style", "open"]);
-const regionKey = (page, region) => `${page}#${region}`;
-const polygonBox = polygons => polygons?.some(ring => ring.length) ? bbox(polygons) : undefined;
-const regionBox = region => region.box ?? region.model_box ?? polygonBox(region.polygons);
-const validBox = box => box?.length === 4 && box.every(Number.isFinite);
 const same = isDeepStrictEqual;
 
 function legacyView(files) {
@@ -43,90 +39,26 @@ function legacyView(files) {
   return { files: effective, legacy };
 }
 
-function writeRegion(region, asFraction, types, ownerKind) {
-  const box = regionBox(region);
-  if (!validBox(box)) throw new Error(`Region ${region.id} has no usable box.`);
-  const kind = types[region.type]?.region;
-  const out = { id: region.id, type: region.type, box: asFraction(box), lines: (region.lines ?? []).map(line => {
-    const result = pick(line, ["text", "spans", "style"]);
-    if (result.spans) result.spans = structuredClone(result.spans);
-    const box = polygonBox(line.polygons) ?? line.box;
-    if (validBox(box)) result.box = asFraction(box);
-    // This is the old reader's fallback, including prose hyphens that it kept before v1.
-    const end = line.end || (["verse", "table"].includes(ownerKind) ? "line" : "space");
-    if (end !== effectiveEnd(result, kind)) result.end = end;
-    return result;
-  }) };
-  const source = region.source;
-  if (source?.kept_as && source.proposed_type) out.proposed = source.proposed_type;
-  if (source?.transcription?.uncertain) out.uncertain = true;
-  if (source?.transcription?.note != null) out.note = source.transcription.note;
-  return out;
-}
-
-function collectTree(assembled, oldTypes) {
-  const byId = new Map(assembled.units.map(unit => [unit.id, unit]));
-  const refInfo = new Map(), destination = new Map(), containers = {};
-  let nextContainer = 0;
-  function walk(unit, path, flow) {
-    const extraFlow = !path.length && (oldTypes[unit.type]?.flow ?? "main") !== flow ? { flow } : {};
-    if (unit.children.some(child => child.unit)) {
-      const id = `c${++nextContainer}`, nested = [...path, id];
-      containers[id] = { type: unit.type, ...unitAttrs(unit), ...extraFlow };
-      destination.set(unit.id, { container: id });
-      for (const child of unit.children) {
-        if (child.unit) walk(byId.get(child.unit), nested, flow);
-        else refInfo.set(child.region, { flow, kind: oldTypes[unit.type]?.region, attrs: { in: nested, direct: true } });
-      }
-      return;
-    }
-    unit.children.forEach(({ region }, index) => {
-      const first = index === 0;
-      if (first) destination.set(unit.id, { region });
-      refInfo.set(region, { flow, kind: oldTypes[unit.type]?.region, unitType: unit.type, attrs: {
-        ...(path.length ? { in: path } : {}), ...extraFlow, ...(first ? unitAttrs(unit) : {}),
-        ...(index < unit.children.length - 1 ? { continues: true } : {}),
-      } });
-    });
+function formatTypes(oldTypes, existingRules) {
+  const rules = { ...existingRules }, finder = {};
+  const types = Object.fromEntries(Object.entries(oldTypes).map(([name, { region, role, ...type }]) => {
+    if (region) finder[name] = region;
+    return [name, { ...type,
+      ...(["verse", "table", "formula", "heading"].includes(region) ? { lines: true } : {}),
+      ...(region === "figure" ? { figure: true } : {}),
+      ...(region === "heading" ? { heading: true } : {}),
+      ...(role === "furniture" ? { ignored: true } : {}),
+    }];
+  }));
+  for (const [setting, kind] of Object.entries({
+    captions: "caption", contents_types: "list_item", page_numbers: "page_number", tables: "table",
+  })) {
+    const names = Object.keys(finder).filter(name => finder[name] === kind);
+    if (names.length) rules[setting] = names;
   }
-  for (const [flow, ids] of Object.entries(assembled.flows)) for (const id of ids) walk(byId.get(id), [], flow);
-  return { refInfo, containers, destination };
-}
-
-// Respect a hand-edited flow order while retaining the page's slots for other flows and furniture.
-function orderRegions(page, refInfo, rank) {
-  const regions = [...page.regions].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
-  const flow = region => refInfo.get(regionKey(page.id, region.id))?.flow;
-  const byFlow = new Map();
-  for (const region of regions) if (flow(region) != null) {
-    if (!byFlow.has(flow(region))) byFlow.set(flow(region), []);
-    byFlow.get(flow(region)).push(region);
-  }
-  for (const group of byFlow.values()) group.sort((a, b) => rank.get(regionKey(page.id, b.id)) - rank.get(regionKey(page.id, a.id)));
-  return regions.map(region => byFlow.get(flow(region))?.pop() ?? region);
-}
-
-function moveLinks(assembled, destination, regions, anchors) {
-  for (const [order, { type, from, to }] of assembled.relations.entries()) {
-    const dest = destination.get(to.unit);
-    const target = dest?.container ?? regions.get(dest?.region)?.address;
-    if (!target) throw new Error(`A ${type} relation has no stored target.`);
-    const found = regions.get(from.region);
-    const line = from.line == null ? null : found?.old.lines?.findIndex(value => value.line === from.line);
-    if (from.region != null && (!found || (from.line != null && (line == null || line < 0))))
-      throw new Error(`Cannot place source of a ${type} link.`);
-    if (type === "note" && from.anchor) {
-      const span = anchors.get(from.anchor);
-      if (!span || span.to) throw new Error(`Cannot attach note relation ${from.anchor} to one note marker.`);
-      span.to = target;
-      span.link = { order };
-      if (found) span.link.source = { region: found.address, ...(line != null ? { line } : {}) };
-      if (from.marker !== span.marker) span.link.marker = from.marker ?? null;
-    } else {
-      if (!found) throw new Error(`A ${type} link has no source region.`);
-      (found.region.links ||= []).push({ type, ...(line != null ? { line } : {}), ...pick(from, ["marker"]), to: target, order });
-    }
-  }
+  const lead = Object.keys(finder).filter(name => finder[name] === "lead_in");
+  if (lead.length) rules.verses = { ...rules.verses, lead_in: lead };
+  return { rules, finder, types };
 }
 
 function makeBook(original, effective, docs, assembled, oldTypes) {
@@ -135,15 +67,15 @@ function makeBook(original, effective, docs, assembled, oldTypes) {
   const rank = new Map([...refInfo.keys()].map((ref, index) => [ref, index]));
   const seen = new Map(docs.filter(Boolean).map(doc => [doc.page.id, doc.page]));
   const regions = new Map(), anchors = new Map();
-  const unplaceable = [];
+  const unplaceable = [], retyped = [];
+  const format = formatTypes(rawTypes, manifest.rules);
   const skipped = new Set(manifest.skipped);
-  const book = { chaya: 1, title: manifest.title ?? oldTypes.title,
+  const book = { chaya: 1, title: oldTypes.title?.trim() || manifest.title,
     ...pick(oldTypes, ["description", "languages", "conventions", "flows", "relations"]),
-    ...pick(manifest, ["description", "languages", "conventions", "rules"]),
-    types: Object.fromEntries(Object.entries(rawTypes).map(([name, { region, role, ...type }]) => [name,
-      { ...type, ...(region !== undefined ? { kind: region } : {}), ...(role === "furniture" ? { furniture: true } : {}) }])),
+    ...pick(manifest, ["description", "languages", "conventions"]),
+    types: format.types, rules: format.rules,
     ...(manifest.pdf != null ? { source: pick(manifest.pdf, ["name", "sha256"]) } : {}),
-    ...(manifest.reader_options != null ? { reading: manifest.reader_options } : {}),
+    reading: { ...manifest.reader_options, finder_classes: format.finder },
     ...(original["style.json"] != null ? { stylesheet: original["style.json"] } : {}),
     ...(Object.keys(containers).length ? { containers } : {}),
   };
@@ -163,14 +95,19 @@ function makeBook(original, effective, docs, assembled, oldTypes) {
     out.regions = orderRegions(page, refInfo, rank).map(value => {
       const ref = regionKey(entry.id, value.id);
       const stored = refInfo.get(ref);
-      const region = writeRegion(value, asFraction, rawTypes, stored ? stored.kind : rawTypes[value.type]?.region);
-      if (stored) {
-        Object.assign(region, stored.attrs);
-        if (stored.unitType && stored.unitType !== value.type) region.unit_type = stored.unitType;
-      } else if (!out.skip && rawTypes[value.type]?.role !== "furniture") region.out = true;
+      const type = stored?.unitType ?? value.type;
+      if (type !== value.type) {
+        if (!format.finder[type]) throw new Error(`A printed region cannot take container type ${type}.`);
+        retyped.push({ region: ref, from: value.type, to: type });
+      }
+      const region = writeRegion(value, asFraction, book.types, stored ? stored.kind : rawTypes[value.type]?.region, type);
+      if (stored) Object.assign(region, stored.attrs);
+      else if (!out.skip && rawTypes[value.type]?.role !== "furniture") region.ignored = true;
       regions.set(ref, { region, old: value, address: `${index + 1}/${value.id}` });
-      for (const line of region.lines) for (const span of line.spans ?? []) if (span.kind === "note_marker" && span.id != null) {
-        anchors.set(regionKey(entry.id, span.id), span);
+      for (const [index, line] of region.lines.entries()) for (const span of line.spans ?? []) {
+        if (span.kind !== "note_marker") continue;
+        if (span.id != null) anchors.set(regionKey(entry.id, span.id), { span, region: ref, line: index });
+        delete span.id;
       }
       return region;
     });
@@ -185,16 +122,17 @@ function makeBook(original, effective, docs, assembled, oldTypes) {
         do { id = `area${next++}`; } while (used.has(id));
       }
       used.add(id);
-      const region = area.block ? writeRegion({ ...area.block, id, box }, asFraction, rawTypes, rawTypes[area.block.type]?.region)
+      const region = area.block ? writeRegion({ ...area.block, id, box }, asFraction, book.types, rawTypes[area.block.type]?.region)
         : { id, type: "?", box: asFraction(box), ...(area.proposed_type ? { proposed: area.proposed_type } : {}) };
-      if (key !== "omitted_regions") region.out = true;
+      for (const line of region.lines ?? []) for (const span of line.spans ?? []) if (span.kind === "note_marker") delete span.id;
+      if (key !== "omitted_regions") region.ignored = true;
       if (area.block && Number.isInteger(area.block.order)) out.regions.splice(Math.max(0, area.block.order - 1), 0, region);
       else out.regions.push(region);
     }
     return out;
   });
-  moveLinks(assembled, destination, regions, anchors);
-  return { book, unplaceable };
+  const signs = moveLinks(assembled, destination, regions, anchors);
+  return { book, unplaceable, retyped, signs };
 }
 
 function comparison(before, after) {
@@ -221,15 +159,21 @@ function normalizedStructure(book) {
   }
   for (const [flow, ids] of Object.entries(book.flows)) tree[flow] = ids.map((id, i) => visit(id, [flow, i]));
   if (at.size !== units.size) throw new Error("An assembled unit is missing from the reading tree.");
-  const relations = book.relations.map(({ type, from, to }) => {
-    const source = { ...from };
-    if (source.line != null && source.region) {
-      source.line = entries.get(source.region)?.lines.findIndex(line => line.line === source.line);
-      if (source.line == null || source.line < 0) throw new Error(`A ${type} relation points to a missing line.`);
+  const anchors = new Map();
+  for (const page of book.pages) for (const region of page.regions) for (const [line, value] of (region.lines ?? []).entries()) {
+    for (const span of value.spans ?? []) if (span.kind === "note_marker")
+      anchors.set(regionKey(page.id, span.id), { region: regionKey(page.id, region.id), line, position: span.start });
+  }
+  const relations = [...new Set(book.relations.map(({ type, from, to }) => {
+    const source = from.anchor ? anchors.get(from.anchor) : { region: from.region };
+    if (!source) throw new Error(`A ${type} relation points from a missing marker.`);
+    if (!from.anchor && from.line != null) {
+      source.line = entries.get(from.region)?.lines.findIndex(line => line.line === from.line);
+      if (source.line == null || source.line < 0) throw new Error(`A ${type} relation points from a missing line.`);
     }
     if (!at.has(to.unit)) throw new Error(`A ${type} relation points to a missing unit.`);
-    return canonical({ type, from: source, to: { ...to, unit: at.get(to.unit) } });
-  }).sort();
+    return canonical({ type, from: source, to: at.get(to.unit) });
+  }))].sort();
   const roots = Object.entries(tree).map(([flow, nodes]) => [flow, nodes.map(({ type, children }) => [type, firstRegion(children)])]);
   return { tree, roots, relations };
 }
@@ -250,41 +194,49 @@ function compareText(original, projected) {
 }
 
 function compareVerses(before, after) {
-  const content = data => data.map(({ key, parts }) => ({ key, parts: parts.map(({ regions, ...part }) => ({
+  const content = verse => verse.parts.map(({ regions, ...part }) => ({
     ...part, locations: regions.map(({ box, ...location }) => location),
-  })) }));
+  }));
+  const linked = part => ["footnote", "readings"].includes(part.role);
+  const identity = ({ regions, ...part }) => canonical({ ...part, regions: regions.map(({ box, ...location }) => location) });
+  const normalize = data => data.map(({ key, parts }) => {
+    const ordered = parts.filter(linked).sort((a, b) => identity(b).localeCompare(identity(a)));
+    return { key, parts: parts.map(part => linked(part) ? ordered.pop() : part) };
+  });
+  const a = normalize(before), b = normalize(after);
+  const byKey = new Map(after.map(verse => [verse.key, verse]));
+  const changedLinkedOrder = before.filter(verse => byKey.has(verse.key) &&
+    !same(content(verse), content(byKey.get(verse.key))) &&
+    same(content(normalize([verse])[0]), content(normalize([byKey.get(verse.key)])[0]))).map(verse => verse.key);
   const boxes = data => data.flatMap(verse => verse.parts.flatMap(part => part.regions.map(region => region.box)));
-  const a = boxes(before), b = boxes(after);
-  return { ...comparison(content(before), content(after)), verses: before.length, boxesBefore: a.length, boxesAfter: b.length,
-    changedBoxes: a.reduce((n, box, i) => n + Number(!same(box, b[i])), Math.max(b.length - a.length, 0)) };
+  const aa = boxes(a), bb = boxes(b);
+  const compare = data => data.map(verse => ({ key: verse.key, parts: content(verse) }));
+  return { ...comparison(compare(a), compare(b)), changedLinkedOrder, verses: before.length,
+    boxesBefore: aa.length, boxesAfter: bb.length,
+    changedBoxes: aa.reduce((n, box, i) => n + Number(!same(box, bb[i])), Math.max(bb.length - aa.length, 0)) };
 }
 
 function inlineReading(book) {
   return book.pages.flatMap(page => page.regions.map(region => [regionKey(page.id, region.id),
-    (region.lines ?? []).map(line => pick(line, ["text", "spans", "style"]))])).sort(([a], [b]) => a < b ? -1 : 1);
-}
-
-function addedFields(book) {
-  const regions = book.pages.flatMap(page => page.regions ?? []);
-  const spans = regions.flatMap(region => (region.lines ?? []).flatMap(line => line.spans ?? []));
-  const containers = Object.values(book.containers ?? {});
-  return {
-    pageIds: book.pages.filter(page => page.id != null).length, pageSizes: book.pages.filter(page => page.size != null).length,
-    open: [...regions, ...containers].filter(unit => unit.open).length, unitType: regions.filter(region => region.unit_type).length,
-    direct: regions.filter(region => region.direct).length, flow: [...regions, ...containers].filter(unit => unit.flow).length,
-    markerIds: spans.filter(span => span.kind === "note_marker" && span.id != null).length,
-    markerLinks: spans.filter(span => span.link).length, source: spans.filter(span => span.link?.source).length,
-    differentMarker: spans.filter(span => span.link && Object.hasOwn(span.link, "marker")).length,
-    linkOrders: regions.reduce((n, region) => n + (region.links ?? []).filter(link => link.order != null).length, 0),
-    regionLinkMarkers: regions.reduce((n, region) => n + (region.links ?? []).filter(link => Object.hasOwn(link, "marker")).length, 0),
-  };
+    (region.lines ?? []).map(line => {
+      const item = pick(line, ["text", "spans", "style"]);
+      if (item.spans) item.spans = item.spans.map(span => {
+        if (span.kind !== "note_marker") return span;
+        const { id, ...visible } = span;
+        return visible;
+      });
+      return item;
+    })])).sort(([a], [b]) => a < b ? -1 : 1);
 }
 
 function inventory(book, unplaceable) {
   const all = book.pages.flatMap(page => page.regions ?? []);
-  return { containers: Object.keys(book.containers ?? {}).length, continues: all.filter(region => region.continues).length,
+  return { containers: Object.keys(book.containers ?? {}).length, continues: all.filter(region => region.continues === true).length,
+    openEnds: all.filter(region => region.continues === "open").length,
     ends: all.reduce((n, region) => n + (region.lines ?? []).filter(line => line.end != null).length, 0),
-    unknown: all.filter(region => region.type === "?").length, out: all.filter(region => region.out).length,
+    unknown: all.filter(region => region.type === "?").length, ignored: all.filter(region => region.ignored).length,
+    fromPrevious: all.filter(region => region.from_previous).length,
+    containerOpen: Object.values(book.containers ?? {}).filter(container => container.open).length,
     proposed: all.filter(region => region.proposed).length, unplaceable: unplaceable.length };
 }
 
@@ -295,7 +247,7 @@ export function migrateFiles(files, { verses = false } = {}) {
   const docs = manifest.pages.map(page => effective[pagePath(effective, page.id)]).filter(Boolean);
   const old = bookReading(manifest.pages, docs, tl, new Set(manifest.skipped), manifest.rules);
   const [assembled] = assemble(old.docs, old.types);
-  const { book, unplaceable } = makeBook(files, effective, old.docs, assembled, old.types);
+  const { book, unplaceable, retyped, signs } = makeBook(files, effective, old.docs, assembled, old.types);
   const json = JSON.stringify(book);
   const stored = JSON.parse(json);
   const next = toPageDocs(stored);
@@ -312,7 +264,7 @@ export function migrateFiles(files, { verses = false } = {}) {
     verses: verses ? compareVerses(verseExport(assembled, old.types, manifest), verseExport(converted, next.types, stored)) : null,
   };
   return { book: stored, report: { passed: Object.values(comparisons).every(result => result == null || result.identical),
-    pages: manifest.pages.length, legacy, sizes: { json: Buffer.byteLength(json) }, comparisons, counts: inventory(stored, unplaceable), additions: addedFields(stored), unplaceable } };
+    pages: manifest.pages.length, legacy, sizes: { json: Buffer.byteLength(json) }, comparisons, counts: inventory(stored, unplaceable), retyped, signs, unplaceable } };
 }
 
 // The stdlib ZIP writer supports large archives and stores the exact old paths. JSON attachments were already parsed
