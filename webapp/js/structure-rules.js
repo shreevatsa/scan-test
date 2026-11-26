@@ -1,9 +1,9 @@
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261125-v1";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261125-v1";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261125-v1";
-import { groupVerses } from "./verse-group-rules.js?v=20261125-v1";
-import { headingSections } from "./heading-rules.js?v=20261125-v1";
-import { compileRules } from "./rules.js?v=20261125-v1";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261126-scan-preview";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261126-scan-preview";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261126-scan-preview";
+import { groupVerses } from "./verse-group-rules.js?v=20261126-scan-preview";
+import { headingSections } from "./heading-rules.js?v=20261126-scan-preview";
+import { compileRules } from "./rules.js?v=20261126-scan-preview";
 
 const ridOf = ref => ref.split("#").pop();
 const textOf = (doc, unit) => unit.children.filter(child => child.region)

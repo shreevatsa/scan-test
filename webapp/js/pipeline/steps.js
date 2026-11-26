@@ -2,8 +2,8 @@
 // the region call's request and the scaling of its boxes (042), the region records the local step gives (043), the
 // transcription call's request (055), and the page document built from its answer (055's pagedoc.py).
 
-import { regionClasses, regionTypeEnum, regionCaption } from "./prompts.js?v=20261125-v1";
-import { parseLine } from "../inline.js?v=20261125-v1";
+import { regionClasses, regionTypeEnum, regionCaption } from "./prompts.js?v=20261126-scan-preview";
+import { parseLine } from "../inline.js?v=20261126-scan-preview";
 
 export const SETTINGS = {
   regions: { model: "gpt-6.1-terra", reasoning_effort: "none", image_detail: "original", max_output_tokens: 16384, store: false },

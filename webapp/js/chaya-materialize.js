@@ -1,6 +1,6 @@
 // Store geometry, transcription and structure from a page-document reading as Chaya v1.
-import { effectiveEnd } from "./chaya-book.js?v=20261125-v1";
-import { bbox } from "./render.js?v=20261125-v1";
+import { effectiveEnd } from "./chaya-book.js?v=20261126-scan-preview";
+import { bbox } from "./render.js?v=20261126-scan-preview";
 
 const pick = (object, keys) => Object.fromEntries(keys.filter(key => Object.hasOwn(object, key)).map(key => [key, object[key]]));
 const unitAttrs = unit => pick(unit, ["number", "label", "lang", "style", "open"]);

@@ -12,7 +12,8 @@ Use **Export → Save .chaya.pdf** to keep a portable copy of the scan and edits
 
 - **Scans** is the editor. Select a box or its text to edit it. **Next check** visits unread or uncertain text,
   areas that need a type, unlinked notes, and likely lines outside the boxes. **Text** follows the saved
-  reading order and links. Double-click a passage to return to its scan.
+  reading order and links. Double-click a passage or footnote to preview its scan. **Open in Scans** jumps
+  to that region in the editor.
 - **Process** finds regions and reads text on unprocessed pages, a scan range, or the current page.
   The dialog shows the engines, estimated cost, spending threshold, and progress. **Use saved records only**
   replays suitable records from the attached work archive. **Stop** interrupts a run and **Undo** restores the

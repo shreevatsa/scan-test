@@ -1,13 +1,14 @@
-import { bookCredentials } from "./book-credentials.js?v=20261125-v1";
-import { openExport } from "./book-export.js?v=20261125-v1";
-import { openSettings } from "./book-settings.js?v=20261125-v1";
-import { openProcess } from "./process-view.js?v=20261125-v1";
-import { h, cropInto } from "./render.js?v=20261125-v1";
-import * as B from "./book.js?v=20261125-v1";
-import { ScanView } from "./bookview.js?v=20261125-v1";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261125-v1";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261125-v1";
-import { baseCss } from "./style.js?v=20261125-v1";
+import { bookCredentials } from "./book-credentials.js?v=20261126-scan-preview";
+import { openExport } from "./book-export.js?v=20261126-scan-preview";
+import { openSettings } from "./book-settings.js?v=20261126-scan-preview";
+import { openProcess } from "./process-view.js?v=20261126-scan-preview";
+import { h, cropInto } from "./render.js?v=20261126-scan-preview";
+import * as B from "./book.js?v=20261126-scan-preview";
+import { pageCaption } from "./bookchecks.js?v=20261126-scan-preview";
+import { ScanView } from "./bookview.js?v=20261126-scan-preview";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261126-scan-preview";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261126-scan-preview";
+import { baseCss } from "./style.js?v=20261126-scan-preview";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -101,7 +102,7 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json?v=20261125-v1", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261126-scan-preview", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {
@@ -253,6 +254,7 @@ class App {
   }
 
   clearText() {
+    this.closeScanPreview?.();
     this.figures?.disconnect();
     this.figures = null;
     this.textJob?.abort();
@@ -274,10 +276,15 @@ class App {
     this.textScroll.append(root);
     const job = this.textJob = new AbortController();
     wireBookView(root, this.textScroll, { signal: job.signal });
-    root.ondblclick = event => {
-      const ref = event.target.closest(".r-reg,.r-fig")?.dataset.ref, address = ref && this.addressOf(ref);
-      if (address) this.switchMode("scans", address);
-    };
+    root.addEventListener("dblclick", event => {
+      if (event.target.closest("a")) return;
+      const source = event.target.closest(".r-reg[data-ref], .r-note-piece, .sidenote, .bv-inline-note");
+      const ref = source?.dataset.ref ?? source?.querySelector(".r-note-piece")?.dataset.ref;
+      const address = ref && this.addressOf(ref);
+      if (!address) return;
+      getSelection()?.removeAllRanges();
+      this.previewScan(address, event.clientX, event.clientY);
+    }, { signal: job.signal });
     this.figures = new IntersectionObserver(entries => {
       for (const { isIntersecting, target } of entries) {
         if (!isIntersecting) continue;
@@ -304,6 +311,66 @@ class App {
     const at = region || root.querySelector(`#pb-${CSS.escape(safeId(page?.id ?? position.index + 1))}`);
     if (at) at.scrollIntoView({ block: "start" });
     else this.textScroll.scrollTop = 0;
+  }
+
+  async previewScan(address, x, y) {
+    const region = B.regionAt(this.book, address);
+    if (!region) return;
+    this.closeScanPreview?.();
+    const page = this.book.pages[B.pageIndexOf(this.book, address)];
+
+    const job = new AbortController(), { signal } = job;
+    let url;
+    const caption = pageCaption(page);
+    const status = h("p", { class: "meta", role: "status" }, "Loading scan…");
+    const crop = h("div", { role: "img", "aria-label": `Scan crop from ${caption}`, hidden: true });
+    const close = () => {
+      if (signal.aborted) return;
+      job.abort();
+      if (url) URL.revokeObjectURL(url);
+      panel.remove();
+      this.closeScanPreview = null;
+    };
+    const panel = h("div", { class: "v1-scan-preview", popover: "auto", role: "dialog", "aria-label": "Scan preview" },
+      status, crop,
+      h("div", { class: "v1-scan-preview-bar" }, h("span", {}, caption),
+        button("Open in Scans", () => { close(); this.switchMode("scans", address); }),
+        button("×", close, { "aria-label": "Close scan preview" })));
+    this.closeScanPreview = close;
+    this.textScroll.append(panel);
+    panel.addEventListener("toggle", event => { if (event.newState === "closed") close(); });
+    const { scrollTop, scrollLeft } = this.textScroll;
+    this.textScroll.addEventListener("scroll", () => {
+      if (this.textScroll.scrollTop !== scrollTop || this.textScroll.scrollLeft !== scrollLeft) close();
+    }, { passive: true, signal });
+    panel.showPopover();
+    const place = () => {
+      const { width, height } = panel.getBoundingClientRect();
+      panel.style.left = `${Math.max(8, Math.min(innerWidth - width - 8, x - width / 2))}px`;
+      panel.style.top = `${Math.max(8, y + height + 12 < innerHeight ? y + 8 : y - height - 8)}px`;
+    };
+    place();
+
+    try {
+      const blob = await this.session.scan(page, 1440, signal);
+      if (signal.aborted) return;
+      const bitmap = await createImageBitmap(blob);
+      const { width, height } = bitmap;
+      bitmap.close();
+      if (signal.aborted) return;
+      url = URL.createObjectURL(blob);
+      const box = region.box.map((value, i) => {
+        const bound = i % 2 ? height : width;
+        const pad = i < 2 ? -12 : 12;
+        return Math.max(0, Math.min(bound, value * bound + pad));
+      });
+      cropInto(crop, url, { width, height }, box, Math.min(640, innerWidth - 34), Math.min(420, innerHeight * 0.6));
+      crop.hidden = false;
+      status.hidden = true;
+      place();
+    } catch (error) {
+      if (!signal.aborted) { status.textContent = `Could not load the scan. ${error.message}`; place(); }
+    }
   }
 
   dialog(title, content) {

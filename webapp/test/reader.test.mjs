@@ -2,6 +2,7 @@
 // figures, and the standalone document. Run from the repository root:  node --test webapp/test/*.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { assemble } from "../js/book.js";
 import { prepare, bookHtml, bookDocument, bookText } from "../js/reader.js";
 
 
@@ -63,4 +64,30 @@ test("rows, styles and figures in the reader's HTML", () => {
   assert.ok(doc.startsWith("<!DOCTYPE html>") && doc.includes('<img class="r-figimg" src="data:image/png;base64,'), "a standalone document with images");
   assert.ok(doc.includes("max-width:calc(var(--pt, 1pt) * 297.6)"), "the book's measure");
   assert.ok(bookText(P).includes("[figure: a symbol]"));
+});
+
+test("margin notes identify each of their own scan regions, including continuations", () => {
+  const box = [0.1, 0.2, 0.9, 0.3];
+  const region = (id, type, text, attrs = {}) => ({ id, type, lines: [{ text }], box, ...attrs });
+  const book = { chaya: 1, title: "A book with footnotes", flows: { main: "Text", notes: "Notes" },
+    types: { paragraph: {}, footnote: { flow: "notes" } }, pages: [
+      { id: "scan-one", pdf_page: 1, regions: [
+        region("body", "paragraph", "", { lines: [{ text: "A passage has a note.", spans: [
+          { kind: "note_marker", start: 9, end: 9, marker: "1", to: "2/note-start" },
+        ] }] }),
+      ] },
+      { id: "scan-two", pdf_page: 2, regions: [
+        region("body-two", "paragraph", "First continuation page."),
+        region("note-start", "footnote", "Start of the note.", { continues: true }),
+      ] },
+      { id: "scan-three", pdf_page: 3, regions: [
+        region("body-three", "paragraph", "Second continuation page."),
+        region("note-end", "footnote", "End of the note."),
+        region("unlinked", "footnote", "An unlinked note."),
+      ] },
+    ] };
+  const html = bookHtml(assemble(book), { plain: true });
+  assert.match(html, /class="r-reg" data-ref="scan-one#body"/);
+  assert.match(html, /class="sidenote"[^>]*><span class="r-note-piece" data-ref="scan-two#note-start">Start of the note\.<\/span> <span class="r-note-piece" data-ref="scan-three#note-end">End of the note\.<\/span>/);
+  assert.match(html, /class="sidenote unlinked"[^>]*><span class="r-note-piece" data-ref="scan-three#unlinked">An unlinked note\.<\/span>/);
 });

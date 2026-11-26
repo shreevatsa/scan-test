@@ -2,13 +2,13 @@
 // flow rendered in reading order. Headings, verses, paragraphs, tables and notes follow their types' region classes;
 // formatting is shown; note markers link to their notes; figures are shown as their part of the page image, with
 // their label; the printed page number is shown where each page starts.
-// Hovering a passage shows its region on the page image; double-clicking it opens the page in the editor.
+// In the app, a double-click previews the scan region for a passage or note.
 
-import { assemble } from "./assemble.js?v=20261125-v1";
-import { cp } from "./inline.js?v=20261125-v1";
-import { lineHtml, esc } from "./render.js?v=20261125-v1";
-import { verseGroups } from "./verses.js?v=20261125-v1";
-import { css, unitStyle, baseCss } from "./style.js?v=20261125-v1";
+import { assemble } from "./assemble.js?v=20261126-scan-preview";
+import { cp } from "./inline.js?v=20261126-scan-preview";
+import { lineHtml, esc } from "./render.js?v=20261126-scan-preview";
+import { verseGroups } from "./verses.js?v=20261126-scan-preview";
+import { css, unitStyle, baseCss } from "./style.js?v=20261126-scan-preview";
 
 // A line piece with something in it: an empty one adds nothing to a block's text, not even a space.
 const spoken = line => Boolean(line.text) || Boolean(line.spans?.length);
@@ -124,8 +124,12 @@ function plainNotes(P) {
   const text = uid => {
     const out = [];
     const walk = unit => { for (const child of unit?.children || []) {
-      if (child.region) { const R = regions[child.region]; if (R) out.push((R.region.lines || []).map(L => lineHtml(L.text || "", (L.spans || []).filter(s => s.kind !== "note_marker"), () => "")).join(" ")); }
-      else walk(units[child.unit]);
+      if (child.unit) { walk(units[child.unit]); continue; }
+      const region = regions[child.region]?.region;
+      if (!region) continue;
+      const lines = (region.lines || []).map(line => lineHtml(line.text || "",
+        (line.spans || []).filter(span => span.kind !== "note_marker"), () => ""));
+      out.push(`<span class="r-note-piece" data-ref="${esc(child.region)}">${lines.join(" ")}</span>`);
     } };
     walk(units[uid]);
     return out.join(" ");

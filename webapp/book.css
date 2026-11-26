@@ -92,6 +92,14 @@
 .v1-reading .reader { font-family: var(--deva); }
 .v1-reading .r-mk::before { content: attr(data-sign); vertical-align: super; font: 11px system-ui, sans-serif; color: var(--v1-blue); }
 .v1-reading .r-flowbar { display: none; }
+.v1-scan-preview {
+  position: fixed; inset: auto; margin: 0; max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px);
+  padding: 7px; border: 1px solid var(--v1-edge); border-radius: 6px; background: var(--v1-paper);
+  color: var(--v1-ink); box-shadow: 0 6px 24px #0003;
+}
+.v1-scan-preview .meta { margin: 4px 6px; }
+.v1-scan-preview-bar { display: flex; flex-wrap: wrap; gap: 5px 8px; align-items: center; padding-top: 5px; font-size: 13px; }
+.v1-scan-preview-bar span { margin-right: auto; color: var(--v1-muted); }
 .v1-dialog { width: min(520px, 92vw); padding: 16px; color: var(--v1-ink); background: var(--v1-paper); border: 1px solid var(--v1-edge); border-radius: 8px; }
 .v1-dialog::backdrop { background: #24231f60; }
 .v1-dialog-head { display: flex; align-items: center; justify-content: space-between; }

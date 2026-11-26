@@ -88,7 +88,7 @@ g:hover > .pv-regbox, g.hl > .pv-regbox, g.sel > .pv-regbox { display: block; }
 .r-mk::before { content: attr(data-sign); }
 .r-mk.none { color: var(--bad); }
 .r-back { font-size: .8em; text-decoration: none; margin-left: 4px; }
-.r-reg:hover { background: #fff5c4; }
+.r-reg:hover:not(:has(.sidenote:hover)), .r-note-piece:hover { background: #fff5c4; }
 
 .spc { letter-spacing: .18em; }
 .r-figure { margin: 1em 0; text-align: center; }

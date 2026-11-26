@@ -5,9 +5,9 @@
 // and simplified (Douglas–Peucker) as cv2.findContours and cv2.approxPolyDP do, so vertices may differ slightly
 // from the Python results while the outlines agree.
 
-import { ROLE, components, rotate, unrotate } from "./ink.js?v=20261125-v1";
+import { ROLE, components, rotate, unrotate } from "./ink.js?v=20261126-scan-preview";
 
-import { ruleStroke } from "./ink-checks.js?v=20261125-v1";
+import { ruleStroke } from "./ink-checks.js?v=20261126-scan-preview";
 
 export const UNASSIGNED = -1;
 

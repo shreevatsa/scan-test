@@ -1,10 +1,10 @@
-import * as B from "./book.js?v=20261125-v1";
-import { areaTitle, checksFor, pageCaption } from "./bookchecks.js?v=20261125-v1";
-import { hasTextInk } from "./local/ink-checks.js?v=20261125-v1";
-import { PageView } from "./pageimage.js?v=20261125-v1";
-import { boxRing } from "./ops.js?v=20261125-v1";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261125-v1";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261125-v1";
+import * as B from "./book.js?v=20261126-scan-preview";
+import { areaTitle, checksFor, pageCaption } from "./bookchecks.js?v=20261126-scan-preview";
+import { hasTextInk } from "./local/ink-checks.js?v=20261126-scan-preview";
+import { PageView } from "./pageimage.js?v=20261126-scan-preview";
+import { boxRing } from "./ops.js?v=20261126-scan-preview";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261126-scan-preview";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261126-scan-preview";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const words = type => type === "?" ? "Needs a type" : type[0].toUpperCase() + type.slice(1).replaceAll("_", " ");
@@ -63,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261125-v1", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261126-scan-preview", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }

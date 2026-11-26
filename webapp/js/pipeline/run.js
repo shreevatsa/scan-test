@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261125-v1";
-import * as S from "./steps.js?v=20261125-v1";
-import * as I from "./images.js?v=20261125-v1";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261125-v1";
-import * as Split from "./split.js?v=20261125-v1";
-import { markersFromQuotes } from "../note-links.js?v=20261125-v1";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261125-v1";
-import { classifyBlocks } from "../local/blocks.js?v=20261125-v1";
-import { finderById, finderPath } from "./finders.js?v=20261125-v1";
-import { finderRequest } from "./finder-requests.js?v=20261125-v1";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261125-v1";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261125-v1";
-import { bbox } from "../render.js?v=20261125-v1";
-import { canonical } from "../ops.js?v=20261125-v1";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261125-v1";
+import * as P from "./prompts.js?v=20261126-scan-preview";
+import * as S from "./steps.js?v=20261126-scan-preview";
+import * as I from "./images.js?v=20261126-scan-preview";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261126-scan-preview";
+import * as Split from "./split.js?v=20261126-scan-preview";
+import { markersFromQuotes } from "../note-links.js?v=20261126-scan-preview";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261126-scan-preview";
+import { classifyBlocks } from "../local/blocks.js?v=20261126-scan-preview";
+import { finderById, finderPath } from "./finders.js?v=20261126-scan-preview";
+import { finderRequest } from "./finder-requests.js?v=20261126-scan-preview";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261126-scan-preview";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261126-scan-preview";
+import { bbox } from "../render.js?v=20261126-scan-preview";
+import { canonical } from "../ops.js?v=20261126-scan-preview";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261126-scan-preview";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 
