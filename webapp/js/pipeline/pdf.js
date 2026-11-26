@@ -9,8 +9,8 @@ let lib = null;
 
 async function pdfjs() {
   if (!lib) {
-    lib = await import(new URL("pdf.min.mjs", VENDOR).href);
-    lib.GlobalWorkerOptions.workerSrc = new URL("pdf.worker.min.mjs", VENDOR).href;
+    lib = await import(new URL("pdf.min.mjs?v=20261125-v1-phase3", VENDOR).href);
+    lib.GlobalWorkerOptions.workerSrc = new URL("pdf.worker.min.mjs?v=20261125-v1-phase3", VENDOR).href;
   }
   return lib;
 }

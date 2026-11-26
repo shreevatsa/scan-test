@@ -6,11 +6,21 @@ The library opens ordinary PDFs and [Chaya v1 books](../schema/FORMAT.md). It ke
 `chaya.json`, and a `work/` directory in browser storage. **Scans** is a continuous scan and editor view. **Text**
 shows the assembled book, with its contents and linked footnotes. Double-click text to jump to its scan.
 **Next check** visits unknown areas, unread lines, uncertain readings, unlinked notes, and ink outside the boxes.
-**Export** saves the current `.chaya.pdf`. Use `?book=<url>` to open a book from a URL.
+Use `?book=<url>` to open a book from a URL.
 
-The continuous view loads scans near the viewport. This stage includes local editing, undo, redo, and v1 PDF
-export. The processing dialog, full settings, and remaining exports are the next stage. Example links for the old
-format continue to open the previous app until its v1 examples are published.
+- **Process** runs the selected region finder and reader for unprocessed pages, a scan range, or the current scan.
+  The dialog shows the estimate, spend threshold, progress, and Stop. It asks before replacing processed pages.
+  Undo restores the book before the run. Processing records remain in `work/`.
+- **Open work archive** in the Process dialog attaches a migrated book's matching `.work.zip`. **Use saved
+  records only** replays the selected finder and reader's saved results at zero API cost.
+- **Settings** holds book metadata, a type table, structure rules, the finder and reader, and API credentials.
+  The pipeline writes the rules' results into the book until its structure is edited. **Find structure now**
+  rebuilds the stored structure after confirmation. Read uses the book's existing stylesheet.
+- **Export** downloads the v1 PDF, original scan, plain text, self-contained HTML, or `chaya.json`. Books with
+  numbered verses also offer verses JSON.
+
+The continuous view renders scans near the viewport. The examples still link to the previous app until the v1
+examples and the versioned app are published.
 
 ## Schema 0.4 reference
 

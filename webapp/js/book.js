@@ -252,10 +252,11 @@ function hasContainerMembers(book, id) {
   return book.pages.some(page => page.regions?.some(region => pathOf(region).includes(id)));
 }
 
-function preserveJoinTargets(before, after) {
+export function preserveJoinTargets(before, after) {
   return mapRegions(after, (region, index) => {
     if (region.continues !== true || after.pages[index].skip || !readingRegion(after, region)) return region;
     const address = `${index + 1}/${region.id}`;
+    if (regionAt(before, address)?.continues !== true) return region;
     const earlier = neighbor(before, address, 1);
     if (!earlier || regionAt(before, earlier)?.from_previous) return region;
     return neighbor(after, address, 1) === earlier ? region : field(region, "continues", "open");

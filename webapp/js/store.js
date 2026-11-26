@@ -1,3 +1,4 @@
+import { openWorkZip } from "./work-zip.js?v=20261125-v1-phase3";
 import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261125-v1-phase3";
 import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261125-v1-phase3";
 
@@ -139,6 +140,61 @@ class StoredBook {
     return this.writes;
   }
 
+  async workFile(path, create = false) {
+    const parts = path.split("/");
+    if (parts.length < 2 || parts[0] !== "work" ||
+        parts.some(part => !/^[\w.-]+$/.test(part) || part === "." || part === "..")) throw new Error("Invalid work record path.");
+    let dir = this.dir;
+    for (const part of parts.slice(0, -1)) dir = await dir.getDirectoryHandle(part, { create });
+    return [dir, parts.at(-1)];
+  }
+
+  async readWork(path, localOnly = false) {
+    try {
+      const [dir, name] = await this.workFile(path);
+      return JSON.parse(await (await file(dir, name)).text());
+    } catch (error) {
+      if (error.name !== "NotFoundError") throw error;
+      return localOnly ? null : (await this.workArchive())?.zip.json(path) ?? null;
+    }
+  }
+
+  async writeWork(path, record) {
+    const [dir, name] = await this.workFile(path, true);
+    await write(dir, name, JSON.stringify(record));
+  }
+
+  async updateWork(path, change) {
+    const task = (this.workWrites ?? Promise.resolve()).catch(() => {}).then(async () =>
+      this.writeWork(path, change(await this.readWork(path))));
+    this.workWrites = task;
+    return task;
+  }
+
+  async workArchive() {
+    this.archive ??= (async () => {
+      try {
+        const [dir, name] = await this.workFile("work/archive.zip");
+        const zip = await openWorkZip(await file(dir, name));
+        return { zip, manifest: await zip.json("book.json") };
+      } catch (error) {
+        if (error.name === "NotFoundError") return null;
+        throw error;
+      }
+    })();
+    return this.archive;
+  }
+
+  async attachWorkArchive(archive) {
+    const zip = await openWorkZip(archive), manifest = await zip.json("book.json");
+    const sha = this.book.source?.sha256 || await sha256hex(new Uint8Array(await (await this.original()).arrayBuffer()));
+    if (!sha || manifest?.pdf?.sha256 !== sha) throw new Error("This work archive belongs to a different source PDF.");
+    const [dir, name] = await this.workFile("work/archive.zip", true);
+    await write(dir, name, archive);
+    this.archive = null;
+    return manifest;
+  }
+
   async original() { return file(this.dir, "book.pdf"); }
 
   async export(book) {
@@ -152,14 +208,14 @@ class StoredBook {
     if (pdf) await (await pdf).loadingTask.destroy();
   }
 
-  async scan(page, width, signal) {
+  async scan(page, width, signal, storedHeight = null) {
     this.pdf ??= this.original().then(async pdf => openPdfData(new Uint8Array(await pdf.arrayBuffer())));
     const document = await this.pdf;
     signal.throwIfAborted();
     const source = await document.getPage(page.pdf_page);
     signal.throwIfAborted();
     const base = source.getViewport({ scale: 1 }), [x0, y0, x1, y1] = page.crop ?? [0, 0, 1, 1];
-    const scale = width / (base.width * (x1 - x0)), height = Math.max(1, Math.round(base.height * (y1 - y0) * scale));
+    const scale = width / (base.width * (x1 - x0)), height = storedHeight ?? Math.max(1, Math.round(base.height * (y1 - y0) * scale));
     const viewport = source.getViewport({ scale, offsetX: -x0 * base.width * scale, offsetY: -y0 * base.height * scale });
     const canvas = new OffscreenCanvas(width, height);
     const task = source.render({ canvas, canvasContext: canvas.getContext("2d"), viewport, background: "#fff" });

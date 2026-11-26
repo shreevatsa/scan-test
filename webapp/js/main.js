@@ -1,3 +1,7 @@
+import { bookCredentials } from "./book-credentials.js?v=20261125-v1-phase3";
+import { openExport } from "./book-export.js?v=20261125-v1-phase3";
+import { openSettings } from "./book-settings.js?v=20261125-v1-phase3";
+import { openProcess } from "./process-view.js?v=20261125-v1-phase3";
 import { h, cropInto } from "./render.js?v=20261125-v1-phase3";
 import * as B from "./book.js?v=20261125-v1-phase3";
 import { ScanView } from "./bookview.js?v=20261125-v1-phase3";
@@ -6,6 +10,7 @@ import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v
 import { baseCss } from "./style.js?v=20261125-v1-phase3";
 
 const app = document.querySelector("#app");
+let dialogSequence = 0;
 const button = (text, click, attrs) => h("button", { type: "button", onclick: click, ...attrs }, text);
 
 document.head.append(h("style", {}, BOOK_CSS));
@@ -303,7 +308,8 @@ class App {
   }
 
   dialog(title, content) {
-    const panel = h("dialog", { class: "v1-dialog" }, h("div", { class: "v1-dialog-head" }, h("h2", {}, title),
+    const label = `v1-dialog-title-${++dialogSequence}`;
+    const panel = h("dialog", { class: "v1-dialog", "aria-labelledby": label }, h("div", { class: "v1-dialog-head" }, h("h2", { id: label }, title),
       button("×", () => panel.close(), { "aria-label": "Close" })), content);
     panel.addEventListener("close", () => panel.remove(), { once: true });
     app.append(panel);
@@ -311,33 +317,26 @@ class App {
     return panel;
   }
 
-  settings() {
-    const title = h("input", { value: this.book.title, required: true });
-    const form = h("form", { onsubmit: event => {
-      event.preventDefault();
-      if (title.value.trim()) this.edit(book => ({ ...book, title: title.value.trim() }));
-      panel.close();
-    } }, h("label", {}, "Book title ", title), h("p", {}, h("button", { type: "submit", class: "primary" }, "Save")));
-    const panel = this.dialog("Settings", form);
+  credentials() { return this.credentialStore ??= bookCredentials(); }
+
+  async structureHints() {
+    const hints = new Map();
+    for (const [index, page] of this.book.pages.entries()) {
+      if (page.skip || !page.regions) continue;
+      const pid = page.id ?? String(index + 1);
+      const data = await this.session.readWork(`work/structure-hints/${pid}.json`, true);
+      if (data) hints.set(pid, data);
+    }
+    return hints;
   }
 
-  process(index) {
-    this.dialog(index == null ? "Process pages" : `Process scan ${index + 1}`,
-      h("p", {}, "Region finding and transcription will be available in Phase 3."));
-  }
+  settings() { openSettings(this); }
+
+  process(index) { openProcess(this, index).catch(error => this.notify(error.message)); }
 
   exportMenu() {
-    const save = button("Save .chaya.pdf", async () => {
-      save.disabled = true;
-      try {
-        await this.flush();
-        const book = this.book;
-        download(await this.session.export(book), fileStem(book.title) + ".chaya.pdf");
-        panel.close();
-      } catch (error) { this.notify(error.message); }
-      finally { save.disabled = false; }
-    }, { class: "primary" });
-    const panel = this.dialog("Export", h("p", {}, save));
+    try { openExport(this, download); }
+    catch (error) { this.notify(error.message); }
   }
 
   notify(message) {

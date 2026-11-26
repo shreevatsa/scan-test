@@ -12,6 +12,8 @@
 // series whose entries hold verses are the text, their letter the śataka their stream is labelled with; every other
 // series (a translation's, the notes') goes with a series of the text in order, the next with its letter where its
 // heading names a śataka ("VAIRÂGYAS'ATAKA."), else the next one.
+import { printedNumber } from "./number-rules.js?v=20261125-v1-phase3";
+
 const SHATAKA = [["N", /नीति|N[IÎĪ]T[IÎĪ]/iu], ["V", /वैराग्य|VAIR[AÂĀ]/iu], ["S", /शृङ्गार|शृंगार|[SŚ]['′]?R[IĪ]?[NṄ]G[AĀÂ]R/iu]];
 const letterOf = text => SHATAKA.find(([, pattern]) => pattern.test(text || ""))?.[0] || null;
 // A heading names a śataka where it says "śataka" too ("अथ शृङ्गारशतकम्", "NITI S'ATAKA."): not a commentary's heading
@@ -224,7 +226,7 @@ export function verseGroups(book, tl) {
 // printed in (page id, PDF page, printed page number, box in the page's pixels and the page's size, so that the region
 // can be cut from the page image). An apparatus reading is one line of its region. `manifest` (book.json) gives the
 // PDF pages.
-export function verseExport(book, tl, manifest = {}) {
+export function verseExport(book, tl, manifest = {}, { numberedFallback = false } = {}) {
   const { groups } = verseGroups(book, tl);
   const units = new Map(book.units.map(unit => [unit.id, unit]));
   const pageOf = new Map(book.pages.map(page => [page.id, page]));
@@ -245,9 +247,40 @@ export function verseExport(book, tl, manifest = {}) {
       return end === "hyphen" ? line.text.replace(/[-‐]$/u, "") : line.text + (end === "line" ? "\n" : end === "join" ? "" : " ");
     }).join("").trim();
   };
+  const fallbackNumbers = new Map();
+  if (!groups.size && numberedFallback) {
+    const counts = new Map(), refsByAnchor = new Map(), byUnit = new Map();
+    const walk = uid => {
+      const unit = units.get(uid);
+      if (!unit) return;
+      if (tl.types[unit.type]?.region === "verse") {
+        const refs = refsOf(uid);
+        const lines = refs.flatMap(ref => regionOf(ref)?.region?.lines ?? []);
+        const match = printedNumber(lines.findLast(line => line.text?.trim())?.text);
+        const n = numbersOf(unit.number)?.[0] ?? match?.value;
+        if (n != null) {
+          const count = (counts.get(n) ?? 0) + 1, key = count === 1 ? String(n) : `${n}-${count}`;
+          counts.set(n, count);
+          fallbackNumbers.set(uid, unit.number ?? match?.printed ?? String(n));
+          const group = { key, verse: [uid], lead: [], follow: [], companions: {}, readings: [], footnotes: [] };
+          groups.set(key, group);
+          byUnit.set(uid, group);
+          for (const ref of refs) for (const line of regionOf(ref)?.region?.lines ?? []) for (const span of line.spans ?? [])
+            if (span.kind === "note_marker") refsByAnchor.set(`${ref.split("#")[0]}#${span.id}`, group);
+          return;
+        }
+      }
+      for (const child of unit.children) if (child.unit) walk(child.unit);
+    };
+    for (const uid of book.flows.main ?? []) walk(uid);
+    for (const { type, from, to } of book.relations) {
+      if (type === "note") refsByAnchor.get(from.anchor)?.footnotes.push(to.unit);
+      if (type === "readings") byUnit.get(to.unit)?.readings.push({ region: from.region, line: from.line });
+    }
+  }
   const part = (role, uid) => {
     const refs = refsOf(uid).map(regionOf).filter(found => found?.region);
-    return { role, type: units.get(uid)?.type, number: units.get(uid)?.number ?? null, text: textOf(uid, refs),
+    return { role, type: units.get(uid)?.type, number: units.get(uid)?.number ?? fallbackNumbers.get(uid) ?? null, text: textOf(uid, refs),
       regions: refs.map(({ page, region }) => place(page, region, region.polygons)) };
   };
   return [...groups.values()].map(g => ({ key: g.key, parts: [

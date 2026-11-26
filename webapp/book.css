@@ -132,3 +132,31 @@
   .v1-image { position: relative; top: 0; }
   .v1-examples { grid-template-columns: 1fr; }
 }
+.v1-process, .v1-settings { max-height: 92dvh; overflow: auto; }
+.v1-process-fields { display: grid; gap: 8px; margin-top: 10px; }
+.v1-process-fields label { display: flex; align-items: center; gap: 8px; }
+.v1-process-fields input[type=number] { width: 90px; }
+.v1-models { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 10px; margin: 4px 0; }
+.v1-models dt { color: var(--v1-muted); }
+.v1-models dd { margin: 0; }
+.v1-estimate, .v1-process-status { margin: 4px 0 8px; }
+.v1-process-progress progress { width: 100%; }
+.v1-process-errors { color: #9b331d; margin: 6px 0; padding-left: 20px; max-height: 150px; overflow: auto; }
+.v1-process-errors:empty { display: none; }
+.v1-dialog.v1-settings { width: min(1110px, 96vw); }
+.v1-settings-section { padding: 12px 0; border-top: 1px solid var(--v1-edge); }
+.v1-settings-section h3 { margin: 0 0 8px; font-size: 17px; }
+.v1-settings-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 8px 14px; }
+.v1-settings-fields label { display: grid; gap: 3px; }
+.v1-settings textarea { width: 100%; padding: 6px; border: 1px solid var(--v1-edge); border-radius: 4px; font: inherit; }
+.v1-settings textarea[aria-label="Structure rules"] { font: 13px/1.4 ui-monospace, monospace; }
+.v1-type-table { overflow-x: auto; margin-bottom: 8px; }
+.v1-type-table table { border-collapse: collapse; width: 100%; font-size: 12px; }
+.v1-type-table th, .v1-type-table td { padding: 4px; border-bottom: 1px solid var(--v1-edge); text-align: left; }
+.v1-type-table th { font-weight: 600; }
+.v1-type-table input { width: 88px; max-width: 30vw; }
+.v1-type-table input[type=checkbox] { width: auto; }
+.v1-type-table input[aria-label^="description "] { width: 190px; }
+.v1-credentials details { margin: 5px 0; }
+.v1-export-options { margin: 10px 0; }
+@media (max-width: 650px) { .v1-settings-fields { grid-template-columns: 1fr; } }

@@ -1,7 +1,18 @@
-const DEV = "०१२३४५६७८९";
-const toInt = s => Number([...s].map(c => DEV.includes(c) ? DEV.indexOf(c) : c).join(""));
-export const toDev = (n, like) => /[०-९]/.test(like) ? String(n).replace(/\d/g, d => DEV[d]) : String(n);
-const NUMBER = /(?:॥|\|\||II|।।)\s*([०-९0-9]{1,4})\s*(?:॥|\|\||II|।।)?\s*$/;
+const DIGITS = ["०१२३४५६७८९", "೦೧೨೩೪೫೬೭೮೯"];
+const digitsOf = c => c && DIGITS.find(set => set.includes(c));
+export function toDev(n, like = "") {
+  const digits = [...like].map(digitsOf).find(Boolean);
+  return digits ? String(n).replace(/\d/g, digit => digits[digit]) : String(n);
+}
+const NUMBER = /(?:॥|\|\||II|।।)\s*([०-९೦-೯0-9]{1,4})\s*(?:॥|\|\||II|।।)?\s*$/;
+
+export function printedNumber(text) {
+  const match = NUMBER.exec(text ?? "");
+  if (!match) return null;
+  const printed = match[1];
+  const value = Number([...printed].map(c => digitsOf(c)?.indexOf(c) ?? c).join(""));
+  return { at: match.index + match[0].indexOf(printed), printed, value };
+}
 
 // The verses in book order: [{ line, at, printed, value, page }] (null value where no number is printed).
 export function verseNumbers(docs, type = "verse") {
@@ -15,8 +26,8 @@ export function verseNumbers(docs, type = "verse") {
       if (unit.open?.end) return;   // its number is printed where it ends, on a later page
       const last = [...unit.children].reverse().find(child => child.region);
       const region = last && regions.get(last.region.split("#").pop()), line = region?.lines?.at(-1);
-      const match = line && NUMBER.exec(line.text || "");
-      out.push(match ? { line, at: match.index + match[0].indexOf(match[1]), printed: match[1], value: toInt(match[1]), unit, page: doc.page.id } : { line: null, value: null, page: doc.page.id });
+      const match = printedNumber(line?.text);
+      out.push(match ? { line, ...match, unit, page: doc.page.id } : { line: null, value: null, page: doc.page.id });
     };
     for (const id of doc.flows.main || []) walk(id);
   }

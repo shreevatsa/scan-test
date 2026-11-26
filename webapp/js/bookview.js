@@ -509,8 +509,8 @@ export class ScanView {
       actions.append(target, button("Link note", () => {
         if (!target.value) return;
         const line = region.lines[check.line];
-        this.edit(b => B.setLine(b, address, check.line, line.text,
-          line.spans.map((span, i) => i === check.span ? { ...span, to: target.value } : span)));
+        this.edit(b => ({ ...B.setLine(b, address, check.line, line.text,
+          line.spans.map((span, i) => i === check.span ? { ...span, to: target.value } : span)), structure_edited: true }));
       }));
     } else if (check.kind === "note") {
       actions.append(button("Find an unlinked marker", () => this.nextCheck("marker")));

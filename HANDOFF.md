@@ -4,12 +4,14 @@ Rewritten 2026-11-21 to describe the present. Earlier versions are in git histor
 
 ## Chaya v1 status (2026-11-25)
 
-The app on `main` now has the v1 library, a continuous Scans view with editing and checks, Text with linked notes,
-and v1 PDF export. The source PDF and book data are stored separately in the browser. Original schema 0.4 books
-belong in the app on `chaya-0.4`. The sections below record that app and the earlier workflow.
+The app on `main` opens version 1. The library stores the original PDF, `chaya.json`, and processing records
+separately. Scans has continuous editing and checks. Text has contents, linked notes, and jumps to the scan.
+Process runs the existing finder and reader or replays a matching work archive. Settings covers book metadata,
+types, processing, and rules. Export includes PDF, text, HTML, book JSON, and applicable verses JSON.
 
-Next, connect the existing finders and readers to the v1 book, finish settings and exports, and keep processing
-records beside the book. The versioned site and example URL switch follow that work.
+The remaining phase removes inactive schema 0.4 code and narrows the tests and docs. It also publishes the
+`chaya-0.4` branch under `versions/0.4/` and switches example URLs when the v1 examples are available.
+The sections below record the older app and earlier workflow.
 
 ## Goal
 

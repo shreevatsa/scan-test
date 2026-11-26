@@ -103,7 +103,9 @@ export async function post(provider, payload, key, auth = {}) {
     if (auth.project) headers["x-goog-user-project"] = auth.project;
   }
   const t0 = performance.now();
-  const r = await fetch(S.ENDPOINTS[provider], { method: "POST", headers, body: JSON.stringify(payload), signal: AbortSignal.timeout(auth.timeout_ms || REQUEST_TIMEOUT_MS) });
+  const timeout = AbortSignal.timeout(auth.timeout_ms || REQUEST_TIMEOUT_MS);
+  const signal = auth.signal ? AbortSignal.any([auth.signal, timeout]) : timeout;
+  const r = await fetch(S.ENDPOINTS[provider], { method: "POST", headers, body: JSON.stringify(payload), signal });
   const raw = await r.json().catch(() => null);
   const body = raw?.interaction || raw;
   if (!r.ok) throw new Error(`${provider} HTTP ${r.status}${body?.error?.message ? ": " + body.error.message : ""}`);
@@ -113,7 +115,7 @@ export async function post(provider, payload, key, auth = {}) {
 
 export class Maker {
   // outlines(pid, url, boxes) runs the local step (the app's worker); check(doc) runs the schema checks.
-  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, layout = localLayout, readLines = localLines, onCost = () => {}, onSaved = () => {} }) {
+  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, layout = localLayout, readLines = localLines, onCost = () => {}, onSaved = () => {}, registerProposals = true }) {
     this.book = book;
     this.outlines = outlines;
     this.keys = keys;
@@ -125,6 +127,7 @@ export class Maker {
     this.layout = layout;
     this.onCost = onCost;
     this.onSaved = onSaved;
+    this.registerProposals = registerProposals;
     this.jobs = new Map();
     this.previewCache = new Map();
   }
@@ -206,7 +209,7 @@ export class Maker {
     }
     await this.book.writeWork(this.workPath(pid), record);
     let assignments = null;
-    if (record.type_proposals?.length || record.regions.some(region => region.proposed_type)) {
+    if (this.registerProposals && (record.type_proposals?.length || record.regions.some(region => region.proposed_type))) {
       await recordFinderProposals(this.book, record, { pdfPage: this.book.page(pid)?.pdf_page ?? null });
       assignments = proposalAssignments(await readPendingProposals(this.book), this.book.types);
     }
