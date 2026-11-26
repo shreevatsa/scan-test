@@ -1,6 +1,6 @@
-import { canonical } from "../ops.js?v=20261126-scan-preview";
-import { checkReading, selectPageRegions } from "./split.js?v=20261126-scan-preview";
-import { transcribedLines } from "./steps.js?v=20261126-scan-preview";
+import { canonical } from "../ops.js?v=20261126-type-suggestion";
+import { checkReading, selectPageRegions } from "./split.js?v=20261126-type-suggestion";
+import { transcribedLines } from "./steps.js?v=20261126-type-suggestion";
 
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
 const prose = new Set(["paragraph", "note"]);

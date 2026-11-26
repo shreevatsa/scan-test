@@ -4,11 +4,11 @@
 // their label; the printed page number is shown where each page starts.
 // In the app, a double-click previews the scan region for a passage or note.
 
-import { assemble } from "./assemble.js?v=20261126-scan-preview";
-import { cp } from "./inline.js?v=20261126-scan-preview";
-import { lineHtml, esc } from "./render.js?v=20261126-scan-preview";
-import { verseGroups } from "./verses.js?v=20261126-scan-preview";
-import { css, unitStyle, baseCss } from "./style.js?v=20261126-scan-preview";
+import { assemble } from "./assemble.js?v=20261126-type-suggestion";
+import { cp } from "./inline.js?v=20261126-type-suggestion";
+import { lineHtml, esc } from "./render.js?v=20261126-type-suggestion";
+import { verseGroups } from "./verses.js?v=20261126-type-suggestion";
+import { css, unitStyle, baseCss } from "./style.js?v=20261126-type-suggestion";
 
 // A line piece with something in it: an empty one adds nothing to a block's text, not even a space.
 const spoken = line => Boolean(line.text) || Boolean(line.spans?.length);

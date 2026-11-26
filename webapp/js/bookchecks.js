@@ -1,5 +1,21 @@
 // Scan checks are derived from the visible reading and never written into the book.
-export const areaTitle = region => region.proposed ? `May be a new type: ${region.proposed.replaceAll("_", " ")}` : "Needs a type";
+export const typeLabel = type => type === "?" ? "Needs a type" : type[0].toUpperCase() + type.slice(1).replaceAll("_", " ");
+
+export function existingProposedType(region, types) {
+  const name = region.proposed;
+  if (!name || !types) return;
+  if (Object.hasOwn(types, name)) return name;
+  const fold = value => value.normalize("NFC").toLowerCase();
+  const key = fold(name);
+  const matches = Object.keys(types).filter(type => fold(type) === key);
+  if (matches.length === 1) return matches[0];
+}
+
+export function areaTitle(region, types) {
+  const existing = existingProposedType(region, types);
+  if (existing) return `Suggested type: ${typeLabel(existing)}`;
+  return region.proposed ? `May be a new type: ${region.proposed.replaceAll("_", " ")}` : "Needs a type";
+}
 
 export function pageCaption(page) {
   const scan = `PDF page ${page.pdf_page}`;
@@ -13,7 +29,7 @@ export function checksFor(book) {
       const address = `${index + 1}/${region.id}`, type = book.types[region.type] ?? {};
       if (region.ignored || type.ignored) continue;
       if (region.type === "?") {
-        checks[index].push({ kind: "type", address, title: areaTitle(region) });
+        checks[index].push({ kind: "type", address, title: areaTitle(region, book.types) });
         continue;
       }
       available.set(address, type);

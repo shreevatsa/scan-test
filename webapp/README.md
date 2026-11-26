@@ -11,7 +11,8 @@ Open `http://127.0.0.1:8000/webapp/`. The library can open a local PDF or a URL,
 Use **Export → Save .chaya.pdf** to keep a portable copy of the scan and edits.
 
 - **Scans** is the editor. Select a box or its text to edit it. **Next check** visits unread or uncertain text,
-  areas that need a type, unlinked notes, and likely lines outside the boxes. **Text** follows the saved
+  areas that need a type, unlinked notes, and likely lines outside the boxes. If a suggested type already
+  exists, **Use** assigns it to the area you are reviewing. **Text** follows the saved
   reading order and links. Double-click a passage or footnote to preview its scan. **Open in Scans** jumps
   to that region in the editor.
 - **Process** finds regions and reads text on unprocessed pages, a scan range, or the current page.

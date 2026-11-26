@@ -1,14 +1,14 @@
-import { bookCredentials } from "./book-credentials.js?v=20261126-scan-preview";
-import { openExport } from "./book-export.js?v=20261126-scan-preview";
-import { openSettings } from "./book-settings.js?v=20261126-scan-preview";
-import { openProcess } from "./process-view.js?v=20261126-scan-preview";
-import { h, cropInto } from "./render.js?v=20261126-scan-preview";
-import * as B from "./book.js?v=20261126-scan-preview";
-import { pageCaption } from "./bookchecks.js?v=20261126-scan-preview";
-import { ScanView } from "./bookview.js?v=20261126-scan-preview";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261126-scan-preview";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261126-scan-preview";
-import { baseCss } from "./style.js?v=20261126-scan-preview";
+import { bookCredentials } from "./book-credentials.js?v=20261126-type-suggestion";
+import { openExport } from "./book-export.js?v=20261126-type-suggestion";
+import { openSettings } from "./book-settings.js?v=20261126-type-suggestion";
+import { openProcess } from "./process-view.js?v=20261126-type-suggestion";
+import { h, cropInto } from "./render.js?v=20261126-type-suggestion";
+import * as B from "./book.js?v=20261126-type-suggestion";
+import { pageCaption } from "./bookchecks.js?v=20261126-type-suggestion";
+import { ScanView } from "./bookview.js?v=20261126-type-suggestion";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261126-type-suggestion";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261126-type-suggestion";
+import { baseCss } from "./style.js?v=20261126-type-suggestion";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -102,7 +102,7 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json?v=20261126-scan-preview", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261126-type-suggestion", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {

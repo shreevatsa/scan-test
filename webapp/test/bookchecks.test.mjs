@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { areaTitle, checksFor, pageCaption } from "../js/bookchecks.js";
+import { areaTitle, checksFor, existingProposedType, pageCaption } from "../js/bookchecks.js";
 
 test("checks resolve against the live book while skipped and ignored regions stay out", () => {
   const book = { types: { paragraph: {}, footnote: { flow: "notes" }, stamp: { ignored: true } }, pages: [
@@ -28,4 +28,16 @@ test("book view labels use printed page numbers and plain type decisions", () =>
   assert.equal(pageCaption({ pdf_page: 8 }), "PDF page 8");
   assert.equal(areaTitle({}), "Needs a type");
   assert.equal(areaTitle({ proposed: "ownership_stamp" }), "May be a new type: ownership stamp");
+});
+
+test("a repeated proposal suggests the type as soon as it exists in the book", () => {
+  const region = { id: "b", type: "?", proposed: "byline" };
+  const pages = [{ regions: [region] }];
+  assert.equal(checksFor({ types: {}, pages })[0][0].title, "May be a new type: byline");
+  const types = { byline: {} };
+  assert.equal(existingProposedType(region, types), "byline");
+  assert.equal(checksFor({ types, pages })[0][0].title, "Suggested type: Byline");
+  assert.equal(region.type, "?");
+  assert.equal(existingProposedType({ proposed: "Byline" }, types), "byline");
+  assert.equal(existingProposedType({ proposed: "BYLINE" }, { Byline: {}, byline: {} }), undefined);
 });

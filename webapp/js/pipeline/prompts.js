@@ -2,7 +2,7 @@
 // prompt.py (the region call) and method 055's prompt.py (the transcription call), with the same templates
 // (webapp/pipeline/*.txt, copies of the methods' files). A test checks that they give the same text as Python.
 
-import { finderTypeList } from "../chaya-book.js?v=20261126-scan-preview";
+import { finderTypeList } from "../chaya-book.js?v=20261126-type-suggestion";
 
 // ---------------------------------------------------------------- the region call (method 042)
 

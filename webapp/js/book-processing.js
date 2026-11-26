@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261126-scan-preview";
-import { finderTypeList } from "./chaya-book.js?v=20261126-scan-preview";
-import { validBox, writeRegion } from "./chaya-materialize.js?v=20261126-scan-preview";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261126-scan-preview";
-import { applyReading } from "./pipeline/apply.js?v=20261126-scan-preview";
-import { finderById, finderPath } from "./pipeline/finders.js?v=20261126-scan-preview";
-import { pageRange } from "./pipeline/pdf.js?v=20261126-scan-preview";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261126-scan-preview";
-import { readerById, readerOptions } from "./pipeline/readers.js?v=20261126-scan-preview";
-import { Maker, post } from "./pipeline/run.js?v=20261126-scan-preview";
-import { pageCost, RECIPE } from "./recipe.js?v=20261126-scan-preview";
+import * as B from "./book.js?v=20261126-type-suggestion";
+import { finderTypeList } from "./chaya-book.js?v=20261126-type-suggestion";
+import { validBox, writeRegion } from "./chaya-materialize.js?v=20261126-type-suggestion";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261126-type-suggestion";
+import { applyReading } from "./pipeline/apply.js?v=20261126-type-suggestion";
+import { finderById, finderPath } from "./pipeline/finders.js?v=20261126-type-suggestion";
+import { pageRange } from "./pipeline/pdf.js?v=20261126-type-suggestion";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261126-type-suggestion";
+import { readerById, readerOptions } from "./pipeline/readers.js?v=20261126-type-suggestion";
+import { Maker, post } from "./pipeline/run.js?v=20261126-type-suggestion";
+import { pageCost, RECIPE } from "./recipe.js?v=20261126-type-suggestion";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -148,7 +148,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261126-scan-preview", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261126-type-suggestion", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;

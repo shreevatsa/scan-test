@@ -1,12 +1,12 @@
-import * as B from "./book.js?v=20261126-scan-preview";
-import { findStructure } from "./book-structure.js?v=20261126-scan-preview";
-import { processingChoices } from "./book-processing.js?v=20261126-scan-preview";
-import { saveCredential } from "./book-credentials.js?v=20261126-scan-preview";
-import { providerGroups, stageKeyControls } from "./key-check.js?v=20261126-scan-preview";
-import { FINDERS } from "./pipeline/finders.js?v=20261126-scan-preview";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261126-scan-preview";
-import { ruleProblems } from "./rules.js?v=20261126-scan-preview";
-import { h } from "./render.js?v=20261126-scan-preview";
+import * as B from "./book.js?v=20261126-type-suggestion";
+import { findStructure } from "./book-structure.js?v=20261126-type-suggestion";
+import { processingChoices } from "./book-processing.js?v=20261126-type-suggestion";
+import { saveCredential } from "./book-credentials.js?v=20261126-type-suggestion";
+import { providerGroups, stageKeyControls } from "./key-check.js?v=20261126-type-suggestion";
+import { FINDERS } from "./pipeline/finders.js?v=20261126-type-suggestion";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261126-type-suggestion";
+import { ruleProblems } from "./rules.js?v=20261126-type-suggestion";
+import { h } from "./render.js?v=20261126-type-suggestion";
 
 const button = (text, onclick, attrs) => h("button", { type: "button", onclick, ...attrs }, text);
 const words = text => text.replaceAll("_", " ");

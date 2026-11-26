@@ -1,13 +1,12 @@
-import * as B from "./book.js?v=20261126-scan-preview";
-import { areaTitle, checksFor, pageCaption } from "./bookchecks.js?v=20261126-scan-preview";
-import { hasTextInk } from "./local/ink-checks.js?v=20261126-scan-preview";
-import { PageView } from "./pageimage.js?v=20261126-scan-preview";
-import { boxRing } from "./ops.js?v=20261126-scan-preview";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261126-scan-preview";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261126-scan-preview";
+import * as B from "./book.js?v=20261126-type-suggestion";
+import { areaTitle, checksFor, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261126-type-suggestion";
+import { hasTextInk } from "./local/ink-checks.js?v=20261126-type-suggestion";
+import { PageView } from "./pageimage.js?v=20261126-type-suggestion";
+import { boxRing } from "./ops.js?v=20261126-type-suggestion";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261126-type-suggestion";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261126-type-suggestion";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
-const words = type => type === "?" ? "Needs a type" : type[0].toUpperCase() + type.slice(1).replaceAll("_", " ");
 const addressOf = (index, id) => `${index + 1}/${id}`;
 const clamp = n => Math.max(0, Math.min(1, n));
 const orderedBox = ([a, b, c, d]) => [clamp(Math.min(a, c)), clamp(Math.min(b, d)), clamp(Math.max(a, c)), clamp(Math.max(b, d))];
@@ -16,10 +15,10 @@ const fractions = (box, w, h) => box.map((n, i) => n / (i % 2 ? h : w));
 const nonText = (book, r) => r.ignored || r.type === "?" || book.types[r.type]?.ignored;
 const checkKey = ({ kind, address, line, span, id }) => JSON.stringify([kind, address, line, span, id]);
 
-function picker(types, selected, change, label, area = null) {
+function picker(types, selected, change, label, areaLabel = null) {
   const select = h("select", { "aria-label": label, onchange: e => change(e.target.value) });
-  const entries = area ? ["?", ...types] : types;
-  select.append(...entries.map(type => h("option", { value: type }, type === "?" && area ? areaTitle(area) : words(type))));
+  const entries = areaLabel ? ["?", ...types] : types;
+  select.append(...entries.map(type => h("option", { value: type }, type === "?" && areaLabel ? areaLabel : words(type))));
   select.value = selected;
   return select;
 }
@@ -63,7 +62,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261126-scan-preview", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261126-type-suggestion", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }
@@ -284,7 +283,7 @@ export class ScanView {
     for (const type of furniture) colors[type] = "#777575";
     slot.view.show({ page: { width: slot.w, height: slot.h, regions: active.map(region => ({
       ...region, box: box(region), polygons: [boxRing(box(region))], lines: [],
-    })) }, source: { omitted_regions: slot.unknown.map(r => ({ region: r.id, box: box(r), proposed_type: r.proposed, label: areaTitle(r) })),
+    })) }, source: { omitted_regions: slot.unknown.map(r => ({ region: r.id, box: box(r), proposed_type: r.proposed, label: areaTitle(r, this.book.types) })),
       ignored_regions: slot.ignored.map(r => ({ region: r.id, box: box(r) })) } }, slot.url, colors, furniture);
     this.badges(slot);
   }
@@ -309,7 +308,7 @@ export class ScanView {
 
   makeCard(slot, region) {
     const address = addressOf(slot.index, region.id), muted = nonText(this.book, region);
-    const plan = picker(this.typeNames(), region.type, type => this.edit(b => B.retypeRegion(b, address, type)), "Region type", region);
+    const plan = picker(this.typeNames(), region.type, type => this.edit(b => B.retypeRegion(b, address, type)), "Region type", areaTitle(region, this.book.types));
     const badge = button("!", event => {
       event.stopPropagation();
       const first = this.checks(slot.index).find(item => item.address === address);
@@ -473,9 +472,13 @@ export class ScanView {
     })));
     for (const badge of slot.cards.querySelectorAll(".v1-mark"))
       badge.hidden = !regionChecks.has(badge.closest(".v1-card").dataset.address);
-    if (slot.openCheck && !checks.some(item => checkKey(item) === slot.openCheck)) {
+    if (!slot.openCheck) return;
+    const open = checks.find(item => checkKey(item) === slot.openCheck);
+    if (!open) {
       slot.openCheck = null;
       slot.checkBox.hidden = true;
+    } else if (open.kind === "type" && slot.checkTypes !== this.book.types && !slot.checkBox.hidden) {
+      this.renderCheck(slot, open);
     }
   }
 
@@ -486,14 +489,24 @@ export class ScanView {
     slot.openCheck = key;
     this.currentCheck = { index, key };
     slot.checkBox.hidden = false;
+    this.renderCheck(slot, check);
+    slot.checkBox.scrollIntoView({ block: "nearest" });
+    this.measure(slot);
+  }
+
+  renderCheck(slot, check) {
+    slot.checkTypes = this.book.types;
     slot.checkBox.replaceChildren(h("div", { class: "v1-review-heading" }, h("strong", {}, check.title),
       button("×", () => { slot.openCheck = null; slot.checkBox.hidden = true; }, { "aria-label": "Close check" })));
     const address = check.address, region = address && B.regionAt(this.book, address);
     const actions = h("div", { class: "v1-tools" });
     if (check.kind === "type") {
+      const existing = existingProposedType(region, this.book.types);
       const proposed = region.proposed;
-      if (proposed && /^[a-z][a-z0-9_]*$/.test(proposed)) actions.append(button(`Add type ${words(proposed)}`, () =>
-        this.edit(b => B.retypeRegion(Object.hasOwn(b.types, proposed) ? b : B.addType(b, proposed), address, proposed))));
+      if (existing) actions.append(button(`Use ${words(existing)}`, () =>
+        this.edit(b => B.retypeRegion(b, address, existing))));
+      else if (proposed && /^[a-z][a-z0-9_]*$/.test(proposed)) actions.append(button(`Add type ${words(proposed)}`, () =>
+        this.edit(b => B.retypeRegion(B.addType(b, proposed), address, proposed))));
       actions.append(h("label", {}, "Keep as ", picker(this.typeNames(), "", type => this.edit(b => B.retypeRegion(b, address, type)), "Keep as")),
         button("Leave out", () => this.edit(b => B.ignoreRegion(b, address))));
     } else if (check.kind === "unread") {
@@ -517,12 +530,10 @@ export class ScanView {
       actions.append(button("Find an unlinked marker", () => this.nextCheck("marker")));
     } else {
       actions.append(button("Draw region around line", () => {
-        this.edit(b => B.addRegion(b, index, "?", orderedBox(check.box)));
+        this.edit(b => B.addRegion(b, slot.index, "?", orderedBox(check.box)));
       }));
     }
     slot.checkBox.append(actions);
-    slot.checkBox.scrollIntoView({ block: "nearest" });
-    this.measure(slot);
   }
 
   workerJob() {

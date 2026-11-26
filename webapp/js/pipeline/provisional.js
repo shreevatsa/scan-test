@@ -1,4 +1,4 @@
-import { selectPageRegions } from "./split.js?v=20261126-scan-preview";
+import { selectPageRegions } from "./split.js?v=20261126-type-suggestion";
 
 export function regionTypePaths(types) {
   const definitions = types.types, paths = new Map(), queue = [];
