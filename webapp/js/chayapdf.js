@@ -450,3 +450,15 @@ export async function writeChaya(original, data, { description = "The book's dat
 }
 
 export { PdfError };
+
+// Version 1 stores the book directly in the same PDF attachment.
+export async function readBook(bytes) {
+  const result = await readChaya(bytes);
+  if (result.data !== null && result.data.chaya !== 1) fail("the PDF does not contain a Chaya version 1 book");
+  return result;
+}
+
+export async function writeBook(original, book) {
+  if (book?.chaya !== 1) fail("expected a Chaya version 1 book");
+  return writeChaya(original, book, { description: "Chaya version 1: regions, text and reading structure." });
+}

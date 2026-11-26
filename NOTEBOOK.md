@@ -5452,3 +5452,9 @@ Later, from using it: "computing the outlines…" stayed for many seconds after 
 Checked 34 books and 9,229 scans, including a private Kannada series (21 volumes) and two other private books. The normal reader and the reconstructed pages gave the same plain text, contents, page labels and note links in every book. Five śataka verse exports kept their keys and part roles and texts. The 5,934 changed crop boxes used editable rectangles in place of ink bounds. Without line boxes, 282 apparatus crops grew to the enclosing region, and all reading comparisons still matched.
 
 The uncompressed attachments total 2,930.3 MB, including 2,541.2 MB of work records. The simple exports total 43.0 MB raw and 10.4 MB gzipped. The export uses 961 pages with overrides and 610 exceptional line ends. It also carries page sizes, unread-piece indices, explicit rule-matching ends, original line IDs targeted by overrides, and piece separators for embedded newlines. See [schema/SIMPLE.md](schema/SIMPLE.md) for the format. The repository-root suite passed 422 tests. No network or paid calls.
+
+## 2026-11-25 Chaya version 1 migration
+
+Migrated 34 of 34 books spanning 9,229 scans, including a private Kannada series (21 volumes) and two other private books. The migration verified the ordered unit trees and flows, relation endpoints, plain text, page labels, and inline spans and styles. It verified 1,227 verse entries across five editions. Rectangle geometry changed 5,934 crop boxes. Each migrated copy recovered its original PDF bytes and had its legacy attachments archived in a ZIP sidecar.
+
+Old PDFs total 1,770.8 MB. New PDFs total 1,168.5 MB with 68.6 MB of uncompressed v1 JSON. Sidecars total 701.5 MB. The spec adds stable page names and pixel sizes, unmatched open flags, unit types and direct members where needed, and saved marker and link details. 14 areas without geometry remain in the sidecars. The repository-root suite passed 424 tests.
