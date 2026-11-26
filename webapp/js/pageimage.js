@@ -16,6 +16,7 @@ export function regionPath(region, regionClass) {
   return pathD(region.polygons);
 }
 
+let viewSequence = 0;
 const SVGNS = "http://www.w3.org/2000/svg";
 const svgEl = (tag, attrs = {}) => {
   const el = document.createElementNS(SVGNS, tag);
@@ -24,10 +25,10 @@ const svgEl = (tag, attrs = {}) => {
 };
 
 export class PageView {
-  constructor(el, { onSelectRegion, onSelectOmitted, onSelectMany, onBox, onDraw, onHoverLine, onHoverRegion, onLeaveOut, onRestore, onCheck,
-    editable = true, typeLabel = null }) {
+  constructor(el, { onSelectRegion, onSelectOmitted, onSelectIgnored, onSelectMany, onBox, onDraw, onHoverLine, onHoverRegion, onLeaveOut, onRestore, onCheck,
+    editable = true, typeLabel = null, hatchFurniture = false }) {
     this.el = el;
-    this.cb = { onSelectRegion, onSelectOmitted, onSelectMany, onBox, onDraw, onHoverLine, onHoverRegion, onLeaveOut, onRestore, onCheck };
+    this.cb = { onSelectRegion, onSelectOmitted, onSelectIgnored, onSelectMany, onBox, onDraw, onHoverLine, onHoverRegion, onLeaveOut, onRestore, onCheck };
     this.checks = [];
     this.many = { regions: [], omitted: [] };
     this.zoom = 1;
@@ -35,6 +36,8 @@ export class PageView {
     this.drawing = false;
     this.editable = editable;
     this.typeLabel = typeLabel;
+    this.hatchFurniture = hatchFurniture;
+    this.id = ++viewSequence;
     el.innerHTML = "";
     this.wrap = document.createElement("div");
     this.wrap.className = "pv-wrap";
@@ -84,7 +87,7 @@ export class PageView {
     this.resizeObserver.observe(el);
   }
 
-  destroy() { this.resizeObserver.disconnect(); }
+  destroy() { clearTimeout(this.toolTimer); this.resizeObserver.disconnect(); }
 
   // The whole page's width in the pane (zoom 1: the image is as wide as the pane).
   fitWidth() {
@@ -123,7 +126,8 @@ export class PageView {
     this.colors = colors;
     this.furniture = furniture;
     this.types = types;
-    if (this.img.getAttribute("src") !== imageUrl) this.img.src = imageUrl;
+    if (imageUrl && this.img.getAttribute("src") !== imageUrl) this.img.src = imageUrl;
+    if (!imageUrl) this.img.removeAttribute("src");
     const { width: W, height: H } = doc.page;
     this.svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     this.wrap.style.aspectRatio = `${W} / ${H}`;
@@ -134,14 +138,16 @@ export class PageView {
   redraw() {
     const svg = this.svg, doc = this.doc;
     svg.replaceChildren();
-    svg.append(hatchPattern("pv-omitted-hatch"), hatchPattern("pv-ignored-hatch", "#8d8d93"));
+    const omittedHatch = `pv-omitted-hatch-${this.id}`, ignoredHatch = `pv-ignored-hatch-${this.id}`;
+    svg.append(hatchPattern(omittedHatch), hatchPattern(ignoredHatch, "#8d8d93"));
     this.regionEls = {};
+    this.areaEls = {};
     for (const r of doc.page.regions) {
       const col = this.colors[r.type] || "#888";
       const g = svgEl("g", { "data-rid": r.id });
       const label = this.typeLabel ? this.typeLabel(r.type) : `${r.id} · ${r.type}`;
       const title = svgEl("title"); title.textContent = label; g.append(title);
-      const p = svgEl("path", { d: regionPath(r, this.types?.types[r.type]?.region), class: "pv-reg" + (this.furniture.has(r.type) ? " furn" : ""), stroke: col, fill: col });
+      const p = svgEl("path", { d: regionPath(r, this.types?.types[r.type]?.region), class: "pv-reg" + (this.furniture.has(r.type) ? " furn" : ""), stroke: col, fill: this.hatchFurniture && this.furniture.has(r.type) ? `url(#${ignoredHatch})` : col });
       g.append(p);
       // The region's whole box, drawn only while the region is hovered, selected or highlighted: the filled outline above
       // follows the ink that was found, which can be only part of what the finder boxed.
@@ -167,21 +173,33 @@ export class PageView {
     }
     for (const [index, omitted] of (doc.source?.omitted_regions || []).entries()) if (omitted.box) {
       const [x1, y1, x2, y2] = omitted.box;
-      const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-omitted", fill: "url(#pv-omitted-hatch)", "data-omitted": index });
+      const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-omitted", fill: `url(#${omittedHatch})`, "data-omitted": index });
       const title = svgEl("title"); title.textContent = this.typeLabel ? "Area without a type" : `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`; rect.append(title);
       rect.addEventListener("click", event => { event.stopPropagation(); this.cb.onSelectOmitted?.(index, { add: event.shiftKey || event.metaKey || event.ctrlKey }); });
-      rect.addEventListener("pointerenter", () => this.showTool({ omitted: index }, omitted.box));
-      rect.addEventListener("pointerleave", () => this.hideTool());
+      if (omitted.region) this.areaEls[omitted.region] = rect;
+      rect.addEventListener("pointerenter", () => {
+        this.cb.onHoverRegion?.(omitted.region, true);
+        this.showTool({ omitted: index }, omitted.box);
+      });
+      rect.addEventListener("pointerleave", () => { this.cb.onHoverRegion?.(omitted.region, false); this.hideTool(); });
       if (this.many.omitted.includes(index)) rect.classList.add("sel");
       svg.append(rect);
     }
     // The areas left out of the book: grey, under a ↺ that brings each back.
     for (const [index, area] of (doc.source?.ignored_regions || []).entries()) if (area.box && this.editable) {
       const [x1, y1, x2, y2] = area.box;
-      const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-ignored", fill: "url(#pv-ignored-hatch)" });
+      const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-ignored", fill: `url(#${ignoredHatch})` });
       const title = svgEl("title"); title.textContent = "Left out of the book"; rect.append(title);
-      rect.addEventListener("pointerenter", () => this.showTool({ restore: index }, area.box));
-      rect.addEventListener("pointerleave", () => this.hideTool());
+      if (area.region) this.areaEls[area.region] = rect;
+      if (this.cb.onSelectIgnored) rect.addEventListener("click", event => {
+        event.stopPropagation();
+        this.cb.onSelectIgnored(index, { add: event.shiftKey || event.metaKey || event.ctrlKey });
+      });
+      rect.addEventListener("pointerenter", () => {
+        if (area.region) this.cb.onHoverRegion?.(area.region, true);
+        this.showTool({ restore: index }, area.box);
+      });
+      rect.addEventListener("pointerleave", () => { if (area.region) this.cb.onHoverRegion?.(area.region, false); this.hideTool(); });
       svg.insertBefore(rect, svg.querySelector("g[data-rid]"));
     }
     this.boxLayer = svgEl("g", { class: "pv-box" });
@@ -189,7 +207,7 @@ export class PageView {
     this.lineLayer = svgEl("g", { class: "pv-linebox-layer" });
     svg.append(this.lineLayer);
     this.drawLineBox();
-    this.select(this.selected, this.many);
+    this.select(this.selected, this.many, this.selectedOmitted);
     this.drawChecks();
   }
 
@@ -266,16 +284,18 @@ export class PageView {
   }
 
   // Select one region (its box with handles), or several (`many`: { regions, omitted }, outlined, no handles).
-  select(rid, many = null) {
+  select(rid, many = null, omitted = null) {
     this.selected = rid;
+    this.selectedOmitted = omitted;
     this.many = { regions: many?.regions || [], omitted: many?.omitted || [] };
     for (const [id, g] of Object.entries(this.regionEls || {})) g.classList.toggle("sel", id === rid || this.many.regions.includes(id));
     this.svg.querySelectorAll(".pv-omitted").forEach(rect => rect.classList.toggle("sel", this.many.omitted.includes(Number(rect.dataset.omitted))));
     this.boxLayer.replaceChildren();
-    const r = rid && this.doc.page.regions.find(x => x.id === rid);
+    const area = this.doc.source?.omitted_regions?.[omitted];
+    const r = (rid && this.doc.page.regions.find(x => x.id === rid)) || area;
     if (!r || !this.editable) { if (this.toolTarget?.region) this.tool.hidden = true; return; }
     const box = r.box || boundsOf(r.polygons);
-    if (!this.many.regions.length) this.showTool({ region: r.id }, box);
+    if (!this.many.regions.length) this.showTool(area ? { omitted } : { region: r.id }, box);
     this.drawBox(box);
   }
 
@@ -308,24 +328,31 @@ export class PageView {
     if (!handle) return this.startSelect(e);
     e.preventDefault();
     e.stopPropagation();
-    const r = this.doc.page.regions.find(x => x.id === this.selected);
+    const area = this.doc.source?.omitted_regions?.[this.selectedOmitted];
+    const r = area ?? this.doc.page.regions.find(x => x.id === this.selected);
+    if (!r) return;
     const start = this.toPage(e), box0 = [...(r.box || boundsOf(r.polygons))];
     let box = box0;
     const move = ev => {
       const [x, y] = this.toPage(ev), dx = x - start[0], dy = y - start[1];
       let [x1, y1, x2, y2] = box0;
-      if (handle === "move") { x1 += dx; x2 += dx; y1 += dy; y2 += dy; }
-      if (handle.includes("w")) x1 += dx;
-      if (handle.includes("e")) x2 += dx;
-      if (handle.includes("n") && handle !== "move") y1 += dy;
-      if (handle.includes("s")) y2 += dy;
+      if (handle === "move") {
+        const sx = Math.max(-x1, Math.min(this.doc.page.width - x2, dx));
+        const sy = Math.max(-y1, Math.min(this.doc.page.height - y2, dy));
+        x1 += sx; x2 += sx; y1 += sy; y2 += sy;
+      } else {
+        if (handle.includes("w")) x1 += dx;
+        if (handle.includes("e")) x2 += dx;
+        if (handle.includes("n")) y1 += dy;
+        if (handle.includes("s")) y2 += dy;
+      }
       box = [x1, y1, x2, y2];
       this.drawBox([Math.min(x1, x2), Math.min(y1, y2), Math.max(x1, x2), Math.max(y1, y2)]);
     };
     const up = () => {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
-      if (box !== box0) this.cb.onBox(this.selected, box);
+      if (box !== box0) this.cb.onBox(area?.region ?? this.selected, box);
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
@@ -394,7 +421,7 @@ export class PageView {
   }
 
   highlightRegion(rid, on) {
-    const g = this.regionEls?.[rid];
+    const g = this.regionEls?.[rid] ?? this.areaEls?.[rid];
     if (g) g.classList.toggle("hl", on);
   }
 

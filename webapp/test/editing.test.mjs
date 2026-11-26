@@ -5,7 +5,7 @@ import { makeValidator, checkPage } from "../js/schema.js";
 import { editorFocus, mergeTextEdit } from "../js/editing.js";
 import { layerState, noteEdit } from "../js/layers.js";
 import { prepare, bookHtml, bookText } from "../js/reader.js";
-import { Book, idb } from "../js/store.js";
+import { Book, idb } from "../js/store-0.4.js";
 import * as ops from "../js/ops.js";
 
 const validate = makeValidator(JSON.parse(readFileSync(new URL("../schema.json", import.meta.url))));

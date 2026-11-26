@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { makeValidator, checkPage } from "../js/schema.js";
 import { provisionalDocument } from "../js/pipeline/provisional.js";
 import { planTypeRevision, revisedTypeList, mappedTypeNames, resolveTypeName, citedSamplePages } from "../js/type-revisions.js";
-import { Book, idb } from "../js/store.js";
+import { Book, idb } from "../js/store-0.4.js";
 
 const validate = makeValidator(JSON.parse(readFileSync(new URL("../schema.json", import.meta.url))));
 const check = (doc, types) => checkPage(validate, doc, types)[0];

@@ -1,0 +1,31 @@
+// Scan checks are derived from the visible reading and never written into the book.
+export function checksFor(book) {
+  const available = new Map(), notes = [], sources = [], checks = book.pages.map(() => []);
+  for (const [index, page] of book.pages.entries()) {
+    if (page.skip) continue;
+    for (const region of page.regions ?? []) {
+      const address = `${index + 1}/${region.id}`, type = book.types[region.type] ?? {};
+      if (region.ignored || type.ignored) continue;
+      if (region.type === "?") {
+        checks[index].push({ kind: "type", address, title: region.proposed ? `Proposed type: ${region.proposed.replaceAll("_", " ")}` : "This area needs a type" });
+        continue;
+      }
+      available.set(address, type);
+      if (type.flow === "notes") notes.push({ index, address });
+      if (region.uncertain) checks[index].push({ kind: "uncertain", address, title: "The reading is uncertain" });
+      for (const [line, piece] of (region.lines ?? []).entries()) {
+        if (piece.text == null) checks[index].push({ kind: "unread", address, line, title: `Line ${line + 1} has no reading yet` });
+        for (const [span, marker] of (piece.spans ?? []).entries()) if (marker.kind === "note_marker")
+          sources.push({ index, address, line, span, marker });
+      }
+    }
+  }
+  const linked = new Set();
+  for (const { index, address, line, span, marker } of sources) {
+    if (available.has(marker.to) || (marker.to && Object.hasOwn(book.containers ?? {}, marker.to))) linked.add(marker.to);
+    else checks[index].push({ kind: "marker", address, line, span, title: `Note marker ${marker.marker} has no note` });
+  }
+  for (const { index, address } of notes) if (!linked.has(address))
+    checks[index].push({ kind: "note", address, title: "No marker points to this note" });
+  return checks;
+}

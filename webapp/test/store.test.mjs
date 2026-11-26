@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { isProtected, pageReviewState } from "../js/layers.js";
-import { Book, idb } from "../js/store.js";
+import { Book, idb } from "../js/store-0.4.js";
 
 function folder(files, prefix = "") {
   return {

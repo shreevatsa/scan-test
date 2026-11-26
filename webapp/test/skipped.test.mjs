@@ -2,7 +2,7 @@
 // Run from the repository root:  node --test webapp/test/*.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { Book } from "../js/store.js";
+import { Book } from "../js/store-0.4.js";
 
 function folder(files, prefix = "") {
   return {

@@ -4,7 +4,7 @@ import { pageStages, hasReading, workflowRoute, workflowAddress, eligible, readi
 import { accept, layerState } from "../js/layers.js";
 import { runBatch } from "../js/pipeline/batch.js";
 import { CredentialChecks } from "../js/key-check.js";
-import { Book, idb } from "../js/store.js";
+import { Book, idb } from "../js/store-0.4.js";
 import { writeChaya, sha256hex } from "../js/chayapdf.js";
 import { assemble } from "../js/assemble.js";
 

@@ -4,7 +4,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DiskCopy, copyState, spendingBlock, copyLabel, storageText, COPY_INTERVAL_MS, COPY_SETTLE_MS } from "../js/disk-copy.js";
-import { Book, restoreChaya, idb } from "../js/store.js";
+import { Book, restoreChaya, idb } from "../js/store-0.4.js";
 import { writeChaya } from "../js/chayapdf.js";
 
 // A clock and timers that advance only when told to.

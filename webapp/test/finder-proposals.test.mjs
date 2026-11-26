@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { Maker } from "../js/pipeline/run.js";
-import { Book } from "../js/store.js";
+import { Book } from "../js/store-0.4.js";
 import { makeValidator, checkPage } from "../js/schema.js";
 import { finderById } from "../js/pipeline/finders.js";
 import { proposingPrompt, proposingSchema, scaleProposingRegions, offeredProposals } from "../js/pipeline/proposing-finder.js";

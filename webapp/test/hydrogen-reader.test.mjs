@@ -5,7 +5,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { Maker } from "../js/pipeline/run.js";
-import { Book } from "../js/store.js";
+import { Book } from "../js/store-0.4.js";
 import { readerById, READERS, usageCost, readerOptions } from "../js/pipeline/readers.js";
 import { RECIPE, MEASURED_PAGE_COST, pageCost, runEstimate } from "../js/recipe.js";
 import { selectPageRegions, wholePageList, wholePagePrompt, wholePageSchema, checkWholePage, checkReading, UNFIT_NOTE } from "../js/pipeline/split.js";

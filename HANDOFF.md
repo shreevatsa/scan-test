@@ -2,6 +2,15 @@
 
 Rewritten 2026-11-21 to describe the present. Earlier versions are in git history; the long design log of 2026-11-11 is at [old/HANDOFF-2026-11-11.md](old/HANDOFF-2026-11-11.md). Keep this file short: replace statements when they stop being true, and put test records in NOTEBOOK.md.
 
+## Chaya v1 status (2026-11-25)
+
+The app on `main` now has the v1 library, a continuous Scans view with editing and checks, Text with linked notes,
+and v1 PDF export. The source PDF and book data are stored separately in the browser. Original schema 0.4 books
+belong in the app on `chaya-0.4`. The sections below record that app and the earlier workflow.
+
+Next, connect the existing finders and readers to the v1 book, finish settings and exports, and keep processing
+records beside the book. The versioned site and example URL switch follow that work.
+
 ## Goal
 
 Turn a book's PDF into a digital book in which every passage links to where it is printed on the scanned page, in a statically hosted web app that uses the user's own API keys. Models do the first pass; a person checks and corrects; the result reads well and exports cleanly.

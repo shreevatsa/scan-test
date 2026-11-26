@@ -187,10 +187,10 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
   const notes = plain ? plainNotes(P) : null;
   const references = referencePages(P);
   const renderedNotes = new Set();
-  const sidenote = (uid, cls = "") => {
+  const sidenote = (uid, cls = "", back = null) => {
     if (renderedNotes.has(uid)) return "";
     renderedNotes.add(uid);
-    return `<span class="sidenote${cls}" id="sn-${safeId(uid)}">${notes.text(uid)}</span>`;
+    return `<span class="sidenote${cls}" id="sn-${safeId(uid)}">${notes.text(uid)}${back ? ` <a class="r-back" href="#${esc(back)}" title="Back to marker">↩</a>` : ""}</span>`;
   };
   const toc = tocTargets(P);
   let lastPage = null, flowNow = "main";
@@ -204,7 +204,7 @@ export function bookHtml(P, { printed = false, figureSrc = null, plain = false }
   };
   const marker = pid => sp => {
     const a = `${pid}#${sp.id}`, note = noteOf[a];
-    if (plain) return note ? `<a class="r-mk" href="#sn-${safeId(note)}" data-sign="${esc(sp.marker)}" title="note ${esc(sp.marker)}"></a>${sidenote(note)}`
+    if (plain) return note ? `<a class="r-mk" id="mk-${esc(a)}" href="#sn-${safeId(note)}" data-sign="${esc(sp.marker)}" title="note ${esc(sp.marker)}"></a>${sidenote(note, "", `mk-${a}`)}`
       : `<span class="r-mk none" data-sign="${esc(sp.marker)}"></span>`;
     return note ? `<a class="r-mk" id="mk-${esc(a)}" href="#note-${esc(note)}" data-sign="${esc(sp.marker)}" title="note ${esc(sp.marker)}"></a>`
       : `<span class="r-mk none" id="mk-${esc(a)}" data-sign="${esc(sp.marker)}" title="a note marker not linked to a note"></span>`;
@@ -413,7 +413,7 @@ export function bookToc(P) {
 // to their place (in the app the address belongs to the app's own routes); on a narrow screen a note marker opens its
 // note under the line; the contents follow the reading, marking the part and section in view; a button shows the
 // contents where they do not fit beside the text.
-export function wireBookView(root, scroller) {
+export function wireBookView(root, scroller, { signal } = {}) {
   const top = () => scroller === window ? 0 : scroller.getBoundingClientRect().top;
   root.addEventListener("click", event => {
     if (event.target.closest(".bv-open")) { root.classList.toggle("toc-open"); return; }
@@ -424,6 +424,7 @@ export function wireBookView(root, scroller) {
     const target = root.querySelector(`[id="${a.getAttribute("href").slice(1)}"]`);
     if (!target) return;
     event.preventDefault();
+    if (a.classList.contains("r-mk") && a.id) target.querySelector(".r-back")?.setAttribute("href", "#" + a.id);
     if (a.classList.contains("r-mk") && getComputedStyle(target).float === "none") {
       // Where notes do not fit in the margin, the note opens under its verse or paragraph, and a second tap closes it.
       const block = a.closest(".r-verse, .r-para, .r-heading, .r-tocline") || a.parentElement;
@@ -437,11 +438,12 @@ export function wireBookView(root, scroller) {
     root.classList.remove("toc-open");
     target.scrollIntoView({ block: "start" });
     if (scroller !== window) scroller.scrollTop -= 8;
-  });
+  }, { signal });
   const links = [...root.querySelectorAll(".bv-toc a")], nav = root.querySelector(".bv-toc");
   const targets = links.map(a => root.querySelector(`[id="${a.getAttribute("href").slice(1)}"]`));
   let pending = false;
   const spy = () => {
+    if (signal?.aborted) return;
     pending = false;
     let current = -1;
     targets.forEach((el, i) => { if (el && el.getBoundingClientRect().top - top() < 120) current = i; });
@@ -452,7 +454,7 @@ export function wireBookView(root, scroller) {
       if (r.top < n.top || r.bottom > n.bottom) nav.scrollTop += r.top - n.top - n.height / 3;
     }
   };
-  (scroller === window ? window : scroller).addEventListener("scroll", () => { if (!pending) { pending = true; requestAnimationFrame(spy); } }, { passive: true });
+  (scroller === window ? window : scroller).addEventListener("scroll", () => { if (!pending) { pending = true; requestAnimationFrame(spy); } }, { passive: true, signal });
   spy();
 }
 

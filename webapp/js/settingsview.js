@@ -1,5 +1,5 @@
 import { h } from "./render.js";
-import { settings } from "./store.js?v=20261125-leaveout-3";
+import { settings } from "./store-0.4.js?v=20261125-leaveout-3";
 import { credentialsBox } from "./key-check.js?v=20261125-leaveout-3";
 import { FINDERS, finderById } from "./pipeline/finders.js?v=20261125-leaveout-3";
 import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261125-leaveout-3";

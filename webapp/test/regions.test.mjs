@@ -7,7 +7,7 @@ const rebuildProvisional = doc => doc;
 import { addBookType, initialBookTypes, REGION_CLASSES } from "../js/book-types.js";
 import { layerState, noteEdit } from "../js/layers.js";
 import * as ops from "../js/ops.js";
-import { Book } from "../js/store.js";
+import { Book } from "../js/store-0.4.js";
 
 const schema = JSON.parse(readFileSync(new URL("../schema.json", import.meta.url))), validate = makeValidator(schema);
 const types = { format: "types", schema_version: "0.2", book_id: "regions", title: "Regions", flows: { main: "Main", notes: "Notes" },

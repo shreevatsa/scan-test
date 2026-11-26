@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { Maker, post } from "../js/pipeline/run.js";
-import { Book, idb } from "../js/store.js";
+import { Book, idb } from "../js/store-0.4.js";
 import { makeValidator, checkPage } from "../js/schema.js";
 import { readerOptions, readerById, usageCost, projectBookCost, bookCostEstimate, wholePageReading, DEFAULT_TRANSCRIPTION_REFERENCE, STRUCTURER, structurePath } from "../js/pipeline/readers.js";
 import { openaiCost } from "../js/pipeline/steps.js";

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { Book } from "../js/store.js";
+import { Book } from "../js/store-0.4.js";
 import { clone, canonical } from "../js/ops.js";
 import { layerState, layerView } from "../js/layers.js";
 import { makeValidator, checkPage } from "../js/schema.js";

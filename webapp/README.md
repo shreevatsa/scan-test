@@ -1,5 +1,21 @@
 # The web app: reading and correcting digitized books
 
+## Current app on main
+
+The library opens ordinary PDFs and [Chaya v1 books](../schema/FORMAT.md). It keeps the original `book.pdf`,
+`chaya.json`, and a `work/` directory in browser storage. **Scans** is a continuous scan and editor view. **Text**
+shows the assembled book, with its contents and linked footnotes. Double-click text to jump to its scan.
+**Next check** visits unknown areas, unread lines, uncertain readings, unlinked notes, and ink outside the boxes.
+**Export** saves the current `.chaya.pdf`. Use `?book=<url>` to open a book from a URL.
+
+The continuous view loads scans near the viewport. This stage includes local editing, undo, redo, and v1 PDF
+export. The processing dialog, full settings, and remaining exports are the next stage. Example links for the old
+format continue to open the previous app until its v1 examples are published.
+
+## Schema 0.4 reference
+
+The rest of this document describes the previous app, kept on the `chaya-0.4` branch.
+
 A static web app for the books this repository's methods produce. It runs entirely in the browser with plain HTML, CSS and JavaScript modules, bundled PDF and OCR runtimes, and no build step. A book consists of its PDF and page documents (schema 0.2 and 0.3, [schema/README.md](../schema/README.md)), kept in the browser and saved together as a **.chaya.pdf** ("Books" below).
 
 Agents preparing a book can use [the portable transcription skill](../skills/transcribe-chaya-book/SKILL.md). Its folder contains a general workflow, a self-contained format reference and a Python PDF packer that work independently with public PDF tools and the chosen OCR engines or models.

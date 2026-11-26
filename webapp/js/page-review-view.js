@@ -1,7 +1,7 @@
 import { h } from "./render.js";
 import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261125-leaveout-3";
 import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261125-leaveout-3";
-import { settings } from "./store.js?v=20261125-leaveout-3";
+import { settings } from "./store-0.4.js?v=20261125-leaveout-3";
 import { money } from "./reader-controls.js?v=20261125-leaveout-3";
 import { reviewTypeChange } from "./type-operations.js?v=20261125-leaveout-3";
 import { REGION_CLASSES } from "./book-types.js?v=20261125-leaveout-3";

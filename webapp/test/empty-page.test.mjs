@@ -6,7 +6,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { Book, idb } from "../js/store.js";
+import { Book, idb } from "../js/store-0.4.js";
 import { Maker } from "../js/pipeline/run.js";
 import { runBatch } from "../js/pipeline/batch.js";
 import { movePage, eligible, pageStages, reviewPageStates, readingDocuments, readingGaps, noContent, stageFlags } from "../js/workflow.js";

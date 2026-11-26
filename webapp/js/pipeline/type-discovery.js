@@ -2,7 +2,7 @@
 // response contract and its conversion to types.json, used to check and review a saved proposal for a new book
 // (a plain-PDF link with &proposal=).
 import { FORMATTING, makeValidator, checkTypes } from "../schema.js?v=20261125-leaveout-3";
-import { settings, idb } from "../store.js?v=20261125-leaveout-3";
+import { settings, idb } from "../store-0.4.js?v=20261125-leaveout-3";
 
 export function samplePages(count) {
   const middle = Math.ceil(count / 2);
