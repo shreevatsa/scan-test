@@ -2,6 +2,8 @@
 // prompt.py (the region call) and method 055's prompt.py (the transcription call), with the same templates
 // (webapp/pipeline/*.txt, copies of the methods' files). A test checks that they give the same text as Python.
 
+import { finderTypeList } from "../chaya-book.js?v=20261125-leaveout-3";
+
 // ---------------------------------------------------------------- the region call (method 042)
 
 export const CLASS_RULES = {
@@ -22,11 +24,11 @@ export const CLASS_RULES = {
 const OTHER = "other";
 const OTHER_DESCRIPTION = "Anything else on the page that none of the types above describes. Printer's signature marks and catchwords are other, keep=false.";
 
-const rstrip = s => s.replace(/\s+$/u, "");
+const rstrip = (s = "") => s.replace(/\s+$/u, "");
 const stripDot = s => s.replace(/\.+$/u, "");
 const bookLine = tl => (stripDot(tl.title) + ". " + (tl.description || "").trim()).trim();
 
-export const regionTypes = tl => Object.entries(tl.types).filter(([, t]) => "region" in t || t.role === "furniture");
+export const regionTypes = tl => Object.entries((tl.chaya === 1 ? finderTypeList(tl) : tl).types).filter(([, t]) => "region" in t || t.role === "furniture");
 
 export function regionTypeEnum(tl) {
   const names = regionTypes(tl).map(([n]) => n);
@@ -73,6 +75,7 @@ function largerUnits(tl) {
 }
 
 export function regionPrompt(tl, template) {
+  if (tl.chaya === 1) tl = finderTypeList(tl);
   return template.replace("<<BOOK>>", bookLine(tl))
     .replace("<<TYPES>>", regionTypeLines(tl))
     .replace("<<LARGER_UNITS>>\n", largerUnits(tl))
