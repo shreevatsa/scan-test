@@ -57,7 +57,7 @@ test("the migration preserves joined prose, numbered groups, linked footnotes an
   assert.equal(book.pages[0].regions.find(r => r.id === "r2").lines[0].text, "Library stamp");
   assert.equal(book.pages[0].regions.find(r => r.id === "r3").proposed, "ownership_mark");
   assert.equal(book.pages[1].regions.find(r => r.id === "r2").lines[0].spans[0].to, "2/r3");
-  assert.equal(book.pages[1].regions[0].from_previous, true);
+  assert.equal(book.pages[1].regions[0].from_previous, undefined);
   const note = book.pages[1].regions.find(r => r.id === "r2").lines[0].spans[0];
   assert.equal(Object.hasOwn(note, "id"), false);
   assert.equal(Object.hasOwn(note, "link"), false);
@@ -75,7 +75,7 @@ test("v1 uses stored paths and allows a different kind of unit between continued
     containers: { c1: { type: "section" } }, pages: [{ id: "page", regions: [
       { id: "a", type: "paragraph", box: fraction, in: ["c1"], continues: true, lines: [{ text: "inter‐" }] },
       { id: "b", type: "verse", box: fraction, in: ["c1"], lines: [{ text: "A verse." }] },
-      { id: "c", type: "paragraph", box: fraction, in: ["c1"], from_previous: true, lines: [{ text: "rupted." }, {}] },
+      { id: "c", type: "paragraph", box: fraction, in: ["c1"], lines: [{ text: "rupted." }, {}] },
     ] }],
   };
   const next = toPageDocs(stored), [book] = assemble(next.docs, next.types);

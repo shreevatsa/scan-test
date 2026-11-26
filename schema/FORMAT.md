@@ -85,9 +85,9 @@ Unicode code-point offsets. A `note_marker` is zero-width, with the printed `mar
 ## Structure
 
 - A unit's first region carries its `number`, `label`, `lang` and `style` as needed.
-- `continues: true` on a region pairs with `from_previous: true` on the next region of its type, flow and
-  container path. Other types can stand between them. A skipped scan can be passed over. An unprocessed page
-  interrupts the join. An unpaired flag records a continuation whose other end is missing.
+- `continues: true` joins the next region of the same type, flow and container path. Other types and skipped
+  scans can stand between the pieces. An unprocessed page interrupts the join. `continues: "open"` records an
+  unmatched end, and `from_previous: true` records an unmatched start. Joined regions need only the earlier flag.
 - `in` is the list of container IDs, outermost first. `containers` defines their `type` and optional
   `number`, `label`, `lang`, `style` and unmatched `open` edges, such as `{"end": true}`.
 - `direct: true` puts a region directly inside the innermost container. Such a container can hold both

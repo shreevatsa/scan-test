@@ -113,14 +113,15 @@ export function toPageDocs(book) {
       if (!region.direct) {
         const key = JSON.stringify([parent?.unit.id ?? null, flow, type]);
         const earlier = continuing.get(key);
-        if (earlier && region.from_previous) unit = earlier;
+        if (earlier && !region.from_previous) unit = earlier;
         else {
           if (earlier) open(earlier, "end");
           unit = addUnit(region, type, parent, flow, doc);
           if (region.from_previous) open(unit, "start");
         }
-        if (region.continues) continuing.set(key, unit);
+        if (region.continues === true) continuing.set(key, unit);
         else continuing.delete(key);
+        if (region.continues === "open") open(unit, "end");
       }
       if (!unit) throw new Error(`Direct region ${ref} has no container.`);
       unit.unit.children.push({ region: oldRef });

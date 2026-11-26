@@ -78,7 +78,8 @@ test("continuations, labels and numbers assemble from stored choices across page
   const start = freeze(book());
   const joined = B.setContinues(start, "1/r2", true);
   assert.equal(joined.structure_edited, true);
-  assert.equal(B.regionAt(joined, "2/r1").from_previous, true);
+  assert.equal(B.regionAt(joined, "1/r2").continues, true);
+  assert.equal(B.regionAt(joined, "2/r1").from_previous, undefined);
   const labeled = B.setLabel(freeze(joined), "2/r1", "A shared label");
   const numbered = B.setNumber(freeze(labeled), "2/r1", 4);
   const unit = B.assemble(numbered).book.units.find(u => u.number === "4");
@@ -164,4 +165,25 @@ test("unwrapping a top-level section retains the reading flow of its children", 
   assert.deepEqual(B.regionAt(next, "1/r1").in, ["c2"]);
   assert.equal(B.regionAt(next, "1/r2").flow, "notes");
   assert.equal(B.assemble(next).book.flows.notes.length, 2);
+});
+
+test("a section starts before a joined unit even when the later region is selected", () => {
+  const start = B.setContinues(book(), "1/r2", true);
+  const section = B.startSection(freeze(start), "2/r1", "section");
+  assert.equal(B.regionAt(section, "1/r2").in[0], B.regionAt(section, "2/r1").in[0]);
+  assert.equal(B.regionAt(section, "2/r1").from_previous, undefined);
+  assert.deepEqual(B.assemble(section).book.units.find(unit => unit.children.length === 2 && unit.children[0].region)?.children,
+    [{ region: "first#r2" }, { region: "second#r1" }]);
+});
+
+test("an open end and an unmatched start stay separate from neighboring text of the same type", () => {
+  const start = book();
+  start.pages[0].regions[1].continues = "open";
+  start.pages[1].regions[0].from_previous = true;
+  const separate = B.assemble(freeze(start)).book.units;
+  assert.deepEqual(separate[1].open, { end: true });
+  assert.deepEqual(separate[2].open, { start: true });
+  const joined = B.setContinues(start, "1/r2", true);
+  assert.equal(B.regionAt(joined, "2/r1").from_previous, undefined);
+  assert.equal(B.assemble(joined).book.units[1].children.length, 2);
 });

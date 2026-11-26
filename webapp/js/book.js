@@ -114,6 +114,7 @@ export function retypeRegion(book, address, type) {
 
 export const ignoreRegion = (book, address) => regionEdit(book, address, region => field(region, "ignored", true));
 export const restoreRegion = (book, address) => regionEdit(book, address, region => field(region, "ignored", null));
+export const clearUncertainty = (book, address) => regionEdit(book, address, region => field(region, "uncertain", null));
 
 function removeLinks(book, target) {
   return mapRegions(book, region => {
@@ -212,12 +213,12 @@ function neighbor(book, address, step) {
   }
 }
 
-function unitStart(book, address) {
+export function unitStartAddress(book, address) {
   let region = mustFind(book, address);
-  while (region.from_previous && !region.direct) {
+  while (!region.from_previous && !region.direct) {
     const earlier = neighbor(book, address, -1);
     const previous = earlier && regionAt(book, earlier);
-    if (!previous?.continues) break;
+    if (previous?.continues !== true) break;
     address = earlier;
     region = previous;
   }
@@ -230,10 +231,9 @@ export function setContinues(book, address, value) {
   const current = mustFind(book, address);
   if (current.direct || !readingRegion(book, current)) throw new Error("This region has no separate reading unit.");
   const after = neighbor(book, address, 1);
-  const later = after && regionAt(book, after);
-  let next = regionEdit(book, address, region => field(region, "continues", value ? true : null));
-  if (after && (value || (current.continues && later.from_previous)))
-    next = regionEdit(next, after, region => field(region, "from_previous", value ? true : null));
+  let next = regionEdit(book, address, region => field(region, "continues", value ? (after ? true : "open") : null));
+  if (after && value && regionAt(book, after).from_previous)
+    next = regionEdit(next, after, region => field(region, "from_previous", null));
   return structure(next);
 }
 
@@ -252,18 +252,29 @@ function hasContainerMembers(book, id) {
   return book.pages.some(page => page.regions?.some(region => pathOf(region).includes(id)));
 }
 
+function preserveJoinTargets(before, after) {
+  return mapRegions(after, (region, index) => {
+    if (region.continues !== true || after.pages[index].skip || !readingRegion(after, region)) return region;
+    const address = `${index + 1}/${region.id}`;
+    const earlier = neighbor(before, address, 1);
+    if (!earlier || regionAt(before, earlier)?.from_previous) return region;
+    return neighbor(after, address, 1) === earlier ? region : field(region, "continues", "open");
+  });
+}
+
 function changePaths(book, replacements) {
-  return mapRegions(book, (region, index) => {
+  const next = mapRegions(book, (region, index) => {
     const path = replacements.get(`${index + 1}/${region.id}`);
     if (!path) return region;
     return field(region, "in", path.length ? path : null);
   });
+  return preserveJoinTargets(book, next);
 }
 
 export function startSection(book, at, type) {
   requireType(book, type);
   if (!book.types[type]?.contains) throw new Error("Choose a container type for the section.");
-  const first = unitStart(book, at);
+  const first = unitStartAddress(book, at);
   const entries = textRegions(book);
   const index = entries.findIndex(entry => entry.address === first);
   if (index < 0) throw new Error("This region is outside the reading.");
@@ -366,12 +377,12 @@ export function notSectionStart(book, target) {
     }
     return field(next, "in", remaining.length ? remaining : null);
   });
-  return structure(removeLinks(result, id));
+  return structure(preserveJoinTargets(book, removeLinks(result, id)));
 }
 
 function unitField(book, target, key, value) {
   const stored = value == null || value === "" ? null : String(value);
-  if (target.includes("/")) return structure(regionEdit(book, unitStart(book, target), region => field(region, key, stored)));
+  if (target.includes("/")) return structure(regionEdit(book, unitStartAddress(book, target), region => field(region, key, stored)));
   const id = containerId(book, target), previous = book.containers[id];
   const next = field(previous, key, stored);
   return structure(previous === next ? book : { ...book, containers: { ...book.containers, [id]: next } });

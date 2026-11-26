@@ -85,8 +85,8 @@ function collectTree(assembled, oldTypes) {
       const { open, ...attributes } = unitAttrs(unit);
       refInfo.set(region, { flow, kind: oldTypes[unit.type]?.region, unitType: unit.type, attrs: {
         ...(path.length ? { in: path } : {}), ...extraFlow, ...(first ? attributes : {}),
-        ...(index > 0 || (first && open?.start) ? { from_previous: true } : {}),
-        ...(index < unit.children.length - 1 || (index === unit.children.length - 1 && open?.end) ? { continues: true } : {}),
+        ...(first && open?.start ? { from_previous: true } : {}),
+        ...(index < unit.children.length - 1 ? { continues: true } : open?.end ? { continues: "open" } : {}),
       } });
     });
   }
@@ -324,7 +324,8 @@ function inlineReading(book) {
 
 function inventory(book, unplaceable) {
   const all = book.pages.flatMap(page => page.regions ?? []);
-  return { containers: Object.keys(book.containers ?? {}).length, continues: all.filter(region => region.continues).length,
+  return { containers: Object.keys(book.containers ?? {}).length, continues: all.filter(region => region.continues === true).length,
+    openEnds: all.filter(region => region.continues === "open").length,
     ends: all.reduce((n, region) => n + (region.lines ?? []).filter(line => line.end != null).length, 0),
     unknown: all.filter(region => region.type === "?").length, ignored: all.filter(region => region.ignored).length,
     fromPrevious: all.filter(region => region.from_previous).length,
