@@ -4,7 +4,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { writeChaya, readChaya, recoverOriginal, sha256hex } from "../js/chayapdf.js";
+import { writeBook, readBook, recoverOriginal, sha256hex } from "../js/chayapdf.js";
 
 const ROOT = new URL("../..", import.meta.url).pathname;
 
@@ -20,30 +20,30 @@ function tinyPdf() {
   return new TextEncoder().encode(out);
 }
 
-const book = n => ({ format: "chaya-book", version: 1, saved_by: "test", files: { "book.json": { book_id: "t", n }, "pages/t-page-001.json": { page: { width: 10, height: 20 } }, "work/x.txt": "ಕನ್ನಡ text" } });
+const book = n => ({ chaya: 1, title: `Book ${n}`, types: {}, pages: [{ pdf_page: 1 }] });
 
 test("written, read back, saved again on the original, original recovered", async () => {
   const pdf = tinyPdf();
-  const a = await writeChaya(pdf, book(1));
-  const ra = await readChaya(a);
+  const a = await writeBook(pdf, book(1));
+  const ra = await readBook(a);
   assert.deepEqual(ra.data, book(1));
   assert.equal(ra.recovered, true);
   assert.deepEqual(ra.original, pdf);
   // Saving again from the .chaya.pdf rebuilds the update on the original: the same size for the same data, and new
   // data replaces the old (one book, not two).
-  assert.equal((await writeChaya(a, book(1))).length, a.length);
-  const b = await writeChaya(a, book(2));
-  assert.equal((await readChaya(b)).data.files["book.json"].n, 2);
+  assert.equal((await writeBook(a, book(1))).length, a.length);
+  const b = await writeBook(a, book(2));
+  assert.equal((await readBook(b)).data.title, "Book 2");
   assert.ok(b.length < a.length + 100, "no growth");
   assert.deepEqual(await recoverOriginal(b), pdf);
   // A plain PDF has no book.
-  assert.equal((await readChaya(pdf)).data, null);
+  assert.equal((await readBook(pdf)).data, null);
   assert.equal(await recoverOriginal(pdf), null);
 });
 
 test("an encrypted PDF is refused", async () => {
   const pdf = new TextDecoder().decode(tinyPdf()).replace("/Root 1 0 R >>", "/Root 1 0 R /Encrypt 1 0 R >>");
-  await assert.rejects(writeChaya(new TextEncoder().encode(pdf), book(1)), /encrypted/);
+  await assert.rejects(writeBook(new TextEncoder().encode(pdf), book(1)), /encrypted/);
 });
 
 // The tiny PDF with an earlier incremental update that gave it an attachment of its own, in a name tree under
@@ -67,8 +67,8 @@ function updatedPdf() {
 
 test("a PDF updated before, with an attachment tree of its own", async () => {
   const pdf = updatedPdf();
-  const out = await writeChaya(pdf, book(4));
-  const r = await readChaya(out);
+  const out = await writeBook(pdf, book(4));
+  const r = await readBook(out);
   assert.deepEqual(r.data, book(4));
   assert.deepEqual(r.original, pdf);
   const update = new TextDecoder("latin1").decode(out.subarray(pdf.length));
@@ -82,9 +82,9 @@ test("a PDF updated before, with an attachment tree of its own", async () => {
 const KALE = join(ROOT, "Kale-1913-pp21-272.pdf");
 test("a .chaya.pdf of Kale's PDF", { skip: !existsSync(KALE) }, async () => {
   const pdf = new Uint8Array(readFileSync(KALE));
-  const out = await writeChaya(pdf, book(3));
-  const r = await readChaya(out);
+  const out = await writeBook(pdf, book(3));
+  const r = await readBook(out);
   assert.deepEqual(r.data, book(3));
   assert.equal(await sha256hex(r.original), await sha256hex(pdf));
-  assert.equal((await writeChaya(out, book(3))).length, out.length, "no growth on saving again");
+  assert.equal((await writeBook(out, book(3))).length, out.length, "no growth on saving again");
 });

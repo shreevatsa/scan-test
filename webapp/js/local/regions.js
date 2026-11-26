@@ -5,7 +5,9 @@
 // and simplified (Douglas–Peucker) as cv2.findContours and cv2.approxPolyDP do, so vertices may differ slightly
 // from the Python results while the outlines agree.
 
-import { ROLE, components, rotate, unrotate } from "./ink.js?v=20261125-v1-phase3";
+import { ROLE, components, rotate, unrotate } from "./ink.js?v=20261125-v1";
+
+import { ruleStroke } from "./ink-checks.js?v=20261125-v1";
 
 export const UNASSIGNED = -1;
 
@@ -442,7 +444,7 @@ export function outlineRegions(comp, prep, owner, lineOf, angle, nRegions, cfg) 
 }
 
 // Everything that depends on the boxes: ownership and outlines for the given float xyxy boxes, one per region.
-export function regionsFromBoxes(analysis, boxes, cfg) {
+export function regionsFromBoxes(analysis, boxes, cfg, measureRules = false) {
   const { comp, seg, angle } = analysis;
   const prep = analysis.prep || (analysis.prep = prepare(comp, seg, cfg));
   const pboxes = boxes.map(b => pixelBox(b, comp.W, comp.H));
@@ -456,17 +458,22 @@ export function regionsFromBoxes(analysis, boxes, cfg) {
       line.line_id = band.anchor_line_id;
     }
   }
-  const uncovered = uncoveredLines(comp, prep, decisions, owner, seg.lines);
+  const uncovered = uncoveredLines(comp, prep, decisions, owner, seg.lines, measureRules);
   return { geometry, owner, decisions, dropped, attached, uncovered };
 }
 
-export function uncoveredLines(comp, prep, decisions, owner, bands = []) {
+export function uncoveredLines(comp, prep, decisions, owner, bands = [], measureRules = false) {
   return decisions.filter(decision => decision.mode === "uncovered").flatMap(decision => {
     const members = [];
     for (let index = 1; index < comp.count; index++) if (prep.lineOf[index] === decision.line_id) members.push(index);
     if (!members.length || members.some(index => owner[index] !== UNASSIGNED)) return [];
-    return [{ line_id: bands[decision.line_id]?.anchor_line_id ?? decision.line_id,
-      box: [Math.min(...members.map(index => comp.x0[index])), Math.min(...members.map(index => comp.y0[index])),
-        Math.max(...members.map(index => comp.x1[index])), Math.max(...members.map(index => comp.y1[index]))] }];
+    const box = [Math.min(...members.map(index => comp.x0[index])), Math.min(...members.map(index => comp.y0[index])),
+      Math.max(...members.map(index => comp.x1[index])), Math.max(...members.map(index => comp.y1[index]))];
+    const [left, top, right, bottom] = box;
+    const stroke = measureRules && right - left >= 6 * (bottom - top) ? ruleStroke(comp, members, box) : Infinity;
+    const vertical = measureRules && right - left < comp.charH && bottom - top >= 1.8 * (right - left)
+      ? ruleStroke(comp, members, box, true) : Infinity;
+    return [{ line_id: bands[decision.line_id]?.anchor_line_id ?? decision.line_id, box,
+      ...(Number.isFinite(stroke) ? { stroke } : {}), ...(Number.isFinite(vertical) ? { vertical } : {}) }];
   });
 }

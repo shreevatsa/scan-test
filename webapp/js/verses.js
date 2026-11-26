@@ -12,7 +12,7 @@
 // series whose entries hold verses are the text, their letter the śataka their stream is labelled with; every other
 // series (a translation's, the notes') goes with a series of the text in order, the next with its letter where its
 // heading names a śataka ("VAIRÂGYAS'ATAKA."), else the next one.
-import { printedNumber } from "./number-rules.js?v=20261125-v1-phase3";
+import { printedNumber } from "./number-rules.js?v=20261125-v1";
 
 const SHATAKA = [["N", /नीति|N[IÎĪ]T[IÎĪ]/iu], ["V", /वैराग्य|VAIR[AÂĀ]/iu], ["S", /शृङ्गार|शृंगार|[SŚ]['′]?R[IĪ]?[NṄ]G[AĀÂ]R/iu]];
 const letterOf = text => SHATAKA.find(([, pattern]) => pattern.test(text || ""))?.[0] || null;

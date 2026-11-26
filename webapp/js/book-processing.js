@@ -1,15 +1,14 @@
-import * as B from "./book.js?v=20261125-v1-phase3";
-import { finderTypeList } from "./chaya-book.js?v=20261125-v1-phase3";
-import { validBox, writeRegion } from "./chaya-materialize.js?v=20261125-v1-phase3";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261125-v1-phase3";
-import { mergeText } from "./pipeline/apply.js?v=20261125-v1-phase3";
-import { finderById, finderPath } from "./pipeline/finders.js?v=20261125-v1-phase3";
-import { pageRange } from "./pipeline/pdf.js?v=20261125-v1-phase3";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261125-v1-phase3";
-import { readerById, readerOptions } from "./pipeline/readers.js?v=20261125-v1-phase3";
-import { Maker, post } from "./pipeline/run.js?v=20261125-v1-phase3";
-import { checkDocument } from "./schema.js?v=20261125-v1-phase3";
-import { pageCost, RECIPE } from "./recipe.js?v=20261125-v1-phase3";
+import * as B from "./book.js?v=20261125-v1";
+import { finderTypeList } from "./chaya-book.js?v=20261125-v1";
+import { validBox, writeRegion } from "./chaya-materialize.js?v=20261125-v1";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261125-v1";
+import { applyReading } from "./pipeline/apply.js?v=20261125-v1";
+import { finderById, finderPath } from "./pipeline/finders.js?v=20261125-v1";
+import { pageRange } from "./pipeline/pdf.js?v=20261125-v1";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261125-v1";
+import { readerById, readerOptions } from "./pipeline/readers.js?v=20261125-v1";
+import { Maker, post } from "./pipeline/run.js?v=20261125-v1";
+import { pageCost, RECIPE } from "./recipe.js?v=20261125-v1";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -119,16 +118,12 @@ export function replaceProcessedPage(book, index, result) {
   return { book: book.structure_edited ? B.preserveJoinTargets(book, updated) : updated, hints };
 }
 
-// The old finder and reader still run their existing prompts, local outline work and call ledger.
-// This adapter supplies one temporary page document, and writes only work records back to storage.
+// The finder and reader share the original scan and the book’s work records.
 function pipelinePage(session, book, index, tl, options, signal) {
-  const pages = book.pages.map((page, i) => ({ ...page, id: page.id ?? String(i + 1),
-    ...(page.crop ? { pdf_part: [page.crop[0], page.crop[2]] } : {}) }));
-  const page = pages[index], pid = page.id;
+  const page = book.pages[index], pid = page.id ?? String(index + 1);
   let image, imageUrl;
   const state = {
-    types: tl, pages, index: Object.fromEntries(pages.map((page, i) => [page.id, i])), work: new Map(),
-    page: () => page, async current() { return state.doc ?? null; }, async draft() { return null; },
+    types: tl,
     async getReaderOptions() { return options; },
     readWork: path => session.readWork(path),
     writeWork: (path, record) => session.writeWork(path, record),
@@ -153,7 +148,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261125-v1-phase3", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261125-v1", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;
@@ -224,7 +219,7 @@ export async function processBook(session, starting, indices, { choices, keys = 
           cached = true;
         } else {
           const maker = new Maker(state, {
-            keys, check: doc => checkDocument(doc, tl), registerProposals: false,
+            keys,
             outlines: (pid, url, boxes) => outlines.run(pid, url, boxes),
             onCost: value => {
               if (Number.isFinite(value)) spend += value;
@@ -236,12 +231,11 @@ export async function processBook(session, starting, indices, { choices, keys = 
               return request(provider, payload, key, { ...auth, signal });
             },
           });
-          layout = await maker.findRegions(pid, { save: false, force: false, finder: choices.finder.id });
+          layout = await maker.findRegions(pid, { finder: choices.finder.id });
           signal.throwIfAborted();
           if (unknown || (spend > 0 && spend >= limit && choices.reader.provider !== "local")) break;
-          state.doc = maker.provisional(pid, layout, layout.image_sha256);
           progress({ completed, total: indices.length, index, step: "Reading text", spend, reused });
-          reading = await maker.read(pid, choices.options, { save: false, progress: step =>
+          reading = await maker.read(pid, layout, choices.options, { progress: step =>
             progress({ completed, total: indices.length, index, step, spend, reused }) });
           cached = !!(layout.cached && reading.cached);
           layout = reading.regions_record ?? layout;
@@ -251,10 +245,8 @@ export async function processBook(session, starting, indices, { choices, keys = 
         const doc = provisionalDocument(pid, {
           image: `${pid}.png`, image_sha256: reading.image_sha256,
           width: layout.width, height: layout.height,
-        }, tl, layout, { firstPage: index === 0, lastPage: index === book.pages.length - 1 });
-        const applied = mergeText(doc, reading, tl);
-        if (!applied.taken.includes("text")) throw new Error("The reading does not fit this scan's saved regions.");
-        const result = materializeProcessedPage(applied.doc, book.pages[index], book.types, tl, book.rules);
+        }, tl, layout);
+        const result = materializeProcessedPage(applyReading(doc, reading, tl), book.pages[index], book.types, tl, book.rules);
         const replacement = replaceProcessedPage(book, index, result);
         saving = true;
         await session.writeWork(`work/structure-hints/${pid}.json`, replacement.hints);

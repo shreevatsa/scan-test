@@ -1,4 +1,4 @@
-// Join page documents, in page order, into one book document: a port of schema/book.py assemble. Returns
+// Join the projected units in page order. Returns
 // [book, warnings]. A unit open at its end joins the unit open at its start on a later page of its flow, level by
 // level, when the two have the same type and every page between has no unit of that type there and no open end of its
 // own (a blank page, a plate with its caption, a page whose units are all of other types). The pages between keep
@@ -121,9 +121,8 @@ export function assemble(pageDocs, tl, source = {}, { onMerge = () => {} } = {})
       relations.push(rel);
     }
   }
-  const version = present.map(pd => pd.schema_version || "0.1").reduce((a, b) => (b > a ? b : a), "0.1");
   const book = {
-    format: "book", schema_version: version, types: tl, pages: present.map(pd => pd.page),
+    types: tl, pages: present.map(pd => pd.page),
     units: [...units.values()], flows, relations,
     source: { assembled_by: "webapp/js/assemble.js", pages: present.map(pd => pd.page.id), ...source },
   };

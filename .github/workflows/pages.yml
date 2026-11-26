@@ -1,4 +1,4 @@
-# Publishes only webapp/ (about 24 MB) to GitHub Pages, at <site>/webapp/, instead of the whole repository.
+# Publishes the current app and the archived 0.4 app to GitHub Pages.
 # Needs Settings > Pages > Build and deployment > Source: "GitHub Actions".
 name: Pages
 on:
@@ -24,10 +24,17 @@ jobs:
         with:
           sparse-checkout: webapp
           sparse-checkout-cone-mode: true
+      - uses: actions/checkout@v7
+        with:
+          ref: chaya-0.4
+          path: legacy
+          sparse-checkout: webapp
+          sparse-checkout-cone-mode: true
       - name: Stage the site
         run: |
-          mkdir _site
-          cp -r webapp _site/webapp
+          mkdir -p _site/webapp _site/versions/0.4
+          cp -r webapp/. _site/webapp/
+          cp -r legacy/webapp/. _site/versions/0.4/
           echo '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=webapp/"><a href="webapp/">webapp/</a>' > _site/index.html
       - uses: actions/upload-pages-artifact@v5
         with:

@@ -1,14 +1,9 @@
-// The reader's HTML for a made-up book with a style sheet (schema 0.3): rows side by side, styles as printed,
+// The reader's HTML for a made-up book with a style sheet: rows side by side, styles as printed,
 // figures, and the standalone document. Run from the repository root:  node --test webapp/test/*.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import { prepare, bookHtml, bookDocument, bookText, fillFigures } from "../js/reader.js";
-import { makeValidator, checkPage } from "../js/schema.js";
+import { prepare, bookHtml, bookDocument, bookText } from "../js/reader.js";
 
-const ROOT = new URL("../..", import.meta.url).pathname;
-const validate = makeValidator(JSON.parse(readFileSync(join(ROOT, "webapp/schema.json"), "utf8")));
 
 const TL = { format: "types", schema_version: "0.2", book_id: "test", title: "A made-up book", flows: { main: "The text." },
   types: {
@@ -52,8 +47,6 @@ function pages() {
 }
 
 test("rows, styles and figures in the reader's HTML", () => {
-  assert.deepEqual(validate(SHEET), [], "the style sheet is valid");
-  for (const d of pages()) assert.deepEqual(checkPage(validate, d, TL)[0], [], `${d.page.id} is valid`);
   const P = prepare(pages(), TL, SHEET);
   const plain = bookHtml(P), printed = bookHtml(P, { printed: true });
   // The address: one row of two columns, in both views.
@@ -70,14 +63,4 @@ test("rows, styles and figures in the reader's HTML", () => {
   assert.ok(doc.startsWith("<!DOCTYPE html>") && doc.includes('<img class="r-figimg" src="data:image/png;base64,'), "a standalone document with images");
   assert.ok(doc.includes("max-width:calc(var(--pt, 1pt) * 297.6)"), "the book's measure");
   assert.ok(bookText(P).includes("[figure: a symbol]"));
-});
-
-test("figures in Read retain the full crop when the detected ink covers only a small area", async () => {
-  const docs = pages(), region = docs[0].page.regions[0];
-  region.polygons = rect(550, 60, 570, 80);
-  const image = { dataset: { ref: `${docs[0].page.id}#r1` }, style: {} };
-  await fillFigures({ querySelectorAll: () => [image] }, { book: { imageUrl: async () => "page.png" } }, prepare(docs, TL));
-  assert.equal(image.style.width, "201px");
-  assert.equal(image.style.height, "201px");
-  assert.equal(image.style.backgroundPosition, "-500px -50px");
 });

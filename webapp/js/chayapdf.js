@@ -344,7 +344,7 @@ const pdfString = s => "(" + s.replace(/[\\()]/g, c => "\\" + c) + ")";
 
 // The original PDF's bytes followed by one update that attaches `data` (an object, written as chaya.json).
 // Given a .chaya.pdf rather than an original, its original is used (so the file does not grow with each save).
-export async function writeChaya(original, data, { description = "The book's data for the Chaya web app: its types, page documents, corrections and styles." } = {}) {
+async function writeChaya(original, data, description) {
   original = (await recoverOriginal(original)) || original;
   const pdf = await PdfFile.open(original);
   if (pdf.trailer.get("Encrypt")) fail("this PDF is encrypted; the app cannot add the book's data to it");
@@ -460,5 +460,5 @@ export async function readBook(bytes) {
 
 export async function writeBook(original, book) {
   if (book?.chaya !== 1) fail("expected a Chaya version 1 book");
-  return writeChaya(original, book, { description: "Chaya version 1: regions, text and reading structure." });
+  return writeChaya(original, book, "Chaya version 1: regions, text and reading structure.");
 }

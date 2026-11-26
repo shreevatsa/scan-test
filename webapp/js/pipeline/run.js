@@ -1,52 +1,30 @@
-import { typeRevision } from "../schema.js?v=20261125-v1-phase3";
-import { mappedTypeNames } from "../type-revisions.js?v=20261125-v1-phase3";
-// Fixed region detection and local outlines, a selectable reader, then a fixed text-only structurer.
-// Save each stage independently so retries can reuse completed work.
+// Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261125-v1-phase3";
-import * as S from "./steps.js?v=20261125-v1-phase3";
-import * as I from "./images.js?v=20261125-v1-phase3";
-import { readerById, readerOptions, structurerById, structurePath, structureRequest, usageCost, geminiReadingRequest } from "./readers.js?v=20261125-v1-phase3";
-import * as Split from "./split.js?v=20261125-v1-phase3";
-import { markersFromQuotes } from "../note-links.js?v=20261125-v1-phase3";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261125-v1-phase3";
-import { classifyBlocks } from "../local/blocks.js?v=20261125-v1-phase3";
-import { finderById, finderPath } from "./finders.js?v=20261125-v1-phase3";
-import { finderRequest } from "./finder-requests.js?v=20261125-v1-phase3";
-import { planReading, combineReading, retainedParts, partTotals, partialTextScope, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261125-v1-phase3";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261125-v1-phase3";
-import { bbox } from "../render.js?v=20261125-v1-phase3";
-import { pdfFollows } from "./pdf.js?v=20261125-v1-phase3";
-import { canonical } from "../ops.js?v=20261125-v1-phase3";
-import { layerState, noteEdit } from "../layers.js?v=20261125-v1-phase3";
-import { provisionalDocument } from "./provisional.js?v=20261125-v1-phase3";
-import { mergeRegions, mergeText } from "./apply.js?v=20261125-v1-phase3";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261125-v1-phase3";
-import { readPendingProposals, recordFinderProposals, proposalAssignments, normalizeTypeName } from "../type-additions.js?v=20261125-v1-phase3";
-import { isProtected, LAYERS } from "../layers.js?v=20261125-v1-phase3";
+import * as P from "./prompts.js?v=20261125-v1";
+import * as S from "./steps.js?v=20261125-v1";
+import * as I from "./images.js?v=20261125-v1";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261125-v1";
+import * as Split from "./split.js?v=20261125-v1";
+import { markersFromQuotes } from "../note-links.js?v=20261125-v1";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261125-v1";
+import { classifyBlocks } from "../local/blocks.js?v=20261125-v1";
+import { finderById, finderPath } from "./finders.js?v=20261125-v1";
+import { finderRequest } from "./finder-requests.js?v=20261125-v1";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261125-v1";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261125-v1";
+import { bbox } from "../render.js?v=20261125-v1";
+import { canonical } from "../ops.js?v=20261125-v1";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261125-v1";
 
 export const REQUEST_TIMEOUT_MS = 75000;
-
-// A finder record with each region of a proposed type that has since been added (or assigned to an existing type)
-// given that type. Others keep type other and their proposed_type, and the page keeps them unassigned.
-export function assignedRecord(record, assignments, types) {
-  if (!assignments?.size || !record.regions.some(region => region.proposed_type)) return record;
-  const out = structuredClone(record);
-  for (const region of out.regions) {
-    const type = region.proposed_type && assignments.get(normalizeTypeName(region.proposed_type));
-    if (type && types.types[type]) { region.type = type; region.region_class = types.types[type].region || region.region_class; }
-  }
-  return out;
-}
 
 let TEMPLATES = null;
 export async function templates() {
   if (!TEMPLATES) {
     const get = async (name, json) => { const r = await fetch(new URL(`../../pipeline/${name}`, import.meta.url)); return json ? r.json() : r.text(); };
     TEMPLATES = { regionPrompt: await get("regions-prompt-template.txt"), regionSchema: await get("regions-schema-template.json", true),
-                  transcriptionPrompt: await get("transcription-prompt-template.txt"),
                   proposingPrompt: await get("regions-proposals-prompt-template.txt"), proposingSchema: await get("regions-proposals-schema-template.json", true),
-                  regionPricing: await get("regions-pricing.json", true), transcriptionPricing: await get("transcription-pricing.json", true) };
+                  regionPricing: await get("regions-pricing.json", true) };
   }
   return TEMPLATES;
 }
@@ -114,141 +92,35 @@ export async function post(provider, payload, key, auth = {}) {
 }
 
 export class Maker {
-  // outlines(pid, url, boxes) runs the local step (the app's worker); check(doc) runs the schema checks.
-  constructor(book, { outlines, keys, check, request = post, images = I, recognize = localReading, layout = localLayout, readLines = localLines, onCost = () => {}, onSaved = () => {}, registerProposals = true }) {
+  constructor(book, { outlines, keys = {}, request = post, images = I, recognize = localReading, layout = localLayout, readLines = localLines, onCost = () => {} }) {
     this.book = book;
     this.outlines = outlines;
     this.keys = keys;
-    this.check = check;
     this.request = request;
     this.images = images;
     this.recognize = recognize;
     this.readLines = readLines;
     this.layout = layout;
     this.onCost = onCost;
-    this.onSaved = onSaved;
-    this.registerProposals = registerProposals;
     this.jobs = new Map();
     this.previewCache = new Map();
   }
 
-  workPath(pid) { return `work/${pid}.regions.json`; }
-  regions(pid) { return this.book.readWork(this.workPath(pid)); }
   image(pid) { return this.book.imageBlob(pid); }
-
-  async stageCurrent(pid, { ignoreInvalidDraft = false } = {}) {
-    const current = await this.book.current(pid, { refresh: true }), draft = await this.book.draft(pid);
-    if (!draft) return current;
-    if (this.check(draft.doc)[0].length) {
-      if (ignoreInvalidDraft) return current;
-      throw new Error("Fix this page's draft before running a model step.");
-    }
-    return noteEdit(current, draft.doc);
-  }
-
-  async saveMerged(pid, layer, path, merge, provenance = {}) {
-    const out = await this.book.updateStage(pid, (current, draft) => {
-      if (draft && this.check(draft)[0].length) throw new Error("Fix this page's draft before saving a model result.");
-      const latest = draft ? noteEdit(current, draft) : current;
-      const result = merge(latest);
-      result.doc.source ||= {};
-      if (result.taken.includes(layer)) {
-        const { calls, ...source } = provenance;
-        Object.assign(result.doc.source, source);
-        if (calls) result.doc.source.calls = { ...result.doc.source.calls, ...calls };
-        if (result.doc.source.type_review) {
-          delete result.doc.source.type_review[layer];
-          if (!Object.keys(result.doc.source.type_review).some(key => key !== "errors")) delete result.doc.source.type_review;
-        }
-      }
-      if (result.suggestion) result.doc.source.suggestions = { ...result.doc.source.suggestions, [layer]: path };
-      else if (result.doc.source.suggestions) delete result.doc.source.suggestions[layer];
-      result.valid = !this.check(result.doc)[0].length;
-      return result;
-    });
-    await this.onSaved(pid);
-    return out;
-  }
-
-  // assignments: normalized proposed type names to the types they became (type-additions.js proposalAssignments).
-  provisional(pid, record, imageHash, assignments = null) {
-    const p = this.book.page(pid);
-    return provisionalDocument(pid, { image: (p.image || `${pid}.png`).split("/").pop(), image_sha256: imageHash,
-      width: record.width, height: record.height }, this.book.types, assignedRecord(record, assignments, this.book.types),
-      { firstPage: this.book.index[pid] === 0, lastPage: this.book.index[pid] === this.book.pages.length - 1 });
-  }
 
   regionFingerprint(profile, imageHash, options) {
     return jsonHash({ image: imageHash, method: profile.method, types: this.book.types,
       ...(profile.id === "tesseract-regions" ? { languages: options.ocr_languages } : {}) });
   }
 
-  async finderResult(pid, id, { compatible = false } = {}) {
-    let saved = await this.book.readWork(finderPath(pid, id));
-    if (!saved) {
-      const legacy = await this.regions(pid);
-      if (legacy && (legacy.profile?.id || "terra-regions") === id) saved = legacy;
-    }
-    if (!saved || !compatible) return saved;
-    const imageHash = await sha256(await this.image(pid));
-    const fingerprint = await this.regionFingerprint(finderById(id), imageHash, await this.options());
-    const current = await this.book.current(pid, { refresh: true });
-    const reset = Math.max(this.book.types.source?.region_reset_revision || 1, current?.source?.type_review?.regions || 1);
-    return (!saved.image_sha256 || saved.image_sha256 === imageHash) && typeRevision(saved.types_revision) >= reset &&
-      (!saved.fingerprint || saved.fingerprint === fingerprint) ? saved : null;
-  }
-
-  async retainRegions(pid, record, { save, trial, imageHash }) {
-    const path = finderPath(pid, record.profile?.id || "terra-regions");
-    await this.book.writeWork(path, record);
-    if (trial) return;
-    const previous = await this.regions(pid);
-    if (previous) {
-      const previousPath = finderPath(pid, previous.profile?.id || "terra-regions");
-      if (previousPath !== path && !await this.book.readWork(previousPath)) await this.book.writeWork(previousPath, previous);
-    }
-    await this.book.writeWork(this.workPath(pid), record);
-    let assignments = null;
-    if (this.registerProposals && (record.type_proposals?.length || record.regions.some(region => region.proposed_type))) {
-      await recordFinderProposals(this.book, record, { pdfPage: this.book.page(pid)?.pdf_page ?? null });
-      assignments = proposalAssignments(await readPendingProposals(this.book), this.book.types);
-    }
-    if (save) await this.saveMerged(pid, "regions", path, current => mergeRegions(current,
-      mappedTypeNames(this.provisional(pid, record, imageHash, assignments), this.book.types), this.check));
-  }
-
-  // After a proposed type is added (or found to be an existing type): the page's regions that carry the proposed name,
-  // unassigned or kept meanwhile under the type of their kind, get the type, by rebuilding the page from its finder
-  // record, unless a person's work protects the page. Returns "assigned", "protected" or "none".
-  async assignProposedRegions(pid, assignments) {
-    const current = await this.book.current(pid, { refresh: true });
-    const named = name => Boolean(name) && assignments.has(normalizeTypeName(name));
-    const waiting = [...(current?.source?.omitted_regions || []).filter(region => named(region.proposed_type)),
-      ...(current?.page.regions || []).filter(region => named(region.source?.proposed_type) && region.source.kept_as === region.type)];
-    if (!waiting.length) return "none";
-    if (LAYERS.some(layer => isProtected(current, layer)) || await this.book.draft(pid)) return "protected";
-    const record = await this.regions(pid);
-    if (!record?.regions.some(region => region.proposed_type && assignments.has(normalizeTypeName(region.proposed_type)))) return "none";
-    const imageHash = record.image_sha256 || current.page.image_sha256;
-    const out = await this.saveMerged(pid, "regions", finderPath(pid, record.profile?.id || "terra-regions"), latest => {
-      if (LAYERS.some(layer => isProtected(latest, layer))) return { doc: latest, taken: [], suggestion: false };
-      return mergeRegions(latest, mappedTypeNames(this.provisional(pid, record, imageHash, assignments), this.book.types), this.check);
-    });
-    return out?.taken?.includes("regions") ? "assigned" : "protected";
-  }
-
-  async findRegions(pid, { save = this.book.writable, force = true, finder, trial = false } = {}) {
-    if (save) await this.stageCurrent(pid);
+  async findRegions(pid, { force = false, finder } = {}) {
     const options = await this.options(), profile = finderById(finder || options.finder), tl = this.book.types;
     const file = await this.image(pid), imageHash = await sha256(file);
     const fingerprint = await this.regionFingerprint(profile, imageHash, options);
+    const path = finderPath(pid, profile.id);
     if (!force) {
-      const cached = await this.finderResult(pid, profile.id);
-      const current = await this.book.current(pid, { refresh: true });
-      const reset = Math.max(tl.source?.region_reset_revision || 1, current?.source?.type_review?.regions || 1);
-      if (cached && (!cached.image_sha256 || cached.image_sha256 === imageHash) &&
-          typeRevision(cached.types_revision) >= reset && (!cached.fingerprint || cached.fingerprint === fingerprint)) {
-        await this.retainRegions(pid, cached, { save, trial, imageHash });
+      const cached = await this.book.readWork(path);
+      if (cached?.image_sha256 === imageHash && cached.fingerprint === fingerprint) {
         return { ...cached, cached: true };
       }
     }
@@ -276,13 +148,11 @@ export class Maker {
       this.onCost(0);
     } else {
       const t = await templates();
-      // Method 097 reads the pending proposals now, at request time, so a page sees what earlier pages proposed.
-      const pending = profile.proposals ? await readPendingProposals(this.book) : null;
       const payload = profile.proposals
-        ? finderRequest(profile, proposingPrompt(tl, t.proposingPrompt, pending), proposingSchema(tl, t.proposingSchema, pending), await dataUrlOf(file))
+        ? finderRequest(profile, proposingPrompt(tl, t.proposingPrompt), proposingSchema(tl, t.proposingSchema), await dataUrlOf(file))
         : finderRequest(profile, P.regionPrompt(tl, t.regionPrompt), P.regionSchema(tl, t.regionSchema), await dataUrlOf(file));
       const call = await this.callJSON(pid, "regions", profile, payload,
-        parsed => profile.proposals ? scaleProposingRegions(parsed, W, H, tl, pending) : S.scaleRegions(parsed, W, H, tl), profile.provider === "openai"
+        parsed => profile.proposals ? scaleProposingRegions(parsed, W, H, tl) : S.scaleRegions(parsed, W, H, tl), profile.provider === "openai"
           ? (usage, body) => S.openaiCost(usage, profile.pricing || t.regionPricing, body.service_tier) : null);
       ({ regions, warnings } = call.parsed);
       if (profile.proposals) typeProposals = call.parsed.proposals;
@@ -293,65 +163,16 @@ export class Maker {
       regionCall = { model: call.response.model, response_id: call.response.id, usage: call.response.usage,
         cost_usd: call.cost_usd, seconds: call.seconds, output: profile.provider === "openai" ? S.openaiText(call.response) : S.geminiText(call.response), path: call.path };
     }
-    const out = { format: "page-regions", page: pid, profile, fingerprint, types_revision: typeRevision(tl.source?.revision),
+    const out = { format: "page-regions", page: pid, profile, fingerprint,
       width: W, height: H, image_sha256: imageHash, char_h: res.charH, page_angle_deg: res.angle, local_method: res.method,
       regions: S.regionRecords(regions, res.geometry), uncovered_lines: res.uncovered || [], warnings,
       region_call: regionCall, made_at_utc: new Date().toISOString(), ...(typeProposals ? { type_proposals: typeProposals } : {}) };
-    await this.retainRegions(pid, out, { save, trial, imageHash });
+    await this.book.writeWork(path, out);
     return out;
   }
 
   async options() {
     return readerOptions(await this.book.getReaderOptions(), this.book.types);
-  }
-
-  async sourceRegions(pid) {
-    const saved = await this.regions(pid);
-    const doc = await this.stageCurrent(pid);
-    if (!doc && saved) return saved;
-    if (!doc) throw new Error("Find the page's regions first.");
-    const classes = P.regionClasses(this.book.types);
-    const regions = doc.page.regions.map((r, index) => {
-      const original = saved?.regions.find(value => (value.document_region_id || `r${value.region_id}`) === r.id);
-      const b = bbox(r.polygons || []);
-      const bounds = Number.isFinite(b[0]) ? [b[0], b[1], b[2] + 1, b[3] + 1] : null;
-      const region = {
-        region_id: r.source?.region_id || index + 1, document_region_id: r.id, type: r.type, keep: this.book.types.types[r.type]?.role !== "furniture",
-        reading_order: r.order ?? null, uncertain: r.source?.uncertain || false,
-        continues_from_earlier: r.source?.continues_from_earlier || false, continues_later: r.source?.continues_later || false,
-        region_class: classes[r.type] || "other", model_box: r.box || bounds,
-        // A region kept with no ink found (outlined by its box, nothing to read) is no_ink here as on the page, where it
-        // takes no part in reading (apply.js geometry); "ok" made every reading of the page fail to apply, unreported.
-        status: bounds && !(r.source?.no_ink && !(r.lines || []).some(L => L.polygons?.length)) ? "ok" : "no_ink", polygons: r.polygons, bounds,
-        lines: (r.lines || []).filter(L => L.polygons?.length).map(L => ({ line_id: L.line, polygons: L.polygons })),
-      };
-      // Keep the original precision and request metadata when the current page agrees.
-      if (original) {
-        const unchanged = r.type === original.type && (r.order ?? null) === original.reading_order &&
-          region.region_class === original.region_class && region.keep === original.keep &&
-          canonical(r.polygons) === canonical(original.polygons) &&
-          canonical(region.lines) === canonical(original.lines) &&
-          canonical(r.box) === canonical(original.model_box.map(Math.round)) &&
-          region.continues_from_earlier === Boolean(original.continues_from_earlier) &&
-          region.continues_later === Boolean(original.continues_later);
-        if (unchanged) return structuredClone(original);
-        if (canonical(r.box) === canonical(original.model_box.map(Math.round))) region.model_box = original.model_box;
-      }
-      return region;
-    });
-    // An area the finder gave a type the book does not have yet (a proposed type, waiting for the person's decision) is
-    // not on the page, but it is read with the page, so that its text is there when the type is added (restoreWaiting).
-    const onPage = new Set(regions.map(region => region.document_region_id));
-    for (const area of doc.source?.omitted_regions || []) {
-      const original = saved?.regions.find(value => (value.document_region_id || `r${value.region_id}`) === area.region);
-      if (original && !onPage.has(area.region)) regions.push(structuredClone(original));
-    }
-    if (saved && canonical(regions) === canonical(saved.regions)) return saved;
-    return { ...saved, format: "page-regions", page: pid, width: doc.page.width, height: doc.page.height,
-      char_h: doc.source?.char_h ?? saved?.char_h ?? Math.max(8, doc.page.height / 70), regions,
-      page_angle_deg: doc.source?.page_angle_deg ?? saved?.page_angle_deg ?? 0,
-      local_method: doc.source?.geometry_update?.method || doc.source?.regions_method || saved?.local_method || "existing page geometry",
-      region_call: doc.source?.calls?.regions || null };
   }
 
   async imageSet(pid, file, rec, sent, fingerprint) {
@@ -386,10 +207,8 @@ export class Maker {
     const partKey = scope.partial && await jsonHash({ requestHash, regions: scope.region_ids });
     const partPath = scope.partial ? `work/reading-parts/${pid}/${profile.id}/${partKey}.json` : null;
     if (partPath) {
-      this.book.work.delete(partPath);
       const saved = await this.book.readWork(partPath);
       if (saved?.path) {
-        this.book.work.delete(saved.path);
         const record = await this.book.readWork(saved.path);
         if (record?.status === "completed" && record.request_sha256 === requestHash) {
           const parsed = parse ? parse(record.response) : record.parsed;
@@ -449,23 +268,13 @@ export class Maker {
     return { ...record, path, cached: false };
   }
 
-  async read(pid, options = null, { force = false, progress, save = false } = {}) {
-    if (save) await this.stageCurrent(pid);
+  async read(pid, record, options = null, { force = false, progress } = {}) {
     const all = readerOptions(options || await this.book.getReaderOptions(), this.book.types);
     const chosen = { reader: all.reader, ocr_languages: all.ocr_languages };
     const profile = readerById(chosen.reader), key = `read:${pid}:${JSON.stringify(chosen)}`;
-    const job = this.jobs.get(key) || this.readPage(pid, chosen, profile, { force, progress });
+    const job = this.jobs.get(key) || this.readPage(pid, record, chosen, profile, { force, progress });
     this.jobs.set(key, job);
-    let reading;
-    try { reading = await job; } finally { if (this.jobs.get(key) === job) this.jobs.delete(key); }
-    if (save) {
-      await this.saveMerged(pid, "text", `work/readings/${pid}/${profile.id}.json`, current =>
-        mergeText(current || this.provisional(pid, reading.regions_record, reading.image_sha256), reading, this.book.types, this.check,
-          { regionIds: partialTextScope(current, reading) }),
-        { reader: profile, model: profile.model, calls: { reading: { cost_usd: reading.cost_usd, seconds: reading.seconds,
-          ...(reading.partial ? { partial: true, parts: reading.parts } : {}) } } });
-    }
-    return reading;
+    try { return await job; } finally { if (this.jobs.get(key) === job) this.jobs.delete(key); }
   }
 
   // Lines a whole-page reader left empty that are lines, not fragments (wordsToReading `missed`), are read alone by the
@@ -537,15 +346,14 @@ export class Maker {
     return parsed;
   }
 
-  async readPage(pid, chosen, profile, { force, progress }) {
-    const rec = structuredClone(await this.sourceRegions(pid)), { sent, skipped } = Split.selectPageRegions(rec.regions);
+  async readPage(pid, record, chosen, profile, { force, progress }) {
+    const rec = structuredClone(record), { sent, skipped } = Split.selectPageRegions(rec.regions);
     const file = await this.image(pid), imageHash = await sha256(file);
     // A whole-page reader (method 100) sends the page's regions as a list in its prompt; the list is part of the request.
     const list = profile.whole_page ? Split.wholePageList(rec, sent) : null;
     const prompt = list ? Split.wholePagePrompt(this.book.types, list) : Split.readingPrompt(this.book.types);
     const fingerprint = await jsonHash({ version: Split.SPLIT_VERSION, chosen, profile, imageHash, regions: rec.regions, prompt });
     const path = `work/readings/${pid}/${profile.id}.json`;
-    this.book.work.delete(path);
     const cached = await this.book.readWork(path), baseline = canonical(cached);
     const geometry_key = await geometryKey(rec, chosen, profile, imageHash);
     const previousKey = cached?.geometry_key || (cached?.regions_record && await geometryKey(cached.regions_record,
@@ -598,11 +406,8 @@ export class Maker {
     } else if (list) {
       // One call for the whole page: the page image as the app draws it, the regions in the prompt. A region whose answer
       // does not fit its line pieces holds the page's current text (checkWholePage) and is flagged when applied.
-      const current = await this.book.current(pid);
-      const currentLines = Object.fromEntries((current?.page.regions || []).map(region => [region.id,
-        (region.lines || []).filter(line => line.polygons?.length).map(line => Split.markedText(line))]));
       const payload = geminiReadingRequest(profile, Split.wholePageContent(prompt, (await dataUrlOf(file)).split(",")[1], file.type || "image/png"), Split.wholePageSchema(list));
-      result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkWholePage(parsed, list, currentLines), null, null, scope);
+      result = await this.callJSON(pid, "reading", profile, payload, parsed => Split.checkWholePage(parsed, list), null, null, scope);
     } else {
       const imageKey = plan.partial ? await jsonHash({ fingerprint, regions: scope.region_ids, char_h: rec.char_h }) : fingerprint;
       const images = await this.imageSet(pid, file, rec, targets, imageKey);
@@ -635,40 +440,6 @@ export class Maker {
     return reading;
   }
 
-  async context(pid, options) {
-    const out = [];
-    const current = await this.book.current(pid);
-    for (const [side, step] of [["previous", -1], ["next", 1]]) {
-      if (current?.source?.sample?.[`consecutive_${side}`] === false) continue;
-      const page = this.book.pages[this.book.index[pid] + step];
-      if (!page) continue;
-      const sourcePage = this.book.page(pid);
-      if (!pdfFollows(sourcePage, page, step)) continue;
-      const saved = await this.book.readWork(`work/readings/${page.id}/${options.reader}.json`);
-      const neighbor = await this.stageCurrent(page.id, { ignoreInvalidDraft: true });
-      const doc = neighbor && layerState(neighbor, "text") ? neighbor : null;
-      if (!saved && !doc) continue;
-      // Preserve the saved request when the document has the same marked text.
-      const useSaved = saved && (!doc || sameReading(Split.readingFromDocument(doc,
-        Split.selectPageRegions(saved.regions_record.regions).sent), saved.parsed));
-      const regions = useSaved ? saved.parsed.regions.filter(r => {
-        const source = saved.regions_record.regions.find(s => (s.document_region_id || `r${s.region_id}`) === r.id);
-        return source?.keep;
-      }) : doc.page.regions.filter(r => Number.isFinite(r.order)).map(r => ({ id: r.id,
-        lines: r.lines.map((L, i) => ({ n: i + 1, text: Split.markedText(L) })) }));
-      const edge = side === "previous" ? regions.slice(-2) : regions.slice(0, 2);
-      out.push({ side, page: page.id, regions: edge.map(r => ({ id: r.id, lines: side === "previous" ? r.lines.slice(-3) : r.lines.slice(0, 3) })) });
-    }
-    return out;
-  }
-}
-
-function sameReading(a, b) {
-  const content = value => value.regions.map(region => ({ id: region.id,
-    lines: region.lines.map(line => ({ n: line.n,
-      text: Split.markedText(S.transcribedLines([line.n], { [line.n]: [] }, [line]).lines[0]) })) }))
-    .sort((left, right) => left.id.localeCompare(right.id));
-  return canonical(content(a)) === canonical(content(b));
 }
 
 // What a saved reading depends on: the page image, the model, the regions' outlines and line pieces and, for a

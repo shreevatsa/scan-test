@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { classifyBlocks, lineBlocks, tesseractBlocks } from "../js/local/blocks.js";
-import { finderById, finderPath, regionLayout, reviewedRegionLayout } from "../js/pipeline/finders.js";
+import { finderById, finderPath } from "../js/pipeline/finders.js";
 import { readerOptions } from "../js/pipeline/readers.js";
 import { FINDERS } from "../js/pipeline/finders.js";
 import { finderRequest } from "../js/pipeline/finder-requests.js";
@@ -47,30 +47,12 @@ test("Tesseract layout retains paragraph order and drops invalid or empty boxes"
   assert.deepEqual(tesseractBlocks({}), []);
 });
 
-test("region finder choices preserve legacy defaults and the other stage choices", () => {
+test("region finder choices preserve legacy defaults", () => {
   assert.equal(finderById().id, "terra-regions");
   assert.equal(finderPath("p1", "local-blocks"), "work/region-finders/p1/local-blocks.json");
   assert.equal(readerOptions({ finder: "local-blocks", reader: "flash-low" }).finder, "local-blocks");
   assert.equal(readerOptions({ finder: "local-blocks", reader: "flash-low" }).reader, "flash-low");
   assert.throws(() => readerOptions({ finder: "missing" }), /Unknown region finder/);
-});
-
-test("reviewed layout matches ignore local IDs and expire after geometry or type changes", () => {
-  const current = { page: { image_sha256: "image", width: 100, height: 100, regions: [
-    { id: "r1", type: "paragraph", order: 1, polygons: [[[0, 0], [50, 0], [50, 50]]],
-      lines: [{ line: 4, polygons: [[[0, 0], [50, 0], [50, 10]]], text: "Current transcription" }] },
-  ] }, source: {} };
-  const candidate = structuredClone(current);
-  candidate.page.regions[0].id = "r99";
-  candidate.page.regions[0].lines[0].line = 88;
-  candidate.page.regions[0].lines[0].text = "Different transcription";
-  assert.deepEqual(reviewedRegionLayout(current, candidate), { reviewed: 0, matches: 0 });
-  current.source.review = { regions_page: { layout: regionLayout(current) } };
-  assert.deepEqual(reviewedRegionLayout(current, candidate), { reviewed: 1, matches: 1 });
-  candidate.page.regions[0].type = "verse";
-  assert.deepEqual(reviewedRegionLayout(current, candidate), { reviewed: 1, matches: 0 });
-  current.page.regions[0].polygons[0][0][0]++;
-  assert.deepEqual(reviewedRegionLayout(current, candidate), { reviewed: 0, matches: 0 });
 });
 
 test("the Terra request stays compatible and each provider uses its evaluated model settings", () => {

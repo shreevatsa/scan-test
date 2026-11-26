@@ -5458,3 +5458,14 @@ The uncompressed attachments total 2,930.3 MB, including 2,541.2 MB of work reco
 Migrated 34 of 34 books spanning 9,229 scans, including a private Kannada series (21 volumes) and two other private books. The migration verified the ordered unit trees and flows, relation endpoints, plain text, page labels, and inline spans and styles. It verified 1,227 verse entries across five editions. Rectangle geometry changed 5,934 crop boxes. Each migrated copy recovered its original PDF bytes and had its legacy attachments archived in a ZIP sidecar.
 
 Old PDFs total 1,770.8 MB. New PDFs total 1,168.5 MB with 68.6 MB of uncompressed v1 JSON. Sidecars total 701.5 MB. The spec adds stable page names and pixel sizes, unmatched open flags, unit types and direct members where needed, and saved marker and link details. 14 areas without geometry remain in the sidecars. The repository-root suite passed 424 tests.
+
+## 2026-11-25 · Chaya v1 app
+
+The library opens PDFs into a continuous Scans editor and a Text view with linked notes. Processing, Settings,
+and Export work from the same book. The v1 app no longer includes the old editor, stage workflow, draft layers,
+type revision interface, or model comparisons. The migration tool stays with the earlier app. The Pages workflow
+stages the current and earlier app at separate paths, and the current example list points at the v1 PDF prefix.
+
+At a 700-pixel scan width, the live ink check removed seven of 29 checks on Kale (252 scans) and 36 of 2,127 on
+Gopinath 1914 (481 scans). Every removed check was inspected on the scan. They marked horizontal rules, ornaments,
+or scan edges. No printed text line was among the removed checks.

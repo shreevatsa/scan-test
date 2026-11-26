@@ -94,6 +94,7 @@ Unicode code-point offsets. A `note_marker` is zero-width, with the printed `mar
   regions and child units.
 - A top-level unit or container can give an explicit `flow` where it differs from its type’s flow.
 
-To migrate an old book, run `node --max-old-space-size=8192 webapp/tools/migrate.mjs IN.chaya.pdf OUT_DIR`.
-Add `--check` for a report without writing a PDF or sidecar. Migration verifies the assembled structure,
-relation targets, text, labels, formatting, and applicable verse exports before writing new files.
+Migration runs from the `chaya-0.4` branch, which reads the original book format. In a checkout of that branch, run
+`node --max-old-space-size=8192 webapp/tools/migrate.mjs IN.chaya.pdf OUT_DIR`.
+Add `--check` to verify the migration and write only its report. The tool compares the assembled structure,
+relation targets, text, labels, formatting, and applicable verse exports.

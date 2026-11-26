@@ -1,5 +1,4 @@
-import { typeRevision } from "../schema.js?v=20261125-v1-phase3";
-import { selectPageRegions } from "./split.js?v=20261125-v1-phase3";
+import { selectPageRegions } from "./split.js?v=20261125-v1";
 
 export function regionTypePaths(types) {
   const definitions = types.types, paths = new Map(), queue = [];
@@ -110,9 +109,9 @@ export function keptType(region, types) {
   return ofKind(kind) || (kind === "figure" ? null : ofKind("paragraph"));
 }
 
-export function provisionalDocument(pid, page, types, record, boundary = {}) {
+export function provisionalDocument(pid, page, types, record) {
   const { sent, skipped } = selectPageRegions(record.regions);
-  const regions = [], omitted = [], kept = new Set();
+  const regions = [], omitted = [];
   const sourceOf = region => ({ region_id: region.region_id, method_type: region.type, region_class: region.region_class, keep: region.keep,
     uncertain: region.uncertain, continues_from_earlier: Boolean(region.continues_from_earlier),
     continues_later: Boolean(region.continues_later), model_box: structuredClone(region.model_box),
@@ -141,16 +140,9 @@ export function provisionalDocument(pid, page, types, record, boundary = {}) {
     regions.push({ id: region.document_region_id || `r${region.region_id}`, type: region.type, polygons: [[[x1, y1], [x2, y1], [x2, y2], [x1, y2]]],
       box: [x1, y1, x2, y2], order: region.reading_order, lines: [],
       source: { ...sourceOf(region), no_ink: true, outline: "the box (no ink in it)" } });
-    kept.add(entry.region_id);
   }
   const position = new Map(record.regions.map((r, index) => [r.document_region_id || `r${r.region_id}`, index]));
   regions.sort((a, b) => (position.get(a.id) ?? 0) - (position.get(b.id) ?? 0));
-  const source = { method: "provisional-regions-v1", char_h: record.char_h ?? record.line_analysis?.char_h ?? 0,
-    page_angle_deg: record.page_angle_deg ?? record.line_analysis?.page_angle_deg ?? 0,
-    regions_skipped: structuredClone(skipped.filter(entry => !kept.has(entry.region_id))), omitted_regions: omitted,
-    uncovered_lines: structuredClone(record.uncovered_lines || []),
-    warnings: structuredClone(record.warnings || []), problems: [...(record.problems || [])],
-    layers: { regions: { state: "model", made_by: record.profile?.method || "042+063", types_revision: typeRevision(record.types_revision) } } };
-  if (record.region_call) source.calls = { regions: structuredClone(record.region_call) };
-  return { format: "page", schema_version: "0.4", book_id: types.book_id, page: { id: pid, ...structuredClone(page), regions }, overrides: {}, source };
+  return { page: { id: pid, ...page, regions }, source: { omitted_regions: omitted } };
+
 }

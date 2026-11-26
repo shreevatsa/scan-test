@@ -1,6 +1,6 @@
-import { openWorkZip } from "./work-zip.js?v=20261125-v1-phase3";
-import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261125-v1-phase3";
-import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261125-v1-phase3";
+import { openWorkZip } from "./work-zip.js?v=20261125-v1";
+import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261125-v1";
+import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261125-v1";
 
 export const PREVIOUS = "/scan-test/versions/0.4/";
 

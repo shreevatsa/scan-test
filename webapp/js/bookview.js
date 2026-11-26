@@ -1,9 +1,10 @@
-import * as B from "./book.js?v=20261125-v1-phase3";
-import { areaTitle, checksFor, pageCaption } from "./bookchecks.js?v=20261125-v1-phase3";
-import { PageView } from "./pageimage.js?v=20261125-v1-phase3";
-import { boxRing } from "./ops.js?v=20261125-v1-phase3";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261125-v1-phase3";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261125-v1-phase3";
+import * as B from "./book.js?v=20261125-v1";
+import { areaTitle, checksFor, pageCaption } from "./bookchecks.js?v=20261125-v1";
+import { hasTextInk } from "./local/ink-checks.js?v=20261125-v1";
+import { PageView } from "./pageimage.js?v=20261125-v1";
+import { boxRing } from "./ops.js?v=20261125-v1";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261125-v1";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261125-v1";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const words = type => type === "?" ? "Needs a type" : type[0].toUpperCase() + type.slice(1).replaceAll("_", " ");
@@ -62,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261125-v1-phase3", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261125-v1", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }
@@ -72,7 +73,7 @@ class Outlines {
   finish(result) {
     const work = this.busy;
     this.busy = null;
-    work?.done(result.uncovered ?? []);
+    work?.done(result.uncovered ?? [], result.charH);
     this.request();
   }
   destroy() { clearTimeout(this.timer); this.worker?.terminate(); this.busy = null; }
@@ -537,9 +538,9 @@ export class ScanView {
     const page = this.book.pages[slot.index], width = slot.scanWidth ?? Math.max(560, Math.min(920, Math.round(slot.view.el.clientWidth || 700)));
     const height = slot.view.img.naturalHeight || Math.round(width * slot.h / slot.w);
     const boxes = page.regions.map(region => pixel(region.box, width, height));
-    return { input: { pid: slot.index, url, boxes }, done: uncovered => {
+    return { input: { pid: slot.index, url, boxes, measureRules: true }, done: (uncovered, charH) => {
       if (slot.url !== url || signature !== this.inkSignature(slot)) return;
-      slot.ink = uncovered.filter(item => item.box[3] - item.box[1] >= 5 && item.box[2] - item.box[0] >= 12).map(item => ({
+      slot.ink = uncovered.filter(item => hasTextInk(item.box, charH, width, height, item.stroke, item.vertical)).map(item => ({
         kind: "ink", id: item.line_id, title: "Ink outside the region boxes", box: fractions(item.box, width, height),
       }));
       this.badges(slot);

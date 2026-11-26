@@ -2,12 +2,12 @@
 // of the same or a higher level, across pages, and assembly joins its pieces.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { readThroughBlocks } from "../js/reading.js";
+import { deriveStructure } from "../js/structure-rules.js";
 import { assemble } from "../js/assemble.js";
-import { bookRules, ruleProblems, headingDefaults } from "../js/rules.js";
+import { bookRules, ruleProblems } from "../js/rules.js";
 
-const generic = JSON.parse(readFileSync(new URL("../types/generic.json", import.meta.url)));
+const generic = { flows: { main: "Text" }, types: Object.fromEntries(["heading", "paragraph", "list_item", "verse"].map(name => [name, { region: name, flow: "main" }])) };
+generic.types.section = { contains: ["heading", "paragraph", "list_item", "verse"] };
 const types = structuredClone(generic);
 types.types.chapter_heading = { region: "heading", flow: "main", description: "A chapter's title" };
 types.types.chapter = { flow: "main", contains: ["chapter_heading", "section", "heading", "paragraph"], description: "A chapter" };
@@ -16,13 +16,12 @@ types.types.chapter = { flow: "main", contains: ["chapter_heading", "section", "
 let n = 0;
 const page = blocks => {
   const id = `book-page-${String(++n).padStart(3, "0")}`;
-  return { format: "page", schema_version: "0.4", book_id: "book", overrides: {}, source: {},
-    page: { id, width: 1000, height: 1400, regions: blocks.map(([type, text], i) => ({ id: `r${i + 1}`, type, order: i + 1,
+  return { page: { id, width: 1000, height: 1400, regions: blocks.map(([type, text], i) => ({ id: `r${i + 1}`, type, order: i + 1,
       polygons: [[[100, 100 + i * 60], [900, 100 + i * 60], [900, 150 + i * 60], [100, 150 + i * 60]]], box: [100, 100 + i * 60, 900, 150 + i * 60],
       lines: [{ line: 1, text, polygons: [[[100, 100 + i * 60], [900, 100 + i * 60], [900, 150 + i * 60], [100, 150 + i * 60]]] }] })) } };
 };
 const read = (docs, rules) => {
-  const derived = readThroughBlocks(docs, types, rules);
+  const derived = deriveStructure(docs, types, rules);
   const [book, warnings] = assemble(derived, types);
   const unit = id => book.units.find(value => value.id === id);
   const tree = id => { const u = unit(id); return u.children.some(c => c.unit) ? { [`${u.type}${u.label ? ` “${u.label}”` : ""}`]: u.children.map(c => c.unit ? tree(c.unit) : null).filter(Boolean) } : u.type; };
@@ -58,8 +57,6 @@ test("the rule's settings: none by default, checked names, a default for a new b
   assert.deepEqual(bookRules(null).headings, []);
   assert.deepEqual(bookRules({ headings: [{ heading: " heading ", container: "section" }] }).headings, [{ heading: "heading", container: "section" }]);
   assert.equal(ruleProblems({ headings: [{ heading: "Heading!", container: "section" }] }).length, 1);
-  assert.deepEqual(headingDefaults(generic), [{ heading: "heading", container: "section" }]);
-  assert.deepEqual(headingDefaults({ types: { paragraph: { region: "paragraph" } } }), []);
 });
 
 test("a heading straight after its section's heading is a subtitle of that section", () => {

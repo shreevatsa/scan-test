@@ -1,6 +1,5 @@
 // Each additional finder is evaluated on the public passage references before being offered here.
-import { canonical } from "../ops.js?v=20261125-v1-phase3";
-import { argonRates, flashRates } from "./model-prices.js?v=20261125-v1-phase3";
+import { argonRates, flashRates } from "./model-prices.js?v=20261125-v1";
 export const FINDERS = [
   { id: "terra-regions", label: "GPT-6.1 Terra · reasoning off", provider: "openai", model: "gpt-6.1-terra", reasoning: "none", method: "042+063" },
   { id: "terra-proposals", label: "GPT-6.1 Terra · reasoning off · proposes new types", provider: "openai", model: "gpt-6.1-terra", reasoning: "none",
@@ -29,18 +28,4 @@ export function finderById(id = "terra-regions") {
 export function finderPath(pid, id = "terra-regions") {
   finderById(id);
   return `work/region-finders/${pid}/${id}.json`;
-}
-
-export function regionLayout(doc) {
-  return canonical({ image: doc.page.image_sha256, width: doc.page.width, height: doc.page.height,
-    regions: doc.page.regions.map(region => ({ type: region.type, order: region.order,
-      polygons: region.polygons, lines: (region.lines || []).map(line => line.polygons),
-      from: !!region.source?.continues_from_earlier, later: !!region.source?.continues_later })).sort((a, b) => canonical(a).localeCompare(canonical(b))),
-    omitted: (doc.source?.omitted_regions || []).map(region => ({ type: region.type, box: region.box })).sort((a, b) => canonical(a).localeCompare(canonical(b))) });
-}
-
-export function reviewedRegionLayout(current, candidate) {
-  const saved = current.source?.review?.regions_page;
-  if (!saved || saved.layout !== regionLayout(current)) return { reviewed: 0, matches: 0 };
-  return { reviewed: 1, matches: Number(saved.layout === regionLayout(candidate)) };
 }

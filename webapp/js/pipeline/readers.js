@@ -1,7 +1,7 @@
 // Transcription and schema-assignment profiles. Token prices are paid-tier USD per million.
-import { finderById } from "./finders.js?v=20261125-v1-phase3";
+import { finderById } from "./finders.js?v=20261125-v1";
 // Source fetched 2026-11-08: https://ai.google.dev/gemini-api/docs/pricing
-import { carbonRates, argonRates, flashRates, hydrogenRates } from "./model-prices.js?v=20261125-v1-phase3";
+import { carbonRates, argonRates, flashRates, hydrogenRates } from "./model-prices.js?v=20261125-v1";
 
 export const READERS = [
   // Method 100: one page image per call, the page's regions listed in the prompt (webapp/README.md, "Reading a page").
@@ -21,15 +21,6 @@ export const READERS = [
   { id: "vision-document", label: "Cloud Vision · Document Text Detection", provider: "vision", model: "DOCUMENT_TEXT_DETECTION", formatting: false, usd_per_page: 0.0015 },
 ];
 
-export const DEFAULT_TRANSCRIPTION_REFERENCE = "argon-high";
-
-export const STRUCTURER = { id: "argon-structure", label: "Gemini 4 Argon · high thinking", provider: "gemini", model: "gemini-4-argon", thinking: "high", rates: argonRates };
-export const STRUCTURERS = [STRUCTURER,
-  { ...READERS.find(r => r.id === "argon-low"), id: "argon-low-structure" },
-  { ...READERS.find(r => r.id === "flash-low"), id: "flash-structure" },
-  { ...READERS.find(r => r.id === "flash-lite"), id: "flash-lite-structure" },
-  { id: "terra-structure", label: "GPT-6.1 Terra · reasoning off", provider: "openai", model: "gpt-6.1-terra", reasoning: "none" },
-];
 export const OCR_LANGUAGES = [
   ["eng", "English"], ["kan+eng", "Kannada and English"], ["san+eng", "Sanskrit in Devanagari and English"],
 ];
@@ -40,27 +31,14 @@ export function readerById(id) {
   return reader;
 }
 
-export function structurerById(id = STRUCTURER.id) {
-  const profile = STRUCTURERS.find(profile => profile.id === id);
-  if (!profile) throw new Error(`Unknown schema assignment model ${id}`);
-  return profile;
-}
-
-// Keep the original Argon-high path so existing trials remain available.
-export function structurePath(pid, reader, structurer = STRUCTURER.id) {
-  return structurer === STRUCTURER.id ? `work/structures/${pid}/${reader}.json` : `work/structures/${pid}/${reader}/${structurer}.json`;
-}
-
 export function readerOptions(value = {}, types = {}) {
   const reader = value.reader || "argon-low";
   readerById(reader);
-  const structurer = value.structurer || STRUCTURER.id;
-  structurerById(structurer);
   const languages = (types.languages || []).map(language => language.split("-")[0]);
   const ocrLanguages = value.ocr_languages || (languages.includes("kn") ? "kan+eng" : languages.includes("sa") ? "san+eng" : "eng");
   if (!OCR_LANGUAGES.some(([id]) => id === ocrLanguages)) throw new Error("Choose one of the included OCR language packs.");
   if (value.finder) finderById(value.finder);
-  return { reader, ocr_languages: ocrLanguages, structurer, ...(value.finder ? { finder: value.finder } : {}) };
+  return { reader, ocr_languages: ocrLanguages, ...(value.finder ? { finder: value.finder } : {}) };
 }
 
 export function readerPrice(profile, at = new Date().toISOString()) {
@@ -79,39 +57,6 @@ export function usageCost(usage, profile, at) {
     (usage.total_output_tokens + usage.total_thought_tokens) * rates.output) / 1e6;
 }
 
-// Estimate each stage from its available samples. Repair charges stay in the actual-spend ledger.
-export function bookCostEstimate(samples, pageCount) {
-  const counts = {}, totals = {}, missing = [];
-  if (!Number.isSafeInteger(pageCount) || pageCount <= 0) return { total: null, known_total: null, counts, missing, invalid_page_count: true };
-  for (const stage of ["regions", "reading", "structure"]) {
-    const costs = samples.filter(sample => stage !== "reading" || !sample.reading?.partial)
-      .map(sample => sample[stage]?.cost_usd).filter(value => Number.isFinite(value) && value >= 0);
-    counts[stage] = costs.length;
-    if (costs.length) totals[stage] = costs.reduce((sum, value) => sum + value, 0) / costs.length * pageCount;
-    else missing.push(stage);
-  }
-  const known = Object.values(totals);
-  const knownTotal = known.length ? known.reduce((sum, value) => sum + value, 0) : null;
-  return { total: missing.length ? null : knownTotal, known_total: knownTotal, counts, missing };
-}
-
-export function projectBookCost(samples, pageCount) {
-  return bookCostEstimate(samples, pageCount).total;
-}
-
-// A repaired reading retains its original whole-page call in history, which still supplies a price sample.
-export async function wholePageReading(book, reading) {
-  const source = reading, seen = new Set();
-  while (reading?.partial) {
-    const path = reading.previous_reading;
-    if (!path || seen.has(path)) return null;
-    seen.add(path);
-    reading = await book.readWork(path);
-    if (reading?.image_sha256 !== source.image_sha256 || reading?.profile?.id !== source.profile?.id) return null;
-  }
-  return reading || null;
-}
-
 export function geminiReadingRequest(profile, input, schema, maxOutputTokens = 32768) {
   if (profile.provider !== "gemini") throw new Error("This transcription model runs locally.");
   return {
@@ -120,12 +65,4 @@ export function geminiReadingRequest(profile, input, schema, maxOutputTokens = 3
     response_format: { type: "text", mime_type: "application/json", schema },
     service_tier: "standard", store: false,
   };
-}
-
-export function structureRequest(profile, prompt, input, schema) {
-  if (profile.provider === "gemini") return geminiReadingRequest(profile,
-    [{ type: "text", text: prompt }, { type: "text", text: JSON.stringify(input) }], schema, 16384);
-  return { model: profile.model, reasoning: { effort: profile.reasoning }, store: false, max_output_tokens: 16384,
-    input: [{ role: "user", content: [{ type: "input_text", text: prompt }, { type: "input_text", text: JSON.stringify(input) }] }],
-    text: { format: { type: "json_schema", name: "page_structure", strict: true, schema } } };
 }

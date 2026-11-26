@@ -2,8 +2,8 @@
 // the region call's request and the scaling of its boxes (042), the region records the local step gives (043), the
 // transcription call's request (055), and the page document built from its answer (055's pagedoc.py).
 
-import { regionClasses, regionTypeEnum, regionCaption } from "./prompts.js?v=20261125-v1-phase3";
-import { parseLine } from "../inline.js?v=20261125-v1-phase3";
+import { regionClasses, regionTypeEnum, regionCaption } from "./prompts.js?v=20261125-v1";
+import { parseLine } from "../inline.js?v=20261125-v1";
 
 export const SETTINGS = {
   regions: { model: "gpt-6.1-terra", reasoning_effort: "none", image_detail: "original", max_output_tokens: 16384, store: false },
@@ -91,62 +91,6 @@ export const linePieces = region => region.lines.filter(L => L.polygons && L.pol
 });
 
 // Regions to transcribe, in reading order, then the unordered ones by id (055's select_regions).
-export function selectRegions(records) {
-  const sent = [], skipped = [];
-  for (const r of records) {
-    const pieces = linePieces(r);
-    if (r.status !== "ok" || !r.polygons.length || !pieces.length) { skipped.push({ region_id: r.region_id, type: r.type, status: r.status }); continue; }
-    sent.push({ rid: `r${r.region_id}`, region: r, line_ids: pieces.map(p => p[0]) });
-  }
-  sent.sort((a, b) => (a.region.reading_order === null) - (b.region.reading_order === null) || (a.region.reading_order || 0) - (b.region.reading_order || 0) || a.region.region_id - b.region.region_id);
-  return { sent, skipped };
-}
-
-// The last (which "last") or first text region of each stream, main text and notes (055's edge_regions).
-export function edgeRegions(records, tl, which) {
-  const furniture = new Set(Object.entries(tl.types).filter(([, t]) => t.role === "furniture").map(([n]) => n));
-  const cand = records.filter(r => r.status === "ok" && r.polygons.length && r.reading_order !== null && !furniture.has(r.type) && r.type !== "other" && linePieces(r).length);
-  const out = {};
-  for (const stream of ["main", "notes"]) {
-    const rs = cand.filter(r => (r.region_class === "note") === (stream === "notes"));
-    if (rs.length) out[stream] = rs.reduce((a, b) => (which === "last" ? (b.reading_order > a.reading_order ? b : a) : (b.reading_order < a.reading_order ? b : a)));
-  }
-  return out;
-}
-
-// The request's content, in method 055's order. images: {overview, cutouts: {rid: dataUrl}, context: [{side, stream, type, dataUrl}],
-// missing: {previous: text, next: text}}.
-export function transcriptionContent(prompt, sent, images) {
-  const content = [{ type: "input_text", text: prompt }, { type: "input_text", text: "The whole page, with the regions outlined:" },
-    { type: "input_image", image_url: images.overview }];
-  for (const s of sent) {
-    content.push({ type: "input_text", text: regionCaption(s.rid, s.region.type, s.line_ids.length) });
-    content.push({ type: "input_image", image_url: images.cutouts[s.rid] });
-  }
-  content.push({ type: "input_text", text: "Context from the neighboring pages, not part of this page:" });
-  for (const side of ["previous", "next"]) {
-    const items = images.context.filter(c => c.side === side);
-    if (images.missing[side]) content.push({ type: "input_text", text: images.missing[side] });
-    for (const c of items) {
-      const what = side === "previous" ? "end" : "start";
-      content.push({ type: "input_text", text: `The ${what} of the ${side} page's ${c.stream === "main" ? "main text" : "notes"} (from a ${c.type} region):` });
-      content.push({ type: "input_image", image_url: c.dataUrl });
-    }
-  }
-  return content;
-}
-
-export function geminiRequest(content, schema) {
-  const c = SETTINGS.transcription;
-  const input = content.map(x => (x.type === "input_text" ? { type: "text", text: x.text }
-    : { type: "image", data: x.image_url.split(",", 2)[1], mime_type: "image/png", resolution: c.image_resolution }));
-  return { model: c.model, input,
-    generation_config: { thinking_level: c.thinking_level, thinking_summaries: "none", max_output_tokens: c.max_output_tokens },
-    response_format: { type: "text", mime_type: "application/json", schema }, service_tier: "standard", store: false };
-}
-
-// ---------------------------------------------------------------- method 055: the page document (pagedoc.build)
-
 const DIGITS = Object.fromEntries([..."०१२३४५६७८९"].map((d, i) => [d, String(i)]).concat([..."೦೧೨೩೪೫೬೭೮೯"].map((d, i) => [d, String(i)])));
 
 export function pageLabel(regions) {

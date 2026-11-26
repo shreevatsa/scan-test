@@ -2,7 +2,7 @@
 // prompt.py (the region call) and method 055's prompt.py (the transcription call), with the same templates
 // (webapp/pipeline/*.txt, copies of the methods' files). A test checks that they give the same text as Python.
 
-import { finderTypeList } from "../chaya-book.js?v=20261125-v1-phase3";
+import { finderTypeList } from "../chaya-book.js?v=20261125-v1";
 
 // ---------------------------------------------------------------- the region call (method 042)
 
@@ -117,40 +117,6 @@ function relationLines(tl) {
   return out.join("\n") + "\n";
 }
 
-export function transcriptionPrompt(tl, template) {
-  const conventions = (tl.conventions && tl.conventions.length) ? tl.conventions : ["Transcribe as printed, in Unicode NFC."];
-  return template.replace("<<BOOK>>", bookLine(tl))
-    .replace("<<CONVENTIONS>>", conventions.map(c => "  - " + c).join("\n"))
-    .replace("<<TYPES>>", unitTypeLines(tl))
-    .replace("<<FURNITURE>>", furnitureTypes(tl).join(", ") || "none in this book")
-    .replace("<<FLOWS>>", Object.entries(tl.flows).map(([k, v]) => `  - ${k}: ${v}`).join("\n"))
-    .replace("<<RELATIONS>>\n", relationLines(tl));
-}
-
 export const regionCaption = (rid, type, n) => `${rid}: ${type}, ${n} line${n !== 1 ? "s" : ""}`;
 
 // Method 052's schema: regions as a list with ids from the page's region ids, and free line counts.
-export function transcriptionSchema(tl, regionIds) {
-  const item = {
-    type: "object", additionalProperties: false, required: ["id", "type", "lines", "uncertain", "note"],
-    properties: {
-      id: { type: "string", enum: regionIds },
-      type: { enum: regionTypeEnum(tl) },
-      lines: { type: "array", items: { type: "object", additionalProperties: false, required: ["n", "text", "end"],
-        properties: { n: { type: "integer" }, text: { type: "string" }, end: { enum: ENDS } } } },
-      uncertain: { type: "boolean" },
-      note: { type: ["string", "null"] },
-    },
-  };
-  const unit = { type: "object", additionalProperties: false, required: ["id", "type", "number", "label", "open_start", "open_end", "children"],
-    properties: { id: { type: "string" }, type: { enum: unitTypes(tl) }, number: { type: ["string", "null"] }, label: { type: ["string", "null"] },
-                  open_start: { type: "boolean" }, open_end: { type: "boolean" }, children: { type: "array", items: { type: "string" } } } };
-  const flow = { type: "object", additionalProperties: false, required: ["flow", "units"],
-    properties: { flow: { enum: Object.keys(tl.flows) }, units: { type: "array", items: { type: "string" } } } };
-  const props = { regions: { type: "array", items: item }, units: { type: "array", items: unit }, flows: { type: "array", items: flow } };
-  if (tl.relations && Object.keys(tl.relations).length) {
-    props.relations = { type: "array", items: { type: "object", additionalProperties: false, required: ["type", "region", "line", "marker", "to"],
-      properties: { type: { enum: Object.keys(tl.relations) }, region: { type: "string" }, line: { type: "integer" }, marker: { type: "string" }, to: { type: "string" } } } };
-  }
-  return { type: "object", additionalProperties: false, required: Object.keys(props), properties: props };
-}

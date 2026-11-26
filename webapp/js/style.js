@@ -1,4 +1,4 @@
-// Styles (schema 0.3): how a unit or line piece is printed, from the book's style sheet (base, then its type) and
+// Styles: how a unit or line piece is printed, from the book's style sheet (base, then its type) and
 // its own style. Presentation only: the reader's "as printed" view and the HTML export use it; the structure and
 // the text do not depend on it. Lengths are points of the printed page, scaled by the CSS variable --pt.
 

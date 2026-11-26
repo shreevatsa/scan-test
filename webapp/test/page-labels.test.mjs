@@ -1,7 +1,7 @@
 // Printed page numbers misread from the scan, settled by their neighbours (reading.js settleLabels).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { settleLabels } from "../js/reading.js";
+import { settleLabels } from "../js/structure-rules.js";
 
 const pages = labels => labels.map((label, i) => label === undefined ? null : { page: { id: `p${i}`, ...(label === "" ? {} : { label }) } });
 const labels = docs => docs.map(doc => doc?.page.label);

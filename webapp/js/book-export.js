@@ -1,8 +1,8 @@
-import { assemble } from "./book.js?v=20261125-v1-phase3";
-import { bookDocument, bookText } from "./reader.js?v=20261125-v1-phase3";
-import { verseExport } from "./verses.js?v=20261125-v1-phase3";
-import { fileStem } from "./store.js?v=20261125-v1-phase3";
-import { h } from "./render.js?v=20261125-v1-phase3";
+import { assemble } from "./book.js?v=20261125-v1";
+import { bookDocument, bookText } from "./reader.js?v=20261125-v1";
+import { verseExport } from "./verses.js?v=20261125-v1";
+import { fileStem } from "./store.js?v=20261125-v1";
+import { h } from "./render.js?v=20261125-v1";
 
 const text = (value, mime) => new Blob([value], { type: mime });
 const json = value => text(JSON.stringify(value, null, 2) + "\n", "application/json");

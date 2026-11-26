@@ -1,6 +1,6 @@
-// Independent reading and structuring contracts. Only the reader supplies printed text.
-import { transcriptionSchema, regionCaption } from "./prompts.js?v=20261125-v1-phase3";
-import { parseLine } from "../inline.js?v=20261125-v1-phase3";
+// Reading requests and response checks.
+import { regionCaption } from "./prompts.js?v=20261125-v1";
+import { parseLine } from "../inline.js?v=20261125-v1";
 
 export const SPLIT_VERSION = "reading-and-structure-v1";
 
@@ -136,55 +136,6 @@ export function checkReading(parsed, sent) {
     if (typeof region.uncertain !== "boolean" || !(region.note === null || typeof region.note === "string")) throw new Error(`Invalid reading metadata for ${region.id}.`);
   }
   return parsed;
-}
-
-export function combineReading(reading, structure, sent, types = null) {
-  checkReading(reading, sent);
-  if (!structure || !Array.isArray(structure.regions) || !Array.isArray(structure.units) || !Array.isArray(structure.flows)) throw new Error("The structure response is incomplete.");
-  const reads = new Map(reading.regions.map(r => [r.id, r]));
-  const seen = new Set();
-  const regions = structure.regions.map(r => {
-    const s = sent.find(s => s.rid === r.id);
-    if (!s || seen.has(r.id)) throw new Error(`Unexpected or repeated structure region ${r.id}.`);
-    if (types && !(types.types[r.type]?.region || types.types[r.type]?.role === "furniture")) throw new Error(`Invalid printed type ${r.type} for ${r.id}.`);
-    seen.add(r.id);
-    if (!Array.isArray(r.ends) || r.ends.length !== s.line_ids.length || r.ends.some(e => !["space", "hyphen", "join", "line"].includes(e))) throw new Error(`${r.id} has invalid line-end joins.`);
-    const reading = reads.get(r.id);
-    return { id: r.id, type: r.type,
-      lines: (reading?.lines || []).map((L, i) => ({ n: L.n, text: L.text, end: r.ends[i] })),
-      uncertain: Boolean(r.uncertain || reading?.uncertain),
-      note: [reading?.note, r.note].filter(Boolean).join("; ") || null };
-  });
-  if (seen.size !== sent.length) throw new Error("The structure response omitted page regions.");
-  return { ...structure, regions };
-}
-
-export function readingFromDocument(doc, records, profile = "existing") {
-  const regions = records.filter(s => s.line_ids.length).map(s => {
-    const r = doc.page.regions.find(r => r.id === s.rid);
-    return { id: s.rid, uncertain: false, note: null, lines: s.line_ids.map((id, i) => {
-      const line = r?.lines.find(L => L.line === id);
-      return { n: i + 1, text: markedText(line || { text: "" }) };
-    }) };
-  });
-  return { profile, regions };
-}
-
-// The model-facing notation for saved spans, including markers at their printed position.
-export function markedText(line) {
-  const chars = Array.from(line.text || "");
-  const tags = { bold: "b", italic: "i", small_caps: "sc", superscript: "sup", subscript: "sub" };
-  let out = "", opened = [];
-  for (let i = 0; i <= chars.length; i++) {
-    const active = (line.spans || []).filter(s => tags[s.kind] && s.start <= i && i < s.end).map(s => tags[s.kind]);
-    if (active.join() !== opened.join()) {
-      out += [...opened].reverse().map(t => `</${t}>`).join("") + active.map(t => `<${t}>`).join("");
-      opened = active;
-    }
-    for (const marker of (line.spans || []).filter(s => s.kind === "note_marker" && s.start === i)) out += `[${marker.marker}]`;
-    if (i < chars.length) out += chars[i];
-  }
-  return out;
 }
 
 export function plainReading(raw) {

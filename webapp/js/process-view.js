@@ -1,7 +1,7 @@
-import { h } from "./render.js?v=20261125-v1-phase3";
-import { pageCaption } from "./bookchecks.js?v=20261125-v1-phase3";
-import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261125-v1-phase3";
-import { dollars } from "./recipe.js?v=20261125-v1-phase3";
+import { h } from "./render.js?v=20261125-v1";
+import { pageCaption } from "./bookchecks.js?v=20261125-v1";
+import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261125-v1";
+import { dollars } from "./recipe.js?v=20261125-v1";
 
 const button = (text, attrs) => h("button", { type: "button", ...attrs }, text);
 const frame = () => new Promise(requestAnimationFrame);

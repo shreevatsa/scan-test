@@ -1,5 +1,5 @@
-import { canonical } from "../ops.js?v=20261125-v1-phase3";
-import { selectPageRegions, checkReading } from "./split.js?v=20261125-v1-phase3";
+import { canonical } from "../ops.js?v=20261125-v1";
+import { selectPageRegions, checkReading } from "./split.js?v=20261125-v1";
 
 export function regionGeometry(source) {
   return { id: source.rid, polygons: source.region.polygons,
@@ -55,12 +55,4 @@ export function partTotals(parts, field) {
   const unique = [...new Map(parts.map(part => [part.path, part])).values()];
   return unique.every(part => Number.isFinite(part[field]) && part[field] >= 0)
     ? unique.reduce((total, part) => total + part[field], 0) : null;
-}
-
-// A repair to the same model preserves the page's other text, including human corrections.
-export function partialTextScope(current, reading) {
-  const model = current?.source?.layers?.text?.made_by || current?.source?.reader?.id;
-  if (!reading.partial || model !== reading.profile?.id) return null;
-  const missing = current.page.regions.filter(region => region.lines?.some(line => line.polygons?.length && line.text === undefined));
-  return [...new Set([...(reading.region_ids || []), ...missing.map(region => region.id)])];
 }

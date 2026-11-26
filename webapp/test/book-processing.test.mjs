@@ -90,3 +90,26 @@ test("closing-line rules retain episodes when the book also has printed headings
   assert.equal(Object.values(stored.containers).filter(container => container.number != null).length, 2);
   assert.equal(B.regionAt(stored, "1/v1").in.length, 2);
 });
+
+test("a verse group marker read on the verse's last line becomes its own stored region", () => {
+  const book = { chaya: 1, title: "An invented book",
+    types: { verse: { lines: true }, verse_group_marker: { lines: true } },
+    pages: [scan(1, [
+      region("r1", "verse", "First verse ॥ १ ॥"),
+      { id: "r2", type: "verse", box: [0.1, 0.25, 0.9, 0.4], lines: [
+        { text: "Second verse ॥ २ ॥", box: [0.1, 0.25, 0.9, 0.31] },
+        { text: "(युगलकम्)", box: [0.72, 0.35, 0.9, 0.4] },
+      ] },
+      region("r4", "?", "Unassigned area"),
+    ])] };
+  const output = findStructure(book), regions = output.pages[0].regions;
+  assert.equal(regions.length, 4);
+  const marker = regions.find(value => value.type === "verse_group_marker");
+  assert.notEqual(marker.id, "r4");
+  assert.equal(marker.lines[0].text, "(युगलकम्)");
+  assert.equal(regions.find(value => value.id === "r2").lines.length, 1);
+  const group = output.containers[marker.in[0]];
+  assert.equal(group.type, "verse_group");
+  assert.equal(group.label, "युगलकम्");
+  assert.equal(B.assemble(output).book.units.filter(value => value.type === "verse").length, 2);
+});

@@ -3,10 +3,10 @@
 // pieces for a list of boxes.
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
 
-import { analyzePage } from "./ink.js?v=20261125-v1-phase3";
-import { regionsFromBoxes } from "./regions.js?v=20261125-v1-phase3";
-import { LINES, OWNERSHIP } from "./config.js?v=20261125-v1-phase3";
-import { lineBlocks } from "./blocks.js?v=20261125-v1-phase3";
+import { analyzePage } from "./ink.js?v=20261125-v1";
+import { regionsFromBoxes } from "./regions.js?v=20261125-v1";
+import { LINES, OWNERSHIP } from "./config.js?v=20261125-v1";
+import { lineBlocks } from "./blocks.js?v=20261125-v1";
 
 const cache = new Map();
 
@@ -24,7 +24,7 @@ async function grayOf(url) {
 }
 
 onmessage = async e => {
-  const { id, pid, url, boxes } = e.data;
+  const { id, pid, url, boxes, measureRules } = e.data;
   const t0 = performance.now();
   try {
     const key = `${pid}:${url}`;
@@ -47,7 +47,7 @@ onmessage = async e => {
       return;
     }
     const blocks = boxes === null ? lineBlocks(a) : null;
-    const { geometry, uncovered } = regionsFromBoxes(a, blocks ? blocks.map(block => block.box) : boxes, OWNERSHIP);
+    const { geometry, uncovered } = regionsFromBoxes(a, blocks ? blocks.map(block => block.box) : boxes, OWNERSHIP, measureRules);
     postMessage({ id, geometry, uncovered, blocks, method: "094-illumination-flattened-ink", charH: a.charH, angle: a.angle, lines: a.seg.lines.length, seconds: (performance.now() - t0) / 1000 });
   } catch (err) {
     postMessage({ id, error: err.message });

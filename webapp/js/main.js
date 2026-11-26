@@ -1,13 +1,13 @@
-import { bookCredentials } from "./book-credentials.js?v=20261125-v1-phase3";
-import { openExport } from "./book-export.js?v=20261125-v1-phase3";
-import { openSettings } from "./book-settings.js?v=20261125-v1-phase3";
-import { openProcess } from "./process-view.js?v=20261125-v1-phase3";
-import { h, cropInto } from "./render.js?v=20261125-v1-phase3";
-import * as B from "./book.js?v=20261125-v1-phase3";
-import { ScanView } from "./bookview.js?v=20261125-v1-phase3";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261125-v1-phase3";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261125-v1-phase3";
-import { baseCss } from "./style.js?v=20261125-v1-phase3";
+import { bookCredentials } from "./book-credentials.js?v=20261125-v1";
+import { openExport } from "./book-export.js?v=20261125-v1";
+import { openSettings } from "./book-settings.js?v=20261125-v1";
+import { openProcess } from "./process-view.js?v=20261125-v1";
+import { h, cropInto } from "./render.js?v=20261125-v1";
+import * as B from "./book.js?v=20261125-v1";
+import { ScanView } from "./bookview.js?v=20261125-v1";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261125-v1";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261125-v1";
+import { baseCss } from "./style.js?v=20261125-v1";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -79,7 +79,7 @@ class App {
       h("div", { class: "v1-open" }, button("Open PDF…", () => file.click(), { class: "primary" }), file, form),
       status, h("section", {}, h("h2", {}, "Books in this browser"), list),
       h("section", {}, h("h2", {}, "Examples"), examples),
-      h("footer", {}, h("a", { href: PREVIOUS }, "Previous version for books in the old format"))));
+      h("footer", {}, h("a", { href: PREVIOUS }, "The previous version, for books in the old format"))));
     try {
       const books = await browserBooks();
       list.replaceChildren(...books.map(book => h("div", { class: "v1-book-row" },
@@ -101,14 +101,13 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261125-v1", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {
-        const legacy = book.url && !new URL(book.url).pathname.startsWith("/v1/");
         const url = book.url ?? new URL(`../examples/${book.file}`, import.meta.url).href;
-        examples.append(h("a", { class: "v1-example", href: `${legacy ? PREVIOUS : ""}?book=${encodeURIComponent(url)}` },
-          h("strong", {}, book.title), h("span", {}, book.blurb), legacy ? h("small", {}, "Previous version") : null));
+        examples.append(h("a", { class: "v1-example", href: `?book=${encodeURIComponent(url)}` },
+          h("strong", {}, book.title), h("span", {}, book.blurb)));
       }
     } catch { examples.append(h("p", { class: "v1-muted" }, "Examples are unavailable.")); }
   }

@@ -1,5 +1,5 @@
 // Project the stored structure into the page-document interface used by the reader.
-import { boxRing } from "./ops.js?v=20261125-v1-phase3";
+import { boxRing } from "./ops.js?v=20261125-v1";
 
 export function effectiveEnd(line, type) {
   if (line.end != null) return line.end;
@@ -37,7 +37,8 @@ export function finderTypeList(book) {
   const tl = pageTypes(book);
   for (const [name, region] of Object.entries(book.reading?.finder_classes ?? {}))
     if (Object.hasOwn(tl.types, name)) tl.types[name].region = region;
-  return { ...tl, title: book.title, description: book.description, languages: book.languages, conventions: book.conventions };
+  return { ...tl, title: book.title, description: book.description, languages: book.languages,
+    conventions: Array.isArray(book.conventions) ? book.conventions : Object.values(book.conventions ?? {}).filter(value => typeof value === "string") };
 }
 
 export function toPageDocs(book) {
@@ -68,7 +69,7 @@ export function toPageDocs(book) {
     if (!page.regions) { closeContinuations(); docs.push(null); return; }
     const id = page.id ?? String(index + 1), [width, height] = page.size ?? [10000, 10000];
     const pixels = ([x0, y0, x1, y1]) => [Math.round(x0 * width), Math.round(y0 * height), Math.round(x1 * width), Math.round(y1 * height)];
-    const doc = { schema_version: "0.3", joinsResolved: true,
+    const doc = { joinsResolved: true,
       page: { id, width, height, regions: [], ...(page.label != null ? { label: page.label } : {}) },
       units: [], flows: Object.fromEntries(Object.keys(types.flows).map(flow => [flow, []])), relations: [] };
     docs.push(doc);
