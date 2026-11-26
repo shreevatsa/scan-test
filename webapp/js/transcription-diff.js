@@ -1,6 +1,6 @@
 // Display differences without separating vowel signs or Indic consonant conjuncts.
-import { parseLine } from "./inline.js";
-import { esc, lineHtml } from "./render.js";
+import { parseLine } from "./inline.js?v=20261125-v1-phase3";
+import { esc, lineHtml } from "./render.js?v=20261125-v1-phase3";
 
 const SEGMENTER = typeof Intl.Segmenter === "function" ? new Intl.Segmenter(undefined, { granularity: "grapheme" }) : null;
 // Unicode 18.0 Indic_Syllabic_Category values Virama and Invisible_Stacker.

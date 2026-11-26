@@ -1,4 +1,4 @@
-import { h } from "./render.js";
+import { h } from "./render.js?v=20261125-v1-phase3";
 
 export function runProgress(label) {
   let total = 0, processed = 0, reused = 0, failed = 0, skipped = 0, started = 0, timer = null;

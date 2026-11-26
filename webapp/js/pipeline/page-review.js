@@ -1,11 +1,11 @@
-import { makeValidator } from "../schema.js?v=20261125-leaveout-3";
-import { REGION_CLASSES } from "../book-types.js?v=20261125-leaveout-3";
-import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261125-leaveout-3";
-import { finderById } from "./finders.js?v=20261125-leaveout-3";
-import { finderRequest } from "./finder-requests.js?v=20261125-leaveout-3";
-import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261125-leaveout-3";
-import { templates, jsonHash } from "./run.js?v=20261125-leaveout-3";
-import { sha256hex } from "../chayapdf.js";
+import { makeValidator } from "../schema.js?v=20261125-v1-phase3";
+import { REGION_CLASSES } from "../book-types.js?v=20261125-v1-phase3";
+import { revisedTypeList, resolveTypeName, mappedTypeNames } from "../type-revisions.js?v=20261125-v1-phase3";
+import { finderById } from "./finders.js?v=20261125-v1-phase3";
+import { finderRequest } from "./finder-requests.js?v=20261125-v1-phase3";
+import { scaleRegions, regionRecords, openaiCost } from "./steps.js?v=20261125-v1-phase3";
+import { templates, jsonHash } from "./run.js?v=20261125-v1-phase3";
+import { sha256hex } from "../chayapdf.js?v=20261125-v1-phase3";
 
 export const PAGE_REVIEW_MODELS = [
   { ...finderById("terra-regions"), id: "terra-page-review", method: "087-terra-page-region-review" },

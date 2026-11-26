@@ -1,6 +1,6 @@
 // Tesseract runs in a local worker using bundled engine and language assets.
-import { bbox } from "../render.js";
-import { tesseractBlocks } from "../local/blocks.js?v=20261125-leaveout-3";
+import { bbox } from "../render.js?v=20261125-v1-phase3";
+import { tesseractBlocks } from "../local/blocks.js?v=20261125-v1-phase3";
 
 let workerPromise = null, workerLanguages = null, queue = Promise.resolve();
 
@@ -10,7 +10,7 @@ async function workerFor(languages, progress) {
     workerPromise = null;
   }
   if (!workerPromise) {
-    const { default: { createWorker } } = await import("../../vendor/tesseract-6.0.1/tesseract.esm.min.js");
+    const { default: { createWorker } } = await import("../../vendor/tesseract-6.0.1/tesseract.esm.min.js?v=20261125-v1-phase3");
     const base = new URL("../../vendor/tesseract-6.0.1/", import.meta.url).href;
     workerLanguages = languages;
     workerPromise = createWorker(languages, 1, {

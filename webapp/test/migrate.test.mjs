@@ -49,7 +49,10 @@ test("the migration preserves joined prose, numbered groups, linked footnotes an
       { type: "note", from: { anchor: "second#m4", marker: "*", region: "second#r2", line: 1 }, to: { unit: "n" } },
     ]),
   };
+  files["book.json"] = { ...files["book.json"], title: "Internal run name" };
+  files["types.json"] = { ...files["types.json"], title: "Printed edition" };
   const { book, report } = migrateFiles(files);
+  assert.equal(book.title, "Printed edition");
   assert.equal(report.passed, true, JSON.stringify(report.comparisons));
   assert.equal(book.pages[0].regions.find(r => r.id === "r1").continues, true);
   assert.equal(book.pages[0].regions.find(r => r.id === "r1").lines[0].end, "space");

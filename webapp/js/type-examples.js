@@ -1,4 +1,4 @@
-import { bbox } from "./render.js";
+import { bbox } from "./render.js?v=20261125-v1-phase3";
 
 // Printed types use their regions. Container examples include every descendant region on that page.
 export function typeExampleIndex(docs, types) {

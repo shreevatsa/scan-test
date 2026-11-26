@@ -3,10 +3,10 @@
 // is checked against the schema as it is made; "Save" writes it with the book (style.json in a folder, or this
 // browser for a book opened by URL). Units' and line pieces' own styles are edited in the page view.
 
-import { h, esc } from "./render.js";
-import { prepare, bookHtml, fillFigures } from "./reader.js?v=20261125-leaveout-3";
-import { readThroughBlocks } from "./reading.js?v=20261125-leaveout-3";
-import { baseCss } from "./style.js";
+import { h, esc } from "./render.js?v=20261125-v1-phase3";
+import { prepare, bookHtml, fillFigures } from "./reader.js?v=20261125-v1-phase3";
+import { readThroughBlocks } from "./reading.js?v=20261125-v1-phase3";
+import { baseCss } from "./style.js?v=20261125-v1-phase3";
 
 const clone = x => JSON.parse(JSON.stringify(x));
 const canonical = x => JSON.stringify(x, (k, v) => (v && typeof v === "object" && !Array.isArray(v)

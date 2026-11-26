@@ -1,4 +1,10 @@
 // Scan checks are derived from the visible reading and never written into the book.
+export const areaTitle = region => region.proposed ? `May be a new type: ${region.proposed.replaceAll("_", " ")}` : "Needs a type";
+
+export function pageCaption(page) {
+  const scan = `PDF page ${page.pdf_page}`;
+  return page.label == null || page.label === "" ? scan : `p. ${page.label} · ${scan}`;
+}
 export function checksFor(book) {
   const available = new Map(), notes = [], sources = [], checks = book.pages.map(() => []);
   for (const [index, page] of book.pages.entries()) {
@@ -7,7 +13,7 @@ export function checksFor(book) {
       const address = `${index + 1}/${region.id}`, type = book.types[region.type] ?? {};
       if (region.ignored || type.ignored) continue;
       if (region.type === "?") {
-        checks[index].push({ kind: "type", address, title: region.proposed ? `Proposed type: ${region.proposed.replaceAll("_", " ")}` : "This area needs a type" });
+        checks[index].push({ kind: "type", address, title: areaTitle(region) });
         continue;
       }
       available.set(address, type);

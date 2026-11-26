@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { checksFor } from "../js/bookchecks.js";
+import { areaTitle, checksFor, pageCaption } from "../js/bookchecks.js";
 
 test("checks resolve against the live book while skipped and ignored regions stay out", () => {
   const book = { types: { paragraph: {}, footnote: { flow: "notes" }, stamp: { ignored: true } }, pages: [
@@ -21,4 +21,11 @@ test("checks resolve against the live book while skipped and ignored regions sta
     [["type", "1/a", undefined], ["uncertain", "1/b", undefined], ["unread", "1/b", 0], ["marker", "1/b", 1]]);
   assert.deepEqual(results[1].map(({ kind, address }) => [kind, address]), [["note", "2/u"]]);
   assert.deepEqual(results[2], []);
+});
+
+test("book view labels use printed page numbers and plain type decisions", () => {
+  assert.equal(pageCaption({ label: "137", pdf_page: 139 }), "p. 137 · PDF page 139");
+  assert.equal(pageCaption({ pdf_page: 8 }), "PDF page 8");
+  assert.equal(areaTitle({}), "Needs a type");
+  assert.equal(areaTitle({ proposed: "ownership_stamp" }), "May be a new type: ownership stamp");
 });

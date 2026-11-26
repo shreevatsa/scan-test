@@ -163,7 +163,7 @@ function makeBook(original, effective, docs, assembled, oldTypes) {
   const unplaceable = [], retyped = [];
   const format = formatTypes(rawTypes, manifest.rules);
   const skipped = new Set(manifest.skipped);
-  const book = { chaya: 1, title: manifest.title ?? oldTypes.title,
+  const book = { chaya: 1, title: oldTypes.title?.trim() || manifest.title,
     ...pick(oldTypes, ["description", "languages", "conventions", "flows", "relations"]),
     ...pick(manifest, ["description", "languages", "conventions"]),
     types: format.types, rules: format.rules,

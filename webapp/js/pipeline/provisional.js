@@ -1,5 +1,5 @@
-import { typeRevision } from "../schema.js?v=20261125-leaveout-3";
-import { selectPageRegions } from "./split.js";
+import { typeRevision } from "../schema.js?v=20261125-v1-phase3";
+import { selectPageRegions } from "./split.js?v=20261125-v1-phase3";
 
 export function regionTypePaths(types) {
   const definitions = types.types, paths = new Map(), queue = [];

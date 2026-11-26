@@ -1,6 +1,6 @@
 // Independent reading and structuring contracts. Only the reader supplies printed text.
-import { transcriptionSchema, regionCaption } from "./prompts.js";
-import { parseLine } from "../inline.js";
+import { transcriptionSchema, regionCaption } from "./prompts.js?v=20261125-v1-phase3";
+import { parseLine } from "../inline.js?v=20261125-v1-phase3";
 
 export const SPLIT_VERSION = "reading-and-structure-v1";
 

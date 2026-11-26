@@ -5,7 +5,7 @@
 // or selected an × that leaves it out of the book; an area left out stays on the scan, grey, with a ↺ that brings it
 // back.
 
-import { bbox, pathD } from "./render.js";
+import { bbox, pathD } from "./render.js?v=20261125-v1-phase3";
 
 // Figures use the full image crop in Read and HTML export. Text outlines describe detected ink.
 export function regionPath(region, regionClass) {
@@ -174,7 +174,7 @@ export class PageView {
     for (const [index, omitted] of (doc.source?.omitted_regions || []).entries()) if (omitted.box) {
       const [x1, y1, x2, y2] = omitted.box;
       const rect = svgEl("rect", { x: x1, y: y1, width: x2 - x1, height: y2 - y1, class: "pv-omitted", fill: `url(#${omittedHatch})`, "data-omitted": index });
-      const title = svgEl("title"); title.textContent = this.typeLabel ? "Area without a type" : `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`; rect.append(title);
+      const title = svgEl("title"); title.textContent = omitted.label ?? (this.typeLabel ? "Area without a type" : `${omitted.region} needs a type${omitted.proposed_type ? ` (proposed: ${omitted.proposed_type})` : ""}`); rect.append(title);
       rect.addEventListener("click", event => { event.stopPropagation(); this.cb.onSelectOmitted?.(index, { add: event.shiftKey || event.metaKey || event.ctrlKey }); });
       if (omitted.region) this.areaEls[omitted.region] = rect;
       rect.addEventListener("pointerenter", () => {

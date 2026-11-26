@@ -1,13 +1,13 @@
-import { h } from "./render.js";
-import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261125-leaveout-3";
-import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261125-leaveout-3";
-import { settings } from "./store-0.4.js?v=20261125-leaveout-3";
-import { money } from "./reader-controls.js?v=20261125-leaveout-3";
-import { reviewTypeChange } from "./type-operations.js?v=20261125-leaveout-3";
-import { REGION_CLASSES } from "./book-types.js?v=20261125-leaveout-3";
-import { classPicker, defaultClass } from "./class-labels.js?v=20261125-leaveout-3";
-import { reviewPage } from "./review-view.js?v=20261125-leaveout-3";
-import { runProgress } from "./run-progress.js";
+import { h } from "./render.js?v=20261125-v1-phase3";
+import { PAGE_REVIEW_MODELS, requestPageReview, latestPageReview, pendingTypeAdditions, alreadyInBook, pageReviewRegions } from "./pipeline/page-review.js?v=20261125-v1-phase3";
+import { CredentialChecks, stageKeyControls } from "./key-check.js?v=20261125-v1-phase3";
+import { settings } from "./store-0.4.js?v=20261125-v1-phase3";
+import { money } from "./reader-controls.js?v=20261125-v1-phase3";
+import { reviewTypeChange } from "./type-operations.js?v=20261125-v1-phase3";
+import { REGION_CLASSES } from "./book-types.js?v=20261125-v1-phase3";
+import { classPicker, defaultClass } from "./class-labels.js?v=20261125-v1-phase3";
+import { reviewPage } from "./review-view.js?v=20261125-v1-phase3";
+import { runProgress } from "./run-progress.js?v=20261125-v1-phase3";
 
 export async function reviewPageWithAI(app) {
   if (app.workflowBusy || app.outlineBusy || app.maker?.processing) throw new Error("Wait for the active operation before reviewing this page.");

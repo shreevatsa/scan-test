@@ -5,7 +5,7 @@
 // and simplified (Douglas–Peucker) as cv2.findContours and cv2.approxPolyDP do, so vertices may differ slightly
 // from the Python results while the outlines agree.
 
-import { ROLE, components, rotate, unrotate } from "./ink.js";
+import { ROLE, components, rotate, unrotate } from "./ink.js?v=20261125-v1-phase3";
 
 export const UNASSIGNED = -1;
 

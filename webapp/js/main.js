@@ -1,9 +1,9 @@
-import { h, cropInto } from "./render.js";
-import * as B from "./book.js?v=20261125-leaveout-3";
-import { ScanView } from "./bookview.js?v=20261125-leaveout-3";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261125-leaveout-3";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261125-leaveout-3";
-import { baseCss } from "./style.js";
+import { h, cropInto } from "./render.js?v=20261125-v1-phase3";
+import * as B from "./book.js?v=20261125-v1-phase3";
+import { ScanView } from "./bookview.js?v=20261125-v1-phase3";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261125-v1-phase3";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261125-v1-phase3";
+import { baseCss } from "./style.js?v=20261125-v1-phase3";
 
 const app = document.querySelector("#app");
 const button = (text, click, attrs) => h("button", { type: "button", onclick: click, ...attrs }, text);

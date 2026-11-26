@@ -1,6 +1,6 @@
 // Immutable edits to the stored book. Keep the previous book for undo.
-import { toPageDocs } from "./chaya-book.js?v=20261125-leaveout-3";
-import { prepare } from "./reader.js?v=20261125-leaveout-3";
+import { toPageDocs } from "./chaya-book.js?v=20261125-v1-phase3";
+import { prepare } from "./reader.js?v=20261125-v1-phase3";
 
 const pathOf = region => region.in ?? [];
 const startsWith = (path, prefix) => prefix.every((id, i) => path[i] === id);

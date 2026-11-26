@@ -1,5 +1,5 @@
-import { canonical } from "../ops.js?v=20261125-leaveout-3";
-import { selectPageRegions, checkReading } from "./split.js";
+import { canonical } from "../ops.js?v=20261125-v1-phase3";
+import { selectPageRegions, checkReading } from "./split.js?v=20261125-v1-phase3";
 
 export function regionGeometry(source) {
   return { id: source.rid, polygons: source.region.polygons,

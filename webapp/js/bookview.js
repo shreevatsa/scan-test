@@ -1,12 +1,12 @@
-import * as B from "./book.js?v=20261125-leaveout-3";
-import { checksFor } from "./bookchecks.js?v=20261125-leaveout-3";
-import { PageView } from "./pageimage.js?v=20261125-leaveout-3";
-import { boxRing } from "./ops.js";
-import { h, PALETTE, lineHtml } from "./render.js";
-import { cpLength, normalizeSpans } from "./inline.js";
+import * as B from "./book.js?v=20261125-v1-phase3";
+import { areaTitle, checksFor, pageCaption } from "./bookchecks.js?v=20261125-v1-phase3";
+import { PageView } from "./pageimage.js?v=20261125-v1-phase3";
+import { boxRing } from "./ops.js?v=20261125-v1-phase3";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261125-v1-phase3";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261125-v1-phase3";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
-const words = type => type === "?" ? "Needs a type" : type.replaceAll("_", " ");
+const words = type => type === "?" ? "Needs a type" : type[0].toUpperCase() + type.slice(1).replaceAll("_", " ");
 const addressOf = (index, id) => `${index + 1}/${id}`;
 const clamp = n => Math.max(0, Math.min(1, n));
 const orderedBox = ([a, b, c, d]) => [clamp(Math.min(a, c)), clamp(Math.min(b, d)), clamp(Math.max(a, c)), clamp(Math.max(b, d))];
@@ -15,10 +15,10 @@ const fractions = (box, w, h) => box.map((n, i) => n / (i % 2 ? h : w));
 const nonText = (book, r) => r.ignored || r.type === "?" || book.types[r.type]?.ignored;
 const checkKey = ({ kind, address, line, span, id }) => JSON.stringify([kind, address, line, span, id]);
 
-function picker(types, selected, change, label, unknown = false) {
+function picker(types, selected, change, label, area = null) {
   const select = h("select", { "aria-label": label, onchange: e => change(e.target.value) });
-  const entries = unknown ? ["?", ...types] : types;
-  select.append(...entries.map(type => h("option", { value: type }, words(type))));
+  const entries = area ? ["?", ...types] : types;
+  select.append(...entries.map(type => h("option", { value: type }, type === "?" && area ? areaTitle(area) : words(type))));
   select.value = selected;
   return select;
 }
@@ -62,7 +62,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261125-leaveout-3", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261125-v1-phase3", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }
@@ -131,8 +131,7 @@ export class ScanView {
   }
 
   header(slot, page) {
-    const name = page.label ? `Page ${page.label}` : `Scan ${slot.index + 1}`;
-    slot.label.textContent = `${name} · PDF ${page.pdf_page}`;
+    slot.label.textContent = pageCaption(page);
     slot.process.textContent = page.regions ? "Process again" : "Process";
     slot.process.hidden = slot.draw.hidden = !!page.skip;
     slot.skip.textContent = page.skip ? "↺" : "×";
@@ -284,7 +283,7 @@ export class ScanView {
     for (const type of furniture) colors[type] = "#777575";
     slot.view.show({ page: { width: slot.w, height: slot.h, regions: active.map(region => ({
       ...region, box: box(region), polygons: [boxRing(box(region))], lines: [],
-    })) }, source: { omitted_regions: slot.unknown.map(r => ({ region: r.id, box: box(r), proposed_type: r.proposed })),
+    })) }, source: { omitted_regions: slot.unknown.map(r => ({ region: r.id, box: box(r), proposed_type: r.proposed, label: areaTitle(r) })),
       ignored_regions: slot.ignored.map(r => ({ region: r.id, box: box(r) })) } }, slot.url, colors, furniture);
     this.badges(slot);
   }
@@ -309,7 +308,7 @@ export class ScanView {
 
   makeCard(slot, region) {
     const address = addressOf(slot.index, region.id), muted = nonText(this.book, region);
-    const plan = picker(this.typeNames(), region.type, type => this.edit(b => B.retypeRegion(b, address, type)), "Region type", true);
+    const plan = picker(this.typeNames(), region.type, type => this.edit(b => B.retypeRegion(b, address, type)), "Region type", region);
     const badge = button("!", event => {
       event.stopPropagation();
       const first = this.checks(slot.index).find(item => item.address === address);

@@ -53,7 +53,7 @@
 .v1-type { display: flex; align-items: center; gap: 7px; min-height: 22px; }
 .v1-type select {
   background: transparent; color: var(--v1-blue); border: 1px solid transparent; border-radius: 4px;
-  padding: 1px 5px; font-size: 12px; font-weight: 600; text-transform: capitalize;
+  padding: 1px 5px; font-size: 12px; font-weight: 600;
 }
 .v1-type select:hover, .v1-type select:focus { border-color: var(--v1-edge); background: #fff; }
 .v1-card.muted .v1-type select { color: var(--v1-muted); }

@@ -1,11 +1,11 @@
-import { h, cropInto, bbox, esc } from "./render.js";
-import { regionPath } from "./pageimage.js?v=20261125-leaveout-3";
-import { clone } from "./ops.js?v=20261125-leaveout-3";
-import { parseLine, TAGS } from "./inline.js";
-import { markedText } from "./pipeline/split.js";
-import { transcriptionHtml } from "./transcription-diff.js";
-import { reviewCandidate, saveReview, settle } from "./review.js?v=20261125-leaveout-3";
-import { partialTextScope } from "./pipeline/partial-reading.js?v=20261125-leaveout-3";
+import { h, cropInto, bbox, esc } from "./render.js?v=20261125-v1-phase3";
+import { regionPath } from "./pageimage.js?v=20261125-v1-phase3";
+import { clone } from "./ops.js?v=20261125-v1-phase3";
+import { parseLine, TAGS } from "./inline.js?v=20261125-v1-phase3";
+import { markedText } from "./pipeline/split.js?v=20261125-v1-phase3";
+import { transcriptionHtml } from "./transcription-diff.js?v=20261125-v1-phase3";
+import { reviewCandidate, saveReview, settle } from "./review.js?v=20261125-v1-phase3";
+import { partialTextScope } from "./pipeline/partial-reading.js?v=20261125-v1-phase3";
 
 const titles = { regions: "Page regions", text: "Transcription" };
 

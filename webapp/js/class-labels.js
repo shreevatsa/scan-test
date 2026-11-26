@@ -2,8 +2,8 @@
 // rule the region finder is given for that kind of region (CLASS_RULES in pipeline/prompts.js), so it decides how finely
 // regions are cut; a figure has no text lines. The user sees "Draw regions like: …", a short label and the rule in
 // plain words. The rule wording is the first sentence of CLASS_RULES, so the two cannot drift apart.
-import { h } from "./render.js";
-import { CLASS_RULES } from "./pipeline/prompts.js?v=20261125-leaveout-3";
+import { h } from "./render.js?v=20261125-v1-phase3";
+import { CLASS_RULES } from "./pipeline/prompts.js?v=20261125-v1-phase3";
 
 export const CLASS_LABELS = {
   verse: "verse (one region per verse, with its number)",

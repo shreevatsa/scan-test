@@ -1,8 +1,8 @@
-import { blockLineEnd } from "./blocks.js";
-import { cpLength } from "./inline.js";
-import { boxRing } from "./ops.js";
-import { bbox } from "./render.js";
-import { BLOCKS_VERSION } from "./blocks-format.js";
+import { blockLineEnd } from "./blocks.js?v=20261125-v1-phase3";
+import { cpLength } from "./inline.js?v=20261125-v1-phase3";
+import { boxRing } from "./ops.js?v=20261125-v1-phase3";
+import { bbox } from "./render.js?v=20261125-v1-phase3";
+import { BLOCKS_VERSION } from "./blocks-format.js?v=20261125-v1-phase3";
 
 const byOrder = (a, b) => (a.order ?? Infinity) - (b.order ?? Infinity);
 const hasPoints = polygons => polygons?.some(ring => ring.length);

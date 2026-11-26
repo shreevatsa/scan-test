@@ -5,7 +5,7 @@
 // added and removed. Functions throw an Error with a message for the user when an edit cannot be made; the result
 // is checked with schema.js before it is saved.
 
-import { cp, nextMarkerId, normalizeSpans } from "./inline.js";
+import { cp, nextMarkerId, normalizeSpans } from "./inline.js?v=20261125-v1-phase3";
 
 export class EditError extends Error {}
 const fail = msg => { throw new EditError(msg); };
