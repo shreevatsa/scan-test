@@ -1,6 +1,6 @@
 // Reading requests and response checks.
-import { regionCaption } from "./prompts.js?v=20261127-place-areas";
-import { parseLine } from "../inline.js?v=20261127-place-areas";
+import { regionCaption } from "./prompts.js?v=20261127-no-auto-hyphens";
+import { parseLine } from "../inline.js?v=20261127-no-auto-hyphens";
 
 export const SPLIT_VERSION = "reading-and-structure-v1";
 

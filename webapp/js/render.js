@@ -1,6 +1,6 @@
 // HTML for a line piece's text with its spans (formatting and note markers), shared by the editor and the reader.
 
-import { segments } from "./inline.js?v=20261127-place-areas";
+import { segments } from "./inline.js?v=20261127-no-auto-hyphens";
 
 export const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 

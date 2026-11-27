@@ -1,8 +1,8 @@
-import { assemble } from "./book.js?v=20261127-place-areas";
-import { bookDocument, bookText } from "./reader.js?v=20261127-place-areas";
-import { verseExport } from "./verses.js?v=20261127-place-areas";
-import { fileStem } from "./store.js?v=20261127-place-areas";
-import { h } from "./render.js?v=20261127-place-areas";
+import { assemble } from "./book.js?v=20261127-no-auto-hyphens";
+import { bookDocument, bookText } from "./reader.js?v=20261127-no-auto-hyphens";
+import { verseExport } from "./verses.js?v=20261127-no-auto-hyphens";
+import { fileStem } from "./store.js?v=20261127-no-auto-hyphens";
+import { h } from "./render.js?v=20261127-no-auto-hyphens";
 
 const text = (value, mime) => new Blob([value], { type: mime });
 const json = value => text(JSON.stringify(value, null, 2) + "\n", "application/json");

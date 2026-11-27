@@ -1,6 +1,6 @@
-import { canonical } from "../ops.js?v=20261127-place-areas";
-import { checkReading, selectPageRegions } from "./split.js?v=20261127-place-areas";
-import { transcribedLines } from "./steps.js?v=20261127-place-areas";
+import { canonical } from "../ops.js?v=20261127-no-auto-hyphens";
+import { checkReading, selectPageRegions } from "./split.js?v=20261127-no-auto-hyphens";
+import { transcribedLines } from "./steps.js?v=20261127-no-auto-hyphens";
 
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
 const prose = new Set(["paragraph", "note"]);

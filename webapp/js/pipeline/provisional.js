@@ -1,5 +1,5 @@
-import { UNCLASSIFIED } from "../chaya-book.js?v=20261127-place-areas";
-import { selectPageRegions } from "./split.js?v=20261127-place-areas";
+import { UNCLASSIFIED } from "../chaya-book.js?v=20261127-no-auto-hyphens";
+import { selectPageRegions } from "./split.js?v=20261127-no-auto-hyphens";
 
 export function regionTypePaths(types) {
   const definitions = types.types, paths = new Map(), queue = [];

@@ -1,10 +1,10 @@
-import { assemble } from "./assemble.js?v=20261127-place-areas";
-import { toPageDocs } from "./chaya-book.js?v=20261127-place-areas";
-import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261127-place-areas";
-import { deriveStructure } from "./structure-rules.js?v=20261127-place-areas";
-import { pageLabel } from "./pipeline/steps.js?v=20261127-place-areas";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261127-place-areas";
-import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261127-place-areas";
+import { assemble } from "./assemble.js?v=20261127-no-auto-hyphens";
+import { toPageDocs } from "./chaya-book.js?v=20261127-no-auto-hyphens";
+import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261127-no-auto-hyphens";
+import { deriveStructure } from "./structure-rules.js?v=20261127-no-auto-hyphens";
+import { pageLabel } from "./pipeline/steps.js?v=20261127-no-auto-hyphens";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261127-no-auto-hyphens";
+import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261127-no-auto-hyphens";
 
 const cleanRegion = ({ in: path, direct, flow, number, label, continues, from_previous, links, ...region }) => ({
   ...region,

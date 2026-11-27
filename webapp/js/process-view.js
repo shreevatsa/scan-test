@@ -1,7 +1,7 @@
-import { h } from "./render.js?v=20261127-place-areas";
-import { pageCaption } from "./bookchecks.js?v=20261127-place-areas";
-import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261127-place-areas";
-import { dollars } from "./recipe.js?v=20261127-place-areas";
+import { h } from "./render.js?v=20261127-no-auto-hyphens";
+import { pageCaption } from "./bookchecks.js?v=20261127-no-auto-hyphens";
+import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261127-no-auto-hyphens";
+import { dollars } from "./recipe.js?v=20261127-no-auto-hyphens";
 
 const button = (text, attrs) => h("button", { type: "button", ...attrs }, text);
 const frame = () => new Promise(requestAnimationFrame);

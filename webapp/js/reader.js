@@ -4,11 +4,11 @@
 // their label; the printed page number is shown where each page starts.
 // In the app, a double-click previews the scan region for a passage or note.
 
-import { assemble } from "./assemble.js?v=20261127-place-areas";
-import { cp } from "./inline.js?v=20261127-place-areas";
-import { lineHtml, esc } from "./render.js?v=20261127-place-areas";
-import { verseGroups } from "./verses.js?v=20261127-place-areas";
-import { css, unitStyle, baseCss } from "./style.js?v=20261127-place-areas";
+import { assemble } from "./assemble.js?v=20261127-no-auto-hyphens";
+import { cp } from "./inline.js?v=20261127-no-auto-hyphens";
+import { lineHtml, esc } from "./render.js?v=20261127-no-auto-hyphens";
+import { verseGroups } from "./verses.js?v=20261127-no-auto-hyphens";
+import { css, unitStyle, baseCss } from "./style.js?v=20261127-no-auto-hyphens";
 
 // A line piece with something in it: an empty one adds nothing to a block's text, not even a space.
 const spoken = line => Boolean(line.text) || Boolean(line.spans?.length);
@@ -481,7 +481,7 @@ export const BOOK_CSS = `
 .r-verse_group { margin-left: -12px; padding-left: 10px; border-left: 2px solid transparent; border-radius: 2px; transition: background .15s; }
 .r-vgmark { float: right; margin-left: 1em; font-size: .85em; color: #8a8170; cursor: pointer; }
 .r-verse_group:has(.r-vgmark:hover), .r-verse_group.lit { border-left-color: #d9cfb5; background: #faf6ea; }
-.bookview .reader { grid-column: 2; max-width: none; margin: 0; padding: 1.5rem 0 10rem; }
+.bookview .reader { grid-column: 2; max-width: none; margin: 0; padding: 1.5rem 0 10rem; hyphens: none; }
 .bookview .reader:not(.printed) { font-size: 18px; line-height: 1.65; }
 .bookview .reader:not(.printed) .r-verse { margin: .8em 0 .8em 1.5em; }
 .bookview .reader:not(.printed) .r-para { margin: .5em 0; }
@@ -521,7 +521,7 @@ export const BOOK_CSS = `
 // The CSS a standalone export needs: the reader's rules for its elements, as printed.
 const EXPORT_CSS = `
 body { margin: 0; background: #fdfdfb; color: #1d1d1b; }
-.reader { --pt: 1.35pt; margin: 2em auto 6em; padding: 0 1.2em; box-sizing: content-box; hyphens: auto; }
+.reader { --pt: 1.35pt; margin: 2em auto 6em; padding: 0 1.2em; box-sizing: content-box; }
 .reader h2, .reader h3, .reader h4, .reader h5, .reader h6 { margin: 0; }
 .r-para, .r-verse, .r-note { margin: 0; }
 .r-flow[data-flow="notes"] { margin-top: 3em; border-top: 1px solid #ccc; padding-top: 1em; }

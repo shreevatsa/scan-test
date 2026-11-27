@@ -1,5 +1,5 @@
-import { canonical } from "../ops.js?v=20261127-place-areas";
-import { selectPageRegions, checkReading } from "./split.js?v=20261127-place-areas";
+import { canonical } from "../ops.js?v=20261127-no-auto-hyphens";
+import { selectPageRegions, checkReading } from "./split.js?v=20261127-no-auto-hyphens";
 
 export function regionGeometry(source) {
   return { id: source.rid, polygons: source.region.polygons,

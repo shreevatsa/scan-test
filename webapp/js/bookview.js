@@ -1,11 +1,11 @@
-import * as B from "./book.js?v=20261127-place-areas";
-import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-areas";
-import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-place-areas";
-import { hasTextInk } from "./local/ink-checks.js?v=20261127-place-areas";
-import { PageView } from "./pageimage.js?v=20261127-place-areas";
-import { boxRing } from "./ops.js?v=20261127-place-areas";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261127-place-areas";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261127-place-areas";
+import * as B from "./book.js?v=20261127-no-auto-hyphens";
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-no-auto-hyphens";
+import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-no-auto-hyphens";
+import { hasTextInk } from "./local/ink-checks.js?v=20261127-no-auto-hyphens";
+import { PageView } from "./pageimage.js?v=20261127-no-auto-hyphens";
+import { boxRing } from "./ops.js?v=20261127-no-auto-hyphens";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261127-no-auto-hyphens";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261127-no-auto-hyphens";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const addressOf = (index, id) => `${index + 1}/${id}`;
@@ -63,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261127-place-areas", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261127-no-auto-hyphens", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }

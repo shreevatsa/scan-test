@@ -3,10 +3,10 @@
 // pieces for a list of boxes.
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
 
-import { analyzePage } from "./ink.js?v=20261127-place-areas";
-import { regionsFromBoxes } from "./regions.js?v=20261127-place-areas";
-import { LINES, OWNERSHIP } from "./config.js?v=20261127-place-areas";
-import { lineBlocks } from "./blocks.js?v=20261127-place-areas";
+import { analyzePage } from "./ink.js?v=20261127-no-auto-hyphens";
+import { regionsFromBoxes } from "./regions.js?v=20261127-no-auto-hyphens";
+import { LINES, OWNERSHIP } from "./config.js?v=20261127-no-auto-hyphens";
+import { lineBlocks } from "./blocks.js?v=20261127-no-auto-hyphens";
 
 const cache = new Map();
 

@@ -1,9 +1,9 @@
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261127-place-areas";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261127-place-areas";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261127-place-areas";
-import { groupVerses } from "./verse-group-rules.js?v=20261127-place-areas";
-import { headingSections } from "./heading-rules.js?v=20261127-place-areas";
-import { compileRules } from "./rules.js?v=20261127-place-areas";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261127-no-auto-hyphens";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261127-no-auto-hyphens";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261127-no-auto-hyphens";
+import { groupVerses } from "./verse-group-rules.js?v=20261127-no-auto-hyphens";
+import { headingSections } from "./heading-rules.js?v=20261127-no-auto-hyphens";
+import { compileRules } from "./rules.js?v=20261127-no-auto-hyphens";
 
 const ridOf = ref => ref.split("#").pop();
 const textOf = (doc, unit) => unit.children.filter(child => child.region)

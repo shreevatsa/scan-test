@@ -1,5 +1,5 @@
-import { CredentialChecks } from "./key-check.js?v=20261127-place-areas";
-import { settings } from "./preferences.js?v=20261127-place-areas";
+import { CredentialChecks } from "./key-check.js?v=20261127-no-auto-hyphens";
+import { settings } from "./preferences.js?v=20261127-no-auto-hyphens";
 
 export async function bookCredentials() {
   const keys = Object.fromEntries(await Promise.all(["openai", "gemini", "vision", "vision_auth", "vision_project"].map(async name =>
