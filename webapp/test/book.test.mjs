@@ -218,3 +218,26 @@ test("regions without lines add no reading units or bare printed page numbers", 
   assert.doesNotMatch(bookText(reading), /\[p\. 134\]/u);
   assert.match(bookText(reading), /\[figure\]/u);
 });
+
+test("a drawn region takes its printed place in the reading and the sections around it", () => {
+  const at = (id, y, more = {}) => ({ id, type: "prose", box: [0.1, y, 0.9, y + 0.05], lines: [{ text: id }], ...more });
+  const start = freeze({ chaya: 1, title: "Two essays", types: { prose: {}, heading: { lines: true, heading: true }, section: { contains: ["prose", "heading"] } },
+    containers: { c1: { type: "section" }, c2: { type: "section" } },
+    pages: [{ id: "one", pdf_page: 1, regions: [at("r1", 0.1, { type: "heading", in: ["c1"] }), at("r2", 0.4, { in: ["c1"] }),
+      at("r3", 0.6), at("r4", 0.8, { type: "heading", in: ["c2"] })] }] });
+  // Between the first essay's heading and its first paragraph: inside the first essay.
+  let next = B.addRegion(start, 0, "prose", [0.1, 0.2, 0.9, 0.25]);
+  assert.deepEqual(next.pages[0].regions.map(r => r.id), ["r1", "r5", "r2", "r3", "r4"]);
+  assert.deepEqual(next.pages[0].regions[1].in, ["c1"]);
+  // Between the two essays: in neither, so neither is split.
+  next = B.addRegion(start, 0, "prose", [0.1, 0.7, 0.9, 0.75]);
+  assert.deepEqual(next.pages[0].regions.map(r => r.id), ["r1", "r2", "r3", "r5", "r4"]);
+  assert.equal(next.pages[0].regions[3].in, undefined);
+  // Below everything: at the end.
+  next = B.addRegion(start, 0, "prose", [0.1, 0.9, 0.9, 0.95]);
+  assert.equal(next.pages[0].regions.at(-1).id, "r5");
+  // Its text reads in its place.
+  next = B.setLine(B.addLine(B.addRegion(start, 0, "prose", [0.1, 0.2, 0.9, 0.25]), "1/r5", 0), "1/r5", 0, "added");
+  const text = bookText(B.assemble(next));
+  assert.ok(text.indexOf("r1") < text.indexOf("added") && text.indexOf("added") < text.indexOf("r2"), text);
+});

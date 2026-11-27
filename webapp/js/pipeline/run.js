@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261127-no-auto-hyphens";
-import * as S from "./steps.js?v=20261127-no-auto-hyphens";
-import * as I from "./images.js?v=20261127-no-auto-hyphens";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-no-auto-hyphens";
-import * as Split from "./split.js?v=20261127-no-auto-hyphens";
-import { markersFromQuotes } from "../note-links.js?v=20261127-no-auto-hyphens";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-no-auto-hyphens";
-import { classifyBlocks } from "../local/blocks.js?v=20261127-no-auto-hyphens";
-import { finderById, finderPath } from "./finders.js?v=20261127-no-auto-hyphens";
-import { finderRequest } from "./finder-requests.js?v=20261127-no-auto-hyphens";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-no-auto-hyphens";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-no-auto-hyphens";
-import { bbox } from "../render.js?v=20261127-no-auto-hyphens";
-import { canonical } from "../ops.js?v=20261127-no-auto-hyphens";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-no-auto-hyphens";
+import * as P from "./prompts.js?v=20261127-place-regions";
+import * as S from "./steps.js?v=20261127-place-regions";
+import * as I from "./images.js?v=20261127-place-regions";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-place-regions";
+import * as Split from "./split.js?v=20261127-place-regions";
+import { markersFromQuotes } from "../note-links.js?v=20261127-place-regions";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-place-regions";
+import { classifyBlocks } from "../local/blocks.js?v=20261127-place-regions";
+import { finderById, finderPath } from "./finders.js?v=20261127-place-regions";
+import { finderRequest } from "./finder-requests.js?v=20261127-place-regions";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-place-regions";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-place-regions";
+import { bbox } from "../render.js?v=20261127-place-regions";
+import { canonical } from "../ops.js?v=20261127-place-regions";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-place-regions";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

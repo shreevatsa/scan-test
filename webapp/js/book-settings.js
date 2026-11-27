@@ -1,12 +1,12 @@
-import * as B from "./book.js?v=20261127-no-auto-hyphens";
-import { findStructure } from "./book-structure.js?v=20261127-no-auto-hyphens";
-import { processingChoices } from "./book-processing.js?v=20261127-no-auto-hyphens";
-import { saveCredential } from "./book-credentials.js?v=20261127-no-auto-hyphens";
-import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-no-auto-hyphens";
-import { FINDERS } from "./pipeline/finders.js?v=20261127-no-auto-hyphens";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-no-auto-hyphens";
-import { ruleProblems } from "./rules.js?v=20261127-no-auto-hyphens";
-import { h } from "./render.js?v=20261127-no-auto-hyphens";
+import * as B from "./book.js?v=20261127-place-regions";
+import { findStructure } from "./book-structure.js?v=20261127-place-regions";
+import { processingChoices } from "./book-processing.js?v=20261127-place-regions";
+import { saveCredential } from "./book-credentials.js?v=20261127-place-regions";
+import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-place-regions";
+import { FINDERS } from "./pipeline/finders.js?v=20261127-place-regions";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-place-regions";
+import { ruleProblems } from "./rules.js?v=20261127-place-regions";
+import { h } from "./render.js?v=20261127-place-regions";
 
 const button = (text, onclick, attrs) => h("button", { type: "button", onclick, ...attrs }, text);
 const words = text => text.replaceAll("_", " ");

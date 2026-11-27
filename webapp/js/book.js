@@ -1,6 +1,6 @@
 // Immutable edits to the stored book. Keep the previous book for undo.
-import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-no-auto-hyphens";
-import { prepare } from "./reader.js?v=20261127-no-auto-hyphens";
+import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-regions";
+import { prepare } from "./reader.js?v=20261127-place-regions";
 
 const pathOf = region => region.in ?? [];
 const startsWith = (path, prefix) => prefix.every((id, i) => path[i] === id);
@@ -98,11 +98,43 @@ export function ensureUnclassifiedType(book) {
     addType(book, UNCLASSIFIED, { lines: true, description: "No type chosen yet; its printed lines are kept." });
 }
 
+// A new region goes where it is printed: in the reading order, before the first region that starts below its top and
+// overlaps it across (else the first that starts below it, else at the end), and in the sections it then stands in.
 export function addRegion(book, page, type, box) {
   if (type === UNCLASSIFIED) book = ensureUnclassifiedType(book);
   requireType(book, type);
-  const region = { id: newRegionId(book, page), type, box: withBox(box) };
-  return pageEdit(book, page, item => ({ ...item, regions: [...(item.regions ?? []), region] }));
+  const index = pageIndexOf(book, page);
+  if (index < 0) throw new Error("No such page.");
+  const regions = book.pages[index].regions ?? [], placed = withBox(box);
+  const below = region => region.box[1] > placed[1], across = region => region.box[0] < placed[2] && region.box[2] > placed[0];
+  let at = regions.findIndex(region => below(region) && across(region));
+  if (at < 0) at = regions.findIndex(below);
+  if (at < 0) at = regions.length;
+  const sections = sectionsAt(book, index, at, book.types[type]?.flow ?? "main");
+  const region = { id: newRegionId(book, page), type, box: placed, ...(sections.length ? { in: sections } : {}) };
+  return pageEdit(book, index, item => ({ ...item, regions: (item.regions ?? []).toSpliced(at, 0, region) }));
+}
+
+// The sections a region standing at `at` on page `index` belongs to: those shared by the regions just before and just
+// after that place in the reading of its flow (across pages; skipped pages, ignored regions, other flows and areas
+// still unclassified aside), so that it never splits a section. `skip` is the region's own position, when it is
+// already on the page.
+export function sectionsAt(book, index, at, flow = "main", skip = -1) {
+  const inFlow = region => !region.ignored && region.type !== "?" && region.type !== UNCLASSIFIED &&
+    !book.types[region.type]?.ignored && (book.types[region.type]?.flow ?? "main") === flow;
+  const near = step => {
+    for (let p = index, i = step < 0 ? at - 1 : at; p >= 0 && p < book.pages.length; p += step) {
+      const page = book.pages[p], regions = page.regions ?? [];
+      if (p !== index) i = step < 0 ? regions.length - 1 : 0;
+      if (!page.skip) for (; i >= 0 && i < regions.length; i += step) if (i !== skip && inFlow(regions[i])) return regions[i];
+    }
+    return null;
+  };
+  const before = near(-1), after = near(1);
+  if (!before || !after) return [];
+  const a = pathOf(before), b = pathOf(after), shared = [];
+  for (let i = 0; i < Math.min(a.length, b.length) && a[i] === b[i]; i++) shared.push(a[i]);
+  return shared;
 }
 
 export function resizeRegion(book, address, box) {

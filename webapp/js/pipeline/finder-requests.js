@@ -1,5 +1,5 @@
-import { regionRequest } from "./steps.js?v=20261127-no-auto-hyphens";
-import { geminiReadingRequest } from "./readers.js?v=20261127-no-auto-hyphens";
+import { regionRequest } from "./steps.js?v=20261127-place-regions";
+import { geminiReadingRequest } from "./readers.js?v=20261127-place-regions";
 
 export function finderRequest(profile, prompt, schema, image) {
   if (profile.provider === "openai") return { ...regionRequest(prompt, schema, image),

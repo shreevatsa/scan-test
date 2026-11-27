@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261127-no-auto-hyphens";
-import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-no-auto-hyphens";
-import { writeRegion } from "./chaya-materialize.js?v=20261127-no-auto-hyphens";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261127-no-auto-hyphens";
-import { applyReading } from "./pipeline/apply.js?v=20261127-no-auto-hyphens";
-import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-no-auto-hyphens";
-import { pageRange } from "./pipeline/pdf.js?v=20261127-no-auto-hyphens";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-no-auto-hyphens";
-import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-no-auto-hyphens";
-import { Maker, post } from "./pipeline/run.js?v=20261127-no-auto-hyphens";
-import { pageCost, RECIPE } from "./recipe.js?v=20261127-no-auto-hyphens";
+import * as B from "./book.js?v=20261127-place-regions";
+import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-regions";
+import { writeRegion } from "./chaya-materialize.js?v=20261127-place-regions";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261127-place-regions";
+import { applyReading } from "./pipeline/apply.js?v=20261127-place-regions";
+import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-place-regions";
+import { pageRange } from "./pipeline/pdf.js?v=20261127-place-regions";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-place-regions";
+import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-place-regions";
+import { Maker, post } from "./pipeline/run.js?v=20261127-place-regions";
+import { pageCost, RECIPE } from "./recipe.js?v=20261127-place-regions";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -171,7 +171,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261127-no-auto-hyphens", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261127-place-regions", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;
