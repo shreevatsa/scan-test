@@ -1,6 +1,6 @@
 // Immutable edits to the stored book. Keep the previous book for undo.
-import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-check-in-card";
-import { prepare } from "./reader.js?v=20261127-check-in-card";
+import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-furniture-in-place";
+import { prepare } from "./reader.js?v=20261127-furniture-in-place";
 
 const pathOf = region => region.in ?? [];
 const startsWith = (path, prefix) => prefix.every((id, i) => path[i] === id);
@@ -105,14 +105,29 @@ export function addRegion(book, page, type, box) {
   requireType(book, type);
   const index = pageIndexOf(book, page);
   if (index < 0) throw new Error("No such page.");
-  const regions = book.pages[index].regions ?? [], placed = withBox(box);
-  const below = region => region.box[1] > placed[1], across = region => region.box[0] < placed[2] && region.box[2] > placed[0];
-  let at = regions.findIndex(region => below(region) && across(region));
-  if (at < 0) at = regions.findIndex(below);
-  if (at < 0) at = regions.length;
+  const regions = book.pages[index].regions ?? [], placed = withBox(box), at = printedPlace(regions, placed);
   const sections = sectionsAt(book, index, at, book.types[type]?.flow ?? "main");
   const region = { id: newRegionId(book, page), type, box: placed, ...(sections.length ? { in: sections } : {}) };
   return pageEdit(book, index, item => ({ ...item, regions: (item.regions ?? []).toSpliced(at, 0, region) }));
+}
+
+// Where a region printed at `box` goes among a page's regions: before the first that starts below its top and overlaps
+// it across, else the first that starts below it, else at the end.
+export function printedPlace(regions, box) {
+  const below = region => region.box[1] > box[1], across = region => region.box[0] < box[2] && region.box[2] > box[0];
+  let at = regions.findIndex(region => below(region) && across(region));
+  if (at < 0) at = regions.findIndex(below);
+  return at < 0 ? regions.length : at;
+}
+
+// A page's regions with those of ignored types (running headers, page numbers: no part of the reading, so with no place
+// in its order) each put where it is printed, top to bottom, among the others.
+export function furnitureInPlace(regions, types) {
+  const furniture = region => types[region.type]?.ignored;
+  const placed = regions.filter(region => !furniture(region));
+  for (const region of regions.filter(furniture).sort((a, b) => a.box[1] - b.box[1] || a.box[0] - b.box[0]))
+    placed.splice(printedPlace(placed, region.box), 0, region);
+  return placed;
 }
 
 // The sections a region standing at `at` on page `index` belongs to: those shared by the regions just before and just

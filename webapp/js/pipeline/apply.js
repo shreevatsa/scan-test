@@ -1,6 +1,6 @@
-import { canonical } from "../ops.js?v=20261127-check-in-card";
-import { checkReading, selectPageRegions } from "./split.js?v=20261127-check-in-card";
-import { transcribedLines } from "./steps.js?v=20261127-check-in-card";
+import { canonical } from "../ops.js?v=20261127-furniture-in-place";
+import { checkReading, selectPageRegions } from "./split.js?v=20261127-furniture-in-place";
+import { transcribedLines } from "./steps.js?v=20261127-furniture-in-place";
 
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
 const prose = new Set(["paragraph", "note"]);

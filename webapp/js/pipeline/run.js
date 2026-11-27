@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261127-check-in-card";
-import * as S from "./steps.js?v=20261127-check-in-card";
-import * as I from "./images.js?v=20261127-check-in-card";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-check-in-card";
-import * as Split from "./split.js?v=20261127-check-in-card";
-import { markersFromQuotes } from "../note-links.js?v=20261127-check-in-card";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-check-in-card";
-import { classifyBlocks } from "../local/blocks.js?v=20261127-check-in-card";
-import { finderById, finderPath } from "./finders.js?v=20261127-check-in-card";
-import { finderRequest } from "./finder-requests.js?v=20261127-check-in-card";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-check-in-card";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-check-in-card";
-import { bbox } from "../render.js?v=20261127-check-in-card";
-import { canonical } from "../ops.js?v=20261127-check-in-card";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-check-in-card";
+import * as P from "./prompts.js?v=20261127-furniture-in-place";
+import * as S from "./steps.js?v=20261127-furniture-in-place";
+import * as I from "./images.js?v=20261127-furniture-in-place";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-furniture-in-place";
+import * as Split from "./split.js?v=20261127-furniture-in-place";
+import { markersFromQuotes } from "../note-links.js?v=20261127-furniture-in-place";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-furniture-in-place";
+import { classifyBlocks } from "../local/blocks.js?v=20261127-furniture-in-place";
+import { finderById, finderPath } from "./finders.js?v=20261127-furniture-in-place";
+import { finderRequest } from "./finder-requests.js?v=20261127-furniture-in-place";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-furniture-in-place";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-furniture-in-place";
+import { bbox } from "../render.js?v=20261127-furniture-in-place";
+import { canonical } from "../ops.js?v=20261127-furniture-in-place";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-furniture-in-place";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

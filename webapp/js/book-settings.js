@@ -1,12 +1,12 @@
-import * as B from "./book.js?v=20261127-check-in-card";
-import { findStructure } from "./book-structure.js?v=20261127-check-in-card";
-import { processingChoices } from "./book-processing.js?v=20261127-check-in-card";
-import { saveCredential } from "./book-credentials.js?v=20261127-check-in-card";
-import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-check-in-card";
-import { FINDERS } from "./pipeline/finders.js?v=20261127-check-in-card";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-check-in-card";
-import { ruleProblems } from "./rules.js?v=20261127-check-in-card";
-import { h } from "./render.js?v=20261127-check-in-card";
+import * as B from "./book.js?v=20261127-furniture-in-place";
+import { findStructure } from "./book-structure.js?v=20261127-furniture-in-place";
+import { processingChoices } from "./book-processing.js?v=20261127-furniture-in-place";
+import { saveCredential } from "./book-credentials.js?v=20261127-furniture-in-place";
+import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-furniture-in-place";
+import { FINDERS } from "./pipeline/finders.js?v=20261127-furniture-in-place";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-furniture-in-place";
+import { ruleProblems } from "./rules.js?v=20261127-furniture-in-place";
+import { h } from "./render.js?v=20261127-furniture-in-place";
 
 const button = (text, onclick, attrs) => h("button", { type: "button", onclick, ...attrs }, text);
 const words = text => text.replaceAll("_", " ");

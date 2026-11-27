@@ -241,3 +241,11 @@ test("a drawn region takes its printed place in the reading and the sections aro
   const text = bookText(B.assemble(next));
   assert.ok(text.indexOf("r1") < text.indexOf("added") && text.indexOf("added") < text.indexOf("r2"), text);
 });
+
+test("running headers and page numbers stand where they are printed among a page's regions", () => {
+  const types = { prose: {}, running_header: { ignored: true }, page_number: { ignored: true } };
+  const r = (id, type, x, y) => ({ id, type, box: [x, y, x + 0.3, y + 0.05] });
+  const regions = [r("r4", "prose", 0.1, 0.2), r("r5", "prose", 0.1, 0.5), r("r1", "page_number", 0.1, 0.05), r("r2", "running_header", 0.4, 0.05),
+    r("r3", "page_number", 0.4, 0.95)];
+  assert.deepEqual(B.furnitureInPlace(regions, types).map(x => x.id), ["r1", "r2", "r4", "r5", "r3"]);
+});

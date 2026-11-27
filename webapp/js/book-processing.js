@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261127-check-in-card";
-import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-check-in-card";
-import { writeRegion } from "./chaya-materialize.js?v=20261127-check-in-card";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261127-check-in-card";
-import { applyReading } from "./pipeline/apply.js?v=20261127-check-in-card";
-import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-check-in-card";
-import { pageRange } from "./pipeline/pdf.js?v=20261127-check-in-card";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-check-in-card";
-import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-check-in-card";
-import { Maker, post } from "./pipeline/run.js?v=20261127-check-in-card";
-import { pageCost, RECIPE } from "./recipe.js?v=20261127-check-in-card";
+import * as B from "./book.js?v=20261127-furniture-in-place";
+import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-furniture-in-place";
+import { writeRegion } from "./chaya-materialize.js?v=20261127-furniture-in-place";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261127-furniture-in-place";
+import { applyReading } from "./pipeline/apply.js?v=20261127-furniture-in-place";
+import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-furniture-in-place";
+import { pageRange } from "./pipeline/pdf.js?v=20261127-furniture-in-place";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-furniture-in-place";
+import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-furniture-in-place";
+import { Maker, post } from "./pipeline/run.js?v=20261127-furniture-in-place";
+import { pageCost, RECIPE } from "./recipe.js?v=20261127-furniture-in-place";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -53,7 +53,7 @@ export function materializeProcessedPage(doc, previous, types, tl, rules) {
     return region;
   });
   const label = scanLabels(doc.page.regions, rules) ?? previous.label;
-  return { page: { ...previous, size: [width, height], ...(label != null ? { label } : {}), regions }, hints };
+  return { page: { ...previous, size: [width, height], ...(label != null ? { label } : {}), regions: B.furnitureInPlace(regions, types) }, hints };
 }
 
 const placement = ["in", "direct", "flow", "number", "label", "lang", "style", "continues", "from_previous", "links"];
@@ -171,7 +171,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261127-check-in-card", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261127-furniture-in-place", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;

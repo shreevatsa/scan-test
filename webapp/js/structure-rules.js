@@ -1,9 +1,9 @@
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261127-check-in-card";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261127-check-in-card";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261127-check-in-card";
-import { groupVerses } from "./verse-group-rules.js?v=20261127-check-in-card";
-import { headingSections } from "./heading-rules.js?v=20261127-check-in-card";
-import { compileRules } from "./rules.js?v=20261127-check-in-card";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261127-furniture-in-place";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261127-furniture-in-place";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261127-furniture-in-place";
+import { groupVerses } from "./verse-group-rules.js?v=20261127-furniture-in-place";
+import { headingSections } from "./heading-rules.js?v=20261127-furniture-in-place";
+import { compileRules } from "./rules.js?v=20261127-furniture-in-place";
 
 const ridOf = ref => ref.split("#").pop();
 const textOf = (doc, unit) => unit.children.filter(child => child.region)
