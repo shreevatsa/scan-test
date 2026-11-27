@@ -1,7 +1,7 @@
-import { h } from "./render.js?v=20261127-furniture-in-place";
-import { pageCaption } from "./bookchecks.js?v=20261127-furniture-in-place";
-import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261127-furniture-in-place";
-import { dollars } from "./recipe.js?v=20261127-furniture-in-place";
+import { h } from "./render.js?v=20261127-close-contents";
+import { pageCaption } from "./bookchecks.js?v=20261127-close-contents";
+import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261127-close-contents";
+import { dollars } from "./recipe.js?v=20261127-close-contents";
 
 const button = (text, attrs) => h("button", { type: "button", ...attrs }, text);
 const frame = () => new Promise(requestAnimationFrame);

@@ -1,6 +1,6 @@
-import { openWorkZip } from "./work-zip.js?v=20261127-furniture-in-place";
-import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-furniture-in-place";
-import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-furniture-in-place";
+import { openWorkZip } from "./work-zip.js?v=20261127-close-contents";
+import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-close-contents";
+import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-close-contents";
 
 export const PREVIOUS = "/scan-test/versions/0.4/";
 

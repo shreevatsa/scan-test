@@ -1,14 +1,14 @@
-import { bookCredentials } from "./book-credentials.js?v=20261127-furniture-in-place";
-import { openExport } from "./book-export.js?v=20261127-furniture-in-place";
-import { openSettings } from "./book-settings.js?v=20261127-furniture-in-place";
-import { openProcess } from "./process-view.js?v=20261127-furniture-in-place";
-import { h, cropInto } from "./render.js?v=20261127-furniture-in-place";
-import * as B from "./book.js?v=20261127-furniture-in-place";
-import { pageCaption } from "./bookchecks.js?v=20261127-furniture-in-place";
-import { ScanView } from "./bookview.js?v=20261127-furniture-in-place";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-furniture-in-place";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-furniture-in-place";
-import { baseCss } from "./style.js?v=20261127-furniture-in-place";
+import { bookCredentials } from "./book-credentials.js?v=20261127-close-contents";
+import { openExport } from "./book-export.js?v=20261127-close-contents";
+import { openSettings } from "./book-settings.js?v=20261127-close-contents";
+import { openProcess } from "./process-view.js?v=20261127-close-contents";
+import { h, cropInto } from "./render.js?v=20261127-close-contents";
+import * as B from "./book.js?v=20261127-close-contents";
+import { pageCaption } from "./bookchecks.js?v=20261127-close-contents";
+import { ScanView } from "./bookview.js?v=20261127-close-contents";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-close-contents";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-close-contents";
+import { baseCss } from "./style.js?v=20261127-close-contents";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -102,7 +102,7 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json?v=20261127-furniture-in-place", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261127-close-contents", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {
@@ -269,7 +269,7 @@ class App {
     const view = B.assemble(this.book);
     const printed = !!view.sheet;
     const root = h("div", { class: "bookview" });
-    root.innerHTML = `<button class="bv-open" type="button">Contents</button>${bookToc(view)}<article class="reader plain${printed ? " printed" : ""}">${bookHtml(view, { plain: true, printed })}</article>`;
+    root.innerHTML = `${bookToc(view)}<article class="reader plain${printed ? " printed" : ""}">${bookHtml(view, { plain: true, printed })}</article>`;
     const article = root.querySelector("article");
     if (printed) article.style.cssText = baseCss(view.sheet);
     if (!view.book.units.length) article.append(h("p", { class: "v1-empty" }, "The book has no text yet."));

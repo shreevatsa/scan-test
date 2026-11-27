@@ -18,7 +18,8 @@ Use **Export → Save .chaya.pdf** to keep a portable copy of the scan and edits
   **Leave out** excludes an area from reading.
 - The **Text** view follows the saved reading order and links. Double-click a passage or footnote to
   preview its scan. **Open in Scans** jumps to that region in the editor. The Text view and standalone
-  HTML export wrap without adding hyphens.
+  HTML export wrap without adding hyphens. On smaller screens, dismiss the Contents sidebar with
+  **Close contents**, Escape, or a tap outside the sidebar.
 - **Process** finds regions and reads text on unprocessed pages, a scan range, or the current page.
   Areas that need a type use **Unclassified**, which keeps printed lines and any suggested type for review.
   The dialog shows the engines, estimated cost, spending threshold, and progress. **Use saved records only**

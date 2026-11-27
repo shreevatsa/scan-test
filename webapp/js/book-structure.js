@@ -1,10 +1,10 @@
-import { assemble } from "./assemble.js?v=20261127-furniture-in-place";
-import { toPageDocs } from "./chaya-book.js?v=20261127-furniture-in-place";
-import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261127-furniture-in-place";
-import { deriveStructure } from "./structure-rules.js?v=20261127-furniture-in-place";
-import { pageLabel } from "./pipeline/steps.js?v=20261127-furniture-in-place";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261127-furniture-in-place";
-import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261127-furniture-in-place";
+import { assemble } from "./assemble.js?v=20261127-close-contents";
+import { toPageDocs } from "./chaya-book.js?v=20261127-close-contents";
+import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261127-close-contents";
+import { deriveStructure } from "./structure-rules.js?v=20261127-close-contents";
+import { pageLabel } from "./pipeline/steps.js?v=20261127-close-contents";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261127-close-contents";
+import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261127-close-contents";
 
 const cleanRegion = ({ in: path, direct, flow, number, label, continues, from_previous, links, ...region }) => ({
   ...region,

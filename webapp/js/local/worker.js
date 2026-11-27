@@ -3,10 +3,10 @@
 // pieces for a list of boxes.
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
 
-import { analyzePage } from "./ink.js?v=20261127-furniture-in-place";
-import { regionsFromBoxes } from "./regions.js?v=20261127-furniture-in-place";
-import { LINES, OWNERSHIP } from "./config.js?v=20261127-furniture-in-place";
-import { lineBlocks } from "./blocks.js?v=20261127-furniture-in-place";
+import { analyzePage } from "./ink.js?v=20261127-close-contents";
+import { regionsFromBoxes } from "./regions.js?v=20261127-close-contents";
+import { LINES, OWNERSHIP } from "./config.js?v=20261127-close-contents";
+import { lineBlocks } from "./blocks.js?v=20261127-close-contents";
 
 const cache = new Map();
 

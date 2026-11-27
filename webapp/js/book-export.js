@@ -1,8 +1,8 @@
-import { assemble } from "./book.js?v=20261127-furniture-in-place";
-import { bookDocument, bookText } from "./reader.js?v=20261127-furniture-in-place";
-import { verseExport } from "./verses.js?v=20261127-furniture-in-place";
-import { fileStem } from "./store.js?v=20261127-furniture-in-place";
-import { h } from "./render.js?v=20261127-furniture-in-place";
+import { assemble } from "./book.js?v=20261127-close-contents";
+import { bookDocument, bookText } from "./reader.js?v=20261127-close-contents";
+import { verseExport } from "./verses.js?v=20261127-close-contents";
+import { fileStem } from "./store.js?v=20261127-close-contents";
+import { h } from "./render.js?v=20261127-close-contents";
 
 const text = (value, mime) => new Blob([value], { type: mime });
 const json = value => text(JSON.stringify(value, null, 2) + "\n", "application/json");

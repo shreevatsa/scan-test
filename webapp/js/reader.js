@@ -4,11 +4,11 @@
 // their label; the printed page number is shown where each page starts.
 // In the app, a double-click previews the scan region for a passage or note.
 
-import { assemble } from "./assemble.js?v=20261127-furniture-in-place";
-import { cp } from "./inline.js?v=20261127-furniture-in-place";
-import { lineHtml, esc } from "./render.js?v=20261127-furniture-in-place";
-import { verseGroups } from "./verses.js?v=20261127-furniture-in-place";
-import { css, unitStyle, baseCss } from "./style.js?v=20261127-furniture-in-place";
+import { assemble } from "./assemble.js?v=20261127-close-contents";
+import { cp } from "./inline.js?v=20261127-close-contents";
+import { lineHtml, esc } from "./render.js?v=20261127-close-contents";
+import { verseGroups } from "./verses.js?v=20261127-close-contents";
+import { css, unitStyle, baseCss } from "./style.js?v=20261127-close-contents";
 
 // A line piece with something in it: an empty one adds nothing to a block's text, not even a space.
 const spoken = line => Boolean(line.text) || Boolean(line.spans?.length);
@@ -407,7 +407,10 @@ export function bookToc(P) {
   }
   const last = tops.findLastIndex(uid => isEntry(units[uid]));
   if (last >= 0 && last < tops.length - 1) out += link(tops[last + 1], "End", "front");
-  return `<nav class="bv-toc" aria-label="Contents">${out}</nav>`;
+  return `<button class="bv-open" type="button" aria-controls="book-contents" aria-expanded="false">Contents</button>
+<div class="bv-backdrop" aria-hidden="true"></div>
+<nav class="bv-toc" id="book-contents" aria-label="Contents"><div class="bv-toc-actions">
+<button class="bv-close" type="button">Close contents</button></div>${out}</nav>`;
 }
 
 // The Book view's behaviour, self-contained so the HTML export can carry it as a script: links within the book scroll
@@ -416,8 +419,21 @@ export function bookToc(P) {
 // contents where they do not fit beside the text.
 export function wireBookView(root, scroller, { signal } = {}) {
   const top = () => scroller === window ? 0 : scroller.getBoundingClientRect().top;
+  const opener = root.querySelector(".bv-open"), closeButton = root.querySelector(".bv-close");
+  const setContentsOpen = open => {
+    if (root.classList.contains("toc-open") === open) return;
+    root.classList.toggle("toc-open", open);
+    opener.setAttribute("aria-expanded", String(open));
+    (open ? closeButton : opener).focus({ preventScroll: true });
+  };
+  root.addEventListener("keydown", event => {
+    if (event.key !== "Escape" || event.defaultPrevented || !root.classList.contains("toc-open")) return;
+    event.preventDefault();
+    setContentsOpen(false);
+  }, { signal });
   root.addEventListener("click", event => {
-    if (event.target.closest(".bv-open")) { root.classList.toggle("toc-open"); return; }
+    if (event.target.closest(".bv-open")) { setContentsOpen(!root.classList.contains("toc-open")); return; }
+    if (event.target.closest(".bv-close, .bv-backdrop")) { setContentsOpen(false); return; }
     const groupMark = event.target.closest(".r-vgmark");
     if (groupMark) { groupMark.closest(".r-verse_group")?.classList.toggle("lit"); return; }   // a tap lights the verses the marker groups
     const a = event.target.closest('a[href^="#"]');
@@ -436,7 +452,7 @@ export function wireBookView(root, scroller, { signal } = {}) {
       block.after(box);
       return;
     }
-    root.classList.remove("toc-open");
+    setContentsOpen(false);
     target.scrollIntoView({ block: "start" });
     if (scroller !== window) scroller.scrollTop -= 8;
   }, { signal });
@@ -494,7 +510,8 @@ export const BOOK_CSS = `
 .bookview .sidenote { float: right; clear: right; width: var(--note); margin: .15em calc(-1 * (var(--note) + var(--gap))) .6em 0; font-size: 13.5px; line-height: 1.45; color: #555; text-align: left; text-indent: 0; }
 .bookview .sidenote.unlinked { color: #888; }
 .bookview .r-unit[id] { scroll-margin-top: 8px; }
-.bv-open { display: none; }
+.bv-open, .bv-backdrop, .bv-toc-actions { display: none; }
+.bv-open, .bv-close { font: 13px system-ui, sans-serif; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; background: #fdfdfb; color: inherit; cursor: pointer; }
 .r-tocline { display: flex; align-items: baseline; gap: .4em; margin: .1em 0; }
 .r-tocline .r-leader { flex: 1; border-bottom: 1px dotted #bbb; }
 .r-tocline a { color: inherit; text-decoration: none; }
@@ -502,16 +519,19 @@ export const BOOK_CSS = `
 @media (max-width: 1240px) {
   .bookview { grid-template-columns: minmax(0, 38rem) var(--note); }
   .bookview .reader { grid-column: 1; }
-  .bookview .bv-toc { position: fixed; left: 0; top: 0; bottom: 0; z-index: 40; width: 19rem; max-height: none; padding: 1rem; background: #fdfdfb; box-shadow: 0 0 24px rgba(0,0,0,.18); transform: translateX(-105%); transition: transform .18s; }
-  .bookview.toc-open .bv-toc { transform: none; }
-  .bv-open { display: block; position: sticky; top: .5rem; z-index: 30; grid-column: 1 / -1; justify-self: start; font: 13px system-ui, sans-serif; padding: 4px 10px; border: 1px solid #ccc; border-radius: 6px; background: #fdfdfb; cursor: pointer; }
+  .bookview .bv-toc { position: fixed; left: 0; top: 0; bottom: 0; z-index: 40; width: min(19rem, 100vw); max-height: none; padding: 0 1rem 1rem; background: #fdfdfb; box-shadow: 0 0 24px rgba(0,0,0,.18); visibility: hidden; transform: translateX(-105%); transition: transform .18s, visibility 0s .18s; }
+  .bookview.toc-open .bv-toc { visibility: visible; transform: none; transition-delay: 0s; }
+  .bookview.toc-open .bv-backdrop { display: block; position: fixed; inset: 0; z-index: 39; background: rgba(0,0,0,.18); }
+  .bv-toc-actions { display: flex; justify-content: flex-end; position: sticky; top: 0; z-index: 1; padding: .75rem 0 .5rem; background: #fdfdfb; }
+  .bv-close { min-height: 2.5rem; }
+  .bv-open { display: block; position: sticky; top: .5rem; z-index: 30; grid-column: 1 / -1; justify-self: start; }
 }
 @media (max-width: 820px) {
   .bookview { grid-template-columns: minmax(0, 1fr); padding: 0 1rem; }
   .bookview .sidenote { display: none; float: none; }
   .bookview .bv-inline-note { margin: .2em 0 .7em 1.5em; padding: .35em .6em; font-size: 14px; line-height: 1.45; color: #555; background: #f6f3ea; border-left: 3px solid #d9cfb5; }
 }
-@media print { .bv-toc, .bv-open { display: none; } .bookview { display: block; } }
+@media print { .bv-toc, .bv-open, .bookview.toc-open .bv-backdrop { display: none; } .bookview { display: block; } }
 
 .bookview .r-pageref { color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; }
 .bookview .r-vlinks { font: 11px/1.4 system-ui, -apple-system, sans-serif; color: #8a8170; margin: .1em 0 .9em; text-indent: 0; }
@@ -553,7 +573,7 @@ export function bookDocument(P, { title, lang = "", figureSrc }) {
 <html${lang ? ` lang="${esc(lang)}"` : ""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <style>${EXPORT_CSS}${BOOK_CSS}</style></head>
-<body><div class="bookview"><button class="bv-open" type="button">☰ Contents</button>${bookToc(P)}<article class="reader plain${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>
+<body><div class="bookview">${bookToc(P)}<article class="reader plain${printed ? " printed" : ""}"${printed ? ` style="${esc(baseCss(P.sheet))}"` : ""}>
 ${bookHtml(P, { printed, figureSrc, plain: true })}
 </article></div>
 <script>(${wireBookView.toString()})(document.querySelector(".bookview"), window);</script></body></html>
