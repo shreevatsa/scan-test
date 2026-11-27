@@ -1,14 +1,14 @@
-import { bookCredentials } from "./book-credentials.js?v=20261126-type-suggestion";
-import { openExport } from "./book-export.js?v=20261126-type-suggestion";
-import { openSettings } from "./book-settings.js?v=20261126-type-suggestion";
-import { openProcess } from "./process-view.js?v=20261126-type-suggestion";
-import { h, cropInto } from "./render.js?v=20261126-type-suggestion";
-import * as B from "./book.js?v=20261126-type-suggestion";
-import { pageCaption } from "./bookchecks.js?v=20261126-type-suggestion";
-import { ScanView } from "./bookview.js?v=20261126-type-suggestion";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261126-type-suggestion";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261126-type-suggestion";
-import { baseCss } from "./style.js?v=20261126-type-suggestion";
+import { bookCredentials } from "./book-credentials.js?v=20261127-place-areas";
+import { openExport } from "./book-export.js?v=20261127-place-areas";
+import { openSettings } from "./book-settings.js?v=20261127-place-areas";
+import { openProcess } from "./process-view.js?v=20261127-place-areas";
+import { h, cropInto } from "./render.js?v=20261127-place-areas";
+import * as B from "./book.js?v=20261127-place-areas";
+import { pageCaption } from "./bookchecks.js?v=20261127-place-areas";
+import { ScanView } from "./bookview.js?v=20261127-place-areas";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-place-areas";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-place-areas";
+import { baseCss } from "./style.js?v=20261127-place-areas";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -102,7 +102,7 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json?v=20261126-type-suggestion", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261127-place-areas", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {
@@ -160,7 +160,7 @@ class App {
     this.textScroll = h("main", { class: "v1-scroll v1-reading", "aria-label": "Text", hidden: true });
     app.replaceChildren(this.header, this.scanScroll, this.textScroll);
     this.scans = new ScanView(this.scanScroll, session, { edit: (operation, detail) => this.edit(operation, detail),
-      process: index => this.process(index), message: message => this.notify(message) });
+      process: (index, restore) => this.process(index, restore), message: message => this.notify(message) });
     this.updateHistory();
   }
 
@@ -398,7 +398,7 @@ class App {
 
   settings() { openSettings(this); }
 
-  process(index) { openProcess(this, index).catch(error => this.notify(error.message)); }
+  process(index, restore) { openProcess(this, index, restore).catch(error => this.notify(error.message)); }
 
   exportMenu() {
     try { openExport(this, download); }

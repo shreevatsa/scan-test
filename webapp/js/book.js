@@ -1,10 +1,11 @@
 // Immutable edits to the stored book. Keep the previous book for undo.
-import { toPageDocs } from "./chaya-book.js?v=20261126-type-suggestion";
-import { prepare } from "./reader.js?v=20261126-type-suggestion";
+import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-areas";
+import { prepare } from "./reader.js?v=20261127-place-areas";
 
 const pathOf = region => region.in ?? [];
 const startsWith = (path, prefix) => prefix.every((id, i) => path[i] === id);
-const readingRegion = (book, region) => region.type !== "?" && !region.ignored && !book.types[region.type]?.ignored;
+const readingRegion = (book, region) => region.type !== "?" && !region.ignored &&
+  !book.types[region.type]?.ignored && hasReadingContent(region, book.types[region.type]);
 
 export function pageIndexOf(book, page) {
   if (Number.isInteger(page)) return page >= 0 && page < book.pages.length ? page : -1;
@@ -92,7 +93,13 @@ function requireType(book, name) {
   if (name !== "?" && !Object.hasOwn(book.types, name)) throw new Error(`Unknown type: ${name}.`);
 }
 
+export function ensureUnclassifiedType(book) {
+  return Object.hasOwn(book.types, UNCLASSIFIED) ? book :
+    addType(book, UNCLASSIFIED, { lines: true, description: "No type chosen yet; its printed lines are kept." });
+}
+
 export function addRegion(book, page, type, box) {
+  if (type === UNCLASSIFIED) book = ensureUnclassifiedType(book);
   requireType(book, type);
   const region = { id: newRegionId(book, page), type, box: withBox(box) };
   return pageEdit(book, page, item => ({ ...item, regions: [...(item.regions ?? []), region] }));
@@ -109,7 +116,7 @@ export function moveRegion(book, address, dx, dy) {
 
 export function retypeRegion(book, address, type) {
   requireType(book, type);
-  return regionEdit(book, address, region => field(region, "type", type));
+  return regionEdit(book, address, region => field(field(region, "type", type), "proposed", null));
 }
 
 export const ignoreRegion = (book, address) => regionEdit(book, address, region => field(region, "ignored", true));

@@ -1,5 +1,9 @@
 // Scan checks are derived from the visible reading and never written into the book.
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-areas";
+
 export const typeLabel = type => type === "?" ? "Needs a type" : type[0].toUpperCase() + type.slice(1).replaceAll("_", " ");
+
+export const compareScanBoxes = (a, b) => a[1] - b[1] || a[0] - b[0];
 
 export function existingProposedType(region, types) {
   const name = region.proposed;
@@ -28,13 +32,12 @@ export function checksFor(book) {
     for (const region of page.regions ?? []) {
       const address = `${index + 1}/${region.id}`, type = book.types[region.type] ?? {};
       if (region.ignored || type.ignored) continue;
-      if (region.type === "?") {
-        checks[index].push({ kind: "type", address, title: areaTitle(region, book.types) });
-        continue;
-      }
+      if (region.type === UNCLASSIFIED || region.type === "?" || region.proposed) checks[index].push({ kind: "type", address, title: areaTitle(region, book.types) });
       available.set(address, type);
       if (type.flow === "notes") notes.push({ index, address });
       if (region.uncertain) checks[index].push({ kind: "uncertain", address, title: "The reading is uncertain" });
+      if (region.type !== "?" && !type.figure && !region.lines?.length)
+        checks[index].push({ kind: "unread", address, title: "This region has no reading yet" });
       for (const [line, piece] of (region.lines ?? []).entries()) {
         if (piece.text == null) checks[index].push({ kind: "unread", address, line, title: `Line ${line + 1} has no reading yet` });
         for (const [span, marker] of (piece.spans ?? []).entries()) if (marker.kind === "note_marker")

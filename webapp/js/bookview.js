@@ -1,10 +1,11 @@
-import * as B from "./book.js?v=20261126-type-suggestion";
-import { areaTitle, checksFor, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261126-type-suggestion";
-import { hasTextInk } from "./local/ink-checks.js?v=20261126-type-suggestion";
-import { PageView } from "./pageimage.js?v=20261126-type-suggestion";
-import { boxRing } from "./ops.js?v=20261126-type-suggestion";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261126-type-suggestion";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261126-type-suggestion";
+import * as B from "./book.js?v=20261127-place-areas";
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-areas";
+import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-place-areas";
+import { hasTextInk } from "./local/ink-checks.js?v=20261127-place-areas";
+import { PageView } from "./pageimage.js?v=20261127-place-areas";
+import { boxRing } from "./ops.js?v=20261127-place-areas";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261127-place-areas";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261127-place-areas";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const addressOf = (index, id) => `${index + 1}/${id}`;
@@ -15,10 +16,10 @@ const fractions = (box, w, h) => box.map((n, i) => n / (i % 2 ? h : w));
 const nonText = (book, r) => r.ignored || r.type === "?" || book.types[r.type]?.ignored;
 const checkKey = ({ kind, address, line, span, id }) => JSON.stringify([kind, address, line, span, id]);
 
-function picker(types, selected, change, label, areaLabel = null) {
+function picker(types, selected, change, label) {
   const select = h("select", { "aria-label": label, onchange: e => change(e.target.value) });
-  const entries = areaLabel ? ["?", ...types] : types;
-  select.append(...entries.map(type => h("option", { value: type }, type === "?" && areaLabel ? areaLabel : words(type))));
+  const entries = selected && !types.includes(selected) ? [...types, selected] : types;
+  select.append(...entries.map(type => h("option", { value: type }, words(type))));
   select.value = selected;
   return select;
 }
@@ -62,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261126-type-suggestion", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261127-place-areas", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }
@@ -191,7 +192,7 @@ export class ScanView {
         const id = B.newRegionId(this.book, index);
         slot.view.setDrawing(false);
         slot.draw.setAttribute("aria-pressed", false);
-        this.edit(b => B.addRegion(b, index, "?", orderedBox(fractions(box, slot.w, slot.h))));
+        this.edit(b => B.addRegion(b, index, UNCLASSIFIED, orderedBox(fractions(box, slot.w, slot.h))));
         this.select(addressOf(index, id));
       },
       onLeaveOut: item => {
@@ -308,7 +309,7 @@ export class ScanView {
 
   makeCard(slot, region) {
     const address = addressOf(slot.index, region.id), muted = nonText(this.book, region);
-    const plan = picker(this.typeNames(), region.type, type => this.edit(b => B.retypeRegion(b, address, type)), "Region type", areaTitle(region, this.book.types));
+    const plan = picker(this.typeNames(), region.type, type => this.edit(b => B.retypeRegion(b, address, type)), "Region type");
     const badge = button("!", event => {
       event.stopPropagation();
       const first = this.checks(slot.index).find(item => item.address === address);
@@ -459,7 +460,11 @@ export class ScanView {
       this.dataChecks = checksFor(this.book);
       this.checkBook = this.book;
     }
-    return [...this.dataChecks[index], ...(this.slots[index].ink ?? [])];
+    const checks = [...this.dataChecks[index], ...(this.slots[index].ink ?? [])];
+    if (checks.length < 2) return checks;
+    const boxes = new Map((this.book.pages[index].regions ?? []).map(region => [addressOf(index, region.id), region.box]));
+    const box = check => check.box ?? boxes.get(check.address);
+    return checks.sort((a, b) => compareScanBoxes(box(a), box(b)));
   }
 
   badges(slot) {
@@ -499,6 +504,7 @@ export class ScanView {
     slot.checkBox.replaceChildren(h("div", { class: "v1-review-heading" }, h("strong", {}, check.title),
       button("×", () => { slot.openCheck = null; slot.checkBox.hidden = true; }, { "aria-label": "Close check" })));
     const address = check.address, region = address && B.regionAt(this.book, address);
+    const leaveOut = () => button("Leave out", () => this.edit(b => B.ignoreRegion(b, address)));
     const actions = h("div", { class: "v1-tools" });
     if (check.kind === "type") {
       const existing = existingProposedType(region, this.book.types);
@@ -507,11 +513,18 @@ export class ScanView {
         this.edit(b => B.retypeRegion(b, address, existing))));
       else if (proposed && /^[a-z][a-z0-9_]*$/.test(proposed)) actions.append(button(`Add type ${words(proposed)}`, () =>
         this.edit(b => B.retypeRegion(B.addType(b, proposed), address, proposed))));
-      actions.append(h("label", {}, "Keep as ", picker(this.typeNames(), "", type => this.edit(b => B.retypeRegion(b, address, type)), "Keep as")),
-        button("Leave out", () => this.edit(b => B.ignoreRegion(b, address))));
+      const keep = picker(this.typeNames(), region.type, () => {}, "Keep as");
+      actions.append(h("label", {}, "Keep as ", keep),
+        button("Keep", () => this.edit(b => B.retypeRegion(b, address, keep.value))), leaveOut());
     } else if (check.kind === "unread") {
-      actions.append(button("Enter text", () => this.card(slot, region.id)?.querySelector(`[data-line="${check.line}"]`)?.focus()),
-        button("Keep empty", () => this.edit(b => B.setLine(b, address, check.line, "", region.lines[check.line].spans))));
+      if (region.note) slot.checkBox.append(h("p", {}, region.note));
+      actions.append(button("Enter text", () => {
+        const line = check.line ?? 0;
+        if (check.line == null) this.edit(b => B.addLine(b, address, line));
+        this.card(slot, region.id)?.querySelector(`[data-line="${line}"]`)?.focus();
+      }), button("Keep empty", () => this.edit(b => check.line == null
+        ? B.addLine(b, address, 0, { text: "" })
+        : B.setLine(b, address, check.line, "", region.lines[check.line].spans))), leaveOut());
     } else if (check.kind === "uncertain") {
       if (region.note) slot.checkBox.append(h("p", {}, region.note));
       actions.append(button("Resolve", () => this.edit(b => B.clearUncertainty(b, address))));
@@ -530,9 +543,11 @@ export class ScanView {
       actions.append(button("Find an unlinked marker", () => this.nextCheck("marker")));
     } else {
       actions.append(button("Draw region around line", () => {
-        this.edit(b => B.addRegion(b, slot.index, "?", orderedBox(check.box)));
+        this.edit(b => B.addRegion(b, slot.index, UNCLASSIFIED, orderedBox(check.box)));
       }));
     }
+    if (check.kind === "unread" || (check.kind === "type" && !region.lines?.length))
+      actions.append(button("Restore from saved work…", () => this.callbacks.process(slot.index, true)));
     slot.checkBox.append(actions);
   }
 

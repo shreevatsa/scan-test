@@ -10,15 +10,19 @@ Open `http://127.0.0.1:8000/webapp/`. The library can open a local PDF or a URL,
 `?book=<encoded PDF URL>`. It stores the original scan, `chaya.json`, and processing work in this browser.
 Use **Export → Save .chaya.pdf** to keep a portable copy of the scan and edits.
 
-- **Scans** is the editor. Select a box or its text to edit it. **Next check** visits unread or uncertain text,
-  areas that need a type, unlinked notes, and likely lines outside the boxes. If a suggested type already
-  exists, **Use** assigns it to the area you are reviewing. **Text** follows the saved
-  reading order and links. Double-click a passage or footnote to preview its scan. **Open in Scans** jumps
-  to that region in the editor.
+- **Scans** is the editor. Select a box or its text to edit it. Cards follow the book’s saved order.
+  **Next check** follows the positions on the scan. Checks flag unread or uncertain text, type suggestions,
+  unlinked notes, and likely lines outside the boxes. **Use** applies an existing suggested type.
+  **Keep** accepts the selected type and **Leave out** excludes an area from reading.
+- The **Text** view follows the saved reading order and links. Double-click a passage or footnote to
+  preview its scan. **Open in Scans** jumps to that region in the editor.
 - **Process** finds regions and reads text on unprocessed pages, a scan range, or the current page.
+  Areas that need a type use **Unclassified**, which keeps printed lines and any suggested type for review.
   The dialog shows the engines, estimated cost, spending threshold, and progress. **Use saved records only**
-  replays suitable records from the attached work archive. **Stop** interrupts a run and **Undo** restores the
-  book before a run that changed it.
+  replays matching records from browser storage or the attached work archive. **Fill in missing text only**
+  copies readings into matching blank line slots or untranscribed regions while preserving existing text,
+  exclusions, and structure. An unread check opens this mode through **Restore from saved work…**.
+  **Stop** interrupts a run and **Undo** restores the book before a run that changed it.
 - **Settings** holds book details, types, finder and reader choices, credentials, and structure rules.
   Processing saves inferred structure until you edit it. **Find structure now** replaces saved structure
   after confirmation.

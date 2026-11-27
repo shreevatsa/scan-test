@@ -1,11 +1,15 @@
 // Project the stored structure into the page-document interface used by the reader.
-import { boxRing } from "./ops.js?v=20261126-type-suggestion";
+import { boxRing } from "./ops.js?v=20261127-place-areas";
 
 export function effectiveEnd(line, type) {
   if (line.end != null) return line.end;
   if (type?.lines) return "line";
   return /[-‐]$/u.test(line.text || "") ? "hyphen" : "space";
 }
+
+export const UNCLASSIFIED = "unclassified";
+
+export const hasReadingContent = (region, type) => !!region.lines?.length || !!type?.figure;
 
 const attrs = ({ number, label, lang, style, open }) =>
   Object.fromEntries(Object.entries({ number, label, lang, style, open }).filter(([, v]) => v !== undefined));
@@ -21,6 +25,7 @@ function pageTypes(book) {
     if (rules.captions?.includes(name)) return "caption";
     if (rules.verses?.lead_in?.includes(name)) return "lead_in";
     if (rules.contents_types?.includes(name)) return "list_item";
+    if (name === UNCLASSIFIED) return "paragraph";
     if (type.lines) return "verse";
     if (type.flow === "notes" || type.flow === "apparatus") return "note";
     if (!type.contains || printed.has(name)) return "paragraph";
@@ -79,6 +84,7 @@ export function toPageDocs(book) {
       const { type } = region;
       if (type === "?" || region.ignored) continue;
       const definition = book.types[type] ?? {};
+      if (!hasReadingContent(region, definition)) continue;
       const ref = `${index + 1}/${region.id}`, oldRef = `${id}#${region.id}`;
       const box = pixels(region.box);
       const lines = (region.lines ?? []).map(({ box, spans, ...line }, lineIndex) => {

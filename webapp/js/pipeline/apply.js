@@ -1,11 +1,11 @@
-import { canonical } from "../ops.js?v=20261126-type-suggestion";
-import { checkReading, selectPageRegions } from "./split.js?v=20261126-type-suggestion";
-import { transcribedLines } from "./steps.js?v=20261126-type-suggestion";
+import { canonical } from "../ops.js?v=20261127-place-areas";
+import { checkReading, selectPageRegions } from "./split.js?v=20261127-place-areas";
+import { transcribedLines } from "./steps.js?v=20261127-place-areas";
 
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
 const prose = new Set(["paragraph", "note"]);
-function lineEnd(line, kind) {
-  if (printedLines.has(kind)) return "line";
+function lineEnd(line, kind, whole) {
+  if (whole) return "line";
   if (prose.has(kind) && /[-‐]$/u.test(line.text || "")) return "hyphen";
   return "space";
 }
@@ -19,10 +19,9 @@ function geometry(doc) {
       .sort((a, b) => a.id.localeCompare(b.id)) });
 }
 
-function sentRegions(doc, types) {
+function sentRegions(doc) {
   return doc.page.regions.map(region => ({ rid: region.id,
-    line_ids: types.types[region.type]?.region === "figure" ? []
-      : (region.lines || []).filter(line => line.polygons?.length).map(line => line.line) }));
+    line_ids: (region.lines || []).filter(line => line.polygons?.length).map(line => line.line) }));
 }
 
 export function spreadLines(lines, n, { whole = false } = {}) {
@@ -39,21 +38,17 @@ export function spreadLines(lines, n, { whole = false } = {}) {
   return out.map(piece => piece.join(" "));
 }
 
-export function applyReading(current, reading, types) {
-  const sent = sentRegions(current, types);
-  let parsed = reading.parsed || reading;
+export function applyReading(current, reading, types, storedTypes = {}) {
+  const sent = sentRegions(current);
+  const parsed = reading.parsed || reading;
   if (reading.regions_record) {
     const record = reading.regions_record;
     const original = selectPageRegions(record.regions).sent;
-    const currentIds = new Set(current.page.regions.map(region => region.id));
-    checkReading(parsed, original);
     const source = { page: { id: current.page.id, image_sha256: reading.image_sha256 || current.page.image_sha256,
-      width: record.width, height: record.height, regions: original.filter(value => currentIds.has(value.rid) || types.types[value.region.type])
-        .map(value => value.region)
-        .map(region => ({ id: region.document_region_id || `r${region.region_id}`, polygons: region.polygons,
-          lines: (region.lines || []).map(line => ({ line: line.line_id, polygons: line.polygons })) })) } };
+      width: record.width, height: record.height, regions: original.map(({ rid, region, line_ids }) =>
+        ({ id: rid, polygons: region.polygons, lines: region.lines.filter(line => line_ids.includes(line.line_id))
+          .map(line => ({ line: line.line_id, polygons: line.polygons })) })) } };
     if (geometry(current) !== geometry(source)) throw new Error("The reading does not fit this scan’s saved regions.");
-    parsed = { ...parsed, regions: parsed.regions.filter(region => currentIds.has(region.id)) };
   }
   checkReading(parsed, sent);
   const doc = structuredClone(current);
@@ -62,6 +57,8 @@ export function applyReading(current, reading, types) {
     let input = parsed.regions.find(value => value.id === region.id);
     if (!input) continue;
     const ids = sent.find(value => value.rid === region.id).line_ids;
+    const kind = types.types[region.type]?.region;
+    const whole = storedTypes[region.type]?.lines || printedLines.has(kind);
     if (input.kept) {
       // The reading gave this region another number of lines than the scan's line pieces. A region with no text yet takes
       // the reading's text, spread over its line pieces in order (to be checked); one with text keeps it.
@@ -71,7 +68,6 @@ export function applyReading(current, reading, types) {
         continue;
       }
       // A block whose printed lines are lines (a verse) keeps them whole, one to a piece; prose is spread evenly.
-      const whole = printedLines.has(types.types[region.type]?.region);
       input = { id: input.id, uncertain: true, note: `The reading's ${input.returned_lines.length} lines are spread over this area's ${ids.length} line pieces; check the line breaks.`,
         lines: spreadLines(input.returned_lines, ids.length, { whole }).map((text, i) => ({ n: i + 1, text })) };
     }
@@ -84,7 +80,7 @@ export function applyReading(current, reading, types) {
       delete target.spans;
       if (line.spans) target.spans = line.spans;
       // How the line ends (a verse's lines are lines, a paragraph's run on): by the block's type, as the reading takes it.
-      const end = lineEnd(target, types.types[region.type]?.region);
+      const end = lineEnd(target, kind, whole);
       if (!target.end && end !== "space") target.end = end;
     }
     region.source = { ...region.source, transcription: { uncertain: input.uncertain, note: input.note } };

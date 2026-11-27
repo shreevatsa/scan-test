@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as B from "../js/book.js";
+import { bookText } from "../js/reader.js";
 import { regionClasses, regionPrompt } from "../js/pipeline/prompts.js";
 
 const box = [0.1, 0.1, 0.4, 0.3];
@@ -186,4 +187,34 @@ test("an open end and an unmatched start stay separate from neighboring text of 
   const joined = B.setContinues(start, "1/r2", true);
   assert.equal(B.regionAt(joined, "2/r1").from_previous, undefined);
   assert.equal(B.assemble(joined).book.units[1].children.length, 2);
+});
+
+test("drawing an unclassified region adds its line-preserving type only when needed", () => {
+  const start = freeze(book());
+  assert.equal(B.addRegion(start, "second", "prose", box).types, start.types);
+  let edited = B.addRegion(start, "second", "unclassified", box);
+  const id = edited.pages[1].regions.at(-1).id;
+  const address = `2/${id}`;
+  assert.equal(B.regionAt(edited, address).type, "unclassified");
+  assert.deepEqual(edited.types.unclassified, { lines: true, description: "No type chosen yet; its printed lines are kept." });
+  edited = B.addLine(edited, address, 0, { text: "One printed line-" });
+  edited = B.addLine(edited, address, 1, { text: "another printed line" });
+  assert.equal(B.assemble(edited).tl.types.unclassified.region, "paragraph");
+  assert.match(bookText(B.assemble(edited)), /One printed line-\nanother printed line/u);
+});
+
+test("regions without lines add no reading units or bare printed page numbers", () => {
+  const start = book();
+  start.types.unclassified = { lines: true };
+  start.types.figure = { figure: true };
+  start.containers = { empty: { type: "section" } };
+  start.pages[0] = { ...start.pages[0], label: "134", regions: [
+    { id: "r1", type: "unclassified", box, in: ["empty"], proposed: "byline" },
+    { id: "r2", type: "prose", box, lines: [] },
+  ] };
+  start.pages[1].regions.push({ id: "plate", type: "figure", box });
+  const reading = B.assemble(start);
+  assert.deepEqual(reading.book.units.map(unit => unit.type), ["prose", "prose", "figure"]);
+  assert.doesNotMatch(bookText(reading), /\[p\. 134\]/u);
+  assert.match(bookText(reading), /\[figure\]/u);
 });

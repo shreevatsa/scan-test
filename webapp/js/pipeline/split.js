@@ -1,6 +1,6 @@
 // Reading requests and response checks.
-import { regionCaption } from "./prompts.js?v=20261126-type-suggestion";
-import { parseLine } from "../inline.js?v=20261126-type-suggestion";
+import { regionCaption } from "./prompts.js?v=20261127-place-areas";
+import { parseLine } from "../inline.js?v=20261127-place-areas";
 
 export const SPLIT_VERSION = "reading-and-structure-v1";
 

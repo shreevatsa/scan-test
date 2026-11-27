@@ -1,5 +1,5 @@
-import { regionRequest } from "./steps.js?v=20261126-type-suggestion";
-import { geminiReadingRequest } from "./readers.js?v=20261126-type-suggestion";
+import { regionRequest } from "./steps.js?v=20261127-place-areas";
+import { geminiReadingRequest } from "./readers.js?v=20261127-place-areas";
 
 export function finderRequest(profile, prompt, schema, image) {
   if (profile.provider === "openai") return { ...regionRequest(prompt, schema, image),

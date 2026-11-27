@@ -2,7 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as B from "../js/book.js";
 import { findStructure } from "../js/book-structure.js";
-import { pagesToProcess, processingChoices, processBook, replaceProcessedPage } from "../js/book-processing.js";
+import { checksFor } from "../js/bookchecks.js";
+import { provisionalDocument } from "../js/pipeline/provisional.js";
+import { applyReading } from "../js/pipeline/apply.js";
+import { pagesToProcess, processingChoices, processBook, materializeProcessedPage, replaceProcessedPage } from "../js/book-processing.js";
 import { verseExport } from "../js/verses.js";
 
 const box = [0.1, 0.1, 0.9, 0.2];
@@ -63,6 +66,7 @@ test("saved-only processing stops at missing work without rendering or calling a
   assert.deepEqual(pagesToProcess(book, "unprocessed"), [0]);
   assert.deepEqual(pagesToProcess(book, "range", 0, "1–3"), [0, 2]);
   assert.equal(pagesToProcess(book, "page", 1).length, 0);
+  assert.deepEqual(pagesToProcess(book, "unprocessed", 0, "", true), []);
   let requests = 0;
   const result = await processBook({
     async readWork() { return null; }, async workArchive() { return null; },
@@ -74,6 +78,50 @@ test("saved-only processing stops at missing work without rendering or calling a
   assert.equal(result.completed, 0);
   assert.equal(requests, 0);
   assert.match(result.errors[0].message, /matching saved finder and reader/);
+});
+
+test("restoring saved text fills matching gaps and keeps earlier edits and reading order", async () => {
+  const lines = [{ text: "Already edited" }, {}];
+  const book = { chaya: 1, title: "An invented book", types: { paragraph: {}, unclassified: { lines: true } },
+    pages: [scan(1, [
+      region("r3", "paragraph", "", { ignored: true, lines: [] }),
+      region("r1", "paragraph", "", { number: "8", lines }),
+      region("r2", "unclassified", "", { proposed: "byline", lines: [] }),
+      region("r4", "unclassified", ""),
+      region("r5", "unclassified", "", { lines: [], box: [0.1, 0.5, 0.9, 0.6] }),
+    ])] };
+  const choices = processingChoices(book);
+  const image_sha256 = "scan";
+  const model_box = [10, 10, 90, 20], polygons = [[[10, 10], [90, 10], [90, 20], [10, 20]]];
+  const layout = { width: 100, height: 100, image_sha256, profile: { id: choices.finder.id },
+    regions: [1, 2, 3, 4, 5].map(region_id => ({ region_id, region_class: "paragraph", reading_order: region_id,
+      status: "ok", model_box, polygons, lines: Array.from({ length: region_id < 3 ? 2 : 1 }, (_, i) => ({ line_id: i + 1, polygons })) })) };
+  const reading = { image_sha256, regions_record: layout, parsed: {
+    regions: layout.regions.map(item => ({ id: `r${item.region_id}`, uncertain: false, note: null,
+      lines: item.lines.map(({ line_id: n }) => ({ n, text: `Saved ${n}` })) })),
+  } };
+  const changed = [];
+  const session = { async readWork(path) { return path.includes("/readings/") ? reading : layout; } };
+  const options = { choices, missingOnly: true, signal: new AbortController().signal,
+    async change(value) { changed.push(value); },
+    async request() { assert.fail("Restoring text must use saved records"); } };
+  const result = await processBook(session, book, [0], options);
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.restored, 2);
+  assert.equal(result.spend, 0);
+  assert.equal(changed.length, 1);
+  const before = book.pages[0].regions, after = changed[0].pages[0].regions;
+  assert.deepEqual(after.map(r => r.id), before.map(r => r.id));
+  for (const i of [0, 3, 4]) assert.equal(after[i], before[i]);
+  assert.equal(after[1].number, "8");
+  assert.equal(after[1].lines[0], lines[0]);
+  assert.equal(after[1].lines[1].text, "Saved 2");
+  assert.equal(after[2].proposed, "byline");
+  assert.deepEqual(after[2].lines.map(line => line.text), ["Saved 1", "Saved 2"]);
+  assert.equal(B.assemble(changed[0]).regions["1#r2"].region.lines[0].end, "line");
+  assert.deepEqual(pagesToProcess(book, "unprocessed", 0, "", true), [0]);
+  assert.equal((await processBook(session, changed[0], [0], options)).restored, 0);
+  assert.equal(changed.length, 1);
 });
 
 test("closing-line rules retain episodes when the book also has printed headings", () => {
@@ -112,4 +160,32 @@ test("a verse group marker read on the verse's last line becomes its own stored 
   assert.equal(group.type, "verse_group");
   assert.equal(group.label, "युगलकम्");
   assert.equal(B.assemble(output).book.units.filter(value => value.type === "verse").length, 2);
+});
+
+test("processing keeps proposals and printed lines for unclassified regions", () => {
+  const types = { unclassified: { lines: true }, heading: { lines: true, heading: true },
+    footnote: { flow: "notes" } };
+  const tl = { types: { unclassified: { region: "paragraph" }, heading: { region: "heading" },
+    footnote: { region: "note", flow: "notes" } } };
+  const modelBox = [20, 40, 80, 90], rings = [[[20, 40], [80, 40], [80, 90], [20, 90]]];
+  const item = (region_id, region_class, proposed_type) => ({ region_id, region_class, proposed_type,
+    status: "ok", type: "other", model_box: modelBox, polygons: rings,
+    lines: [{ line_id: 1, polygons: rings }, { line_id: 2, polygons: rings }] });
+  const layout = { width: 100, height: 100, regions: [
+    item(1, "note", "presentation_note"), item(2, "heading", "section_name"), item(3, "other"),
+    { ...item(4, "heading"), type: "heading" },
+  ] };
+  const doc = provisionalDocument("1", { width: layout.width, height: layout.height }, tl, layout);
+  const reading = { regions_record: layout, parsed: { regions: ["r1", "r2", "r3", "r4"].map(id => ({
+    id, uncertain: false, note: null, lines: [{ n: 1, text: "First line" }, { n: 2, text: "Second line" }],
+  })) } };
+  const { page } = materializeProcessedPage(applyReading(doc, reading, tl, types), { pdf_page: 1 }, types, tl);
+  assert.deepEqual(page.regions.map(r => [r.type, r.proposed]), [
+    ["unclassified", "presentation_note"], ["unclassified", "section_name"], ["unclassified", undefined], ["heading", undefined],
+  ]);
+  for (const r of page.regions) assert.deepEqual(r.lines.map(line => line.text), ["First line", "Second line"]);
+  const book = { chaya: 1, title: "Invented book", types, pages: [page] };
+  assert.equal(B.assemble(book).regions["1#r1"].region.lines[0].end, "line");
+  assert.deepEqual(checksFor(book)[0].map(check => check.title),
+    ["May be a new type: presentation note", "May be a new type: section name", "Needs a type"]);
 });

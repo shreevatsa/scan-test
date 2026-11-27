@@ -1,4 +1,5 @@
-import { selectPageRegions } from "./split.js?v=20261126-type-suggestion";
+import { UNCLASSIFIED } from "../chaya-book.js?v=20261127-place-areas";
+import { selectPageRegions } from "./split.js?v=20261127-place-areas";
 
 export function regionTypePaths(types) {
   const definitions = types.types, paths = new Map(), queue = [];
@@ -99,50 +100,26 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
   return { units, flows, problems };
 }
 
-// The book's type for a region of a proposed type, by its kind (region class): the type named for the class, else the
-// first of that class, else (a kind the book has no type for, a lead-in say) a paragraph, so that its text is in the
-// book; none for a region of no proposed type, of no known kind, or a figure the book has no type for.
-export function keptType(region, types) {
-  const kind = region.region_class;
-  if (!region.proposed_type || !kind || kind === "other") return null;
-  const ofKind = kind => types.types[kind]?.region === kind ? kind : Object.entries(types.types).find(([, type]) => type.region === kind)?.[0] || null;
-  return ofKind(kind) || (kind === "figure" ? null : ofKind("paragraph"));
-}
-
 export function provisionalDocument(pid, page, types, record) {
-  const { sent, skipped } = selectPageRegions(record.regions);
-  const regions = [], omitted = [];
-  const sourceOf = region => ({ region_id: region.region_id, method_type: region.type, region_class: region.region_class, keep: region.keep,
-    uncertain: region.uncertain, continues_from_earlier: Boolean(region.continues_from_earlier),
-    continues_later: Boolean(region.continues_later), model_box: structuredClone(region.model_box),
-    ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) });
-  for (const { rid, region, line_ids: lineIds } of sent) {
-    // An area the finder proposed a new type for is in the book meanwhile, as a block of the book's type of its kind (a
-    // paragraph, a verse), so that its text is: the proposal waits on it (source.kept_as), for the person to add the
-    // type or keep it as it is. An area of no known kind ("other", a mark the finder could not place) is left out.
-    const kept = !types.types[region.type] && keptType(region, types);
-    if (!types.types[region.type] && !kept) {
-      omitted.push({ region: rid, type: region.type, box: structuredClone(region.model_box), ...(region.proposed_type ? { proposed_type: region.proposed_type } : {}) });
-      continue;
+  const { sent } = selectPageRegions(record.regions);
+  const sentById = new Map(sent.map(entry => [entry.rid, entry]));
+  const regions = record.regions.flatMap(region => {
+    const id = region.document_region_id || `r${region.region_id}`, reading = sentById.get(id);
+    const [x0, y0, x1, y1] = (region.model_box ?? region.bounds ?? []).map(Math.round);
+    if (![x0, y0, x1, y1].every(Number.isFinite)) {
+      if (reading) throw new Error(`Region ${id} has no usable box.`);
+      return [];
     }
+    const box = [x0, y0, x1, y1];
     const lines = new Map(region.lines.map(line => [line.line_id, line.polygons]));
-    regions.push({ id: rid, type: kept || region.type, polygons: structuredClone(region.polygons), box: region.model_box.map(Math.round),
-      order: region.reading_order, lines: lineIds.map(line => ({ line, polygons: structuredClone(lines.get(line)) })),
-      source: { ...sourceOf(region), ...(kept ? { kept_as: kept } : {}) } });
-  }
-  // A region the finder drew where the scan has no ink is kept, outlined by its box and marked, as the editor does for a
-  // region drawn by hand over blank paper: the person sees it in the list and on the scan and decides (delete it, retype
-  // it, or keep it, a page number for instance). It has no line pieces, so nothing is read from it.
-  for (const entry of skipped) {
-    const region = entry.status === "no_ink" && entry.model_box ? record.regions.find(r => r.region_id === entry.region_id) : null;
-    if (!region || !types.types[region.type]) continue;
-    const [x1, y1, x2, y2] = region.model_box.map(Math.round);
-    regions.push({ id: region.document_region_id || `r${region.region_id}`, type: region.type, polygons: [[[x1, y1], [x2, y1], [x2, y2], [x1, y2]]],
-      box: [x1, y1, x2, y2], order: region.reading_order, lines: [],
-      source: { ...sourceOf(region), no_ink: true, outline: "the box (no ink in it)" } });
-  }
-  const position = new Map(record.regions.map((r, index) => [r.document_region_id || `r${r.region_id}`, index]));
-  regions.sort((a, b) => (position.get(a.id) ?? 0) - (position.get(b.id) ?? 0));
-  return { page: { id: pid, ...page, regions }, source: { omitted_regions: omitted } };
-
+    const type = Object.hasOwn(types.types, region.type) ? region.type : UNCLASSIFIED;
+    const proposed = region.proposed_type;
+    return [{ id, type, box, order: region.reading_order,
+      polygons: reading ? structuredClone(region.polygons) : [[[x0, y0], [x1, y0], [x1, y1], [x0, y1]]],
+      lines: reading?.line_ids.map(line => ({ line, polygons: structuredClone(lines.get(line)) })) ?? [],
+      source: { continues_from_earlier: Boolean(region.continues_from_earlier), continues_later: Boolean(region.continues_later),
+        ...(proposed ? { proposed_type: proposed } : {}),
+        ...(!reading ? { no_ink: true } : {}) } }];
+  });
+  return { page: { id: pid, ...page, regions } };
 }

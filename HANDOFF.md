@@ -3,8 +3,10 @@
 ## 2026-11-25 · Version 1
 
 The app on `main` opens Chaya v1 PDFs and ordinary scans. Its browser library stores the original scan,
-edited book, and processing work separately. Scans combines the scan and region editor. Text assembles
-saved structure and linked notes. Process reuses the finders and readers and can replay a work archive.
+edited book, and processing work separately. Scans shows regions in saved reading order and checks in scan
+position order. Unclassified regions retain their printed lines while their type is under review. Text
+assembles saved structure and linked notes. Process can fill gaps from matching saved work while keeping
+the other edits.
 See [the app guide](webapp/README.md) and [the book format](schema/FORMAT.md).
 
 The old app and the migration tool live on `chaya-0.4`. Run migration there using the command in the format

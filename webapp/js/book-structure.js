@@ -1,10 +1,10 @@
-import { assemble } from "./assemble.js?v=20261126-type-suggestion";
-import { toPageDocs } from "./chaya-book.js?v=20261126-type-suggestion";
-import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261126-type-suggestion";
-import { deriveStructure } from "./structure-rules.js?v=20261126-type-suggestion";
-import { pageLabel } from "./pipeline/steps.js?v=20261126-type-suggestion";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261126-type-suggestion";
-import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261126-type-suggestion";
+import { assemble } from "./assemble.js?v=20261127-place-areas";
+import { toPageDocs } from "./chaya-book.js?v=20261127-place-areas";
+import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261127-place-areas";
+import { deriveStructure } from "./structure-rules.js?v=20261127-place-areas";
+import { pageLabel } from "./pipeline/steps.js?v=20261127-place-areas";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261127-place-areas";
+import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261127-place-areas";
 
 const cleanRegion = ({ in: path, direct, flow, number, label, continues, from_previous, links, ...region }) => ({
   ...region,

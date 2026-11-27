@@ -1,6 +1,6 @@
-import { openWorkZip } from "./work-zip.js?v=20261126-type-suggestion";
-import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261126-type-suggestion";
-import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261126-type-suggestion";
+import { openWorkZip } from "./work-zip.js?v=20261127-place-areas";
+import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-place-areas";
+import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-place-areas";
 
 export const PREVIOUS = "/scan-test/versions/0.4/";
 

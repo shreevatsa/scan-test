@@ -24,7 +24,7 @@ Required fields are `chaya: 1`, `title`, `types` and `pages`. Optional fields ar
 Each key in `types` names a type. A type may have a `description`, a language `lang`, a `flow` (such as
 `notes` or `apparatus`), `contains` (the types it can hold), and `numbered: true`.
 
-- `lines: true` keeps printed line breaks.
+- `lines: true` keeps printed line breaks. `unclassified` uses this flag for areas that still need a type.
 - `figure: true` shows the region's crop.
 - `heading: true` shows the unit as a heading and identifies it to the heading rules.
 - `ignored: true` keeps that type on the scan and excludes it from reading.
@@ -63,14 +63,17 @@ Regions are addressed by their 1-based position in the book and their region ID.
 ```
 
 Regions are stored in reading order. IDs are unique per page. Boxes are `[left, top, right, bottom]` in
-fractions of the scan. A type of `"?"` marks an area needing a type. Optional `proposed` names a proposed
-type. `ignored: true` excludes a region from reading while keeping it on the scan. `uncertain: true` and
-`note` preserve uncertainty about the transcription.
+fractions of the scan. A region can carry an optional `proposed` type while it uses its current type.
+`ignored: true` excludes a region from reading while keeping it on the scan. `uncertain: true` and `note`
+preserve uncertainty about the transcription.
 
 `lines` contains the printed lines. Each can have a `box`, its own `style`, and `text`. Missing `text` is
-unread. An empty string records an empty transcription. A line ends with a break when its type has
-`lines: true`. Otherwise a trailing `-` or `‐` joins the word across lines, and other lines join with a
-space. Set `end` to `line`, `space`, `hyphen`, or `join` for exceptions.
+unread. Regions without lines add no reading units, except figures. An empty string records an empty
+transcription. For a type with `lines: true`, an end-of-line hyphen (`-` or `‐`) is printed text, and the
+break is kept. Set `end` on these types only to `space` to join printed lines with a space, as for a two-line
+heading, or to `join` to connect two pieces of the same printed line. For other types a trailing hyphen
+joins the word across lines, and other lines join with a space. Their exceptions can use `line`, `space`,
+`hyphen`, or `join`.
 
 Spans mark formatting such as italic, bold, small caps, superscript or subscript. `start` and `end` are
 Unicode code-point offsets. A `note_marker` is zero-width, with the printed `marker` and an optional

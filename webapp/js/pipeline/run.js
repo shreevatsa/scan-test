@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261126-type-suggestion";
-import * as S from "./steps.js?v=20261126-type-suggestion";
-import * as I from "./images.js?v=20261126-type-suggestion";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261126-type-suggestion";
-import * as Split from "./split.js?v=20261126-type-suggestion";
-import { markersFromQuotes } from "../note-links.js?v=20261126-type-suggestion";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261126-type-suggestion";
-import { classifyBlocks } from "../local/blocks.js?v=20261126-type-suggestion";
-import { finderById, finderPath } from "./finders.js?v=20261126-type-suggestion";
-import { finderRequest } from "./finder-requests.js?v=20261126-type-suggestion";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261126-type-suggestion";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261126-type-suggestion";
-import { bbox } from "../render.js?v=20261126-type-suggestion";
-import { canonical } from "../ops.js?v=20261126-type-suggestion";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261126-type-suggestion";
+import * as P from "./prompts.js?v=20261127-place-areas";
+import * as S from "./steps.js?v=20261127-place-areas";
+import * as I from "./images.js?v=20261127-place-areas";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-place-areas";
+import * as Split from "./split.js?v=20261127-place-areas";
+import { markersFromQuotes } from "../note-links.js?v=20261127-place-areas";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-place-areas";
+import { classifyBlocks } from "../local/blocks.js?v=20261127-place-areas";
+import { finderById, finderPath } from "./finders.js?v=20261127-place-areas";
+import { finderRequest } from "./finder-requests.js?v=20261127-place-areas";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-place-areas";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-place-areas";
+import { bbox } from "../render.js?v=20261127-place-areas";
+import { canonical } from "../ops.js?v=20261127-place-areas";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-place-areas";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

@@ -1,6 +1,6 @@
 // Store geometry, transcription and structure from a page-document reading as Chaya v1.
-import { effectiveEnd } from "./chaya-book.js?v=20261126-type-suggestion";
-import { bbox } from "./render.js?v=20261126-type-suggestion";
+import { effectiveEnd } from "./chaya-book.js?v=20261127-place-areas";
+import { bbox } from "./render.js?v=20261127-place-areas";
 
 const pick = (object, keys) => Object.fromEntries(keys.filter(key => Object.hasOwn(object, key)).map(key => [key, object[key]]));
 const unitAttrs = unit => pick(unit, ["number", "label", "lang", "style", "open"]);
@@ -22,7 +22,7 @@ export function writeRegion(region, asFraction, types, ownerKind, type = region.
     return result;
   }) };
   const source = region.source;
-  if (source?.kept_as && source.proposed_type) out.proposed = source.proposed_type;
+  if (source?.proposed_type) out.proposed = source.proposed_type;
   if (source?.transcription?.uncertain) out.uncertain = true;
   if (source?.transcription?.note != null) out.note = source.transcription.note;
   return out;

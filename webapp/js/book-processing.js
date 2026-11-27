@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261126-type-suggestion";
-import { finderTypeList } from "./chaya-book.js?v=20261126-type-suggestion";
-import { validBox, writeRegion } from "./chaya-materialize.js?v=20261126-type-suggestion";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261126-type-suggestion";
-import { applyReading } from "./pipeline/apply.js?v=20261126-type-suggestion";
-import { finderById, finderPath } from "./pipeline/finders.js?v=20261126-type-suggestion";
-import { pageRange } from "./pipeline/pdf.js?v=20261126-type-suggestion";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261126-type-suggestion";
-import { readerById, readerOptions } from "./pipeline/readers.js?v=20261126-type-suggestion";
-import { Maker, post } from "./pipeline/run.js?v=20261126-type-suggestion";
-import { pageCost, RECIPE } from "./recipe.js?v=20261126-type-suggestion";
+import * as B from "./book.js?v=20261127-place-areas";
+import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-areas";
+import { writeRegion } from "./chaya-materialize.js?v=20261127-place-areas";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261127-place-areas";
+import { applyReading } from "./pipeline/apply.js?v=20261127-place-areas";
+import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-place-areas";
+import { pageRange } from "./pipeline/pdf.js?v=20261127-place-areas";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-place-areas";
+import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-place-areas";
+import { Maker, post } from "./pipeline/run.js?v=20261127-place-areas";
+import { pageCost, RECIPE } from "./recipe.js?v=20261127-place-areas";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -17,14 +17,20 @@ export function processingChoices(book, calls = []) {
   return { options, finder, reader, finderCost: estimate(finder), readerCost: estimate(reader) };
 }
 
-export function pagesToProcess(book, scope, index, range) {
-  if (scope === "unprocessed") return book.pages.flatMap((page, i) => !page.skip && !page.regions ? [i] : []);
+export function pagesToProcess(book, scope, index, range, missingOnly = false) {
+  const hasGap = region => {
+    const type = book.types[region.type];
+    return !region.ignored && !type?.ignored && !type?.figure &&
+      (!region.lines?.length || region.lines.some(line => line.text == null && !line.spans?.length));
+  };
+  const eligible = page => !!page && !page.skip && (!missingOnly || page.regions?.some(hasGap));
+  if (scope === "unprocessed")
+    return book.pages.flatMap((page, i) => eligible(page) && (missingOnly || !page.regions) ? [i] : []);
   if (scope === "range") {
     if (!range.trim()) throw new Error("Enter one or more scan numbers.");
-    return pageRange(range, book.pages.length).filter(n => !book.pages[n - 1].skip).map(n => n - 1);
+    return pageRange(range, book.pages.length).map(n => n - 1).filter(i => eligible(book.pages[i]));
   }
-  if (!Number.isInteger(index) || !book.pages[index] || book.pages[index].skip) return [];
-  return [index];
+  return Number.isInteger(index) && eligible(book.pages[index]) ? [index] : [];
 }
 
 function cleanSpans(line) {
@@ -46,21 +52,38 @@ export function materializeProcessedPage(doc, previous, types, tl, rules) {
     hints[region.id] = { from: !!old.source?.continues_from_earlier, to: !!old.source?.continues_later };
     return region;
   });
-  const used = new Set(regions.map(region => region.id));
-  let next = 0;
-  for (const area of doc.source?.omitted_regions ?? []) {
-    if (!validBox(area.box)) continue;
-    let id = area.region;
-    if (!id || used.has(id)) do { id = `area${++next}`; } while (used.has(id));
-    used.add(id);
-    regions.push({ id, type: "?", box: asFraction(area.box), ...(area.proposed_type ? { proposed: area.proposed_type } : {}) });
-  }
   const label = scanLabels(doc.page.regions, rules) ?? previous.label;
   return { page: { ...previous, size: [width, height], ...(label != null ? { label } : {}), regions }, hints };
 }
 
 const placement = ["in", "direct", "flow", "number", "label", "lang", "style", "continues", "from_previous", "links"];
 const sameBox = (one, two) => one.every((value, i) => Math.abs(value - two[i]) < 0.003);
+
+function restoreMissingText(book, index, saved) {
+  const page = book.pages[index];
+  if (!page.regions) return { book, restored: 0 };
+  const candidates = new Map(saved.regions.map(region => [region.id, region]));
+  let restored = 0;
+  const regions = page.regions.map(region => {
+    const type = book.types[region.type];
+    const source = candidates.get(region.id);
+    if (region.ignored || type?.ignored || type?.figure || !source || !sameBox(region.box, source.box)) return region;
+    const original = region.lines ?? [];
+    // Match existing line slots before filling them. A saved empty string is an editor decision.
+    if (original.length && (original.length !== source.lines.length ||
+        original.some((line, i) => line.box && (!source.lines[i].box || !sameBox(line.box, source.lines[i].box))))) return region;
+    const lines = source.lines.map((line, i) => {
+      const previous = original[i];
+      if (previous?.text != null || previous?.spans?.length || line.text == null) return previous ?? line;
+      return { ...line, ...previous, text: line.text };
+    });
+    if (!lines.some((line, i) => line !== original[i] && line.text?.trim())) return region;
+    restored++;
+    return { ...(source.uncertain ? { uncertain: true } : {}), ...(source.note ? { note: source.note } : {}),
+      ...region, lines };
+  });
+  return { book: restored ? { ...book, pages: book.pages.with(index, { ...page, regions }) } : book, restored };
+}
 
 function keepMarkerLinks(region, old) {
   return region.lines.map((line, i) => {
@@ -148,7 +171,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261126-type-suggestion", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261127-place-areas", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;
@@ -196,8 +219,9 @@ async function cachedPage(session, book, index, pid, choices) {
 }
 
 export async function processBook(session, starting, indices, { choices, keys = {}, limit, savedOnly = false,
-  signal, change, progress = () => {}, request = post }) {
-  let book = starting, spend = 0, completed = 0, reused = 0, unknown = false, halted = false;
+  missingOnly = false, signal, change, progress = () => {}, request = post }) {
+  if (missingOnly) savedOnly = true;
+  let book = starting, spend = 0, completed = 0, reused = 0, restored = 0, unknown = false, halted = false;
   const errors = [], hints = new Map();
   const outlines = outlineWorker(signal);
   try {
@@ -246,14 +270,31 @@ export async function processBook(session, starting, indices, { choices, keys = 
           image: `${pid}.png`, image_sha256: reading.image_sha256,
           width: layout.width, height: layout.height,
         }, tl, layout);
-        const result = materializeProcessedPage(applyReading(doc, reading, tl), book.pages[index], book.types, tl, book.rules);
-        const replacement = replaceProcessedPage(book, index, result);
+        const needsType = doc.page.regions.some(region => region.type === UNCLASSIFIED);
+        const typed = needsType ? B.ensureUnclassifiedType(book) : book;
+        if (needsType && !Object.hasOwn(tl.types, UNCLASSIFIED)) tl.types[UNCLASSIFIED] = { region: "paragraph", flow: "main" };
+        if (missingOnly) {
+          const current = new Map(book.pages[index].regions?.map(region => [region.id, region]));
+          for (const region of doc.page.regions) {
+            const before = current.get(region.id);
+            if (before && tl.types[before.type]) region.type = before.type;
+          }
+        }
+        const result = materializeProcessedPage(applyReading(doc, reading, tl, typed.types), typed.pages[index], typed.types, tl, typed.rules);
         saving = true;
-        await session.writeWork(`work/structure-hints/${pid}.json`, replacement.hints);
-        await change(replacement.book);
+        if (missingOnly) {
+          const next = restoreMissingText(book, index, result.page);
+          if (next.restored) await change(next.book);
+          book = next.book;
+          restored += next.restored;
+        } else {
+          const replacement = replaceProcessedPage(typed, index, result);
+          await session.writeWork(`work/structure-hints/${pid}.json`, replacement.hints);
+          await change(replacement.book);
+          book = replacement.book;
+          hints.set(pid, replacement.hints);
+        }
         saving = false;
-        book = replacement.book;
-        hints.set(pid, replacement.hints);
         if (cached) reused++;
         completed++;
         progress({ completed, total: indices.length, index, step: cached ? "Applied saved reading" : "Page saved", spend, reused });
@@ -264,7 +305,7 @@ export async function processBook(session, starting, indices, { choices, keys = 
         state.dispose();
       }
     }
-    if (completed && !halted && !book.structure_edited) {
+    if (!missingOnly && completed && !halted && !book.structure_edited) {
       progress({ completed, total: indices.length, step: "Finding structure", spend, reused });
       for (const [index, page] of book.pages.entries()) {
         if (page.skip || !page.regions) continue;
@@ -277,6 +318,6 @@ export async function processBook(session, starting, indices, { choices, keys = 
       book = findStructure(book, hints);
       await change(book);
     }
-    return { completed, reused, spend, unknown, errors, stopped: signal.aborted || unknown || halted || completed + errors.length < indices.length };
+    return { completed, reused, restored, spend, unknown, errors, stopped: signal.aborted || unknown || halted || completed + errors.length < indices.length };
   } finally { outlines.dispose(); }
 }
