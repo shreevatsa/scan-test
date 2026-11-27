@@ -10,10 +10,12 @@ Open `http://127.0.0.1:8000/webapp/`. The library can open a local PDF or a URL,
 `?book=<encoded PDF URL>`. It stores the original scan, `chaya.json`, and processing work in this browser.
 Use **Export → Save .chaya.pdf** to keep a portable copy of the scan and edits.
 
-- **Scans** is the editor. Select a box or its text to edit it. Cards follow the book’s saved order.
-  **Next check** follows the positions on the scan. Checks flag unread or uncertain text, type suggestions,
-  unlinked notes, and likely lines outside the boxes. **Use** applies an existing suggested type.
-  **Keep** accepts the selected type and **Leave out** excludes an area from reading.
+- **Scans** is the editor. Select a box or its text to edit it. Cards follow the book’s saved order, with
+  running headers and page numbers where they are printed. A drawn box goes in at its place on the page,
+  inside the sections around it. **Next check** follows the positions on the scan. Checks flag unread or
+  uncertain text, type suggestions, unlinked notes, and likely lines outside the boxes; a check opens in its
+  region's card. **Use** applies an existing suggested type. **Keep** accepts the selected type and
+  **Leave out** excludes an area from reading.
 - The **Text** view follows the saved reading order and links. Double-click a passage or footnote to
   preview its scan. **Open in Scans** jumps to that region in the editor. The Text view and standalone
   HTML export wrap without adding hyphens.
