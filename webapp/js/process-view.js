@@ -1,7 +1,7 @@
-import { h } from "./render.js?v=20261127-place-regions";
-import { pageCaption } from "./bookchecks.js?v=20261127-place-regions";
-import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261127-place-regions";
-import { dollars } from "./recipe.js?v=20261127-place-regions";
+import { h } from "./render.js?v=20261127-check-in-card";
+import { pageCaption } from "./bookchecks.js?v=20261127-check-in-card";
+import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261127-check-in-card";
+import { dollars } from "./recipe.js?v=20261127-check-in-card";
 
 const button = (text, attrs) => h("button", { type: "button", ...attrs }, text);
 const frame = () => new Promise(requestAnimationFrame);

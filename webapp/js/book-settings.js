@@ -1,12 +1,12 @@
-import * as B from "./book.js?v=20261127-place-regions";
-import { findStructure } from "./book-structure.js?v=20261127-place-regions";
-import { processingChoices } from "./book-processing.js?v=20261127-place-regions";
-import { saveCredential } from "./book-credentials.js?v=20261127-place-regions";
-import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-place-regions";
-import { FINDERS } from "./pipeline/finders.js?v=20261127-place-regions";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-place-regions";
-import { ruleProblems } from "./rules.js?v=20261127-place-regions";
-import { h } from "./render.js?v=20261127-place-regions";
+import * as B from "./book.js?v=20261127-check-in-card";
+import { findStructure } from "./book-structure.js?v=20261127-check-in-card";
+import { processingChoices } from "./book-processing.js?v=20261127-check-in-card";
+import { saveCredential } from "./book-credentials.js?v=20261127-check-in-card";
+import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-check-in-card";
+import { FINDERS } from "./pipeline/finders.js?v=20261127-check-in-card";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-check-in-card";
+import { ruleProblems } from "./rules.js?v=20261127-check-in-card";
+import { h } from "./render.js?v=20261127-check-in-card";
 
 const button = (text, onclick, attrs) => h("button", { type: "button", onclick, ...attrs }, text);
 const words = text => text.replaceAll("_", " ");

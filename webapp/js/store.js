@@ -1,6 +1,6 @@
-import { openWorkZip } from "./work-zip.js?v=20261127-place-regions";
-import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-place-regions";
-import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-place-regions";
+import { openWorkZip } from "./work-zip.js?v=20261127-check-in-card";
+import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-check-in-card";
+import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-check-in-card";
 
 export const PREVIOUS = "/scan-test/versions/0.4/";
 

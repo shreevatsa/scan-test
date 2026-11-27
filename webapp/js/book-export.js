@@ -1,8 +1,8 @@
-import { assemble } from "./book.js?v=20261127-place-regions";
-import { bookDocument, bookText } from "./reader.js?v=20261127-place-regions";
-import { verseExport } from "./verses.js?v=20261127-place-regions";
-import { fileStem } from "./store.js?v=20261127-place-regions";
-import { h } from "./render.js?v=20261127-place-regions";
+import { assemble } from "./book.js?v=20261127-check-in-card";
+import { bookDocument, bookText } from "./reader.js?v=20261127-check-in-card";
+import { verseExport } from "./verses.js?v=20261127-check-in-card";
+import { fileStem } from "./store.js?v=20261127-check-in-card";
+import { h } from "./render.js?v=20261127-check-in-card";
 
 const text = (value, mime) => new Blob([value], { type: mime });
 const json = value => text(JSON.stringify(value, null, 2) + "\n", "application/json");

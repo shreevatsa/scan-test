@@ -1,5 +1,5 @@
-import { regionPrompt, regionSchema, regionTypes } from "./prompts.js?v=20261127-place-regions";
-import { scaleRegions } from "./steps.js?v=20261127-place-regions";
+import { regionPrompt, regionSchema, regionTypes } from "./prompts.js?v=20261127-check-in-card";
+import { scaleRegions } from "./steps.js?v=20261127-check-in-card";
 
 const REGION_CLASSES = ["verse", "paragraph", "heading", "lead_in", "list_item", "formula", "note", "table", "figure", "caption", "running_header", "page_number", "other"];
 const normalizeTypeName = name => String(name || "").normalize("NFC").toLowerCase().replace(/[\s_.\-–—]+/gu, "");

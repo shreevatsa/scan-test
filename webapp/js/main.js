@@ -1,14 +1,14 @@
-import { bookCredentials } from "./book-credentials.js?v=20261127-place-regions";
-import { openExport } from "./book-export.js?v=20261127-place-regions";
-import { openSettings } from "./book-settings.js?v=20261127-place-regions";
-import { openProcess } from "./process-view.js?v=20261127-place-regions";
-import { h, cropInto } from "./render.js?v=20261127-place-regions";
-import * as B from "./book.js?v=20261127-place-regions";
-import { pageCaption } from "./bookchecks.js?v=20261127-place-regions";
-import { ScanView } from "./bookview.js?v=20261127-place-regions";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-place-regions";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-place-regions";
-import { baseCss } from "./style.js?v=20261127-place-regions";
+import { bookCredentials } from "./book-credentials.js?v=20261127-check-in-card";
+import { openExport } from "./book-export.js?v=20261127-check-in-card";
+import { openSettings } from "./book-settings.js?v=20261127-check-in-card";
+import { openProcess } from "./process-view.js?v=20261127-check-in-card";
+import { h, cropInto } from "./render.js?v=20261127-check-in-card";
+import * as B from "./book.js?v=20261127-check-in-card";
+import { pageCaption } from "./bookchecks.js?v=20261127-check-in-card";
+import { ScanView } from "./bookview.js?v=20261127-check-in-card";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-check-in-card";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-check-in-card";
+import { baseCss } from "./style.js?v=20261127-check-in-card";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -102,7 +102,7 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json?v=20261127-place-regions", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261127-check-in-card", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {

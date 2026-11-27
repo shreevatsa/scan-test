@@ -1,11 +1,11 @@
-import * as B from "./book.js?v=20261127-place-regions";
-import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-regions";
-import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-place-regions";
-import { hasTextInk } from "./local/ink-checks.js?v=20261127-place-regions";
-import { PageView } from "./pageimage.js?v=20261127-place-regions";
-import { boxRing } from "./ops.js?v=20261127-place-regions";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261127-place-regions";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261127-place-regions";
+import * as B from "./book.js?v=20261127-check-in-card";
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-check-in-card";
+import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-check-in-card";
+import { hasTextInk } from "./local/ink-checks.js?v=20261127-check-in-card";
+import { PageView } from "./pageimage.js?v=20261127-check-in-card";
+import { boxRing } from "./ops.js?v=20261127-check-in-card";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261127-check-in-card";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261127-check-in-card";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const addressOf = (index, id) => `${index + 1}/${id}`;
@@ -63,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261127-place-regions", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261127-check-in-card", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }
@@ -292,6 +292,9 @@ export class ScanView {
   render(slot) {
     const page = this.book.pages[slot.index];
     slot.cards.replaceChildren(...(page.regions ?? []).map(region => this.makeCard(slot, region)));
+    // An open check moves with the cards it stands among.
+    const open = slot.openCheck && !slot.checkBox.hidden && this.checks(slot.index).find(item => checkKey(item) === slot.openCheck);
+    if (open) this.placeCheck(slot, open);
     if (!page.regions) slot.cards.append(h("p", { class: "v1-empty" }, "This page is awaiting regions."));
     else if (!page.regions.length) slot.cards.append(h("p", { class: "v1-empty" }, "This page has no regions."));
     this.draw(slot);
@@ -494,9 +497,20 @@ export class ScanView {
     slot.openCheck = key;
     this.currentCheck = { index, key };
     slot.checkBox.hidden = false;
+    this.placeCheck(slot, check);
     this.renderCheck(slot, check);
     slot.checkBox.scrollIntoView({ block: "nearest" });
     this.measure(slot);
+  }
+
+  // An open check stands where it is about: in its region's card, under the type and above the text; a check with no
+  // region (ink outside every box) among the cards, before the first region printed below it.
+  placeCheck(slot, check) {
+    const card = check.address && this.card(slot, check.address.split("/")[1]);
+    if (card) { card.querySelector(".v1-type").after(slot.checkBox); return; }
+    const top = check.box?.[1] ?? 0, regions = this.book.pages[slot.index].regions ?? [];
+    const below = [...slot.cards.children].find(element => regions.find(region => region.id === element.dataset?.region)?.box[1] > top);
+    slot.cards.insertBefore(slot.checkBox, below ?? null);
   }
 
   renderCheck(slot, check) {

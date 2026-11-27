@@ -1,6 +1,6 @@
 // Immutable edits to the stored book. Keep the previous book for undo.
-import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-place-regions";
-import { prepare } from "./reader.js?v=20261127-place-regions";
+import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-check-in-card";
+import { prepare } from "./reader.js?v=20261127-check-in-card";
 
 const pathOf = region => region.in ?? [];
 const startsWith = (path, prefix) => prefix.every((id, i) => path[i] === id);
