@@ -1,6 +1,6 @@
-import { post } from "./pipeline/run.js?v=20261127-close-contents";
-import { openaiText, geminiText } from "./pipeline/steps.js?v=20261127-close-contents";
-import { h } from "./render.js?v=20261127-close-contents";
+import { post } from "./pipeline/run.js?v=20261127-credential-links";
+import { openaiText, geminiText } from "./pipeline/steps.js?v=20261127-credential-links";
+import { h } from "./render.js?v=20261127-credential-links";
 
 // Generated blank PNG. Credential checks never contain a book page.
 const BLANK = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAI0lEQVR4nGP8//8/AymAiSTVDKMaiANMRKqDg1ENxACSQwkAVW0DHeN02ZEAAAAASUVORK5CYII=";
@@ -102,13 +102,24 @@ export class CredentialChecks {
   }
 }
 
+const KEY_LINKS = {
+  openai: ["OpenAI API keys", "https://platform.openai.com/api-keys"],
+  gemini: ["Gemini API keys in Google AI Studio", "https://aistudio.google.com/apikey"],
+  vision: ["Google Cloud credentials", "https://console.cloud.google.com/apis/credentials"],
+};
+const VISION_OAUTH_LINK = ["Cloud Vision OAuth setup", "https://docs.cloud.google.com/vision/docs/setup#rest-command-line-user-account-authentication"];
+
 export function stageKeyControls(checks, profile, save, changed = () => {}, label = "API credential") {
   if (profile.provider === "local") return h("p", { class: "hint" }, "Runs on this device with zero API cost.");
   const keys = checks.keys, provider = profile.provider;
   const status = h("p", { class: "hint", role: "status" });
+  const setupLink = h("a", { target: "_blank", rel: "noopener noreferrer" });
   // The summary says whether the credential has checked out, so the panel can stay closed.
   const state = h("span", { class: "key-state" });
   const refresh = () => {
+    const [name, url] = provider === "vision" && keys.vision_auth === "oauth" ? VISION_OAUTH_LINK : KEY_LINKS[provider];
+    setupLink.textContent = name;
+    setupLink.href = url;
     const result = checks.status(profile);
     state.className = `key-state ${result?.valid ? "ok" : result ? "bad" : "hint"}`;
     state.textContent = result?.valid ? "✓ checked" : result ? "✗ not accepted" : "not checked";
@@ -144,7 +155,7 @@ export function stageKeyControls(checks, profile, save, changed = () => {}, labe
   } }, "Check key");
   refresh();
   const panel = h("details", { class: "stage-keys", open: !checks.status(profile)?.valid }, h("summary", {}, `${label} `, state),
-    fields, h("p", {}, button), status, h("p", { class: "hint" },
+    fields, h("p", { class: "hint" }, setupLink), h("p", {}, button), status, h("p", { class: "hint" },
       "The check makes a small billable test request with no book content. OAuth tokens are held for this session. Keys are saved in this browser."));
   return panel;
 }

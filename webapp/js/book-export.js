@@ -1,8 +1,8 @@
-import { assemble } from "./book.js?v=20261127-close-contents";
-import { bookDocument, bookText } from "./reader.js?v=20261127-close-contents";
-import { verseExport } from "./verses.js?v=20261127-close-contents";
-import { fileStem } from "./store.js?v=20261127-close-contents";
-import { h } from "./render.js?v=20261127-close-contents";
+import { assemble } from "./book.js?v=20261127-credential-links";
+import { bookDocument, bookText } from "./reader.js?v=20261127-credential-links";
+import { verseExport } from "./verses.js?v=20261127-credential-links";
+import { fileStem } from "./store.js?v=20261127-credential-links";
+import { h } from "./render.js?v=20261127-credential-links";
 
 const text = (value, mime) => new Blob([value], { type: mime });
 const json = value => text(JSON.stringify(value, null, 2) + "\n", "application/json");

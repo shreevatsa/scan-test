@@ -1,6 +1,6 @@
-import { canonical } from "../ops.js?v=20261127-close-contents";
-import { checkReading, selectPageRegions } from "./split.js?v=20261127-close-contents";
-import { transcribedLines } from "./steps.js?v=20261127-close-contents";
+import { canonical } from "../ops.js?v=20261127-credential-links";
+import { checkReading, selectPageRegions } from "./split.js?v=20261127-credential-links";
+import { transcribedLines } from "./steps.js?v=20261127-credential-links";
 
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
 const prose = new Set(["paragraph", "note"]);

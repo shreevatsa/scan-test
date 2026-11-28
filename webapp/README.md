@@ -28,6 +28,7 @@ Use **Export → Save .chaya.pdf** to keep a portable copy of the scan and edits
   exclusions, and structure. An unread check opens this mode through **Restore from saved work…**.
   **Stop** interrupts a run and **Undo** restores the book before a run that changed it.
 - **Settings** holds book details, types, finder and reader choices, credentials, and structure rules.
+  Use the links beside the credential fields to open the provider’s setup page.
   Processing saves inferred structure until you edit it. **Find structure now** replaces saved structure
   after confirmation.
 - **Export** offers the Chaya PDF, original PDF, plain text, standalone HTML, `chaya.json`, and verses JSON

@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261127-close-contents";
-import * as S from "./steps.js?v=20261127-close-contents";
-import * as I from "./images.js?v=20261127-close-contents";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-close-contents";
-import * as Split from "./split.js?v=20261127-close-contents";
-import { markersFromQuotes } from "../note-links.js?v=20261127-close-contents";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-close-contents";
-import { classifyBlocks } from "../local/blocks.js?v=20261127-close-contents";
-import { finderById, finderPath } from "./finders.js?v=20261127-close-contents";
-import { finderRequest } from "./finder-requests.js?v=20261127-close-contents";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-close-contents";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-close-contents";
-import { bbox } from "../render.js?v=20261127-close-contents";
-import { canonical } from "../ops.js?v=20261127-close-contents";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-close-contents";
+import * as P from "./prompts.js?v=20261127-credential-links";
+import * as S from "./steps.js?v=20261127-credential-links";
+import * as I from "./images.js?v=20261127-credential-links";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-credential-links";
+import * as Split from "./split.js?v=20261127-credential-links";
+import { markersFromQuotes } from "../note-links.js?v=20261127-credential-links";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-credential-links";
+import { classifyBlocks } from "../local/blocks.js?v=20261127-credential-links";
+import { finderById, finderPath } from "./finders.js?v=20261127-credential-links";
+import { finderRequest } from "./finder-requests.js?v=20261127-credential-links";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-credential-links";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-credential-links";
+import { bbox } from "../render.js?v=20261127-credential-links";
+import { canonical } from "../ops.js?v=20261127-credential-links";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-credential-links";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

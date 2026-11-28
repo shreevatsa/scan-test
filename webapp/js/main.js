@@ -1,14 +1,14 @@
-import { bookCredentials } from "./book-credentials.js?v=20261127-close-contents";
-import { openExport } from "./book-export.js?v=20261127-close-contents";
-import { openSettings } from "./book-settings.js?v=20261127-close-contents";
-import { openProcess } from "./process-view.js?v=20261127-close-contents";
-import { h, cropInto } from "./render.js?v=20261127-close-contents";
-import * as B from "./book.js?v=20261127-close-contents";
-import { pageCaption } from "./bookchecks.js?v=20261127-close-contents";
-import { ScanView } from "./bookview.js?v=20261127-close-contents";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-close-contents";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-close-contents";
-import { baseCss } from "./style.js?v=20261127-close-contents";
+import { bookCredentials } from "./book-credentials.js?v=20261127-credential-links";
+import { openExport } from "./book-export.js?v=20261127-credential-links";
+import { openSettings } from "./book-settings.js?v=20261127-credential-links";
+import { openProcess } from "./process-view.js?v=20261127-credential-links";
+import { h, cropInto } from "./render.js?v=20261127-credential-links";
+import * as B from "./book.js?v=20261127-credential-links";
+import { pageCaption } from "./bookchecks.js?v=20261127-credential-links";
+import { ScanView } from "./bookview.js?v=20261127-credential-links";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-credential-links";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-credential-links";
+import { baseCss } from "./style.js?v=20261127-credential-links";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -102,7 +102,7 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json?v=20261127-close-contents", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261127-credential-links", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {

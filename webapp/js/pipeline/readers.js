@@ -1,7 +1,7 @@
 // Transcription and schema-assignment profiles. Token prices are paid-tier USD per million.
-import { finderById } from "./finders.js?v=20261127-close-contents";
+import { finderById } from "./finders.js?v=20261127-credential-links";
 // Source fetched 2026-11-08: https://ai.google.dev/gemini-api/docs/pricing
-import { carbonRates, argonRates, flashRates, hydrogenRates } from "./model-prices.js?v=20261127-close-contents";
+import { carbonRates, argonRates, flashRates, hydrogenRates } from "./model-prices.js?v=20261127-credential-links";
 
 export const READERS = [
   // Method 100: one page image per call, the page's regions listed in the prompt (webapp/README.md, "Reading a page").

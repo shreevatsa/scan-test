@@ -5,7 +5,7 @@
 // or selected an × that leaves it out of the book; an area left out stays on the scan, grey, with a ↺ that brings it
 // back.
 
-import { bbox, pathD } from "./render.js?v=20261127-close-contents";
+import { bbox, pathD } from "./render.js?v=20261127-credential-links";
 
 // Figures use the full image crop in Read and HTML export. Text outlines describe detected ink.
 export function regionPath(region, regionClass) {

@@ -1,12 +1,12 @@
-import * as B from "./book.js?v=20261127-close-contents";
-import { findStructure } from "./book-structure.js?v=20261127-close-contents";
-import { processingChoices } from "./book-processing.js?v=20261127-close-contents";
-import { saveCredential } from "./book-credentials.js?v=20261127-close-contents";
-import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-close-contents";
-import { FINDERS } from "./pipeline/finders.js?v=20261127-close-contents";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-close-contents";
-import { ruleProblems } from "./rules.js?v=20261127-close-contents";
-import { h } from "./render.js?v=20261127-close-contents";
+import * as B from "./book.js?v=20261127-credential-links";
+import { findStructure } from "./book-structure.js?v=20261127-credential-links";
+import { processingChoices } from "./book-processing.js?v=20261127-credential-links";
+import { saveCredential } from "./book-credentials.js?v=20261127-credential-links";
+import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-credential-links";
+import { FINDERS } from "./pipeline/finders.js?v=20261127-credential-links";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-credential-links";
+import { ruleProblems } from "./rules.js?v=20261127-credential-links";
+import { h } from "./render.js?v=20261127-credential-links";
 
 const button = (text, onclick, attrs) => h("button", { type: "button", onclick, ...attrs }, text);
 const words = text => text.replaceAll("_", " ");

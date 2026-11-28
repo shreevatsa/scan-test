@@ -4,11 +4,11 @@
 // their label; the printed page number is shown where each page starts.
 // In the app, a double-click previews the scan region for a passage or note.
 
-import { assemble } from "./assemble.js?v=20261127-close-contents";
-import { cp } from "./inline.js?v=20261127-close-contents";
-import { lineHtml, esc } from "./render.js?v=20261127-close-contents";
-import { verseGroups } from "./verses.js?v=20261127-close-contents";
-import { css, unitStyle, baseCss } from "./style.js?v=20261127-close-contents";
+import { assemble } from "./assemble.js?v=20261127-credential-links";
+import { cp } from "./inline.js?v=20261127-credential-links";
+import { lineHtml, esc } from "./render.js?v=20261127-credential-links";
+import { verseGroups } from "./verses.js?v=20261127-credential-links";
+import { css, unitStyle, baseCss } from "./style.js?v=20261127-credential-links";
 
 // A line piece with something in it: an empty one adds nothing to a block's text, not even a space.
 const spoken = line => Boolean(line.text) || Boolean(line.spans?.length);
