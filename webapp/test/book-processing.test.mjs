@@ -205,3 +205,22 @@ test("areas the finder gave no reading order go where they are printed, not afte
   const { page } = materializeProcessedPage(applyReading(doc, reading, tl, types), { pdf_page: 1 }, types, tl);
   assert.deepEqual(page.regions.map(r => r.id), ["r3", "r1", "r2", "r4"]);
 });
+
+test("saved-only processing replays a page from the records it was made with, though the reader setting changed since", async () => {
+  const book = { chaya: 1, title: "An invented book", types: { paragraph: {} }, pages: [scan(1, [region("r1", "paragraph", "Old")])] };
+  const choices = processingChoices(book);
+  const other = ["hydrogen-low-page", "argon-low", "flash-low"].find(id => id !== choices.reader.id);
+  const image_sha256 = "scan", polygons = [[[10, 10], [90, 10], [90, 20], [10, 20]]];
+  const layout = { width: 100, height: 160, image_sha256, profile: { id: choices.finder.id }, regions: [{ region_id: 1, type: "paragraph",
+    region_class: "paragraph", reading_order: 1, status: "ok", model_box: [10, 10, 90, 20], polygons, lines: [{ line_id: 1, polygons }] }] };
+  const reading = { image_sha256, profile: { id: other }, regions_record: layout,
+    parsed: { regions: [{ id: "r1", uncertain: false, note: null, lines: [{ n: 1, text: "Saved by another reader" }] }] } };
+  const files = { [`work/readings/1/${other}.json`]: reading, [`work/region-finders/1/${choices.finder.id}.json`]: layout };
+  let requests = 0, changed = null;
+  const result = await processBook({ async readWork(path) { return files[path] ?? null; }, async writeWork() {}, async workArchive() { return null; } },
+    book, [0], { choices, savedOnly: true, limit: 0, signal: new AbortController().signal,
+      async change(value) { changed = value; }, async request() { requests++; throw new Error("Unexpected API call"); } });
+  assert.deepEqual(result.errors.map(error => error.message), []);
+  assert.equal(requests, 0);
+  assert.deepEqual(changed.pages[0].regions.map(r => r.lines.map(l => l.text)), [["Saved by another reader"]]);
+});

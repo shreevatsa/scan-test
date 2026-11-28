@@ -1,8 +1,8 @@
-import { assemble } from "./book.js?v=20261127-all-pages";
-import { bookDocument, bookText } from "./reader.js?v=20261127-all-pages";
-import { verseExport } from "./verses.js?v=20261127-all-pages";
-import { fileStem } from "./store.js?v=20261127-all-pages";
-import { h } from "./render.js?v=20261127-all-pages";
+import { assemble } from "./book.js?v=20261127-replay-any-reader";
+import { bookDocument, bookText } from "./reader.js?v=20261127-replay-any-reader";
+import { verseExport } from "./verses.js?v=20261127-replay-any-reader";
+import { fileStem } from "./store.js?v=20261127-replay-any-reader";
+import { h } from "./render.js?v=20261127-replay-any-reader";
 
 const text = (value, mime) => new Blob([value], { type: mime });
 const json = value => text(JSON.stringify(value, null, 2) + "\n", "application/json");

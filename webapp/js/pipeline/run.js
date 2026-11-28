@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261127-all-pages";
-import * as S from "./steps.js?v=20261127-all-pages";
-import * as I from "./images.js?v=20261127-all-pages";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-all-pages";
-import * as Split from "./split.js?v=20261127-all-pages";
-import { markersFromQuotes } from "../note-links.js?v=20261127-all-pages";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-all-pages";
-import { classifyBlocks } from "../local/blocks.js?v=20261127-all-pages";
-import { finderById, finderPath } from "./finders.js?v=20261127-all-pages";
-import { finderRequest } from "./finder-requests.js?v=20261127-all-pages";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-all-pages";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-all-pages";
-import { bbox } from "../render.js?v=20261127-all-pages";
-import { canonical } from "../ops.js?v=20261127-all-pages";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-all-pages";
+import * as P from "./prompts.js?v=20261127-replay-any-reader";
+import * as S from "./steps.js?v=20261127-replay-any-reader";
+import * as I from "./images.js?v=20261127-replay-any-reader";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-replay-any-reader";
+import * as Split from "./split.js?v=20261127-replay-any-reader";
+import { markersFromQuotes } from "../note-links.js?v=20261127-replay-any-reader";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-replay-any-reader";
+import { classifyBlocks } from "../local/blocks.js?v=20261127-replay-any-reader";
+import { finderById, finderPath } from "./finders.js?v=20261127-replay-any-reader";
+import { finderRequest } from "./finder-requests.js?v=20261127-replay-any-reader";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-replay-any-reader";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-replay-any-reader";
+import { bbox } from "../render.js?v=20261127-replay-any-reader";
+import { canonical } from "../ops.js?v=20261127-replay-any-reader";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-replay-any-reader";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

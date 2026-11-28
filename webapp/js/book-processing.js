@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261127-all-pages";
-import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-all-pages";
-import { writeRegion } from "./chaya-materialize.js?v=20261127-all-pages";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261127-all-pages";
-import { applyReading } from "./pipeline/apply.js?v=20261127-all-pages";
-import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-all-pages";
-import { pageRange } from "./pipeline/pdf.js?v=20261127-all-pages";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-all-pages";
-import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-all-pages";
-import { Maker, post } from "./pipeline/run.js?v=20261127-all-pages";
-import { pageCost, RECIPE } from "./recipe.js?v=20261127-all-pages";
+import * as B from "./book.js?v=20261127-replay-any-reader";
+import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-replay-any-reader";
+import { writeRegion } from "./chaya-materialize.js?v=20261127-replay-any-reader";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261127-replay-any-reader";
+import { applyReading } from "./pipeline/apply.js?v=20261127-replay-any-reader";
+import { FINDERS, finderById, finderPath } from "./pipeline/finders.js?v=20261127-replay-any-reader";
+import { pageRange } from "./pipeline/pdf.js?v=20261127-replay-any-reader";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-replay-any-reader";
+import { READERS, readerById, readerOptions } from "./pipeline/readers.js?v=20261127-replay-any-reader";
+import { Maker, post } from "./pipeline/run.js?v=20261127-replay-any-reader";
+import { pageCost, RECIPE } from "./recipe.js?v=20261127-replay-any-reader";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -173,7 +173,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261127-all-pages", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261127-replay-any-reader", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;
@@ -198,26 +198,35 @@ function archivedId(archive, page, index) {
   return JSON.stringify(crop) === JSON.stringify(page.crop ?? null) ? old.id : null;
 }
 
+// The saved records a page was made from, for replaying it: a reading and the finder's record of the same scan. The
+// chosen reader's and finder's come first; a page read before those settings changed is replayed from the records it
+// has (any reader's reading whose regions record, or saved finder record, is of the same scan).
 async function cachedPage(session, book, index, pid, choices) {
-  const readPath = id => `work/readings/${id}/${choices.reader.id}.json`;
-  const [localReading, localRegions] = await Promise.all([
-    session.readWork(readPath(pid), true), session.readWork(finderPath(pid, choices.finder.id), true),
-  ]);
-  if (localReading?.parsed && localRegions && localReading.image_sha256 === localRegions.image_sha256 &&
-      (!localReading.regions_record?.profile?.id || localReading.regions_record.profile.id === choices.finder.id))
-    return { layout: localReading.regions_record ?? localRegions, reading: localReading };
-  const archive = await session.workArchive();
-  const id = archivedId(archive, book.pages[index], index);
+  const readers = [choices.reader.id, ...READERS.map(reader => reader.id).filter(id => id !== choices.reader.id)];
+  const finders = [choices.finder.id, ...FINDERS.map(finder => finder.id).filter(id => id !== choices.finder.id)];
+  const agree = (reading, regions) => reading?.parsed && regions && reading.image_sha256 && regions.image_sha256 === reading.image_sha256;
+  const fromSaved = async (read, readPath, finderRecord, fallback = async () => null) => {
+    for (const readerId of readers) {
+      const reading = await read(readPath(readerId));
+      if (!reading?.parsed) continue;
+      const made = reading.regions_record?.profile?.id;
+      for (const finderId of made ? [made] : finders) {
+        const regions = await finderRecord(finderId) ?? await fallback();
+        if (agree(reading, regions)) return { layout: reading.regions_record ?? regions, reading };
+      }
+      if (reading.regions_record && agree(reading, reading.regions_record)) return { layout: reading.regions_record, reading };
+    }
+    return null;
+  };
+  const local = path => session.readWork(path, true).catch(() => null);
+  const saved = await fromSaved(local, readerId => `work/readings/${pid}/${readerId}.json`, finderId => local(finderPath(pid, finderId)));
+  if (saved) return saved;
+  const archive = await session.workArchive?.();
+  const id = archive && archivedId(archive, book.pages[index], index);
   if (!id) return null;
-  const [reading, recent, original] = await Promise.all([
-    archive.zip.json(readPath(id)), archive.zip.json(finderPath(id, choices.finder.id)), archive.zip.json(`work/${id}.regions.json`),
-  ]);
-  const active = recent ?? original;
-  if (!reading?.parsed || active?.profile?.id !== choices.finder.id || reading.profile?.id !== choices.reader.id ||
-      !reading.image_sha256 || active.image_sha256 !== reading.image_sha256) return null;
-  const layout = reading.regions_record ?? active;
-  if (layout.profile?.id !== choices.finder.id) return null;
-  return { layout, reading };
+  const zipped = path => archive.zip.json(path).catch(() => null);
+  return fromSaved(zipped, readerId => `work/readings/${id}/${readerId}.json`, finderId => zipped(finderPath(id, finderId)),
+    () => zipped(`work/${id}.regions.json`));
 }
 
 export async function processBook(session, starting, indices, { choices, keys = {}, limit, savedOnly = false,

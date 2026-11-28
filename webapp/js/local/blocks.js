@@ -1,5 +1,5 @@
 // Coarse page blocks from method 063's lines. All coordinates remain in source pixels.
-import { ROLE } from "./ink.js?v=20261127-all-pages";
+import { ROLE } from "./ink.js?v=20261127-replay-any-reader";
 
 const median = values => {
   const sorted = [...values].sort((a, b) => a - b);

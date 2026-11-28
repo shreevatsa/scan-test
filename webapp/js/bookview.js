@@ -1,11 +1,11 @@
-import * as B from "./book.js?v=20261127-all-pages";
-import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-all-pages";
-import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-all-pages";
-import { hasTextInk } from "./local/ink-checks.js?v=20261127-all-pages";
-import { PageView } from "./pageimage.js?v=20261127-all-pages";
-import { boxRing } from "./ops.js?v=20261127-all-pages";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261127-all-pages";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261127-all-pages";
+import * as B from "./book.js?v=20261127-replay-any-reader";
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-replay-any-reader";
+import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-replay-any-reader";
+import { hasTextInk } from "./local/ink-checks.js?v=20261127-replay-any-reader";
+import { PageView } from "./pageimage.js?v=20261127-replay-any-reader";
+import { boxRing } from "./ops.js?v=20261127-replay-any-reader";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261127-replay-any-reader";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261127-replay-any-reader";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const addressOf = (index, id) => `${index + 1}/${id}`;
@@ -63,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261127-all-pages", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261127-replay-any-reader", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }

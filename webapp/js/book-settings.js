@@ -1,12 +1,12 @@
-import * as B from "./book.js?v=20261127-all-pages";
-import { findStructure } from "./book-structure.js?v=20261127-all-pages";
-import { processingChoices } from "./book-processing.js?v=20261127-all-pages";
-import { saveCredential } from "./book-credentials.js?v=20261127-all-pages";
-import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-all-pages";
-import { FINDERS } from "./pipeline/finders.js?v=20261127-all-pages";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-all-pages";
-import { ruleProblems } from "./rules.js?v=20261127-all-pages";
-import { h } from "./render.js?v=20261127-all-pages";
+import * as B from "./book.js?v=20261127-replay-any-reader";
+import { findStructure } from "./book-structure.js?v=20261127-replay-any-reader";
+import { processingChoices } from "./book-processing.js?v=20261127-replay-any-reader";
+import { saveCredential } from "./book-credentials.js?v=20261127-replay-any-reader";
+import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-replay-any-reader";
+import { FINDERS } from "./pipeline/finders.js?v=20261127-replay-any-reader";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-replay-any-reader";
+import { ruleProblems } from "./rules.js?v=20261127-replay-any-reader";
+import { h } from "./render.js?v=20261127-replay-any-reader";
 
 const button = (text, onclick, attrs) => h("button", { type: "button", onclick, ...attrs }, text);
 const words = text => text.replaceAll("_", " ");
