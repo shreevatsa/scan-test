@@ -5,9 +5,9 @@
 // and simplified (Douglas–Peucker) as cv2.findContours and cv2.approxPolyDP do, so vertices may differ slightly
 // from the Python results while the outlines agree.
 
-import { ROLE, components, rotate, unrotate } from "./ink.js?v=20261127-export-work";
+import { ROLE, components, rotate, unrotate } from "./ink.js?v=20261127-display-type";
 
-import { ruleStroke } from "./ink-checks.js?v=20261127-export-work";
+import { ruleStroke } from "./ink-checks.js?v=20261127-display-type";
 
 export const UNASSIGNED = -1;
 
@@ -443,12 +443,46 @@ export function outlineRegions(comp, prep, owner, lineOf, angle, nRegions, cfg) 
   return regions;
 }
 
+// Display type, a title several times the height of the body text: its tall letters are "large" components, which the
+// line analysis puts on no line (and the outlines treat as separators), so such a region would be read from what is
+// left of it, its short letters and the dot of an i. A box whose ink is mostly letters of one large size, at least
+// three side by side in a box at most three of them high (not a figure, not a paragraph's drop cap), gets all its
+// ink as one line piece instead, numbered after the page's lines. Returns the components so placed.
+function displayLines(comp, prep, pboxes, owner, lineOf, firstFree) {
+  const { x0, y0, x1, y1, area, count } = comp, { role } = prep, placed = [];
+  pboxes.forEach(([xa, ya, xb, yb], r) => {
+    const held = k => Math.max(0, Math.min(xb, x1[k]) - Math.max(xa, x0[k])) * Math.max(0, Math.min(yb, y1[k]) - Math.max(ya, y0[k])) >=
+      0.5 * Math.max(1, (x1[k] - x0[k]) * (y1[k] - y0[k]));
+    const large = [], text = [];
+    for (let k = 1; k < count; k++) {
+      if (role[k] === ROLE.large && held(k)) large.push(k);
+      else if (role[k] === ROLE.text && (owner[k] === r || owner[k] === UNASSIGNED) && held(k)) text.push(k);
+    }
+    if (large.length < 3) return;
+    const heights = large.map(k => y1[k] - y0[k]).sort((a, b) => a - b), median = heights[heights.length >> 1];
+    if (heights[0] < median / 2 || heights.at(-1) > 2 * median || yb - ya > 3 * median) return;
+    const largeInk = large.reduce((sum, k) => sum + area[k], 0), lineInk = text.filter(k => owner[k] === r).reduce((sum, k) => sum + area[k], 0);
+    if (largeInk < lineInk) return;
+    for (const k of [...large, ...text]) { owner[k] = r; lineOf[k] = firstFree + r; placed.push(k); }
+  });
+  return placed;
+}
+
 // Everything that depends on the boxes: ownership and outlines for the given float xyxy boxes, one per region.
 export function regionsFromBoxes(analysis, boxes, cfg, measureRules = false) {
   const { comp, seg, angle } = analysis;
-  const prep = analysis.prep || (analysis.prep = prepare(comp, seg, cfg));
+  let prep = analysis.prep || (analysis.prep = prepare(comp, seg, cfg));
   const pboxes = boxes.map(b => pixelBox(b, comp.W, comp.H));
-  const { owner, decisions, dropped, attached, lineOf } = assign(comp, prep, seg.lines.length, pboxes, cfg);
+  const assigned = assign(comp, prep, seg.lines.length, pboxes, cfg);
+  const { owner, decisions, dropped, attached } = assigned;
+  // Copies: the page's analysis is kept for the next boxes.
+  const lineOf = Int32Array.from(assigned.lineOf);
+  const display = displayLines(comp, prep, pboxes, owner, lineOf, seg.lines.length);
+  if (display.length) {
+    const role = Uint8Array.from(prep.role);
+    for (const k of display) role[k] = ROLE.text;
+    prep = { ...prep, role };
+  }
   const geometry = outlineRegions(comp, prep, owner, lineOf, angle, boxes.length, cfg);
   // Keep the parent's original ID so existing text follows the enlarged line.
   for (const region of geometry) for (const line of region.lines) {
@@ -459,7 +493,7 @@ export function regionsFromBoxes(analysis, boxes, cfg, measureRules = false) {
     }
   }
   const uncovered = uncoveredLines(comp, prep, decisions, owner, seg.lines, measureRules);
-  return { geometry, owner, decisions, dropped, attached, uncovered };
+  return { geometry, owner, decisions, dropped, attached, uncovered, display: [...new Set(display.map(k => owner[k]))] };
 }
 
 export function uncoveredLines(comp, prep, decisions, owner, bands = [], measureRules = false) {

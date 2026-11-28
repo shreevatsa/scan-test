@@ -1,5 +1,5 @@
 // Scan checks are derived from the visible reading and never written into the book.
-import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-export-work";
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-display-type";
 
 export const typeLabel = type => type === "?" ? "Needs a type" : type[0].toUpperCase() + type.slice(1).replaceAll("_", " ");
 

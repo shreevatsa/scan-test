@@ -1,6 +1,6 @@
-import { post } from "./pipeline/run.js?v=20261127-export-work";
-import { openaiText, geminiText } from "./pipeline/steps.js?v=20261127-export-work";
-import { h } from "./render.js?v=20261127-export-work";
+import { post } from "./pipeline/run.js?v=20261127-display-type";
+import { openaiText, geminiText } from "./pipeline/steps.js?v=20261127-display-type";
+import { h } from "./render.js?v=20261127-display-type";
 
 // Generated blank PNG. Credential checks never contain a book page.
 const BLANK = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAI0lEQVR4nGP8//8/AymAiSTVDKMaiANMRKqDg1ENxACSQwkAVW0DHeN02ZEAAAAASUVORK5CYII=";

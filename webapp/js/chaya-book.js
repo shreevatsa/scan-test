@@ -1,5 +1,5 @@
 // Project the stored structure into the page-document interface used by the reader.
-import { boxRing } from "./ops.js?v=20261127-export-work";
+import { boxRing } from "./ops.js?v=20261127-display-type";
 
 export function effectiveEnd(line, type) {
   if (line.end != null) return line.end;
