@@ -1,6 +1,6 @@
-import { openWorkZip } from "./work-zip.js?v=20261127-credential-links";
-import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-credential-links";
-import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-credential-links";
+import { openWorkZip } from "./work-zip.js?v=20261127-unordered-in-place";
+import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-unordered-in-place";
+import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-unordered-in-place";
 
 export const PREVIOUS = "/scan-test/versions/0.4/";
 

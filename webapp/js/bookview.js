@@ -1,11 +1,11 @@
-import * as B from "./book.js?v=20261127-credential-links";
-import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-credential-links";
-import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-credential-links";
-import { hasTextInk } from "./local/ink-checks.js?v=20261127-credential-links";
-import { PageView } from "./pageimage.js?v=20261127-credential-links";
-import { boxRing } from "./ops.js?v=20261127-credential-links";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261127-credential-links";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261127-credential-links";
+import * as B from "./book.js?v=20261127-unordered-in-place";
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-unordered-in-place";
+import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-unordered-in-place";
+import { hasTextInk } from "./local/ink-checks.js?v=20261127-unordered-in-place";
+import { PageView } from "./pageimage.js?v=20261127-unordered-in-place";
+import { boxRing } from "./ops.js?v=20261127-unordered-in-place";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261127-unordered-in-place";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261127-unordered-in-place";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const addressOf = (index, id) => `${index + 1}/${id}`;
@@ -63,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261127-credential-links", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261127-unordered-in-place", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }

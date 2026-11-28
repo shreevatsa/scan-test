@@ -1,6 +1,6 @@
 // Immutable edits to the stored book. Keep the previous book for undo.
-import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-credential-links";
-import { prepare } from "./reader.js?v=20261127-credential-links";
+import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261127-unordered-in-place";
+import { prepare } from "./reader.js?v=20261127-unordered-in-place";
 
 const pathOf = region => region.in ?? [];
 const startsWith = (path, prefix) => prefix.every((id, i) => path[i] === id);
@@ -120,12 +120,13 @@ export function printedPlace(regions, box) {
   return at < 0 ? regions.length : at;
 }
 
-// A page's regions with those of ignored types (running headers, page numbers: no part of the reading, so with no place
-// in its order) each put where it is printed, top to bottom, among the others.
-export function furnitureInPlace(regions, types) {
-  const furniture = region => types[region.type]?.ignored;
-  const placed = regions.filter(region => !furniture(region));
-  for (const region of regions.filter(furniture).sort((a, b) => a.box[1] - b.box[1] || a.box[0] - b.box[0]))
+// A page's regions with those that have no place in its reading order put where they are printed, top to bottom, among
+// the others: those of ignored types (running headers, page numbers), and any `unordered` (an area the finder gave no
+// reading order, such as a byline or a journal's footer).
+export function furnitureInPlace(regions, types, unordered = () => false) {
+  const loose = region => types[region.type]?.ignored || unordered(region);
+  const placed = regions.filter(region => !loose(region));
+  for (const region of regions.filter(loose).sort((a, b) => a.box[1] - b.box[1] || a.box[0] - b.box[0]))
     placed.splice(printedPlace(placed, region.box), 0, region);
   return placed;
 }

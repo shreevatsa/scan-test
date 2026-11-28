@@ -1,6 +1,6 @@
-import { canonical } from "../ops.js?v=20261127-credential-links";
-import { checkReading, selectPageRegions } from "./split.js?v=20261127-credential-links";
-import { transcribedLines } from "./steps.js?v=20261127-credential-links";
+import { canonical } from "../ops.js?v=20261127-unordered-in-place";
+import { checkReading, selectPageRegions } from "./split.js?v=20261127-unordered-in-place";
+import { transcribedLines } from "./steps.js?v=20261127-unordered-in-place";
 
 const printedLines = new Set(["verse", "heading", "table", "formula"]);
 const prose = new Set(["paragraph", "note"]);

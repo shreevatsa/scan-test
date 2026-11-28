@@ -189,3 +189,18 @@ test("processing keeps proposals and printed lines for unclassified regions", ()
   assert.deepEqual(checksFor(book)[0].map(check => check.title),
     ["May be a new type: presentation note", "May be a new type: section name", "Needs a type"]);
 });
+
+test("areas the finder gave no reading order go where they are printed, not after everything else", () => {
+  const types = { unclassified: { lines: true }, paragraph: {} };
+  const tl = { types: { unclassified: { region: "paragraph" }, paragraph: { region: "paragraph" } } };
+  const at = (region_id, y, more) => ({ region_id, status: "ok", model_box: [10, y, 90, y + 5], polygons: [[[10, y], [90, y], [90, y + 5], [10, y + 5]]],
+    lines: [{ line_id: 1, polygons: [[[10, y], [90, y], [90, y + 5], [10, y + 5]]] }], ...more });
+  const layout = { width: 100, height: 100, regions: [
+    at(1, 20, { type: "paragraph", reading_order: 1 }), at(2, 50, { type: "paragraph", reading_order: 2 }),
+    at(3, 3, { type: "other", reading_order: null }), at(4, 94, { type: "other", reading_order: null }),
+  ] };
+  const doc = provisionalDocument("1", { width: 100, height: 100 }, tl, layout);
+  const reading = { regions_record: layout, parsed: { regions: ["r1", "r2", "r3", "r4"].map(id => ({ id, uncertain: false, note: null, lines: [{ n: 1, text: id }] })) } };
+  const { page } = materializeProcessedPage(applyReading(doc, reading, tl, types), { pdf_page: 1 }, types, tl);
+  assert.deepEqual(page.regions.map(r => r.id), ["r3", "r1", "r2", "r4"]);
+});

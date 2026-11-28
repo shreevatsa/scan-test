@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261127-credential-links";
-import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-credential-links";
-import { writeRegion } from "./chaya-materialize.js?v=20261127-credential-links";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261127-credential-links";
-import { applyReading } from "./pipeline/apply.js?v=20261127-credential-links";
-import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-credential-links";
-import { pageRange } from "./pipeline/pdf.js?v=20261127-credential-links";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-credential-links";
-import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-credential-links";
-import { Maker, post } from "./pipeline/run.js?v=20261127-credential-links";
-import { pageCost, RECIPE } from "./recipe.js?v=20261127-credential-links";
+import * as B from "./book.js?v=20261127-unordered-in-place";
+import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-unordered-in-place";
+import { writeRegion } from "./chaya-materialize.js?v=20261127-unordered-in-place";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261127-unordered-in-place";
+import { applyReading } from "./pipeline/apply.js?v=20261127-unordered-in-place";
+import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-unordered-in-place";
+import { pageRange } from "./pipeline/pdf.js?v=20261127-unordered-in-place";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-unordered-in-place";
+import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-unordered-in-place";
+import { Maker, post } from "./pipeline/run.js?v=20261127-unordered-in-place";
+import { pageCost, RECIPE } from "./recipe.js?v=20261127-unordered-in-place";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -46,14 +46,15 @@ function cleanSpans(line) {
 export function materializeProcessedPage(doc, previous, types, tl, rules) {
   const { width, height } = doc.page, asFraction = box => box.map((value, i) => value / (i % 2 ? height : width));
   const hints = {};
-  const regions = [...doc.page.regions].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity)).map(old => {
+  const sorted = [...doc.page.regions].sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
+  const regions = sorted.map(old => {
     const region = writeRegion(old, asFraction, types, tl.types[old.type]?.region);
     region.lines.forEach(cleanSpans);
     hints[region.id] = { from: !!old.source?.continues_from_earlier, to: !!old.source?.continues_later };
     return region;
   });
   const label = scanLabels(doc.page.regions, rules) ?? previous.label;
-  return { page: { ...previous, size: [width, height], ...(label != null ? { label } : {}), regions: B.furnitureInPlace(regions, types) }, hints };
+  return { page: { ...previous, size: [width, height], ...(label != null ? { label } : {}), regions: B.furnitureInPlace(regions, types, region => !Number.isFinite(sorted[regions.indexOf(region)].order)) }, hints };
 }
 
 const placement = ["in", "direct", "flow", "number", "label", "lang", "style", "continues", "from_previous", "links"];
@@ -171,7 +172,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261127-credential-links", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261127-unordered-in-place", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;

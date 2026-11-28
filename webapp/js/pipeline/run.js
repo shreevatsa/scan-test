@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261127-credential-links";
-import * as S from "./steps.js?v=20261127-credential-links";
-import * as I from "./images.js?v=20261127-credential-links";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-credential-links";
-import * as Split from "./split.js?v=20261127-credential-links";
-import { markersFromQuotes } from "../note-links.js?v=20261127-credential-links";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-credential-links";
-import { classifyBlocks } from "../local/blocks.js?v=20261127-credential-links";
-import { finderById, finderPath } from "./finders.js?v=20261127-credential-links";
-import { finderRequest } from "./finder-requests.js?v=20261127-credential-links";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-credential-links";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-credential-links";
-import { bbox } from "../render.js?v=20261127-credential-links";
-import { canonical } from "../ops.js?v=20261127-credential-links";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-credential-links";
+import * as P from "./prompts.js?v=20261127-unordered-in-place";
+import * as S from "./steps.js?v=20261127-unordered-in-place";
+import * as I from "./images.js?v=20261127-unordered-in-place";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-unordered-in-place";
+import * as Split from "./split.js?v=20261127-unordered-in-place";
+import { markersFromQuotes } from "../note-links.js?v=20261127-unordered-in-place";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-unordered-in-place";
+import { classifyBlocks } from "../local/blocks.js?v=20261127-unordered-in-place";
+import { finderById, finderPath } from "./finders.js?v=20261127-unordered-in-place";
+import { finderRequest } from "./finder-requests.js?v=20261127-unordered-in-place";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-unordered-in-place";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-unordered-in-place";
+import { bbox } from "../render.js?v=20261127-unordered-in-place";
+import { canonical } from "../ops.js?v=20261127-unordered-in-place";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-unordered-in-place";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

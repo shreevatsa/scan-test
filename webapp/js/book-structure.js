@@ -1,10 +1,10 @@
-import { assemble } from "./assemble.js?v=20261127-credential-links";
-import { toPageDocs } from "./chaya-book.js?v=20261127-credential-links";
-import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261127-credential-links";
-import { deriveStructure } from "./structure-rules.js?v=20261127-credential-links";
-import { pageLabel } from "./pipeline/steps.js?v=20261127-credential-links";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261127-credential-links";
-import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261127-credential-links";
+import { assemble } from "./assemble.js?v=20261127-unordered-in-place";
+import { toPageDocs } from "./chaya-book.js?v=20261127-unordered-in-place";
+import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261127-unordered-in-place";
+import { deriveStructure } from "./structure-rules.js?v=20261127-unordered-in-place";
+import { pageLabel } from "./pipeline/steps.js?v=20261127-unordered-in-place";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261127-unordered-in-place";
+import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261127-unordered-in-place";
 
 const cleanRegion = ({ in: path, direct, flow, number, label, continues, from_previous, links, ...region }) => ({
   ...region,
