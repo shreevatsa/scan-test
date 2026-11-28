@@ -1,14 +1,14 @@
-import { bookCredentials } from "./book-credentials.js?v=20261127-display-type";
-import { openExport } from "./book-export.js?v=20261127-display-type";
-import { openSettings } from "./book-settings.js?v=20261127-display-type";
-import { openProcess } from "./process-view.js?v=20261127-display-type";
-import { h, cropInto } from "./render.js?v=20261127-display-type";
-import * as B from "./book.js?v=20261127-display-type";
-import { pageCaption } from "./bookchecks.js?v=20261127-display-type";
-import { ScanView } from "./bookview.js?v=20261127-display-type";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-display-type";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-display-type";
-import { baseCss } from "./style.js?v=20261127-display-type";
+import { bookCredentials } from "./book-credentials.js?v=20261128-page-joins";
+import { openExport } from "./book-export.js?v=20261128-page-joins";
+import { openSettings } from "./book-settings.js?v=20261128-page-joins";
+import { openProcess } from "./process-view.js?v=20261128-page-joins";
+import { h, cropInto } from "./render.js?v=20261128-page-joins";
+import * as B from "./book.js?v=20261128-page-joins";
+import { pageCaption } from "./bookchecks.js?v=20261128-page-joins";
+import { ScanView } from "./bookview.js?v=20261128-page-joins";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261128-page-joins";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261128-page-joins";
+import { baseCss } from "./style.js?v=20261128-page-joins";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -102,7 +102,7 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json?v=20261127-display-type", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261128-page-joins", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {

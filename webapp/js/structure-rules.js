@@ -1,9 +1,9 @@
-import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261127-display-type";
-import { noteTypesOf, linkNotes } from "./note-links.js?v=20261127-display-type";
-import { sectionKeys, groupPage } from "./section-rules.js?v=20261127-display-type";
-import { groupVerses } from "./verse-group-rules.js?v=20261127-display-type";
-import { headingSections } from "./heading-rules.js?v=20261127-display-type";
-import { compileRules } from "./rules.js?v=20261127-display-type";
+import { provisionalUnits, regionTypePaths } from "./pipeline/provisional.js?v=20261128-page-joins";
+import { noteTypesOf, linkNotes } from "./note-links.js?v=20261128-page-joins";
+import { sectionKeys, groupPage } from "./section-rules.js?v=20261128-page-joins";
+import { groupVerses } from "./verse-group-rules.js?v=20261128-page-joins";
+import { headingSections } from "./heading-rules.js?v=20261128-page-joins";
+import { compileRules } from "./rules.js?v=20261128-page-joins";
 
 const ridOf = ref => ref.split("#").pop();
 const textOf = (doc, unit) => unit.children.filter(child => child.region)
@@ -26,7 +26,9 @@ function settleBreaks(pages, tl, mainTypes, noteTypes) {
   // A page's text blocks in reading order, of the main text or of the notes (`kinds`, the flow's types): figures and
   // captions float (provisional.js) and stand at no edge.
   let kinds = mainTypes;
-  const blocks = index => (page(index)?.regions || []).filter(region => kinds.has(region.type) && !["figure", "caption"].includes(tl.types[region.type]?.region) && (region.lines || []).some(line => line.text?.trim()))
+  // An area not classified yet (a journal's footer or running title, most often) stands at no edge either.
+  const blocks = index => (page(index)?.regions || []).filter(region => kinds.has(region.type) && region.type !== "unclassified" &&
+    !["figure", "caption"].includes(tl.types[region.type]?.region) && (region.lines || []).some(line => line.text?.trim()))
     .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
   const edge = (index, last) => last ? blocks(index).at(-1) : blocks(index)[0];
   // Blocks of other types (not headings) at a page's edge, then one of `type`: a quotation with the text going on past it.
@@ -67,6 +69,15 @@ function settleBreaks(pages, tl, mainTypes, noteTypes) {
       const region = out.get(i + 1).regions.find(value => value.id === b.id);
       region.source = { ...region.source, type_settled: { from: region.type, reason: `it goes on from a ${a.type.replaceAll("_", " ")} on the page before` } };
       region.type = a.type;
+    }
+    // Neither side marked: prose that stops mid-sentence at the foot of a page and goes on in lowercase at the head of
+    // the next, in a block of the same type, is one passage. (A new paragraph does not begin in lowercase; scripts
+    // without case are left as they are.)
+    if (!later && !earlier && a.type === b.type && !["verse", "heading", "table"].includes(tl.types[a.type]?.region) &&
+        !ENDS_SENTENCE.test(lastText(a)) && /^\p{Ll}/u.test(firstText(b))) {
+      edit(i, a.id, { continues_later: true, continuation_settled: "the text goes on in lowercase on the next page" });
+      edit(i + 1, b.id, { continues_from_earlier: true, continuation_settled: "the text goes on in lowercase from the page before" });
+      continue;
     }
     if (later === earlier) continue;
     const ends = ENDS_SENTENCE.test((a.lines.filter(line => line.text?.trim()).at(-1)?.text || "").trim());

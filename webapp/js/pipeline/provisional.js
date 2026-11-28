@@ -1,5 +1,5 @@
-import { UNCLASSIFIED } from "../chaya-book.js?v=20261127-display-type";
-import { selectPageRegions } from "./split.js?v=20261127-display-type";
+import { UNCLASSIFIED } from "../chaya-book.js?v=20261128-page-joins";
+import { selectPageRegions } from "./split.js?v=20261128-page-joins";
 
 export function regionTypePaths(types) {
   const definitions = types.types, paths = new Map(), queue = [];
@@ -65,8 +65,10 @@ export function provisionalUnits(pid, regions, types, { firstPage = false, lastP
   }
   const regionMap = new Map(regions.map(region => [`${pid}#${region.id}`, region]));
   // A figure or caption at a page's edge floats (assemble.js): the block that goes on to the next page (or comes from
-  // the previous one) may stand before (after) it, and is the one marked open.
-  const isFloat = id => { const unit = id && byId.get(id); return Boolean(unit) && !isText(unit.type) && !unit.children.some(child => child.unit); };
+  // the previous one) may stand before (after) it, and is the one marked open. So does an area not classified yet (a
+  // journal's footer or running title).
+  const isFloat = id => { const unit = id && byId.get(id);
+    return Boolean(unit) && (!isText(unit.type) || unit.type === "unclassified") && !unit.children.some(child => child.unit); };
   const edgeChild = (children, first) => {
     const list = first === 0 ? children : [...children].reverse();
     return list.find(child => !(child.unit && isFloat(child.unit))) || list[0];

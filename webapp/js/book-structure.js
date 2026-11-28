@@ -1,10 +1,10 @@
-import { assemble } from "./assemble.js?v=20261127-display-type";
-import { toPageDocs } from "./chaya-book.js?v=20261127-display-type";
-import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261127-display-type";
-import { deriveStructure } from "./structure-rules.js?v=20261127-display-type";
-import { pageLabel } from "./pipeline/steps.js?v=20261127-display-type";
-import { regionTypePaths } from "./pipeline/provisional.js?v=20261127-display-type";
-import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261127-display-type";
+import { assemble } from "./assemble.js?v=20261128-page-joins";
+import { toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261128-page-joins";
+import { collectTree, moveLinks, orderRegions, regionKey, writeRegion } from "./chaya-materialize.js?v=20261128-page-joins";
+import { deriveStructure } from "./structure-rules.js?v=20261128-page-joins";
+import { pageLabel } from "./pipeline/steps.js?v=20261128-page-joins";
+import { regionTypePaths } from "./pipeline/provisional.js?v=20261128-page-joins";
+import { printedNumber, sequenceFixes, toDev } from "./number-rules.js?v=20261128-page-joins";
 
 const cleanRegion = ({ in: path, direct, flow, number, label, continues, from_previous, links, ...region }) => ({
   ...region,
@@ -74,6 +74,9 @@ export function findStructure(book, hints = new Map()) {
   }
   tl.flows.main ??= "Text";
   for (const { flow } of Object.values(tl.types)) if (flow) tl.flows[flow] ??= flow;
+  // An area not classified yet (a journal's footer, a byline) may stand in any section: it ends none.
+  if (tl.types[UNCLASSIFIED]) for (const type of Object.values(tl.types))
+    if (type.contains && !type.contains.includes(UNCLASSIFIED)) type.contains = [...type.contains, UNCLASSIFIED];
   const children = new Set(Object.values(tl.types).flatMap(type => type.contains ?? []));
   for (const [name, type] of Object.entries(tl.types))
     if (!type.flow && !children.has(name) && type.role !== "furniture") type.flow = "main";

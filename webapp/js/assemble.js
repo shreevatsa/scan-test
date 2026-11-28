@@ -20,7 +20,8 @@ export function assemble(pageDocs, tl, source = {}, { onMerge = () => {} } = {})
   const inner = new Map();
   const typeOf = uid => units.get(uid).type;
   const flagged = uid => startOpen[uid] || endOpen[uid];
-  const isFloat = uid => !flagged(uid) && ["figure", "caption"].includes(tl.types?.[typeOf(uid)]?.region);
+  // An area not classified yet (a journal's footer or running title, a page number taken for text) floats as well.
+  const isFloat = uid => !flagged(uid) && (["figure", "caption"].includes(tl.types?.[typeOf(uid)]?.region) || typeOf(uid) === "unclassified");
   // The child open at the end, past any floats after it.
   const openLast = children => {
     for (let i = children.length - 1; i >= 0; i--) {

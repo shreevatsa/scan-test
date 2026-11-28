@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261127-display-type";
-import * as S from "./steps.js?v=20261127-display-type";
-import * as I from "./images.js?v=20261127-display-type";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-display-type";
-import * as Split from "./split.js?v=20261127-display-type";
-import { markersFromQuotes } from "../note-links.js?v=20261127-display-type";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-display-type";
-import { classifyBlocks } from "../local/blocks.js?v=20261127-display-type";
-import { finderById, finderPath } from "./finders.js?v=20261127-display-type";
-import { finderRequest } from "./finder-requests.js?v=20261127-display-type";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-display-type";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-display-type";
-import { bbox } from "../render.js?v=20261127-display-type";
-import { canonical } from "../ops.js?v=20261127-display-type";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-display-type";
+import * as P from "./prompts.js?v=20261128-page-joins";
+import * as S from "./steps.js?v=20261128-page-joins";
+import * as I from "./images.js?v=20261128-page-joins";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261128-page-joins";
+import * as Split from "./split.js?v=20261128-page-joins";
+import { markersFromQuotes } from "../note-links.js?v=20261128-page-joins";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261128-page-joins";
+import { classifyBlocks } from "../local/blocks.js?v=20261128-page-joins";
+import { finderById, finderPath } from "./finders.js?v=20261128-page-joins";
+import { finderRequest } from "./finder-requests.js?v=20261128-page-joins";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261128-page-joins";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261128-page-joins";
+import { bbox } from "../render.js?v=20261128-page-joins";
+import { canonical } from "../ops.js?v=20261128-page-joins";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261128-page-joins";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

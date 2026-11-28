@@ -1,12 +1,12 @@
-import * as B from "./book.js?v=20261127-display-type";
-import { findStructure } from "./book-structure.js?v=20261127-display-type";
-import { processingChoices } from "./book-processing.js?v=20261127-display-type";
-import { saveCredential } from "./book-credentials.js?v=20261127-display-type";
-import { providerGroups, stageKeyControls } from "./key-check.js?v=20261127-display-type";
-import { FINDERS } from "./pipeline/finders.js?v=20261127-display-type";
-import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261127-display-type";
-import { ruleProblems } from "./rules.js?v=20261127-display-type";
-import { h } from "./render.js?v=20261127-display-type";
+import * as B from "./book.js?v=20261128-page-joins";
+import { findStructure } from "./book-structure.js?v=20261128-page-joins";
+import { processingChoices } from "./book-processing.js?v=20261128-page-joins";
+import { saveCredential } from "./book-credentials.js?v=20261128-page-joins";
+import { providerGroups, stageKeyControls } from "./key-check.js?v=20261128-page-joins";
+import { FINDERS } from "./pipeline/finders.js?v=20261128-page-joins";
+import { OCR_LANGUAGES, READERS } from "./pipeline/readers.js?v=20261128-page-joins";
+import { ruleProblems } from "./rules.js?v=20261128-page-joins";
+import { h } from "./render.js?v=20261128-page-joins";
 
 const button = (text, onclick, attrs) => h("button", { type: "button", onclick, ...attrs }, text);
 const words = text => text.replaceAll("_", " ");

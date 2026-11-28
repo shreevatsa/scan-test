@@ -7,6 +7,7 @@ import { provisionalDocument } from "../js/pipeline/provisional.js";
 import { applyReading } from "../js/pipeline/apply.js";
 import { pagesToProcess, processingChoices, processBook, materializeProcessedPage, replaceProcessedPage } from "../js/book-processing.js";
 import { verseExport } from "../js/verses.js";
+import { bookText } from "../js/reader.js";
 
 const box = [0.1, 0.1, 0.9, 0.2];
 const region = (id, type, text, more = {}) => ({ id, type, box, lines: [{ text }], ...more });
@@ -223,4 +224,22 @@ test("saved-only processing replays a page from the records it was made with, th
   assert.deepEqual(result.errors.map(error => error.message), []);
   assert.equal(requests, 0);
   assert.deepEqual(changed.pages[0].regions.map(r => r.lines.map(l => l.text)), [["Saved by another reader"]]);
+});
+
+test("prose that breaks off mid-sentence goes on in lowercase on the next page, past a footer, in the same section", () => {
+  const at = (id, type, y, text) => ({ id, type, box: [0.1, y, 0.9, y + 0.05], lines: [{ text }] });
+  const book = (first, second) => ({ chaya: 1, title: "An invented paper",
+    types: { heading: { heading: true, lines: true }, paragraph: {}, unclassified: { lines: true }, section: { contains: ["heading", "paragraph"] } },
+    pages: [scan(1, [at("r1", "heading", 0.1, "A Question"), at("r2", "paragraph", 0.3, first), at("r3", "unclassified", 0.95, "Journal 10:4")]),
+      scan(2, [at("r1", "paragraph", 0.1, second), at("r2", "paragraph", 0.5, "Another paragraph.")])] });
+  const found = findStructure(book("Our civilization has a considerable ability to", "pick up balls, but none to put them back."));
+  assert.equal(B.regionAt(found, "1/r2").continues, true);
+  assert.deepEqual(B.regionAt(found, "2/r1").in, B.regionAt(found, "1/r2").in);
+  assert.deepEqual(B.regionAt(found, "1/r3").in, B.regionAt(found, "1/r2").in);
+  assert.match(bookText(B.assemble(found)), /considerable ability to (\[[^\]]*\] )?pick up balls/);
+  // A capital on the next page, or a sentence ended at the foot: two passages.
+  for (const [first, second] of [["it has a considerable ability to", "Pick up balls."], ["It has a considerable ability.", "and more."]]) {
+    const apart = findStructure(book(first, second));
+    assert.notEqual(B.regionAt(apart, "1/r2").continues, true, `${first} | ${second}`);
+  }
 });

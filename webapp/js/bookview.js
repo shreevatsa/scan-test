@@ -1,11 +1,11 @@
-import * as B from "./book.js?v=20261127-display-type";
-import { UNCLASSIFIED } from "./chaya-book.js?v=20261127-display-type";
-import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261127-display-type";
-import { hasTextInk } from "./local/ink-checks.js?v=20261127-display-type";
-import { PageView } from "./pageimage.js?v=20261127-display-type";
-import { boxRing } from "./ops.js?v=20261127-display-type";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261127-display-type";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261127-display-type";
+import * as B from "./book.js?v=20261128-page-joins";
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261128-page-joins";
+import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261128-page-joins";
+import { hasTextInk } from "./local/ink-checks.js?v=20261128-page-joins";
+import { PageView } from "./pageimage.js?v=20261128-page-joins";
+import { boxRing } from "./ops.js?v=20261128-page-joins";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261128-page-joins";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261128-page-joins";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const addressOf = (index, id) => `${index + 1}/${id}`;
@@ -63,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261127-display-type", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261128-page-joins", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }
