@@ -1,6 +1,6 @@
 // Immutable edits to the stored book. Keep the previous book for undo.
-import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261128-page-joins";
-import { prepare } from "./reader.js?v=20261128-page-joins";
+import { hasReadingContent, toPageDocs, UNCLASSIFIED } from "./chaya-book.js?v=20261128-join-sections";
+import { prepare } from "./reader.js?v=20261128-join-sections";
 
 const pathOf = region => region.in ?? [];
 const startsWith = (path, prefix) => prefix.every((id, i) => path[i] === id);
@@ -285,11 +285,73 @@ const structure = book => field(book, "structure_edited", true);
 export function setContinues(book, address, value) {
   const current = mustFind(book, address);
   if (current.direct || !readingRegion(book, current)) throw new Error("This region has no separate reading unit.");
-  const after = neighbor(book, address, 1);
+  let after = neighbor(book, address, 1);
+  // The passage goes on in a section that the structure found as going on from an earlier page: they are one section.
+  if (value && !after) {
+    const later = nextOfType(book, address), mine = pathOf(current), theirs = later && pathOf(regionAt(book, later));
+    const section = theirs?.at(-1);
+    if (section && theirs.length === mine.length && startsWith(theirs, mine.slice(0, -1)) && book.containers?.[section]?.open?.start &&
+        previousSection(book, section) === mine.at(-1)) {
+      book = joinPreviousSection(book, section);
+      after = neighbor(book, address, 1);
+    }
+  }
   let next = regionEdit(book, address, region => field(region, "continues", value ? (after ? true : "open") : null));
   if (after && value && regionAt(book, after).from_previous)
     next = regionEdit(next, after, region => field(region, "from_previous", null));
   return structure(next);
+}
+
+// The next region of the same type in the same flow, in any section.
+function nextOfType(book, address) {
+  const [start, position] = regionPosition(book, address), region = book.pages[start].regions[position], flow = flowOf(book, region);
+  for (let page = start; page < book.pages.length; page++) {
+    const scan = book.pages[page];
+    if (scan.skip) continue;
+    if (!scan.regions) return;
+    for (let i = page === start ? position + 1 : 0; i < scan.regions.length; i++) {
+      const candidate = scan.regions[i];
+      if (readingRegion(book, candidate) && !candidate.direct && candidate.type === region.type && flowOf(book, candidate) === flow)
+        return `${page + 1}/${candidate.id}`;
+    }
+  }
+}
+
+// The section just before section `id` at its level (in the same parent, of the same type), or null.
+export function previousSection(book, id) {
+  const where = textRegions(book), first = where.findIndex(({ region }) => pathOf(region).includes(id));
+  if (first < 0) return null;
+  const path = pathOf(where[first].region), depth = path.indexOf(id), parent = path.slice(0, depth);
+  for (let i = first - 1; i >= 0; i--) {
+    const other = pathOf(where[i].region);
+    if (!startsWith(other, parent)) return null;
+    if (other.length > depth && other[depth] !== id)
+      return book.containers[other[depth]]?.type === book.containers[id]?.type ? other[depth] : null;
+  }
+  return null;
+}
+
+// The first region of section `id`.
+export function sectionStart(book, id) {
+  return textRegions(book).find(({ region }) => pathOf(region).includes(id))?.region ?? null;
+}
+
+// Section `id` folded into the section before it at its level: its regions take that section's place in their paths,
+// and the section before keeps its label and number. So a passage can go on across a page where the structure found
+// a new section that is not one (a page's text taken for a section going on from an earlier page).
+export function joinPreviousSection(book, target) {
+  const id = containerId(book, target), into = previousSection(book, id);
+  if (!into) throw new Error("There is no section before this one at its level.");
+  const { [id]: gone, ...containers } = book.containers, kept = containers[into];
+  const open = { ...(kept.open?.start ? { start: true } : {}), ...(gone.open?.end ? { end: true } : {}) };
+  containers[into] = field(kept, "open", Object.keys(open).length ? open : null);
+  const result = mapRegions({ ...book, containers }, region => {
+    const path = pathOf(region);
+    let next = path.includes(id) ? field(region, "in", path.map(value => value === id ? into : value)) : region;
+    if (next.links?.some(link => link.to === id)) next = field(next, "links", next.links.map(link => link.to === id ? { ...link, to: into } : link));
+    return next;
+  });
+  return structure(preserveJoinTargets(book, result));
 }
 
 function textRegions(book) {

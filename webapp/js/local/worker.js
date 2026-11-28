@@ -3,10 +3,10 @@
 // pieces for a list of boxes.
 //   postMessage({id, pid, url, boxes})  ->  {id, geometry, seconds} or {id, error}
 
-import { analyzePage } from "./ink.js?v=20261128-page-joins";
-import { regionsFromBoxes } from "./regions.js?v=20261128-page-joins";
-import { LINES, OWNERSHIP } from "./config.js?v=20261128-page-joins";
-import { lineBlocks } from "./blocks.js?v=20261128-page-joins";
+import { analyzePage } from "./ink.js?v=20261128-join-sections";
+import { regionsFromBoxes } from "./regions.js?v=20261128-join-sections";
+import { LINES, OWNERSHIP } from "./config.js?v=20261128-join-sections";
+import { lineBlocks } from "./blocks.js?v=20261128-join-sections";
 
 const cache = new Map();
 

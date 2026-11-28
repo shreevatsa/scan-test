@@ -1,4 +1,4 @@
-import { boxRing } from "./ops.js?v=20261128-page-joins";
+import { boxRing } from "./ops.js?v=20261128-join-sections";
 
 
 export const DEFAULT_COUNTS = "युगलकम्=2,युग्मम्=2,तिलकम्=3,विशेषकम्=3,कलापकम्=4,कुलकम्=5";

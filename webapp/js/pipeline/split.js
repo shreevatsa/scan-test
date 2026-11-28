@@ -1,6 +1,6 @@
 // Reading requests and response checks.
-import { regionCaption } from "./prompts.js?v=20261128-page-joins";
-import { parseLine } from "../inline.js?v=20261128-page-joins";
+import { regionCaption } from "./prompts.js?v=20261128-join-sections";
+import { parseLine } from "../inline.js?v=20261128-join-sections";
 
 export const SPLIT_VERSION = "reading-and-structure-v1";
 

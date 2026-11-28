@@ -16,6 +16,11 @@ Use **Export → Save .chaya.pdf** to keep a portable copy of the scan and edits
   uncertain text, type suggestions, unlinked notes, and likely lines outside the boxes; a check opens in its
   region's card. **Use** applies an existing suggested type. **Keep** accepts the selected type and
   **Leave out** excludes an area from reading.
+- A selected card's **structure** row edits the sections by hand: **Start a section here**, **Deeper** and **Up**
+  (Tab and Shift-Tab), **Not a section start** (its regions leave the section), and, for a section that does not
+  begin with a heading or that was found as going on from an earlier page, **Join the section before**.
+  **Continues on the next page** joins a passage to its next piece; where that piece begins a section found as
+  going on from an earlier page, the two sections become one.
 - The **Text** view follows the saved reading order and links. Double-click a passage or footnote to
   preview its scan. **Open in Scans** jumps to that region in the editor. The Text view and standalone
   HTML export wrap without adding hyphens. On smaller screens, dismiss the Contents sidebar with

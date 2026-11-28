@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261128-page-joins";
-import * as S from "./steps.js?v=20261128-page-joins";
-import * as I from "./images.js?v=20261128-page-joins";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261128-page-joins";
-import * as Split from "./split.js?v=20261128-page-joins";
-import { markersFromQuotes } from "../note-links.js?v=20261128-page-joins";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261128-page-joins";
-import { classifyBlocks } from "../local/blocks.js?v=20261128-page-joins";
-import { finderById, finderPath } from "./finders.js?v=20261128-page-joins";
-import { finderRequest } from "./finder-requests.js?v=20261128-page-joins";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261128-page-joins";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261128-page-joins";
-import { bbox } from "../render.js?v=20261128-page-joins";
-import { canonical } from "../ops.js?v=20261128-page-joins";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261128-page-joins";
+import * as P from "./prompts.js?v=20261128-join-sections";
+import * as S from "./steps.js?v=20261128-join-sections";
+import * as I from "./images.js?v=20261128-join-sections";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261128-join-sections";
+import * as Split from "./split.js?v=20261128-join-sections";
+import { markersFromQuotes } from "../note-links.js?v=20261128-join-sections";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261128-join-sections";
+import { classifyBlocks } from "../local/blocks.js?v=20261128-join-sections";
+import { finderById, finderPath } from "./finders.js?v=20261128-join-sections";
+import { finderRequest } from "./finder-requests.js?v=20261128-join-sections";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261128-join-sections";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261128-join-sections";
+import { bbox } from "../render.js?v=20261128-join-sections";
+import { canonical } from "../ops.js?v=20261128-join-sections";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261128-join-sections";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

@@ -249,3 +249,24 @@ test("running headers and page numbers stand where they are printed among a page
     r("r3", "page_number", 0.4, 0.95)];
   assert.deepEqual(B.furnitureInPlace(regions, types).map(x => x.id), ["r1", "r2", "r4", "r5", "r3"]);
 });
+
+test("a passage goes on into a section found as going on from an earlier page: ticking the box makes them one section", () => {
+  const at = (id, type, y, text, more = {}) => ({ id, type, box: [0.1, y, 0.9, y + 0.05], lines: [{ text }], ...more });
+  const start = freeze({ chaya: 1, title: "An invented paper",
+    types: { heading: { heading: true, lines: true }, paragraph: {}, section: { contains: ["heading", "paragraph"] } },
+    containers: { c1: { type: "section", label: "One" }, c2: { type: "section", open: { start: true } }, c3: { type: "section", label: "Two" } },
+    pages: [{ pdf_page: 1, regions: [at("r1", "heading", 0.1, "One", { in: ["c1"] }), at("r2", "paragraph", 0.3, "It has a considerable ability to", { in: ["c1"] })] },
+      { pdf_page: 2, regions: [at("r1", "paragraph", 0.1, "pick up balls.", { in: ["c2"] }), at("r2", "heading", 0.5, "Two", { in: ["c3"] })] }] });
+  assert.equal(B.previousSection(start, "c1"), null);
+  assert.equal(B.previousSection(start, "c2"), "c1");
+  const ticked = B.setContinues(start, "1/r2", true);
+  assert.equal(B.regionAt(ticked, "1/r2").continues, true);
+  assert.deepEqual(B.regionAt(ticked, "2/r1").in, ["c1"]);
+  assert.equal(ticked.containers.c2, undefined);
+  assert.deepEqual(ticked.containers.c1, { type: "section", label: "One" });
+  assert.match(bookText(B.assemble(ticked)), /ability to (\[[^\]]*\] )?pick up balls/);
+  // By hand, without the box: the same section, the passage still two.
+  const joined = B.joinPreviousSection(start, "c2");
+  assert.deepEqual(B.regionAt(joined, "2/r1").in, ["c1"]);
+  assert.throws(() => B.joinPreviousSection(start, "c1"), /no section before/);
+});

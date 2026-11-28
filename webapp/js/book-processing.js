@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261128-page-joins";
-import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261128-page-joins";
-import { writeRegion } from "./chaya-materialize.js?v=20261128-page-joins";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261128-page-joins";
-import { applyReading } from "./pipeline/apply.js?v=20261128-page-joins";
-import { FINDERS, finderById, finderPath } from "./pipeline/finders.js?v=20261128-page-joins";
-import { pageRange } from "./pipeline/pdf.js?v=20261128-page-joins";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261128-page-joins";
-import { READERS, readerById, readerOptions } from "./pipeline/readers.js?v=20261128-page-joins";
-import { Maker, post } from "./pipeline/run.js?v=20261128-page-joins";
-import { pageCost, RECIPE } from "./recipe.js?v=20261128-page-joins";
+import * as B from "./book.js?v=20261128-join-sections";
+import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261128-join-sections";
+import { writeRegion } from "./chaya-materialize.js?v=20261128-join-sections";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261128-join-sections";
+import { applyReading } from "./pipeline/apply.js?v=20261128-join-sections";
+import { FINDERS, finderById, finderPath } from "./pipeline/finders.js?v=20261128-join-sections";
+import { pageRange } from "./pipeline/pdf.js?v=20261128-join-sections";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261128-join-sections";
+import { READERS, readerById, readerOptions } from "./pipeline/readers.js?v=20261128-join-sections";
+import { Maker, post } from "./pipeline/run.js?v=20261128-join-sections";
+import { pageCost, RECIPE } from "./recipe.js?v=20261128-join-sections";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -173,7 +173,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261128-page-joins", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261128-join-sections", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;

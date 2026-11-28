@@ -1,11 +1,11 @@
-import * as B from "./book.js?v=20261128-page-joins";
-import { UNCLASSIFIED } from "./chaya-book.js?v=20261128-page-joins";
-import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261128-page-joins";
-import { hasTextInk } from "./local/ink-checks.js?v=20261128-page-joins";
-import { PageView } from "./pageimage.js?v=20261128-page-joins";
-import { boxRing } from "./ops.js?v=20261128-page-joins";
-import { h, PALETTE, lineHtml } from "./render.js?v=20261128-page-joins";
-import { cpLength, normalizeSpans } from "./inline.js?v=20261128-page-joins";
+import * as B from "./book.js?v=20261128-join-sections";
+import { UNCLASSIFIED } from "./chaya-book.js?v=20261128-join-sections";
+import { areaTitle, checksFor, compareScanBoxes, existingProposedType, pageCaption, typeLabel as words } from "./bookchecks.js?v=20261128-join-sections";
+import { hasTextInk } from "./local/ink-checks.js?v=20261128-join-sections";
+import { PageView } from "./pageimage.js?v=20261128-join-sections";
+import { boxRing } from "./ops.js?v=20261128-join-sections";
+import { h, PALETTE, lineHtml } from "./render.js?v=20261128-join-sections";
+import { cpLength, normalizeSpans } from "./inline.js?v=20261128-join-sections";
 
 const button = (title, action, attrs) => h("button", { type: "button", onclick: action, ...attrs }, title);
 const addressOf = (index, id) => `${index + 1}/${id}`;
@@ -63,7 +63,7 @@ class Outlines {
     const work = this.getWork();
     if (!work) return;
     if (!this.worker) {
-      this.worker = new Worker(new URL("./local/worker.js?v=20261128-page-joins", import.meta.url), { type: "module" });
+      this.worker = new Worker(new URL("./local/worker.js?v=20261128-join-sections", import.meta.url), { type: "module" });
       this.worker.onmessage = event => this.finish(event.data);
       this.worker.onerror = () => { this.worker?.terminate(); this.worker = null; this.finish({ error: true }); };
     }
@@ -446,7 +446,12 @@ export class ScanView {
       shell.append(h("div", { class: "v1-tools" }, types, button("Start a section here", () => this.edit(b => B.startSection(b, address, types.value))),
         id ? button("Deeper", () => this.edit(b => B.sectionDeeper(b, id)), { title: "Tab on the structure row" }) : null,
         id ? button("Up", () => this.edit(b => B.sectionUp(b, id))) : null,
-        id ? button("Not a section start", () => this.edit(b => B.notSectionStart(b, id))) : null));
+        id ? button("Not a section start", () => this.edit(b => B.notSectionStart(b, id))) : null,
+        // Offered for a section that seems not to be one of its own: one going on from an earlier page, or not
+        // beginning with a heading.
+        id && (this.book.containers[id].open?.start || !this.book.types[B.sectionStart(this.book, id)?.type]?.heading) &&
+          B.previousSection(this.book, id) ? button("Join the section before", () => this.edit(b => B.joinPreviousSection(b, id)),
+          { title: "This section goes on from the one before it: make them one" }) : null));
     }
     if (id) fields.append(field("Section label", this.book.containers[id].label, (b, value) => B.setLabel(b, id, value)));
     fields.append(field("Unit number", unit.number, (b, value) => B.setNumber(b, address, value)),
