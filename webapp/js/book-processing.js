@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261127-replay-any-reader";
-import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-replay-any-reader";
-import { writeRegion } from "./chaya-materialize.js?v=20261127-replay-any-reader";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261127-replay-any-reader";
-import { applyReading } from "./pipeline/apply.js?v=20261127-replay-any-reader";
-import { FINDERS, finderById, finderPath } from "./pipeline/finders.js?v=20261127-replay-any-reader";
-import { pageRange } from "./pipeline/pdf.js?v=20261127-replay-any-reader";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-replay-any-reader";
-import { READERS, readerById, readerOptions } from "./pipeline/readers.js?v=20261127-replay-any-reader";
-import { Maker, post } from "./pipeline/run.js?v=20261127-replay-any-reader";
-import { pageCost, RECIPE } from "./recipe.js?v=20261127-replay-any-reader";
+import * as B from "./book.js?v=20261127-export-work";
+import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-export-work";
+import { writeRegion } from "./chaya-materialize.js?v=20261127-export-work";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261127-export-work";
+import { applyReading } from "./pipeline/apply.js?v=20261127-export-work";
+import { FINDERS, finderById, finderPath } from "./pipeline/finders.js?v=20261127-export-work";
+import { pageRange } from "./pipeline/pdf.js?v=20261127-export-work";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-export-work";
+import { READERS, readerById, readerOptions } from "./pipeline/readers.js?v=20261127-export-work";
+import { Maker, post } from "./pipeline/run.js?v=20261127-export-work";
+import { pageCost, RECIPE } from "./recipe.js?v=20261127-export-work";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -173,7 +173,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261127-replay-any-reader", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261127-export-work", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;

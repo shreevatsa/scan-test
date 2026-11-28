@@ -40,5 +40,43 @@ export async function openWorkZip(file) {
       if (raw.byteLength !== size) throw new Error("Incorrect work ZIP record size.");
       return JSON.parse(decoder.decode(raw));
     },
+    names: () => [...entries.keys()],
   };
+}
+
+// A work ZIP of JSON records, each deflated: `entries` are [{ name, value }] (value: any JSON value). Read back with
+// openWorkZip.
+export async function makeWorkZip(entries) {
+  const encoder = new TextEncoder(), locals = [], central = [];
+  let offset = 0;
+  for (const { name, value } of entries) {
+    const path = encoder.encode(name), raw = encoder.encode(JSON.stringify(value));
+    const packed = new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream("deflate-raw"))).arrayBuffer());
+    const crc = crc32(raw), header = new DataView(new ArrayBuffer(30)), entry = new DataView(new ArrayBuffer(46));
+    // Version 2.0, UTF-8 names, deflated, dated 1980-01-01.
+    for (const [view, at] of [[header, 4], [entry, 6]]) {
+      view.setUint16(at, 20, true); view.setUint16(at + 2, 0x0800, true); view.setUint16(at + 4, 8, true);
+      view.setUint16(at + 8, 33, true); view.setUint32(at + 10, crc, true); view.setUint32(at + 14, packed.length, true);
+      view.setUint32(at + 18, raw.length, true); view.setUint16(at + 22, path.length, true);
+    }
+    header.setUint32(0, 0x04034b50, true);
+    entry.setUint32(0, 0x02014b50, true); entry.setUint16(4, 20, true); entry.setUint32(42, offset, true);
+    locals.push(header, path, packed);
+    central.push(entry, path);
+    offset += 30 + path.length + packed.length;
+  }
+  const size = central.reduce((n, part) => n + part.byteLength, 0), end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, entries.length, true); end.setUint16(10, entries.length, true);
+  end.setUint32(12, size, true); end.setUint32(16, offset, true);
+  return new Blob([...locals, ...central, end], { type: "application/zip" });
+}
+
+const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
+  for (let k = 0; k < 8; k++) n = n & 1 ? 0xedb88320 ^ (n >>> 1) : n >>> 1;
+  return n >>> 0;
+});
+function crc32(bytes) {
+  let crc = 0xffffffff;
+  for (const byte of bytes) crc = CRC_TABLE[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+  return (crc ^ 0xffffffff) >>> 0;
 }

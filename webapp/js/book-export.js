@@ -1,8 +1,8 @@
-import { assemble } from "./book.js?v=20261127-replay-any-reader";
-import { bookDocument, bookText } from "./reader.js?v=20261127-replay-any-reader";
-import { verseExport } from "./verses.js?v=20261127-replay-any-reader";
-import { fileStem } from "./store.js?v=20261127-replay-any-reader";
-import { h } from "./render.js?v=20261127-replay-any-reader";
+import { assemble } from "./book.js?v=20261127-export-work";
+import { bookDocument, bookText } from "./reader.js?v=20261127-export-work";
+import { verseExport } from "./verses.js?v=20261127-export-work";
+import { fileStem } from "./store.js?v=20261127-export-work";
+import { h } from "./render.js?v=20261127-export-work";
 
 const text = (value, mime) => new Blob([value], { type: mime });
 const json = value => text(JSON.stringify(value, null, 2) + "\n", "application/json");
@@ -58,6 +58,7 @@ export function openExport(app, download) {
     } }, label));
   };
   add("Save .chaya.pdf", ".chaya.pdf", () => session.export(book), true);
+  add("Processing records (.work.zip)", ".work.zip", () => session.exportWork());
   add("Original PDF", ".pdf", () => session.original());
   add("Plain text", ".txt", () => text(bookText(view), "text/plain;charset=utf-8"));
   add("HTML", ".html", async () => text(await exportHtml(book, view, session), "text/html;charset=utf-8"));

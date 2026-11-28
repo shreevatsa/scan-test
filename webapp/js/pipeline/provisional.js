@@ -1,5 +1,5 @@
-import { UNCLASSIFIED } from "../chaya-book.js?v=20261127-replay-any-reader";
-import { selectPageRegions } from "./split.js?v=20261127-replay-any-reader";
+import { UNCLASSIFIED } from "../chaya-book.js?v=20261127-export-work";
+import { selectPageRegions } from "./split.js?v=20261127-export-work";
 
 export function regionTypePaths(types) {
   const definitions = types.types, paths = new Map(), queue = [];

@@ -1,6 +1,6 @@
-import { openWorkZip } from "./work-zip.js?v=20261127-replay-any-reader";
-import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-replay-any-reader";
-import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-replay-any-reader";
+import { makeWorkZip, openWorkZip } from "./work-zip.js?v=20261127-export-work";
+import { readBook, writeBook, sha256hex } from "./chayapdf.js?v=20261127-export-work";
+import { drawnSize, openPdfData, pageInfo, spreadFold } from "./pipeline/pdf.js?v=20261127-export-work";
 
 export const PREVIOUS = "/scan-test/versions/0.4/";
 
@@ -193,6 +193,28 @@ class StoredBook {
     await write(dir, name, archive);
     this.archive = null;
     return manifest;
+  }
+
+  // The book's processing records as a work ZIP, for another browser's Process → Open work archive…: every record kept
+  // here, and those of an attached archive that are not, with a manifest naming the pages and the source PDF.
+  async exportWork() {
+    const records = new Map();
+    const walk = async (dir, path) => {
+      for await (const [name, handle] of dir.entries()) {
+        if (handle.kind === "directory") await walk(handle, `${path}/${name}`);
+        else if (name.endsWith(".json")) records.set(`${path}/${name}`, JSON.parse(await (await handle.getFile()).text()));
+      }
+    };
+    const work = await this.dir.getDirectoryHandle("work").catch(() => null);
+    if (work) await walk(work, "work");
+    const archive = await this.workArchive();
+    for (const name of archive?.zip.names() ?? [])
+      if (name.startsWith("work/") && !records.has(name)) records.set(name, await archive.zip.json(name));
+    if (!records.size) throw new Error("This browser has no processing records for this book.");
+    const sha = this.book.source?.sha256 || await sha256hex(new Uint8Array(await (await this.original()).arrayBuffer()));
+    const manifest = { format: "chaya-work", pdf: { sha256: sha }, pages: this.book.pages.map((page, i) => ({
+      id: page.id ?? String(i + 1), pdf_page: page.pdf_page, ...(page.crop ? { pdf_part: [page.crop[0], page.crop[2]] } : {}) })) };
+    return makeWorkZip([{ name: "book.json", value: manifest }, ...[...records].sort(([a], [b]) => a.localeCompare(b)).map(([name, value]) => ({ name, value }))]);
   }
 
   async original() { return file(this.dir, "book.pdf"); }

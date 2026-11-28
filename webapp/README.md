@@ -31,7 +31,9 @@ Use **Export → Save .chaya.pdf** to keep a portable copy of the scan and edits
   Use the links beside the credential fields to open the provider’s setup page.
   Processing saves inferred structure until you edit it. **Find structure now** replaces saved structure
   after confirmation.
-- **Export** offers the Chaya PDF, original PDF, plain text, standalone HTML, `chaya.json`, and verses JSON
+- **Export** offers the Chaya PDF, the book's processing records (`.work.zip`: the finder's and readers' saved results,
+  which stay in the browser that made them; open it in another browser with Process → **Open work archive…** to
+  replay pages there for $0), original PDF, plain text, standalone HTML, `chaya.json`, and verses JSON
   when the book has numbered verses.
 
 The library links to the previous app for older books. The published site serves it at `versions/0.4/`.

@@ -1,20 +1,20 @@
 // Region finding and reading retain their work records so retries can reuse them.
 
-import * as P from "./prompts.js?v=20261127-replay-any-reader";
-import * as S from "./steps.js?v=20261127-replay-any-reader";
-import * as I from "./images.js?v=20261127-replay-any-reader";
-import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-replay-any-reader";
-import * as Split from "./split.js?v=20261127-replay-any-reader";
-import { markersFromQuotes } from "../note-links.js?v=20261127-replay-any-reader";
-import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-replay-any-reader";
-import { classifyBlocks } from "../local/blocks.js?v=20261127-replay-any-reader";
-import { finderById, finderPath } from "./finders.js?v=20261127-replay-any-reader";
-import { finderRequest } from "./finder-requests.js?v=20261127-replay-any-reader";
-import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-replay-any-reader";
-import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-replay-any-reader";
-import { bbox } from "../render.js?v=20261127-replay-any-reader";
-import { canonical } from "../ops.js?v=20261127-replay-any-reader";
-import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-replay-any-reader";
+import * as P from "./prompts.js?v=20261127-export-work";
+import * as S from "./steps.js?v=20261127-export-work";
+import * as I from "./images.js?v=20261127-export-work";
+import { readerById, readerOptions, usageCost, geminiReadingRequest } from "./readers.js?v=20261127-export-work";
+import * as Split from "./split.js?v=20261127-export-work";
+import { markersFromQuotes } from "../note-links.js?v=20261127-export-work";
+import { localReading, localLayout, localLines } from "./ocr.js?v=20261127-export-work";
+import { classifyBlocks } from "../local/blocks.js?v=20261127-export-work";
+import { finderById, finderPath } from "./finders.js?v=20261127-export-work";
+import { finderRequest } from "./finder-requests.js?v=20261127-export-work";
+import { planReading, combineReading, retainedParts, partTotals, readingFits, readingGeometry, sameReadingSource } from "./partial-reading.js?v=20261127-export-work";
+import { visionRequest, visionReading, visionCost, VISION_PARSE } from "./vision.js?v=20261127-export-work";
+import { bbox } from "../render.js?v=20261127-export-work";
+import { canonical } from "../ops.js?v=20261127-export-work";
+import { proposingPrompt, proposingSchema, scaleProposingRegions } from "./proposing-finder.js?v=20261127-export-work";
 
 export const REQUEST_TIMEOUT_MS = 75000;
 

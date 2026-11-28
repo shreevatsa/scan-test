@@ -1,14 +1,14 @@
-import { bookCredentials } from "./book-credentials.js?v=20261127-replay-any-reader";
-import { openExport } from "./book-export.js?v=20261127-replay-any-reader";
-import { openSettings } from "./book-settings.js?v=20261127-replay-any-reader";
-import { openProcess } from "./process-view.js?v=20261127-replay-any-reader";
-import { h, cropInto } from "./render.js?v=20261127-replay-any-reader";
-import * as B from "./book.js?v=20261127-replay-any-reader";
-import { pageCaption } from "./bookchecks.js?v=20261127-replay-any-reader";
-import { ScanView } from "./bookview.js?v=20261127-replay-any-reader";
-import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-replay-any-reader";
-import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-replay-any-reader";
-import { baseCss } from "./style.js?v=20261127-replay-any-reader";
+import { bookCredentials } from "./book-credentials.js?v=20261127-export-work";
+import { openExport } from "./book-export.js?v=20261127-export-work";
+import { openSettings } from "./book-settings.js?v=20261127-export-work";
+import { openProcess } from "./process-view.js?v=20261127-export-work";
+import { h, cropInto } from "./render.js?v=20261127-export-work";
+import * as B from "./book.js?v=20261127-export-work";
+import { pageCaption } from "./bookchecks.js?v=20261127-export-work";
+import { ScanView } from "./bookview.js?v=20261127-export-work";
+import { browserBooks, openBook, importBook, downloadInput, fileStem, removeBook, OldBookError, PREVIOUS } from "./store.js?v=20261127-export-work";
+import { bookHtml, bookToc, BOOK_CSS, wireBookView, safeId } from "./reader.js?v=20261127-export-work";
+import { baseCss } from "./style.js?v=20261127-export-work";
 
 const app = document.querySelector("#app");
 let dialogSequence = 0;
@@ -102,7 +102,7 @@ class App {
       if (!books.length) list.append(h("p", { class: "v1-muted" }, "Open a PDF to start your library."));
     } catch (err) { list.replaceChildren(h("p", { class: "v1-error" }, err.message)); }
     try {
-      const response = await fetch(new URL("../examples.json?v=20261127-replay-any-reader", import.meta.url));
+      const response = await fetch(new URL("../examples.json?v=20261127-export-work", import.meta.url));
       if (!response.ok) throw new Error();
       const books = await response.json();
       for (const book of books) {
