@@ -12,9 +12,11 @@ const types = structuredClone(generic);
 types.types.chapter_heading = { region: "heading", flow: "main", description: "A chapter's title" };
 types.types.chapter = { flow: "main", contains: ["chapter_heading", "section", "heading", "paragraph"], description: "A chapter" };
 
-// A page of blocks: [type, text] in reading order, each one line.
+// A page of blocks: [type, text] in reading order, each one line. A paragraph is a whole sentence, so that no two join
+// across a page break (structure-rules.js joins prose that breaks off mid-sentence and goes on in lowercase).
 let n = 0;
-const page = blocks => {
+const page = input => {
+  const blocks = input.map(([type, text]) => [type, type === "paragraph" && !/[.!?:]$/.test(text) ? `${text}.` : text]);
   const id = `book-page-${String(++n).padStart(3, "0")}`;
   return { page: { id, width: 1000, height: 1400, regions: blocks.map(([type, text], i) => ({ id: `r${i + 1}`, type, order: i + 1,
       polygons: [[[100, 100 + i * 60], [900, 100 + i * 60], [900, 150 + i * 60], [100, 150 + i * 60]]], box: [100, 100 + i * 60, 900, 150 + i * 60],
