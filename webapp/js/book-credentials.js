@@ -1,5 +1,5 @@
-import { CredentialChecks } from "./key-check.js?v=20261127-unordered-in-place";
-import { settings } from "./preferences.js?v=20261127-unordered-in-place";
+import { CredentialChecks } from "./key-check.js?v=20261127-all-pages";
+import { settings } from "./preferences.js?v=20261127-all-pages";
 
 export async function bookCredentials() {
   const keys = Object.fromEntries(await Promise.all(["openai", "gemini", "vision", "vision_auth", "vision_project"].map(async name =>

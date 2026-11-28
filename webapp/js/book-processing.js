@@ -1,14 +1,14 @@
-import * as B from "./book.js?v=20261127-unordered-in-place";
-import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-unordered-in-place";
-import { writeRegion } from "./chaya-materialize.js?v=20261127-unordered-in-place";
-import { findStructure, scanLabels } from "./book-structure.js?v=20261127-unordered-in-place";
-import { applyReading } from "./pipeline/apply.js?v=20261127-unordered-in-place";
-import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-unordered-in-place";
-import { pageRange } from "./pipeline/pdf.js?v=20261127-unordered-in-place";
-import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-unordered-in-place";
-import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-unordered-in-place";
-import { Maker, post } from "./pipeline/run.js?v=20261127-unordered-in-place";
-import { pageCost, RECIPE } from "./recipe.js?v=20261127-unordered-in-place";
+import * as B from "./book.js?v=20261127-all-pages";
+import { finderTypeList, UNCLASSIFIED } from "./chaya-book.js?v=20261127-all-pages";
+import { writeRegion } from "./chaya-materialize.js?v=20261127-all-pages";
+import { findStructure, scanLabels } from "./book-structure.js?v=20261127-all-pages";
+import { applyReading } from "./pipeline/apply.js?v=20261127-all-pages";
+import { finderById, finderPath } from "./pipeline/finders.js?v=20261127-all-pages";
+import { pageRange } from "./pipeline/pdf.js?v=20261127-all-pages";
+import { provisionalDocument } from "./pipeline/provisional.js?v=20261127-all-pages";
+import { readerById, readerOptions } from "./pipeline/readers.js?v=20261127-all-pages";
+import { Maker, post } from "./pipeline/run.js?v=20261127-all-pages";
+import { pageCost, RECIPE } from "./recipe.js?v=20261127-all-pages";
 
 export function processingChoices(book, calls = []) {
   const options = readerOptions({ ...RECIPE, ...book.reading }, book);
@@ -26,6 +26,7 @@ export function pagesToProcess(book, scope, index, range, missingOnly = false) {
   const eligible = page => !!page && !page.skip && (!missingOnly || page.regions?.some(hasGap));
   if (scope === "unprocessed")
     return book.pages.flatMap((page, i) => eligible(page) && (missingOnly || !page.regions) ? [i] : []);
+  if (scope === "all") return book.pages.flatMap((page, i) => eligible(page) ? [i] : []);
   if (scope === "range") {
     if (!range.trim()) throw new Error("Enter one or more scan numbers.");
     return pageRange(range, book.pages.length).map(n => n - 1).filter(i => eligible(book.pages[i]));
@@ -172,7 +173,7 @@ function outlineWorker(signal) {
     async run(pid, url, boxes) {
       signal.throwIfAborted();
       if (!worker) {
-        worker = new Worker(new URL("./local/worker.js?v=20261127-unordered-in-place", import.meta.url), { type: "module" });
+        worker = new Worker(new URL("./local/worker.js?v=20261127-all-pages", import.meta.url), { type: "module" });
         worker.onerror = () => {
           active?.reject(new Error("The outline worker failed."));
           active = null;

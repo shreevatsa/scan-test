@@ -65,6 +65,7 @@ test("saved-only processing stops at missing work without rendering or calling a
     pages: [scan(1), { ...scan(2), skip: true }, scan(3, [])] };
   assert.deepEqual(pagesToProcess(book, "unprocessed"), [0]);
   assert.deepEqual(pagesToProcess(book, "range", 0, "1–3"), [0, 2]);
+  assert.deepEqual(pagesToProcess(book, "all"), [0, 2]);
   assert.equal(pagesToProcess(book, "page", 1).length, 0);
   assert.deepEqual(pagesToProcess(book, "unprocessed", 0, "", true), []);
   let requests = 0;

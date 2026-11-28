@@ -1,5 +1,5 @@
-import { UNCLASSIFIED } from "../chaya-book.js?v=20261127-unordered-in-place";
-import { selectPageRegions } from "./split.js?v=20261127-unordered-in-place";
+import { UNCLASSIFIED } from "../chaya-book.js?v=20261127-all-pages";
+import { selectPageRegions } from "./split.js?v=20261127-all-pages";
 
 export function regionTypePaths(types) {
   const definitions = types.types, paths = new Map(), queue = [];

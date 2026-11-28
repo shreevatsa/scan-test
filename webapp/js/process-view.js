@@ -1,7 +1,7 @@
-import { h } from "./render.js?v=20261127-unordered-in-place";
-import { pageCaption } from "./bookchecks.js?v=20261127-unordered-in-place";
-import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261127-unordered-in-place";
-import { dollars } from "./recipe.js?v=20261127-unordered-in-place";
+import { h } from "./render.js?v=20261127-all-pages";
+import { pageCaption } from "./bookchecks.js?v=20261127-all-pages";
+import { pagesToProcess, processingChoices, processBook } from "./book-processing.js?v=20261127-all-pages";
+import { dollars } from "./recipe.js?v=20261127-all-pages";
 
 const button = (text, attrs) => h("button", { type: "button", ...attrs }, text);
 const frame = () => new Promise(requestAnimationFrame);
@@ -15,6 +15,7 @@ export async function openProcess(app, index, restore = false) {
   if (app.session !== session) return;
   const allPages = h("option", { value: "unprocessed" }, "All unprocessed pages");
   const scope = h("select", { "aria-label": "Pages to process" }, allPages,
+    h("option", { value: "all" }, "All pages"),
     h("option", { value: "range" }, "These pages"),
     h("option", { value: "page" }, `This page · ${pageCaption(original.pages[current])}`));
   scope.value = index == null ? "unprocessed" : "page";
@@ -57,7 +58,9 @@ export async function openProcess(app, index, restore = false) {
       const pages = selected().length;
       const { finderCost, readerCost } = choices;
       const cost = localOnly.checked ? 0 : finderCost == null || readerCost == null ? null : (finderCost + readerCost) * pages;
-      estimate.textContent = `${pages} ${pages === 1 ? "page" : "pages"} · ${cost == null ? "Cost estimate unavailable" : `Estimated new work ${dollars(cost)}`}`;
+      estimate.textContent = !pages && scope.value === "unprocessed" && !restoring()
+        ? "Every page has been processed. Choose All pages, These pages or This page to process pages again."
+        : `${pages} ${pages === 1 ? "page" : "pages"} · ${cost == null ? "Cost estimate unavailable" : `Estimated new work ${dollars(cost)}`}`;
       start.disabled = !!busy || importing || !pages;
     } catch (error) { estimate.textContent = error.message; start.disabled = true; }
   };
